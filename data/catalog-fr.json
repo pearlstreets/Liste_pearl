@@ -1,0 +1,243 @@
+{
+  "pain": [
+    "pains",
+    "pain traditionnel",
+    "pain blanc",
+    "pain de campagne",
+    "pain courant"
+  ],
+  "tomates": [
+    "tomate",
+    "tomatesz",
+    "tomatez"
+  ],
+  "lait": [
+    "laits",
+    "lai"
+  ],
+  "oeufs": [
+    "oeuf",
+    "œuf",
+    "œufs"
+  ],
+  "yaourt": [
+    "yahourt",
+    "yaourths",
+    "yaourts",
+    "yoghourt"
+  ],
+  "riz": [
+    "ris"
+  ],
+  "pâtes": [
+    "pasta",
+    "pate",
+    "pates"
+  ],
+  "huile": [
+    "huiles",
+    "huile d olive",
+    "huile olive",
+    "huile de tournesol",
+    "huile tournesol",
+    "huile d'olive"
+  ],
+  "télé": [
+    "ecran television",
+    "ecran tv",
+    "tele",
+    "téléviseur",
+    "television",
+    "tv"
+  ],
+  "ordinateur": [
+    "computer",
+    "ordinateur fixe",
+    "pc",
+    "unité centrale"
+  ],
+  "ordinateur portable": [
+    "laptop",
+    "macbook",
+    "notebook",
+    "portable pc",
+    "ultrabook"
+  ],
+  "smartphone": [
+    "android",
+    "gsm",
+    "iphone",
+    "portable",
+    "téléphone",
+    "téléphone portable"
+  ],
+  "tablette": [
+    "ipad",
+    "tablette tactile"
+  ],
+  "casque": [
+    "casque audio",
+    "headphone",
+    "headphones"
+  ],
+  "écouteurs": [
+    "airpods",
+    "earbuds",
+    "ecouteur",
+    "ecouteurs bluetooth"
+  ],
+  "enceinte bluetooth": [
+    "enceinte",
+    "haut-parleur bluetooth",
+    "speaker bluetooth"
+  ],
+  "chargeur": [
+    "adaptateur secteur",
+    "bloc de charge",
+    "chargeur secteur",
+    "chargeur usb"
+  ],
+  "câble hdmi": [
+    "cordon hdmi",
+    "hdmi"
+  ],
+  "câble usb": [
+    "cable usb",
+    "câble usb-a",
+    "cordon usb",
+    "usb"
+  ],
+  "câble usb-c": [
+    "type c",
+    "usb c",
+    "usb type c"
+  ],
+  "câble lightning": [
+    "cable iphone",
+    "lightning"
+  ],
+  "clé usb": [
+    "clef usb",
+    "usb key"
+  ],
+  "disque dur": [
+    "disque dur externe",
+    "disque dur portable",
+    "hdd"
+  ],
+  "ssd": [
+    "disque ssd"
+  ],
+  "console": [
+    "console de jeu",
+    "console de jeux"
+  ],
+  "manette": [
+    "controller",
+    "gamepad"
+  ],
+  "rasoir": [
+    "lame de rasoir",
+    "rasoir de sûreté",
+    "rasoir jetable",
+    "rasoir manuel"
+  ],
+  "rasoir électrique": [
+    "rasoir electrique",
+    "tondeuse",
+    "tondeuse barbe"
+  ],
+  "maquillage": [
+    "cosmétiques",
+    "kit maquillage",
+    "makeup"
+  ],
+  "œufs": [
+    "oeuf",
+    "œuf",
+    "oeufs"
+  ],
+  "pomme de terre": [
+    "patate",
+    "patates",
+    "pommes de terre"
+  ],
+  "essuie-tout": [
+    "essuie tout",
+    "rouleau essuie-tout",
+    "sopalin"
+  ],
+  "papier aluminium": [
+    "alu",
+    "papier alu",
+    "papier d aluminium",
+    "papier d'aluminium"
+  ],
+  "film étirable": [
+    "cellophane",
+    "film alimentaire",
+    "film plastique"
+  ],
+  "liquide vaisselle": [
+    "liquide de vaisselle",
+    "produit vaisselle"
+  ],
+  "lessive": [
+    "capsules de lessive",
+    "lessive en poudre",
+    "lessive liquide"
+  ],
+  "adoucissant": [
+    "assouplissant"
+  ],
+  "détachant": [
+    "anti tache",
+    "anti taches"
+  ],
+  "désinfectant": [
+    "desinfectant"
+  ],
+  "gel hydroalcoolique": [
+    "gel hydro alcoolique",
+    "gel main"
+  ],
+  "papier toilette": [
+    "papier hygiénique",
+    "papier wc",
+    "pq"
+  ],
+  "serviettes hygiéniques": [
+    "serviettes hygieniques"
+  ],
+  "après-shampoing": [
+    "après shampoing",
+    "apres-shampoing",
+    "conditionneur"
+  ],
+  "shampoing": [
+    "shampoin",
+    "shampooing"
+  ],
+  "huile d'olive": [
+    "huile olive"
+  ],
+  "vinaigre balsamique": [
+    "balsamique"
+  ],
+  "soda": [
+    "boisson gazeuse"
+  ],
+  "cola": [
+    "coca",
+    "coke"
+  ],
+  "chips": [
+    "chip"
+  ],
+  "fruits": [
+    "fruit"
+  ],
+  "bananes": [
+    "banane"
+  ]
+}

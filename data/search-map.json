@@ -1,0 +1,78 @@
+{
+  "pommes": [
+    { "name": "Pommes Golden", "detail": "Origine France – 1kg", "price": 2.49, "unitPrice": "2,49 €/KG" },
+    { "name": "Pommes Gala",   "detail": "Origine Italie – 1kg", "price": 2.69, "unitPrice": "2,69 €/KG" }
+  ],
+  "pomme": [
+    { "name": "Pommes Golden", "detail": "Origine France – 1kg", "price": 2.49, "unitPrice": "2,49 €/KG" }
+  ],
+  "bananes": [
+    { "name": "Bananes", "detail": "Origine Équateur – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" }
+  ],
+  "banane": [
+    { "name": "Bananes", "detail": "Origine Équateur – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" }
+  ],
+  "oranges": [
+    { "name": "Oranges", "detail": "Origine Maroc – 1kg", "price": 2.79, "unitPrice": "2,79 €/KG" }
+  ],
+  "orange": [
+    { "name": "Oranges", "detail": "Origine Maroc – 1kg", "price": 2.79, "unitPrice": "2,79 €/KG" }
+  ],
+  "cerises": [
+    { "name": "Cerises", "detail": "Origine France – 500g", "price": 3.49, "unitPrice": "6,98 €/KG" }
+  ],
+  "cerise": [
+    { "name": "Cerises", "detail": "Origine France – 500g", "price": 3.49, "unitPrice": "6,98 €/KG" }
+  ],
+  "fraises": [
+    { "name": "Fraises", "detail": "Origine Espagne – 250g", "price": 2.29, "unitPrice": "9,16 €/KG" }
+  ],
+  "fraise": [
+    { "name": "Fraises", "detail": "Origine Espagne – 250g", "price": 2.29, "unitPrice": "9,16 €/KG" }
+  ],
+  "tomates": [
+    { "name": "Tomates grappe", "detail": "Origine France – 1kg", "price": 3.59, "unitPrice": "3,59 €/KG" },
+    { "name": "Tomates cerise", "detail": "Origine Maroc – 250g", "price": 1.69, "unitPrice": "6,76 €/KG" }
+  ],
+  "tomate": [
+    { "name": "Tomates grappe", "detail": "Origine France – 1kg", "price": 3.59, "unitPrice": "3,59 €/KG" }
+  ],
+  "lait": [
+    { "name": "Lait demi-écrémé", "detail": "Brique – 1L", "price": 0.99, "unitPrice": "0,99 €/L" }
+  ],
+  "eau": [
+    { "name": "Eau minérale", "detail": "Pack 6x1,5L – 9L", "price": 2.70, "unitPrice": "0,30 €/L" }
+  ],
+  "riz": [
+    { "name": "Riz basmati", "detail": "Sachet – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" }
+  ],
+  "pates": [
+    { "name": "Pâtes penne", "detail": "Sachet – 500g", "price": 0.95, "unitPrice": "1,90 €/KG" }
+  ],
+  "shampoing": [
+    { "name": "Shampooing doux", "detail": "Flacon – 250ml", "price": 3.49, "unitPrice": "13,96 €/L" }
+  ],
+  "shampooing": [
+    { "name": "Shampooing doux", "detail": "Flacon – 250ml", "price": 3.49, "unitPrice": "13,96 €/L" }
+  ],
+  "savon": [
+    { "name": "Savon liquide", "detail": "Recharge – 500ml", "price": 2.19, "unitPrice": "4,38 €/L" }
+  ],
+  "tv": [
+    { "name": "TV 43\" 4K", "detail": "LED – 43 pouces", "price": 249.00, "unitPrice": "" }
+  ],
+  "tele": [
+    { "name": "TV 43\" 4K", "detail": "LED – 43 pouces", "price": 249.00, "unitPrice": "" }
+  ],
+  "fruits": [
+    { "name": "Pommes Golden", "detail": "Origine France – 1kg", "price": 2.49, "unitPrice": "2,49 €/KG" },
+    { "name": "Bananes", "detail": "Origine Équateur – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" },
+    { "name": "Oranges", "detail": "Origine Maroc – 1kg", "price": 2.79, "unitPrice": "2,79 €/KG" },
+    { "name": "Cerises", "detail": "Origine France – 500g", "price": 3.49, "unitPrice": "6,98 €/KG" },
+    { "name": "Fraises", "detail": "Origine Espagne – 250g", "price": 2.29, "unitPrice": "9,16 €/KG" }
+  ],
+  "legumes": [
+    { "name": "Tomates grappe", "detail": "Origine France – 1kg", "price": 3.59, "unitPrice": "3,59 €/KG" },
+    { "name": "Tomates cerise", "detail": "Origine Maroc – 250g", "price": 1.69, "unitPrice": "6,76 €/KG" }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "tabs": {
+    "myList": "Ma Liste",
+    "products": "Produits",
+    "favorites": "Favoris",
+    "cart": "Panier"
+  },
+  "listScreen": {
+    "scan": "Scan",
+    "inputPlaceholder": "Ajouter un article (ex: \"2 pommes, 5 œufs\")",
+    "selectAll": "Tout sélectionner",
+    "strikeAll": "Tout barrer",
+    "hideStriked": "Masquer les articles barrés",
+    "noItems": "Aucun article",
+    "findExactProducts": "Trouver les produits exacts",
+    "editItem": "Modifier l'article",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "productsScreen": {
+    "clickAndCollect": "Click & Collect",
+    "delivery": "Livraison",
+    "addItems": "Ajouter des articles",
+    "strategies": {
+      "balanced": "Équilibré",
+      "totalPrice": "Prix total",
+      "time": "Temps",
+      "singleShop": "1 magasin"
+    },
+    "proposal": "Proposition: ",
+    "proposalTypes": {
+      "balanced": "Équilibrée",
+      "economic": "Économique",
+      "fast": "Rapide",
+      "singleShop": "Optimisé"
+    },
+    "total": "Total: ",
+    "time": " • Temps: ",
+    "minutes": " min",
+    "shops": " • Shops: ",
+    "defaultShop": "Boutique",
+    "deliveryFee": "Frais de livraison: ",
+    "productsTotal": "Total produits",
+    "totalWithDelivery": "Total avec livraison",
+    "search": "Chercher",
+    "noItems": "Aucun article"
+  },
+  "searchPopup": {
+    "header": "De quoi avez-vous besoin ?",
+    "placeholder": "pain, pop corn, huître…",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "resultSingular": " résultat",
+    "resultPlural": " résultats",
+    "resultsFor": " pour « ",
+    "noResults": "Aucun résultat",
+    "close": "Fermer",
+    "soonAvailable": "Bientôt disponible"
+  },
+  "camera": {
+    "permissionDenied": "Permission refusée",
+    "enableCameraSettings": "Activez la caméra dans Réglages."
+  },
+  "placeholder": {
+    "screenToImplement": "Écran à implémenter."
+  },
+  "fallbackProducts": {
+    "apples": "Pommes",
+    "plainYogurt": "Yaourt nature",
+    "bread": "Pain",
+    "saltyPopcorn": "Pop corn salé Menguy's",
+    "sweetPopcorn": "Pop corn sucré Tokapi",
+    "traditionalBaguette": "Pain baguette tradition",
+    "goldenApples": "Pommes Golden",
+    "oysters": "Huîtres n°3 Marennes",
+    "microwave": "Micro-ondes – 3x90g",
+    "microwaveable": "Micro-ondable – 3x90g",
+    "weight250g": "250g",
+    "originFrance": "Origine France – 1kg",
+    "perDozen": "La douzaine"
+  },
+  "shops": {
+    "carrefourMarket": "Carrefour Market",
+    "intermarcheSud": "Intermarché Sud",
+    "primeurBio": "Primeur Bio",
+    "leclercMeaux": "Leclerc Meaux",
+    "monoprixCentre": "Monoprix Centre"
+  },
+  "common": {
+    "euroSymbol": " €",
+    "perKg": "€/KG"
+  },
+  "favorites": {
+    "noFavorites": "Aucun magasin favori pour le moment",
+    "addFromProducts": "Ajoutez vos magasins favoris depuis l'onglet Produits"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "tabs": {
+    "myList": "My List",
+    "products": "Products",
+    "favorites": "Favorites",
+    "cart": "Cart"
+  },
+  "listScreen": {
+    "scan": "Scan",
+    "inputPlaceholder": "Add an item (ex: \"2 apples, 5 eggs\")",
+    "selectAll": "Select all",
+    "strikeAll": "Strike all",
+    "hideStriked": "Hide crossed items",
+    "noItems": "No items",
+    "findExactProducts": "Find exact products",
+    "editItem": "Edit item",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "productsScreen": {
+    "clickAndCollect": "Click & Collect",
+    "delivery": "Delivery",
+    "addItems": "Add Items",
+    "strategies": {
+      "balanced": "Balanced",
+      "totalPrice": "Total price",
+      "time": "Time",
+      "singleShop": "Single shop"
+    },
+    "proposal": "Proposal: ",
+    "proposalTypes": {
+      "balanced": "Balanced",
+      "economic": "Economic",
+      "fast": "Fast",
+      "singleShop": "Optimized"
+    },
+    "total": "Total: ",
+    "time": " • Time: ",
+    "minutes": " min",
+    "shops": " • Shops: ",
+    "defaultShop": "Shop",
+    "deliveryFee": "Delivery fee: ",
+    "productsTotal": "Products total",
+    "totalWithDelivery": "Total with delivery",
+    "search": "Search",
+    "noItems": "No items"
+  },
+  "searchPopup": {
+    "header": "What do you need?",
+    "placeholder": "bread, popcorn, oyster...",
+    "filter": "Filter",
+    "sort": "Sort",
+    "resultSingular": " result",
+    "resultPlural": " results",
+    "resultsFor": " for \"",
+    "noResults": "No results",
+    "close": "Close",
+    "soonAvailable": "Soon available"
+  },
+  "camera": {
+    "permissionDenied": "Permission denied",
+    "enableCameraSettings": "Enable camera in Settings."
+  },
+  "placeholder": {
+    "screenToImplement": "Screen to be implemented."
+  },
+  "fallbackProducts": {
+    "apples": "Apples",
+    "plainYogurt": "Plain yogurt",
+    "bread": "Bread",
+    "saltyPopcorn": "Salty popcorn Menguy's",
+    "sweetPopcorn": "Sweet popcorn Tokapi",
+    "traditionalBaguette": "Traditional baguette",
+    "goldenApples": "Golden apples",
+    "oysters": "Oysters n°3 Marennes",
+    "microwave": "Microwave – 3x90g",
+    "microwaveable": "Microwaveable – 3x90g",
+    "weight250g": "250g",
+    "originFrance": "Origin France – 1kg",
+    "perDozen": "Per dozen"
+  },
+  "shops": {
+    "carrefourMarket": "Carrefour Market",
+    "intermarcheSud": "Intermarché South",
+    "primeurBio": "Organic Greengrocer",
+    "leclercMeaux": "Leclerc Meaux",
+    "monoprixCentre": "Monoprix Center"
+  },
+  "common": {
+    "euroSymbol": " €",
+    "perKg": "€/KG"
+  },
+  "favorites": {
+    "noFavorites": "No favorite shops yet",
+    "addFromProducts": "Add your favorite shops from the Products tab"
+  }
+}

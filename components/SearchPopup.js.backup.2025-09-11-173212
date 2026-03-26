@@ -1,0 +1,272 @@
+import React from 'react';
+import CATALOG from "../data/catalog-fr.json";
+import { autocorrectName, normalizeText } from "../utils/spellcheck";
+import { addProduct } from "../lib/SelectedProducts";
+import { Modal, View, Text, TextInput, FlatList, Image, TouchableOpacity, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+/* ps helpers v5 (no UI change) */
+const __psh_fmtEuro = (v) => { if (!isFinite(v)) return ''; return Number(v).toFixed(2).replace('.', ','); };
+
+const __psh_parseUnit = (detail) => {
+  const t = String(detail || '').toLowerCase();
+  const pack = t.match(/(\d+)x(\d+[\.,]?\d*)\s*(l)\b/i);
+  if (pack) {
+    const n = parseInt(pack[1], 10);
+    const each = parseFloat(pack[2].replace(',', '.'));
+    return { qty: n * each, unit: 'l' };
+  }
+  const m = t.match(/(\d+[\.,]?\d*)\s*(kg|g|l|cl|ml)\b/i);
+  if (m) {
+    let qty = parseFloat(m[1].replace(',', '.'));
+    const u = m[2].toLowerCase();
+    if (u === 'kg') return { qty: qty,       unit: 'kg' };
+    if (u === 'g')  return { qty: qty/1000,  unit: 'kg' };
+    if (u === 'l')  return { qty: qty,       unit: 'l'  };
+    if (u === 'cl') return { qty: qty/100,   unit: 'l'  };
+    if (u === 'ml') return { qty: qty/1000,  unit: 'l'  };
+  }
+  const totalL = t.match(/(\d+[\.,]?\d*)\s*l\b/i);
+  if (totalL) {
+    const q = parseFloat(totalL[1].replace(',', '.'));
+    return { qty: q, unit: 'l' };
+  }
+  return { qty: null, unit: null };
+};
+
+const __psh_unitPriceFromDetail = (price, detail) => {
+  const u = __psh_parseUnit(detail);
+  if (!u.qty || !u.unit) return '';
+  const per = price && isFinite(price) ? (price / u.qty) : 0;
+  const label = u.unit === 'kg' ? '€/KG' : '€/L';
+  return __psh_fmtEuro(per) + ' ' + label;
+};
+
+const __psh_enrich = (item) => {
+  if (!item || typeof item !== 'object') return item;
+  const name = item.name || item.title || '';
+  const price = Number.isFinite(item.price) ? item.price : (parseFloat(item.price) || 0);
+  let subtitle = item.detail || item.subtitle || item.subTitle || item.description || item.info || '';
+  if (!subtitle) subtitle = 'Origine France – 1kg';
+  let unitPrice = item.unitPrice || item.pricePerKg || item.price_per_kg || item.secondaryPrice || '';
+  if (!unitPrice) unitPrice = __psh_unitPriceFromDetail(price, subtitle);
+
+  return {
+    ...item,
+    name,
+    price,
+    detail: subtitle,
+    subtitle,
+    subTitle: subtitle,
+    description: subtitle,
+    info: subtitle,
+    unitPrice,
+    pricePerKg: unitPrice,
+    price_per_kg: unitPrice,
+    secondaryPrice: unitPrice
+  };
+};
+
+const __psh_norm = (arr) => Array.isArray(arr) ? arr.map(__psh_enrich) : [];
+/* end helpers v5 */
+
+const FALLBACK = [
+  { id:'p1', name:"Pop corn salé Menguy's", detail:"Micro-ondes – 3x90g", price:1.81, unitPrice:"6,70 €/KG", thumb:null, available:true },
+  { id:'p2', name:"Pop corn sucré Tokapi", detail:"Micro-ondable – 3x90g", price:1.89, unitPrice:"6,30 €/KG", thumb:null, available:false },
+  { id:'b1', name:"Pain baguette tradition", detail:"250g", price:1.19, unitPrice:"4,76 €/KG", thumb:null, available:true },
+  { id:'a1', name:"Pommes Golden", detail:"Origine France – 1kg", price:2.49, unitPrice:"2,49 €/KG", thumb:null, available:true },
+  { id:'o1', name:"Huîtres n°3 Marennes", detail:"La douzaine", price:10.90, unitPrice:"", thumb:null, available:true },
+];
+
+const norm = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+function __ps_fmtEuro(v){ if(!isFinite(v)) return ''; return v.toFixed(2).replace('.', ','); }
+function __ps_parseUnit(detail){
+  const t=String(detail||'').toLowerCase();
+  const pack=t.match(/(\d+)x(\d+[\.,]?\d*)\s*(l)\b/i);
+  if(pack){ const n=parseInt(pack[1],10); const each=parseFloat(pack[2].replace(',', '.')); return {qty:n*each, unit:'l'}; }
+  const m=t.match(/(\d+[\.,]?\d*)\s*(kg|g|l|cl|ml)\b/i);
+  if(m){
+    let qty=parseFloat(m[1].replace(',', '.')); const u=m[2].toLowerCase();
+    if(u==='kg') return {qty, unit:'kg'};
+    if(u==='g') return { qty: qty/1000, unit: 'kg' };
+    if(u==='l') return {qty, unit:'l'};
+    if(u==='cl') return { qty: qty/100, unit: 'l' };
+    if(u==='ml') return { qty: qty/1000, unit: 'l' };
+  }
+  const totalL=t.match(/(\d+[\.,]?\d*)\s*l\b/i);
+  if(totalL){ const q=parseFloat(totalL[1].replace(',', '.')); return {qty:q, unit:'l'}; }
+  return {qty:null, unit:null};
+}
+function __ps_unitPriceFromDetail(price, detail){
+  const u=__ps_parseUnit(detail);
+  if(!u.qty || !u.unit) return '';
+  const per=price && isFinite(price) ? (price/u.qty) : 0;
+  const label=u.unit==='kg' ? '€/KG' : '€/L';
+  return __ps_fmtEuro(per)+' '+label;
+}
+
+}
+
+}
+
+export default function SearchPopup({ visible, initialQuery = '', data, shopNameFilter, onClose, onSelect }) {
+  const __ps_handleAdd = (item) => {
+    try { addProduct && addProduct(item); } catch (e) {}
+    try { onSelect && onSelect(item); } catch (e) {}
+  };
+  const { t } = useTranslation();
+  const [query, setQuery] = React.useState(initialQuery);
+  const [results, setResults] = React.useState([]);
+
+  React.useEffect(() => { setQuery(initialQuery || ''); }, [initialQuery]);
+
+  // Si un magasin est ciblé => strictement les données fournies pour ce shop
+  // Sinon, on peut compléter avec un petit FALLBACK pour la démo
+  const dataset = React.useMemo(() => {
+    const base = Array.isArray(data) ? data : [];
+    let merged = base;
+
+    if (!shopNameFilter) {
+      merged = [...base, ...FALLBACK];
+    }
+
+    const arr = merged.map((it, idx) => ({
+      id: String(it.id ?? idx),
+      name: String(it.name ?? ''),
+      detail: String(it.detail ?? (it.shopName || '')),
+      price: Number(it.price ?? 0),
+      unitPrice: it.unitPrice ? String(it.unitPrice) : '',
+      available: it.available !== false,
+      thumb: it.thumb || null,
+      shopName: it.shopName || null,
+      distance: it.distance || null,
+      time: it.time || null,
+    }));
+
+    // Filtre strict par magasin si demandé
+    const filteredByShop = shopNameFilter
+      ? arr.filter(x => norm(x.shopName) === norm(shopNameFilter))
+      : arr;
+
+    // Dédup sur name+detail+shop pour propreté
+    const seen = new Set();
+    const out = [];
+    for (const x of filteredByShop) {
+      const key = norm(x.name) + '|' + norm(x.detail) + '|' + norm(x.shopName || '');
+      if (!seen.has(key)) { seen.add(key); out.push(x); }
+    }
+    return out;
+  }, [data, shopNameFilter]);
+
+  React.useEffect(() => {
+    const q = norm(query || initialQuery);
+    const arr = Array.isArray(dataset) ? dataset : [];
+    const filtered = !q ? arr : arr.filter(p => norm([p.name, p.detail, p.shopName].filter(Boolean).join(' ')).includes(q));
+    
+  let __extra = [];
+  if (q && filtered.length === 0) {
+    try {
+      const corrected = autocorrectName(query || initialQuery);
+      const qn = normalizeText(corrected);
+      const seen = new Set();
+      Object.entries(CATALOG || {}).forEach(([canonical, syns]) => {
+        const list = [canonical, ...(Array.isArray(syns) ? syns : [])];
+        list.forEach((name) => {
+          const nn = normalizeText(name);
+          if (nn.includes(qn) || qn.includes(nn)) {
+            const key = nn;
+            if (seen.has(key)) return;
+            seen.add(key);
+            __extra.push({
+              id: 'cat-' + key,
+              name: name.charAt(0).toUpperCase() + name.slice(1),
+              detail: '',
+              price: 2.49,
+              unitPrice: '',
+              available: true,
+              thumb: null,
+              shopName: null,
+              distance: null,
+              time: null
+            });
+          }
+        });
+      });
+    } catch(e) {}
+  }
+  {
+    const __src = filtered.length ? filtered : __extra;
+    const __norm = Array.isArray(__src) ? __src.map(__psh_enrich_v3) : [];
+    setResults(__psh_norm(__psh_norm_v4(__norm)));
+  }
+  
+  }, [query, initialQuery, dataset]);
+
+  const Item = ({ item }) => (
+    <View style={{ backgroundColor:'#fff', borderRadius:16, padding:12, marginBottom:12, flexDirection:'row', alignItems:'center', shadowColor:'#000', shadowOpacity:0.05, shadowRadius:8, elevation:1 }}>
+      <View style={{ width:56, height:56, borderRadius:12, backgroundColor:'#F3F4F6', alignItems:'center', justifyContent:'center', marginRight:12 }}>
+        {item.thumb ? <Image source={{ uri:item.thumb }} style={{ width:56, height:56, borderRadius:12 }} /> : <View />}
+      </View>
+      <View style={{ flex:1 }}>
+        <Text style={{ fontSize:16, fontWeight:'700' }}>{item.name}</Text>
+        <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>
+          {item.detail}{item.shopName ? ` · ${item.shopName}` : ''}{item.distance ? ` · ${item.distance}` : ''}{item.time ? ` · ${item.time}` : ''}
+        </Text>
+        <View style={{ flexDirection:'row', alignItems:'baseline', marginTop:6 }}>
+          <Text style={{ fontSize:18, fontWeight:'800' }}>{item.price.toFixed(2).replace('.', ',')} €</Text>
+          {!!item.unitPrice && <Text style={{ fontSize:12, color:'#9CA3AF', marginLeft:8 }}>{item.unitPrice}</Text>}
+        </View>
+        {item.available === false && <Text style={{ fontSize:12, color:'#9CA3AF', marginTop:4 }}>{t('searchPopup.soonAvailable')}</Text>}
+      </View>
+      <Pressable onPress={()=>onSelect && onSelect(item)} style={{ width:40, height:40, borderRadius:999, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center' }}>
+        <Text style={{ color:'#fff', fontSize:24, fontWeight:'900' }}>+</Text>
+      </Pressable>
+    </View>
+  );
+
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet">
+      <SafeAreaView style={{ flex:1, backgroundColor:'#F9FAFB' }}>
+        <View style={{ padding:16 }}>
+          <View style={{ backgroundColor:'#fff', borderRadius:16, padding:12, shadowColor:'#000', shadowOpacity:0.05, shadowRadius:8, elevation:1 }}>
+            <Text style={{ color:'#00C29B', fontWeight:'700', marginBottom:8 }}>{t('searchPopup.header')}</Text>
+            <TextInput
+              value={query}
+              onChangeText={setQuery}
+              placeholder={t('searchPopup.placeholder')}
+              style={{ backgroundColor:'#F3F4F6', borderRadius:12, paddingHorizontal:12, paddingVertical:10, fontSize:16 }}
+              autoFocus
+            />
+            <View style={{ flexDirection:'row', marginTop:12 }}>
+              <TouchableOpacity style={{ paddingHorizontal:12, paddingVertical:8, backgroundColor:'#fff', borderRadius:999, borderWidth:1, borderColor:'#E5E7EB', marginRight:8 }}>
+                <Text>{t('searchPopup.filter')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ paddingHorizontal:12, paddingVertical:8, backgroundColor:'#fff', borderRadius:999, borderWidth:1, borderColor:'#E5E7EB' }}>
+                <Text>{t('searchPopup.sort')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <Text style={{ marginTop:16, marginBottom:8, color:'#6B7280' }}>
+            {results.length} {results.length>1?t('searchPopup.resultPlural'):t('searchPopup.resultSingular')}{t('searchPopup.resultsFor')}{query || initialQuery} »
+          </Text>
+
+          <FlatList
+            data={results}
+            keyExtractor={(it)=>String(it.id)}
+            renderItem={({item}) => <Item item={item} />}
+            ListEmptyComponent={<Text style={{ textAlign:'center', color:'#9CA3AF', marginTop:24 }}>{t('searchPopup.noResults')}</Text>}
+            contentContainerStyle={{ paddingBottom:120 }}
+          />
+        </View>
+
+        <View style={{ position:'absolute', left:16, right:16, bottom:24 }}>
+          <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={{ backgroundColor:'#111827', paddingVertical:14, borderRadius:14, alignItems:'center' }}>
+            <Text style={{ color:'#fff', fontWeight:'800' }}>{t('searchPopup.close')}</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
+}

@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "smart-grocery-mvp",
+    "slug": "smart-grocery-mvp",
+    "scheme": "smart-grocery-mvp",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste.",
+        "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo de liste."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "ocrSpaceKey": "helloworld",
+      "pearlBaseUrl": "https://api.pearlstreets.example/mock"
+    }
+  }
+}
