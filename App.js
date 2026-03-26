@@ -22,7 +22,7 @@ import './i18n';
 import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import SearchPopup from './components/SearchPopup';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image } from "react-native";
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -105,6 +105,32 @@ function parseMulti(input){
   return out;
 }
 
+// Toast notification component
+const Toast = ({ visible, message }) => {
+  const opacity = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    if (visible) {
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+        Animated.delay(1200),
+        Animated.timing(opacity, { toValue: 0, duration: 300, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [visible, message]);
+  if (!visible) return null;
+  return (
+    <Animated.View style={{
+      position: 'absolute', top: 60, left: 40, right: 40, zIndex: 999,
+      backgroundColor: '#111', borderRadius: 12, paddingVertical: 12, paddingHorizontal: 16,
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      opacity, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8, elevation: 5,
+    }}>
+      <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{ marginRight: 8 }} />
+      <Text style={{ color: '#fff', fontWeight: '600', fontSize: 14 }}>{message}</Text>
+    </Animated.View>
+  );
+};
+
 function ListScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -113,6 +139,10 @@ function ListScreen() {
   const [selectAll, setSelectAll] = useState(false);
   const [strikeAll, setStrikeAll] = useState(false);
   const [hideCrossed, setHideCrossed] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastKey, setToastKey] = useState(0);
+
+  const showToast = (msg) => { setToastMsg(msg); setToastKey(k => k + 1); };
 
   const [editVisible, setEditVisible] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -140,6 +170,8 @@ function ListScreen() {
     });
     setText("");
     Keyboard.dismiss();
+    const count = parsed.length;
+    showToast(count === 1 ? `"${parsed[0].name}" ajouté` : `${count} articles ajoutés`);
   };
 
   const onMinus = id => setItems(items.map(it => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it));
@@ -227,6 +259,7 @@ function ListScreen() {
 
   return (
     <SafeAreaView style={styles.screen}>
+      <Toast key={toastKey} visible={toastKey > 0} message={toastMsg} />
       <FlatList
         data={visible}
         keyExtractor={(it) => it.id}
@@ -251,7 +284,7 @@ function ListScreen() {
         }catch(e){}
         navigation.navigate("products");
       }}>
-          <Text style={styles.bottomBtnText} onPress={async ()=>{try{const chosen=Array.isArray(items)?items.filter(it=>it&&(it.selected||it.checked)).map(it=>({name:String(it.name||it.title||'').trim(),qty:Number(it.qty||it.quantity||1)})):[];await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));}catch(e){} navigation.navigate('products');}}>{t('listScreen.findExactProducts')}</Text>
+          <Text style={styles.bottomBtnText}>{t('listScreen.findExactProducts')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -303,9 +336,11 @@ function Placeholder({ title }) {
 
 const ProductsScreen = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const [__activeQuery, __setActiveQuery] = React.useState('');
   const [__selectedByQuery, __setSelectedByQuery] = React.useState({});
   const [popupSelectedItems, setPopupSelectedItems] = React.useState([]); // Items selected from popup
+  const [checkedShops, setCheckedShops] = React.useState({}); // {shopIndex: true/false}
 
   const [__searchVisible, __setSearchVisible] = React.useState(false); //__search_popup_flag
   const [__initialQuery, __setInitialQuery] = React.useState(''); //__search_popup_flag
@@ -336,14 +371,22 @@ const ProductsScreen = () => {
 
   const fmtEUR=(n)=>{const num=Number(n||0);return num.toFixed(2).replace('.', ',')+" €";};
   const parseMin=(t)=>{if(!t)return 0;const m=String(t).match(/(\d+)/);return m?Number(m[1]):0;};
-  const randBetween=(a,b)=> a + Math.random()*(b-a);
-  const randPrice=(name)=>{const n=String(name||"").toLowerCase();
-    if(n.includes("pain"))return randBetween(1.0,2.0);
-    if(n.includes("yaourt"))return randBetween(0.6,1.2);
-    if(n.includes("pomme"))return randBetween(0.4,1.0);
-    if(n.includes("tomate"))return randBetween(1.5,3.0);
-    if(n.includes("poulet"))return randBetween(6.0,11.0);
-    return randBetween(0.8,13.0);
+  // Deterministic hash so prices stay stable across refreshes
+  const hashStr=(s)=>{let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);};
+  const seededRand=(seed,a,b)=>a+((seed%10000)/10000)*(b-a);
+  const randPrice=(name,shopName)=>{
+    const n=String(name||"").toLowerCase();
+    const seed=hashStr(n+"_"+(shopName||""));
+    if(n.includes("pain"))return seededRand(seed,1.0,2.0);
+    if(n.includes("yaourt"))return seededRand(seed,0.6,1.2);
+    if(n.includes("pomme"))return seededRand(seed,0.4,1.0);
+    if(n.includes("tomate"))return seededRand(seed,1.5,3.0);
+    if(n.includes("poulet"))return seededRand(seed,6.0,11.0);
+    if(n.includes("lait"))return seededRand(seed,0.8,1.5);
+    if(n.includes("oeuf")||n.includes("œuf"))return seededRand(seed,2.0,4.0);
+    if(n.includes("fromage"))return seededRand(seed,1.5,5.0);
+    if(n.includes("beurre"))return seededRand(seed,1.2,3.0);
+    return seededRand(seed,0.8,13.0);
   };
 
   const readJSON=async(k)=>{try{const raw=await AsyncStorage.getItem(k);return raw?JSON.parse(raw):null;}catch(_){return null;}};
@@ -365,19 +408,22 @@ const ProductsScreen = () => {
 
   const buildInventory=(items)=>{
     const shops=[
-      {name:"Carrefour Market", distance:"0.9 km", time:"9 min",  fee:Number(randBetween(1.5,4.0).toFixed(2))},
-      {name:"Intermarché Sud", distance:"0.8 km", time:"10 min", fee:Number(randBetween(1.5,4.0).toFixed(2))},
-      {name:"Primeur Bio",     distance:"0.5 km", time:"7 min",  fee:Number(randBetween(1.5,4.0).toFixed(2))},
-      {name:"Leclerc Meaux",   distance:"1.8 km", time:"8 min",  fee:Number(randBetween(1.5,4.0).toFixed(2))},
-      {name:"Monoprix Centre", distance:"1.2 km", time:"6 min",  fee:Number(randBetween(1.5,4.0).toFixed(2))}
+      {name:"Carrefour Market", distance:"0.9 km", time:"9 min",  fee:Number(seededRand(hashStr("fee_carrefour"),1.5,4.0).toFixed(2))},
+      {name:"Intermarché Sud", distance:"0.8 km", time:"10 min", fee:Number(seededRand(hashStr("fee_inter"),1.5,4.0).toFixed(2))},
+      {name:"Primeur Bio",     distance:"0.5 km", time:"7 min",  fee:Number(seededRand(hashStr("fee_bio"),1.5,4.0).toFixed(2))},
+      {name:"Leclerc Meaux",   distance:"1.8 km", time:"8 min",  fee:Number(seededRand(hashStr("fee_leclerc"),1.5,4.0).toFixed(2))},
+      {name:"Monoprix Centre", distance:"1.2 km", time:"6 min",  fee:Number(seededRand(hashStr("fee_mono"),1.5,4.0).toFixed(2))}
     ];
     return shops.map(s=>({
       ...s,
-      items: items.map(it=>({
-        name: it.name, qty: it.qty,
-        available: Math.random()<0.85,
-        price: Number(randPrice(it.name).toFixed(2))
-      }))
+      items: items.map(it=>{
+        const avail = (hashStr(it.name+"_avail_"+s.name)%100)<85;
+        return {
+          name: it.name, qty: it.qty,
+          available: avail,
+          price: Number(randPrice(it.name,s.name).toFixed(2))
+        };
+      })
     }));
   };
 
@@ -390,7 +436,7 @@ const ProductsScreen = () => {
         if(r && r.available && (!best || r.price<best.price)) best={shop:s, row:r};
       });
       if(!best){const s=inv[Math.floor(Math.random()*inv.length)];
-        best={shop:s,row:{name:it.name,price:randPrice(it.name),qty:it.qty}};}
+        best={shop:s,row:{name:it.name,price:randPrice(it.name,s.name),qty:it.qty}};}
       const key=best.shop.name;
       if(!map[key]) map[key]={shop:best.shop,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:best.row.price});
@@ -403,7 +449,7 @@ const ProductsScreen = () => {
     const map={};
     items.forEach(it=>{
       const chosen=sorted.find(s=>s.items.find(r=>r.name===it.name && r.available))||sorted[0];
-      const row=chosen.items.find(r=>r.name===it.name)||{price:randPrice(it.name)};
+      const row=chosen.items.find(r=>r.name===it.name)||{price:randPrice(it.name,chosen.name)};
       const key=chosen.name; if(!map[key]) map[key]={shop:chosen,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:row.price});
     });
@@ -417,7 +463,7 @@ const ProductsScreen = () => {
       let best=null;
       inv.forEach(s=>{
         const r=s.items.find(x=>x.name===it.name);
-        const unit=r&&r.available?r.price:randPrice(it.name)*1.1;
+        const unit=r&&r.available?r.price:randPrice(it.name,s.name)*1.1;
         const score=unit + alpha*parseMin(s.time);
         if(!best || score<best.score) best={shop:s,price:unit,score};
       });
@@ -441,7 +487,7 @@ const ProductsScreen = () => {
         items.forEach(it=>{
           const ri=si.items.find(x=>x.name===it.name && x.available);
           const rj=sj.items.find(x=>x.name===it.name && x.available);
-          const price = ri?ri.price : (rj?rj.price : randPrice(it.name)*1.2);
+          const price = ri?ri.price : (rj?rj.price : randPrice(it.name,"fallback")*1.2);
           sum += price*it.qty;
         });
         const ti=parseMin(si.time), tj=parseMin(sj.time);
@@ -457,7 +503,7 @@ const ProductsScreen = () => {
       const pi=ri&&ri.available?ri.price:Infinity;
       const pj=rj&&rj.available?rj.price:Infinity;
       const chosen=(pi<=pj)?{shop:best.si,price:pi}:{shop:best.sj,price:pj};
-      if(!isFinite(chosen.price)) chosen.price=randPrice(it.name)*1.25;
+      if(!isFinite(chosen.price)) chosen.price=randPrice(it.name,"fallback")*1.25;
       const key=chosen.shop.name; if(!res[key]) res[key]={shop:chosen.shop,products:[]};
       res[key].products.push({title:it.name,qty:it.qty,price:chosen.price});
     });
@@ -561,12 +607,20 @@ const ProductsScreen = () => {
     })()}
           keyExtractor={(g,i)=>String(g?.name||'shop')+'_'+i}
           renderItem={({item,index})=>(
-            <View style={{backgroundColor:"#fff",padding:16,marginVertical:8,marginHorizontal:16,borderRadius:12,shadowColor:"#000",shadowOpacity:0.05,shadowRadius:5}}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={()=>setCheckedShops(prev=>({...prev,[index]:!prev[index]}))}
+              style={{backgroundColor:"#fff",padding:16,marginVertical:8,marginHorizontal:16,borderRadius:12,shadowColor:"#000",shadowOpacity:0.05,shadowRadius:5,
+                borderWidth: checkedShops[index] ? 2 : 0, borderColor: checkedShops[index] ? BRAND : "transparent"
+              }}>
               <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                <Text style={{fontWeight:"bold",fontSize:16}}>{item?.name||'Boutique'}</Text>
+                <View style={{flexDirection:"row",alignItems:"center",flex:1}}>
+                  <Square value={!!checkedShops[index]} onPress={()=>setCheckedShops(prev=>({...prev,[index]:!prev[index]}))} />
+                  <Text style={{fontWeight:"bold",fontSize:16,marginLeft:10}}>{item?.name||'Boutique'}</Text>
+                </View>
                 <View style={{flexDirection:"row",alignItems:"center"}}>
-                  <TouchableOpacity 
-                    onPress={()=>toggleShopFav({name:item?.name})} 
+                  <TouchableOpacity
+                    onPress={()=>toggleShopFav({name:item?.name})}
                     style={{
                       borderWidth:1,
                       borderColor: isShopFav(item?.name) ? "#00C29B" : "#ddd",
@@ -577,10 +631,10 @@ const ProductsScreen = () => {
                       marginRight:8
                     }}
                   >
-                    <Ionicons 
-                      name={isShopFav(item?.name) ? "heart" : "heart-outline"} 
-                      size={16} 
-                      color={isShopFav(item?.name) ? "#00C29B" : "#6B7280"} 
+                    <Ionicons
+                      name={isShopFav(item?.name) ? "heart" : "heart-outline"}
+                      size={16}
+                      color={isShopFav(item?.name) ? "#00C29B" : "#6B7280"}
                     />
                   </TouchableOpacity>
                   <Text style={{color:"#666"}}>{(item?.distance||"")+(item?.time?(" • "+item.time):"")}</Text>
@@ -612,11 +666,13 @@ const ProductsScreen = () => {
                   {/* Show matching selected items below each product */}
                   {popupSelectedItems
                     .filter(selected => {
-                      const productName = String(p?.title || p?.name || '').toLowerCase();
-                      const selectedName = String(selected?.name || '').toLowerCase();
-                      return productName.includes('pomme') && selectedName.includes('pomme') ||
-                             productName.includes('pain') && selectedName.includes('pain') ||
-                             productName.includes('banane') && selectedName.includes('banane');
+                      const productName = String(p?.title || p?.name || '').toLowerCase().trim();
+                      const selectedName = String(selected?.name || '').toLowerCase().trim();
+                      if (!productName || !selectedName) return false;
+                      // Smart matching: check if words overlap significantly
+                      const productWords = productName.split(/\s+/).filter(w => w.length > 2);
+                      const selectedWords = selectedName.split(/\s+/).filter(w => w.length > 2);
+                      return productWords.some(pw => selectedWords.some(sw => sw.includes(pw) || pw.includes(sw)));
                     })
                     .map(selectedItem => (
                       <View key={selectedItem.id} style={{marginTop:8,padding:12,backgroundColor:"#F9FAFB",borderRadius:8,marginLeft:20}}>
@@ -655,11 +711,64 @@ const ProductsScreen = () => {
                   <Text style={{fontWeight:"700"}}>{fmtEUR(item?.grandTotal||0)}</Text>
                 </View>
               ) : null}
-            </View>
+            </TouchableOpacity>
           )}
           ListEmptyComponent={<Text style={{textAlign:"center",marginTop:32,color:"#666"}}>{t('productsScreen.noItems')}</Text>}
+          contentContainerStyle={{paddingBottom: 100}}
         />
       )}
+
+      {/* Bouton Commander les magasins sélectionnés */}
+      {Object.values(checkedShops).some(v=>v) && (
+        <View style={{position:"absolute",bottom:30,left:16,right:16}}>
+          <TouchableOpacity
+            onPress={async ()=>{
+              try {
+                const cartItems = [];
+                const src = Array.isArray(groups)?groups:[];
+                Object.keys(checkedShops).forEach(idx=>{
+                  if(!checkedShops[idx]) return;
+                  const g = src[Number(idx)];
+                  if(!g) return;
+                  (g.products||[]).forEach(p=>{
+                    cartItems.push({
+                      name: p.title||p.name,
+                      qty: p.qty||1,
+                      price: p.price||0,
+                      shop: g.name
+                    });
+                  });
+                });
+                // Merge with existing cart
+                const raw = await AsyncStorage.getItem(KEY_CART);
+                const existing = raw ? JSON.parse(raw) : [];
+                const merged = [...(Array.isArray(existing)?existing:[]), ...cartItems];
+                await AsyncStorage.setItem(KEY_CART, JSON.stringify(merged));
+                setCheckedShops({});
+                Alert.alert(
+                  "Ajouté au panier",
+                  `${cartItems.length} produit${cartItems.length>1?'s':''} ajouté${cartItems.length>1?'s':''} au panier`,
+                  [
+                    {text:"Continuer", style:"cancel"},
+                    {text:"Voir le panier", onPress:()=>navigation.navigate("cart")}
+                  ]
+                );
+              } catch(e){}
+            }}
+            style={{
+              height:52,borderRadius:14,backgroundColor:BRAND,
+              flexDirection:"row",alignItems:"center",justifyContent:"center",
+              shadowColor:"#000",shadowOpacity:0.15,shadowRadius:8,elevation:5
+            }}
+          >
+            <Ionicons name="bag-handle" size={20} color="#fff" style={{marginRight:8}} />
+            <Text style={{color:"#fff",fontSize:16,fontWeight:"700"}}>
+              Commander ({Object.values(checkedShops).filter(v=>v).length} magasin{Object.values(checkedShops).filter(v=>v).length>1?'s':''})
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
           <SearchPopup 
             visible={__searchVisible} 
             initialQuery={__initialQuery} 
@@ -810,9 +919,269 @@ const FavoritesScreen = () => {
     </SafeAreaView>
   );
 };
+// Simulated order tracking modal
+const OrderTracker = ({ visible, onClose, items, total }) => {
+  const steps = [
+    { icon: "checkmark-circle", label: "Commande confirmée", delay: 0 },
+    { icon: "storefront", label: "Préparation en cours", delay: 2500 },
+    { icon: "bicycle", label: "Livreur en route", delay: 6000 },
+    { icon: "location", label: "Presque arrivé !", delay: 10000 },
+    { icon: "home", label: "Livré !", delay: 13000 },
+  ];
+  const [currentStep, setCurrentStep] = React.useState(0);
+  const [orderNumber] = React.useState(() => "SG-" + Math.floor(10000 + Math.random() * 90000));
+  const [eta, setEta] = React.useState(25);
+
+  React.useEffect(() => {
+    if (!visible) { setCurrentStep(0); setEta(25); return; }
+    const timers = steps.map((s, i) => {
+      if (i === 0) return null;
+      return setTimeout(() => setCurrentStep(i), s.delay);
+    });
+    // ETA countdown
+    const interval = setInterval(() => {
+      setEta(prev => Math.max(0, prev - 1));
+    }, 1000);
+    return () => { timers.forEach(t => t && clearTimeout(t)); clearInterval(interval); };
+  }, [visible]);
+
+  if (!visible) return null;
+
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        {/* Header */}
+        <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={{ fontSize: 22, fontWeight: '800', color: '#111' }}>Suivi de commande</Text>
+            <TouchableOpacity onPress={onClose} style={{ padding: 6 }}>
+              <Ionicons name="close" size={24} color="#666" />
+            </TouchableOpacity>
+          </View>
+          <Text style={{ color: '#6B7280', marginTop: 4 }}>N° {orderNumber}</Text>
+        </View>
+
+        {/* ETA */}
+        <View style={{ alignItems: 'center', paddingVertical: 24 }}>
+          <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: currentStep >= 4 ? '#ECFDF5' : '#F0FDF4', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: BRAND }}>
+            <Ionicons name={currentStep >= 4 ? "checkmark-circle" : "time-outline"} size={36} color={BRAND} />
+            <Text style={{ fontSize: 18, fontWeight: '800', color: BRAND, marginTop: 2 }}>
+              {currentStep >= 4 ? "OK" : `${eta} min`}
+            </Text>
+          </View>
+          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111', marginTop: 12 }}>
+            {currentStep >= 4 ? "Votre commande est arrivée !" : "Livraison estimée"}
+          </Text>
+        </View>
+
+        {/* Steps */}
+        <View style={{ paddingHorizontal: 24 }}>
+          {steps.map((step, i) => (
+            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+              <View style={{
+                width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center',
+                backgroundColor: i <= currentStep ? BRAND : '#F3F4F6',
+              }}>
+                <Ionicons name={step.icon} size={18} color={i <= currentStep ? '#fff' : '#9CA3AF'} />
+              </View>
+              {i < steps.length - 1 && (
+                <View style={{
+                  position: 'absolute', left: 17, top: 36, width: 2, height: 20,
+                  backgroundColor: i < currentStep ? BRAND : '#E5E7EB'
+                }} />
+              )}
+              <View style={{ marginLeft: 14, flex: 1 }}>
+                <Text style={{
+                  fontSize: 15, fontWeight: i <= currentStep ? '700' : '500',
+                  color: i <= currentStep ? '#111' : '#9CA3AF'
+                }}>{step.label}</Text>
+              </View>
+              {i <= currentStep && (
+                <Ionicons name="checkmark" size={18} color={BRAND} />
+              )}
+            </View>
+          ))}
+        </View>
+
+        {/* Order summary */}
+        <View style={{ marginTop: 16, marginHorizontal: 20, padding: 16, backgroundColor: '#F9FAFB', borderRadius: 12 }}>
+          <Text style={{ fontSize: 14, fontWeight: '700', color: '#111', marginBottom: 8 }}>Récapitulatif</Text>
+          {(items || []).slice(0, 5).map((it, i) => (
+            <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 }}>
+              <Text style={{ color: '#374151', fontSize: 13 }}>{it.qty || 1}x {it.name || it.title}</Text>
+              <Text style={{ color: '#374151', fontSize: 13 }}>{(Number(it.price || 0) * Number(it.qty || 1)).toFixed(2).replace('.', ',')} €</Text>
+            </View>
+          ))}
+          {(items || []).length > 5 && <Text style={{ color: '#9CA3AF', fontSize: 12, marginTop: 4 }}>+ {items.length - 5} autres articles</Text>}
+          <View style={{ borderTopWidth: 1, borderTopColor: '#E5E7EB', marginTop: 8, paddingTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={{ fontSize: 16, fontWeight: '800' }}>Total</Text>
+            <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{(total || 0).toFixed(2).replace('.', ',')} €</Text>
+          </View>
+        </View>
+
+        {/* Close button */}
+        {currentStep >= 4 && (
+          <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
+            <TouchableOpacity onPress={onClose} style={{
+              height: 48, borderRadius: 14, backgroundColor: BRAND,
+              alignItems: 'center', justifyContent: 'center'
+            }}>
+              <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Terminé</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </SafeAreaView>
+    </Modal>
+  );
+};
+
 const CartScreen = () => {
   const { t } = useTranslation();
-  return <Placeholder title={t('tabs.cart')} />;
+  const [cartItems, setCartItems] = React.useState([]);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const [orderVisible, setOrderVisible] = React.useState(false);
+
+  const loadCart = React.useCallback(async () => {
+    try {
+      const raw = await AsyncStorage.getItem(KEY_CART);
+      const arr = raw ? JSON.parse(raw) : [];
+      const items = Array.isArray(arr) ? arr : [];
+      setCartItems(items);
+      setTotalPrice(items.reduce((sum, it) => sum + (Number(it.price || 0) * Number(it.qty || 1)), 0));
+    } catch(e) {
+      setCartItems([]);
+      setTotalPrice(0);
+    }
+  }, []);
+
+  useFocusEffect(React.useCallback(() => { loadCart(); }, [loadCart]));
+
+  const removeFromCart = async (index) => {
+    const updated = cartItems.filter((_, i) => i !== index);
+    setCartItems(updated);
+    setTotalPrice(updated.reduce((sum, it) => sum + (Number(it.price || 0) * Number(it.qty || 1)), 0));
+    await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+  };
+
+  const updateQty = async (index, delta) => {
+    const updated = cartItems.map((it, i) => {
+      if (i !== index) return it;
+      return { ...it, qty: Math.max(1, (it.qty || 1) + delta) };
+    });
+    setCartItems(updated);
+    setTotalPrice(updated.reduce((sum, it) => sum + (Number(it.price || 0) * Number(it.qty || 1)), 0));
+    await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+  };
+
+  const clearCart = async () => {
+    Alert.alert(
+      "Vider le panier",
+      "Êtes-vous sûr de vouloir vider votre panier ?",
+      [
+        { text: t('listScreen.cancel'), style: "cancel" },
+        { text: "Vider", style: "destructive", onPress: async () => {
+          setCartItems([]);
+          setTotalPrice(0);
+          await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+        }}
+      ]
+    );
+  };
+
+  if (cartItems.length === 0) {
+    return (
+      <SafeAreaView style={styles.screen}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 40 }}>
+          <Ionicons name="bag-handle-outline" size={64} color="#E5E7EB" />
+          <Text style={{ fontSize: 18, fontWeight: '600', color: '#111', marginTop: 16, textAlign: 'center' }}>
+            Votre panier est vide
+          </Text>
+          <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 8, textAlign: 'center' }}>
+            Ajoutez des produits depuis l'onglet Produits
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.screen}>
+      <FlatList
+        data={cartItems}
+        keyExtractor={(_, i) => String(i)}
+        contentContainerStyle={{ paddingVertical: 16, paddingBottom: 120 }}
+        renderItem={({ item, index }) => (
+          <View style={{
+            backgroundColor: '#fff', marginHorizontal: 16, marginVertical: 6,
+            borderRadius: 12, padding: 16,
+            shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 5, elevation: 2
+          }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: '#111' }}>{item.name || item.title}</Text>
+                {item.shop ? <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>{item.shop}</Text> : null}
+              </View>
+              <TouchableOpacity onPress={() => removeFromCart(index)} style={{ padding: 6 }}>
+                <Ionicons name="trash-outline" size={18} color="#EF4444" />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => updateQty(index, -1)} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, paddingVertical: 4, paddingHorizontal: 10 }}>
+                  <Text style={{ fontSize: 16 }}>-</Text>
+                </TouchableOpacity>
+                <Text style={{ fontWeight: '600', marginHorizontal: 12 }}>{item.qty || 1}</Text>
+                <TouchableOpacity onPress={() => updateQty(index, 1)} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, paddingVertical: 4, paddingHorizontal: 10 }}>
+                  <Text style={{ fontSize: 16 }}>+</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={{ fontSize: 16, fontWeight: '800', color: '#111' }}>
+                {(Number(item.price || 0) * Number(item.qty || 1)).toFixed(2).replace('.', ',')} €
+              </Text>
+            </View>
+          </View>
+        )}
+      />
+      <View style={{
+        position: 'absolute', bottom: 30, left: GUTTER, right: GUTTER,
+        backgroundColor: '#fff', borderRadius: 14, padding: 16,
+        shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5
+      }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: '700' }}>Total</Text>
+          <Text style={{ fontSize: 18, fontWeight: '800', color: BRAND }}>{totalPrice.toFixed(2).replace('.', ',')} €</Text>
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={clearCart} style={{
+            flex: 1, height: 44, borderRadius: 10, borderWidth: 1, borderColor: '#EF4444',
+            alignItems: 'center', justifyContent: 'center', marginRight: 8
+          }}>
+            <Text style={{ color: '#EF4444', fontWeight: '600' }}>Vider</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setOrderVisible(true)} style={{
+            flex: 2, height: 44, borderRadius: 10, backgroundColor: BRAND,
+            alignItems: 'center', justifyContent: 'center'
+          }}>
+            <Ionicons name="bicycle" size={18} color="#fff" style={{ marginRight: 6 }} />
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Commander</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <OrderTracker
+        visible={orderVisible}
+        items={cartItems}
+        total={totalPrice}
+        onClose={async () => {
+          setOrderVisible(false);
+          // Clear cart after order
+          setCartItems([]);
+          setTotalPrice(0);
+          await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+        }}
+      />
+    </SafeAreaView>
+  );
 };
 
 function MainNavigator() {

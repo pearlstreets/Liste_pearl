@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Modal, View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { addProduct } from "../lib/SelectedProducts";
@@ -163,41 +163,46 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <SafeAreaView style={{ flex:1, backgroundColor:'rgba(0,0,0,0.35)', justifyContent:'flex-end' }}>
-        <View style={{ backgroundColor:'#F8FAFC', borderTopLeftRadius:24, borderTopRightRadius:24, padding:16, maxHeight:'92%' }}>
-          <Text style={{ color:BRAND, fontWeight:'800', marginBottom:8 }}>{t('searchPopup.title') || 'What do you need?'}</Text>
-          <TextInput
-            value={query}
-            onChangeText={setQuery}
-            placeholder={t('searchPopup.placeholder') || 'Search a product'}
-            autoFocus
-            style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:12, borderRadius:14, fontSize:16 }}
-          />
+      <KeyboardAvoidingView style={{ flex:1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TouchableOpacity activeOpacity={1} onPress={()=>Keyboard.dismiss()} style={{ flex:1, backgroundColor:'rgba(0,0,0,0.35)', justifyContent:'flex-start' }}>
+          <SafeAreaView style={{ flex:1, justifyContent:'flex-start' }}>
+            <View style={{ backgroundColor:'#F8FAFC', borderBottomLeftRadius:24, borderBottomRightRadius:24, padding:16, maxHeight:'85%', marginTop:0 }}>
+              <Text style={{ color:BRAND, fontWeight:'800', marginBottom:8 }}>{t('searchPopup.title') || 'What do you need?'}</Text>
+              <TextInput
+                value={query}
+                onChangeText={setQuery}
+                placeholder={t('searchPopup.placeholder') || 'Search a product'}
+                autoFocus={false}
+                style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:12, borderRadius:14, fontSize:16 }}
+              />
 
-          <View style={{ flexDirection:'row', marginTop:10, marginBottom:6 }}>
-            <View style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:8, borderRadius:20, marginRight:8 }}>
-              <Text>Filter</Text>
+              <View style={{ flexDirection:'row', marginTop:10, marginBottom:6 }}>
+                <View style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:8, borderRadius:20, marginRight:8 }}>
+                  <Text>Filter</Text>
+                </View>
+                <View style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:8, borderRadius:20 }}>
+                  <Text>Sort</Text>
+                </View>
+              </View>
+
+              <FlatList
+                data={results}
+                keyExtractor={(it)=>String(it.id)}
+                renderItem={({item}) => <Item item={item} />}
+                ListEmptyComponent={<Text style={{ textAlign:'center', color:'#9CA3AF', marginTop:24 }}>{t('searchPopup.noResults') || 'No results'}</Text>}
+                contentContainerStyle={{ paddingBottom:20 }}
+                keyboardShouldPersistTaps="handled"
+              />
+
+              <View style={{ marginTop:8 }}>
+                <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={{ backgroundColor:'#0F172A', paddingVertical:14, borderRadius:14, alignItems:'center' }}>
+                  <Text style={{ color:'#fff', fontWeight:'800' }}>{t('searchPopup.close') || 'Close'}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={{ backgroundColor:'#fff', paddingHorizontal:14, paddingVertical:8, borderRadius:20 }}>
-              <Text>Sort</Text>
-            </View>
-          </View>
-
-          <FlatList
-            data={results}
-            keyExtractor={(it)=>String(it.id)}
-            renderItem={({item}) => <Item item={item} />}
-            ListEmptyComponent={<Text style={{ textAlign:'center', color:'#9CA3AF', marginTop:24 }}>{t('searchPopup.noResults') || 'No results'}</Text>}
-            contentContainerStyle={{ paddingBottom:120 }}
-          />
-
-          <View style={{ marginTop:8 }}>
-            <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={{ backgroundColor:'#0F172A', paddingVertical:14, borderRadius:14, alignItems:'center' }}>
-              <Text style={{ color:'#fff', fontWeight:'800' }}>{t('searchPopup.close') || 'Close'}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
+          </SafeAreaView>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

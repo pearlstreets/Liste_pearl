@@ -30,6 +30,9 @@
     "extra": {
       "ocrSpaceKey": "helloworld",
       "pearlBaseUrl": "https://api.pearlstreets.example/mock"
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
