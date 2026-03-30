@@ -51,6 +51,8 @@
     "totalWithDelivery": "Total with delivery",
     "search": "Search",
     "noItems": "No items",
+    "addFromList": "Add products to My List",
+    "addFromListSub": "Then tap \"Find exact products\"",
     "clear": "Clear",
     "defaultProducts": "Add items to My List then tap \"Find exact products\" to see results here.",
     "quantity": "quantity",

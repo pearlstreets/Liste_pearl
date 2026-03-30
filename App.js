@@ -1412,7 +1412,13 @@ const ProductsScreen = () => {
               ) : null}
             </TouchableOpacity>
           )}
-          ListEmptyComponent={<Text style={{textAlign:"center",marginTop:32,color:"#666"}}>{t('productsScreen.noItems')}</Text>}
+          ListEmptyComponent={
+            <View style={{flex:1, alignItems:'center', justifyContent:'center', paddingTop:80, paddingHorizontal:40}}>
+              <Ionicons name="cart-outline" size={56} color="#E5E7EB" />
+              <Text style={{textAlign:"center", marginTop:16, fontSize:16, fontWeight:'600', color:"#374151"}}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
+              <Text style={{textAlign:"center", marginTop:8, fontSize:13, color:"#9CA3AF"}}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
+            </View>
+          }
           contentContainerStyle={{paddingBottom: 100}}
         />
       )}

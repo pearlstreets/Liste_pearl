@@ -51,6 +51,8 @@
     "totalWithDelivery": "Total avec livraison",
     "search": "Chercher",
     "noItems": "Aucun article",
+    "addFromList": "Ajoutez des produits dans Ma Liste",
+    "addFromListSub": "Puis appuyez sur \"Trouver produits exacts\"",
     "clear": "Effacer",
     "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur \"Trouver produits exacts\" pour voir les résultats ici.",
     "quantity": "quantité",
