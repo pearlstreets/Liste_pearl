@@ -3673,7 +3673,7 @@ function FakeProfileScreen({ onLogout }) {
     const elapsed = Date.now() - (order.id || Date.parse(order.date) || 0);
     const minutes = elapsed / 60000;
     const isCollect = order.mode === 'collect';
-    if (minutes < 5) return { step: 0, label: t('orderStatus.confirmed'), color: '#2563EB', icon: 'checkmark-circle' };
+    if (minutes < 5) return { step: 0, label: t('orderStatus.confirmed'), color: '#059669', icon: 'checkmark-circle' };
     if (minutes < 15) return { step: 1, label: t('orderStatus.preparing'), color: '#F59E0B', icon: 'storefront' };
     if (minutes < 30) return { step: 2, label: isCollect ? t('orderStatus.ready') : t('orderStatus.onTheWay'), color: isCollect ? '#059669' : '#F97316', icon: isCollect ? 'bag-handle' : 'bicycle' };
     if (minutes < 45) return { step: 3, label: isCollect ? t('orderStatus.waitingPickup') : t('orderStatus.almostThere'), color: '#8B5CF6', icon: isCollect ? 'walk' : 'location' };

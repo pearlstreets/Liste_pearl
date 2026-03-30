@@ -106,7 +106,7 @@ export function getDeliveryStatusInfo(status, t) {
     [DELIVERY_STATUS.PENDING]: {
       step: 0,
       label: t ? t("orderStatus.confirmed") : "Confirmed",
-      color: "#2563EB",
+      color: "#059669",
       icon: "checkmark-circle",
     },
     [DELIVERY_STATUS.ACCEPTED]: {
