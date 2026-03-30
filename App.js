@@ -1470,20 +1470,29 @@ const ProductsScreen = () => {
                 </View>
               ))}
 
-              <View style={{marginTop:12,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                <Text style={{fontWeight:"600"}}>{t('productsScreen.productsTotal')}</Text>
-                <Text style={{fontWeight:"700"}}>{(Array.isArray(item?.__renderItems)?item.__renderItems:[]).length}  <Text style={{color:"#6B7280",fontWeight:"600"}}>({(Array.isArray(item?.__renderItems)?item.__renderItems:[]).reduce((s,p)=>s+(Number(p?.qty||1)),0)} {t('productsScreen.quantity') || 'quantité'})</Text></Text>
-              </View>
-              <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                <Text style={{fontWeight:"700", color:"#111"}}>{t('cart.total') || 'Total'}</Text>
-                <Text style={{fontWeight:"800", fontSize:16, color:BRAND}}>{fmtPrice(item?.subtotal||0)}</Text>
-              </View>
-              {mode==="delivery" ? (
-                <View style={{marginTop:4,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                  <Text style={{color:"#444"}}>{t('productsScreen.totalWithDelivery')}</Text>
-                  <Text style={{fontWeight:"700"}}>{fmtPrice(item?.grandTotal||0)}</Text>
-                </View>
-              ) : null}
+              {(() => {
+                // Calculate live total from popupSelectedItems for this shop
+                const shopSelected = popupSelectedItems.filter(si => si.shopIndex === index && si.checked !== false);
+                const liveTotal = shopSelected.reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0);
+                const liveTotalWithDelivery = liveTotal + (mode === 'delivery' ? Number(item?.deliveryFee||0) : 0);
+                const liveQty = shopSelected.reduce((s, si) => s + Number(si.qty||1), 0);
+                return <>
+                  <View style={{marginTop:12,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                    <Text style={{fontWeight:"600"}}>{t('productsScreen.productsTotal')}</Text>
+                    <Text style={{fontWeight:"700"}}>{shopSelected.length}  <Text style={{color:"#6B7280",fontWeight:"600"}}>({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text></Text>
+                  </View>
+                  <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                    <Text style={{fontWeight:"700", color:"#111"}}>{t('cart.total') || 'Total'}</Text>
+                    <Text style={{fontWeight:"800", fontSize:16, color:BRAND}}>{fmtPrice(liveTotal)}</Text>
+                  </View>
+                  {mode==="delivery" ? (
+                    <View style={{marginTop:4,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                      <Text style={{color:"#444"}}>{t('productsScreen.totalWithDelivery')}</Text>
+                      <Text style={{fontWeight:"700"}}>{fmtPrice(liveTotalWithDelivery)}</Text>
+                    </View>
+                  ) : null}
+                </>;
+              })()}
             </TouchableOpacity>
           )}
           ListEmptyComponent={
