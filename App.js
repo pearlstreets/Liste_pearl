@@ -710,7 +710,12 @@ function ListScreen() {
         renderItem={renderItem}
         ListHeaderComponent={Header}
         keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={<View style={{ paddingHorizontal:GUTTER, marginTop:8 }}><Text style={styles.empty}>{t('listScreen.noItems')}</Text></View>}
+        ListEmptyComponent={
+          <View style={{ alignItems:'center', justifyContent:'center', paddingTop:60, paddingHorizontal:40 }}>
+            <Ionicons name="list-outline" size={56} color="#E5E7EB" />
+            <Text style={{ textAlign:'center', marginTop:16, fontSize:16, fontWeight:'600', color:'#374151' }}>{t('listScreen.noItems')}</Text>
+          </View>
+        }
         contentContainerStyle={{ paddingBottom: 160 }}
       />
 
