@@ -52,7 +52,7 @@
     "search": "Chercher",
     "noItems": "Aucun article",
     "clear": "Effacer",
-    "defaultProducts": "Produits populaires suggérés. Ajoutez vos propres articles dans Ma Liste !",
+    "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur \"Trouver produits exacts\" pour voir les résultats ici.",
     "quantity": "quantité",
     "continueShopping": "Continuer les courses"
   },

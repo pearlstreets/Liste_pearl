@@ -903,10 +903,10 @@ const ProductsScreen = () => {
       const base=checked.length?checked:safe;
       selected=base.map(it=>({name:String(it?.name||it?.title||'').trim(),qty:Number(it?.qty||it?.quantity||1)||1}));
     }
-    // Si toujours vide, proposer les produits populaires par défaut
+    // Si toujours vide, retourner vide — les produits n'apparaissent que quand l'utilisateur push
     if (!Array.isArray(selected) || !selected.length) {
       setShowingDefaults(true);
-      return DEFAULT_PRODUCTS;
+      return [];
     }
     setShowingDefaults(false);
     return Array.isArray(selected) ? selected : [];
@@ -1196,11 +1196,11 @@ const ProductsScreen = () => {
       </View>
 
      
-      {/* Bandeau produits par défaut */}
-      {showingDefaults && !loading && groups.length > 0 && (
-        <View style={{marginHorizontal:16, marginTop:8, padding:10, borderRadius:10, backgroundColor:'#FEF3C7', flexDirection:'row', alignItems:'center'}}>
-          <Ionicons name="sparkles" size={16} color="#F59E0B" style={{marginRight:8}} />
-          <Text style={{flex:1, fontSize:12, color:'#92400E'}}>{t('productsScreen.defaultProducts') || 'Produits populaires suggérés. Ajoutez vos propres articles dans Ma Liste !'}</Text>
+      {/* Bandeau info quand liste vide */}
+      {showingDefaults && !loading && (
+        <View style={{marginHorizontal:16, marginTop:8, padding:14, borderRadius:12, backgroundColor:'#FEF3C7', flexDirection:'row', alignItems:'center'}}>
+          <Ionicons name="information-circle" size={18} color="#F59E0B" style={{marginRight:10}} />
+          <Text style={{flex:1, fontSize:13, color:'#92400E'}}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
         </View>
       )}
 
