@@ -3597,11 +3597,11 @@ function FakeProfileScreen({ onLogout }) {
                 </TouchableOpacity>
                 );
               })}
-              {orders.length > 3 && (
+              {orders.length > 0 && (
                 <TouchableOpacity onPress={() => setAllOrdersVisible(true)} style={{
                   paddingVertical:12, borderRadius:10, backgroundColor:'#111', alignItems:'center', marginTop:4
                 }}>
-                  <Text style={{ color:'#fff', fontWeight:'700', fontSize:14 }}>{t('profile.openAllHistory')}</Text>
+                  <Text style={{ color:'#fff', fontWeight:'700', fontSize:14 }}>{t('profile.openAllHistory')} ({orders.length})</Text>
                 </TouchableOpacity>
               )}
             </>
@@ -3980,7 +3980,7 @@ function FakeProfileScreen({ onLogout }) {
             {orders.map((order) => {
               const status = getOrderStatus(order);
               return (
-              <TouchableOpacity key={order.id} activeOpacity={0.8} onPress={() => setDetailOrder(order)}
+              <TouchableOpacity key={order.id} activeOpacity={0.8} onPress={() => { setAllOrdersVisible(false); setTimeout(() => setDetailOrder(order), 300); }}
                 style={{ backgroundColor:'#fff', borderRadius:12, padding:14, marginBottom:10,
                   shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
                 }}>
