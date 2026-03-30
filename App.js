@@ -1474,8 +1474,12 @@ const ProductsScreen = () => {
                 <Text style={{fontWeight:"600"}}>{t('productsScreen.productsTotal')}</Text>
                 <Text style={{fontWeight:"700"}}>{(Array.isArray(item?.__renderItems)?item.__renderItems:[]).length}  <Text style={{color:"#6B7280",fontWeight:"600"}}>({(Array.isArray(item?.__renderItems)?item.__renderItems:[]).reduce((s,p)=>s+(Number(p?.qty||1)),0)} {t('productsScreen.quantity') || 'quantité'})</Text></Text>
               </View>
+              <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                <Text style={{fontWeight:"700", color:"#111"}}>{t('cart.total') || 'Total'}</Text>
+                <Text style={{fontWeight:"800", fontSize:16, color:BRAND}}>{fmtPrice(item?.subtotal||0)}</Text>
+              </View>
               {mode==="delivery" ? (
-                <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                <View style={{marginTop:4,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                   <Text style={{color:"#444"}}>{t('productsScreen.totalWithDelivery')}</Text>
                   <Text style={{fontWeight:"700"}}>{fmtPrice(item?.grandTotal||0)}</Text>
                 </View>
