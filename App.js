@@ -1078,26 +1078,58 @@ const ProductsScreen = () => {
   // Normalize: remove accents, lowercase, trim
   const norm = (s) => String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
+  // Damerau-Levenshtein distance for fuzzy matching
+  const damerauLev = (a, b) => {
+    const m = a.length, n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        const cost = a[i-1] === b[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+        if (i>1 && j>1 && a[i-1]===b[j-2] && a[i-2]===b[j-1])
+          dp[i][j] = Math.min(dp[i][j], dp[i-2][j-2]+1);
+      }
+    }
+    return dp[m][n];
+  };
+
   const autoFillProducts = (items, groups) => {
     const filled = [];
     let idCounter = Date.now();
     const mapKeys = Object.keys(SEARCH_MAP);
+    const mapKeysNorm = mapKeys.map(k => ({ key: k, norm: norm(k) }));
 
     items.forEach(item => {
       const key = norm(item.name);
       if (!key) return;
 
-      // Find product in search-map: exact, +s, -s, or partial match
+      // 1. Exact match
       let mapResults = SEARCH_MAP[key] || SEARCH_MAP[key + 's'] || SEARCH_MAP[key + 'es'];
+      // 2. Remove trailing s/es
       if (!mapResults && key.endsWith('s')) mapResults = SEARCH_MAP[key.slice(0,-1)];
       if (!mapResults && key.endsWith('es')) mapResults = SEARCH_MAP[key.slice(0,-2)];
+      // 3. Substring match
       if (!mapResults) {
-        // Fuzzy: find a key that contains or is contained by the search
-        const found = mapKeys.find(k => {
-          const nk = norm(k);
-          return nk.includes(key) || key.includes(nk);
+        const found = mapKeysNorm.find(k => k.norm.includes(key) || key.includes(k.norm));
+        if (found) mapResults = SEARCH_MAP[found.key];
+      }
+      // 4. Fuzzy match (Damerau-Levenshtein) — find closest product even with typos
+      if (!mapResults) {
+        let bestKey = null, bestDist = Infinity;
+        mapKeysNorm.forEach(({ key: k, norm: nk }) => {
+          if (Math.abs(key.length - nk.length) > 4) return; // skip very different lengths
+          const dist = damerauLev(key, nk);
+          const threshold = Math.max(2, Math.floor(key.length * 0.4)); // allow ~40% errors
+          if (dist < bestDist && dist <= threshold) {
+            bestDist = dist;
+            bestKey = k;
+          }
         });
-        if (found) mapResults = SEARCH_MAP[found];
+        if (bestKey) mapResults = SEARCH_MAP[bestKey];
       }
       const product = mapResults ? mapResults[0] : null;
       if (!product) return;
