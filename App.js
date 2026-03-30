@@ -1167,7 +1167,7 @@ const ProductsScreen = () => {
           qty: item.qty || 1,
           shop: group.name,
           shopIndex: shopIndex,
-          checked: true,
+          checked: false,
         });
       });
     });
@@ -1186,10 +1186,7 @@ const ProductsScreen = () => {
         const autoFilled = autoFillProducts(items, groups);
         if (autoFilled.length > 0) {
           setPopupSelectedItems(autoFilled);
-          // Auto-check all shops that have products
-          const shopChecks = {};
-          autoFilled.forEach(si => { shopChecks[si.shopIndex] = true; });
-          setCheckedShops(shopChecks);
+          setCheckedShops({});
         }
       }
     }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); }
