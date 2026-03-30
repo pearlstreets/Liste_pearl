@@ -1024,6 +1024,9 @@ const ProductsScreen = () => {
     return Object.values(res);
   };
 
+  // Normalize: remove accents, lowercase, trim
+  const norm = (s) => String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
   const buildProposal=(items)=>{
     const inv=buildInventory(items);
     let assigned;
@@ -1065,7 +1068,6 @@ const ProductsScreen = () => {
     });
     // Favoris en haut de liste
     // Ensure ALL products appear in ALL shops (with shop-specific prices)
-    const inv = buildInventory(items);
     groups.forEach(g => {
       const shopInv = inv.find(s => s.name === g.name);
       if (!shopInv) return;
@@ -1092,10 +1094,6 @@ const ProductsScreen = () => {
     const time=(mode==='collect')?groups.reduce((a,g)=>a+parseMin(g.time),0):Math.max(...groups.map(g=>parseMin(g.time)),0);
     return {groups,summary:{price:priceTotal,time,shops:groups.length}};
   };
-
-  // Auto-fill popupSelectedItems from search-map for default products
-  // Normalize: remove accents, lowercase, trim
-  const norm = (s) => String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
   // Damerau-Levenshtein distance for fuzzy matching
   const damerauLev = (a, b) => {
