@@ -3217,6 +3217,21 @@ export default function App() {
   const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
   const [liveRates, setLiveRates] = React.useState(null);
 
+  // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
+  React.useEffect(() => {
+    (async () => {
+      const didReset = await AsyncStorage.getItem('__RESET_V1__');
+      if (!didReset) {
+        // Keep: KEY_PROFILE, KEY_AUTH, KEY_ACCOUNTS, APP_CURRENCY, MARKETPLACE_TOKENS
+        const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS];
+        await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
+        await AsyncStorage.setItem('__RESET_V1__', '1');
+        console.log('[RESET] Data cleared (profile kept)');
+      }
+    })();
+  }, []);
+  // === END RESET ===
+
   // Fetch live exchange rates on mount and every 30 min
   React.useEffect(() => {
     let mounted = true;
