@@ -711,7 +711,7 @@ function ListScreen() {
         ListHeaderComponent={Header}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
-          <View style={{ alignItems:'center', justifyContent:'center', paddingTop:60, paddingHorizontal:40 }}>
+          <View style={{ alignItems:'center', justifyContent:'center', paddingTop:200, paddingHorizontal:40 }}>
             <Ionicons name="list-outline" size={56} color="#E5E7EB" />
             <Text style={{ textAlign:'center', marginTop:16, fontSize:16, fontWeight:'600', color:'#374151' }}>{t('listScreen.noItems')}</Text>
           </View>
