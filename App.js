@@ -872,25 +872,25 @@ const ProductsScreen = () => {
 
   const readJSON=async(k)=>{try{const raw=await AsyncStorage.getItem(k);return raw?JSON.parse(raw):null;}catch(_){return null;}};
 
-  // Produits populaires par défaut quand la liste est vide
-  const DEFAULT_PRODUCTS = [
-    { name: "pain", qty: 1 },
-    { name: "lait", qty: 1 },
-    { name: "oeuf", qty: 6 },
-    { name: "beurre", qty: 1 },
-    { name: "pomme", qty: 4 },
-    { name: "tomate", qty: 3 },
-    { name: "poulet", qty: 1 },
-    { name: "riz", qty: 1 },
-    { name: "fromage", qty: 1 },
-    { name: "yaourt", qty: 4 },
-    { name: "banane", qty: 3 },
-    { name: "carotte", qty: 3 },
-    { name: "pate", qty: 1 },
-    { name: "eau", qty: 2 },
-    { name: "salade", qty: 1 },
-    { name: "chocolat", qty: 1 },
-  ];
+  // Tous les produits du catalogue comme défaut quand la liste est vide
+  // On extrait les clés uniques (singulier) de search-map pour éviter les doublons
+  const DEFAULT_PRODUCTS = React.useMemo(() => {
+    const seen = new Set();
+    const products = [];
+    // Clés singulières prioritaires pour éviter doublons singulier/pluriel
+    const keys = Object.keys(SEARCH_MAP).sort((a, b) => a.length - b.length);
+    keys.forEach(key => {
+      // Skip les catégories génériques (fruits, legumes, viande, etc.)
+      if (['fruits', 'legumes', 'viande', 'poisson', 'surgeles', 'boisson', 'petit dejeuner', 'hygiene', 'menage'].includes(key)) return;
+      const items = SEARCH_MAP[key];
+      if (!items || !items.length) return;
+      const firstName = items[0].name;
+      if (seen.has(firstName)) return;
+      seen.add(firstName);
+      products.push({ name: key, qty: 1 });
+    });
+    return products;
+  }, []);
 
   const [showingDefaults, setShowingDefaults] = React.useState(false);
 
