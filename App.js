@@ -786,6 +786,8 @@ function Placeholder({ title }) {
 
 
 
+const SEARCH_MAP = require('./data/search-map.json');
+
 const ProductsScreen = () => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
@@ -1053,12 +1055,59 @@ const ProductsScreen = () => {
     return {groups,summary:{price:priceTotal,time,shops:groups.length}};
   };
 
+  // Auto-fill popupSelectedItems from search-map for default products
+  const autoFillProducts = (items, groups) => {
+    const filled = [];
+    let idCounter = Date.now();
+    items.forEach(item => {
+      const key = String(item.name || '').toLowerCase().trim();
+      // Find product in search-map
+      const mapResults = SEARCH_MAP[key] || SEARCH_MAP[key + 's'] || [];
+      const product = mapResults[0]; // Take first match
+      if (!product) return;
+
+      // Find which shop group this item is in
+      groups.forEach((group, shopIndex) => {
+        const shopProduct = (group.products || []).find(p => {
+          const pName = String(p.title || '').toLowerCase().trim();
+          return pName === key || pName.includes(key) || key.includes(pName);
+        });
+        if (shopProduct) {
+          filled.push({
+            id: idCounter++,
+            name: product.name,
+            detail: product.detail || '',
+            unitPrice: product.unitPrice || '',
+            price: product.price || shopProduct.price || 0,
+            qty: item.qty || 1,
+            shop: group.name,
+            shopIndex: shopIndex,
+            checked: true,
+          });
+        }
+      });
+    });
+    return filled;
+  };
+
   const refresh=React.useCallback(async()=>{
     setLoading(true);
     try{
       const items=await loadSelected();
       const {groups,summary}=buildProposal(items);
       setGroups(groups); setSummary(summary);
+
+      // Auto-fill product details for default products
+      if (showingDefaults && groups.length > 0) {
+        const autoFilled = autoFillProducts(items, groups);
+        if (autoFilled.length > 0) {
+          setPopupSelectedItems(autoFilled);
+          // Auto-check all shops that have products
+          const shopChecks = {};
+          autoFilled.forEach(si => { shopChecks[si.shopIndex] = true; });
+          setCheckedShops(shopChecks);
+        }
+      }
     }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); }
     finally{ setLoading(false); }
   },[mode,strategy]);
