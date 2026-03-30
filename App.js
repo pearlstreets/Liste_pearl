@@ -9,6 +9,7 @@ import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
+import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo } from "./services/delivery";
 
 function __getUserItems(){
   try { if (typeof items !== "undefined" && Array.isArray(items)) return items; } catch(_) {}
@@ -2731,8 +2732,9 @@ const CartScreen = () => {
             const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
             const selectedDay = deliveryDays[selectedDateIndex];
             const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
-            history.unshift({
-              id: Date.now(),
+            const orderId = Date.now();
+            const order = {
+              id: orderId,
               date: new Date().toISOString(),
               items: cartItems,
               total: totalPrice + deliveryFee,
@@ -2743,8 +2745,34 @@ const CartScreen = () => {
               slot: selectedSlot || '',
               deliveryDate: deliveryDateLabel,
               address: orderMode === 'delivery' ? deliveryAddress : '',
-            });
+              deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
+            };
+            history.unshift(order);
             await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
+
+            // If delivery mode, create delivery assignment for Livraison-app drivers
+            if (orderMode === 'delivery') {
+              try {
+                const profileRaw = await AsyncStorage.getItem(KEY_PROFILE);
+                const profile = profileRaw ? JSON.parse(profileRaw) : {};
+                await createDeliveryOrder({
+                  id: orderId,
+                  shops,
+                  address: deliveryAddress,
+                  deliveryInfo,
+                  customerName: (profile.prenom || '') + ' ' + (profile.nom || ''),
+                  customerPhone: profile.phone || '',
+                  items: cartItems,
+                  total: totalPrice + deliveryFee,
+                  deliveryFee,
+                  slot: selectedSlot || '',
+                  deliveryDate: deliveryDateLabel,
+                  mode: 'delivery',
+                });
+              } catch(e) {
+                console.log('Delivery order sync skipped:', e.message);
+              }
+            }
           } catch(e) {}
           // Clear cart after order
           setCartItems([]);
@@ -3391,8 +3419,57 @@ function FakeProfileScreen({ onLogout }) {
 
   const initials = (profile.prenom?profile.prenom[0]:'') + (profile.nom?profile.nom[0]:'');
 
-  // Calculer le statut simulé d'une commande basé sur le temps écoulé
+  // Track delivery status from API for delivery orders
+  const [deliveryStatuses, setDeliveryStatuses] = React.useState({});
+
+  // Poll delivery status for recent delivery orders
+  React.useEffect(() => {
+    let mounted = true;
+    const pollDeliveryStatuses = async () => {
+      const recentDeliveryOrders = orders.filter(o => o.mode === 'delivery' && o.deliveryStatus && o.deliveryStatus !== DELIVERY_STATUS.DELIVERED && o.deliveryStatus !== DELIVERY_STATUS.CANCELLED);
+      for (const order of recentDeliveryOrders.slice(0, 5)) {
+        try {
+          const status = await getDeliveryStatus(order.id);
+          if (mounted && status && status.status) {
+            setDeliveryStatuses(prev => ({ ...prev, [order.id]: status }));
+            // Update order in history
+            const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
+            if (raw) {
+              const hist = JSON.parse(raw);
+              const idx = hist.findIndex(o => o.id === order.id);
+              if (idx >= 0 && hist[idx].deliveryStatus !== status.status) {
+                hist[idx].deliveryStatus = status.status;
+                hist[idx].driverName = status.driver_name || '';
+                hist[idx].driverPhone = status.driver_phone || '';
+                hist[idx].estimatedArrival = status.estimated_arrival || '';
+                await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(hist));
+              }
+            }
+          }
+        } catch(e) {}
+      }
+    };
+    if (orders.length > 0) {
+      pollDeliveryStatuses();
+      const interval = setInterval(pollDeliveryStatuses, 30000); // Poll every 30s
+      return () => { mounted = false; clearInterval(interval); };
+    }
+    return () => { mounted = false; };
+  }, [orders]);
+
+  // Get order status - uses delivery API for delivery orders, simulated for collect
   const getOrderStatus = (order) => {
+    // For delivery orders, check real delivery status from API
+    if (order.mode === 'delivery' && order.deliveryStatus) {
+      const apiStatus = deliveryStatuses[order.id];
+      if (apiStatus && apiStatus.status) {
+        return getDeliveryStatusInfo(apiStatus.status, t);
+      }
+      // Fallback: use stored delivery status
+      return getDeliveryStatusInfo(order.deliveryStatus, t);
+    }
+
+    // Simulated status based on time elapsed (collect mode or no delivery tracking)
     const elapsed = Date.now() - (order.id || Date.parse(order.date) || 0);
     const minutes = elapsed / 60000;
     const isCollect = order.mode === 'collect';
@@ -3992,6 +4069,27 @@ function FakeProfileScreen({ onLogout }) {
                   <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
                     <Ionicons name="storefront-outline" size={16} color="#00C29B" />
                     <Text style={{ fontSize:13, color:'#6B7280', marginLeft:8 }}>{t('profile.storePickup')}</Text>
+                  </View>
+                ) : null}
+                {/* Driver info (from Livraison-app) */}
+                {detailOrder.mode === 'delivery' && (detailOrder.driverName || deliveryStatuses[detailOrder.id]?.driver_name) ? (
+                  <View style={{ backgroundColor:'#F0FDF4', borderRadius:10, padding:12, marginBottom:10, flexDirection:'row', alignItems:'center' }}>
+                    <View style={{ width:36, height:36, borderRadius:18, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center', marginRight:10 }}>
+                      <Ionicons name="bicycle" size={18} color="#fff" />
+                    </View>
+                    <View style={{ flex:1 }}>
+                      <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>
+                        {deliveryStatuses[detailOrder.id]?.driver_name || detailOrder.driverName}
+                      </Text>
+                      <Text style={{ fontSize:12, color:'#6B7280' }}>
+                        {deliveryStatuses[detailOrder.id]?.estimated_arrival || detailOrder.estimatedArrival || t('orderStatus.onTheWay')}
+                      </Text>
+                    </View>
+                    {(deliveryStatuses[detailOrder.id]?.driver_phone || detailOrder.driverPhone) ? (
+                      <TouchableOpacity style={{ width:36, height:36, borderRadius:18, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center' }}>
+                        <Ionicons name="call" size={16} color="#fff" />
+                      </TouchableOpacity>
+                    ) : null}
                   </View>
                 ) : null}
                 {/* Coûts */}
