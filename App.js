@@ -1075,20 +1075,37 @@ const ProductsScreen = () => {
   };
 
   // Auto-fill popupSelectedItems from search-map for default products
+  // Normalize: remove accents, lowercase, trim
+  const norm = (s) => String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
   const autoFillProducts = (items, groups) => {
     const filled = [];
     let idCounter = Date.now();
+    const mapKeys = Object.keys(SEARCH_MAP);
+
     items.forEach(item => {
-      const key = String(item.name || '').toLowerCase().trim();
-      // Find product in search-map
-      const mapResults = SEARCH_MAP[key] || SEARCH_MAP[key + 's'] || [];
-      const product = mapResults[0]; // Take first match
+      const key = norm(item.name);
+      if (!key) return;
+
+      // Find product in search-map: exact, +s, -s, or partial match
+      let mapResults = SEARCH_MAP[key] || SEARCH_MAP[key + 's'] || SEARCH_MAP[key + 'es'];
+      if (!mapResults && key.endsWith('s')) mapResults = SEARCH_MAP[key.slice(0,-1)];
+      if (!mapResults && key.endsWith('es')) mapResults = SEARCH_MAP[key.slice(0,-2)];
+      if (!mapResults) {
+        // Fuzzy: find a key that contains or is contained by the search
+        const found = mapKeys.find(k => {
+          const nk = norm(k);
+          return nk.includes(key) || key.includes(nk);
+        });
+        if (found) mapResults = SEARCH_MAP[found];
+      }
+      const product = mapResults ? mapResults[0] : null;
       if (!product) return;
 
       // Find which shop group this item is in
       groups.forEach((group, shopIndex) => {
         const shopProduct = (group.products || []).find(p => {
-          const pName = String(p.title || '').toLowerCase().trim();
+          const pName = norm(p.title);
           return pName === key || pName.includes(key) || key.includes(pName);
         });
         if (shopProduct) {
