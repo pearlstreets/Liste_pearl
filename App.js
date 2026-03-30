@@ -2,6 +2,14 @@ import { autocorrectName } from "./utils/spellcheck";
 import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
 import React, { useEffect, useMemo, useState } from "react";
 
+// Marketplace API Services
+import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
+import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
+import { getAllShops, getShopDetails } from "./services/shops";
+import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
+import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
+import { getTokens } from "./services/api";
+
 function __getUserItems(){
   try { if (typeof items !== "undefined" && Array.isArray(items)) return items; } catch(_) {}
   try { if (typeof list !== "undefined" && Array.isArray(list)) return list; } catch(_) {}
@@ -2809,15 +2817,23 @@ function AuthScreen({ onLogin }) {
   const [forgotMsg, setForgotMsg] = React.useState('');
   const [forgotError, setForgotError] = React.useState('');
 
+  const [loading, setLoading] = React.useState(false);
+
   const handleForgotPassword = async () => {
     setForgotError(''); setForgotMsg('');
     if (!forgotEmail.trim()) { setForgotError(t('auth.errorEmailRequired')); return; }
     try {
+      // Try Marketplace API first
+      const result = await apiForgotPassword(forgotEmail.trim());
+      if (result.status) {
+        setForgotMsg(t('auth.successPasswordSent') + forgotEmail.trim());
+        return;
+      }
+      // Fallback to local accounts
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
       const accounts = raw ? JSON.parse(raw) : [];
       const idx = accounts.findIndex(a => a.email.toLowerCase() === forgotEmail.trim().toLowerCase());
-      if (idx < 0) { setForgotError(t('auth.errorNoAccount')); return; }
-      // Generate random password
+      if (idx < 0) { setForgotError(result.message || t('auth.errorNoAccount')); return; }
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
       let newPwd = '';
       for (let i = 0; i < 8; i++) newPwd += chars[Math.floor(Math.random() * chars.length)];
@@ -2842,60 +2858,101 @@ function AuthScreen({ onLogin }) {
   const handleLogin = async () => {
     setError('');
     if (!email.trim() || !password.trim()) { setError(t('auth.errorEmpty')); return; }
-    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-    const accounts = raw ? JSON.parse(raw) : [];
-    const input = email.trim().toLowerCase();
-    const found = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)) && a.password === password);
-    if (!found) { setError(t('auth.errorLoginFailed')); return; }
-    // Charger les données du compte
-    const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
-    // Restaurer les données sauvegardées du compte
-    const savedData = await AsyncStorage.getItem(userKey + '_DATA');
-    if (savedData) {
-      const data = JSON.parse(savedData);
-      if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
-      if (data.items) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(data.items));
-      if (data.cart) await AsyncStorage.setItem(KEY_CART, JSON.stringify(data.cart));
-      if (data.orders) await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(data.orders));
-      if (data.favShops) await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(data.favShops));
-      if (data.favs) await AsyncStorage.setItem(KEY_FAVS, JSON.stringify(data.favs));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(data.selected || []));
-    } else {
-      // Première connexion de ce compte — initialiser avec profil propre et listes vides
-      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
-      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+    setLoading(true);
+    try {
+      // Try Marketplace API login first
+      const result = await loginUser(email.trim(), password);
+      if (result.success) {
+        // Initialize empty lists for the user
+        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+        setLoading(false);
+        onLogin();
+        return;
+      }
+      // Fallback to local accounts if API fails
+      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
+      const accounts = raw ? JSON.parse(raw) : [];
+      const input = email.trim().toLowerCase();
+      const found = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)) && a.password === password);
+      if (!found) { setError(result.message || t('auth.errorLoginFailed')); setLoading(false); return; }
+      const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
+      const savedData = await AsyncStorage.getItem(userKey + '_DATA');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
+        if (data.items) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(data.items));
+        if (data.cart) await AsyncStorage.setItem(KEY_CART, JSON.stringify(data.cart));
+        if (data.orders) await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(data.orders));
+        if (data.favShops) await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(data.favShops));
+        if (data.favs) await AsyncStorage.setItem(KEY_FAVS, JSON.stringify(data.favs));
+        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(data.selected || []));
+      } else {
+        await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
+        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+      }
+      setLoading(false);
+      onLogin();
+    } catch(e) {
+      setError(t('auth.errorRetry'));
+      setLoading(false);
     }
-    onLogin();
   };
 
   const handleSignup = async () => {
     setError('');
     if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty')); return; }
     if (password.length < 6) { setError(t('auth.errorPasswordLength')); return; }
-    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-    const accounts = raw ? JSON.parse(raw) : [];
-    if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists')); return; }
-    if (accounts.find(a => a.pseudo && a.pseudo.toLowerCase() === pseudo.trim().toLowerCase())) { setError(t('auth.errorPseudoTaken')); return; }
-    const newAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password };
-    accounts.push(newAccount);
-    await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-    const userKey = 'USER_' + newAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...newAccount, userKey}));
-    // Nouveau compte = tout vierge
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: newAccount.pseudo, prenom: newAccount.prenom, nom: newAccount.nom, email: newAccount.email, photo: null }));
-    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-    onLogin();
+    setLoading(true);
+    try {
+      // Try Marketplace API registration first
+      const result = await registerUser({
+        username: pseudo.trim(),
+        email: email.trim(),
+        password,
+        firstName: prenom.trim(),
+        lastName: nom.trim(),
+      });
+      if (result.success) {
+        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+        await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+        setLoading(false);
+        onLogin();
+        return;
+      }
+      // Fallback to local accounts
+      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
+      const accounts = raw ? JSON.parse(raw) : [];
+      if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists')); setLoading(false); return; }
+      if (accounts.find(a => a.pseudo && a.pseudo.toLowerCase() === pseudo.trim().toLowerCase())) { setError(t('auth.errorPseudoTaken')); setLoading(false); return; }
+      const newAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password };
+      accounts.push(newAccount);
+      await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
+      const userKey = 'USER_' + newAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...newAccount, userKey}));
+      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: newAccount.pseudo, prenom: newAccount.prenom, nom: newAccount.nom, email: newAccount.email, photo: null }));
+      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+      setLoading(false);
+      onLogin();
+    } catch(e) {
+      setError(t('auth.errorRetry'));
+      setLoading(false);
+    }
   };
 
   return (
@@ -2957,9 +3014,13 @@ function AuthScreen({ onLogin }) {
         )}
 
         {/* Button */}
-        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup}
-          style={{height:52, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
-          <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>
+        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading}
+          style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>
+          )}
         </TouchableOpacity>
 
         {/* Switch */}
@@ -3208,6 +3269,15 @@ function FakeProfileScreen({ onLogout }) {
 
   const loadProfile = React.useCallback(async () => {
     try {
+      // Try to fetch from Marketplace API first
+      const apiProfile = await apiGetProfile();
+      if (apiProfile && apiProfile.id) {
+        setProfile(apiProfile);
+        return;
+      }
+    } catch(e) {}
+    // Fallback to local storage
+    try {
       const raw = await AsyncStorage.getItem(KEY_PROFILE);
       if (raw) setProfile(JSON.parse(raw));
     } catch(e) {}
@@ -3223,7 +3293,16 @@ function FakeProfileScreen({ onLogout }) {
 
   const saveProfile = async () => {
     const updated = { ...profile, nom: editNom.trim(), prenom: editPrenom.trim(), pseudo: editPseudo.trim(), email: editEmail.trim() };
-    // Update account info (not password — that's separate)
+    // Try to update on Marketplace backend first
+    try {
+      await apiUpdateProfile({
+        prenom: editPrenom.trim(),
+        nom: editNom.trim(),
+        pseudo: editPseudo.trim(),
+        email: editEmail.trim(),
+      });
+    } catch(e) {}
+    // Also update local accounts as fallback
     try {
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
       if (accRaw) {
@@ -3256,12 +3335,21 @@ function FakeProfileScreen({ onLogout }) {
     if (newPassword !== confirmPassword) { setPwdError(t('profile.pwdErrorMismatch')); return; }
     if (newPassword.length < 6) { setPwdError(t('profile.pwdErrorLength')); return; }
     try {
+      // Try Marketplace API first
+      const apiResult = await apiUpdatePassword(oldPassword, newPassword);
+      if (apiResult.status) {
+        setPwdSuccess(t('profile.pwdSuccess'));
+        setOldPassword(''); setNewPassword(''); setConfirmPassword('');
+        setTimeout(() => { setShowPwdChange(false); setPwdSuccess(''); }, 1500);
+        return;
+      }
+      // Fallback to local accounts
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
       if (accRaw) {
         const accounts = JSON.parse(accRaw);
         const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
         if (idx >= 0) {
-          if (accounts[idx].password !== oldPassword) { setPwdError(t('profile.pwdErrorOld')); return; }
+          if (accounts[idx].password !== oldPassword) { setPwdError(apiResult.message || t('profile.pwdErrorOld')); return; }
           accounts[idx].password = newPassword;
           await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
           setPwdSuccess(t('profile.pwdSuccess'));
@@ -3289,6 +3377,8 @@ function FakeProfileScreen({ onLogout }) {
       const updated = { ...profile, photo: uri };
       setProfile(updated);
       await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
+      // Sync photo with Marketplace backend
+      try { await uploadProfilePhoto(uri); } catch(e) {}
     }
   };
 
@@ -3527,6 +3617,8 @@ function FakeProfileScreen({ onLogout }) {
                 } catch(e) {}
                 // Nettoyer les données courantes
                 await AsyncStorage.removeItem(KEY_AUTH);
+                // Logout from Marketplace API
+                try { await logoutUser(); } catch(e) {}
                 await AsyncStorage.removeItem(KEY_PROFILE);
                 await AsyncStorage.removeItem(KEY_ORDER_HISTORY);
                 await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
