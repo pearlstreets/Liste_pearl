@@ -1,7 +1,7 @@
 {
   "pommes": [
     { "name": "Pommes Golden", "detail": "Origine France – 1kg", "price": 2.49, "unitPrice": "2,49 €/KG" },
-    { "name": "Pommes Gala",   "detail": "Origine Italie – 1kg", "price": 2.69, "unitPrice": "2,69 €/KG" }
+    { "name": "Pommes Gala", "detail": "Origine Italie – 1kg", "price": 2.69, "unitPrice": "2,69 €/KG" }
   ],
   "pomme": [
     { "name": "Pommes Golden", "detail": "Origine France – 1kg", "price": 2.49, "unitPrice": "2,49 €/KG" }
@@ -45,14 +45,34 @@
     { "name": "Eau minérale", "detail": "Pack 6x1,5L – 9L", "price": 2.70, "unitPrice": "0,30 €/L" }
   ],
   "riz": [
-    { "name": "Riz basmati", "detail": "Sachet – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" }
+    { "name": "Riz basmati", "detail": "Sachet – 1kg", "price": 2.19, "unitPrice": "2,19 €/KG" },
+    { "name": "Riz long grain", "detail": "Sachet – 1kg", "price": 1.79, "unitPrice": "1,79 €/KG" }
   ],
   "pates": [
     { "name": "Pâtes penne", "detail": "Sachet – 500g", "price": 0.95, "unitPrice": "1,90 €/KG" },
     { "name": "Pâtes spaghetti", "detail": "Sachet – 500g", "price": 0.89, "unitPrice": "1,78 €/KG" }
   ],
+  "pate": [
+    { "name": "Pâtes penne", "detail": "Sachet – 500g", "price": 0.95, "unitPrice": "1,90 €/KG" },
+    { "name": "Pâtes spaghetti", "detail": "Sachet – 500g", "price": 0.89, "unitPrice": "1,78 €/KG" }
+  ],
   "spaghetti": [
     { "name": "Pâtes spaghetti", "detail": "Sachet – 500g", "price": 0.89, "unitPrice": "1,78 €/KG" }
+  ],
+  "nouille": [
+    { "name": "Nouilles chinoises", "detail": "Sachet – 250g", "price": 1.29, "unitPrice": "5,16 €/KG" }
+  ],
+  "nouilles": [
+    { "name": "Nouilles chinoises", "detail": "Sachet – 250g", "price": 1.29, "unitPrice": "5,16 €/KG" }
+  ],
+  "couscous": [
+    { "name": "Couscous moyen", "detail": "Sachet – 500g", "price": 1.19, "unitPrice": "2,38 €/KG" }
+  ],
+  "semoule": [
+    { "name": "Semoule fine", "detail": "Sachet – 500g", "price": 1.09, "unitPrice": "2,18 €/KG" }
+  ],
+  "quinoa": [
+    { "name": "Quinoa blanc", "detail": "Sachet – 400g", "price": 3.29, "unitPrice": "8,23 €/KG" }
   ],
   "pizza": [
     { "name": "Pizza Margherita", "detail": "Surgelée – 350g", "price": 3.29, "unitPrice": "9,40 €/KG" },
@@ -70,6 +90,25 @@
     { "name": "Poulet entier", "detail": "Fermier – 1,3kg", "price": 7.99, "unitPrice": "6,15 €/KG" },
     { "name": "Filets de poulet", "detail": "Barquette – 500g", "price": 5.49, "unitPrice": "10,98 €/KG" }
   ],
+  "dinde": [
+    { "name": "Escalope de dinde", "detail": "Barquette – 400g", "price": 4.99, "unitPrice": "12,48 €/KG" }
+  ],
+  "boeuf": [
+    { "name": "Steak de bœuf", "detail": "Barquette – 250g", "price": 5.49, "unitPrice": "21,96 €/KG" },
+    { "name": "Viande hachée bœuf", "detail": "Barquette – 350g – 5%", "price": 4.29, "unitPrice": "12,26 €/KG" }
+  ],
+  "veau": [
+    { "name": "Escalope de veau", "detail": "Barquette – 300g", "price": 7.99, "unitPrice": "26,63 €/KG" }
+  ],
+  "agneau": [
+    { "name": "Côtelettes d'agneau", "detail": "Barquette – 400g", "price": 9.99, "unitPrice": "24,98 €/KG" }
+  ],
+  "porc": [
+    { "name": "Côtes de porc", "detail": "Barquette – 500g", "price": 4.49, "unitPrice": "8,98 €/KG" }
+  ],
+  "canard": [
+    { "name": "Magret de canard", "detail": "Barquette – 350g", "price": 8.49, "unitPrice": "24,26 €/KG" }
+  ],
   "beurre": [
     { "name": "Beurre doux", "detail": "Plaquette – 250g", "price": 2.19, "unitPrice": "8,76 €/KG" },
     { "name": "Beurre demi-sel", "detail": "Plaquette – 250g", "price": 2.29, "unitPrice": "9,16 €/KG" }
@@ -85,12 +124,28 @@
   "camembert": [
     { "name": "Camembert", "detail": "Boîte – 250g", "price": 2.49, "unitPrice": "9,96 €/KG" }
   ],
+  "gruyere": [
+    { "name": "Gruyère râpé", "detail": "Sachet – 200g", "price": 2.29, "unitPrice": "11,45 €/KG" }
+  ],
+  "parmesan": [
+    { "name": "Parmesan râpé", "detail": "Sachet – 100g", "price": 2.49, "unitPrice": "24,90 €/KG" }
+  ],
+  "chevre": [
+    { "name": "Bûche de chèvre", "detail": "Pièce – 180g", "price": 1.99, "unitPrice": "11,06 €/KG" }
+  ],
+  "creme": [
+    { "name": "Crème fraîche", "detail": "Pot – 200ml", "price": 1.29, "unitPrice": "6,45 €/L" },
+    { "name": "Crème liquide", "detail": "Brique – 20cl", "price": 0.99, "unitPrice": "4,95 €/L" }
+  ],
   "yaourt": [
     { "name": "Yaourt nature", "detail": "Pack 12x125g", "price": 2.79, "unitPrice": "1,86 €/KG" },
     { "name": "Yaourt aux fruits", "detail": "Pack 4x125g", "price": 1.99, "unitPrice": "3,98 €/KG" }
   ],
   "yogourt": [
     { "name": "Yaourt nature", "detail": "Pack 12x125g", "price": 2.79, "unitPrice": "1,86 €/KG" }
+  ],
+  "compote": [
+    { "name": "Compote de pommes", "detail": "Pack 4x100g", "price": 1.69, "unitPrice": "4,23 €/KG" }
   ],
   "pain": [
     { "name": "Baguette tradition", "detail": "Pièce – 250g", "price": 1.29, "unitPrice": "5,16 €/KG" },
@@ -99,12 +154,28 @@
   "baguette": [
     { "name": "Baguette tradition", "detail": "Pièce – 250g", "price": 1.29, "unitPrice": "5,16 €/KG" }
   ],
+  "brioche": [
+    { "name": "Brioche tranchée", "detail": "Paquet – 400g", "price": 2.49, "unitPrice": "6,23 €/KG" }
+  ],
+  "croissant": [
+    { "name": "Croissants pur beurre", "detail": "Sachet x6", "price": 2.49, "unitPrice": "0,42 €/pièce" }
+  ],
+  "cereale": [
+    { "name": "Céréales muesli", "detail": "Paquet – 500g", "price": 3.29, "unitPrice": "6,58 €/KG" }
+  ],
+  "cereales": [
+    { "name": "Céréales muesli", "detail": "Paquet – 500g", "price": 3.29, "unitPrice": "6,58 €/KG" },
+    { "name": "Céréales chocolat", "detail": "Paquet – 375g", "price": 2.99, "unitPrice": "7,97 €/KG" }
+  ],
   "cafe": [
     { "name": "Café moulu", "detail": "Paquet – 250g", "price": 3.49, "unitPrice": "13,96 €/KG" },
     { "name": "Capsules café", "detail": "Boîte de 20", "price": 4.99, "unitPrice": "0,25 €/capsule" }
   ],
   "the": [
     { "name": "Thé vert", "detail": "Boîte 25 sachets", "price": 2.29, "unitPrice": "0,09 €/sachet" }
+  ],
+  "tisane": [
+    { "name": "Tisane camomille", "detail": "Boîte 20 sachets", "price": 2.19, "unitPrice": "0,11 €/sachet" }
   ],
   "jus": [
     { "name": "Jus d'orange", "detail": "Brique – 1L", "price": 1.99, "unitPrice": "1,99 €/L" },
@@ -117,8 +188,24 @@
     { "name": "Coca-Cola", "detail": "Bouteille – 1,5L", "price": 1.99, "unitPrice": "1,33 €/L" },
     { "name": "Orangina", "detail": "Bouteille – 1,5L", "price": 1.89, "unitPrice": "1,26 €/L" }
   ],
+  "limonade": [
+    { "name": "Limonade artisanale", "detail": "Bouteille – 75cl", "price": 1.59, "unitPrice": "2,12 €/L" }
+  ],
+  "biere": [
+    { "name": "Bière blonde", "detail": "Pack 6x25cl", "price": 3.99, "unitPrice": "2,66 €/L" }
+  ],
+  "vin": [
+    { "name": "Vin rouge Bordeaux", "detail": "Bouteille – 75cl", "price": 4.99, "unitPrice": "6,65 €/L" }
+  ],
+  "sirop": [
+    { "name": "Sirop de grenadine", "detail": "Bouteille – 75cl", "price": 2.19, "unitPrice": "2,92 €/L" }
+  ],
   "huile": [
-    { "name": "Huile d'olive", "detail": "Bouteille – 750ml", "price": 5.99, "unitPrice": "7,99 €/L" }
+    { "name": "Huile d'olive", "detail": "Bouteille – 750ml", "price": 5.99, "unitPrice": "7,99 €/L" },
+    { "name": "Huile de tournesol", "detail": "Bouteille – 1L", "price": 2.29, "unitPrice": "2,29 €/L" }
+  ],
+  "vinaigre": [
+    { "name": "Vinaigre balsamique", "detail": "Bouteille – 50cl", "price": 2.49, "unitPrice": "4,98 €/L" }
   ],
   "sel": [
     { "name": "Sel fin", "detail": "Boîte – 500g", "price": 0.69, "unitPrice": "1,38 €/KG" }
@@ -126,11 +213,30 @@
   "poivre": [
     { "name": "Poivre noir moulu", "detail": "Flacon – 45g", "price": 1.99, "unitPrice": "44,22 €/KG" }
   ],
+  "moutarde": [
+    { "name": "Moutarde de Dijon", "detail": "Pot – 350g", "price": 1.49, "unitPrice": "4,26 €/KG" }
+  ],
+  "ketchup": [
+    { "name": "Ketchup", "detail": "Flacon – 560g", "price": 1.99, "unitPrice": "3,55 €/KG" }
+  ],
+  "mayonnaise": [
+    { "name": "Mayonnaise", "detail": "Flacon – 400g", "price": 1.89, "unitPrice": "4,73 €/KG" }
+  ],
+  "sauce": [
+    { "name": "Sauce tomate", "detail": "Bocal – 400g", "price": 1.49, "unitPrice": "3,73 €/KG" },
+    { "name": "Sauce soja", "detail": "Bouteille – 150ml", "price": 1.99, "unitPrice": "13,27 €/L" }
+  ],
   "sucre": [
     { "name": "Sucre en poudre", "detail": "Paquet – 1kg", "price": 1.19, "unitPrice": "1,19 €/KG" }
   ],
   "farine": [
     { "name": "Farine de blé T55", "detail": "Paquet – 1kg", "price": 0.89, "unitPrice": "0,89 €/KG" }
+  ],
+  "levure": [
+    { "name": "Levure boulangère", "detail": "Sachet x5", "price": 0.99, "unitPrice": "0,20 €/sachet" }
+  ],
+  "miel": [
+    { "name": "Miel toutes fleurs", "detail": "Pot – 500g", "price": 4.99, "unitPrice": "9,98 €/KG" }
   ],
   "confiture": [
     { "name": "Confiture de fraises", "detail": "Pot – 370g", "price": 2.49, "unitPrice": "6,73 €/KG" }
@@ -145,8 +251,33 @@
   "biscuit": [
     { "name": "Biscuits petit beurre", "detail": "Paquet – 200g", "price": 1.29, "unitPrice": "6,45 €/KG" }
   ],
+  "biscuits": [
+    { "name": "Biscuits petit beurre", "detail": "Paquet – 200g", "price": 1.29, "unitPrice": "6,45 €/KG" },
+    { "name": "Cookies chocolat", "detail": "Paquet – 200g", "price": 1.99, "unitPrice": "9,95 €/KG" }
+  ],
+  "gateau": [
+    { "name": "Gâteau marbré", "detail": "Paquet – 300g", "price": 2.49, "unitPrice": "8,30 €/KG" }
+  ],
   "chips": [
     { "name": "Chips nature", "detail": "Sachet – 150g", "price": 1.79, "unitPrice": "11,93 €/KG" }
+  ],
+  "bonbon": [
+    { "name": "Bonbons gélifiés", "detail": "Sachet – 250g", "price": 1.69, "unitPrice": "6,76 €/KG" }
+  ],
+  "bonbons": [
+    { "name": "Bonbons gélifiés", "detail": "Sachet – 250g", "price": 1.69, "unitPrice": "6,76 €/KG" }
+  ],
+  "glace": [
+    { "name": "Glace vanille", "detail": "Pot – 500ml", "price": 3.49, "unitPrice": "6,98 €/L" }
+  ],
+  "pop corn": [
+    { "name": "Pop corn micro-ondes", "detail": "Sachet x3", "price": 1.99, "unitPrice": "0,66 €/sachet" }
+  ],
+  "popcorn": [
+    { "name": "Pop corn micro-ondes", "detail": "Sachet x3", "price": 1.99, "unitPrice": "0,66 €/sachet" }
+  ],
+  "crepe": [
+    { "name": "Crêpes prêtes", "detail": "Paquet x8", "price": 2.29, "unitPrice": "0,29 €/pièce" }
   ],
   "steak": [
     { "name": "Steak haché 5%", "detail": "Barquette 2x125g", "price": 3.49, "unitPrice": "13,96 €/KG" }
@@ -157,14 +288,32 @@
   "thon": [
     { "name": "Thon en boîte", "detail": "Boîte – 140g", "price": 1.89, "unitPrice": "13,50 €/KG" }
   ],
-  "jambon": [
-    { "name": "Jambon blanc", "detail": "Barquette 4 tranches", "price": 2.49, "unitPrice": "15,56 €/KG" }
+  "sardine": [
+    { "name": "Sardines à l'huile", "detail": "Boîte – 115g", "price": 1.49, "unitPrice": "12,96 €/KG" }
   ],
   "crevettes": [
     { "name": "Crevettes cuites", "detail": "Barquette – 200g", "price": 4.99, "unitPrice": "24,95 €/KG" }
   ],
   "crevette": [
     { "name": "Crevettes cuites", "detail": "Barquette – 200g", "price": 4.99, "unitPrice": "24,95 €/KG" }
+  ],
+  "jambon": [
+    { "name": "Jambon blanc", "detail": "Barquette 4 tranches", "price": 2.49, "unitPrice": "15,56 €/KG" }
+  ],
+  "saucisse": [
+    { "name": "Saucisses de Strasbourg", "detail": "Barquette x4", "price": 2.79, "unitPrice": "8,72 €/KG" }
+  ],
+  "saucisson": [
+    { "name": "Saucisson sec", "detail": "Pièce – 200g", "price": 3.49, "unitPrice": "17,45 €/KG" }
+  ],
+  "lardon": [
+    { "name": "Lardons fumés", "detail": "Barquette – 200g", "price": 1.99, "unitPrice": "9,95 €/KG" }
+  ],
+  "lardons": [
+    { "name": "Lardons fumés", "detail": "Barquette – 200g", "price": 1.99, "unitPrice": "9,95 €/KG" }
+  ],
+  "bacon": [
+    { "name": "Bacon fumé", "detail": "Barquette – 150g", "price": 2.29, "unitPrice": "15,27 €/KG" }
   ],
   "carotte": [
     { "name": "Carottes", "detail": "Origine France – 1kg", "price": 1.49, "unitPrice": "1,49 €/KG" }
@@ -178,14 +327,122 @@
   "oignon": [
     { "name": "Oignons jaunes", "detail": "Filet – 1kg", "price": 1.29, "unitPrice": "1,29 €/KG" }
   ],
+  "oignons": [
+    { "name": "Oignons jaunes", "detail": "Filet – 1kg", "price": 1.29, "unitPrice": "1,29 €/KG" }
+  ],
+  "ail": [
+    { "name": "Ail", "detail": "Filet – 3 têtes", "price": 1.29, "unitPrice": "0,43 €/pièce" }
+  ],
   "pomme de terre": [
     { "name": "Pommes de terre", "detail": "Filet – 2,5kg", "price": 2.99, "unitPrice": "1,20 €/KG" }
   ],
   "patate": [
     { "name": "Pommes de terre", "detail": "Filet – 2,5kg", "price": 2.99, "unitPrice": "1,20 €/KG" }
   ],
-  "creme": [
-    { "name": "Crème fraîche", "detail": "Pot – 200ml", "price": 1.29, "unitPrice": "6,45 €/L" }
+  "courgette": [
+    { "name": "Courgettes", "detail": "Origine France – 1kg", "price": 2.29, "unitPrice": "2,29 €/KG" }
+  ],
+  "concombre": [
+    { "name": "Concombre", "detail": "Pièce", "price": 0.89, "unitPrice": "" }
+  ],
+  "poivron": [
+    { "name": "Poivrons tricolores", "detail": "Barquette x3", "price": 2.49, "unitPrice": "0,83 €/pièce" }
+  ],
+  "brocoli": [
+    { "name": "Brocoli", "detail": "Pièce – ~500g", "price": 1.99, "unitPrice": "3,98 €/KG" }
+  ],
+  "champignon": [
+    { "name": "Champignons de Paris", "detail": "Barquette – 250g", "price": 1.49, "unitPrice": "5,96 €/KG" }
+  ],
+  "champignons": [
+    { "name": "Champignons de Paris", "detail": "Barquette – 250g", "price": 1.49, "unitPrice": "5,96 €/KG" }
+  ],
+  "avocat": [
+    { "name": "Avocats", "detail": "Filet x2", "price": 2.49, "unitPrice": "1,25 €/pièce" }
+  ],
+  "mais": [
+    { "name": "Maïs doux", "detail": "Boîte – 285g", "price": 1.19, "unitPrice": "4,18 €/KG" }
+  ],
+  "haricot vert": [
+    { "name": "Haricots verts", "detail": "Surgelés – 1kg", "price": 2.29, "unitPrice": "2,29 €/KG" }
+  ],
+  "haricots verts": [
+    { "name": "Haricots verts", "detail": "Surgelés – 1kg", "price": 2.29, "unitPrice": "2,29 €/KG" }
+  ],
+  "petit pois": [
+    { "name": "Petits pois", "detail": "Boîte – 400g", "price": 1.09, "unitPrice": "2,73 €/KG" }
+  ],
+  "lentille": [
+    { "name": "Lentilles vertes", "detail": "Sachet – 500g", "price": 1.89, "unitPrice": "3,78 €/KG" }
+  ],
+  "lentilles": [
+    { "name": "Lentilles vertes", "detail": "Sachet – 500g", "price": 1.89, "unitPrice": "3,78 €/KG" }
+  ],
+  "pois chiche": [
+    { "name": "Pois chiches", "detail": "Boîte – 400g", "price": 1.19, "unitPrice": "2,98 €/KG" }
+  ],
+  "epinard": [
+    { "name": "Épinards", "detail": "Surgelés – 800g", "price": 1.99, "unitPrice": "2,49 €/KG" }
+  ],
+  "chou": [
+    { "name": "Chou-fleur", "detail": "Pièce", "price": 1.99, "unitPrice": "" }
+  ],
+  "aubergine": [
+    { "name": "Aubergines", "detail": "Origine France – 1kg", "price": 2.99, "unitPrice": "2,99 €/KG" }
+  ],
+  "citron": [
+    { "name": "Citrons", "detail": "Filet x4", "price": 1.49, "unitPrice": "0,37 €/pièce" }
+  ],
+  "mangue": [
+    { "name": "Mangue", "detail": "Pièce", "price": 2.49, "unitPrice": "" }
+  ],
+  "ananas": [
+    { "name": "Ananas", "detail": "Pièce", "price": 1.99, "unitPrice": "" }
+  ],
+  "raisin": [
+    { "name": "Raisin blanc", "detail": "Barquette – 500g", "price": 2.99, "unitPrice": "5,98 €/KG" }
+  ],
+  "poire": [
+    { "name": "Poires", "detail": "Origine France – 1kg", "price": 2.99, "unitPrice": "2,99 €/KG" }
+  ],
+  "kiwi": [
+    { "name": "Kiwi", "detail": "Barquette x4", "price": 1.99, "unitPrice": "0,50 €/pièce" }
+  ],
+  "melon": [
+    { "name": "Melon", "detail": "Pièce", "price": 2.49, "unitPrice": "" }
+  ],
+  "pasteque": [
+    { "name": "Pastèque", "detail": "Pièce – ~3kg", "price": 4.99, "unitPrice": "1,66 €/KG" }
+  ],
+  "peche": [
+    { "name": "Pêches", "detail": "Barquette – 1kg", "price": 3.49, "unitPrice": "3,49 €/KG" }
+  ],
+  "abricot": [
+    { "name": "Abricots", "detail": "Barquette – 500g", "price": 2.99, "unitPrice": "5,98 €/KG" }
+  ],
+  "myrtille": [
+    { "name": "Myrtilles", "detail": "Barquette – 125g", "price": 2.49, "unitPrice": "19,92 €/KG" }
+  ],
+  "framboise": [
+    { "name": "Framboises", "detail": "Barquette – 125g", "price": 2.99, "unitPrice": "23,92 €/KG" }
+  ],
+  "soupe": [
+    { "name": "Soupe de légumes", "detail": "Brique – 1L", "price": 1.89, "unitPrice": "1,89 €/L" }
+  ],
+  "sandwich": [
+    { "name": "Sandwich jambon-beurre", "detail": "Pièce", "price": 2.99, "unitPrice": "" }
+  ],
+  "wrap": [
+    { "name": "Wraps tortilla", "detail": "Paquet x6", "price": 1.99, "unitPrice": "0,33 €/pièce" }
+  ],
+  "burger": [
+    { "name": "Pain burger", "detail": "Sachet x4", "price": 1.79, "unitPrice": "0,45 €/pièce" }
+  ],
+  "sushi": [
+    { "name": "Box sushi", "detail": "Barquette 12 pièces", "price": 7.99, "unitPrice": "0,67 €/pièce" }
+  ],
+  "conserve": [
+    { "name": "Tomates pelées", "detail": "Boîte – 400g", "price": 0.89, "unitPrice": "2,23 €/KG" }
   ],
   "shampoing": [
     { "name": "Shampooing doux", "detail": "Flacon – 250ml", "price": 3.49, "unitPrice": "13,96 €/L" }
@@ -209,6 +466,21 @@
   "lessive": [
     { "name": "Lessive liquide", "detail": "Bidon – 2L – 40 lavages", "price": 7.99, "unitPrice": "4,00 €/L" }
   ],
+  "eponge": [
+    { "name": "Éponges", "detail": "Pack x3", "price": 1.49, "unitPrice": "0,50 €/pièce" }
+  ],
+  "couche": [
+    { "name": "Couches bébé", "detail": "Paquet x30 – Taille 4", "price": 8.99, "unitPrice": "0,30 €/pièce" }
+  ],
+  "couches": [
+    { "name": "Couches bébé", "detail": "Paquet x30 – Taille 4", "price": 8.99, "unitPrice": "0,30 €/pièce" }
+  ],
+  "croquette": [
+    { "name": "Croquettes chien", "detail": "Sac – 4kg", "price": 9.99, "unitPrice": "2,50 €/KG" }
+  ],
+  "croquettes": [
+    { "name": "Croquettes chien", "detail": "Sac – 4kg", "price": 9.99, "unitPrice": "2,50 €/KG" }
+  ],
   "tv": [
     { "name": "TV 43\" 4K", "detail": "LED – 43 pouces", "price": 249.00, "unitPrice": "" }
   ],
@@ -224,7 +496,6 @@
   ],
   "legumes": [
     { "name": "Tomates grappe", "detail": "Origine France – 1kg", "price": 3.59, "unitPrice": "3,59 €/KG" },
-    { "name": "Tomates cerise", "detail": "Origine Maroc – 250g", "price": 1.69, "unitPrice": "6,76 €/KG" },
     { "name": "Carottes", "detail": "Origine France – 1kg", "price": 1.49, "unitPrice": "1,49 €/KG" },
     { "name": "Salade verte", "detail": "Pièce", "price": 1.09, "unitPrice": "" },
     { "name": "Oignons jaunes", "detail": "Filet – 1kg", "price": 1.29, "unitPrice": "1,29 €/KG" }
