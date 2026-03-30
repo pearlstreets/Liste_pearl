@@ -3220,12 +3220,12 @@ export default function App() {
   // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
   React.useEffect(() => {
     (async () => {
-      const didReset = await AsyncStorage.getItem('__RESET_V1__');
+      const didReset = await AsyncStorage.getItem('__RESET_V2__');
       if (!didReset) {
         // Keep: KEY_PROFILE, KEY_AUTH, KEY_ACCOUNTS, APP_CURRENCY, MARKETPLACE_TOKENS
         const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS];
         await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
-        await AsyncStorage.setItem('__RESET_V1__', '1');
+        await AsyncStorage.setItem('__RESET_V2__', '1');
         console.log('[RESET] Data cleared (profile kept)');
       }
     })();
