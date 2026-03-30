@@ -856,6 +856,28 @@ const ProductsScreen = () => {
 
   const readJSON=async(k)=>{try{const raw=await AsyncStorage.getItem(k);return raw?JSON.parse(raw):null;}catch(_){return null;}};
 
+  // Produits populaires par défaut quand la liste est vide
+  const DEFAULT_PRODUCTS = [
+    { name: "pain", qty: 1 },
+    { name: "lait", qty: 1 },
+    { name: "oeuf", qty: 6 },
+    { name: "beurre", qty: 1 },
+    { name: "pomme", qty: 4 },
+    { name: "tomate", qty: 3 },
+    { name: "poulet", qty: 1 },
+    { name: "riz", qty: 1 },
+    { name: "fromage", qty: 1 },
+    { name: "yaourt", qty: 4 },
+    { name: "banane", qty: 3 },
+    { name: "carotte", qty: 3 },
+    { name: "pate", qty: 1 },
+    { name: "eau", qty: 2 },
+    { name: "salade", qty: 1 },
+    { name: "chocolat", qty: 1 },
+  ];
+
+  const [showingDefaults, setShowingDefaults] = React.useState(false);
+
   const loadSelected=async()=>{
     let selected=(await readJSON(KEY_SELECTED))||(await readJSON('SG_SELECTED_FOR_PRODUCTS'));
     if(!Array.isArray(selected)||!selected.length){
@@ -865,6 +887,12 @@ const ProductsScreen = () => {
       const base=checked.length?checked:safe;
       selected=base.map(it=>({name:String(it?.name||it?.title||'').trim(),qty:Number(it?.qty||it?.quantity||1)||1}));
     }
+    // Si toujours vide, proposer les produits populaires par défaut
+    if (!Array.isArray(selected) || !selected.length) {
+      setShowingDefaults(true);
+      return DEFAULT_PRODUCTS;
+    }
+    setShowingDefaults(false);
     return Array.isArray(selected) ? selected : [];
   };
 
@@ -1105,6 +1133,14 @@ const ProductsScreen = () => {
       </View>
 
      
+      {/* Bandeau produits par défaut */}
+      {showingDefaults && !loading && groups.length > 0 && (
+        <View style={{marginHorizontal:16, marginTop:8, padding:10, borderRadius:10, backgroundColor:'#FEF3C7', flexDirection:'row', alignItems:'center'}}>
+          <Ionicons name="sparkles" size={16} color="#F59E0B" style={{marginRight:8}} />
+          <Text style={{flex:1, fontSize:12, color:'#92400E'}}>{t('productsScreen.defaultProducts') || 'Produits populaires suggérés. Ajoutez vos propres articles dans Ma Liste !'}</Text>
+        </View>
+      )}
+
       {loading ? (
         <ActivityIndicator style={{marginTop:24}} />
       ) : (
