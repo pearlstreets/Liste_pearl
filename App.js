@@ -1064,6 +1064,25 @@ const ProductsScreen = () => {
       return {name:g.shop.name,distance:g.shop.distance,time:g.shop.time,deliveryFee:fee,products:g.products,subtotal,grandTotal:subtotal+fee};
     });
     // Favoris en haut de liste
+    // Ensure ALL products appear in ALL shops (with shop-specific prices)
+    const inv = buildInventory(items);
+    groups.forEach(g => {
+      const shopInv = inv.find(s => s.name === g.name);
+      if (!shopInv) return;
+      items.forEach(it => {
+        const already = g.products.some(p => norm(p.title) === norm(it.name));
+        if (!already) {
+          const row = shopInv.items.find(x => x.name === it.name);
+          if (row) {
+            g.products.push({ title: it.name, qty: it.qty, price: row.price });
+          }
+        }
+      });
+      // Recalculate totals
+      g.subtotal = g.products.reduce((a, p) => a + Number(p.price || 0) * Number(p.qty || 1), 0);
+      g.grandTotal = g.subtotal + (mode === 'delivery' ? Number(g.deliveryFee || 0) : 0);
+    });
+
     groups.sort((a,b) => {
       const aFav = favShops.includes(a.name) ? 0 : 1;
       const bFav = favShops.includes(b.name) ? 0 : 1;
@@ -1134,25 +1153,24 @@ const ProductsScreen = () => {
       const product = mapResults ? mapResults[0] : null;
       if (!product) return;
 
-      // Find which shop group this item is in
+      // Add product to EVERY shop that has it in their products list
       groups.forEach((group, shopIndex) => {
         const shopProduct = (group.products || []).find(p => {
           const pName = norm(p.title);
           return pName === key || pName.includes(key) || key.includes(pName);
         });
-        if (shopProduct) {
-          filled.push({
-            id: idCounter++,
-            name: product.name,
-            detail: product.detail || '',
-            unitPrice: product.unitPrice || '',
-            price: product.price || shopProduct.price || 0,
-            qty: item.qty || 1,
-            shop: group.name,
-            shopIndex: shopIndex,
-            checked: true,
-          });
-        }
+        // Always add — every shop should show every product
+        filled.push({
+          id: idCounter++,
+          name: product.name,
+          detail: product.detail || '',
+          unitPrice: product.unitPrice || '',
+          price: shopProduct ? (product.price || shopProduct.price || 0) : (product.price || 0),
+          qty: item.qty || 1,
+          shop: group.name,
+          shopIndex: shopIndex,
+          checked: true,
+        });
       });
     });
     return filled;
