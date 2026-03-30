@@ -721,10 +721,24 @@ function ListScreen() {
         </View>
         <TouchableOpacity style={styles.bottomBtn} onPress={async ()=>{
         try{
-          const chosen = Array.isArray(items) ? items.filter(it=>it && (it.selected || it.checked)).map(it=>({
+          const all = Array.isArray(items) ? items : [];
+          // D'abord les items cochés, sinon tous les items non-barrés, sinon tous
+          let chosen = all.filter(it=>it && (it.selected || it.checked)).map(it=>({
             name: String(it.name||it.title||'').trim(),
             qty: Number(it.qty||it.quantity||1)
-          })) : [];
+          }));
+          if (!chosen.length) {
+            chosen = all.filter(it=>it && !it.crossed).map(it=>({
+              name: String(it.name||it.title||'').trim(),
+              qty: Number(it.qty||it.quantity||1)
+            }));
+          }
+          if (!chosen.length) {
+            chosen = all.map(it=>({
+              name: String(it.name||it.title||'').trim(),
+              qty: Number(it.qty||it.quantity||1)
+            }));
+          }
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
         navigation.navigate("products");
@@ -1097,8 +1111,8 @@ const ProductsScreen = () => {
       const {groups,summary}=buildProposal(items);
       setGroups(groups); setSummary(summary);
 
-      // Auto-fill product details for default products
-      if (showingDefaults && groups.length > 0) {
+      // Auto-fill product details from search-map for all products
+      if (groups.length > 0 && items.length > 0) {
         const autoFilled = autoFillProducts(items, groups);
         if (autoFilled.length > 0) {
           setPopupSelectedItems(autoFilled);
