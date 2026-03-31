@@ -1855,12 +1855,12 @@ const ProductsScreen = () => {
 
             <View style={{paddingHorizontal:16, gap:10}}>
               {/* Total */}
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingVertical:8, borderTopWidth:1, borderTopColor:'#F3F4F6'}}>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingTop:8, borderTopWidth:1, borderTopColor:'#F3F4F6'}}>
                 <Text style={{fontSize:16, fontWeight:'700', color:'#374151'}}>{t('productsScreen.productsTotal')}</Text>
                 <Text style={{fontSize:16, fontWeight:'700', color:'#374151'}}>{popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)}</Text>
               </View>
               <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom:4}}>
-                <Text style={{fontSize:16, fontWeight:'700', color:'#111'}}>{t('cart.total')}</Text>
+                <Text style={{fontSize:16, fontWeight:'700', color:'#111'}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
                 <Text style={{fontSize:16, fontWeight:'700', color:BRAND}}>{fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}</Text>
               </View>
               <TouchableOpacity
