@@ -4773,9 +4773,11 @@ function FakeProfileScreen({ onLogout }) {
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify(selected));
                   DeviceEventEmitter.emit('CART_UPDATED');
                   setReorderVisible(false);
-                  setDetailOrder(null);
-                  setAllOrdersVisible(false);
-                  navigation.navigate('cart');
+                  setTimeout(() => {
+                    setDetailOrder(null);
+                    setAllOrdersVisible(false);
+                    navigation.navigate('cart');
+                  }, 300);
                 }}
                 disabled={!reorderItems.some(it => it.selected)}
                 style={{height:50, borderRadius:14, backgroundColor: reorderItems.some(it => it.selected) ? '#00C29B' : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
