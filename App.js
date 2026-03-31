@@ -3142,8 +3142,8 @@ function MainNavigator({ onLogout }) {
     >
       <Tab.Screen name="myList" component={ListScreen} />
       <Tab.Screen name="products" component={ProductsScreen} />
-      <Tab.Screen name="favorites" component={FavoritesScreen} />
       <Tab.Screen name="cart"  component={CartScreen} />
+      <Tab.Screen name="favorites" component={FavoritesScreen} />
       <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} />}</Tab.Screen>
     </Tab.Navigator>
   );
