@@ -1531,7 +1531,16 @@ const ProductsScreen = () => {
                 const liveTotalWithDelivery = liveTotal + (mode === 'delivery' ? Number(item?.deliveryFee||0) : 0);
                 const liveQty = shopSelected.reduce((s, si) => s + Number(si.qty||1), 0);
                 return <>
-                  <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  {/* Bouton ajouter un produit supplémentaire */}
+                  <TouchableOpacity
+                    onPress={() => { __setActiveQuery(''); __setInitialQuery(''); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}
+                    style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:8, borderRadius:10, borderWidth:1, borderColor:BRAND, borderStyle:'dashed'}}
+                  >
+                    <Ionicons name="add-circle-outline" size={18} color={BRAND} style={{marginRight:6}} />
+                    <Text style={{color:BRAND, fontWeight:'600', fontSize:14}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+                  </TouchableOpacity>
+
+                  <View style={{marginTop:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                     <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{t('productsScreen.productsTotal')}</Text>
                     <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
                   </View>
