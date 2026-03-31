@@ -917,21 +917,24 @@ const ProductsScreen = () => {
   const [showingDefaults, setShowingDefaults] = React.useState(false);
 
   const loadSelected=async()=>{
-    let selected=(await readJSON(KEY_SELECTED))||(await readJSON('SG_SELECTED_FOR_PRODUCTS'));
-    if(!Array.isArray(selected)||!selected.length){
-      const all=(await readJSON(KEY_ITEMS))||(await readJSON('SG_ITEMS'))||[];
-      const safe=Array.isArray(all)?all:[];
-      const checked=safe.filter(x=>x&&(x.selected||x.checked));
-      const base=checked.length?checked:safe;
-      selected=base.map(it=>({name:String(it?.name||it?.title||'').trim(),qty:Number(it?.qty||it?.quantity||1)||1}));
-    }
-    // Si toujours vide, retourner vide — les produits n'apparaissent que quand l'utilisateur push
-    if (!Array.isArray(selected) || !selected.length) {
+    // Only load from KEY_SELECTED — set by "Trouver produits exacts" button
+    const raw = await AsyncStorage.getItem(KEY_SELECTED);
+    let selected = raw ? JSON.parse(raw) : null;
+    // If KEY_SELECTED is explicitly empty [], products were cleared after cart push
+    if (Array.isArray(selected) && selected.length === 0) {
       setShowingDefaults(true);
       return [];
     }
+    // If KEY_SELECTED doesn't exist, try fallback
+    if (!Array.isArray(selected) || !selected.length) {
+      selected = (await readJSON('SG_SELECTED_FOR_PRODUCTS'));
+      if (!Array.isArray(selected) || !selected.length) {
+        setShowingDefaults(true);
+        return [];
+      }
+    }
     setShowingDefaults(false);
-    return Array.isArray(selected) ? selected : [];
+    return selected;
   };
 
   const buildInventory=(items)=>{
