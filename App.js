@@ -622,10 +622,14 @@ function ListScreen() {
   const renderItem = ({ item }) => {
     const isCrossed = !!item.crossed;
     return (
-    <View style={[styles.row, isCrossed && { opacity: 0.5 }]}>
-      <Square value={!!item.selected} onPress={() => !isCrossed && toggleSelected(item.id)} />
+    <View style={styles.row}>
+      {/* Checkbox — grisée si barré */}
+      <View style={isCrossed ? {opacity:0.3} : undefined}>
+        <Square value={!!item.selected} onPress={() => !isCrossed && toggleSelected(item.id)} />
+      </View>
 
-      <View style={styles.qtyInline}>
+      {/* Quantité — grisée si barré */}
+      <View style={[styles.qtyInline, isCrossed && {opacity:0.3}]}>
         <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="remove" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
         {isCrossed ? (
           <Text style={{ width:48, height:32, lineHeight:32, textAlign:'center', fontSize:15, color:'#9CA3AF' }}>{item.qty || 1}</Text>
@@ -635,13 +639,16 @@ function ListScreen() {
         <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="add" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
       </View>
 
-      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} style={{ flex:1 }}>
+      {/* Nom — barré si crossed */}
+      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} style={{ flex:1, opacity: isCrossed ? 0.4 : 1 }}>
         <Text numberOfLines={1} style={[styles.itemLabel, isCrossed && styles.crossed]}>{item.name}</Text>
       </TouchableOpacity>
 
+      {/* Poubelle — toujours visible */}
       <TouchableOpacity onPress={() => removeOne(item.id)} style={{padding:4, marginLeft:0}}>
         <Ionicons name="trash-outline" size={18} color="#C33" />
       </TouchableOpacity>
+      {/* Radio barrer/débarrer — toujours visible et non grisé */}
       <Radio style={{ marginLeft: 2, marginRight: 20 }} value={isCrossed} onPress={() => toggleCrossed(item.id)} />
     </View>
     );
