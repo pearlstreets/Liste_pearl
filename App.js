@@ -3698,6 +3698,8 @@ function FakeProfileScreen({ onLogout }) {
   const [orders, setOrders] = React.useState([]);
   const [allOrdersVisible, setAllOrdersVisible] = React.useState(false);
   const [detailOrder, setDetailOrder] = React.useState(null);
+  const [reorderVisible, setReorderVisible] = React.useState(false);
+  const [reorderItems, setReorderItems] = React.useState([]); // [{...item, selected: true/false}]
   const [langVisible, setLangVisible] = React.useState(false);
   const [pendingLang, setPendingLang] = React.useState(null);
   const [currencyVisible, setCurrencyVisible] = React.useState(false);
@@ -4564,23 +4566,19 @@ function FakeProfileScreen({ onLogout }) {
 
               {/* Bouton recommander */}
               <TouchableOpacity
-                onPress={async () => {
-                  const items = (detailOrder.items||[]).map(it => ({
+                onPress={() => {
+                  const items = (detailOrder.items||[]).map((it, i) => ({
+                    id: i,
                     name: it.name || it.title,
                     detail: it.detail || '',
                     unitPrice: it.unitPrice || '',
                     qty: it.qty || 1,
                     price: it.price || 0,
-                    shop: it.shop || ''
+                    shop: it.shop || '',
+                    selected: true,
                   }));
-                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(items));
-                  DeviceEventEmitter.emit('CART_UPDATED');
-                  setDetailOrder(null);
-                  Alert.alert(
-                    t('profile.reorderSuccess') || 'Ajouté au panier',
-                    t('profile.reorderSuccessMsg') || 'Les produits ont été ajoutés au panier',
-                    [{ text: 'OK' }]
-                  );
+                  setReorderItems(items);
+                  setReorderVisible(true);
                 }}
                 style={{ marginTop:16, height:50, borderRadius:14, backgroundColor:'#00C29B', flexDirection:'row', alignItems:'center', justifyContent:'center' }}
               >
@@ -4590,6 +4588,91 @@ function FakeProfileScreen({ onLogout }) {
             </ScrollView>
           )}
         </SafeAreaView>
+      </Modal>
+
+      {/* Modal sélection recommander */}
+      <Modal visible={reorderVisible} animationType="slide" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <View>
+                <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.reorder') || 'Recommander'}</Text>
+                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
+                  {reorderItems.filter(it => it.selected).length}/{reorderItems.length} {t('productsScreen.quantity') || 'produits'}
+                </Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <TouchableOpacity onPress={() => {
+                  const allSelected = reorderItems.every(it => it.selected);
+                  setReorderItems(prev => prev.map(it => ({...it, selected: !allSelected})));
+                }} style={{marginRight:12, paddingHorizontal:10, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6'}}>
+                  <Text style={{fontSize:12, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? (t('listScreen.deselectAll') || 'Tout décocher') : (t('listScreen.selectAll') || 'Tout cocher')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:6}}>
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <FlatList
+              data={reorderItems}
+              keyExtractor={(item) => String(item.id)}
+              contentContainerStyle={{padding:16}}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => setReorderItems(prev => prev.map(it => it.id === item.id ? {...it, selected: !it.selected} : it))}
+                  style={{flexDirection:'row', alignItems:'center', padding:12, marginBottom:6, backgroundColor: item.selected ? '#F0FDF4' : '#F9FAFB', borderRadius:10, borderWidth: item.selected ? 1 : 0, borderColor: item.selected ? '#BBF7D0' : 'transparent'}}
+                >
+                  <Square value={item.selected} onPress={() => setReorderItems(prev => prev.map(it => it.id === item.id ? {...it, selected: !it.selected} : it))} />
+                  <View style={{width:8}} />
+                  <ProductThumb name={item.name} size={40} />
+                  <View style={{flex:1, marginLeft:10}}>
+                    <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{item.name}</Text>
+                    {item.shop ? <Text style={{fontSize:11, color:'#6B7280', marginTop:2}}>{item.shop}</Text> : null}
+                  </View>
+                  <View style={{alignItems:'flex-end'}}>
+                    <Text style={{fontSize:13, fontWeight:'700', color:'#374151'}}>x{item.qty||1}</Text>
+                    <Text style={{fontSize:13, fontWeight:'700', color:BRAND, marginTop:2}}>{fmtPrice((item.price||0)*(item.qty||1))}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+
+            <View style={{paddingHorizontal:16, gap:8}}>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                <Text style={{fontSize:15, fontWeight:'700', color:'#111'}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+                <Text style={{fontSize:15, fontWeight:'700', color:BRAND}}>{fmtPrice(reorderItems.filter(it => it.selected).reduce((s, it) => s + (Number(it.price||0) * Number(it.qty||1)), 0))}</Text>
+              </View>
+              <TouchableOpacity
+                onPress={async () => {
+                  const selected = reorderItems.filter(it => it.selected).map(it => ({
+                    name: it.name, detail: it.detail, unitPrice: it.unitPrice,
+                    qty: it.qty, price: it.price, shop: it.shop
+                  }));
+                  if (!selected.length) return;
+                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(selected));
+                  DeviceEventEmitter.emit('CART_UPDATED');
+                  setReorderVisible(false);
+                  setDetailOrder(null);
+                  Alert.alert(
+                    t('profile.reorderSuccess') || 'Ajouté au panier',
+                    (selected.length) + ' ' + (t('profile.reorderSuccessMsg') || 'produits ajoutés au panier'),
+                    [{ text: 'OK' }]
+                  );
+                }}
+                disabled={!reorderItems.some(it => it.selected)}
+                style={{height:50, borderRadius:14, backgroundColor: reorderItems.some(it => it.selected) ? '#00C29B' : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
+              >
+                <Ionicons name="cart-outline" size={20} color="#fff" style={{marginRight:8}} />
+                <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('cart.addToCart') || 'Ajouter au panier'} ({reorderItems.filter(it => it.selected).reduce((s, it) => s + (it.qty||1), 0)})</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setReorderVisible(false)} style={{height:44, borderRadius:14, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center'}}>
+                <Text style={{color:'#666', fontWeight:'600'}}>{t('profile.cancel')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </SafeAreaView>
   );
