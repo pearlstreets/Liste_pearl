@@ -619,26 +619,33 @@ function ListScreen() {
     closeEdit();
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.row}>
-      <Square value={!!item.selected} onPress={() => toggleSelected(item.id)} />
+  const renderItem = ({ item }) => {
+    const isCrossed = !!item.crossed;
+    return (
+    <View style={[styles.row, isCrossed && { opacity: 0.5 }]}>
+      <Square value={!!item.selected} onPress={() => !isCrossed && toggleSelected(item.id)} />
 
       <View style={styles.qtyInline}>
-        <RepeatButton onPress={() => onMinus(item.id)} onLongAction={() => onMinus(item.id)} style={styles.qtyBtn}><Ionicons name="remove" size={16} /></RepeatButton>
-        <QtyInput value={item.qty || 1} onCommit={(q) => setQty(item.id, q)} />
-        <RepeatButton onPress={() => onPlus(item.id)} onLongAction={() => onPlus(item.id)} style={styles.qtyBtn}><Ionicons name="add" size={16} /></RepeatButton>
+        <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="remove" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
+        {isCrossed ? (
+          <Text style={{ width:48, height:32, lineHeight:32, textAlign:'center', fontSize:15, color:'#9CA3AF' }}>{item.qty || 1}</Text>
+        ) : (
+          <QtyInput value={item.qty || 1} onCommit={(q) => setQty(item.id, q)} />
+        )}
+        <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="add" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
       </View>
 
-      <TouchableOpacity onPress={() => openEdit(item)} style={{ flex:1 }}>
-        <Text numberOfLines={1} style={styles.itemLabel}>{item.name}</Text>
+      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} style={{ flex:1 }}>
+        <Text numberOfLines={1} style={[styles.itemLabel, isCrossed && styles.crossed]}>{item.name}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => removeOne(item.id)} style={{padding:4, marginLeft:0}}>
         <Ionicons name="trash-outline" size={18} color="#C33" />
       </TouchableOpacity>
-      <Radio style={{ marginLeft: 2, marginRight: 20 }} value={!!item.crossed} onPress={() => toggleCrossed(item.id)} />
+      <Radio style={{ marginLeft: 2, marginRight: 20 }} value={isCrossed} onPress={() => toggleCrossed(item.id)} />
     </View>
-  );
+    );
+  };
 
   const Header = (
     <View style={{ marginTop: 24 }}>
