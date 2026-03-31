@@ -1519,9 +1519,8 @@ const ProductsScreen = () => {
             onPress={async ()=>{
               try {
                 const cartItems = [];
-                // Ajouter les produits cochés dont le shop est coché
+                // Ajouter tous les produits des shops cochés
                 popupSelectedItems.forEach(si => {
-                  if (si.checked === false) return;
                   const shopIdx = si.shopIndex;
                   if (shopIdx === null || shopIdx === undefined || !checkedShops[shopIdx]) return;
                   cartItems.push({
