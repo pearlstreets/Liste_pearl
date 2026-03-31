@@ -3982,7 +3982,7 @@ function FakeProfileScreen({ onLogout }) {
                     shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
                   }}>
                   <View style={{ flexDirection:'row', alignItems:'center' }}>
-                    <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#D1FAE5',
+                    <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#F3F4F6',
                       alignItems:'center', justifyContent:'center', marginRight:10, flexShrink:0 }}>
                       <Ionicons name={status.icon} size={18} color={status.color} />
                     </View>
@@ -3999,12 +3999,12 @@ function FakeProfileScreen({ onLogout }) {
                     </View>
                     <View style={{ alignItems:'flex-end', marginLeft:10, flexShrink:0 }}>
                       <View style={{ paddingHorizontal:8, paddingVertical:2, borderRadius:6, marginBottom:4,
-                        backgroundColor:'#D1FAE5' }}>
-                        <Text style={{ fontSize:10, fontWeight:'700', color:'#059669' }}>
+                        backgroundColor:'#F3F4F6' }}>
+                        <Text style={{ fontSize:10, fontWeight:'700', color:'#374151' }}>
                           {order.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
                         </Text>
                       </View>
-                      <Text style={{ fontWeight:'800', color:'#00C29B', fontSize:15 }}>
+                      <Text style={{ fontWeight:'800', color:'#111', fontSize:15 }}>
                         {fmtPrice(order.total||0)}
                       </Text>
                       <Ionicons name="chevron-forward" size={16} color="#9CA3AF" style={{marginTop:4}} />
@@ -4401,7 +4401,7 @@ function FakeProfileScreen({ onLogout }) {
                   shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
                 }}>
                 <View style={{ flexDirection:'row', alignItems:'center' }}>
-                  <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#D1FAE5',
+                  <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#F3F4F6',
                     alignItems:'center', justifyContent:'center', marginRight:10, flexShrink:0 }}>
                     <Ionicons name={status.icon} size={18} color={status.color} />
                   </View>
@@ -4418,12 +4418,12 @@ function FakeProfileScreen({ onLogout }) {
                   </View>
                   <View style={{ alignItems:'flex-end', marginLeft:10, flexShrink:0 }}>
                     <View style={{ paddingHorizontal:8, paddingVertical:2, borderRadius:6, marginBottom:4,
-                      backgroundColor:'#D1FAE5' }}>
-                      <Text style={{ fontSize:10, fontWeight:'700', color:'#059669' }}>
+                      backgroundColor:'#F3F4F6' }}>
+                      <Text style={{ fontSize:10, fontWeight:'700', color:'#374151' }}>
                         {order.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
                       </Text>
                     </View>
-                    <Text style={{ fontWeight:'800', color:'#00C29B', fontSize:15 }}>
+                    <Text style={{ fontWeight:'800', color:'#111', fontSize:15 }}>
                       {fmtPrice(order.total||0)}
                     </Text>
                     <Ionicons name="chevron-forward" size={16} color="#9CA3AF" style={{marginTop:4}} />
@@ -4604,22 +4604,17 @@ function FakeProfileScreen({ onLogout }) {
           <Modal visible={reorderVisible} animationType="slide" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
-            <View style={{padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.reorder') || 'Recommander'}</Text>
-                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:6}}>
-                  <Ionicons name="close" size={24} color="#666" />
-                </TouchableOpacity>
-              </View>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginTop:8}}>
-                <Text style={{fontSize:13, color:'#6B7280'}}>
-                  {reorderItems.filter(it => it.selected).length}/{reorderItems.length} {t('productsScreen.quantity') || 'produits'}
-                </Text>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.reorder') || 'Recommander'}</Text>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
                 <TouchableOpacity onPress={() => {
                   const allSelected = reorderItems.every(it => it.selected);
                   setReorderItems(prev => prev.map(it => ({...it, selected: !allSelected})));
-                }} style={{paddingHorizontal:12, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6'}}>
-                  <Text style={{fontSize:13, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? t('listScreen.deselectAll') : t('listScreen.selectAll')}</Text>
+                }} style={{paddingHorizontal:10, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6', marginRight:10}}>
+                  <Text style={{fontSize:12, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? t('listScreen.deselectAll') : t('listScreen.selectAll')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:4}}>
+                  <Ionicons name="close" size={24} color="#666" />
                 </TouchableOpacity>
               </View>
             </View>
