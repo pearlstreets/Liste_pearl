@@ -2296,18 +2296,30 @@ const CartScreen = () => {
   const [shopProductsName, setShopProductsName] = React.useState('');
 
   const openShopProducts = (shopName) => {
-    // Build full product list from search-map for this shop
+    // Build full product list from search-map
     const allProducts = [];
     const seen = new Set();
-    Object.keys(SEARCH_MAP).forEach(key => {
-      if (['fruits','legumes','viande','poisson','surgeles','boisson','petit dejeuner','hygiene','menage'].includes(key)) return;
+    const skipCategories = new Set(['fruits','legumes','viande','poisson','surgeles','boisson','petit dejeuner','hygiene','menage']);
+    const keys = Object.keys(SEARCH_MAP).sort((a, b) => a.length - b.length);
+    keys.forEach(key => {
+      if (skipCategories.has(key)) return;
       const items = SEARCH_MAP[key];
       if (!items || !items.length) return;
-      items.forEach(p => {
+      const p = items[0];
+      if (seen.has(p.name)) return;
+      seen.add(p.name);
+      const inCart = cartItems.some(ci => ci.shop === shopName && String(ci.name||'').toLowerCase() === String(p.name||'').toLowerCase());
+      allProducts.push({ ...p, inCart, qty: 1 });
+    });
+    // Also add other variants (2nd, 3rd products per key)
+    Object.keys(SEARCH_MAP).forEach(key => {
+      if (skipCategories.has(key)) return;
+      const items = SEARCH_MAP[key];
+      if (!items || items.length <= 1) return;
+      items.slice(1).forEach(p => {
         if (seen.has(p.name)) return;
         seen.add(p.name);
-        // Check if already in cart for this shop
-        const inCart = cartItems.some(ci => ci.shop === shopName && ci.name === p.name);
+        const inCart = cartItems.some(ci => ci.shop === shopName && String(ci.name||'').toLowerCase() === String(p.name||'').toLowerCase());
         allProducts.push({ ...p, inCart, qty: 1 });
       });
     });
@@ -3183,7 +3195,7 @@ const CartScreen = () => {
       />
 
       {/* Modal liste produits du shop */}
-      <Modal visible={shopProductsVisible} animationType="slide" transparent={true}>
+      <Modal visible={shopProductsVisible} animationType="none" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'85%', paddingBottom:40}}>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
