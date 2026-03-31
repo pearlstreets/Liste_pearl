@@ -1318,26 +1318,20 @@ const ProductsScreen = () => {
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={()=>{
-                const matchFn = (si) => si.shopIndex === index;
-                const hasProducts = popupSelectedItems.some(si => matchFn(si));
-                if (!hasProducts) return;
                 const wasChecked = !!checkedShops[index];
-                setCheckedShops(prev=>({...prev,[index]:!prev[index]}));
-                setPopupSelectedItems(prev => prev.map(si => matchFn(si) ? {...si, checked: !wasChecked} : si));
+                setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
+                setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
               }}
               style={{backgroundColor:"#fff",padding:16,marginVertical:8,marginHorizontal:16,borderRadius:12,shadowColor:"#000",shadowOpacity:0.05,shadowRadius:5,
                 borderWidth: checkedShops[index] ? 2 : 0, borderColor: checkedShops[index] ? BRAND : "transparent"
               }}>
               <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                 <View style={{flexDirection:"row",alignItems:"center",flex:1}}>
-                  {popupSelectedItems.length > 0 && <Square value={!!checkedShops[index]} onPress={()=>{
-                    const matchFn = (si) => si.shopIndex === index;
-                    const hasProducts = popupSelectedItems.some(si => matchFn(si));
-                    if (!hasProducts) return;
+                  <Square value={!!checkedShops[index]} onPress={()=>{
                     const wasChecked = !!checkedShops[index];
-                    setCheckedShops(prev=>({...prev,[index]:!prev[index]}));
-                    setPopupSelectedItems(prev => prev.map(si => matchFn(si) ? {...si, checked: !wasChecked} : si));
-                  }} />}
+                    setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
+                    setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
+                  }} />
                   <Text style={{fontWeight:"bold",fontSize:16,marginLeft:popupSelectedItems.length > 0 ? 10 : 0}}>{item?.name||t('productsScreen.defaultShop')}</Text>
                 </View>
                 <View style={{flexDirection:"row",alignItems:"center"}}>
