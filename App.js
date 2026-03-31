@@ -2465,6 +2465,12 @@ const CartScreen = () => {
               </TouchableOpacity>
               );
             })}
+
+            {/* Shop subtotal */}
+            <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingTop:10, marginTop:6, borderTopWidth:1, borderTopColor:'#F3F4F6' }}>
+              <Text style={{ fontSize:13, color:'#6B7280' }}>{group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
+              <Text style={{ fontSize:15, fontWeight:'700', color:BRAND }}>{fmtPrice(group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}</Text>
+            </View>
           </View>
           );
         }}
