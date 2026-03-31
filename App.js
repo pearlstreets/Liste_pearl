@@ -4604,22 +4604,22 @@ function FakeProfileScreen({ onLogout }) {
           <Modal visible={reorderVisible} animationType="slide" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <View>
+            <View style={{padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                 <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.reorder') || 'Recommander'}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
+                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:6}}>
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginTop:8}}>
+                <Text style={{fontSize:13, color:'#6B7280'}}>
                   {reorderItems.filter(it => it.selected).length}/{reorderItems.length} {t('productsScreen.quantity') || 'produits'}
                 </Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
                 <TouchableOpacity onPress={() => {
                   const allSelected = reorderItems.every(it => it.selected);
                   setReorderItems(prev => prev.map(it => ({...it, selected: !allSelected})));
-                }} style={{marginRight:12, paddingHorizontal:10, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6'}}>
-                  <Text style={{fontSize:12, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? (t('listScreen.deselectAll') || 'Tout décocher') : (t('listScreen.selectAll') || 'Tout cocher')}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:6}}>
-                  <Ionicons name="close" size={24} color="#666" />
+                }} style={{paddingHorizontal:12, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6'}}>
+                  <Text style={{fontSize:13, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? t('listScreen.deselectAll') : t('listScreen.selectAll')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

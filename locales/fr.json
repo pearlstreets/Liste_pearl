@@ -10,6 +10,7 @@
     "scan": "Scan",
     "inputPlaceholder": "Ajouter un article (ex: \"2 pommes, 5 œufs\")",
     "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
     "strikeAll": "Tout barrer",
     "hideStriked": "Masquer les articles barrés",
     "noItems": "Aucun article",

@@ -10,6 +10,7 @@
     "scan": "Scan",
     "inputPlaceholder": "Add an item (ex: \"2 apples, 5 eggs\")",
     "selectAll": "Select all",
+    "deselectAll": "Deselect all",
     "strikeAll": "Strike all",
     "hideStriked": "Hide crossed items",
     "noItems": "No items",
