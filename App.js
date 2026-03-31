@@ -770,6 +770,7 @@ function ListScreen() {
           }
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
+        DeviceEventEmitter.emit('PRODUCTS_RESET');
         navigation.navigate("products");
       }}>
           <Text style={styles.bottomBtnText}>{t('listScreen.findExactProducts')}</Text>
@@ -922,6 +923,7 @@ const ProductsScreen = () => {
   }, []);
 
   const [showingDefaults, setShowingDefaults] = React.useState(false);
+  const [cartPushed, setCartPushed] = React.useState(false); // true after adding to cart = block refresh
 
   const loadSelected=async()=>{
     // Only load from KEY_SELECTED — set by "Trouver produits exacts" button
@@ -1202,6 +1204,7 @@ const ProductsScreen = () => {
   };
 
   const refresh=React.useCallback(async()=>{
+    if (cartPushed) { setLoading(false); return; }
     setLoading(true);
     try{
       const items=await loadSelected();
@@ -1222,6 +1225,15 @@ const ProductsScreen = () => {
 
   React.useEffect(()=>{ refresh(); },[refresh]);
   useFocusEffect(React.useCallback(()=>{ refresh(); },[refresh]));
+
+  // Reset cartPushed when user pushes new products from Ma Liste
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('PRODUCTS_RESET', () => {
+      setCartPushed(false);
+      refresh();
+    });
+    return () => sub.remove();
+  }, [refresh]);
 
   const setQty=(si,pi,delta)=>{
     setGroups(prev=>{
@@ -1710,6 +1722,7 @@ const ProductsScreen = () => {
                   await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                   setGroups([]); setSummary({price:0,time:0,shops:0});
                   setShowingDefaults(true);
+                  setCartPushed(true);
                   setCheckedShops({});
                   setPopupSelectedItems([]);
                   setDupModalVisible(false);
@@ -1867,6 +1880,7 @@ const ProductsScreen = () => {
                     await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                     setGroups([]); setSummary({price:0,time:0,shops:0});
                     setShowingDefaults(true);
+                    setCartPushed(true);
                     setCheckedShops({});
                     setPopupSelectedItems([]);
                     setConfirmCartVisible(false);
