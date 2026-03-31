@@ -1693,13 +1693,14 @@ const ProductsScreen = () => {
                   }
                   await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                   setGroups([]); setSummary({price:0,time:0,shops:0});
+                  setShowingDefaults(true);
 
                   setCheckedShops({});
                   setPopupSelectedItems([]);
                   setDupModalVisible(false);
                   setCartSuccessCount(added);
                   setCartSuccessVisible(true);
-                  setTimeout(() => navigation.navigate('cart'), 500);
+                  navigation.navigate('cart');
                 }}
                 style={{height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
               >
@@ -1851,6 +1852,7 @@ const ProductsScreen = () => {
                     // Clear selected products so Products screen resets
                     await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                     setGroups([]); setSummary({price:0,time:0,shops:0});
+                    setShowingDefaults(true);
 
                     setCheckedShops({});
                     setPopupSelectedItems([]);
@@ -1858,7 +1860,7 @@ const ProductsScreen = () => {
                     setCartSuccessCount(count);
                     setCartSuccessVisible(true);
                     // Navigate to cart
-                    setTimeout(() => navigation.navigate('cart'), 500);
+                    navigation.navigate('cart');
                   } catch(e) {}
                 }}
                 style={{height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
