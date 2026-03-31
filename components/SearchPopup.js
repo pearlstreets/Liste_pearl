@@ -348,17 +348,16 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
             {/* Bottom: selected items list + Terminer */}
             <SafeAreaView style={{ backgroundColor:'#F8FAFC' }}>
               {selList.length > 0 && (
-                <View style={{ maxHeight:180, borderTopWidth:1, borderTopColor:'#E5E7EB' }}>
-                  <ScrollView style={{ paddingHorizontal:16 }} showsVerticalScrollIndicator={true}>
+                <View style={{ borderTopWidth:1, borderTopColor:'#E5E7EB' }}>
+                  <ScrollView style={{ paddingHorizontal:16, maxHeight:155 }} showsVerticalScrollIndicator={true}>
                     {selList.map((a) => {
                       const nm = t('productNames.' + a.item.name, { defaultValue: a.item.name });
                       const em = getEmoji(a.item.name);
                       const lineTotal = a.item.price * a.qty;
                       return (
-                        <View key={String(a.item.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:8, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
+                        <View key={String(a.item.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:7, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
                           <Text style={{ fontSize:16, marginRight:8 }}>{em}</Text>
                           <Text style={{ flex:1, fontSize:13, fontWeight:'600', color:'#111' }} numberOfLines={1}>{nm}</Text>
-                          <Text style={{ fontSize:12, color:'#6B7280', marginRight:8 }}>{formatPrice(a.item.price)}</Text>
                           <Text style={{ fontSize:13, fontWeight:'800', color:'#111', marginRight:8 }}>{formatPrice(lineTotal)}</Text>
                           <View style={{ flexDirection:'row', alignItems:'center' }}>
                             {a.qty === 1 ? (
@@ -379,6 +378,11 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
                       );
                     })}
                   </ScrollView>
+                  {/* Nombre de produits sélectionnés */}
+                  <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingHorizontal:16, paddingVertical:6 }}>
+                    <Text style={{ fontSize:14, fontWeight:'700', color:'#374151' }}>{selList.reduce((s, a) => s + a.qty, 0)} {t('productsScreen.quantity') || 'produits'}</Text>
+                    <Text style={{ fontSize:15, fontWeight:'800', color:BRAND }}>{formatPrice(selList.reduce((s, a) => s + a.item.price * a.qty, 0))}</Text>
+                  </View>
                 </View>
               )}
               <View style={{ paddingHorizontal:16, paddingVertical:10 }}>
