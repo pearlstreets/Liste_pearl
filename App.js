@@ -4570,7 +4570,7 @@ function FakeProfileScreen({ onLogout }) {
             )}
           </View>
           {detailOrder && (
-            <ScrollView contentContainerStyle={{ padding:20, paddingBottom:40 }}>
+            <ScrollView style={{flex:1}} contentContainerStyle={{ padding:20, paddingBottom:20 }}>
               {/* Infos commande */}
               <View style={{ backgroundColor:'#fff', borderRadius:12, padding:16, marginBottom:14,
                 shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
