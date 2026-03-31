@@ -4527,9 +4527,21 @@ function FakeProfileScreen({ onLogout }) {
                 </View>
               </View>
 
-              {/* Étapes de suivi */}
-              <Text style={{ fontSize:16, fontWeight:'800', color:'#111', marginBottom:12 }}>{t('profile.orderTracking')}</Text>
-              <OrderSteps mode={detailOrder.mode || 'delivery'} />
+              {/* Statut actuel */}
+              {(() => {
+                const status = getOrderStatus(detailOrder);
+                return (
+                  <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12 }}>
+                    <View style={{ width:40, height:40, borderRadius:20, backgroundColor: status.color + '20', alignItems:'center', justifyContent:'center', marginRight:12 }}>
+                      <Ionicons name={status.icon} size={20} color={status.color} />
+                    </View>
+                    <View style={{flex:1}}>
+                      <Text style={{ fontSize:13, color:'#6B7280' }}>{t('profile.orderTracking')}</Text>
+                      <Text style={{ fontSize:16, fontWeight:'700', color: status.color }}>{status.label}</Text>
+                    </View>
+                  </View>
+                );
+              })()}
 
               {/* Produits par shop */}
               <Text style={{ fontSize:16, fontWeight:'800', color:'#111', marginBottom:12, marginTop:8 }}>{t('profile.productDetails')}</Text>
