@@ -2405,10 +2405,17 @@ const CartScreen = () => {
 
   return (
     <SafeAreaView style={styles.screen}>
+      {/* Header avec titre + poubelle */}
+      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:16, paddingTop:14, paddingBottom:8}}>
+        <Text style={{fontSize:22, fontWeight:'900', color:'#111'}}>{t('tabs.cart')}</Text>
+        <TouchableOpacity onPress={clearCart} style={{padding:6}}>
+          <Ionicons name="trash-outline" size={22} color="#EF4444" />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={groupedCart}
         keyExtractor={(item, i) => item.shop + i}
-        contentContainerStyle={{ paddingVertical: 16, paddingBottom: 120 }}
+        contentContainerStyle={{ paddingVertical: 8, paddingBottom: 120 }}
         renderItem={({ item: group }) => {
           const allSelected = group.items.every(it => selectedCart[it._originalIndex]);
           const someSelected = group.items.some(it => selectedCart[it._originalIndex]);
@@ -2492,15 +2499,9 @@ const CartScreen = () => {
           <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(totalPrice)}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={clearCart} style={{
-            flex: 1, height: 40, borderRadius: 10, borderWidth: 1, borderColor: '#EF4444',
-            alignItems: 'center', justifyContent: 'center', marginRight: 8
-          }}>
-            <Text style={{ color: '#EF4444', fontWeight: '600' }}>{t('cart.clearCartBtn')}</Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => setConfirmVisible(true)} style={{
-            flex: 2, height: 40, borderRadius: 10, backgroundColor: BRAND,
-            alignItems: 'center', justifyContent: 'center'
+            flex: 1, height: 44, borderRadius: 12, backgroundColor: BRAND,
+            flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
           }}>
             <Ionicons name="bicycle" size={16} color="#fff" style={{ marginRight: 6 }} />
             <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>{t('cart.confirmOrder')}</Text>
