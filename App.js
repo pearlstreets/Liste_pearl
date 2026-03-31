@@ -4551,7 +4551,7 @@ function FakeProfileScreen({ onLogout }) {
       </Modal>
 
       {/* Order Detail Full Page Modal */}
-      <Modal visible={!!detailOrder} animationType="slide">
+      <Modal visible={!!detailOrder} animationType="none">
         <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
           <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
             <TouchableOpacity onPress={() => setDetailOrder(null)} style={{ marginRight:12 }}>
@@ -4777,12 +4777,11 @@ function FakeProfileScreen({ onLogout }) {
                   if (!selected.length) return;
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify(selected));
                   DeviceEventEmitter.emit('CART_UPDATED');
+                  // Close everything at once and navigate
                   setReorderVisible(false);
-                  setTimeout(() => {
-                    setDetailOrder(null);
-                    setAllOrdersVisible(false);
-                    navigation.navigate('cart');
-                  }, 300);
+                  setDetailOrder(null);
+                  setAllOrdersVisible(false);
+                  navigation.navigate('cart');
                 }}
                 disabled={!reorderItems.some(it => it.selected)}
                 style={{height:50, borderRadius:14, backgroundColor: reorderItems.some(it => it.selected) ? '#00C29B' : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
