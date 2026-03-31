@@ -2387,7 +2387,7 @@ const CartScreen = () => {
       }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
           <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('productsScreen.productsTotal')}</Text>
-          <Text style={{ fontSize: 13, fontWeight: '600', color: '#374151' }}>{cartItems.filter((_, i) => selectedCart[i]).length} {t('productsScreen.quantity')} ({cartItems.filter((_, i) => selectedCart[i]).reduce((s, it) => s + Number(it.qty || 1), 0)})</Text>
+          <Text style={{ fontSize: 13, fontWeight: '600', color: '#374151' }}>{cartItems.filter((_, i) => selectedCart[i]).reduce((s, it) => s + Number(it.qty || 1), 0)}</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
           <Text style={{ fontSize: 16, fontWeight: '700' }}>{t('cart.total')}</Text>
