@@ -1535,7 +1535,7 @@ const ProductsScreen = () => {
                     <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{t('productsScreen.productsTotal')}</Text>
                     <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
                   </View>
-                  <View style={{marginTop:2,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                     <Text style={{fontSize:15,fontWeight:"700", color:"#111"}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
                     <Text style={{fontWeight:"700", fontSize:15, color:BRAND}}>{fmtPrice(liveTotal)}</Text>
                   </View>
