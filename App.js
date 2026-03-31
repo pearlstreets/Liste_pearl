@@ -2289,6 +2289,32 @@ const CartScreen = () => {
   const [orderMode, setOrderMode] = React.useState('delivery'); // 'delivery' | 'collect'
   const [cartSearchVisible, setCartSearchVisible] = React.useState(false);
   const [cartSearchShop, setCartSearchShop] = React.useState('');
+  const [shopProductsVisible, setShopProductsVisible] = React.useState(false);
+  const [shopProductsList, setShopProductsList] = React.useState([]);
+  const [shopProductsSearch, setShopProductsSearch] = React.useState('');
+  const [shopProductsName, setShopProductsName] = React.useState('');
+
+  const openShopProducts = (shopName) => {
+    // Build full product list from search-map for this shop
+    const allProducts = [];
+    const seen = new Set();
+    Object.keys(SEARCH_MAP).forEach(key => {
+      if (['fruits','legumes','viande','poisson','surgeles','boisson','petit dejeuner','hygiene','menage'].includes(key)) return;
+      const items = SEARCH_MAP[key];
+      if (!items || !items.length) return;
+      items.forEach(p => {
+        if (seen.has(p.name)) return;
+        seen.add(p.name);
+        // Check if already in cart for this shop
+        const inCart = cartItems.some(ci => ci.shop === shopName && ci.name === p.name);
+        allProducts.push({ ...p, inCart, qty: 1 });
+      });
+    });
+    setShopProductsList(allProducts);
+    setShopProductsName(shopName);
+    setShopProductsSearch('');
+    setShopProductsVisible(true);
+  };
   const [deliveryAddress, setDeliveryAddress] = React.useState('12 Rue de Rivoli, 75004 Paris');
   const [deliveryInfo, setDeliveryInfo] = React.useState('');
   const [editingAddress, setEditingAddress] = React.useState(false);
@@ -2554,11 +2580,11 @@ const CartScreen = () => {
 
             {/* Bouton ajouter produit */}
             <TouchableOpacity
-              onPress={() => { setCartSearchShop(group.shop); setCartSearchVisible(true); }}
-              style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:8, borderRadius:10, borderWidth:1, borderColor:BRAND, borderStyle:'dashed'}}
+              onPress={() => openShopProducts(group.shop)}
+              style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:10, borderRadius:12, backgroundColor:BRAND}}
             >
-              <Ionicons name="add-circle-outline" size={18} color={BRAND} style={{marginRight:6}} />
-              <Text style={{color:BRAND, fontWeight:'600', fontSize:14}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+              <Ionicons name="add-circle" size={20} color="#fff" style={{marginRight:8}} />
+              <Text style={{color:'#fff', fontWeight:'700', fontSize:15}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
             </TouchableOpacity>
 
             {/* Shop subtotal */}
@@ -3154,6 +3180,93 @@ const CartScreen = () => {
           await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
         }}
       />
+
+      {/* Modal liste produits du shop */}
+      <Modal visible={shopProductsVisible} animationType="slide" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'85%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <View style={{flex:1}}>
+                <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{shopProductsName}</Text>
+                <Text style={{fontSize:13, color:'#6B7280', marginTop:2}}>{shopProductsList.length} {t('productsScreen.quantity') || 'produits'}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShopProductsVisible(false)} style={{padding:6}}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Barre de recherche */}
+            <View style={{paddingHorizontal:20, paddingVertical:10}}>
+              <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', borderRadius:10, paddingHorizontal:12, paddingVertical:8}}>
+                <Ionicons name="search-outline" size={16} color="#9CA3AF" />
+                <TextInput
+                  value={shopProductsSearch}
+                  onChangeText={setShopProductsSearch}
+                  placeholder={t('favorites.searchProductPlaceholder') || 'Rechercher un produit...'}
+                  placeholderTextColor="#9CA3AF"
+                  style={{flex:1, marginLeft:8, fontSize:14, color:'#111', padding:0}}
+                />
+                {shopProductsSearch.length > 0 && (
+                  <TouchableOpacity onPress={() => setShopProductsSearch('')}>
+                    <Ionicons name="close-circle" size={16} color="#9CA3AF" />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+
+            <FlatList
+              data={shopProductsSearch.trim()
+                ? shopProductsList.filter(p => (p.name||'').toLowerCase().includes(shopProductsSearch.toLowerCase().trim()))
+                : shopProductsList
+              }
+              keyExtractor={(item, i) => item.name + i}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{paddingHorizontal:16, paddingBottom:16}}
+              renderItem={({item: product}) => (
+                <View style={{flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+                  <ProductThumb name={product.name} size={40} />
+                  <View style={{flex:1, marginLeft:10}}>
+                    <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{product.name}</Text>
+                    {product.detail ? <Text style={{fontSize:12, color:'#6B7280', marginTop:1}}>{product.detail}</Text> : null}
+                    <View style={{flexDirection:'row', alignItems:'baseline', marginTop:2}}>
+                      <Text style={{fontSize:14, fontWeight:'700', color:'#111'}}>{fmtPrice(product.price||0)}</Text>
+                      {product.unitPrice ? <Text style={{fontSize:10, color:'#9CA3AF', marginLeft:4}}>{product.unitPrice}</Text> : null}
+                    </View>
+                  </View>
+                  {product.inCart ? (
+                    <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', paddingHorizontal:10, paddingVertical:6, borderRadius:8}}>
+                      <Ionicons name="checkmark-circle" size={14} color="#9CA3AF" style={{marginRight:4}} />
+                      <Text style={{fontSize:12, fontWeight:'600', color:'#9CA3AF'}}>{t('cart.inCart') || 'Dans le panier'}</Text>
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={async () => {
+                        const newItem = {
+                          name: product.name, detail: product.detail || '',
+                          unitPrice: product.unitPrice || '', qty: 1,
+                          price: product.price || 0, shop: shopProductsName
+                        };
+                        const updated = [...cartItems, newItem];
+                        setCartItems(updated);
+                        const sel = {};
+                        updated.forEach((_, i) => { sel[i] = true; });
+                        setSelectedCart(sel);
+                        await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+                        // Mark as in cart
+                        setShopProductsList(prev => prev.map(p => p.name === product.name ? {...p, inCart: true} : p));
+                      }}
+                      style={{flexDirection:'row', alignItems:'center', backgroundColor:BRAND, paddingHorizontal:12, paddingVertical:8, borderRadius:8}}
+                    >
+                      <Ionicons name="add" size={16} color="#fff" style={{marginRight:4}} />
+                      <Text style={{fontSize:13, fontWeight:'700', color:'#fff'}}>{t('cart.add') || 'Ajouter'}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
 
       {/* SearchPopup pour ajouter produit dans le panier */}
       <SearchPopup
