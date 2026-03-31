@@ -4525,6 +4525,32 @@ function FakeProfileScreen({ onLogout }) {
                   </View>
                 ));
               })()}
+
+              {/* Bouton recommander */}
+              <TouchableOpacity
+                onPress={async () => {
+                  const items = (detailOrder.items||[]).map(it => ({
+                    name: it.name || it.title,
+                    detail: it.detail || '',
+                    unitPrice: it.unitPrice || '',
+                    qty: it.qty || 1,
+                    price: it.price || 0,
+                    shop: it.shop || ''
+                  }));
+                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(items));
+                  DeviceEventEmitter.emit('CART_UPDATED');
+                  setDetailOrder(null);
+                  Alert.alert(
+                    t('profile.reorderSuccess') || 'Ajouté au panier',
+                    t('profile.reorderSuccessMsg') || 'Les produits ont été ajoutés au panier',
+                    [{ text: 'OK' }]
+                  );
+                }}
+                style={{ marginTop:16, height:50, borderRadius:14, backgroundColor:'#00C29B', flexDirection:'row', alignItems:'center', justifyContent:'center' }}
+              >
+                <Ionicons name="cart-outline" size={20} color="#fff" style={{marginRight:8}} />
+                <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('profile.reorder') || 'Recommander'}</Text>
+              </TouchableOpacity>
             </ScrollView>
           )}
         </SafeAreaView>
