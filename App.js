@@ -4587,11 +4587,9 @@ function FakeProfileScreen({ onLogout }) {
               </TouchableOpacity>
             </ScrollView>
           )}
-        </SafeAreaView>
-      </Modal>
 
-      {/* Modal sélection recommander */}
-      <Modal visible={reorderVisible} animationType="slide" transparent={true}>
+          {/* Modal sélection recommander — DANS la modal detail */}
+          <Modal visible={reorderVisible} animationType="slide" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
@@ -4673,6 +4671,8 @@ function FakeProfileScreen({ onLogout }) {
             </View>
           </View>
         </View>
+      </Modal>
+        </SafeAreaView>
       </Modal>
     </SafeAreaView>
   );
