@@ -1294,10 +1294,8 @@ const ProductsScreen = () => {
             setGroups([]); setSummary({price:0,time:0,shops:0});
             setPopupSelectedItems([]); setCheckedShops({});
             setShowingDefaults(true);
-          }} style={{flexDirection:'row', alignItems:'center',
-            paddingHorizontal:12, paddingVertical:6, borderRadius:8, backgroundColor:'#FEE2E2'}}>
-            <Ionicons name="trash-outline" size={14} color="#EF4444" />
-            <Text style={{color:'#EF4444', fontWeight:'600', fontSize:13, marginLeft:4}}>{t('productsScreen.clear')}</Text>
+          }} style={{padding:6}}>
+            <Ionicons name="trash-outline" size={22} color="#EF4444" />
           </TouchableOpacity>
         )}
       </View>
