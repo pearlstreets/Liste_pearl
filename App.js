@@ -1724,9 +1724,14 @@ const ProductsScreen = () => {
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
               <View>
                 <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('cart.addToCart')}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
-                  {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).length} {t('productsScreen.productsTotal') || 'produits'} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)} {t('productsScreen.quantity') || 'quantité'})
-                </Text>
+                {(() => {
+                  const active = popupSelectedItems.filter(si => checkedShops[si.shopIndex]);
+                  const shopCount = new Set(active.map(si => si.shop)).size;
+                  const totalQty = active.reduce((s, si) => s + (si.qty || 1), 0);
+                  return <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
+                    {shopCount} {shopCount > 1 ? 'shops' : 'shop'} • {totalQty} {t('productsScreen.quantity') || 'quantité'}
+                  </Text>;
+                })()}
               </View>
               <TouchableOpacity onPress={() => setConfirmCartVisible(false)} style={{padding:6}}>
                 <Ionicons name="close" size={24} color="#666" />
@@ -1734,46 +1739,64 @@ const ProductsScreen = () => {
             </View>
 
             <FlatList
-              data={popupSelectedItems.filter(si => checkedShops[si.shopIndex])}
-              keyExtractor={(item, i) => String(item.id || i)}
+              data={(() => {
+                // Group by shop
+                const active = popupSelectedItems.filter(si => checkedShops[si.shopIndex]);
+                const byShop = {};
+                active.forEach(si => {
+                  if (!byShop[si.shop]) byShop[si.shop] = { shop: si.shop, shopIndex: si.shopIndex, items: [] };
+                  byShop[si.shop].items.push(si);
+                });
+                return Object.values(byShop);
+              })()}
+              keyExtractor={(item, i) => item.shop + i}
               contentContainerStyle={{padding:16}}
-              renderItem={({item: si}) => (
-                <View style={{flexDirection:'row', alignItems:'center', padding:12, marginBottom:8, backgroundColor:'#F9FAFB', borderRadius:12}}>
-                  <ProductThumb name={si.name} size={40} />
-                  <View style={{flex:1, marginLeft:12}}>
-                    <Text style={{fontSize:15, fontWeight:'700', color:'#111'}}>{si.name}</Text>
-                    <Text style={{fontSize:12, color:'#6B7280', marginTop:2}}>{si.shop}</Text>
+              renderItem={({item: group}) => (
+                <View style={{marginBottom:12}}>
+                  <View style={{flexDirection:'row', alignItems:'center', marginBottom:8}}>
+                    <Ionicons name="storefront-outline" size={16} color={BRAND} />
+                    <Text style={{fontSize:15, fontWeight:'700', color:'#111', marginLeft:8}}>{group.shop}</Text>
+                    <Text style={{fontSize:13, color:'#6B7280', marginLeft:8}}>{fmtPrice(group.items.reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}</Text>
                   </View>
-                  <View style={{alignItems:'flex-end'}}>
-                    <View style={{flexDirection:'row', alignItems:'center', marginBottom:4}}>
-                      {(si.qty || 1) <= 1 ? (
-                        <RepeatButton
-                          onPress={() => setPopupSelectedItems(prev => prev.filter(p => p.id !== si.id))}
-                          onLongAction={() => setPopupSelectedItems(prev => prev.filter(p => p.id !== si.id))}
-                          style={{width:26,height:26,borderRadius:13,borderWidth:1.5,borderColor:'#EF4444',alignItems:'center',justifyContent:'center'}}
-                        >
-                          <Ionicons name="trash-outline" size={12} color="#EF4444" />
-                        </RepeatButton>
-                      ) : (
-                        <RepeatButton
-                          onPress={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)-1} : p))}
-                          onLongAction={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: Math.max(1,(p.qty||1)-1)} : p))}
-                          style={{width:26,height:26,borderRadius:13,borderWidth:1.5,borderColor:'#D1D5DB',alignItems:'center',justifyContent:'center'}}
-                        >
-                          <Ionicons name="remove" size={12} color="#555" />
-                        </RepeatButton>
-                      )}
-                      <Text style={{fontSize:14,fontWeight:'800',color:'#111',marginHorizontal:6,minWidth:18,textAlign:'center'}}>{si.qty || 1}</Text>
-                      <RepeatButton
-                        onPress={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
-                        onLongAction={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
-                        style={{width:26,height:26,borderRadius:13,backgroundColor:BRAND,alignItems:'center',justifyContent:'center'}}
-                      >
-                        <Ionicons name="add" size={12} color="#fff" />
-                      </RepeatButton>
+                  {group.items.map(si => (
+                    <View key={si.id} style={{flexDirection:'row', alignItems:'center', padding:10, marginBottom:6, backgroundColor:'#F9FAFB', borderRadius:10}}>
+                      <ProductThumb name={si.name} size={36} />
+                      <View style={{flex:1, marginLeft:10}}>
+                        <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{si.name}</Text>
+                        <Text style={{fontSize:11, color:'#6B7280'}}>{si.detail}</Text>
+                      </View>
+                      <View style={{alignItems:'flex-end'}}>
+                        <View style={{flexDirection:'row', alignItems:'center', marginBottom:3}}>
+                          {(si.qty || 1) <= 1 ? (
+                            <RepeatButton
+                              onPress={() => setPopupSelectedItems(prev => prev.filter(p => p.id !== si.id))}
+                              onLongAction={() => setPopupSelectedItems(prev => prev.filter(p => p.id !== si.id))}
+                              style={{width:24,height:24,borderRadius:12,borderWidth:1.5,borderColor:'#EF4444',alignItems:'center',justifyContent:'center'}}
+                            >
+                              <Ionicons name="trash-outline" size={11} color="#EF4444" />
+                            </RepeatButton>
+                          ) : (
+                            <RepeatButton
+                              onPress={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)-1} : p))}
+                              onLongAction={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: Math.max(1,(p.qty||1)-1)} : p))}
+                              style={{width:24,height:24,borderRadius:12,borderWidth:1.5,borderColor:'#D1D5DB',alignItems:'center',justifyContent:'center'}}
+                            >
+                              <Ionicons name="remove" size={11} color="#555" />
+                            </RepeatButton>
+                          )}
+                          <Text style={{fontSize:13,fontWeight:'800',color:'#111',marginHorizontal:5,minWidth:16,textAlign:'center'}}>{si.qty || 1}</Text>
+                          <RepeatButton
+                            onPress={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
+                            onLongAction={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
+                            style={{width:24,height:24,borderRadius:12,backgroundColor:BRAND,alignItems:'center',justifyContent:'center'}}
+                          >
+                            <Ionicons name="add" size={11} color="#fff" />
+                          </RepeatButton>
+                        </View>
+                        <Text style={{fontSize:12, color:BRAND, fontWeight:'700'}}>{fmtPrice(si.price * (si.qty || 1))}</Text>
+                      </View>
                     </View>
-                    <Text style={{fontSize:13, color:BRAND, fontWeight:'700'}}>{fmtPrice(si.price * (si.qty || 1))}</Text>
-                  </View>
+                  ))}
                 </View>
               )}
             />
