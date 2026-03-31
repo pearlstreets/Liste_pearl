@@ -2287,6 +2287,8 @@ const CartScreen = () => {
   const [confirmVisible, setConfirmVisible] = React.useState(false);
   const [selectedCart, setSelectedCart] = React.useState({});
   const [orderMode, setOrderMode] = React.useState('delivery'); // 'delivery' | 'collect'
+  const [cartSearchVisible, setCartSearchVisible] = React.useState(false);
+  const [cartSearchShop, setCartSearchShop] = React.useState('');
   const [deliveryAddress, setDeliveryAddress] = React.useState('12 Rue de Rivoli, 75004 Paris');
   const [deliveryInfo, setDeliveryInfo] = React.useState('');
   const [editingAddress, setEditingAddress] = React.useState(false);
@@ -2549,6 +2551,15 @@ const CartScreen = () => {
               </TouchableOpacity>
               );
             })}
+
+            {/* Bouton ajouter produit */}
+            <TouchableOpacity
+              onPress={() => { setCartSearchShop(group.shop); setCartSearchVisible(true); }}
+              style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:8, borderRadius:10, borderWidth:1, borderColor:BRAND, borderStyle:'dashed'}}
+            >
+              <Ionicons name="add-circle-outline" size={18} color={BRAND} style={{marginRight:6}} />
+              <Text style={{color:BRAND, fontWeight:'600', fontSize:14}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+            </TouchableOpacity>
 
             {/* Shop subtotal */}
             <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingTop:10, marginTop:6, borderTopWidth:1, borderTopColor:'#F3F4F6' }}>
@@ -3141,6 +3152,31 @@ const CartScreen = () => {
           setCartItems([]);
           setSelectedCart({});
           await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+        }}
+      />
+
+      {/* SearchPopup pour ajouter produit dans le panier */}
+      <SearchPopup
+        visible={cartSearchVisible}
+        initialQuery=""
+        shopName={cartSearchShop}
+        onClose={() => setCartSearchVisible(false)}
+        onSelect={async (product) => {
+          const newItem = {
+            name: product.name,
+            detail: product.detail || product.subtitle || '',
+            unitPrice: product.unitPrice || product.pricePerKg || '',
+            qty: product.qty || 1,
+            price: product.price || 0,
+            shop: cartSearchShop
+          };
+          const updated = [...cartItems, newItem];
+          setCartItems(updated);
+          const sel = {};
+          updated.forEach((_, i) => { sel[i] = true; });
+          setSelectedCart(sel);
+          await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+          setCartSearchVisible(false);
         }}
       />
     </SafeAreaView>
