@@ -597,7 +597,7 @@ function ListScreen() {
   const onPlus  = id => setItems(items.map(it => it.id === id ? { ...it, qty: (it.qty || 1) + 1 } : it));
   const setQty  = (id, q) => setItems(items.map(it => it.id === id ? { ...it, qty: q } : it));
   const toggleSelected = id => setItems(items.map(it => it.id === id ? { ...it, selected: !it.selected } : it));
-  const toggleCrossed  = id => setItems(items.map(it => it.id === id ? { ...it, crossed: !it.crossed } : it));
+  const toggleCrossed  = id => setItems(items.map(it => it.id === id ? { ...it, crossed: !it.crossed, selected: it.crossed ? it.selected : false } : it));
   const removeOne      = id => setItems(items.filter(it => it.id !== id));
 
   const toggleSelectAll = () => {
@@ -606,7 +606,7 @@ function ListScreen() {
   };
   const toggleStrikeAll = () => {
     const v = !strikeAll; setStrikeAll(v);
-    setItems(items.map(it => ({ ...it, crossed: v })));
+    setItems(items.map(it => ({ ...it, crossed: v, selected: v ? false : it.selected })));
   };
 
   const visible = useMemo(() => hideCrossed ? items.filter(i => !i.crossed) : items, [items, hideCrossed]);
