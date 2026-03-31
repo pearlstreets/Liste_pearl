@@ -294,7 +294,7 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
     onClose();
   }, [selectedItems, onSelect, onClose]);
 
-  const selList = Object.values(selectedItems);
+  const selList = Object.values(selectedItems).reverse();
   const totalCount = selList.reduce((s, a) => s + a.qty, 0);
   const totalPrice = selList.reduce((s, a) => s + (a.item.price * a.qty), 0);
 
