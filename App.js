@@ -1249,8 +1249,9 @@ const ProductsScreen = () => {
         {groups.length > 0 && (
           <TouchableOpacity onPress={async () => {
             await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-            await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
             setGroups([]); setSummary({price:0,time:0,shops:0});
+            setPopupSelectedItems([]); setCheckedShops({});
+            setShowingDefaults(true);
           }} style={{flexDirection:'row', alignItems:'center',
             paddingHorizontal:12, paddingVertical:6, borderRadius:8, backgroundColor:'#FEE2E2'}}>
             <Ionicons name="trash-outline" size={14} color="#EF4444" />
