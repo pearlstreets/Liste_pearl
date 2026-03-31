@@ -566,6 +566,16 @@ function ListScreen() {
   })(); }, []);
   useEffect(() => { AsyncStorage.setItem("SG_ITEMS", JSON.stringify(items)).catch(() => {}); }, [items]);
 
+  // Reload items when returning to this tab (e.g. after adding to cart crosses them off)
+  useFocusEffect(React.useCallback(() => {
+    (async () => {
+      try {
+        const s = await AsyncStorage.getItem("SG_ITEMS");
+        if (s) setItems(JSON.parse(s));
+      } catch {}
+    })();
+  }, []));
+
   const addFromInput = () => {
     const parsed = parseMulti(text);
     if (parsed.length === 0) return;
