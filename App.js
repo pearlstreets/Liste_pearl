@@ -1700,6 +1700,7 @@ const ProductsScreen = () => {
                   setDupModalVisible(false);
                   setCartSuccessCount(added);
                   setCartSuccessVisible(true);
+                  setTimeout(() => navigation.navigate('cart'), 500);
                 }}
                 style={{height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
               >
@@ -1834,6 +1835,8 @@ const ProductsScreen = () => {
                     setConfirmCartVisible(false);
                     setCartSuccessCount(count);
                     setCartSuccessVisible(true);
+                    // Navigate to cart
+                    setTimeout(() => navigation.navigate('cart'), 500);
                   } catch(e) {}
                 }}
                 style={{height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
