@@ -108,9 +108,14 @@
     "shops": "stores"
   },
   "favorites": {
-    "noFavorites": "No favorite shops yet",
-    "addFromProducts": "Add your favorite shops from the Products tab",
-    "searchPlaceholder": "Search a favorite..."
+    "noFavorites": "No favorite shops",
+    "noFavProducts": "No favorite products",
+    "addFromProducts": "Add from the Products tab",
+    "addProductHint": "Tap the heart icon on a product to add it",
+    "searchPlaceholder": "Search a shop...",
+    "searchProductPlaceholder": "Search a product...",
+    "shops": "Shops",
+    "products": "Products"
   },
   "profile": {
     "editProfile": "Edit profile",

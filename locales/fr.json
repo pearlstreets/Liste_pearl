@@ -108,9 +108,14 @@
     "shops": "magasins"
   },
   "favorites": {
-    "noFavorites": "Aucun magasin favori pour le moment",
-    "addFromProducts": "Ajoutez vos magasins favoris depuis l'onglet Produits",
-    "searchPlaceholder": "Rechercher un favori..."
+    "noFavorites": "Aucun shop favori",
+    "noFavProducts": "Aucun produit favori",
+    "addFromProducts": "Ajoutez depuis l'onglet Produits",
+    "addProductHint": "Appuyez sur le coeur d'un produit pour l'ajouter",
+    "searchPlaceholder": "Rechercher un shop...",
+    "searchProductPlaceholder": "Rechercher un produit...",
+    "shops": "Shops",
+    "products": "Produits"
   },
   "profile": {
     "editProfile": "Modifier profil",
