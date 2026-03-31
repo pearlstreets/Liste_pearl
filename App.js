@@ -4025,7 +4025,7 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Address Button */}
-        <View style={{ paddingHorizontal:16, marginTop:8, marginBottom:4 }}>
+        <View style={{ paddingHorizontal:16, marginTop:6 }}>
           <TouchableOpacity onPress={() => { setEditAddress(profile.address||''); setEditAddressSupplement(profile.addressSupplement||''); setEditCity(profile.city||''); setEditPostalCode(profile.postalCode||''); setEditCountry(profile.country||''); setAddressVisible(true); }} style={{
             flexDirection:'row', alignItems:'center', justifyContent:'space-between',
             backgroundColor:'#fff', borderRadius:12, padding:14,
@@ -4045,7 +4045,7 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Language Button */}
-        <View style={{ paddingHorizontal:16, marginTop:4, marginBottom:4 }}>
+        <View style={{ paddingHorizontal:16, marginTop:6 }}>
           <TouchableOpacity onPress={() => setLangVisible(true)} style={{
             flexDirection:'row', alignItems:'center', justifyContent:'space-between',
             backgroundColor:'#fff', borderRadius:12, padding:14,
@@ -4065,7 +4065,7 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Currency Button */}
-        <View style={{ paddingHorizontal:16, marginBottom:8 }}>
+        <View style={{ paddingHorizontal:16, marginTop:6 }}>
           <TouchableOpacity onPress={() => setCurrencyVisible(true)} style={{
             flexDirection:'row', alignItems:'center', justifyContent:'space-between',
             backgroundColor:'#fff', borderRadius:12, padding:14,
