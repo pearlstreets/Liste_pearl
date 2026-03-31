@@ -4131,7 +4131,7 @@ function FakeProfileScreen({ onLogout }) {
               })}
               {orders.length > 0 && (
                 <TouchableOpacity onPress={() => setAllOrdersVisible(true)} style={{
-                  paddingVertical:12, borderRadius:10, backgroundColor:'#111', alignItems:'center', marginTop:4
+                  paddingVertical:12, borderRadius:10, backgroundColor:'#00C29B', alignItems:'center', marginTop:4
                 }}>
                   <Text style={{ color:'#fff', fontWeight:'700', fontSize:14 }}>{t('profile.openAllHistory')} ({orders.length})</Text>
                 </TouchableOpacity>
