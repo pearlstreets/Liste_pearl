@@ -4690,7 +4690,12 @@ function FakeProfileScreen({ onLogout }) {
                 ));
               })()}
 
-              {/* Bouton recommander */}
+            </ScrollView>
+          )}
+
+          {/* Bouton recommander fixe en bas */}
+          {detailOrder && (
+            <View style={{ paddingHorizontal:20, paddingVertical:12, borderTopWidth:1, borderTopColor:'#F3F4F6', backgroundColor:'#fff' }}>
               <TouchableOpacity
                 onPress={() => {
                   const items = (detailOrder.items||[]).map((it, i) => ({
@@ -4706,12 +4711,12 @@ function FakeProfileScreen({ onLogout }) {
                   setReorderItems(items);
                   setReorderVisible(true);
                 }}
-                style={{ marginTop:16, height:50, borderRadius:14, backgroundColor:'#00C29B', flexDirection:'row', alignItems:'center', justifyContent:'center' }}
+                style={{ height:50, borderRadius:14, backgroundColor:'#00C29B', flexDirection:'row', alignItems:'center', justifyContent:'center' }}
               >
                 <Ionicons name="cart-outline" size={20} color="#fff" style={{marginRight:8}} />
                 <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('profile.reorder') || 'Recommander'}</Text>
               </TouchableOpacity>
-            </ScrollView>
+            </View>
           )}
 
           {/* Modal sélection recommander — DANS la modal detail */}
