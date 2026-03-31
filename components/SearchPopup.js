@@ -204,7 +204,21 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
   useEffect(() => {
     const q = autocorrectName(query || "");
     const qn = norm(q);
-    if (!qn) { setResults([]); return; }
+    if (!qn) {
+      // Show all products when search is empty
+      const all = [];
+      const seen = new Set();
+      const skipCat = new Set(['fruits','legumes','viande','poisson','surgeles','boisson','petit dejeuner','hygiene','menage']);
+      Object.keys(SEARCH_MAP || {}).forEach(k => {
+        if (skipCat.has(k)) return;
+        (SEARCH_MAP[k] || []).forEach(raw => {
+          const put = enrich(raw, fmtPriceProp);
+          if (!seen.has(put.name)) { seen.add(put.name); all.push(put); }
+        });
+      });
+      setResults(all);
+      return;
+    }
     const out = [];
     for (const it of dataset) {
       const inName = norm(it.name).includes(qn);
