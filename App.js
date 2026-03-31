@@ -1667,6 +1667,24 @@ const ProductsScreen = () => {
                   const added = dupItems.filter(d => d.add).length + dupNewOnly;
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify(finalMerged));
                   DeviceEventEmitter.emit('CART_UPDATED');
+
+                  // Cross off added items in Ma Liste
+                  const addedNames2 = dupItems.filter(d => d.add).map(d => norm(d.newItem.name));
+                  const listRaw2 = await AsyncStorage.getItem(KEY_ITEMS);
+                  if (listRaw2) {
+                    const listItems2 = JSON.parse(listRaw2);
+                    const updated2 = listItems2.map(it => {
+                      const itName = norm(it.name || it.title || '');
+                      if (addedNames2.some(n => n.includes(itName) || itName.includes(n))) {
+                        return { ...it, crossed: true };
+                      }
+                      return it;
+                    });
+                    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated2));
+                  }
+                  await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                  setGroups([]); setSummary({price:0,time:0,shops:0});
+
                   setCheckedShops({});
                   setPopupSelectedItems([]);
                   setDupModalVisible(false);
@@ -1781,6 +1799,26 @@ const ProductsScreen = () => {
                     });
                     await AsyncStorage.setItem(KEY_CART, JSON.stringify(newCart));
                     DeviceEventEmitter.emit('CART_UPDATED');
+
+                    // Cross off added items in Ma Liste
+                    const addedNames = activeItems.map(si => norm(si.name));
+                    const listRaw = await AsyncStorage.getItem(KEY_ITEMS);
+                    if (listRaw) {
+                      const listItems = JSON.parse(listRaw);
+                      const updated = listItems.map(it => {
+                        const itName = norm(it.name || it.title || '');
+                        if (addedNames.some(n => n.includes(itName) || itName.includes(n))) {
+                          return { ...it, crossed: true };
+                        }
+                        return it;
+                      });
+                      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated));
+                    }
+
+                    // Clear selected products so Products screen resets
+                    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                    setGroups([]); setSummary({price:0,time:0,shops:0});
+
                     setCheckedShops({});
                     setPopupSelectedItems([]);
                     setConfirmCartVisible(false);
