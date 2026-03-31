@@ -4161,7 +4161,7 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Language Button */}
-        <View style={{ paddingHorizontal:16, marginTop:6 }}>
+        <View style={{ paddingHorizontal:16, marginTop:12 }}>
           <TouchableOpacity onPress={() => setLangVisible(true)} style={{
             flexDirection:'row', alignItems:'center', justifyContent:'space-between',
             backgroundColor:'#fff', borderRadius:12, padding:14,
@@ -4181,7 +4181,7 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Currency Button */}
-        <View style={{ paddingHorizontal:16, marginTop:6 }}>
+        <View style={{ paddingHorizontal:16, marginTop:12 }}>
           <TouchableOpacity onPress={() => setCurrencyVisible(true)} style={{
             flexDirection:'row', alignItems:'center', justifyContent:'space-between',
             backgroundColor:'#fff', borderRadius:12, padding:14,
