@@ -1484,13 +1484,13 @@ const ProductsScreen = () => {
                 const liveTotalWithDelivery = liveTotal + (mode === 'delivery' ? Number(item?.deliveryFee||0) : 0);
                 const liveQty = shopSelected.reduce((s, si) => s + Number(si.qty||1), 0);
                 return <>
-                  <View style={{marginTop:12,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                    <Text style={{fontWeight:"600"}}>{t('productsScreen.productsTotal')}</Text>
-                    <Text style={{fontWeight:"700"}}>{shopSelected.length}  <Text style={{color:"#6B7280",fontWeight:"600"}}>({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text></Text>
-                  </View>
                   <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                    <Text style={{fontWeight:"700", color:"#111"}}>{t('cart.total') || 'Total'}</Text>
-                    <Text style={{fontWeight:"800", fontSize:16, color:BRAND}}>{fmtPrice(liveTotal)}</Text>
+                    <Text style={{fontSize:12,color:"#6B7280"}}>{t('productsScreen.productsTotal')}</Text>
+                    <Text style={{fontSize:12,fontWeight:"600",color:"#6B7280"}}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
+                  </View>
+                  <View style={{marginTop:2,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                    <Text style={{fontSize:13,fontWeight:"600", color:"#111"}}>{t('cart.total') || 'Total'}</Text>
+                    <Text style={{fontWeight:"700", fontSize:14, color:BRAND}}>{fmtPrice(liveTotal)}</Text>
                   </View>
                   {mode==="delivery" ? (
                     <View style={{marginTop:4,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
