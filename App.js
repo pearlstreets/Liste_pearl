@@ -2426,8 +2426,12 @@ const CartScreen = () => {
               style={{ flexDirection:'row', alignItems:'center', marginBottom:12, paddingBottom:10, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
               <Square value={someSelected} onPress={() => toggleShopSelection(group)} />
               <Ionicons name="storefront-outline" size={16} color="#00C29B" style={{marginLeft:8}} />
-              <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B', marginLeft:6, flex:1 }}>{group.shop}</Text>
-              <Text style={{ fontSize:12, color:'#9CA3AF' }}>{group.items.length} article{group.items.length > 1 ? 's' : ''}</Text>
+              <View style={{flex:1, marginLeft:6}}>
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{group.shop}</Text>
+                <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>
+                  {group.items.reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')} • {fmtPrice(group.items.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}
+                </Text>
+              </View>
             </TouchableOpacity>
 
             {/* Products in this shop */}
