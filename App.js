@@ -1468,7 +1468,7 @@ const ProductsScreen = () => {
 
               {(() => {
                 // Calculate live total from popupSelectedItems for this shop
-                const shopSelected = popupSelectedItems.filter(si => si.shopIndex === index && si.checked !== false);
+                const shopSelected = popupSelectedItems.filter(si => si.shopIndex === index);
                 const liveTotal = shopSelected.reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0);
                 const liveTotalWithDelivery = liveTotal + (mode === 'delivery' ? Number(item?.deliveryFee||0) : 0);
                 const liveQty = shopSelected.reduce((s, si) => s + Number(si.qty||1), 0);
@@ -1696,7 +1696,7 @@ const ProductsScreen = () => {
               <View>
                 <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('cart.addToCart')}</Text>
                 <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
-                  {popupSelectedItems.filter(si => si.checked !== false).length} {t('productsScreen.productsTotal') || 'produits'} ({popupSelectedItems.filter(si => si.checked !== false).reduce((s, si) => s + (si.qty || 1), 0)} {t('productsScreen.quantity') || 'quantité'})
+                  {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).length} {t('productsScreen.productsTotal') || 'produits'} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)} {t('productsScreen.quantity') || 'quantité'})
                 </Text>
               </View>
               <TouchableOpacity onPress={() => setConfirmCartVisible(false)} style={{padding:6}}>
@@ -1705,7 +1705,7 @@ const ProductsScreen = () => {
             </View>
 
             <FlatList
-              data={popupSelectedItems.filter(si => si.checked !== false)}
+              data={popupSelectedItems.filter(si => checkedShops[si.shopIndex])}
               keyExtractor={(item, i) => String(item.id || i)}
               contentContainerStyle={{padding:16}}
               renderItem={({item: si}) => (
@@ -1753,7 +1753,7 @@ const ProductsScreen = () => {
               <TouchableOpacity
                 onPress={async () => {
                   try {
-                    const activeItems = popupSelectedItems.filter(si => si.checked !== false);
+                    const activeItems = popupSelectedItems.filter(si => checkedShops[si.shopIndex]);
                     const count = activeItems.reduce((s, si) => s + (si.qty || 1), 0);
                     // Rebuild cart: existing items + updated popup items
                     const raw = await AsyncStorage.getItem(KEY_CART);
@@ -1781,7 +1781,7 @@ const ProductsScreen = () => {
                 }}
                 style={{height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
               >
-                <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('profile.confirm')} ({popupSelectedItems.filter(si => si.checked !== false).reduce((s, si) => s + (si.qty || 1), 0)})</Text>
+                <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('profile.confirm')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)})</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setConfirmCartVisible(false)}
