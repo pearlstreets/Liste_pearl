@@ -1356,7 +1356,6 @@ const ProductsScreen = () => {
                       const pName = String(p?.title || p?.name || '').toLowerCase().trim();
                       const pWords = pName.split(/\s+/).filter(w => w.length > 2);
                       const matchedQty = popupSelectedItems.filter(si => {
-                        if (si.checked === false) return false;
                         if (si.shopIndex !== index) return false;
                         const sName = String(si.name || '').toLowerCase().trim();
                         const sWords = sName.split(/\s+/).filter(w => w.length > 2);
