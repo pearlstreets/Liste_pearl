@@ -3825,6 +3825,7 @@ function FakeProfileScreen({ onLogout }) {
   const [editCity, setEditCity] = React.useState('');
   const [editPostalCode, setEditPostalCode] = React.useState('');
   const [editCountry, setEditCountry] = React.useState('');
+  const [geoLoading, setGeoLoading] = React.useState(false);
 
   const loadProfile = React.useCallback(async () => {
     try {
@@ -4453,27 +4454,42 @@ function FakeProfileScreen({ onLogout }) {
               <TouchableOpacity
                 onPress={async () => {
                   try {
+                    setGeoLoading(true);
                     const { status } = await Location.requestForegroundPermissionsAsync();
                     if (status !== 'granted') {
-                      Alert.alert(t('profile.locationDenied') || 'Permission refusée', t('profile.locationDeniedMsg') || 'Autorisez la localisation dans les réglages');
+                      setGeoLoading(false);
+                      Alert.alert(t('profile.locationDenied') || 'Permission refusée', t('profile.locationDeniedMsg') || 'Autorisez la localisation dans les réglages.');
                       return;
                     }
-                    const loc = await Location.getCurrentPositionAsync({});
-                    const [result] = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
-                    if (result) {
-                      setEditAddress((result.streetNumber || '') + ' ' + (result.street || ''));
-                      setEditCity(result.city || '');
-                      setEditPostalCode(result.postalCode || '');
-                      setEditCountry(result.country || '');
+                    const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                    const results = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+                    const r = results && results[0];
+                    if (r) {
+                      const num = r.streetNumber || '';
+                      const street = r.street || r.name || '';
+                      setEditAddress((num + ' ' + street).trim());
+                      setEditAddressSupplement(r.district || r.subregion || '');
+                      setEditCity(r.city || r.region || '');
+                      setEditPostalCode(r.postalCode || '');
+                      setEditCountry(r.country || '');
+                    } else {
+                      Alert.alert('Erreur', t('profile.locationError') || 'Adresse introuvable pour cette position.');
                     }
+                    setGeoLoading(false);
                   } catch(e) {
-                    Alert.alert('Erreur', t('profile.locationError') || 'Impossible de récupérer la position');
+                    setGeoLoading(false);
+                    Alert.alert('Erreur', t('profile.locationError') || 'Impossible de récupérer la position.');
                   }
                 }}
-                style={{ flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:12, borderRadius:12, backgroundColor:'#E0F7F1', marginBottom:20 }}
+                disabled={geoLoading}
+                style={{ flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:14, borderRadius:12, backgroundColor: geoLoading ? '#F3F4F6' : '#E0F7F1', marginBottom:20 }}
               >
-                <Ionicons name="navigate" size={20} color="#00C29B" style={{marginRight:8}} />
-                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{t('profile.useMyLocation') || 'Utiliser ma position actuelle'}</Text>
+                {geoLoading ? (
+                  <ActivityIndicator color="#00C29B" style={{marginRight:8}} />
+                ) : (
+                  <Ionicons name="navigate" size={20} color="#00C29B" style={{marginRight:8}} />
+                )}
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
               </TouchableOpacity>
 
               <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.street')}</Text>
