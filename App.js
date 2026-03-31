@@ -3796,6 +3796,7 @@ const LANGUAGES = [
 function FakeProfileScreen({ onLogout }) {
   const { t, i18n: i18nInstance } = useTranslation();
   const { currency, setCurrency, fmtPrice } = useCurrency();
+  const navigation = useNavigation();
   const [profile, setProfile] = React.useState({ nom: '', prenom: '', pseudo: '', photo: null });
   const [editVisible, setEditVisible] = React.useState(false);
   const [editNom, setEditNom] = React.useState('');
@@ -4773,11 +4774,8 @@ function FakeProfileScreen({ onLogout }) {
                   DeviceEventEmitter.emit('CART_UPDATED');
                   setReorderVisible(false);
                   setDetailOrder(null);
-                  Alert.alert(
-                    t('profile.reorderSuccess') || 'Ajouté au panier',
-                    (selected.length) + ' ' + (t('profile.reorderSuccessMsg') || 'produits ajoutés au panier'),
-                    [{ text: 'OK' }]
-                  );
+                  setAllOrdersVisible(false);
+                  navigation.navigate('cart');
                 }}
                 disabled={!reorderItems.some(it => it.selected)}
                 style={{height:50, borderRadius:14, backgroundColor: reorderItems.some(it => it.selected) ? '#00C29B' : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
