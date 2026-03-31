@@ -1570,69 +1570,85 @@ const ProductsScreen = () => {
         />
       )}
 
-      {/* Bouton Commander les magasins sélectionnés */}
+      {/* Panneau produits sélectionnés en bas */}
       {Object.values(checkedShops).some(v=>v) && (
-        <View style={{position:"absolute",bottom:10,left:16,right:16}}>
-          <TouchableOpacity
-            onPress={async ()=>{
-              try {
-                const cartItems = [];
-                // Ajouter tous les produits des shops cochés
-                popupSelectedItems.forEach(si => {
-                  const shopIdx = si.shopIndex;
-                  if (shopIdx === null || shopIdx === undefined || !checkedShops[shopIdx]) return;
-                  cartItems.push({
-                    name: si.name,
-                    detail: si.detail||si.subtitle||'',
-                    unitPrice: si.unitPrice||si.pricePerKg||'',
-                    qty: si.qty||1,
-                    price: si.price||0,
-                    shop: si.shop
-                  });
-                });
-                // Merge with existing cart - ask for duplicates
-                const raw = await AsyncStorage.getItem(KEY_CART);
-                const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
-                const merged = [...existing];
-                const duplicates = [];
-                const newOnly = [];
-                cartItems.forEach(newItem => {
-                  const existingIndex = merged.findIndex(e =>
-                    String(e.name||'').toLowerCase().trim() === String(newItem.name||'').toLowerCase().trim() &&
-                    String(e.shop||'').toLowerCase().trim() === String(newItem.shop||'').toLowerCase().trim()
-                  );
-                  if (existingIndex >= 0) {
-                    duplicates.push({ newItem, existingIndex });
-                  } else {
-                    newOnly.push(newItem);
-                  }
-                });
-                // Add non-duplicates immediately
-                newOnly.forEach(item => merged.push(item));
-
-                if (duplicates.length > 0) {
-                  // Open custom modal with per-product toggle
-                  setDupItems(duplicates.map(d => ({ ...d, add: false })));
-                  setDupMerged(merged);
-                  setDupNewOnly(newOnly.length);
-                  setDupModalVisible(true);
-                } else {
-                  setConfirmCartItems(merged);
-                  setConfirmCartVisible(true);
-                }
-              } catch(e){}
-            }}
-            style={{
-              height:52,borderRadius:14,backgroundColor:BRAND,
-              flexDirection:"row",alignItems:"center",justifyContent:"center",
-              shadowColor:"#000",shadowOpacity:0.15,shadowRadius:8,elevation:5
-            }}
-          >
-            <Ionicons name="cart" size={20} color="#fff" style={{marginRight:8}} />
-            <Text style={{color:"#fff",fontSize:16,fontWeight:"700"}}>
-              {t('cart.addToCart')} ({Object.values(checkedShops).filter(v=>v).length} {Object.values(checkedShops).filter(v=>v).length>1 ? t('common.shops') : t('common.shop')})
+        <View style={{position:"absolute",bottom:0,left:0,right:0,backgroundColor:'#fff',borderTopLeftRadius:20,borderTopRightRadius:20,shadowColor:"#000",shadowOpacity:0.15,shadowRadius:10,elevation:8,paddingBottom:Platform.OS==='ios'?30:16}}>
+          {/* Liste des produits sélectionnés — max 3.5 visibles */}
+          <FlatList
+            data={popupSelectedItems.filter(si => checkedShops[si.shopIndex])}
+            keyExtractor={(item) => String(item.id)}
+            horizontal={false}
+            style={{maxHeight:220, paddingHorizontal:16, paddingTop:12}}
+            showsVerticalScrollIndicator={true}
+            renderItem={({item: si}) => (
+              <View style={{flexDirection:'row', alignItems:'center', paddingVertical:6, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+                <ProductThumb name={si.name} size={32} />
+                <View style={{flex:1, marginLeft:8}}>
+                  <Text style={{fontSize:13, fontWeight:'600', color:'#111'}} numberOfLines={1}>{si.name}</Text>
+                  <Text style={{fontSize:11, color:'#6B7280'}}>{si.shop}</Text>
+                </View>
+                <Text style={{fontSize:12, fontWeight:'600', color:'#374151', marginRight:8}}>x{si.qty||1}</Text>
+                <Text style={{fontSize:13, fontWeight:'700', color:BRAND}}>{fmtPrice((si.price||0)*(si.qty||1))}</Text>
+              </View>
+            )}
+          />
+          {/* Nombre de produits sélectionnés + total */}
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingHorizontal:16, paddingTop:8, paddingBottom:6}}>
+            <Text style={{fontSize:14, fontWeight:'700', color:'#374151'}}>
+              {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)} {t('productsScreen.quantity') || 'produits'}
             </Text>
-          </TouchableOpacity>
+            <Text style={{fontSize:16, fontWeight:'800', color:BRAND}}>
+              {fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}
+            </Text>
+          </View>
+          {/* Bouton ajouter au panier */}
+          <View style={{paddingHorizontal:16}}>
+            <TouchableOpacity
+              onPress={async ()=>{
+                try {
+                  const cartItems = [];
+                  popupSelectedItems.forEach(si => {
+                    const shopIdx = si.shopIndex;
+                    if (shopIdx === null || shopIdx === undefined || !checkedShops[shopIdx]) return;
+                    cartItems.push({
+                      name: si.name, detail: si.detail||si.subtitle||'',
+                      unitPrice: si.unitPrice||si.pricePerKg||'',
+                      qty: si.qty||1, price: si.price||0, shop: si.shop
+                    });
+                  });
+                  const raw = await AsyncStorage.getItem(KEY_CART);
+                  const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
+                  const merged = [...existing];
+                  const duplicates = [];
+                  const newOnly = [];
+                  cartItems.forEach(newItem => {
+                    const existingIndex = merged.findIndex(e =>
+                      String(e.name||'').toLowerCase().trim() === String(newItem.name||'').toLowerCase().trim() &&
+                      String(e.shop||'').toLowerCase().trim() === String(newItem.shop||'').toLowerCase().trim()
+                    );
+                    if (existingIndex >= 0) { duplicates.push({ newItem, existingIndex }); }
+                    else { newOnly.push(newItem); }
+                  });
+                  newOnly.forEach(item => merged.push(item));
+                  if (duplicates.length > 0) {
+                    setDupItems(duplicates.map(d => ({ ...d, add: false })));
+                    setDupMerged(merged);
+                    setDupNewOnly(newOnly.length);
+                    setDupModalVisible(true);
+                  } else {
+                    setConfirmCartItems(merged);
+                    setConfirmCartVisible(true);
+                  }
+                } catch(e){}
+              }}
+              style={{height:50,borderRadius:14,backgroundColor:BRAND,flexDirection:"row",alignItems:"center",justifyContent:"center"}}
+            >
+              <Ionicons name="cart" size={20} color="#fff" style={{marginRight:8}} />
+              <Text style={{color:"#fff",fontSize:16,fontWeight:"700"}}>
+                {t('cart.addToCart')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)})
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
 
