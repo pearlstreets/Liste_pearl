@@ -1823,21 +1823,15 @@ const ProductsScreen = () => {
                   try {
                     const activeItems = popupSelectedItems.filter(si => checkedShops[si.shopIndex]);
                     const count = activeItems.reduce((s, si) => s + (si.qty || 1), 0);
-                    // Rebuild cart: existing items + updated popup items
-                    const raw = await AsyncStorage.getItem(KEY_CART);
-                    const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
-                    const newCart = [...existing];
-                    activeItems.forEach(si => {
-                      const idx = newCart.findIndex(e =>
-                        String(e.name||'').toLowerCase().trim() === String(si.name||'').toLowerCase().trim() &&
-                        String(e.shop||'').toLowerCase().trim() === String(si.shop||'').toLowerCase().trim()
-                      );
-                      if (idx >= 0) {
-                        newCart[idx] = { ...newCart[idx], qty: (newCart[idx].qty || 1) + (si.qty || 1) };
-                      } else {
-                        newCart.push({ name: si.name, detail: si.detail||si.subtitle||'', unitPrice: si.unitPrice||si.pricePerKg||'', qty: si.qty||1, price: si.price||0, shop: si.shop });
-                      }
-                    });
+                    // Replace cart with only the newly selected products
+                    const newCart = activeItems.map(si => ({
+                      name: si.name,
+                      detail: si.detail||si.subtitle||'',
+                      unitPrice: si.unitPrice||si.pricePerKg||'',
+                      qty: si.qty||1,
+                      price: si.price||0,
+                      shop: si.shop
+                    }));
                     await AsyncStorage.setItem(KEY_CART, JSON.stringify(newCart));
                     DeviceEventEmitter.emit('CART_UPDATED');
 
