@@ -4536,7 +4536,7 @@ function FakeProfileScreen({ onLogout }) {
       </Modal>
 
       {/* All Orders Full Page Modal */}
-      <Modal visible={allOrdersVisible} animationType="slide">
+      <Modal visible={allOrdersVisible} animationType="none">
         <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
           <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
             <TouchableOpacity onPress={() => setAllOrdersVisible(false)} style={{ marginRight:12 }}>
@@ -4757,8 +4757,11 @@ function FakeProfileScreen({ onLogout }) {
             </View>
           )}
 
-          {/* Modal sélection recommander — DANS la modal detail */}
-          <Modal visible={reorderVisible} animationType="slide" transparent={true}>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Modal sélection recommander — AU MÊME NIVEAU */}
+      <Modal visible={reorderVisible} animationType="none" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
@@ -4833,8 +4836,6 @@ function FakeProfileScreen({ onLogout }) {
             </View>
           </View>
         </View>
-      </Modal>
-        </SafeAreaView>
       </Modal>
     </SafeAreaView>
   );
