@@ -1692,8 +1692,11 @@ const ProductsScreen = () => {
                     });
                     await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated2));
                   }
+                  await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                  setGroups([]); setSummary({price:0,time:0,shops:0});
+                  setShowingDefaults(true);
                   setCheckedShops({});
-                  setPopupSelectedItems(prev => prev.map(si => ({...si, checked: false})));
+                  setPopupSelectedItems([]);
                   setDupModalVisible(false);
                   setCartSuccessCount(added);
                   setCartSuccessVisible(true);
@@ -1840,9 +1843,12 @@ const ProductsScreen = () => {
                       await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated));
                     }
 
-                    // Uncheck shops but keep products and groups for re-selection
+                    // Clear products screen - no more suggestions
+                    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                    setGroups([]); setSummary({price:0,time:0,shops:0});
+                    setShowingDefaults(true);
                     setCheckedShops({});
-                    setPopupSelectedItems(prev => prev.map(si => ({...si, checked: false})));
+                    setPopupSelectedItems([]);
                     setConfirmCartVisible(false);
                     setCartSuccessCount(count);
                     setCartSuccessVisible(true);
