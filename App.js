@@ -1667,6 +1667,7 @@ const ProductsScreen = () => {
                   });
                   const added = dupItems.filter(d => d.add).length + dupNewOnly;
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify(finalMerged));
+                  DeviceEventEmitter.emit('CART_UPDATED');
                   setCheckedShops({});
                   setPopupSelectedItems([]);
                   setDupModalVisible(false);
@@ -1771,6 +1772,7 @@ const ProductsScreen = () => {
                       }
                     });
                     await AsyncStorage.setItem(KEY_CART, JSON.stringify(newCart));
+                    DeviceEventEmitter.emit('CART_UPDATED');
                     setCheckedShops({});
                     setPopupSelectedItems([]);
                     setConfirmCartVisible(false);
@@ -2247,6 +2249,12 @@ const CartScreen = () => {
   }, []);
 
   useFocusEffect(React.useCallback(() => { loadCart(); }, [loadCart]));
+
+  // Reload cart when products are added from Products screen
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('CART_UPDATED', loadCart);
+    return () => sub.remove();
+  }, [loadCart]);
 
   const removeFromCart = async (index) => {
     const updated = cartItems.filter((_, i) => i !== index);
