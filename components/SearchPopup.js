@@ -386,16 +386,9 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
                 </View>
               )}
               <View style={{ paddingHorizontal:16, paddingVertical:10 }}>
-                <TouchableOpacity onPress={handleFinish} activeOpacity={0.9} style={{ backgroundColor:'#0F172A', paddingVertical:14, borderRadius:14, flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
-                  <Text style={{ color:'#fff', fontWeight:'800' }}>{t('searchPopup.finish') || 'Terminer'}</Text>
-                  {totalCount > 0 && (
-                    <View style={{ flexDirection:'row', alignItems:'center', marginLeft:10 }}>
-                      <View style={{ backgroundColor:BRAND, borderRadius:10, paddingHorizontal:8, paddingVertical:2, marginRight:6 }}>
-                        <Text style={{ color:'#fff', fontWeight:'800', fontSize:12 }}>{totalCount}</Text>
-                      </View>
-                      <Text style={{ color:'#fff', fontWeight:'700', fontSize:14 }}>{formatPrice(totalPrice)}</Text>
-                    </View>
-                  )}
+                <TouchableOpacity onPress={handleFinish} activeOpacity={0.9} style={{ backgroundColor:BRAND, paddingVertical:14, borderRadius:14, flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
+                  <Ionicons name="cart" size={18} color="#fff" style={{ marginRight:8 }} />
+                  <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('cart.addToCart') || 'Ajouter'} ({totalCount})</Text>
                 </TouchableOpacity>
               </View>
             </SafeAreaView>
