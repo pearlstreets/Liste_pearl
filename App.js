@@ -1690,14 +1690,18 @@ const ProductsScreen = () => {
                   DeviceEventEmitter.emit('CART_UPDATED');
 
                   // Cross off added items in Ma Liste
-                  const addedNames2 = dupItems.filter(d => d.add).map(d => norm(d.newItem.name));
+                  const selectedRaw2 = await AsyncStorage.getItem(KEY_SELECTED);
+                  const selectedItems2 = selectedRaw2 ? JSON.parse(selectedRaw2) : [];
+                  const originalNames2 = selectedItems2.map(si => norm(si.name));
+                  const productNames2 = dupItems.filter(d => d.add).map(d => norm(d.newItem.name));
+                  const allNames2 = [...new Set([...originalNames2, ...productNames2])];
                   const listRaw2 = await AsyncStorage.getItem(KEY_ITEMS);
                   if (listRaw2) {
                     const listItems2 = JSON.parse(listRaw2);
                     const updated2 = listItems2.map(it => {
                       const itName = norm(it.name || it.title || '');
-                      if (addedNames2.some(n => n.includes(itName) || itName.includes(n))) {
-                        return { ...it, crossed: true };
+                      if (allNames2.some(n => n.includes(itName) || itName.includes(n))) {
+                        return { ...it, crossed: true, selected: false };
                       }
                       return it;
                     });
@@ -1840,14 +1844,19 @@ const ProductsScreen = () => {
                     DeviceEventEmitter.emit('CART_UPDATED');
 
                     // Cross off added items in Ma Liste
-                    const addedNames = activeItems.map(si => norm(si.name));
+                    // Collect both product names AND original list item names
+                    const selectedRaw = await AsyncStorage.getItem(KEY_SELECTED);
+                    const selectedItems = selectedRaw ? JSON.parse(selectedRaw) : [];
+                    const originalNames = selectedItems.map(si => norm(si.name));
+                    const productNames = activeItems.map(si => norm(si.name));
+                    const allNames = [...new Set([...originalNames, ...productNames])];
                     const listRaw = await AsyncStorage.getItem(KEY_ITEMS);
                     if (listRaw) {
                       const listItems = JSON.parse(listRaw);
                       const updated = listItems.map(it => {
                         const itName = norm(it.name || it.title || '');
-                        if (addedNames.some(n => n.includes(itName) || itName.includes(n))) {
-                          return { ...it, crossed: true };
+                        if (allNames.some(n => n.includes(itName) || itName.includes(n))) {
+                          return { ...it, crossed: true, selected: false };
                         }
                         return it;
                       });
