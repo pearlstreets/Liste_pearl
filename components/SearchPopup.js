@@ -310,7 +310,7 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
             <View style={{ height: '10%' }} />
           </TouchableWithoutFeedback>
 
-          <View style={{ flex:1, backgroundColor:'#F8FAFC', borderTopLeftRadius:24, borderTopRightRadius:24, overflow:'hidden' }}>
+          <View style={{ flex:1, backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, overflow:'hidden' }}>
             {/* Header */}
             <View style={{ padding:16, paddingBottom:0 }}>
               <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
@@ -346,10 +346,10 @@ export default function SearchPopup({ visible, initialQuery = "", data, shopName
             />
 
             {/* Bottom: selected items list + Terminer */}
-            <SafeAreaView style={{ backgroundColor:'#F8FAFC' }}>
+            <SafeAreaView style={{ backgroundColor:'#fff' }}>
               {selList.length > 0 && (
                 <View style={{ borderTopWidth:1, borderTopColor:'#E5E7EB' }}>
-                  <ScrollView style={{ paddingHorizontal:16, maxHeight:155 }} showsVerticalScrollIndicator={true}>
+                  <ScrollView style={{ paddingHorizontal:16, maxHeight:120 }} showsVerticalScrollIndicator={true}>
                     {selList.map((a) => {
                       const nm = t('productNames.' + a.item.name, { defaultValue: a.item.name });
                       const em = getEmoji(a.item.name);
