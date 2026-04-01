@@ -89,6 +89,68 @@ export async function getDeliverySlots(date) {
   return deliveryFetch(`/slots/?date=${date}`);
 }
 
+// === Particulier delivery mode (casual driver) ===
+const KEY_DRIVER_MODE = "PEARL_DRIVER_MODE";
+const KEY_DRIVER_EARNINGS = "PEARL_DRIVER_EARNINGS";
+const ANNUAL_EARNINGS_LIMIT = 3000; // euros per year
+
+// Enable/disable casual driver mode for a regular user
+export async function toggleDriverMode(enabled) {
+  await AsyncStorage.setItem(KEY_DRIVER_MODE, JSON.stringify(enabled));
+  // Sync with backend
+  try {
+    await deliveryFetch("/toggle-casual-driver/", {
+      method: "POST",
+      body: JSON.stringify({ is_casual_driver: enabled }),
+    });
+  } catch (e) {}
+  return enabled;
+}
+
+// Check if casual driver mode is active
+export async function isDriverMode() {
+  const raw = await AsyncStorage.getItem(KEY_DRIVER_MODE);
+  return raw ? JSON.parse(raw) : false;
+}
+
+// Get casual driver earnings for current year
+export async function getDriverEarnings() {
+  try {
+    const data = await deliveryFetch("/earnings/");
+    if (data && data.total_year !== undefined) {
+      await AsyncStorage.setItem(KEY_DRIVER_EARNINGS, JSON.stringify(data));
+      return data;
+    }
+  } catch (e) {}
+  // Fallback to local
+  const raw = await AsyncStorage.getItem(KEY_DRIVER_EARNINGS);
+  return raw ? JSON.parse(raw) : { total_year: 0, remaining: ANNUAL_EARNINGS_LIMIT };
+}
+
+// Check if user can still deliver (under 3000€ threshold)
+export async function canDeliver() {
+  const earnings = await getDriverEarnings();
+  return (earnings.total_year || 0) < ANNUAL_EARNINGS_LIMIT;
+}
+
+// Get available deliveries for casual drivers
+export async function getAvailableDeliveries() {
+  return deliveryFetch("/available/");
+}
+
+// Accept a delivery as casual driver
+export async function acceptDelivery(assignmentId) {
+  return deliveryFetch(`/accept/${assignmentId}/`, { method: "POST" });
+}
+
+// Update delivery status
+export async function updateDeliveryStatusDriver(assignmentId, status) {
+  return deliveryFetch(`/status/${assignmentId}/`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
 // Delivery status constants (matching Livraison-app flow)
 export const DELIVERY_STATUS = {
   PENDING: "pending",           // Order placed, waiting for driver
