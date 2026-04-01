@@ -4468,17 +4468,17 @@ function FakeProfileScreen({ onLogout }) {
                     await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(data));
                   }
                 } catch(e) {}
-                // Nettoyer les données courantes
-                await AsyncStorage.removeItem(KEY_AUTH);
-                // Logout from Marketplace API
+                // Logout from Marketplace API first (needs tokens)
                 try { await logoutUser(); } catch(e) {}
-                await AsyncStorage.removeItem(KEY_PROFILE);
-                await AsyncStorage.removeItem(KEY_ORDER_HISTORY);
-                await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-                await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-                await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-                await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-                await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                // Nettoyer les données courantes
+                try {
+                  await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
+                  await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+                  await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                  await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+                  await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+                  await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                } catch(e) {}
                 if (onLogout) onLogout();
               }}
             ]);
