@@ -3394,6 +3394,8 @@ function AuthScreen({ onLogin }) {
   const [proStep, setProStep] = React.useState(1); // 1=info, 2=documents
   const [signupCountry, setSignupCountry] = React.useState('FR');
   const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
+  const [phonePickerVisible, setPhonePickerVisible] = React.useState(false);
+  const [phoneCountryCode, setPhoneCountryCode] = React.useState('FR');
   const SIGNUP_COUNTRIES = [
     { code: 'FR', flag: '🇫🇷', name: 'France', phoneCode: '+33' },
     { code: 'BE', flag: '🇧🇪', name: 'Belgique', phoneCode: '+32' },
@@ -3421,6 +3423,7 @@ function AuthScreen({ onLogin }) {
     { code: 'CA', flag: '🇨🇦', name: 'Canada', phoneCode: '+1' },
   ];
   const selectedCountry = SIGNUP_COUNTRIES.find(c => c.code === signupCountry) || SIGNUP_COUNTRIES[0];
+  const selectedPhoneCountry = SIGNUP_COUNTRIES.find(c => c.code === phoneCountryCode) || SIGNUP_COUNTRIES[0];
   const [phone, setPhone] = React.useState('');
   const [companyName, setCompanyName] = React.useState('');
   const [managerName, setManagerName] = React.useState('');
@@ -3659,16 +3662,30 @@ function AuthScreen({ onLogin }) {
         {/* Country selector */}
         {!isLogin && (
           <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays'}</Text>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
             <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
               flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
               borderRadius:12, padding:14, marginBottom:12, backgroundColor:'#fff'
             }}>
               <Text style={{fontSize:20, marginRight:10}}>{selectedCountry.flag}</Text>
               <Text style={{flex:1, fontSize:15, color:'#111', fontWeight:'600'}}>{selectedCountry.name}</Text>
-              <Text style={{fontSize:13, color:'#6B7280', marginRight:6}}>{selectedCountry.phoneCode}</Text>
               <Ionicons name="chevron-down" size={18} color="#9CA3AF" />
             </TouchableOpacity>
+
+            {/* Phone with country code */}
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.phoneNumber') || 'Numéro de téléphone'}</Text>
+            <View style={{flexDirection:'row', marginBottom:12}}>
+              <TouchableOpacity onPress={() => setPhonePickerVisible(true)} style={{
+                flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
+                borderRadius:12, padding:14, backgroundColor:'#fff', marginRight:8
+              }}>
+                <Text style={{fontSize:16, marginRight:6}}>{selectedPhoneCountry.flag}</Text>
+                <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{selectedPhoneCountry.phoneCode}</Text>
+                <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
+              </TouchableOpacity>
+              <TextInput value={phone} onChangeText={setPhone} placeholder="6 12 34 56 78" keyboardType="phone-pad"
+                style={{flex:1, borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, color:'#111'}} />
+            </View>
           </>
         )}
 
@@ -3704,9 +3721,6 @@ function AuthScreen({ onLogin }) {
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSector') || 'Secteur d\'activité'}</Text>
             <TextInput value={sector} onChangeText={setSector} placeholder="Alimentation, Commerce..."
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proPhone') || 'Téléphone'}</Text>
-            <TextInput value={phone} onChangeText={setPhone} placeholder="06 12 34 56 78" keyboardType="phone-pad"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
@@ -3804,7 +3818,7 @@ function AuthScreen({ onLogin }) {
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectCountry') || 'Sélectionner un pays'}</Text>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectCountry') || 'Pays de résidence'}</Text>
               <TouchableOpacity onPress={() => setCountryPickerVisible(false)} style={{padding:6}}>
                 <Ionicons name="close" size={24} color="#666" />
               </TouchableOpacity>
@@ -3816,7 +3830,7 @@ function AuthScreen({ onLogin }) {
               contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
               renderItem={({item: country}) => (
                 <TouchableOpacity
-                  onPress={() => { setSignupCountry(country.code); setCountryPickerVisible(false); }}
+                  onPress={() => { setSignupCountry(country.code); setPhoneCountryCode(country.code); setCountryPickerVisible(false); }}
                   style={{
                     flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
                     borderBottomWidth:1, borderBottomColor:'#F3F4F6',
@@ -3825,8 +3839,42 @@ function AuthScreen({ onLogin }) {
                 >
                   <Text style={{fontSize:24, marginRight:14}}>{country.flag}</Text>
                   <Text style={{flex:1, fontSize:16, fontWeight: signupCountry === country.code ? '700' : '500', color: signupCountry === country.code ? BRAND : '#111'}}>{country.name}</Text>
-                  <Text style={{fontSize:13, color:'#6B7280'}}>{country.phoneCode}</Text>
-                  {signupCountry === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{marginLeft:8}} />}
+                  {signupCountry === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      {/* Phone Country Code Picker Modal */}
+      <Modal visible={phonePickerVisible} animationType="none" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectPhoneCode') || 'Indicatif téléphonique'}</Text>
+              <TouchableOpacity onPress={() => setPhonePickerVisible(false)} style={{padding:6}}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={SIGNUP_COUNTRIES}
+              keyExtractor={(item) => item.code + '_phone'}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
+              renderItem={({item: country}) => (
+                <TouchableOpacity
+                  onPress={() => { setPhoneCountryCode(country.code); setPhonePickerVisible(false); }}
+                  style={{
+                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
+                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
+                    backgroundColor: phoneCountryCode === country.code ? '#F0FDF4' : '#fff',
+                  }}
+                >
+                  <Text style={{fontSize:24, marginRight:14}}>{country.flag}</Text>
+                  <Text style={{flex:1, fontSize:16, fontWeight: phoneCountryCode === country.code ? '700' : '500', color: phoneCountryCode === country.code ? BRAND : '#111'}}>{country.name}</Text>
+                  <Text style={{fontSize:14, fontWeight:'700', color:'#374151'}}>{country.phoneCode}</Text>
+                  {phoneCountryCode === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{marginLeft:8}} />}
                 </TouchableOpacity>
               )}
             />
