@@ -3699,17 +3699,24 @@ function AuthScreen({ onLogin }) {
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
       )}
-      <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24}} keyboardShouldPersistTaps="handled">
-        {/* Logo */}
-        <View style={{alignItems:'center', marginBottom:32}}>
-          <View style={{width:80, height:80, borderRadius:40, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
-            <Ionicons name="bicycle" size={40} color="#fff" />
+      <ScrollView contentContainerStyle={{flexGrow:1, paddingHorizontal:24, paddingTop: isLogin ? 60 : 20, paddingBottom:30}} keyboardShouldPersistTaps="handled">
+        {/* Logo — compact on form steps */}
+        {(isLogin || isPro === null || proStep === 1) && (
+          <View style={{alignItems:'center', marginBottom:24}}>
+            <View style={{width:60, height:60, borderRadius:30, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
+              <Ionicons name="bicycle" size={30} color="#fff" />
+            </View>
+            <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
+            {isLogin && <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{t('auth.loginSubtitle')}</Text>}
+            {!isLogin && isPro === null && <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{t('auth.signupSubtitle')}</Text>}
           </View>
-          <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
-          <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>
-            {isLogin ? t('auth.loginSubtitle') : isPro === null ? (t('auth.signupSubtitle') || 'Créez votre compte') : proStep === 1 ? (t('auth.stepEmail') || 'Étape 1 — Identifiants') : proStep === 2 ? (isPro ? (t('auth.proSignupSubtitle') || 'Étape 2 — Informations') : (t('auth.userSignupSubtitle') || 'Étape 2 — Informations')) : (t('auth.proDocTitle') || 'Étape 3 — Documents')}
+        )}
+        {/* Step title */}
+        {!isLogin && isPro !== null && (
+          <Text style={{fontSize:18, fontWeight:'800', color:'#111', marginBottom:16}}>
+            {proStep === 1 ? (t('auth.stepEmail') || 'Identifiants') : proStep === 2 ? (t('auth.stepInfo') || 'Informations') : (t('auth.proDocTitle') || 'Documents')}
           </Text>
-        </View>
+        )}
 
         {/* Error */}
         {error ? (
