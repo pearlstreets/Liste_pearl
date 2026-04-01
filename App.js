@@ -3690,7 +3690,9 @@ function AuthScreen({ onLogin }) {
             <Ionicons name="cart" size={40} color="#fff" />
           </View>
           <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
-          <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{isLogin ? t('auth.loginSubtitle') : t('auth.signupSubtitle')}</Text>
+          <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>
+            {isLogin ? t('auth.loginSubtitle') : (isPro ? (t('auth.proSignupSubtitle') || 'Inscription établissement') : (t('auth.userSignupSubtitle') || 'Inscription livreur'))}
+          </Text>
         </View>
 
         {/* Error */}
@@ -3701,25 +3703,25 @@ function AuthScreen({ onLogin }) {
           </View>
         ) : null}
 
-        {/* Toggle Particulier / Professionnel */}
+        {/* Toggle Établissement / Livreur */}
         {!isLogin && (
           <View style={{flexDirection:'row', marginBottom:16}}>
             <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <Ionicons name="storefront-outline" size={16} color={isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.professional') || 'Professionnel'}</Text>
+                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.establishment') || 'Établissement'}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
               <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="person-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.individual') || 'Particulier'}</Text>
+                <Ionicons name="bicycle-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
+                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.driver') || 'Livreur'}</Text>
               </View>
             </TouchableOpacity>
           </View>
         )}
 
-        {/* Consumer signup fields */}
+        {/* Driver (livreur) signup fields */}
         {!isLogin && !isPro && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
