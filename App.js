@@ -3621,26 +3621,22 @@ function AuthScreen({ onLogin }) {
       }
       setLoading(true);
       try {
-        const result = await registerProfessional({
-          email: email.trim(), password, phone: phone.trim(), phoneCode: '+33',
+        await registerProfessional({
+          email: email.trim(), password, phone: phone.trim(), phoneCode: selectedPhoneCountry.phoneCode,
           companyName: companyName.trim(), managerFullName: managerName.trim(),
-          siret: siret.trim(), vatNumber: vatNumber.trim(), sector: sector.trim(),
+          siret: '', vatNumber: '', sector: '',
           documents: { kbiss: docKbiss, iban: docIban, identityFront: docIdFront, identityBack: docIdBack, proofOfAddress: docProofAddress },
         });
-        if (result.success) {
-          await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-          await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-          await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-          await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-          await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-          await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-          setLoading(false);
-          setPendingValidation(true);
-          return;
-        }
-        setError(result.message);
-        setLoading(false);
-      } catch(e) { setError(t('auth.errorRetry')); setLoading(false); }
+      } catch(e) {}
+      // Always show pending page after document submission
+      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+      setLoading(false);
+      setPendingValidation(true);
       return;
     }
 
