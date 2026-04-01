@@ -3373,6 +3373,7 @@ function MainNavigator({ onLogout }) {
 }
 
 function AuthScreen({ onLogin }) {
+  const { t } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(true);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
