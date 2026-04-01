@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import SearchPopup from './components/SearchPopup';
 import * as Location from 'expo-location';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView } from "react-native";
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -3859,7 +3859,7 @@ function AuthScreen({ onLogin }) {
         {(isLogin || (isPro !== null && proStep === 1)) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none" autoComplete="off" textContentType="oneTimeCode" autoCorrect={false} spellCheck={false}
+            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none" autoComplete="off" textContentType="oneTimeCode" autoCorrect={false} spellCheck={false} inputAccessoryViewID="noSuggestions"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
@@ -3869,7 +3869,7 @@ function AuthScreen({ onLogin }) {
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode"
+              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
                 style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
               <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
                 <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
@@ -3883,7 +3883,7 @@ function AuthScreen({ onLogin }) {
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.confirmPassword') || 'Confirmer le mot de passe'}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode"
+              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
                 style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
             </View>
           </>
@@ -3931,6 +3931,9 @@ function AuthScreen({ onLogin }) {
           {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
         </Text>
       </TouchableOpacity>
+
+      {/* Hide iOS keyboard suggestions bar */}
+      {Platform.OS === 'ios' && <InputAccessoryView nativeID="noSuggestions"><View /></InputAccessoryView>}
 
       {/* Language Picker Modal */}
       <Modal visible={authLangVisible} animationType="none" transparent={true}>
