@@ -9,7 +9,7 @@ import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
-import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver } from "./services/delivery";
+import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 
 function __getUserItems(){
   try { if (typeof items !== "undefined" && Array.isArray(items)) return items; } catch(_) {}
@@ -4003,7 +4003,8 @@ function FakeProfileScreen({ onLogout }) {
   const [geoLoading, setGeoLoading] = React.useState(false);
   const [docStatuses, setDocStatuses] = React.useState(null);
   const [driverMode, setDriverMode] = React.useState(false);
-  const [driverEarnings, setDriverEarnings] = React.useState({ total_year: 0, remaining: 3000 });
+  const [driverCountry, setDriverCountryState] = React.useState('FR');
+  const [driverEarnings, setDriverEarnings] = React.useState({ total_year: 0, remaining: 3000, limit: 3000 });
   const [driverBlocked, setDriverBlocked] = React.useState(false);
 
   const loadProfile = React.useCallback(async () => {
@@ -4035,6 +4036,8 @@ function FakeProfileScreen({ onLogout }) {
       try {
         const dm = await isDriverMode();
         setDriverMode(dm);
+        const cc = await getDriverCountry();
+        setDriverCountryState(cc);
         if (dm) {
           const earnings = await getDriverEarnings();
           setDriverEarnings(earnings);
@@ -4402,14 +4405,17 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Casual Driver Section (particuliers only) */}
-        {(!profile.role || profile.role === 'user') && (
+        {(!profile.role || profile.role === 'user') && (() => {
+          const countryInfo = getCountryLimit(driverCountry);
+          const limit = countryInfo.limit;
+          return (
           <View style={{ paddingHorizontal:16, marginBottom:16 }}>
             <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
               {t('profile.driverSection') || 'Livraison'}
             </Text>
 
-            {/* Toggle devenir livreur */}
             <View style={{ backgroundColor:'#fff', borderRadius:12, padding:16, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+              {/* Toggle devenir livreur */}
               <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between' }}>
                 <View style={{ flexDirection:'row', alignItems:'center', flex:1 }}>
                   <Ionicons name="bicycle-outline" size={22} color={BRAND} style={{marginRight:10}} />
@@ -4418,59 +4424,76 @@ function FakeProfileScreen({ onLogout }) {
                     <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
                   </View>
                 </View>
-                <Switch
-                  value={driverMode}
-                  onValueChange={async (val) => {
-                    if (val && driverBlocked) {
-                      Alert.alert(
-                        t('profile.driverBlockedTitle') || 'Seuil atteint',
-                        t('profile.driverBlockedMsg') || 'Vous avez atteint le plafond de 3 000 €/an. Vous ne pouvez plus effectuer de livraisons cette année.'
-                      );
-                      return;
-                    }
-                    await toggleDriverMode(val);
-                    setDriverMode(val);
-                    if (val) {
-                      const earnings = await getDriverEarnings();
-                      setDriverEarnings(earnings);
-                    }
-                  }}
-                  trackColor={{ true: BRAND }}
-                />
+                <Switch value={driverMode} onValueChange={async (val) => {
+                  if (val && driverBlocked) {
+                    Alert.alert(t('profile.driverBlockedTitle') || 'Seuil atteint', countryInfo.beyondMsg);
+                    return;
+                  }
+                  await toggleDriverMode(val, driverCountry);
+                  setDriverMode(val);
+                  if (val) { const e = await getDriverEarnings(); setDriverEarnings(e); const ok = await canDeliver(); setDriverBlocked(!ok); }
+                }} trackColor={{ true: BRAND }} />
               </View>
 
-              {/* Earnings info when driver mode active */}
+              {/* Country selector */}
               {driverMode && (
                 <View style={{ marginTop:14, borderTopWidth:1, borderTopColor:'#F3F4F6', paddingTop:14 }}>
+                  <Text style={{ fontSize:13, fontWeight:'600', color:'#374151', marginBottom:8 }}>{t('profile.driverCountry') || 'Pays de résidence fiscale'}</Text>
+                  <View style={{ flexDirection:'row', gap:8 }}>
+                    {Object.entries(COUNTRY_LIMITS).map(([code, info]) => (
+                      <TouchableOpacity key={code} onPress={async () => {
+                        setDriverCountryState(code);
+                        await setDriverCountry(code);
+                        const e = await getDriverEarnings(); setDriverEarnings(e);
+                        const ok = await canDeliver(); setDriverBlocked(!ok);
+                      }} style={{
+                        flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center',
+                        paddingVertical:10, borderRadius:10,
+                        borderWidth: driverCountry === code ? 2 : 1,
+                        borderColor: driverCountry === code ? BRAND : '#E5E7EB',
+                        backgroundColor: driverCountry === code ? '#F0FDF4' : '#fff'
+                      }}>
+                        <Text style={{fontSize:18, marginRight:6}}>{info.flag}</Text>
+                        <View>
+                          <Text style={{fontSize:13, fontWeight:'700', color: driverCountry === code ? BRAND : '#111'}}>{info.label}</Text>
+                          <Text style={{fontSize:11, color:'#6B7280'}}>{info.limit.toLocaleString()} €/an</Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+
                   {/* Progress bar */}
-                  <View style={{ flexDirection:'row', justifyContent:'space-between', marginBottom:6 }}>
+                  <View style={{ flexDirection:'row', justifyContent:'space-between', marginTop:14, marginBottom:6 }}>
                     <Text style={{ fontSize:13, fontWeight:'600', color:'#374151' }}>{t('profile.driverEarnings') || 'Gains cette année'}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>{(driverEarnings.total_year || 0).toFixed(2)} € / 3 000 €</Text>
+                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>{(driverEarnings.total_year || 0).toFixed(2)} € / {limit.toLocaleString()} €</Text>
                   </View>
                   <View style={{ height:8, backgroundColor:'#F3F4F6', borderRadius:4, overflow:'hidden' }}>
-                    <View style={{ height:8, borderRadius:4, backgroundColor: driverBlocked ? '#EF4444' : BRAND, width: Math.min(100, ((driverEarnings.total_year || 0) / 3000) * 100) + '%' }} />
+                    <View style={{ height:8, borderRadius:4, backgroundColor: driverBlocked ? '#EF4444' : BRAND, width: Math.min(100, ((driverEarnings.total_year || 0) / limit) * 100) + '%' }} />
                   </View>
 
                   {driverBlocked ? (
                     <View style={{ flexDirection:'row', alignItems:'center', marginTop:10, backgroundColor:'#FEF2F2', borderRadius:10, padding:10 }}>
                       <Ionicons name="alert-circle" size={18} color="#EF4444" style={{marginRight:8}} />
-                      <Text style={{ flex:1, fontSize:12, color:'#991B1B' }}>{t('profile.driverBlockedInfo') || 'Plafond de 3 000 €/an atteint. Les livraisons sont suspendues jusqu\'au 1er janvier.'}</Text>
+                      <Text style={{ flex:1, fontSize:12, color:'#991B1B' }}>{countryInfo.beyondMsg}</Text>
                     </View>
                   ) : (
                     <View style={{ flexDirection:'row', alignItems:'center', marginTop:10, backgroundColor:'#F0FDF4', borderRadius:10, padding:10 }}>
                       <Ionicons name="checkmark-circle" size={18} color="#059669" style={{marginRight:8}} />
-                      <Text style={{ flex:1, fontSize:12, color:'#065F46' }}>{t('profile.driverActive') || 'Mode livreur actif. Restant :'} {(3000 - (driverEarnings.total_year || 0)).toFixed(2)} €</Text>
+                      <Text style={{ flex:1, fontSize:12, color:'#065F46' }}>{t('profile.driverActive') || 'Mode livreur actif. Restant :'} {(limit - (driverEarnings.total_year || 0)).toFixed(2)} €</Text>
                     </View>
                   )}
 
-                  <Text style={{ fontSize:11, color:'#9CA3AF', marginTop:8 }}>
-                    {t('profile.driverLegalNote') || 'Seuil légal de 3 000 €/an pour les particuliers. Au-delà, un statut professionnel est requis.'}
-                  </Text>
+                  {/* Tax info */}
+                  <View style={{ marginTop:10, backgroundColor:'#EFF6FF', borderRadius:10, padding:10, flexDirection:'row', alignItems:'flex-start' }}>
+                    <Ionicons name="information-circle" size={18} color="#2563EB" style={{marginRight:8, marginTop:1}} />
+                    <Text style={{ flex:1, fontSize:11, color:'#1E40AF' }}>{countryInfo.taxInfo}</Text>
+                  </View>
                 </View>
               )}
             </View>
           </View>
-        )}
+          );
+        })()}
 
         {/* Address Button */}
         <View style={{ paddingHorizontal:16, marginTop:16 }}>

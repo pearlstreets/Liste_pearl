@@ -92,16 +92,37 @@ export async function getDeliverySlots(date) {
 // === Particulier delivery mode (casual driver) ===
 const KEY_DRIVER_MODE = "PEARL_DRIVER_MODE";
 const KEY_DRIVER_EARNINGS = "PEARL_DRIVER_EARNINGS";
-const ANNUAL_EARNINGS_LIMIT = 3000; // euros per year
+const KEY_DRIVER_COUNTRY = "PEARL_DRIVER_COUNTRY";
+
+// Earnings limits per country
+export const COUNTRY_LIMITS = {
+  FR: { limit: 3000, label: "France", flag: "🇫🇷", taxInfo: "Régime micro-BIC — Abattement 50% sur revenus imposables", beyondMsg: "Au-delà de 3 000 € → compte bloqué, statut auto-entrepreneur requis" },
+  BE: { limit: 7700, label: "Belgique", flag: "🇧🇪", taxInfo: "Économie collaborative — Taux fixe 10,7% prélevé par la plateforme", beyondMsg: "Au-delà de 7 700 € → statut d'indépendant requis" },
+};
+
+export function getCountryLimit(countryCode) {
+  return COUNTRY_LIMITS[countryCode] || COUNTRY_LIMITS['FR'];
+} per year
+
+// Set driver country
+export async function setDriverCountry(code) {
+  await AsyncStorage.setItem(KEY_DRIVER_COUNTRY, code);
+}
+
+// Get driver country
+export async function getDriverCountry() {
+  const raw = await AsyncStorage.getItem(KEY_DRIVER_COUNTRY);
+  return raw || 'FR';
+}
 
 // Enable/disable casual driver mode for a regular user
-export async function toggleDriverMode(enabled) {
+export async function toggleDriverMode(enabled, countryCode) {
   await AsyncStorage.setItem(KEY_DRIVER_MODE, JSON.stringify(enabled));
-  // Sync with backend
+  if (countryCode) await setDriverCountry(countryCode);
   try {
     await deliveryFetch("/toggle-casual-driver/", {
       method: "POST",
-      body: JSON.stringify({ is_casual_driver: enabled }),
+      body: JSON.stringify({ is_casual_driver: enabled, country: countryCode || 'FR' }),
     });
   } catch (e) {}
   return enabled;
@@ -115,22 +136,24 @@ export async function isDriverMode() {
 
 // Get casual driver earnings for current year
 export async function getDriverEarnings() {
+  const country = await getDriverCountry();
+  const limit = getCountryLimit(country).limit;
   try {
     const data = await deliveryFetch("/earnings/");
     if (data && data.total_year !== undefined) {
-      await AsyncStorage.setItem(KEY_DRIVER_EARNINGS, JSON.stringify(data));
-      return data;
+      const enriched = { ...data, limit, remaining: Math.max(0, limit - (data.total_year || 0)), country };
+      await AsyncStorage.setItem(KEY_DRIVER_EARNINGS, JSON.stringify(enriched));
+      return enriched;
     }
   } catch (e) {}
-  // Fallback to local
   const raw = await AsyncStorage.getItem(KEY_DRIVER_EARNINGS);
-  return raw ? JSON.parse(raw) : { total_year: 0, remaining: ANNUAL_EARNINGS_LIMIT };
+  return raw ? JSON.parse(raw) : { total_year: 0, remaining: limit, limit, country };
 }
 
-// Check if user can still deliver (under 3000€ threshold)
+// Check if user can still deliver (under country threshold)
 export async function canDeliver() {
   const earnings = await getDriverEarnings();
-  return (earnings.total_year || 0) < ANNUAL_EARNINGS_LIMIT;
+  return (earnings.total_year || 0) < earnings.limit;
 }
 
 // Get available deliveries for casual drivers
