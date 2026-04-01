@@ -3873,17 +3873,20 @@ function AuthScreen({ onLogin }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Language selector */}
-        <TouchableOpacity onPress={() => setAuthLangVisible(true)} style={{alignItems:'center', paddingVertical:12, marginBottom:20}}>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Ionicons name="globe-outline" size={16} color="#9CA3AF" style={{marginRight:6}} />
-            <Text style={{color:'#9CA3AF', fontSize:13}}>
-              {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
-            </Text>
-            <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
-          </View>
-        </TouchableOpacity>
       </ScrollView>
+
+      {/* Language selector — fixed bottom */}
+      <TouchableOpacity onPress={() => setAuthLangVisible(true)} style={{
+        flexDirection:'row', alignItems:'center', justifyContent:'center',
+        marginHorizontal:24, marginBottom:12, paddingVertical:12,
+        borderRadius:12, borderWidth:1, borderColor:'#E5E7EB', backgroundColor:'#F9FAFB'
+      }}>
+        <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
+        <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>
+          {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
+        </Text>
+        <Ionicons name="chevron-down" size={16} color="#9CA3AF" style={{marginLeft:8}} />
+      </TouchableOpacity>
 
       {/* Language Picker Modal */}
       <Modal visible={authLangVisible} animationType="none" transparent={true}>
