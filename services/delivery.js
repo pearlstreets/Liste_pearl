@@ -96,8 +96,13 @@ const KEY_DRIVER_COUNTRY = "PEARL_DRIVER_COUNTRY";
 
 // Earnings limits per country
 export const COUNTRY_LIMITS = {
-  FR: { limit: 3000, label: "France", flag: "🇫🇷", taxInfo: "Régime micro-BIC — Abattement 50% sur revenus imposables", beyondMsg: "Au-delà de 3 000 € → compte bloqué, statut auto-entrepreneur requis" },
-  BE: { limit: 7700, label: "Belgique", flag: "🇧🇪", taxInfo: "Économie collaborative — Taux fixe 10,7% prélevé par la plateforme", beyondMsg: "Au-delà de 7 700 € → statut d'indépendant requis" },
+  FR: { limit: 3000, label: "France", flag: "🇫🇷", status: "ok", taxInfo: "Régime micro-BIC — Abattement 50% sur revenus imposables", beyondMsg: "Au-delà de 3 000 € → compte bloqué, statut auto-entrepreneur requis" },
+  BE: { limit: 7700, label: "Belgique", flag: "🇧🇪", status: "ok", taxInfo: "Économie collaborative — Taux fixe 10,7% prélevé par la plateforme", beyondMsg: "Au-delà de 7 700 € → statut d'indépendant requis" },
+  DE: { limit: 0, label: "Allemagne", flag: "🇩🇪", status: "gray", taxInfo: "Pas de cadre spécifique. Revenus à déclarer en \"revenus divers\".", beyondMsg: "Service non disponible — cadre légal non défini" },
+  IT: { limit: 0, label: "Italie", flag: "🇮🇹", status: "gray", taxInfo: "Pas de cadre spécifique. Revenus à déclarer.", beyondMsg: "Service non disponible — cadre légal non défini" },
+  PT: { limit: 0, label: "Portugal", flag: "🇵🇹", status: "gray", taxInfo: "Pas de cadre spécifique. Revenus à déclarer.", beyondMsg: "Service non disponible — cadre légal non défini" },
+  NL: { limit: 0, label: "Pays-Bas", flag: "🇳🇱", status: "strict", taxInfo: "Tendance forte à requalifier en salarié. Risque juridique élevé.", beyondMsg: "Service non disponible — risque de requalification en salarié" },
+  ES: { limit: 0, label: "Espagne", flag: "🇪🇸", status: "blocked", taxInfo: "Loi 2021 : statut salarié obligatoire pour la livraison.", beyondMsg: "Service interdit — statut salarié obligatoire (Loi Rider 2021)" },
 };
 
 export function getCountryLimit(countryCode) {

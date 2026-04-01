@@ -4439,27 +4439,39 @@ function FakeProfileScreen({ onLogout }) {
               {driverMode && (
                 <View style={{ marginTop:14, borderTopWidth:1, borderTopColor:'#F3F4F6', paddingTop:14 }}>
                   <Text style={{ fontSize:13, fontWeight:'600', color:'#374151', marginBottom:8 }}>{t('profile.driverCountry') || 'Pays de résidence fiscale'}</Text>
-                  <View style={{ flexDirection:'row', gap:8 }}>
-                    {Object.entries(COUNTRY_LIMITS).map(([code, info]) => (
+                  <View style={{ flexWrap:'wrap', flexDirection:'row', gap:8 }}>
+                    {Object.entries(COUNTRY_LIMITS).map(([code, info]) => {
+                      const isSelected = driverCountry === code;
+                      const isAvailable = info.status === 'ok';
+                      const statusColor = info.status === 'ok' ? BRAND : info.status === 'gray' ? '#F59E0B' : info.status === 'strict' ? '#F97316' : '#EF4444';
+                      const statusIcon = info.status === 'ok' ? 'checkmark-circle' : info.status === 'blocked' ? 'close-circle' : 'alert-circle';
+                      return (
                       <TouchableOpacity key={code} onPress={async () => {
+                        if (!isAvailable) {
+                          Alert.alert(info.flag + ' ' + info.label, info.beyondMsg);
+                          return;
+                        }
                         setDriverCountryState(code);
                         await setDriverCountry(code);
                         const e = await getDriverEarnings(); setDriverEarnings(e);
                         const ok = await canDeliver(); setDriverBlocked(!ok);
                       }} style={{
-                        flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center',
-                        paddingVertical:10, borderRadius:10,
-                        borderWidth: driverCountry === code ? 2 : 1,
-                        borderColor: driverCountry === code ? BRAND : '#E5E7EB',
-                        backgroundColor: driverCountry === code ? '#F0FDF4' : '#fff'
+                        width:'48%', flexDirection:'row', alignItems:'center',
+                        paddingVertical:10, paddingHorizontal:10, borderRadius:10,
+                        borderWidth: isSelected ? 2 : 1,
+                        borderColor: isSelected ? BRAND : '#E5E7EB',
+                        backgroundColor: isSelected ? '#F0FDF4' : !isAvailable ? '#F9FAFB' : '#fff',
+                        opacity: !isAvailable ? 0.7 : 1,
                       }}>
-                        <Text style={{fontSize:18, marginRight:6}}>{info.flag}</Text>
-                        <View>
-                          <Text style={{fontSize:13, fontWeight:'700', color: driverCountry === code ? BRAND : '#111'}}>{info.label}</Text>
-                          <Text style={{fontSize:11, color:'#6B7280'}}>{info.limit.toLocaleString()} €/an</Text>
+                        <Text style={{fontSize:20, marginRight:8}}>{info.flag}</Text>
+                        <View style={{flex:1}}>
+                          <Text style={{fontSize:12, fontWeight:'700', color: isSelected ? BRAND : '#111'}}>{info.label}</Text>
+                          <Text style={{fontSize:10, color:'#6B7280'}}>{info.limit > 0 ? info.limit.toLocaleString() + ' €/an' : info.status === 'blocked' ? 'Interdit' : 'Non défini'}</Text>
                         </View>
+                        <Ionicons name={statusIcon} size={14} color={statusColor} />
                       </TouchableOpacity>
-                    ))}
+                      );
+                    })}
                   </View>
 
                   {/* Progress bar */}
