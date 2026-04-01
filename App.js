@@ -3707,8 +3707,6 @@ function AuthScreen({ onLogin }) {
               <Ionicons name="bicycle" size={30} color="#fff" />
             </View>
             <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
-            {isLogin && <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{t('auth.loginSubtitle')}</Text>}
-            {!isLogin && isPro === null && <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{t('auth.signupSubtitle')}</Text>}
           </View>
         )}
         {/* Step title */}
