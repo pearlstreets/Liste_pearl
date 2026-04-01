@@ -3585,6 +3585,12 @@ function AuthScreen({ onLogin }) {
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+      {/* Back arrow when on signup */}
+      {!isLogin && (
+        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); setIsPro(false); setProStep(1); }} style={{paddingHorizontal:16, paddingTop:12}}>
+          <Ionicons name="arrow-back" size={26} color="#111" />
+        </TouchableOpacity>
+      )}
       <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24}} keyboardShouldPersistTaps="handled">
         {/* Logo */}
         <View style={{alignItems:'center', marginBottom:32}}>
