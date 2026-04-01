@@ -109,7 +109,7 @@ export const COUNTRY_LIMITS = {
 
 export function getCountryLimit(countryCode) {
   return COUNTRY_LIMITS[countryCode] || COUNTRY_LIMITS['FR'];
-} per year
+}
 
 // Set driver country
 export async function setDriverCountry(code) {
