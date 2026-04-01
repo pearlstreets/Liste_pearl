@@ -3628,6 +3628,14 @@ function AuthScreen({ onLogin }) {
           documents: { kbiss: docKbiss, iban: docIban, identityFront: docIdFront, identityBack: docIdBack, proofOfAddress: docProofAddress },
         });
       } catch(e) {}
+      // Save pro account locally so login works offline + shows pending page
+      const proAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password, role: 'professionaluser', isVerified: false, companyName: companyName.trim() };
+      const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
+      const accounts = accRaw ? JSON.parse(accRaw) : [];
+      if (!accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) {
+        accounts.push(proAccount);
+        await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
+      }
       // Always show pending page after document submission
       await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
       await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
@@ -4133,6 +4141,7 @@ const useCurrency = () => React.useContext(CurrencyContext);
 
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
+  const [proBlocked, setProBlocked] = React.useState(false);
   const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
   const [liveRates, setLiveRates] = React.useState(null);
 
@@ -4219,7 +4228,6 @@ export default function App() {
   }
 
   // Check if pro user needs verification
-  const [proBlocked, setProBlocked] = React.useState(false);
   React.useEffect(() => {
     (async () => {
       const authRaw = await AsyncStorage.getItem(KEY_AUTH);
