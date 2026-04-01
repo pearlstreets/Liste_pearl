@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "smart-grocery-mvp",
-    "slug": "smart-grocery-mvp",
-    "scheme": "smart-grocery-mvp",
+    "name": "Pearl Delivery",
+    "slug": "pearl-delivery",
+    "scheme": "pearl-delivery",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "assetBundlePatterns": [

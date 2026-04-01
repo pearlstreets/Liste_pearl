@@ -3591,7 +3591,7 @@ function AuthScreen({ onLogin }) {
           <View style={{width:80, height:80, borderRadius:40, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
             <Ionicons name="cart" size={40} color="#fff" />
           </View>
-          <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Smart Grocery</Text>
+          <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
           <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>{isLogin ? t('auth.loginSubtitle') : t('auth.signupSubtitle')}</Text>
         </View>
 
