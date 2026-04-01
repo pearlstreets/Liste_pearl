@@ -3745,11 +3745,11 @@ function AuthScreen({ onLogin }) {
           )}
         </TouchableOpacity>
 
-        {/* Switch */}
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={{alignItems:'center', paddingVertical:8}}>
-          <Text style={{color:'#6B7280', fontSize:14}}>
+        {/* Switch login/signup */}
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(false); setProStep(1); }} style={{alignItems:'center', paddingVertical:16, marginBottom:20}}>
+          <Text style={{color:'#6B7280', fontSize:15}}>
             {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
-            <Text style={{color:BRAND, fontWeight:'700'}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
+            <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
