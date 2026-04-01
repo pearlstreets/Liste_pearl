@@ -3390,8 +3390,37 @@ function AuthScreen({ onLogin }) {
   const [loading, setLoading] = React.useState(false);
 
   // Professional registration
-  const [isPro, setIsPro] = React.useState(false);
+  const [isPro, setIsPro] = React.useState(true);
   const [proStep, setProStep] = React.useState(1); // 1=info, 2=documents
+  const [signupCountry, setSignupCountry] = React.useState('FR');
+  const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
+  const SIGNUP_COUNTRIES = [
+    { code: 'FR', flag: '🇫🇷', name: 'France', phoneCode: '+33' },
+    { code: 'BE', flag: '🇧🇪', name: 'Belgique', phoneCode: '+32' },
+    { code: 'GB', flag: '🇬🇧', name: 'Royaume-Uni', phoneCode: '+44' },
+    { code: 'DE', flag: '🇩🇪', name: 'Allemagne', phoneCode: '+49' },
+    { code: 'IT', flag: '🇮🇹', name: 'Italie', phoneCode: '+39' },
+    { code: 'ES', flag: '🇪🇸', name: 'Espagne', phoneCode: '+34' },
+    { code: 'PT', flag: '🇵🇹', name: 'Portugal', phoneCode: '+351' },
+    { code: 'NL', flag: '🇳🇱', name: 'Pays-Bas', phoneCode: '+31' },
+    { code: 'CH', flag: '🇨🇭', name: 'Suisse', phoneCode: '+41' },
+    { code: 'LU', flag: '🇱🇺', name: 'Luxembourg', phoneCode: '+352' },
+    { code: 'AT', flag: '🇦🇹', name: 'Autriche', phoneCode: '+43' },
+    { code: 'IE', flag: '🇮🇪', name: 'Irlande', phoneCode: '+353' },
+    { code: 'SE', flag: '🇸🇪', name: 'Suède', phoneCode: '+46' },
+    { code: 'DK', flag: '🇩🇰', name: 'Danemark', phoneCode: '+45' },
+    { code: 'NO', flag: '🇳🇴', name: 'Norvège', phoneCode: '+47' },
+    { code: 'FI', flag: '🇫🇮', name: 'Finlande', phoneCode: '+358' },
+    { code: 'PL', flag: '🇵🇱', name: 'Pologne', phoneCode: '+48' },
+    { code: 'MA', flag: '🇲🇦', name: 'Maroc', phoneCode: '+212' },
+    { code: 'TN', flag: '🇹🇳', name: 'Tunisie', phoneCode: '+216' },
+    { code: 'DZ', flag: '🇩🇿', name: 'Algérie', phoneCode: '+213' },
+    { code: 'SN', flag: '🇸🇳', name: 'Sénégal', phoneCode: '+221' },
+    { code: 'CI', flag: '🇨🇮', name: 'Côte d\'Ivoire', phoneCode: '+225' },
+    { code: 'US', flag: '🇺🇸', name: 'États-Unis', phoneCode: '+1' },
+    { code: 'CA', flag: '🇨🇦', name: 'Canada', phoneCode: '+1' },
+  ];
+  const selectedCountry = SIGNUP_COUNTRIES.find(c => c.code === signupCountry) || SIGNUP_COUNTRIES[0];
   const [phone, setPhone] = React.useState('');
   const [companyName, setCompanyName] = React.useState('');
   const [managerName, setManagerName] = React.useState('');
@@ -3627,6 +3656,22 @@ function AuthScreen({ onLogin }) {
           </View>
         )}
 
+        {/* Country selector */}
+        {!isLogin && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays'}</Text>
+            <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
+              flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
+              borderRadius:12, padding:14, marginBottom:12, backgroundColor:'#fff'
+            }}>
+              <Text style={{fontSize:20, marginRight:10}}>{selectedCountry.flag}</Text>
+              <Text style={{flex:1, fontSize:15, color:'#111', fontWeight:'600'}}>{selectedCountry.name}</Text>
+              <Text style={{fontSize:13, color:'#6B7280', marginRight:6}}>{selectedCountry.phoneCode}</Text>
+              <Ionicons name="chevron-down" size={18} color="#9CA3AF" />
+            </TouchableOpacity>
+          </>
+        )}
+
         {/* Consumer signup fields */}
         {!isLogin && !isPro && (
           <>
@@ -3753,6 +3798,41 @@ function AuthScreen({ onLogin }) {
           </Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Country Picker Modal */}
+      <Modal visible={countryPickerVisible} animationType="none" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectCountry') || 'Sélectionner un pays'}</Text>
+              <TouchableOpacity onPress={() => setCountryPickerVisible(false)} style={{padding:6}}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={SIGNUP_COUNTRIES}
+              keyExtractor={(item) => item.code}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
+              renderItem={({item: country}) => (
+                <TouchableOpacity
+                  onPress={() => { setSignupCountry(country.code); setCountryPickerVisible(false); }}
+                  style={{
+                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
+                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
+                    backgroundColor: signupCountry === country.code ? '#F0FDF4' : '#fff',
+                  }}
+                >
+                  <Text style={{fontSize:24, marginRight:14}}>{country.flag}</Text>
+                  <Text style={{flex:1, fontSize:16, fontWeight: signupCountry === country.code ? '700' : '500', color: signupCountry === country.code ? BRAND : '#111'}}>{country.name}</Text>
+                  <Text style={{fontSize:13, color:'#6B7280'}}>{country.phoneCode}</Text>
+                  {signupCountry === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{marginLeft:8}} />}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
 
       {/* Forgot Password Modal */}
       <Modal visible={forgotVisible} transparent animationType="slide">
