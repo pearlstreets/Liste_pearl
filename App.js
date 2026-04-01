@@ -3530,8 +3530,10 @@ function AuthScreen({ onLogin }) {
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (!raw) {
-        const accounts = [DEFAULT_ACCOUNT];
+      const accounts = raw ? JSON.parse(raw) : [];
+      const hasDefault = accounts.some(a => a.email && a.email.toLowerCase() === DEFAULT_ACCOUNT.email.toLowerCase());
+      if (!hasDefault) {
+        accounts.push(DEFAULT_ACCOUNT);
         await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
       }
     })();
