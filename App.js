@@ -3616,7 +3616,7 @@ function AuthScreen({ onLogin }) {
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
       {/* Back arrow when on signup */}
       {!isLogin && (
-        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); setIsPro(false); setProStep(1); }} style={{paddingHorizontal:16, paddingTop:12}}>
+        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); setIsPro(true); setProStep(1); }} style={{paddingHorizontal:16, paddingTop:12}}>
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
       )}
@@ -3785,13 +3785,13 @@ function AuthScreen({ onLogin }) {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>
-              {isLogin ? t('auth.loginBtn') : (isPro && proStep === 1 ? (t('auth.proNext') || 'Suivant') : (isPro && proStep === 2 ? (t('auth.proSubmit') || 'Envoyer la demande') : t('auth.signupBtn')))}
+              {isLogin ? t('auth.loginBtn') : isPro ? (proStep === 1 ? (t('auth.proNext') || 'Suivant') : (t('auth.proSubmit') || 'Envoyer la demande')) : (t('auth.signupBtn') || "S'inscrire")}
             </Text>
           )}
         </TouchableOpacity>
 
         {/* Switch login/signup */}
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(false); setProStep(1); }} style={{alignItems:'center', paddingVertical:16, marginBottom:20}}>
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(true); setProStep(1); }} style={{alignItems:'center', paddingVertical:16, marginBottom:20}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
             {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
