@@ -3612,16 +3612,16 @@ function AuthScreen({ onLogin }) {
         {/* Toggle Particulier / Professionnel */}
         {!isLogin && (
           <View style={{flexDirection:'row', marginBottom:16}}>
-            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="person-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.individual') || 'Particulier'}</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
+            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <Ionicons name="storefront-outline" size={16} color={isPro ? '#fff' : '#555'} style={{marginRight:6}} />
                 <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.professional') || 'Professionnel'}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Ionicons name="person-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
+                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.individual') || 'Particulier'}</Text>
               </View>
             </TouchableOpacity>
           </View>
