@@ -219,6 +219,8 @@
     "driver": "Livreur",
     "proSignupSubtitle": "Inscription établissement",
     "userSignupSubtitle": "Inscription livreur",
+    "driverLastName": "Nom du livreur",
+    "driverFirstName": "Prénom du livreur",
     "country": "Pays de résidence",
     "selectCountry": "Pays de résidence",
     "phoneNumber": "Numéro de téléphone",

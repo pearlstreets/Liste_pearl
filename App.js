@@ -3724,14 +3724,14 @@ function AuthScreen({ onLogin }) {
         {/* Driver (livreur) signup fields */}
         {!isLogin && !isPro && (
           <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
-            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
+            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.firstName')}</Text>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverFirstName') || 'Prénom du livreur'}</Text>
             <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')}
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.lastName')}</Text>
-            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
+            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}

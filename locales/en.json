@@ -219,6 +219,8 @@
     "driver": "Driver",
     "proSignupSubtitle": "Business registration",
     "userSignupSubtitle": "Driver registration",
+    "driverLastName": "Driver last name",
+    "driverFirstName": "Driver first name",
     "country": "Country of residence",
     "selectCountry": "Country of residence",
     "phoneNumber": "Phone number",
