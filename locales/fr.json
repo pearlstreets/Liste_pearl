@@ -279,7 +279,10 @@
     "errorRetry": "Erreur, veuillez réessayer",
     "errorLoginFailed": "Identifiant ou mot de passe incorrect",
     "errorAccountNotFound": "Aucun compte trouvé avec cet email ou pseudo",
-    "errorWrongPassword": "Mot de passe incorrect"
+    "errorWrongPassword": "Mot de passe incorrect",
+    "errorBothEmpty": "Veuillez saisir votre email et mot de passe",
+    "errorNoEmail": "Veuillez saisir votre email ou pseudo",
+    "errorNoPassword": "Veuillez saisir votre mot de passe"
   },
   "cart": {
     "today": "Aujourd'hui",

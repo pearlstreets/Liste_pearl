@@ -279,7 +279,10 @@
     "errorRetry": "Error, please try again",
     "errorLoginFailed": "Invalid username or password",
     "errorAccountNotFound": "No account found with this email or username",
-    "errorWrongPassword": "Incorrect password"
+    "errorWrongPassword": "Incorrect password",
+    "errorBothEmpty": "Please enter your email and password",
+    "errorNoEmail": "Please enter your email or username",
+    "errorNoPassword": "Please enter your password"
   },
   "cart": {
     "today": "Today",

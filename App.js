@@ -3544,7 +3544,9 @@ function AuthScreen({ onLogin }) {
 
   const handleLogin = async () => {
     setError('');
-    if (!email.trim() || !password.trim()) { setError(t('auth.errorEmpty')); return; }
+    if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty') || 'Veuillez saisir votre email et mot de passe'); return; }
+    if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email ou pseudo'); return; }
+    if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
     setLoading(true);
     try {
       // Try Marketplace API login first
