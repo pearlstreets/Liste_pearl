@@ -3659,36 +3659,6 @@ function AuthScreen({ onLogin }) {
           </View>
         )}
 
-        {/* Country selector */}
-        {!isLogin && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
-            <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
-              flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
-              borderRadius:12, padding:14, marginBottom:12, backgroundColor:'#fff'
-            }}>
-              <Text style={{fontSize:20, marginRight:10}}>{selectedCountry.flag}</Text>
-              <Text style={{flex:1, fontSize:15, color:'#111', fontWeight:'600'}}>{selectedCountry.name}</Text>
-              <Ionicons name="chevron-down" size={18} color="#9CA3AF" />
-            </TouchableOpacity>
-
-            {/* Phone with country code */}
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.phoneNumber') || 'Numéro de téléphone'}</Text>
-            <View style={{flexDirection:'row', marginBottom:12}}>
-              <TouchableOpacity onPress={() => setPhonePickerVisible(true)} style={{
-                flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
-                borderRadius:12, padding:14, backgroundColor:'#fff', marginRight:8
-              }}>
-                <Text style={{fontSize:16, marginRight:6}}>{selectedPhoneCountry.flag}</Text>
-                <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{selectedPhoneCountry.phoneCode}</Text>
-                <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
-              </TouchableOpacity>
-              <TextInput value={phone} onChangeText={setPhone} placeholder="6 12 34 56 78" keyboardType="phone-pad"
-                style={{flex:1, borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, color:'#111'}} />
-            </View>
-          </>
-        )}
-
         {/* Consumer signup fields */}
         {!isLogin && !isPro && (
           <>
@@ -3707,13 +3677,13 @@ function AuthScreen({ onLogin }) {
         {/* Professional signup — Step 1: Company info */}
         {!isLogin && isPro && proStep === 1 && (
           <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proManagerName') || 'Nom du responsable'}</Text>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proManagerName') || 'Nom du gérant'}</Text>
             <TextInput value={managerName} onChangeText={setManagerName} placeholder="Jean Dupont"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'entreprise'}</Text>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'établissement'}</Text>
             <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSiret') || 'SIRET'}</Text>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSiret') || 'SIRET / Numéro d\'entreprise'}</Text>
             <TextInput value={siret} onChangeText={setSiret} placeholder="123 456 789 00012" keyboardType="number-pad"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proVat') || 'Numéro TVA (optionnel)'}</Text>
@@ -3722,6 +3692,35 @@ function AuthScreen({ onLogin }) {
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSector') || 'Secteur d\'activité'}</Text>
             <TextInput value={sector} onChangeText={setSector} placeholder="Alimentation, Commerce..."
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+          </>
+        )}
+
+        {/* Country + Phone — after name fields, for both pro and particulier */}
+        {!isLogin && (!isPro || proStep === 1) && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
+            <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
+              flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
+              borderRadius:12, padding:14, marginBottom:12, backgroundColor:'#fff'
+            }}>
+              <Text style={{fontSize:20, marginRight:10}}>{selectedCountry.flag}</Text>
+              <Text style={{flex:1, fontSize:15, color:'#111', fontWeight:'600'}}>{selectedCountry.name}</Text>
+              <Ionicons name="chevron-down" size={18} color="#9CA3AF" />
+            </TouchableOpacity>
+
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.phoneNumber') || 'Numéro de téléphone'}</Text>
+            <View style={{flexDirection:'row', marginBottom:12}}>
+              <TouchableOpacity onPress={() => setPhonePickerVisible(true)} style={{
+                flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
+                borderRadius:12, padding:14, backgroundColor:'#fff', marginRight:8
+              }}>
+                <Text style={{fontSize:16, marginRight:6}}>{selectedPhoneCountry.flag}</Text>
+                <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{selectedPhoneCountry.phoneCode}</Text>
+                <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
+              </TouchableOpacity>
+              <TextInput value={phone} onChangeText={setPhone} placeholder="6 12 34 56 78" keyboardType="phone-pad"
+                style={{flex:1, borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, color:'#111'}} />
+            </View>
           </>
         )}
 
