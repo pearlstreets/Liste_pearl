@@ -3859,7 +3859,7 @@ function AuthScreen({ onLogin }) {
         {(isLogin || (isPro !== null && proStep === 1)) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none"
+            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none" autoComplete="off" textContentType="none"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
@@ -3869,7 +3869,7 @@ function AuthScreen({ onLogin }) {
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd}
+              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode"
                 style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
               <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
                 <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
@@ -3883,7 +3883,7 @@ function AuthScreen({ onLogin }) {
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.confirmPassword') || 'Confirmer le mot de passe'}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd}
+              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode"
                 style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
             </View>
           </>
