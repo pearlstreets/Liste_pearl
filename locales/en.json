@@ -277,7 +277,9 @@
     "newPasswordMsg": "Your new password is: ",
     "noteBeforeClosing": "Note it before closing this window.",
     "errorRetry": "Error, please try again",
-    "errorLoginFailed": "Invalid username or password"
+    "errorLoginFailed": "Invalid username or password",
+    "errorAccountNotFound": "No account found with this email or username",
+    "errorWrongPassword": "Incorrect password"
   },
   "cart": {
     "today": "Today",

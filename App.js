@@ -3561,8 +3561,10 @@ function AuthScreen({ onLogin }) {
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
       const accounts = raw ? JSON.parse(raw) : [];
       const input = email.trim().toLowerCase();
-      const found = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)) && a.password === password);
-      if (!found) { setError(result.message || t('auth.errorLoginFailed')); setLoading(false); return; }
+      const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
+      if (!accountExists) { setError(t('auth.errorAccountNotFound') || 'Aucun compte trouvé avec cet email ou pseudo'); setLoading(false); return; }
+      const found = accountExists.password === password ? accountExists : null;
+      if (!found) { setError(t('auth.errorWrongPassword') || 'Mot de passe incorrect'); setLoading(false); return; }
       const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
       await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
       const savedData = await AsyncStorage.getItem(userKey + '_DATA');

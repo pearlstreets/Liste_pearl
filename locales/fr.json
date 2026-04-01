@@ -277,7 +277,9 @@
     "newPasswordMsg": "Votre nouveau mot de passe est : ",
     "noteBeforeClosing": "Notez-le avant de fermer cette fenêtre.",
     "errorRetry": "Erreur, veuillez réessayer",
-    "errorLoginFailed": "Identifiant ou mot de passe incorrect"
+    "errorLoginFailed": "Identifiant ou mot de passe incorrect",
+    "errorAccountNotFound": "Aucun compte trouvé avec cet email ou pseudo",
+    "errorWrongPassword": "Mot de passe incorrect"
   },
   "cart": {
     "today": "Aujourd'hui",
