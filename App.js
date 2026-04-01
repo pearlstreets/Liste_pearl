@@ -3694,7 +3694,7 @@ function AuthScreen({ onLogin }) {
           </View>
           <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
           <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>
-            {isLogin ? t('auth.loginSubtitle') : (isPro ? (t('auth.proSignupSubtitle') || 'Inscription Livreur Pro') : (t('auth.userSignupSubtitle') || 'Inscription Livreur Particulier'))}
+            {isLogin ? t('auth.loginSubtitle') : isPro === null ? (t('auth.signupSubtitle') || 'Créez votre compte') : isPro ? (t('auth.proSignupSubtitle') || 'Inscription Livreur Pro') : (t('auth.userSignupSubtitle') || 'Inscription Livreur Particulier')}
           </Text>
         </View>
 
@@ -3740,7 +3740,7 @@ function AuthScreen({ onLogin }) {
         )}
 
         {/* Driver (livreur) signup fields */}
-        {!isLogin && !isPro && (
+        {!isLogin && isPro === false && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
             <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
