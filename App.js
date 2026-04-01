@@ -3,7 +3,7 @@ import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
+import { loginUser, registerUser, registerProfessional, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
@@ -3388,6 +3388,26 @@ function AuthScreen({ onLogin }) {
 
   const [loading, setLoading] = React.useState(false);
 
+  // Professional registration
+  const [isPro, setIsPro] = React.useState(false);
+  const [proStep, setProStep] = React.useState(1); // 1=info, 2=documents
+  const [phone, setPhone] = React.useState('');
+  const [companyName, setCompanyName] = React.useState('');
+  const [managerName, setManagerName] = React.useState('');
+  const [siret, setSiret] = React.useState('');
+  const [vatNumber, setVatNumber] = React.useState('');
+  const [sector, setSector] = React.useState('');
+  const [docKbiss, setDocKbiss] = React.useState(null);
+  const [docIban, setDocIban] = React.useState(null);
+  const [docIdFront, setDocIdFront] = React.useState(null);
+  const [docIdBack, setDocIdBack] = React.useState(null);
+  const [docProofAddress, setDocProofAddress] = React.useState(null);
+
+  const pickDocument = async (setter) => {
+    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.7 });
+    if (!result.canceled && result.assets?.length > 0) setter(result.assets[0].uri);
+  };
+
   const handleForgotPassword = async () => {
     setForgotError(''); setForgotMsg('');
     if (!forgotEmail.trim()) { setForgotError(t('auth.errorEmailRequired')); return; }
@@ -3476,17 +3496,57 @@ function AuthScreen({ onLogin }) {
 
   const handleSignup = async () => {
     setError('');
+
+    // Professional signup
+    if (isPro) {
+      if (proStep === 1) {
+        // Validate step 1 fields
+        if (!email.trim() || !password.trim() || !phone.trim() || !companyName.trim() || !managerName.trim() || !siret.trim()) {
+          setError(t('auth.errorEmpty')); return;
+        }
+        if (password.length < 8) { setError(t('auth.proPasswordLength') || 'Minimum 8 caractères avec une majuscule'); return; }
+        setProStep(2);
+        return;
+      }
+      // Step 2: validate documents
+      if (!docKbiss || !docIban || !docProofAddress) {
+        setError(t('auth.proDocRequired') || 'KBISS, IBAN et justificatif de domicile sont obligatoires');
+        return;
+      }
+      setLoading(true);
+      try {
+        const result = await registerProfessional({
+          email: email.trim(), password, phone: phone.trim(), phoneCode: '+33',
+          companyName: companyName.trim(), managerFullName: managerName.trim(),
+          siret: siret.trim(), vatNumber: vatNumber.trim(), sector: sector.trim(),
+          documents: { kbiss: docKbiss, iban: docIban, identityFront: docIdFront, identityBack: docIdBack, proofOfAddress: docProofAddress },
+        });
+        if (result.success) {
+          await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+          await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+          await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+          await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+          await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+          await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+          setLoading(false);
+          Alert.alert(t('auth.proSuccessTitle') || 'Compte créé', t('auth.proSuccessMsg') || 'Votre compte professionnel est en cours de vérification. Vous serez notifié une fois approuvé.');
+          onLogin();
+          return;
+        }
+        setError(result.message);
+        setLoading(false);
+      } catch(e) { setError(t('auth.errorRetry')); setLoading(false); }
+      return;
+    }
+
+    // Consumer signup
     if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty')); return; }
     if (password.length < 6) { setError(t('auth.errorPasswordLength')); return; }
     setLoading(true);
     try {
-      // Try Marketplace API registration first
       const result = await registerUser({
-        username: pseudo.trim(),
-        email: email.trim(),
-        password,
-        firstName: prenom.trim(),
-        lastName: nom.trim(),
+        username: pseudo.trim(), email: email.trim(), password,
+        firstName: prenom.trim(), lastName: nom.trim(),
       });
       if (result.success) {
         await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
@@ -3518,10 +3578,7 @@ function AuthScreen({ onLogin }) {
       await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
       setLoading(false);
       onLogin();
-    } catch(e) {
-      setError(t('auth.errorRetry'));
-      setLoading(false);
-    }
+    } catch(e) { setError(t('auth.errorRetry')); setLoading(false); }
   };
 
   return (
@@ -3545,8 +3602,26 @@ function AuthScreen({ onLogin }) {
           </View>
         ) : null}
 
-        {/* Signup fields */}
+        {/* Toggle Particulier / Professionnel */}
         {!isLogin && (
+          <View style={{flexDirection:'row', marginBottom:16}}>
+            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Ionicons name="person-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
+                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.individual') || 'Particulier'}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Ionicons name="storefront-outline" size={16} color={isPro ? '#fff' : '#555'} style={{marginRight:6}} />
+                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.professional') || 'Professionnel'}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Consumer signup fields */}
+        {!isLogin && !isPro && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
             <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
@@ -3560,20 +3635,89 @@ function AuthScreen({ onLogin }) {
           </>
         )}
 
-        {/* Email / Pseudo */}
-        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-        <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none"
-          style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+        {/* Professional signup — Step 1: Company info */}
+        {!isLogin && isPro && proStep === 1 && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proManagerName') || 'Nom du responsable'}</Text>
+            <TextInput value={managerName} onChangeText={setManagerName} placeholder="Jean Dupont"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'entreprise'}</Text>
+            <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSiret') || 'SIRET'}</Text>
+            <TextInput value={siret} onChangeText={setSiret} placeholder="123 456 789 00012" keyboardType="number-pad"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proVat') || 'Numéro TVA (optionnel)'}</Text>
+            <TextInput value={vatNumber} onChangeText={setVatNumber} placeholder="FR12345678901"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSector') || 'Secteur d\'activité'}</Text>
+            <TextInput value={sector} onChangeText={setSector} placeholder="Alimentation, Commerce..."
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proPhone') || 'Téléphone'}</Text>
+            <TextInput value={phone} onChangeText={setPhone} placeholder="06 12 34 56 78" keyboardType="phone-pad"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+          </>
+        )}
 
-        {/* Password */}
-        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
-        <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-          <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd}
-            style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
-          <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
-            <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
-          </TouchableOpacity>
-        </View>
+        {/* Professional signup — Step 2: Documents */}
+        {!isLogin && isPro && proStep === 2 && (
+          <View style={{marginBottom:12}}>
+            <View style={{flexDirection:'row', alignItems:'center', marginBottom:16}}>
+              <TouchableOpacity onPress={() => setProStep(1)} style={{marginRight:10}}>
+                <Ionicons name="arrow-back" size={22} color="#111" />
+              </TouchableOpacity>
+              <Text style={{fontSize:16, fontWeight:'800', color:'#111'}}>{t('auth.proDocTitle') || 'Documents obligatoires'}</Text>
+            </View>
+
+            {[
+              { label: t('auth.docKbiss') || 'KBISS', value: docKbiss, setter: setDocKbiss, required: true },
+              { label: t('auth.docIban') || 'IBAN / RIB', value: docIban, setter: setDocIban, required: true },
+              { label: t('auth.docIdFront') || 'Carte d\'identité (recto)', value: docIdFront, setter: setDocIdFront, required: false },
+              { label: t('auth.docIdBack') || 'Carte d\'identité (verso)', value: docIdBack, setter: setDocIdBack, required: false },
+              { label: t('auth.docProofAddress') || 'Justificatif de domicile', value: docProofAddress, setter: setDocProofAddress, required: true },
+            ].map((doc, i) => (
+              <TouchableOpacity key={i} onPress={() => pickDocument(doc.setter)} style={{
+                flexDirection:'row', alignItems:'center', padding:14, borderWidth:1,
+                borderColor: doc.value ? BRAND : '#E5E7EB', borderRadius:12, marginBottom:10,
+                backgroundColor: doc.value ? '#F0FDF4' : '#fff'
+              }}>
+                <Ionicons name={doc.value ? "checkmark-circle" : "cloud-upload-outline"} size={22} color={doc.value ? BRAND : '#9CA3AF'} style={{marginRight:12}} />
+                <View style={{flex:1}}>
+                  <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{doc.label}{doc.required ? ' *' : ''}</Text>
+                  {doc.value ? <Text style={{fontSize:11, color:BRAND, marginTop:2}}>{t('auth.docUploaded') || 'Document ajouté'}</Text> : <Text style={{fontSize:11, color:'#9CA3AF', marginTop:2}}>{t('auth.docTapUpload') || 'Appuyez pour ajouter'}</Text>}
+                </View>
+                {doc.value && (
+                  <TouchableOpacity onPress={() => doc.setter(null)} style={{padding:4}}>
+                    <Ionicons name="close-circle" size={20} color="#EF4444" />
+                  </TouchableOpacity>
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Email / Pseudo — hidden on pro step 2 */}
+        {(isLogin || !isPro || proStep === 1) && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
+            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none"
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+          </>
+        )}
+
+        {/* Password — hidden on pro step 2 */}
+        {(isLogin || !isPro || proStep === 1) && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
+            <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
+              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd}
+                style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
+              <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
+                <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
 
         {/* Forgot password link */}
         {isLogin && (
@@ -3588,7 +3732,9 @@ function AuthScreen({ onLogin }) {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>
+            <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>
+              {isLogin ? t('auth.loginBtn') : (isPro && proStep === 1 ? (t('auth.proNext') || 'Suivant') : (isPro && proStep === 2 ? (t('auth.proSubmit') || 'Envoyer la demande') : t('auth.signupBtn')))}
+            </Text>
           )}
         </TouchableOpacity>
 
@@ -3854,6 +4000,7 @@ function FakeProfileScreen({ onLogout }) {
   const [editPostalCode, setEditPostalCode] = React.useState('');
   const [editCountry, setEditCountry] = React.useState('');
   const [geoLoading, setGeoLoading] = React.useState(false);
+  const [docStatuses, setDocStatuses] = React.useState(null);
 
   const loadProfile = React.useCallback(async () => {
     try {
@@ -3877,7 +4024,32 @@ function FakeProfileScreen({ onLogout }) {
     } catch(e) {}
   }, []);
 
-  useFocusEffect(React.useCallback(() => { loadProfile(); loadOrders(); }, [loadProfile, loadOrders]));
+  useFocusEffect(React.useCallback(() => {
+    loadProfile(); loadOrders();
+    // Load document verification status for pro users
+    (async () => {
+      try {
+        const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+        const auth = authRaw ? JSON.parse(authRaw) : {};
+        if (auth.role === 'professionaluser') {
+          const data = await getDocumentStatus();
+          if (data.status && data.document_status) {
+            setDocStatuses(data.document_status);
+            // Update isVerified in profile
+            if (data.document_status.is_verified) {
+              const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
+              const prof = profRaw ? JSON.parse(profRaw) : {};
+              if (!prof.isVerified) {
+                prof.isVerified = true;
+                await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
+                setProfile(prof);
+              }
+            }
+          }
+        }
+      } catch(e) {}
+    })();
+  }, [loadProfile, loadOrders]));
 
   const saveProfile = async () => {
     const updated = { ...profile, nom: editNom.trim(), prenom: editPrenom.trim(), pseudo: editPseudo.trim(), email: editEmail.trim() };
@@ -4104,6 +4276,50 @@ function FakeProfileScreen({ onLogout }) {
             <Text style={{ color:'#fff', fontWeight:'700' }}>{t('profile.editProfile')}</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Document Verification Status (Pro users) */}
+        {profile.role === 'professionaluser' && (
+          <View style={{ paddingHorizontal:16, marginBottom:16 }}>
+            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
+              {t('profile.verificationStatus') || 'Statut de vérification'}
+            </Text>
+            {!profile.isVerified && (
+              <View style={{ backgroundColor:'#FEF3C7', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
+                <Ionicons name="time-outline" size={20} color="#F59E0B" style={{marginRight:10}} />
+                <Text style={{ flex:1, fontSize:13, color:'#92400E' }}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
+              </View>
+            )}
+            {profile.isVerified && (
+              <View style={{ backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
+                <Ionicons name="checkmark-circle" size={20} color="#059669" style={{marginRight:10}} />
+                <Text style={{ flex:1, fontSize:13, color:'#065F46', fontWeight:'600' }}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
+              </View>
+            )}
+            {docStatuses && (
+              <View style={{ backgroundColor:'#fff', borderRadius:12, padding:14, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+                {[
+                  { key: 'kbiss_status', label: 'KBISS' },
+                  { key: 'iban_status', label: 'IBAN / RIB' },
+                  { key: 'identityCardFront_status', label: t('auth.docIdFront') || 'Carte d\'identité (recto)' },
+                  { key: 'identityCardBack_status', label: t('auth.docIdBack') || 'Carte d\'identité (verso)' },
+                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress') || 'Justificatif de domicile' },
+                ].map((doc, i) => {
+                  const status = docStatuses[doc.key] || 'pending';
+                  const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
+                  const color = status === 'approved' ? '#059669' : status === 'rejected' ? '#EF4444' : '#F59E0B';
+                  const label = status === 'approved' ? (t('profile.docApproved') || 'Approuvé') : status === 'rejected' ? (t('profile.docRejected') || 'Rejeté') : (t('profile.docPending') || 'En attente');
+                  return (
+                    <View key={i} style={{ flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth: i < 4 ? 1 : 0, borderBottomColor:'#F3F4F6' }}>
+                      <Ionicons name={icon} size={18} color={color} style={{marginRight:10}} />
+                      <Text style={{ flex:1, fontSize:14, fontWeight:'500', color:'#111' }}>{doc.label}</Text>
+                      <Text style={{ fontSize:12, fontWeight:'600', color }}>{label}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        )}
 
         {/* Order History */}
         <View style={{ paddingHorizontal:16 }}>

@@ -119,6 +119,62 @@ export async function verifyOTP(otp) {
   return data;
 }
 
+// Register a professional user with company details and documents
+export async function registerProfessional({ email, password, phone, phoneCode, companyName, managerFullName, siret, vatNumber, sector, address, documents }) {
+  const { apiUpload } = require("./api");
+
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("confirm_password", password);
+  formData.append("phone", phone || "");
+  formData.append("phoneCode", phoneCode || "+33");
+  formData.append("term_condition", "true");
+  formData.append("companyName", companyName || "");
+  formData.append("managerFullName", managerFullName || "");
+  formData.append("siret", siret || "");
+  formData.append("vatNumber", vatNumber || "");
+  formData.append("sectorofActivity", sector || "");
+  formData.append("manual_address", JSON.stringify(address || { address1: "", city: "", postalCode: "", country: "France" }));
+
+  // Documents obligatoires
+  if (documents.kbiss) formData.append("kbiss", { uri: documents.kbiss, type: "application/pdf", name: "kbiss.pdf" });
+  if (documents.iban) formData.append("iban", { uri: documents.iban, type: "application/pdf", name: "iban.pdf" });
+  if (documents.identityFront) formData.append("identityCardFront", { uri: documents.identityFront, type: "image/jpeg", name: "id_front.jpg" });
+  if (documents.identityBack) formData.append("identityCardBack", { uri: documents.identityBack, type: "image/jpeg", name: "id_back.jpg" });
+  if (documents.proofOfAddress) formData.append("proofOfAddress", { uri: documents.proofOfAddress, type: "image/jpeg", name: "proof_address.jpg" });
+
+  const data = await apiUpload("/userprofessional/register/", formData);
+
+  if (data.status && data.access_token) {
+    await saveTokens(data.access_token, data.refresh_token);
+    const user = data.user || {};
+    const authData = {
+      id: user.id,
+      email: user.email || email,
+      username: user.userName || email,
+      pseudo: user.userName || companyName,
+      prenom: managerFullName,
+      nom: companyName,
+      phone: user.phone || phone,
+      photo: null,
+      role: "professionaluser",
+      isVerified: false,
+      companyName: companyName,
+    };
+    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(authData));
+    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(authData));
+    return { success: true, user: authData };
+  }
+
+  return { success: false, message: data.message || data.error || "Registration failed" };
+}
+
+// Get document verification status (professional users)
+export async function getDocumentStatus() {
+  return apiGet("/userprofessional/document-status/");
+}
+
 // Check if user is authenticated (has valid tokens)
 export async function isAuthenticated() {
   const tokens = await getTokens();
