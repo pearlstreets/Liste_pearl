@@ -224,6 +224,7 @@
     "proProDesc": "You have a business or professional status",
     "driverParticulierDesc": "You want to deliver as a side income",
     "stepEmail": "Step 1 — Credentials",
+    "stepInfo": "Step 2 — Information",
     "confirmPassword": "Confirm password",
     "confirmPasswordPlaceholder": "Confirm your password",
     "errorPasswordMismatch": "Passwords do not match",

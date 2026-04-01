@@ -224,6 +224,7 @@
     "proProDesc": "Vous avez un établissement ou un statut professionnel",
     "driverParticulierDesc": "Vous souhaitez livrer en complément de revenu",
     "stepEmail": "Étape 1 — Identifiants",
+    "stepInfo": "Étape 2 — Informations",
     "confirmPassword": "Confirmer le mot de passe",
     "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
     "errorPasswordMismatch": "Les mots de passe ne correspondent pas",

@@ -3785,8 +3785,8 @@ function AuthScreen({ onLogin }) {
             <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'établissement'}</Text>
-            <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique"
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique" editable={true} autoCorrect={false}
+              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111', backgroundColor:'#fff'}} />
           </>
         )}
 
