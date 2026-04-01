@@ -4466,7 +4466,7 @@ function FakeProfileScreen({ onLogout }) {
                         <Text style={{fontSize:20, marginRight:8}}>{info.flag}</Text>
                         <View style={{flex:1}}>
                           <Text style={{fontSize:12, fontWeight:'700', color: isSelected ? BRAND : '#111'}}>{info.label}</Text>
-                          <Text style={{fontSize:10, color:'#6B7280'}}>{info.limit > 0 ? info.limit.toLocaleString() + ' €/an' : info.status === 'blocked' ? 'Interdit' : 'Non défini'}</Text>
+                          <Text style={{fontSize:10, color:'#6B7280'}}>{info.limit > 0 ? info.limit.toLocaleString() + ' ' + (info.currency || '€') + '/an' : info.status === 'blocked' ? 'Interdit' : 'Non défini'}</Text>
                         </View>
                         <Ionicons name={statusIcon} size={14} color={statusColor} />
                       </TouchableOpacity>
@@ -4477,7 +4477,7 @@ function FakeProfileScreen({ onLogout }) {
                   {/* Progress bar */}
                   <View style={{ flexDirection:'row', justifyContent:'space-between', marginTop:14, marginBottom:6 }}>
                     <Text style={{ fontSize:13, fontWeight:'600', color:'#374151' }}>{t('profile.driverEarnings') || 'Gains cette année'}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>{(driverEarnings.total_year || 0).toFixed(2)} € / {limit.toLocaleString()} €</Text>
+                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>{(driverEarnings.total_year || 0).toFixed(2)} {countryInfo.currency || '€'} / {limit.toLocaleString()} {countryInfo.currency || '€'}</Text>
                   </View>
                   <View style={{ height:8, backgroundColor:'#F3F4F6', borderRadius:4, overflow:'hidden' }}>
                     <View style={{ height:8, borderRadius:4, backgroundColor: driverBlocked ? '#EF4444' : BRAND, width: Math.min(100, ((driverEarnings.total_year || 0) / limit) * 100) + '%' }} />
@@ -4491,7 +4491,7 @@ function FakeProfileScreen({ onLogout }) {
                   ) : (
                     <View style={{ flexDirection:'row', alignItems:'center', marginTop:10, backgroundColor:'#F0FDF4', borderRadius:10, padding:10 }}>
                       <Ionicons name="checkmark-circle" size={18} color="#059669" style={{marginRight:8}} />
-                      <Text style={{ flex:1, fontSize:12, color:'#065F46' }}>{t('profile.driverActive') || 'Mode livreur actif. Restant :'} {(limit - (driverEarnings.total_year || 0)).toFixed(2)} €</Text>
+                      <Text style={{ flex:1, fontSize:12, color:'#065F46' }}>{t('profile.driverActive') || 'Mode livreur actif. Restant :'} {(limit - (driverEarnings.total_year || 0)).toFixed(2)} {countryInfo.currency || '€'}</Text>
                     </View>
                   )}
 

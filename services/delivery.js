@@ -103,6 +103,8 @@ export const COUNTRY_LIMITS = {
   PT: { limit: 0, label: "Portugal", flag: "🇵🇹", status: "gray", taxInfo: "Pas de cadre spécifique. Revenus à déclarer.", beyondMsg: "Service non disponible — cadre légal non défini" },
   NL: { limit: 0, label: "Pays-Bas", flag: "🇳🇱", status: "strict", taxInfo: "Tendance forte à requalifier en salarié. Risque juridique élevé.", beyondMsg: "Service non disponible — risque de requalification en salarié" },
   ES: { limit: 0, label: "Espagne", flag: "🇪🇸", status: "blocked", taxInfo: "Loi 2021 : statut salarié obligatoire pour la livraison.", beyondMsg: "Service interdit — statut salarié obligatoire (Loi Rider 2021)" },
+  GB: { limit: 1000, label: "Royaume-Uni", flag: "🇬🇧", status: "ok", currency: "£", taxInfo: "Trading Allowance : sous 1 000 £/an, rien à déclarer. Au-delà, enregistrement self-employed obligatoire auprès de HMRC.", beyondMsg: "Au-delà de 1 000 £ → enregistrement self-employed + déclaration HMRC obligatoire" },
+  CH: { limit: 0, label: "Suisse", flag: "🇨🇭", status: "blocked", taxInfo: "Depuis mars 2023, les livreurs sont considérés comme salariés en Suisse (gig economy).", beyondMsg: "Service non disponible — statut salarié obligatoire en Suisse" },
 };
 
 export function getCountryLimit(countryCode) {
