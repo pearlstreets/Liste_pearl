@@ -238,7 +238,7 @@
     "proNext": "Suivant",
     "proSubmit": "Envoyer la demande",
     "proDocTitle": "Documents obligatoires",
-    "proDocRequired": "KBISS, IBAN et justificatif de domicile sont obligatoires",
+    "proDocRequired": "Carte d'identité, IBAN et KBISS sont obligatoires",
     "proPasswordLength": "Minimum 8 caractères avec une majuscule",
     "proSuccessTitle": "Compte créé",
     "proSuccessMsg": "Votre compte professionnel est en cours de vérification. Vous serez notifié une fois approuvé.",

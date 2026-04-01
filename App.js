@@ -3604,8 +3604,8 @@ function AuthScreen({ onLogin }) {
         return;
       }
       // Step 2: validate documents
-      if (!docKbiss || !docIban || !docProofAddress) {
-        setError(t('auth.proDocRequired') || 'KBISS, IBAN et justificatif de domicile sont obligatoires');
+      if (!docIdFront || !docIdBack || !docIban || !docKbiss) {
+        setError(t('auth.proDocRequired') || 'Carte d\'identité, IBAN et KBISS sont obligatoires');
         return;
       }
       setLoading(true);
@@ -3771,15 +3771,6 @@ function AuthScreen({ onLogin }) {
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'établissement'}</Text>
             <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique"
               style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSiret') || 'SIRET / Numéro d\'entreprise'}</Text>
-            <TextInput value={siret} onChangeText={setSiret} placeholder="123 456 789 00012" keyboardType="number-pad"
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proVat') || 'Numéro TVA (optionnel)'}</Text>
-            <TextInput value={vatNumber} onChangeText={setVatNumber} placeholder="FR12345678901"
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proSector') || 'Secteur d\'activité'}</Text>
-            <TextInput value={sector} onChangeText={setSector} placeholder="Alimentation, Commerce..."
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
 
@@ -3823,20 +3814,19 @@ function AuthScreen({ onLogin }) {
             </View>
 
             {[
-              { label: t('auth.docKbiss') || 'KBISS', value: docKbiss, setter: setDocKbiss, required: true },
-              { label: t('auth.docIban') || 'IBAN / RIB', value: docIban, setter: setDocIban, required: true },
-              { label: t('auth.docIdFront') || 'Carte d\'identité (recto)', value: docIdFront, setter: setDocIdFront, required: false },
-              { label: t('auth.docIdBack') || 'Carte d\'identité (verso)', value: docIdBack, setter: setDocIdBack, required: false },
-              { label: t('auth.docProofAddress') || 'Justificatif de domicile', value: docProofAddress, setter: setDocProofAddress, required: true },
+              { label: t('auth.docIdFront') || 'Carte d\'identité (recto)', value: docIdFront, setter: setDocIdFront, required: true, icon: 'card-outline' },
+              { label: t('auth.docIdBack') || 'Carte d\'identité (verso)', value: docIdBack, setter: setDocIdBack, required: true, icon: 'card-outline' },
+              { label: t('auth.docIban') || 'IBAN / RIB', value: docIban, setter: setDocIban, required: true, icon: 'wallet-outline' },
+              { label: t('auth.docKbiss') || 'KBISS', value: docKbiss, setter: setDocKbiss, required: true, icon: 'document-text-outline' },
             ].map((doc, i) => (
               <TouchableOpacity key={i} onPress={() => pickDocument(doc.setter)} style={{
                 flexDirection:'row', alignItems:'center', padding:14, borderWidth:1,
                 borderColor: doc.value ? BRAND : '#E5E7EB', borderRadius:12, marginBottom:10,
                 backgroundColor: doc.value ? '#F0FDF4' : '#fff'
               }}>
-                <Ionicons name={doc.value ? "checkmark-circle" : "cloud-upload-outline"} size={22} color={doc.value ? BRAND : '#9CA3AF'} style={{marginRight:12}} />
+                <Ionicons name={doc.value ? "checkmark-circle" : doc.icon} size={22} color={doc.value ? BRAND : '#9CA3AF'} style={{marginRight:12}} />
                 <View style={{flex:1}}>
-                  <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{doc.label}{doc.required ? ' *' : ''}</Text>
+                  <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{doc.label} *</Text>
                   {doc.value ? <Text style={{fontSize:11, color:BRAND, marginTop:2}}>{t('auth.docUploaded') || 'Document ajouté'}</Text> : <Text style={{fontSize:11, color:'#9CA3AF', marginTop:2}}>{t('auth.docTapUpload') || 'Appuyez pour ajouter'}</Text>}
                 </View>
                 {doc.value && (

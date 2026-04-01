@@ -238,7 +238,7 @@
     "proNext": "Next",
     "proSubmit": "Submit application",
     "proDocTitle": "Required documents",
-    "proDocRequired": "KBISS, IBAN and proof of address are required",
+    "proDocRequired": "ID card, IBAN and KBISS are required",
     "proPasswordLength": "Minimum 8 characters with one uppercase",
     "proSuccessTitle": "Account created",
     "proSuccessMsg": "Your professional account is being reviewed. You will be notified once approved.",
