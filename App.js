@@ -3382,6 +3382,8 @@ function AuthScreen({ onLogin }) {
   const [nom, setNom] = React.useState('');
   const [error, setError] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
+  const [showConfirmPwd, setShowConfirmPwd] = React.useState(false);
+  const [pendingValidation, setPendingValidation] = React.useState(false);
   const [forgotVisible, setForgotVisible] = React.useState(false);
   const [forgotEmail, setForgotEmail] = React.useState('');
   const [forgotMsg, setForgotMsg] = React.useState('');
@@ -3633,8 +3635,7 @@ function AuthScreen({ onLogin }) {
           await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
           await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
           setLoading(false);
-          Alert.alert(t('auth.proSuccessTitle') || 'Compte créé', t('auth.proSuccessMsg') || 'Votre compte professionnel est en cours de vérification. Vous serez notifié une fois approuvé.');
-          onLogin();
+          setPendingValidation(true);
           return;
         }
         setError(result.message);
@@ -3683,6 +3684,47 @@ function AuthScreen({ onLogin }) {
       onLogin();
     } catch(e) { setError(t('auth.errorRetry')); setLoading(false); }
   };
+
+  // Pending validation page
+  if (pendingValidation) {
+    return (
+      <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+        <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:32}}>
+          <View style={{alignItems:'center'}}>
+            <View style={{width:80, height:80, borderRadius:40, backgroundColor:'#FEF3C7', alignItems:'center', justifyContent:'center', marginBottom:24}}>
+              <Ionicons name="time-outline" size={40} color="#F59E0B" />
+            </View>
+            <Text style={{fontSize:24, fontWeight:'900', color:'#111', textAlign:'center', marginBottom:12}}>
+              {t('auth.pendingTitle') || 'En attente de validation'}
+            </Text>
+            <Text style={{fontSize:15, color:'#6B7280', textAlign:'center', lineHeight:22, marginBottom:24}}>
+              {t('auth.pendingMsg') || 'Vos documents sont en cours de vérification par notre équipe. Vous recevrez un email de confirmation une fois votre compte approuvé.'}
+            </Text>
+
+            <View style={{backgroundColor:'#F9FAFB', borderRadius:12, padding:16, width:'100%', marginBottom:24}}>
+              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
+                <Ionicons name="mail-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingEmail') || 'Un email de confirmation vous sera envoyé'}</Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
+                <Ionicons name="shield-checkmark-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingReview') || 'Vérification sous 24-48h ouvrées'}</Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Ionicons name="notifications-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingNotif') || 'Vous serez notifié du résultat'}</Text>
+              </View>
+            </View>
+
+            <TouchableOpacity onPress={() => { setPendingValidation(false); setIsLogin(true); setIsPro(null); setProStep(1); }}
+              style={{height:52, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', width:'100%', marginBottom:12}}>
+              <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('auth.pendingBackLogin') || 'Retour à la connexion'}</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -3883,8 +3925,11 @@ function AuthScreen({ onLogin }) {
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.confirmPassword') || 'Confirmer le mot de passe'}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
+              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showConfirmPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
                 style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
+              <TouchableOpacity onPress={() => setShowConfirmPwd(!showConfirmPwd)} style={{paddingRight:14}}>
+                <Ionicons name={showConfirmPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
+              </TouchableOpacity>
             </View>
           </>
         )}
@@ -4174,6 +4219,84 @@ export default function App() {
       <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
         <AuthScreen onLogin={() => setIsAuth(true)} />
       </CurrencyContext.Provider>
+    );
+  }
+
+  // Check if pro user needs verification
+  const [proBlocked, setProBlocked] = React.useState(false);
+  React.useEffect(() => {
+    (async () => {
+      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+      if (authRaw) {
+        const auth = JSON.parse(authRaw);
+        if (auth.role === 'professionaluser' && !auth.isVerified) {
+          setProBlocked(true);
+        } else {
+          setProBlocked(false);
+        }
+      }
+    })();
+  }, [isAuth]);
+
+  if (proBlocked) {
+    return (
+      <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+        <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:32}}>
+          <View style={{alignItems:'center'}}>
+            <View style={{width:80, height:80, borderRadius:40, backgroundColor:'#FEF3C7', alignItems:'center', justifyContent:'center', marginBottom:24}}>
+              <Ionicons name="time-outline" size={40} color="#F59E0B" />
+            </View>
+            <Text style={{fontSize:24, fontWeight:'900', color:'#111', textAlign:'center', marginBottom:12}}>
+              En attente de validation
+            </Text>
+            <Text style={{fontSize:15, color:'#6B7280', textAlign:'center', lineHeight:22, marginBottom:24}}>
+              Vos documents sont en cours de vérification par notre équipe. Vous recevrez un email de confirmation une fois votre compte approuvé.
+            </Text>
+            <View style={{backgroundColor:'#F9FAFB', borderRadius:12, padding:16, width:'100%', marginBottom:24}}>
+              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
+                <Ionicons name="mail-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>Un email de confirmation vous sera envoyé</Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
+                <Ionicons name="shield-checkmark-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>Vérification sous 24-48h ouvrées</Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <Ionicons name="notifications-outline" size={20} color={BRAND} style={{marginRight:10}} />
+                <Text style={{fontSize:14, color:'#374151'}}>Vous serez notifié du résultat</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={async () => {
+              try { await logoutUser(); } catch(e) {}
+              try { await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS']); } catch(e) {}
+              setProBlocked(false);
+              setIsAuth(false);
+            }} style={{height:52, borderRadius:14, backgroundColor:'#EF4444', alignItems:'center', justifyContent:'center', width:'100%', marginBottom:12}}>
+              <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>Se déconnecter</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={async () => {
+              // Check if verified now
+              try {
+                const data = await getDocumentStatus();
+                if (data.status && data.document_status?.is_verified) {
+                  const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+                  if (authRaw) {
+                    const auth = JSON.parse(authRaw);
+                    auth.isVerified = true;
+                    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(auth));
+                  }
+                  setProBlocked(false);
+                  Alert.alert('Compte approuvé', 'Votre compte a été vérifié. Bienvenue !');
+                } else {
+                  Alert.alert('En cours', 'Vos documents sont toujours en cours de vérification.');
+                }
+              } catch(e) { Alert.alert('Erreur', 'Impossible de vérifier le statut.'); }
+            }} style={{height:48, borderRadius:14, borderWidth:1, borderColor:BRAND, alignItems:'center', justifyContent:'center', width:'100%'}}>
+              <Text style={{color:BRAND, fontWeight:'700', fontSize:15}}>Vérifier le statut</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
