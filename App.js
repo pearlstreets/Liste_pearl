@@ -3395,6 +3395,8 @@ function AuthScreen({ onLogin }) {
   const [signupCountry, setSignupCountry] = React.useState('FR');
   const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
   const [phonePickerVisible, setPhonePickerVisible] = React.useState(false);
+  const [authLangVisible, setAuthLangVisible] = React.useState(false);
+  const { i18n: i18nAuth } = useTranslation();
   const [phoneCountryCode, setPhoneCountryCode] = React.useState('FR');
   const SIGNUP_COUNTRIES = [
     { code: 'FR', flag: '🇫🇷', name: 'France', phoneCode: '+33' },
@@ -3419,8 +3421,66 @@ function AuthScreen({ onLogin }) {
     { code: 'DZ', flag: '🇩🇿', name: 'Algérie', phoneCode: '+213' },
     { code: 'SN', flag: '🇸🇳', name: 'Sénégal', phoneCode: '+221' },
     { code: 'CI', flag: '🇨🇮', name: 'Côte d\'Ivoire', phoneCode: '+225' },
+    { code: 'CM', flag: '🇨🇲', name: 'Cameroun', phoneCode: '+237' },
+    { code: 'CD', flag: '🇨🇩', name: 'RD Congo', phoneCode: '+243' },
+    { code: 'CG', flag: '🇨🇬', name: 'Congo', phoneCode: '+242' },
+    { code: 'GA', flag: '🇬🇦', name: 'Gabon', phoneCode: '+241' },
+    { code: 'ML', flag: '🇲🇱', name: 'Mali', phoneCode: '+223' },
+    { code: 'BF', flag: '🇧🇫', name: 'Burkina Faso', phoneCode: '+226' },
+    { code: 'GN', flag: '🇬🇳', name: 'Guinée', phoneCode: '+224' },
+    { code: 'BJ', flag: '🇧🇯', name: 'Bénin', phoneCode: '+229' },
+    { code: 'TG', flag: '🇹🇬', name: 'Togo', phoneCode: '+228' },
+    { code: 'NE', flag: '🇳🇪', name: 'Niger', phoneCode: '+227' },
+    { code: 'MG', flag: '🇲🇬', name: 'Madagascar', phoneCode: '+261' },
+    { code: 'MU', flag: '🇲🇺', name: 'Maurice', phoneCode: '+230' },
+    { code: 'EG', flag: '🇪🇬', name: 'Égypte', phoneCode: '+20' },
+    { code: 'LB', flag: '🇱🇧', name: 'Liban', phoneCode: '+961' },
+    { code: 'AE', flag: '🇦🇪', name: 'Émirats arabes unis', phoneCode: '+971' },
+    { code: 'SA', flag: '🇸🇦', name: 'Arabie saoudite', phoneCode: '+966' },
+    { code: 'QA', flag: '🇶🇦', name: 'Qatar', phoneCode: '+974' },
+    { code: 'KW', flag: '🇰🇼', name: 'Koweït', phoneCode: '+965' },
+    { code: 'TR', flag: '🇹🇷', name: 'Turquie', phoneCode: '+90' },
     { code: 'US', flag: '🇺🇸', name: 'États-Unis', phoneCode: '+1' },
     { code: 'CA', flag: '🇨🇦', name: 'Canada', phoneCode: '+1' },
+    { code: 'MX', flag: '🇲🇽', name: 'Mexique', phoneCode: '+52' },
+    { code: 'BR', flag: '🇧🇷', name: 'Brésil', phoneCode: '+55' },
+    { code: 'AR', flag: '🇦🇷', name: 'Argentine', phoneCode: '+54' },
+    { code: 'CO', flag: '🇨🇴', name: 'Colombie', phoneCode: '+57' },
+    { code: 'CL', flag: '🇨🇱', name: 'Chili', phoneCode: '+56' },
+    { code: 'AU', flag: '🇦🇺', name: 'Australie', phoneCode: '+61' },
+    { code: 'NZ', flag: '🇳🇿', name: 'Nouvelle-Zélande', phoneCode: '+64' },
+    { code: 'JP', flag: '🇯🇵', name: 'Japon', phoneCode: '+81' },
+    { code: 'KR', flag: '🇰🇷', name: 'Corée du Sud', phoneCode: '+82' },
+    { code: 'CN', flag: '🇨🇳', name: 'Chine', phoneCode: '+86' },
+    { code: 'IN', flag: '🇮🇳', name: 'Inde', phoneCode: '+91' },
+    { code: 'TH', flag: '🇹🇭', name: 'Thaïlande', phoneCode: '+66' },
+    { code: 'VN', flag: '🇻🇳', name: 'Vietnam', phoneCode: '+84' },
+    { code: 'PH', flag: '🇵🇭', name: 'Philippines', phoneCode: '+63' },
+    { code: 'ID', flag: '🇮🇩', name: 'Indonésie', phoneCode: '+62' },
+    { code: 'MY', flag: '🇲🇾', name: 'Malaisie', phoneCode: '+60' },
+    { code: 'SG', flag: '🇸🇬', name: 'Singapour', phoneCode: '+65' },
+    { code: 'RU', flag: '🇷🇺', name: 'Russie', phoneCode: '+7' },
+    { code: 'UA', flag: '🇺🇦', name: 'Ukraine', phoneCode: '+380' },
+    { code: 'RO', flag: '🇷🇴', name: 'Roumanie', phoneCode: '+40' },
+    { code: 'GR', flag: '🇬🇷', name: 'Grèce', phoneCode: '+30' },
+    { code: 'CZ', flag: '🇨🇿', name: 'Tchéquie', phoneCode: '+420' },
+    { code: 'HU', flag: '🇭🇺', name: 'Hongrie', phoneCode: '+36' },
+    { code: 'HR', flag: '🇭🇷', name: 'Croatie', phoneCode: '+385' },
+    { code: 'BG', flag: '🇧🇬', name: 'Bulgarie', phoneCode: '+359' },
+    { code: 'RS', flag: '🇷🇸', name: 'Serbie', phoneCode: '+381' },
+    { code: 'IL', flag: '🇮🇱', name: 'Israël', phoneCode: '+972' },
+    { code: 'ZA', flag: '🇿🇦', name: 'Afrique du Sud', phoneCode: '+27' },
+    { code: 'NG', flag: '🇳🇬', name: 'Nigeria', phoneCode: '+234' },
+    { code: 'GH', flag: '🇬🇭', name: 'Ghana', phoneCode: '+233' },
+    { code: 'KE', flag: '🇰🇪', name: 'Kenya', phoneCode: '+254' },
+    { code: 'HT', flag: '🇭🇹', name: 'Haïti', phoneCode: '+509' },
+    { code: 'GP', flag: '🇬🇵', name: 'Guadeloupe', phoneCode: '+590' },
+    { code: 'MQ', flag: '🇲🇶', name: 'Martinique', phoneCode: '+596' },
+    { code: 'GF', flag: '🇬🇫', name: 'Guyane française', phoneCode: '+594' },
+    { code: 'RE', flag: '🇷🇪', name: 'La Réunion', phoneCode: '+262' },
+    { code: 'YT', flag: '🇾🇹', name: 'Mayotte', phoneCode: '+262' },
+    { code: 'NC', flag: '🇳🇨', name: 'Nouvelle-Calédonie', phoneCode: '+687' },
+    { code: 'PF', flag: '🇵🇫', name: 'Polynésie française', phoneCode: '+689' },
   ];
   const selectedCountry = SIGNUP_COUNTRIES.find(c => c.code === signupCountry) || SIGNUP_COUNTRIES[0];
   const selectedPhoneCountry = SIGNUP_COUNTRIES.find(c => c.code === phoneCountryCode) || SIGNUP_COUNTRIES[0];
@@ -3804,13 +3864,57 @@ function AuthScreen({ onLogin }) {
         </TouchableOpacity>
 
         {/* Switch login/signup */}
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(true); setProStep(1); }} style={{alignItems:'center', paddingVertical:16, marginBottom:20}}>
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(true); setProStep(1); }} style={{alignItems:'center', paddingVertical:16}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
             {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
+
+        {/* Language selector */}
+        <TouchableOpacity onPress={() => setAuthLangVisible(true)} style={{alignItems:'center', paddingVertical:12, marginBottom:20}}>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <Ionicons name="globe-outline" size={16} color="#9CA3AF" style={{marginRight:6}} />
+            <Text style={{color:'#9CA3AF', fontSize:13}}>
+              {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
+            </Text>
+            <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
+          </View>
+        </TouchableOpacity>
       </ScrollView>
+
+      {/* Language Picker Modal */}
+      <Modal visible={authLangVisible} animationType="none" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'60%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.language') || 'Langue'}</Text>
+              <TouchableOpacity onPress={() => setAuthLangVisible(false)} style={{padding:6}}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={LANGUAGES}
+              keyExtractor={(item) => item.code}
+              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
+              renderItem={({item: lang}) => (
+                <TouchableOpacity
+                  onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANG', lang.code); setAuthLangVisible(false); }}
+                  style={{
+                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
+                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
+                    backgroundColor: i18nAuth.language === lang.code ? '#F0FDF4' : '#fff',
+                  }}
+                >
+                  <Text style={{fontSize:24, marginRight:14}}>{lang.flag}</Text>
+                  <Text style={{flex:1, fontSize:16, fontWeight: i18nAuth.language === lang.code ? '700' : '500', color: i18nAuth.language === lang.code ? BRAND : '#111'}}>{lang.label}</Text>
+                  {i18nAuth.language === lang.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
 
       {/* Country Picker Modal */}
       <Modal visible={countryPickerVisible} animationType="none" transparent={true}>
