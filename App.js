@@ -3691,7 +3691,7 @@ function AuthScreen({ onLogin }) {
           </View>
           <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
           <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>
-            {isLogin ? t('auth.loginSubtitle') : (isPro ? (t('auth.proSignupSubtitle') || 'Inscription établissement') : (t('auth.userSignupSubtitle') || 'Inscription livreur'))}
+            {isLogin ? t('auth.loginSubtitle') : (isPro ? (t('auth.proSignupSubtitle') || 'Inscription Livreur Pro') : (t('auth.userSignupSubtitle') || 'Inscription Livreur Particulier'))}
           </Text>
         </View>
 
@@ -3709,13 +3709,13 @@ function AuthScreen({ onLogin }) {
             <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <Ionicons name="storefront-outline" size={16} color={isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.establishment') || 'Établissement'}</Text>
+                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.proPro') || 'Livreur Pro'}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <Ionicons name="bicycle-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.driver') || 'Livreur'}</Text>
+                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.driverParticulier') || 'Livreur Particulier'}</Text>
               </View>
             </TouchableOpacity>
           </View>
