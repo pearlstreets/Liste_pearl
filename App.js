@@ -3879,13 +3879,12 @@ function AuthScreen({ onLogin }) {
       <TouchableOpacity onPress={() => setAuthLangVisible(true)} style={{
         flexDirection:'row', alignItems:'center', justifyContent:'center',
         marginHorizontal:24, marginBottom:12, paddingVertical:12,
-        borderRadius:12, borderWidth:1, borderColor:'#E5E7EB', backgroundColor:'#F9FAFB'
+        borderRadius:12, backgroundColor:'#fff'
       }}>
         <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
         <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>
           {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
         </Text>
-        <Ionicons name="chevron-down" size={16} color="#9CA3AF" style={{marginLeft:8}} />
       </TouchableOpacity>
 
       {/* Language Picker Modal */}
