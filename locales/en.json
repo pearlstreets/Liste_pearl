@@ -221,6 +221,8 @@
     "driverParticulier": "Individual Driver",
     "proSignupSubtitle": "Pro Driver Registration",
     "userSignupSubtitle": "Individual Driver Registration",
+    "proProDesc": "You have a business or professional status",
+    "driverParticulierDesc": "You want to deliver as a side income",
     "driverLastName": "Driver last name",
     "driverFirstName": "Driver first name",
     "country": "Country of residence",

@@ -3390,7 +3390,7 @@ function AuthScreen({ onLogin }) {
   const [loading, setLoading] = React.useState(false);
 
   // Professional registration
-  const [isPro, setIsPro] = React.useState(true);
+  const [isPro, setIsPro] = React.useState(null); // null=choose, true=pro, false=particulier
   const [proStep, setProStep] = React.useState(1); // 1=info, 2=documents
   const [signupCountry, setSignupCountry] = React.useState('FR');
   const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
@@ -3677,9 +3677,12 @@ function AuthScreen({ onLogin }) {
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-      {/* Back arrow when on signup */}
+      {/* Back arrow */}
       {!isLogin && (
-        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); setIsPro(true); setProStep(1); }} style={{paddingHorizontal:16, paddingTop:12}}>
+        <TouchableOpacity onPress={() => {
+          if (isPro !== null) { setIsPro(null); setProStep(1); setError(''); }
+          else { setIsLogin(true); setError(''); setIsPro(null); }
+        }} style={{paddingHorizontal:16, paddingTop:12}}>
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
       )}
@@ -3703,20 +3706,35 @@ function AuthScreen({ onLogin }) {
           </View>
         ) : null}
 
-        {/* Toggle Établissement / Livreur */}
-        {!isLogin && (
-          <View style={{flexDirection:'row', marginBottom:16}}>
-            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginRight:8, alignItems:'center', backgroundColor: isPro ? BRAND : '#fff'}}>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="storefront-outline" size={16} color={isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.proPro') || 'Livreur Pro'}</Text>
+        {/* Choose type — full page */}
+        {!isLogin && isPro === null && (
+          <View style={{marginBottom:16}}>
+            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{
+              borderWidth:2, borderColor:BRAND, borderRadius:16, padding:20, marginBottom:12,
+              backgroundColor:'#F0FDF4', flexDirection:'row', alignItems:'center'
+            }}>
+              <View style={{width:50, height:50, borderRadius:25, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginRight:16}}>
+                <Ionicons name="storefront" size={26} color="#fff" />
               </View>
+              <View style={{flex:1}}>
+                <Text style={{fontSize:17, fontWeight:'800', color:'#111'}}>{t('auth.proPro') || 'Livreur Pro'}</Text>
+                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{t('auth.proProDesc') || 'Vous avez un établissement ou un statut professionnel'}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={BRAND} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{flex:1, borderWidth:1, borderColor: !isPro ? BRAND : '#ccc', borderRadius:10, paddingVertical:10, marginLeft:8, alignItems:'center', backgroundColor: !isPro ? BRAND : '#fff'}}>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="bicycle-outline" size={16} color={!isPro ? '#fff' : '#555'} style={{marginRight:6}} />
-                <Text style={{color: !isPro ? '#fff' : '#555', fontWeight:'600', fontSize:14}}>{t('auth.driverParticulier') || 'Livreur Particulier'}</Text>
+
+            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{
+              borderWidth:2, borderColor:BRAND, borderRadius:16, padding:20,
+              backgroundColor:'#F0FDF4', flexDirection:'row', alignItems:'center'
+            }}>
+              <View style={{width:50, height:50, borderRadius:25, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginRight:16}}>
+                <Ionicons name="bicycle" size={26} color="#fff" />
               </View>
+              <View style={{flex:1}}>
+                <Text style={{fontSize:17, fontWeight:'800', color:'#111'}}>{t('auth.driverParticulier') || 'Livreur Particulier'}</Text>
+                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{t('auth.driverParticulierDesc') || 'Vous souhaitez livrer en complément de revenu'}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={BRAND} />
             </TouchableOpacity>
           </View>
         )}
@@ -3764,7 +3782,7 @@ function AuthScreen({ onLogin }) {
         )}
 
         {/* Country + Phone — after name fields, for both pro and particulier */}
-        {!isLogin && (!isPro || proStep === 1) && (
+        {!isLogin && isPro !== null && (!isPro || proStep === 1) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
             <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
@@ -3829,8 +3847,8 @@ function AuthScreen({ onLogin }) {
           </View>
         )}
 
-        {/* Email / Pseudo — hidden on pro step 2 */}
-        {(isLogin || !isPro || proStep === 1) && (
+        {/* Email / Pseudo — hidden on pro step 2 and choose page */}
+        {(isLogin || (isPro !== null && (!isPro || proStep === 1))) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
             <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none"
@@ -3838,8 +3856,8 @@ function AuthScreen({ onLogin }) {
           </>
         )}
 
-        {/* Password — hidden on pro step 2 */}
-        {(isLogin || !isPro || proStep === 1) && (
+        {/* Password — hidden on pro step 2 and choose page */}
+        {(isLogin || (isPro !== null && (!isPro || proStep === 1))) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
@@ -3859,7 +3877,8 @@ function AuthScreen({ onLogin }) {
           </TouchableOpacity>
         )}
 
-        {/* Button */}
+        {/* Button — hidden on choose page */}
+        {(isLogin || isPro !== null) && (
         <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading}
           style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
           {loading ? (
@@ -3870,9 +3889,10 @@ function AuthScreen({ onLogin }) {
             </Text>
           )}
         </TouchableOpacity>
+        )}
 
         {/* Switch login/signup */}
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(true); setProStep(1); }} style={{alignItems:'center', paddingVertical:16}}>
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(null); setProStep(1); }} style={{alignItems:'center', paddingVertical:16}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
             {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>

@@ -221,6 +221,8 @@
     "driverParticulier": "Livreur Particulier",
     "proSignupSubtitle": "Inscription Livreur Pro",
     "userSignupSubtitle": "Inscription Livreur Particulier",
+    "proProDesc": "Vous avez un établissement ou un statut professionnel",
+    "driverParticulierDesc": "Vous souhaitez livrer en complément de revenu",
     "driverLastName": "Nom du livreur",
     "driverFirstName": "Prénom du livreur",
     "country": "Pays de résidence",
