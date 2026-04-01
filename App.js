@@ -3391,7 +3391,8 @@ function AuthScreen({ onLogin }) {
 
   // Professional registration
   const [isPro, setIsPro] = React.useState(null); // null=choose, true=pro, false=particulier
-  const [proStep, setProStep] = React.useState(1); // 1=info, 2=documents
+  const [proStep, setProStep] = React.useState(1); // 1=email/mdp, 2=noms/pays/tel, 3=documents(pro)
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [signupCountry, setSignupCountry] = React.useState('FR');
   const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
   const [phonePickerVisible, setPhonePickerVisible] = React.useState(false);
@@ -3592,18 +3593,26 @@ function AuthScreen({ onLogin }) {
   const handleSignup = async () => {
     setError('');
 
+    // Step 1: email + password (both pro and particulier)
+    if (proStep === 1) {
+      if (!email.trim() || !password.trim() || !confirmPassword.trim()) { setError(t('auth.errorEmpty')); return; }
+      if (password.length < 6) { setError(t('auth.errorPasswordLength')); return; }
+      if (password !== confirmPassword) { setError(t('auth.errorPasswordMismatch') || 'Les mots de passe ne correspondent pas'); return; }
+      setProStep(2);
+      return;
+    }
+
     // Professional signup
     if (isPro) {
-      if (proStep === 1) {
-        // Validate step 1 fields
-        if (!email.trim() || !password.trim() || !phone.trim() || !companyName.trim() || !managerName.trim() || !siret.trim()) {
+      if (proStep === 2) {
+        // Validate step 2 fields
+        if (!nom.trim() || !prenom.trim() || !pseudo.trim() || !companyName.trim() || !phone.trim()) {
           setError(t('auth.errorEmpty')); return;
         }
-        if (password.length < 8) { setError(t('auth.proPasswordLength') || 'Minimum 8 caractères avec une majuscule'); return; }
-        setProStep(2);
+        setProStep(3);
         return;
       }
-      // Step 2: validate documents
+      // Step 3: validate documents
       if (!docIdFront || !docIdBack || !docIban || !docKbiss) {
         setError(t('auth.proDocRequired') || 'Carte d\'identité, IBAN et KBISS sont obligatoires');
         return;
@@ -3634,9 +3643,8 @@ function AuthScreen({ onLogin }) {
       return;
     }
 
-    // Consumer signup
-    if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty')); return; }
-    if (password.length < 6) { setError(t('auth.errorPasswordLength')); return; }
+    // Consumer signup (step 2 = final for particulier)
+    if (!pseudo.trim() || !prenom.trim() || !nom.trim() || !phone.trim()) { setError(t('auth.errorEmpty')); return; }
     setLoading(true);
     try {
       const result = await registerUser({
@@ -3682,8 +3690,11 @@ function AuthScreen({ onLogin }) {
       {/* Back arrow */}
       {!isLogin && (
         <TouchableOpacity onPress={() => {
-          if (isPro !== null) { setIsPro(null); setProStep(1); setError(''); }
-          else { setIsLogin(true); setError(''); setIsPro(null); }
+          setError('');
+          if (proStep === 3) { setProStep(2); }
+          else if (proStep === 2) { setProStep(1); }
+          else if (isPro !== null) { setIsPro(null); setProStep(1); }
+          else { setIsLogin(true); setIsPro(null); }
         }} style={{paddingHorizontal:16, paddingTop:12}}>
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
@@ -3696,7 +3707,7 @@ function AuthScreen({ onLogin }) {
           </View>
           <Text style={{fontSize:28, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
           <Text style={{fontSize:14, color:'#6B7280', marginTop:4}}>
-            {isLogin ? t('auth.loginSubtitle') : isPro === null ? (t('auth.signupSubtitle') || 'Créez votre compte') : isPro ? (t('auth.proSignupSubtitle') || 'Inscription Livreur Pro') : (t('auth.userSignupSubtitle') || 'Inscription Livreur Particulier')}
+            {isLogin ? t('auth.loginSubtitle') : isPro === null ? (t('auth.signupSubtitle') || 'Créez votre compte') : proStep === 1 ? (t('auth.stepEmail') || 'Étape 1 — Identifiants') : proStep === 2 ? (isPro ? (t('auth.proSignupSubtitle') || 'Étape 2 — Informations') : (t('auth.userSignupSubtitle') || 'Étape 2 — Informations')) : (t('auth.proDocTitle') || 'Étape 3 — Documents')}
           </Text>
         </View>
 
@@ -3741,8 +3752,8 @@ function AuthScreen({ onLogin }) {
           </View>
         )}
 
-        {/* Driver (livreur) signup fields */}
-        {!isLogin && isPro === false && (
+        {/* Driver (livreur) signup fields — step 2 */}
+        {!isLogin && isPro === false && proStep === 2 && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
             <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
@@ -3756,8 +3767,8 @@ function AuthScreen({ onLogin }) {
           </>
         )}
 
-        {/* Professional signup — Step 1: Company info */}
-        {!isLogin && isPro && proStep === 1 && (
+        {/* Professional signup — Step 2: Company info */}
+        {!isLogin && isPro && proStep === 2 && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
             <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
@@ -3775,7 +3786,7 @@ function AuthScreen({ onLogin }) {
         )}
 
         {/* Country + Phone — after name fields, for both pro and particulier */}
-        {!isLogin && isPro !== null && (!isPro || proStep === 1) && (
+        {!isLogin && isPro !== null && proStep === 2 && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
             <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
@@ -3803,11 +3814,11 @@ function AuthScreen({ onLogin }) {
           </>
         )}
 
-        {/* Professional signup — Step 2: Documents */}
-        {!isLogin && isPro && proStep === 2 && (
+        {/* Professional signup — Step 3: Documents */}
+        {!isLogin && isPro && proStep === 3 && (
           <View style={{marginBottom:12}}>
             <View style={{flexDirection:'row', alignItems:'center', marginBottom:16}}>
-              <TouchableOpacity onPress={() => setProStep(1)} style={{marginRight:10}}>
+              <TouchableOpacity onPress={() => setProStep(2)} style={{marginRight:10}}>
                 <Ionicons name="arrow-back" size={22} color="#111" />
               </TouchableOpacity>
               <Text style={{fontSize:16, fontWeight:'800', color:'#111'}}>{t('auth.proDocTitle') || 'Documents obligatoires'}</Text>
@@ -3839,8 +3850,8 @@ function AuthScreen({ onLogin }) {
           </View>
         )}
 
-        {/* Email / Pseudo — hidden on pro step 2 and choose page */}
-        {(isLogin || (isPro !== null && (!isPro || proStep === 1))) && (
+        {/* Email — login or signup step 1 */}
+        {(isLogin || (isPro !== null && proStep === 1)) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
             <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none"
@@ -3848,8 +3859,8 @@ function AuthScreen({ onLogin }) {
           </>
         )}
 
-        {/* Password — hidden on pro step 2 and choose page */}
-        {(isLogin || (isPro !== null && (!isPro || proStep === 1))) && (
+        {/* Password — login or signup step 1 */}
+        {(isLogin || (isPro !== null && proStep === 1)) && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
             <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
@@ -3858,6 +3869,17 @@ function AuthScreen({ onLogin }) {
               <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
                 <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
               </TouchableOpacity>
+            </View>
+          </>
+        )}
+
+        {/* Confirm password — signup step 1 only */}
+        {!isLogin && isPro !== null && proStep === 1 && (
+          <>
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.confirmPassword') || 'Confirmer le mot de passe'}</Text>
+            <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
+              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showPwd}
+                style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
             </View>
           </>
         )}
@@ -3877,7 +3899,7 @@ function AuthScreen({ onLogin }) {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>
-              {isLogin ? t('auth.loginBtn') : isPro ? (proStep === 1 ? (t('auth.proNext') || 'Suivant') : (t('auth.proSubmit') || 'Envoyer la demande')) : (t('auth.signupBtn') || "S'inscrire")}
+              {isLogin ? t('auth.loginBtn') : proStep === 1 ? (t('auth.proNext') || 'Suivant') : isPro ? (proStep === 2 ? (t('auth.proNext') || 'Suivant') : (t('auth.proSubmit') || 'Envoyer la demande')) : (t('auth.signupBtn') || "S'inscrire")}
             </Text>
           )}
         </TouchableOpacity>
