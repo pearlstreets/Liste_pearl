@@ -3699,7 +3699,7 @@ function AuthScreen({ onLogin }) {
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
       )}
-      <ScrollView contentContainerStyle={{flexGrow:1, paddingHorizontal:24, paddingTop: isLogin ? 60 : 20, paddingBottom:30}} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24, paddingVertical:30}} keyboardShouldPersistTaps="handled">
         {/* Logo — compact on form steps */}
         {(isLogin || isPro === null || proStep === 1) && (
           <View style={{alignItems:'center', marginBottom:24}}>
