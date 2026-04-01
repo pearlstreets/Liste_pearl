@@ -4082,7 +4082,7 @@ export default function App() {
         const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
         await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
         await AsyncStorage.setItem('__RESET_V3__', '1');
-        console.log('[RESET] Data cleared (profile kept)');
+        setIsAuth(false);
       }
     })();
   }, []);
