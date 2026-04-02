@@ -26,6 +26,9 @@ const ENV = {
 };
 
 // Active environment - change this to switch
+// "staging" = pythonapi.digiexports.in (needs deployed backend)
+// "local" = localhost:8000 (needs local Django server)
+// The app always falls back to local accounts if API is unavailable
 const ACTIVE_ENV = "staging";
 
 export const CONFIG = ENV[ACTIVE_ENV];
