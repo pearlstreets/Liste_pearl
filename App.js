@@ -3548,52 +3548,48 @@ function AuthScreen({ onLogin }) {
     if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email ou pseudo'); return; }
     if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
     setLoading(true);
+    // Try Marketplace API login first
     try {
-      // Try Marketplace API login first
       const result = await loginUser(email.trim(), password);
       if (result.success) {
-        // Initialize empty lists for the user
         await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
         await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
         setLoading(false);
         onLogin();
         return;
       }
-      // Fallback to local accounts if API fails
-      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      const accounts = raw ? JSON.parse(raw) : [];
-      const input = email.trim().toLowerCase();
-      const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
-      if (!accountExists) { setError(t('auth.errorAccountNotFound') || 'Aucun compte trouvé avec cet email ou pseudo'); setLoading(false); return; }
-      const found = accountExists.password === password ? accountExists : null;
-      if (!found) { setError(t('auth.errorWrongPassword') || 'Mot de passe incorrect'); setLoading(false); return; }
-      const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
-      const savedData = await AsyncStorage.getItem(userKey + '_DATA');
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
-        if (data.items) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(data.items));
-        if (data.cart) await AsyncStorage.setItem(KEY_CART, JSON.stringify(data.cart));
-        if (data.orders) await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(data.orders));
-        if (data.favShops) await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(data.favShops));
-        if (data.favs) await AsyncStorage.setItem(KEY_FAVS, JSON.stringify(data.favs));
-        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(data.selected || []));
-      } else {
-        await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
-        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-      }
-      setLoading(false);
-      onLogin();
-    } catch(e) {
-      setError(t('auth.errorRetry'));
-      setLoading(false);
+    } catch(e) {}
+    // Fallback to local accounts
+    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
+    const accounts = raw ? JSON.parse(raw) : [];
+    const input = email.trim().toLowerCase();
+    const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
+    if (!accountExists) { setError(t('auth.errorAccountNotFound')); setLoading(false); return; }
+    if (accountExists.password !== password) { setError(t('auth.errorWrongPassword')); setLoading(false); return; }
+    const found = accountExists;
+    const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
+    const savedData = await AsyncStorage.getItem(userKey + '_DATA');
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
+      if (data.items) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(data.items));
+      if (data.cart) await AsyncStorage.setItem(KEY_CART, JSON.stringify(data.cart));
+      if (data.orders) await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(data.orders));
+      if (data.favShops) await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(data.favShops));
+      if (data.favs) await AsyncStorage.setItem(KEY_FAVS, JSON.stringify(data.favs));
+      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(data.selected || []));
+    } else {
+      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
+      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
     }
+    setLoading(false);
+    onLogin();
   };
 
   const handleSignup = async () => {
