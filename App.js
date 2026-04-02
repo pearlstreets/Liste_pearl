@@ -4170,109 +4170,6 @@ function FakeProfileScreen({ onLogout }) {
           )}
         </View>
 
-        {/* Casual Driver Section (particuliers only) */}
-        {(!profile.role || profile.role === 'user') && (() => {
-          const countryInfo = getCountryLimit(driverCountry);
-          const limit = countryInfo.limit;
-          return (
-          <View style={{ paddingHorizontal:16, marginBottom:16 }}>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
-              {t('profile.driverSection') || 'Livraison'}
-            </Text>
-
-            <View style={{ backgroundColor:'#fff', borderRadius:12, padding:16, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-              {/* Toggle devenir livreur */}
-              <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between' }}>
-                <View style={{ flexDirection:'row', alignItems:'center', flex:1 }}>
-                  <Ionicons name="bicycle-outline" size={22} color={BRAND} style={{marginRight:10}} />
-                  <View style={{flex:1}}>
-                    <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-                    <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
-                  </View>
-                </View>
-                <Switch value={driverMode} onValueChange={async (val) => {
-                  if (val && driverBlocked) {
-                    Alert.alert(t('profile.driverBlockedTitle') || 'Seuil atteint', countryInfo.beyondMsg);
-                    return;
-                  }
-                  await toggleDriverMode(val, driverCountry);
-                  setDriverMode(val);
-                  if (val) { const e = await getDriverEarnings(); setDriverEarnings(e); const ok = await canDeliver(); setDriverBlocked(!ok); }
-                }} trackColor={{ true: BRAND }} />
-              </View>
-
-              {/* Country selector */}
-              {driverMode && (
-                <View style={{ marginTop:14, borderTopWidth:1, borderTopColor:'#F3F4F6', paddingTop:14 }}>
-                  <Text style={{ fontSize:13, fontWeight:'600', color:'#374151', marginBottom:8 }}>{t('profile.driverCountry') || 'Pays de résidence fiscale'}</Text>
-                  <View style={{ flexWrap:'wrap', flexDirection:'row', gap:8 }}>
-                    {Object.entries(COUNTRY_LIMITS).map(([code, info]) => {
-                      const isSelected = driverCountry === code;
-                      const isAvailable = info.status === 'ok';
-                      const statusColor = info.status === 'ok' ? BRAND : info.status === 'gray' ? '#F59E0B' : info.status === 'strict' ? '#F97316' : '#EF4444';
-                      const statusIcon = info.status === 'ok' ? 'checkmark-circle' : info.status === 'blocked' ? 'close-circle' : 'alert-circle';
-                      return (
-                      <TouchableOpacity key={code} onPress={async () => {
-                        if (!isAvailable) {
-                          Alert.alert(info.flag + ' ' + info.label, info.beyondMsg);
-                          return;
-                        }
-                        setDriverCountryState(code);
-                        await setDriverCountry(code);
-                        const e = await getDriverEarnings(); setDriverEarnings(e);
-                        const ok = await canDeliver(); setDriverBlocked(!ok);
-                      }} style={{
-                        width:'48%', flexDirection:'row', alignItems:'center',
-                        paddingVertical:10, paddingHorizontal:10, borderRadius:10,
-                        borderWidth: isSelected ? 2 : 1,
-                        borderColor: isSelected ? BRAND : '#E5E7EB',
-                        backgroundColor: isSelected ? '#F0FDF4' : !isAvailable ? '#F9FAFB' : '#fff',
-                        opacity: !isAvailable ? 0.7 : 1,
-                      }}>
-                        <Text style={{fontSize:20, marginRight:8}}>{info.flag}</Text>
-                        <View style={{flex:1}}>
-                          <Text style={{fontSize:12, fontWeight:'700', color: isSelected ? BRAND : '#111'}}>{info.label}</Text>
-                          <Text style={{fontSize:10, color:'#6B7280'}}>{info.limit > 0 ? info.limit.toLocaleString() + ' ' + (info.currency || '€') + '/an' : info.status === 'blocked' ? 'Interdit' : 'Non défini'}</Text>
-                        </View>
-                        <Ionicons name={statusIcon} size={14} color={statusColor} />
-                      </TouchableOpacity>
-                      );
-                    })}
-                  </View>
-
-                  {/* Progress bar */}
-                  <View style={{ flexDirection:'row', justifyContent:'space-between', marginTop:14, marginBottom:6 }}>
-                    <Text style={{ fontSize:13, fontWeight:'600', color:'#374151' }}>{t('profile.driverEarnings') || 'Gains cette année'}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>{(driverEarnings.total_year || 0).toFixed(2)} {countryInfo.currency || '€'} / {limit.toLocaleString()} {countryInfo.currency || '€'}</Text>
-                  </View>
-                  <View style={{ height:8, backgroundColor:'#F3F4F6', borderRadius:4, overflow:'hidden' }}>
-                    <View style={{ height:8, borderRadius:4, backgroundColor: driverBlocked ? '#EF4444' : BRAND, width: Math.min(100, ((driverEarnings.total_year || 0) / limit) * 100) + '%' }} />
-                  </View>
-
-                  {driverBlocked ? (
-                    <View style={{ flexDirection:'row', alignItems:'center', marginTop:10, backgroundColor:'#FEF2F2', borderRadius:10, padding:10 }}>
-                      <Ionicons name="alert-circle" size={18} color="#EF4444" style={{marginRight:8}} />
-                      <Text style={{ flex:1, fontSize:12, color:'#991B1B' }}>{countryInfo.beyondMsg}</Text>
-                    </View>
-                  ) : (
-                    <View style={{ flexDirection:'row', alignItems:'center', marginTop:10, backgroundColor:'#F0FDF4', borderRadius:10, padding:10 }}>
-                      <Ionicons name="checkmark-circle" size={18} color="#059669" style={{marginRight:8}} />
-                      <Text style={{ flex:1, fontSize:12, color:'#065F46' }}>{t('profile.driverActive') || 'Mode livreur actif. Restant :'} {(limit - (driverEarnings.total_year || 0)).toFixed(2)} {countryInfo.currency || '€'}</Text>
-                    </View>
-                  )}
-
-                  {/* Tax info */}
-                  <View style={{ marginTop:10, backgroundColor:'#EFF6FF', borderRadius:10, padding:10, flexDirection:'row', alignItems:'flex-start' }}>
-                    <Ionicons name="information-circle" size={18} color="#2563EB" style={{marginRight:8, marginTop:1}} />
-                    <Text style={{ flex:1, fontSize:11, color:'#1E40AF' }}>{countryInfo.taxInfo}</Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          </View>
-          );
-        })()}
-
         {/* Address Button */}
         <View style={{ paddingHorizontal:16, marginTop:16 }}>
           <TouchableOpacity onPress={() => { setEditAddress(profile.address||''); setEditAddressSupplement(profile.addressSupplement||''); setEditCity(profile.city||''); setEditPostalCode(profile.postalCode||''); setEditCountry(profile.country||''); setAddressVisible(true); }} style={{
@@ -4377,6 +4274,32 @@ function FakeProfileScreen({ onLogout }) {
           }}>
             <Ionicons name="log-out-outline" size={20} color="#fff" style={{ marginRight:8 }} />
             <Text style={{ fontSize:16, fontWeight:'700', color:'#fff' }}>{t('profile.logout')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Become a driver */}
+        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
+          <TouchableOpacity onPress={() => {
+            const { Linking } = require('react-native');
+            Linking.openURL('pearl-delivery://').catch(() => {
+              Alert.alert(
+                t('profile.becomeDriver') || 'Devenir livreur',
+                t('profile.downloadDeliveryApp') || 'Téléchargez l\'app Pearl Delivery pour devenir livreur et gagner un complément de revenu.',
+                [{ text: 'OK' }]
+              );
+            });
+          }} style={{
+            flexDirection:'row', alignItems:'center', justifyContent:'center',
+            backgroundColor:'#fff', borderRadius:12, padding:16,
+            borderWidth:1, borderColor:'#E5E7EB',
+            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
+          }}>
+            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
+            <View style={{flex:1}}>
+              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
       </ScrollView>
