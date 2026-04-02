@@ -333,7 +333,13 @@ const KEY_FAV_SHOPS="KEY_FAV_SHOPS";
 const KEY_FAVS = "KEY_FAVS";
 const KEY_AUTH = "KEY_AUTH";
 const KEY_ACCOUNTS = "KEY_ACCOUNTS";
-const DEFAULT_ACCOUNT = { pseudo: 'Remsko', prenom: 'Remsko', nom: 'Ganja', email: 'Remsko@live.fr', password: 'Test@123' };
+// Marketplace user accounts — synced with backend when available
+// These accounts work offline and will merge with API accounts when backend is deployed
+const MARKETPLACE_ACCOUNTS = [
+  { pseudo: 'Remsko', prenom: 'Remsko', nom: 'Ganja', email: 'Remsko@live.fr', password: 'Test@123', role: 'user' },
+  { pseudo: 'King', prenom: 'King', nom: 'User', email: 'King@gmail.com', password: 'Test@123', role: 'user' },
+];
+const DEFAULT_ACCOUNT = MARKETPLACE_ACCOUNTS[0];
 const GUTTER = 24;
 const CTRL = 20;
 const GAP = 10;
@@ -3385,12 +3391,17 @@ function AuthScreen({ onLogin }) {
   const [loading, setLoading] = React.useState(false);
   const [langVisible, setLangVisible] = React.useState(false);
 
+  // Sync all Marketplace accounts to local storage
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      const accounts = raw ? JSON.parse(raw) : [];
-      const hasDefault = accounts.some(a => a.email && a.email.toLowerCase() === DEFAULT_ACCOUNT.email.toLowerCase());
-      if (!hasDefault) { accounts.push(DEFAULT_ACCOUNT); await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts)); }
+      let accounts = raw ? JSON.parse(raw) : [];
+      let changed = false;
+      for (const mktAccount of MARKETPLACE_ACCOUNTS) {
+        const exists = accounts.some(a => a.email && a.email.toLowerCase() === mktAccount.email.toLowerCase());
+        if (!exists) { accounts.push(mktAccount); changed = true; }
+      }
+      if (changed) await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
     })();
   }, []);
 
@@ -3563,12 +3574,12 @@ export default function App() {
   // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
   React.useEffect(() => {
     (async () => {
-      const didReset = await AsyncStorage.getItem('__RESET_V3__');
+      const didReset = await AsyncStorage.getItem('__RESET_V4__');
       if (!didReset) {
         // Reset everything including accounts to update default credentials
         const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
         await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
-        await AsyncStorage.setItem('__RESET_V3__', '1');
+        await AsyncStorage.setItem('__RESET_V4__', '1');
         setIsAuth(false);
       }
     })();
