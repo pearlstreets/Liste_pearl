@@ -4371,12 +4371,28 @@ function FakeProfileScreen({ onLogout }) {
 
             {/* CTA */}
             <View style={{ marginTop:20 }}>
-              <TouchableOpacity onPress={() => {
-                const { Linking } = require('react-native');
-                setDriverInfoVisible(false);
-                Linking.openURL('pearl-delivery://').catch(() => {
-                  Alert.alert('Pearl Delivery', t('profile.downloadDeliveryApp') || "Téléchargez l'app Pearl Delivery sur l'App Store ou Google Play.", [{ text: 'OK' }]);
-                });
+              <TouchableOpacity onPress={async () => {
+                const { Linking, Platform } = require('react-native');
+                try {
+                  const canOpen = await Linking.canOpenURL('pearl-delivery://');
+                  if (canOpen) {
+                    setDriverInfoVisible(false);
+                    Linking.openURL('pearl-delivery://');
+                  } else {
+                    throw new Error('not installed');
+                  }
+                } catch(e) {
+                  // App not installed — redirect to store
+                  Alert.alert(
+                    'Pearl Delivery',
+                    t('profile.downloadDeliveryApp') || "L'app Pearl Delivery n'est pas installée. Téléchargez-la pour devenir livreur.",
+                    [
+                      { text: t('profile.cancel') || 'Annuler', style: 'cancel' },
+                      { text: 'App Store', onPress: () => Linking.openURL('https://apps.apple.com/app/pearl-delivery/id000000000') },
+                      Platform.OS === 'android' ? { text: 'Google Play', onPress: () => Linking.openURL('https://play.google.com/store/apps/details?id=com.pearlstreets.delivery') } : null,
+                    ].filter(Boolean)
+                  );
+                }
               }} style={{ height:52, borderRadius:14, backgroundColor:BRAND, flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
                 <Ionicons name="bicycle" size={22} color="#fff" style={{marginRight:10}} />
                 <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('profile.openDeliveryApp') || "Ouvrir l'app Pearl Delivery"}</Text>
