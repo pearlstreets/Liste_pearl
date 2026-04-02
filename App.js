@@ -337,7 +337,7 @@ const KEY_ACCOUNTS = "KEY_ACCOUNTS";
 // These accounts work offline and will merge with API accounts when backend is deployed
 const MARKETPLACE_ACCOUNTS = [
   { pseudo: 'Remsko', prenom: 'Remsko', nom: 'Ganja', email: 'Remsko@live.fr', password: 'Test@123', role: 'user' },
-  { pseudo: 'King', prenom: 'King', nom: 'User', email: 'King@gmail.com', password: 'Test@123', role: 'user' },
+  { pseudo: 'King', prenom: 'King', nom: 'Dro', email: 'King@gmail.com', password: 'Test@123', role: 'user' },
 ];
 const DEFAULT_ACCOUNT = MARKETPLACE_ACCOUNTS[0];
 const GUTTER = 24;
@@ -3574,12 +3574,12 @@ export default function App() {
   // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
   React.useEffect(() => {
     (async () => {
-      const didReset = await AsyncStorage.getItem('__RESET_V4__');
+      const didReset = await AsyncStorage.getItem('__RESET_V5__');
       if (!didReset) {
         // Reset everything including accounts to update default credentials
         const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
         await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
-        await AsyncStorage.setItem('__RESET_V4__', '1');
+        await AsyncStorage.setItem('__RESET_V5__', '1');
         setIsAuth(false);
       }
     })();
