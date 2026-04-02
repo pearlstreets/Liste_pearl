@@ -4142,6 +4142,22 @@ const useCurrency = () => React.useContext(CurrencyContext);
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
   const [proBlocked, setProBlocked] = React.useState(false);
+
+  // Check if pro user needs verification
+  React.useEffect(() => {
+    (async () => {
+      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+      if (authRaw) {
+        const auth = JSON.parse(authRaw);
+        if (auth.role === 'professionaluser' && !auth.isVerified) {
+          setProBlocked(true);
+        } else {
+          setProBlocked(false);
+        }
+      }
+    })();
+  }, [isAuth]);
+
   const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
   const [liveRates, setLiveRates] = React.useState(null);
 
@@ -4227,20 +4243,6 @@ export default function App() {
     );
   }
 
-  // Check if pro user needs verification
-  React.useEffect(() => {
-    (async () => {
-      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-      if (authRaw) {
-        const auth = JSON.parse(authRaw);
-        if (auth.role === 'professionaluser' && !auth.isVerified) {
-          setProBlocked(true);
-        } else {
-          setProBlocked(false);
-        }
-      }
-    })();
-  }, [isAuth]);
 
   if (proBlocked) {
     return (
