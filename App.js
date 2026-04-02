@@ -3,7 +3,7 @@ import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, registerProfessional, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
+import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
@@ -3373,7 +3373,7 @@ function MainNavigator({ onLogout }) {
 }
 
 function AuthScreen({ onLogin }) {
-  const { t } = useTranslation();
+  const { t, i18n: i18nAuth } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(true);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -3382,387 +3382,77 @@ function AuthScreen({ onLogin }) {
   const [nom, setNom] = React.useState('');
   const [error, setError] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
-  const [showConfirmPwd, setShowConfirmPwd] = React.useState(false);
-  const [pendingValidation, setPendingValidation] = React.useState(false);
-  const [forgotVisible, setForgotVisible] = React.useState(false);
-  const [forgotEmail, setForgotEmail] = React.useState('');
-  const [forgotMsg, setForgotMsg] = React.useState('');
-  const [forgotError, setForgotError] = React.useState('');
-
   const [loading, setLoading] = React.useState(false);
 
-  // Professional registration
-  const [isPro, setIsPro] = React.useState(null); // null=choose, true=pro, false=particulier
-  const [proStep, setProStep] = React.useState(1); // 1=email/mdp, 2=noms/pays/tel, 3=documents(pro)
-  const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [signupCountry, setSignupCountry] = React.useState('FR');
-  const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
-  const [phonePickerVisible, setPhonePickerVisible] = React.useState(false);
-  const [authLangVisible, setAuthLangVisible] = React.useState(false);
-  const { i18n: i18nAuth } = useTranslation();
-  const [phoneCountryCode, setPhoneCountryCode] = React.useState('FR');
-  const SIGNUP_COUNTRIES = [
-    { code: 'FR', flag: '🇫🇷', name: 'France', phoneCode: '+33' },
-    { code: 'BE', flag: '🇧🇪', name: 'Belgique', phoneCode: '+32' },
-    { code: 'GB', flag: '🇬🇧', name: 'Royaume-Uni', phoneCode: '+44' },
-    { code: 'DE', flag: '🇩🇪', name: 'Allemagne', phoneCode: '+49' },
-    { code: 'IT', flag: '🇮🇹', name: 'Italie', phoneCode: '+39' },
-    { code: 'ES', flag: '🇪🇸', name: 'Espagne', phoneCode: '+34' },
-    { code: 'PT', flag: '🇵🇹', name: 'Portugal', phoneCode: '+351' },
-    { code: 'NL', flag: '🇳🇱', name: 'Pays-Bas', phoneCode: '+31' },
-    { code: 'CH', flag: '🇨🇭', name: 'Suisse', phoneCode: '+41' },
-    { code: 'LU', flag: '🇱🇺', name: 'Luxembourg', phoneCode: '+352' },
-    { code: 'AT', flag: '🇦🇹', name: 'Autriche', phoneCode: '+43' },
-    { code: 'IE', flag: '🇮🇪', name: 'Irlande', phoneCode: '+353' },
-    { code: 'SE', flag: '🇸🇪', name: 'Suède', phoneCode: '+46' },
-    { code: 'DK', flag: '🇩🇰', name: 'Danemark', phoneCode: '+45' },
-    { code: 'NO', flag: '🇳🇴', name: 'Norvège', phoneCode: '+47' },
-    { code: 'FI', flag: '🇫🇮', name: 'Finlande', phoneCode: '+358' },
-    { code: 'PL', flag: '🇵🇱', name: 'Pologne', phoneCode: '+48' },
-    { code: 'MA', flag: '🇲🇦', name: 'Maroc', phoneCode: '+212' },
-    { code: 'TN', flag: '🇹🇳', name: 'Tunisie', phoneCode: '+216' },
-    { code: 'DZ', flag: '🇩🇿', name: 'Algérie', phoneCode: '+213' },
-    { code: 'SN', flag: '🇸🇳', name: 'Sénégal', phoneCode: '+221' },
-    { code: 'CI', flag: '🇨🇮', name: 'Côte d\'Ivoire', phoneCode: '+225' },
-    { code: 'CM', flag: '🇨🇲', name: 'Cameroun', phoneCode: '+237' },
-    { code: 'CD', flag: '🇨🇩', name: 'RD Congo', phoneCode: '+243' },
-    { code: 'CG', flag: '🇨🇬', name: 'Congo', phoneCode: '+242' },
-    { code: 'GA', flag: '🇬🇦', name: 'Gabon', phoneCode: '+241' },
-    { code: 'ML', flag: '🇲🇱', name: 'Mali', phoneCode: '+223' },
-    { code: 'BF', flag: '🇧🇫', name: 'Burkina Faso', phoneCode: '+226' },
-    { code: 'GN', flag: '🇬🇳', name: 'Guinée', phoneCode: '+224' },
-    { code: 'BJ', flag: '🇧🇯', name: 'Bénin', phoneCode: '+229' },
-    { code: 'TG', flag: '🇹🇬', name: 'Togo', phoneCode: '+228' },
-    { code: 'NE', flag: '🇳🇪', name: 'Niger', phoneCode: '+227' },
-    { code: 'MG', flag: '🇲🇬', name: 'Madagascar', phoneCode: '+261' },
-    { code: 'MU', flag: '🇲🇺', name: 'Maurice', phoneCode: '+230' },
-    { code: 'EG', flag: '🇪🇬', name: 'Égypte', phoneCode: '+20' },
-    { code: 'LB', flag: '🇱🇧', name: 'Liban', phoneCode: '+961' },
-    { code: 'AE', flag: '🇦🇪', name: 'Émirats arabes unis', phoneCode: '+971' },
-    { code: 'SA', flag: '🇸🇦', name: 'Arabie saoudite', phoneCode: '+966' },
-    { code: 'QA', flag: '🇶🇦', name: 'Qatar', phoneCode: '+974' },
-    { code: 'KW', flag: '🇰🇼', name: 'Koweït', phoneCode: '+965' },
-    { code: 'TR', flag: '🇹🇷', name: 'Turquie', phoneCode: '+90' },
-    { code: 'US', flag: '🇺🇸', name: 'États-Unis', phoneCode: '+1' },
-    { code: 'CA', flag: '🇨🇦', name: 'Canada', phoneCode: '+1' },
-    { code: 'MX', flag: '🇲🇽', name: 'Mexique', phoneCode: '+52' },
-    { code: 'BR', flag: '🇧🇷', name: 'Brésil', phoneCode: '+55' },
-    { code: 'AR', flag: '🇦🇷', name: 'Argentine', phoneCode: '+54' },
-    { code: 'CO', flag: '🇨🇴', name: 'Colombie', phoneCode: '+57' },
-    { code: 'CL', flag: '🇨🇱', name: 'Chili', phoneCode: '+56' },
-    { code: 'AU', flag: '🇦🇺', name: 'Australie', phoneCode: '+61' },
-    { code: 'NZ', flag: '🇳🇿', name: 'Nouvelle-Zélande', phoneCode: '+64' },
-    { code: 'JP', flag: '🇯🇵', name: 'Japon', phoneCode: '+81' },
-    { code: 'KR', flag: '🇰🇷', name: 'Corée du Sud', phoneCode: '+82' },
-    { code: 'CN', flag: '🇨🇳', name: 'Chine', phoneCode: '+86' },
-    { code: 'IN', flag: '🇮🇳', name: 'Inde', phoneCode: '+91' },
-    { code: 'TH', flag: '🇹🇭', name: 'Thaïlande', phoneCode: '+66' },
-    { code: 'VN', flag: '🇻🇳', name: 'Vietnam', phoneCode: '+84' },
-    { code: 'PH', flag: '🇵🇭', name: 'Philippines', phoneCode: '+63' },
-    { code: 'ID', flag: '🇮🇩', name: 'Indonésie', phoneCode: '+62' },
-    { code: 'MY', flag: '🇲🇾', name: 'Malaisie', phoneCode: '+60' },
-    { code: 'SG', flag: '🇸🇬', name: 'Singapour', phoneCode: '+65' },
-    { code: 'RU', flag: '🇷🇺', name: 'Russie', phoneCode: '+7' },
-    { code: 'UA', flag: '🇺🇦', name: 'Ukraine', phoneCode: '+380' },
-    { code: 'RO', flag: '🇷🇴', name: 'Roumanie', phoneCode: '+40' },
-    { code: 'GR', flag: '🇬🇷', name: 'Grèce', phoneCode: '+30' },
-    { code: 'CZ', flag: '🇨🇿', name: 'Tchéquie', phoneCode: '+420' },
-    { code: 'HU', flag: '🇭🇺', name: 'Hongrie', phoneCode: '+36' },
-    { code: 'HR', flag: '🇭🇷', name: 'Croatie', phoneCode: '+385' },
-    { code: 'BG', flag: '🇧🇬', name: 'Bulgarie', phoneCode: '+359' },
-    { code: 'RS', flag: '🇷🇸', name: 'Serbie', phoneCode: '+381' },
-    { code: 'IL', flag: '🇮🇱', name: 'Israël', phoneCode: '+972' },
-    { code: 'ZA', flag: '🇿🇦', name: 'Afrique du Sud', phoneCode: '+27' },
-    { code: 'NG', flag: '🇳🇬', name: 'Nigeria', phoneCode: '+234' },
-    { code: 'GH', flag: '🇬🇭', name: 'Ghana', phoneCode: '+233' },
-    { code: 'KE', flag: '🇰🇪', name: 'Kenya', phoneCode: '+254' },
-    { code: 'HT', flag: '🇭🇹', name: 'Haïti', phoneCode: '+509' },
-    { code: 'GP', flag: '🇬🇵', name: 'Guadeloupe', phoneCode: '+590' },
-    { code: 'MQ', flag: '🇲🇶', name: 'Martinique', phoneCode: '+596' },
-    { code: 'GF', flag: '🇬🇫', name: 'Guyane française', phoneCode: '+594' },
-    { code: 'RE', flag: '🇷🇪', name: 'La Réunion', phoneCode: '+262' },
-    { code: 'YT', flag: '🇾🇹', name: 'Mayotte', phoneCode: '+262' },
-    { code: 'NC', flag: '🇳🇨', name: 'Nouvelle-Calédonie', phoneCode: '+687' },
-    { code: 'PF', flag: '🇵🇫', name: 'Polynésie française', phoneCode: '+689' },
-  ];
-  const selectedCountry = SIGNUP_COUNTRIES.find(c => c.code === signupCountry) || SIGNUP_COUNTRIES[0];
-  const selectedPhoneCountry = SIGNUP_COUNTRIES.find(c => c.code === phoneCountryCode) || SIGNUP_COUNTRIES[0];
-  const [phone, setPhone] = React.useState('');
-  const [companyName, setCompanyName] = React.useState('');
-  const [managerName, setManagerName] = React.useState('');
-  const [siret, setSiret] = React.useState('');
-  const [vatNumber, setVatNumber] = React.useState('');
-  const [sector, setSector] = React.useState('');
-  const [docKbiss, setDocKbiss] = React.useState(null);
-  const [docIban, setDocIban] = React.useState(null);
-  const [docIdFront, setDocIdFront] = React.useState(null);
-  const [docIdBack, setDocIdBack] = React.useState(null);
-  const [docProofAddress, setDocProofAddress] = React.useState(null);
-
-  const pickDocument = async (setter) => {
-    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.7 });
-    if (!result.canceled && result.assets?.length > 0) setter(result.assets[0].uri);
-  };
-
-  const handleForgotPassword = async () => {
-    setForgotError(''); setForgotMsg('');
-    if (!forgotEmail.trim()) { setForgotError(t('auth.errorEmailRequired')); return; }
-    try {
-      // Try Marketplace API first
-      const result = await apiForgotPassword(forgotEmail.trim());
-      if (result.status) {
-        setForgotMsg(t('auth.successPasswordSent') + forgotEmail.trim());
-        return;
-      }
-      // Fallback to local accounts
-      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      const accounts = raw ? JSON.parse(raw) : [];
-      const idx = accounts.findIndex(a => a.email.toLowerCase() === forgotEmail.trim().toLowerCase());
-      if (idx < 0) { setForgotError(result.message || t('auth.errorNoAccount')); return; }
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-      let newPwd = '';
-      for (let i = 0; i < 8; i++) newPwd += chars[Math.floor(Math.random() * chars.length)];
-      accounts[idx].password = newPwd;
-      await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-      setForgotMsg(t('auth.successPasswordSent') + forgotEmail.trim());
-      Alert.alert(t('auth.newPassword'), t('auth.newPasswordMsg') + newPwd + '\n\n' + t('auth.noteBeforeClosing'));
-    } catch(e) { setForgotError(t('auth.errorRetry')); }
-  };
-
-  // Init default account on first load
+  // Init default account
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
       const accounts = raw ? JSON.parse(raw) : [];
       const hasDefault = accounts.some(a => a.email && a.email.toLowerCase() === DEFAULT_ACCOUNT.email.toLowerCase());
-      if (!hasDefault) {
-        accounts.push(DEFAULT_ACCOUNT);
-        await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-      }
+      if (!hasDefault) { accounts.push(DEFAULT_ACCOUNT); await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts)); }
     })();
   }, []);
 
   const handleLogin = async () => {
     setError('');
     if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty') || 'Veuillez saisir votre email et mot de passe'); return; }
-    if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email ou pseudo'); return; }
+    if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email'); return; }
     if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
     setLoading(true);
-    // Try Marketplace API login first
-    try {
-      const result = await loginUser(email.trim(), password);
-      if (result.success) {
-        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-        setLoading(false);
-        onLogin();
-        return;
-      }
-    } catch(e) {}
-    // Fallback to local accounts
+    try { const result = await loginUser(email.trim(), password); if (result.success) { setLoading(false); onLogin(); return; } } catch(e) {}
     const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
     const accounts = raw ? JSON.parse(raw) : [];
     const input = email.trim().toLowerCase();
     const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
-    if (!accountExists) { setError(t('auth.errorAccountNotFound')); setLoading(false); return; }
-    if (accountExists.password !== password) { setError(t('auth.errorWrongPassword')); setLoading(false); return; }
-    const found = accountExists;
-    const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
+    if (!accountExists) { setError(t('auth.errorAccountNotFound') || 'Aucun compte trouvé'); setLoading(false); return; }
+    if (accountExists.password !== password) { setError(t('auth.errorWrongPassword') || 'Mot de passe incorrect'); setLoading(false); return; }
+    const userKey = 'USER_' + accountExists.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...accountExists, userKey}));
     const savedData = await AsyncStorage.getItem(userKey + '_DATA');
-    if (savedData) {
-      const data = JSON.parse(savedData);
-      if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
-      if (data.items) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(data.items));
-      if (data.cart) await AsyncStorage.setItem(KEY_CART, JSON.stringify(data.cart));
-      if (data.orders) await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(data.orders));
-      if (data.favShops) await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(data.favShops));
-      if (data.favs) await AsyncStorage.setItem(KEY_FAVS, JSON.stringify(data.favs));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(data.selected || []));
-    } else {
-      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
-      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-    }
+    if (savedData) { const data = JSON.parse(savedData); if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile)); }
+    else { await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: accountExists.pseudo, prenom: accountExists.prenom, nom: accountExists.nom, email: accountExists.email, photo: null })); }
+    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+    await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
     setLoading(false);
     onLogin();
   };
 
   const handleSignup = async () => {
     setError('');
-
-    // Step 1: email + password (both pro and particulier)
-    if (proStep === 1) {
-      if (!email.trim() || !password.trim() || !confirmPassword.trim()) { setError(t('auth.errorEmpty')); return; }
-      if (password.length < 6) { setError(t('auth.errorPasswordLength')); return; }
-      if (password !== confirmPassword) { setError(t('auth.errorPasswordMismatch') || 'Les mots de passe ne correspondent pas'); return; }
-      setProStep(2);
-      return;
-    }
-
-    // Professional signup
-    if (isPro) {
-      if (proStep === 2) {
-        // Validate step 2 fields
-        if (!nom.trim() || !prenom.trim() || !pseudo.trim() || !companyName.trim() || !phone.trim()) {
-          setError(t('auth.errorEmpty')); return;
-        }
-        setProStep(3);
-        return;
-      }
-      // Step 3: validate documents
-      if (!docIdFront || !docIdBack || !docIban || !docKbiss) {
-        setError(t('auth.proDocRequired') || 'Carte d\'identité, IBAN et KBISS sont obligatoires');
-        return;
-      }
-      setLoading(true);
-      try {
-        await registerProfessional({
-          email: email.trim(), password, phone: phone.trim(), phoneCode: selectedPhoneCountry.phoneCode,
-          companyName: companyName.trim(), managerFullName: managerName.trim(),
-          siret: '', vatNumber: '', sector: '',
-          documents: { kbiss: docKbiss, iban: docIban, identityFront: docIdFront, identityBack: docIdBack, proofOfAddress: docProofAddress },
-        });
-      } catch(e) {}
-      // Save pro account locally so login works offline + shows pending page
-      const proAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password, role: 'professionaluser', isVerified: false, companyName: companyName.trim() };
-      const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      const accounts = accRaw ? JSON.parse(accRaw) : [];
-      if (!accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) {
-        accounts.push(proAccount);
-        await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-      }
-      // Always show pending page after document submission
-      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-      setLoading(false);
-      setPendingValidation(true);
-      return;
-    }
-
-    // Consumer signup (step 2 = final for particulier)
-    if (!pseudo.trim() || !prenom.trim() || !nom.trim() || !phone.trim()) { setError(t('auth.errorEmpty')); return; }
+    if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty') || 'Remplissez tous les champs'); return; }
+    if (password.length < 6) { setError(t('auth.errorPasswordLength') || 'Minimum 6 caractères'); return; }
     setLoading(true);
-    try {
-      const result = await registerUser({
-        username: pseudo.trim(), email: email.trim(), password,
-        firstName: prenom.trim(), lastName: nom.trim(),
-      });
-      if (result.success) {
-        await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-        await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-        setLoading(false);
-        onLogin();
-        return;
-      }
-      // Fallback to local accounts
-      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      const accounts = raw ? JSON.parse(raw) : [];
-      if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists')); setLoading(false); return; }
-      if (accounts.find(a => a.pseudo && a.pseudo.toLowerCase() === pseudo.trim().toLowerCase())) { setError(t('auth.errorPseudoTaken')); setLoading(false); return; }
-      const newAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password };
-      accounts.push(newAccount);
-      await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-      const userKey = 'USER_' + newAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...newAccount, userKey}));
-      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: newAccount.pseudo, prenom: newAccount.prenom, nom: newAccount.nom, email: newAccount.email, photo: null }));
-      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-      await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
-      setLoading(false);
-      onLogin();
-    } catch(e) { setError(t('auth.errorRetry')); setLoading(false); }
+    try { const result = await registerUser({ username: pseudo.trim(), email: email.trim(), password, firstName: prenom.trim(), lastName: nom.trim() }); if (result.success) { setLoading(false); onLogin(); return; } } catch(e) {}
+    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
+    const accounts = raw ? JSON.parse(raw) : [];
+    if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists') || 'Email déjà utilisé'); setLoading(false); return; }
+    const newAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password, role: 'user' };
+    accounts.push(newAccount);
+    await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
+    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...newAccount, userKey: 'USER_' + newAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_')}));
+    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: newAccount.pseudo, prenom: newAccount.prenom, nom: newAccount.nom, email: newAccount.email, photo: null }));
+    setLoading(false);
+    onLogin();
   };
-
-  // Pending validation page
-  if (pendingValidation) {
-    return (
-      <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:32}}>
-          <View style={{alignItems:'center'}}>
-            <View style={{width:80, height:80, borderRadius:40, backgroundColor:'#FEF3C7', alignItems:'center', justifyContent:'center', marginBottom:24}}>
-              <Ionicons name="time-outline" size={40} color="#F59E0B" />
-            </View>
-            <Text style={{fontSize:24, fontWeight:'900', color:'#111', textAlign:'center', marginBottom:12}}>
-              {t('auth.pendingTitle') || 'En attente de validation'}
-            </Text>
-            <Text style={{fontSize:15, color:'#6B7280', textAlign:'center', lineHeight:22, marginBottom:24}}>
-              {t('auth.pendingMsg') || 'Vos documents sont en cours de vérification par notre équipe. Vous recevrez un email de confirmation une fois votre compte approuvé.'}
-            </Text>
-
-            <View style={{backgroundColor:'#F9FAFB', borderRadius:12, padding:16, width:'100%', marginBottom:24}}>
-              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
-                <Ionicons name="mail-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingEmail') || 'Un email de confirmation vous sera envoyé'}</Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
-                <Ionicons name="shield-checkmark-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingReview') || 'Vérification sous 24-48h ouvrées'}</Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="notifications-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>{t('auth.pendingNotif') || 'Vous serez notifié du résultat'}</Text>
-              </View>
-            </View>
-
-            <TouchableOpacity onPress={() => { setPendingValidation(false); setIsLogin(true); setIsPro(null); setProStep(1); }}
-              style={{height:52, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', width:'100%', marginBottom:12}}>
-              <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('auth.pendingBackLogin') || 'Retour à la connexion'}</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-      {/* Back arrow */}
       {!isLogin && (
-        <TouchableOpacity onPress={() => {
-          setError('');
-          if (proStep === 3) { setProStep(2); }
-          else if (proStep === 2) { setProStep(1); }
-          else if (isPro !== null) { setIsPro(null); setProStep(1); }
-          else { setIsLogin(true); setIsPro(null); }
-        }} style={{paddingHorizontal:16, paddingTop:12}}>
+        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }} style={{paddingHorizontal:16, paddingTop:12}}>
           <Ionicons name="arrow-back" size={26} color="#111" />
         </TouchableOpacity>
       )}
       <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24, paddingVertical:30}} keyboardShouldPersistTaps="handled">
-        {/* Logo — compact on form steps */}
-        {(isLogin || isPro === null || proStep === 1) && (
-          <View style={{alignItems:'center', marginBottom:24}}>
-            <View style={{width:60, height:60, borderRadius:30, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
-              <Ionicons name="bicycle" size={30} color="#fff" />
-            </View>
-            <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl Delivery</Text>
+        <View style={{alignItems:'center', marginBottom:24}}>
+          <View style={{width:60, height:60, borderRadius:30, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
+            <Ionicons name="cart" size={30} color="#fff" />
           </View>
-        )}
-        {/* Step title */}
-        {!isLogin && isPro !== null && (
-          <Text style={{fontSize:18, fontWeight:'800', color:'#111', marginBottom:16}}>
-            {proStep === 1 ? (t('auth.stepEmail') || 'Identifiants') : proStep === 2 ? (t('auth.stepInfo') || 'Informations') : (t('auth.proDocTitle') || 'Documents')}
-          </Text>
-        )}
+          <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl List</Text>
+        </View>
 
-        {/* Error */}
         {error ? (
           <View style={{backgroundColor:'#FEE2E2', borderRadius:10, padding:12, marginBottom:16, flexDirection:'row', alignItems:'center'}}>
             <Ionicons name="alert-circle" size={18} color="#EF4444" />
@@ -3770,606 +3460,55 @@ function AuthScreen({ onLogin }) {
           </View>
         ) : null}
 
-        {/* Choose type — full page */}
-        {!isLogin && isPro === null && (
-          <View style={{marginBottom:16}}>
-            <TouchableOpacity onPress={() => { setIsPro(true); setProStep(1); setError(''); }} style={{
-              borderWidth:2, borderColor:BRAND, borderRadius:16, padding:20, marginBottom:12,
-              backgroundColor:'#F0FDF4', flexDirection:'row', alignItems:'center'
-            }}>
-              <View style={{width:50, height:50, borderRadius:25, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginRight:16}}>
-                <Ionicons name="storefront" size={26} color="#fff" />
-              </View>
-              <View style={{flex:1}}>
-                <Text style={{fontSize:17, fontWeight:'800', color:'#111'}}>{t('auth.proPro') || 'Livreur Pro'}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{t('auth.proProDesc') || 'Vous avez un établissement ou un statut professionnel'}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color={BRAND} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => { setIsPro(false); setProStep(1); setError(''); }} style={{
-              borderWidth:2, borderColor:BRAND, borderRadius:16, padding:20,
-              backgroundColor:'#F0FDF4', flexDirection:'row', alignItems:'center'
-            }}>
-              <View style={{width:50, height:50, borderRadius:25, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginRight:16}}>
-                <Ionicons name="bicycle" size={26} color="#fff" />
-              </View>
-              <View style={{flex:1}}>
-                <Text style={{fontSize:17, fontWeight:'800', color:'#111'}}>{t('auth.driverParticulier') || 'Livreur Particulier'}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{t('auth.driverParticulierDesc') || 'Vous souhaitez livrer en complément de revenu'}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color={BRAND} />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Driver (livreur) signup fields — step 2 */}
-        {!isLogin && isPro === false && proStep === 2 && (
+        {!isLogin && (
           <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
-            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverFirstName') || 'Prénom du livreur'}</Text>
-            <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
-            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.firstName')}</Text>
+            <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.lastName')}</Text>
+            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
 
-        {/* Professional signup — Step 2: Company info */}
-        {!isLogin && isPro && proStep === 2 && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverLastName') || 'Nom du livreur'}</Text>
-            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.driverFirstName') || 'Prénom du livreur'}</Text>
-            <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
-            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.proCompanyName') || 'Nom de l\'établissement'}</Text>
-            <TextInput value={companyName} onChangeText={setCompanyName} placeholder="Ma Boutique" editable={true} autoCorrect={false}
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111', backgroundColor:'#fff'}} />
-          </>
-        )}
+        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
+        <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none" style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
 
-        {/* Country + Phone — after name fields, for both pro and particulier */}
-        {!isLogin && isPro !== null && proStep === 2 && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.country') || 'Pays de résidence'}</Text>
-            <TouchableOpacity onPress={() => setCountryPickerVisible(true)} style={{
-              flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
-              borderRadius:12, padding:14, marginBottom:12, backgroundColor:'#fff'
-            }}>
-              <Text style={{fontSize:20, marginRight:10}}>{selectedCountry.flag}</Text>
-              <Text style={{flex:1, fontSize:15, color:'#111', fontWeight:'600'}}>{selectedCountry.name}</Text>
-              <Ionicons name="chevron-down" size={18} color="#9CA3AF" />
-            </TouchableOpacity>
-
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.phoneNumber') || 'Numéro de téléphone'}</Text>
-            <View style={{flexDirection:'row', marginBottom:12}}>
-              <TouchableOpacity onPress={() => setPhonePickerVisible(true)} style={{
-                flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB',
-                borderRadius:12, padding:14, backgroundColor:'#fff', marginRight:8
-              }}>
-                <Text style={{fontSize:16, marginRight:6}}>{selectedPhoneCountry.flag}</Text>
-                <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{selectedPhoneCountry.phoneCode}</Text>
-                <Ionicons name="chevron-down" size={14} color="#9CA3AF" style={{marginLeft:4}} />
-              </TouchableOpacity>
-              <TextInput value={phone} onChangeText={setPhone} placeholder="6 12 34 56 78" keyboardType="phone-pad"
-                style={{flex:1, borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, color:'#111'}} />
-            </View>
-          </>
-        )}
-
-        {/* Professional signup — Step 3: Documents */}
-        {!isLogin && isPro && proStep === 3 && (
-          <View style={{marginBottom:12}}>
-            <View style={{flexDirection:'row', alignItems:'center', marginBottom:16}}>
-              <TouchableOpacity onPress={() => setProStep(2)} style={{marginRight:10}}>
-                <Ionicons name="arrow-back" size={22} color="#111" />
-              </TouchableOpacity>
-              <Text style={{fontSize:16, fontWeight:'800', color:'#111'}}>{t('auth.proDocTitle') || 'Documents obligatoires'}</Text>
-            </View>
-
-            {[
-              { label: t('auth.docIdFront') || 'Carte d\'identité (recto)', value: docIdFront, setter: setDocIdFront, required: true, icon: 'card-outline' },
-              { label: t('auth.docIdBack') || 'Carte d\'identité (verso)', value: docIdBack, setter: setDocIdBack, required: true, icon: 'card-outline' },
-              { label: t('auth.docIban') || 'IBAN / RIB', value: docIban, setter: setDocIban, required: true, icon: 'wallet-outline' },
-              { label: t('auth.docKbiss') || 'KBISS', value: docKbiss, setter: setDocKbiss, required: true, icon: 'document-text-outline' },
-            ].map((doc, i) => (
-              <TouchableOpacity key={i} onPress={() => pickDocument(doc.setter)} style={{
-                flexDirection:'row', alignItems:'center', padding:14, borderWidth:1,
-                borderColor: doc.value ? BRAND : '#E5E7EB', borderRadius:12, marginBottom:10,
-                backgroundColor: doc.value ? '#F0FDF4' : '#fff'
-              }}>
-                <Ionicons name={doc.value ? "checkmark-circle" : doc.icon} size={22} color={doc.value ? BRAND : '#9CA3AF'} style={{marginRight:12}} />
-                <View style={{flex:1}}>
-                  <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{doc.label} *</Text>
-                  {doc.value ? <Text style={{fontSize:11, color:BRAND, marginTop:2}}>{t('auth.docUploaded') || 'Document ajouté'}</Text> : <Text style={{fontSize:11, color:'#9CA3AF', marginTop:2}}>{t('auth.docTapUpload') || 'Appuyez pour ajouter'}</Text>}
-                </View>
-                {doc.value && (
-                  <TouchableOpacity onPress={() => doc.setter(null)} style={{padding:4}}>
-                    <Ionicons name="close-circle" size={20} color="#EF4444" />
-                  </TouchableOpacity>
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        {/* Email — login or signup step 1 */}
-        {(isLogin || (isPro !== null && proStep === 1)) && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-            <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType={isLogin ? "default" : "email-address"} autoCapitalize="none" autoComplete="off" textContentType="oneTimeCode" autoCorrect={false} spellCheck={false} inputAccessoryViewID="noSuggestions"
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-          </>
-        )}
-
-        {/* Password — login or signup step 1 */}
-        {(isLogin || (isPro !== null && proStep === 1)) && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
-            <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
-                style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
-              <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
-                <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-
-        {/* Confirm password — signup step 1 only */}
-        {!isLogin && isPro !== null && proStep === 1 && (
-          <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.confirmPassword') || 'Confirmer le mot de passe'}</Text>
-            <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-              <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('auth.confirmPasswordPlaceholder') || 'Confirmez votre mot de passe'} secureTextEntry={!showConfirmPwd} autoComplete="off" textContentType="oneTimeCode" inputAccessoryViewID="noSuggestions"
-                style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
-              <TouchableOpacity onPress={() => setShowConfirmPwd(!showConfirmPwd)} style={{paddingRight:14}}>
-                <Ionicons name={showConfirmPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-
-        {/* Forgot password link */}
-        {isLogin && (
-          <TouchableOpacity onPress={() => { setForgotEmail(''); setForgotMsg(''); setForgotError(''); setForgotVisible(true); }} style={{alignSelf:'flex-end', marginBottom:16, marginTop:-8}}>
-            <Text style={{color:BRAND, fontSize:13, fontWeight:'600'}}>{t('auth.forgotPassword')}</Text>
+        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
+        <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
+          <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
+          <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
+            <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
           </TouchableOpacity>
-        )}
+        </View>
 
-        {/* Button — hidden on choose page */}
-        {(isLogin || isPro !== null) && (
         <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading}
           style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>
-              {isLogin ? t('auth.loginBtn') : proStep === 1 ? (t('auth.proNext') || 'Suivant') : isPro ? (proStep === 2 ? (t('auth.proNext') || 'Suivant') : (t('auth.proSubmit') || 'Envoyer la demande')) : (t('auth.signupBtn') || "S'inscrire")}
-            </Text>
-          )}
+          {loading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
         </TouchableOpacity>
-        )}
 
-        {/* Switch login/signup */}
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); setIsPro(null); setProStep(1); }} style={{alignItems:'center', paddingVertical:16}}>
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={{alignItems:'center', paddingVertical:16}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
             {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
-
       </ScrollView>
 
-      {/* Language selector — fixed bottom */}
-      <TouchableOpacity onPress={() => setAuthLangVisible(true)} style={{
-        flexDirection:'row', alignItems:'center', justifyContent:'center',
-        marginHorizontal:24, marginBottom:12, paddingVertical:12,
-        borderRadius:12, backgroundColor:'#fff'
-      }}>
+      {/* Language selector */}
+      <TouchableOpacity onPress={async () => {
+        const codes = ['fr','en','es','zh','ar','de','nl','it','pt','ja','th','sv','ru'];
+        const idx = codes.indexOf(i18nAuth.language);
+        const next = codes[(idx + 1) % codes.length];
+        await i18nAuth.changeLanguage(next);
+      }} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
         <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
-        <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>
-          {LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}
-        </Text>
+        <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
       </TouchableOpacity>
-
-      {/* Hide iOS keyboard suggestions bar */}
-      {Platform.OS === 'ios' && <InputAccessoryView nativeID="noSuggestions"><View /></InputAccessoryView>}
-
-      {/* Language Picker Modal */}
-      <Modal visible={authLangVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'60%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.language') || 'Langue'}</Text>
-              <TouchableOpacity onPress={() => setAuthLangVisible(false)} style={{padding:6}}>
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={LANGUAGES}
-              keyExtractor={(item) => item.code}
-              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
-              renderItem={({item: lang}) => (
-                <TouchableOpacity
-                  onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANG', lang.code); setAuthLangVisible(false); }}
-                  style={{
-                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
-                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
-                    backgroundColor: i18nAuth.language === lang.code ? '#F0FDF4' : '#fff',
-                  }}
-                >
-                  <Text style={{fontSize:24, marginRight:14}}>{lang.flag}</Text>
-                  <Text style={{flex:1, fontSize:16, fontWeight: i18nAuth.language === lang.code ? '700' : '500', color: i18nAuth.language === lang.code ? BRAND : '#111'}}>{lang.label}</Text>
-                  {i18nAuth.language === lang.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
-
-      {/* Country Picker Modal */}
-      <Modal visible={countryPickerVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectCountry') || 'Pays de résidence'}</Text>
-              <TouchableOpacity onPress={() => setCountryPickerVisible(false)} style={{padding:6}}>
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={SIGNUP_COUNTRIES}
-              keyExtractor={(item) => item.code}
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
-              renderItem={({item: country}) => (
-                <TouchableOpacity
-                  onPress={() => { setSignupCountry(country.code); setPhoneCountryCode(country.code); setCountryPickerVisible(false); }}
-                  style={{
-                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
-                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
-                    backgroundColor: signupCountry === country.code ? '#F0FDF4' : '#fff',
-                  }}
-                >
-                  <Text style={{fontSize:24, marginRight:14}}>{country.flag}</Text>
-                  <Text style={{flex:1, fontSize:16, fontWeight: signupCountry === country.code ? '700' : '500', color: signupCountry === country.code ? BRAND : '#111'}}>{country.name}</Text>
-                  {signupCountry === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
-
-      {/* Phone Country Code Picker Modal */}
-      <Modal visible={phonePickerVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('auth.selectPhoneCode') || 'Indicatif téléphonique'}</Text>
-              <TouchableOpacity onPress={() => setPhonePickerVisible(false)} style={{padding:6}}>
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={SIGNUP_COUNTRIES}
-              keyExtractor={(item) => item.code + '_phone'}
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
-              renderItem={({item: country}) => (
-                <TouchableOpacity
-                  onPress={() => { setPhoneCountryCode(country.code); setPhonePickerVisible(false); }}
-                  style={{
-                    flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12,
-                    borderBottomWidth:1, borderBottomColor:'#F3F4F6',
-                    backgroundColor: phoneCountryCode === country.code ? '#F0FDF4' : '#fff',
-                  }}
-                >
-                  <Text style={{fontSize:24, marginRight:14}}>{country.flag}</Text>
-                  <Text style={{flex:1, fontSize:16, fontWeight: phoneCountryCode === country.code ? '700' : '500', color: phoneCountryCode === country.code ? BRAND : '#111'}}>{country.name}</Text>
-                  <Text style={{fontSize:14, fontWeight:'700', color:'#374151'}}>{country.phoneCode}</Text>
-                  {phoneCountryCode === country.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{marginLeft:8}} />}
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
-
-      {/* Forgot Password Modal */}
-      <Modal visible={forgotVisible} transparent animationType="slide">
-        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.4)', justifyContent:'center', padding:24}}>
-          <View style={{backgroundColor:'#fff', borderRadius:16, padding:20}}>
-            <View style={{flexDirection:'row', alignItems:'center', marginBottom:16}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111', flex:1}}>{t('auth.forgotPassword')}</Text>
-              <TouchableOpacity onPress={() => setForgotVisible(false)}>
-                <Ionicons name="close" size={22} color="#9CA3AF" />
-              </TouchableOpacity>
-            </View>
-
-            <Text style={{fontSize:13, color:'#6B7280', marginBottom:12}}>
-              {t('auth.forgotPasswordMsg')}
-            </Text>
-
-            {forgotError ? (
-              <View style={{backgroundColor:'#FEE2E2', borderRadius:8, padding:10, marginBottom:12, flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="alert-circle" size={16} color="#EF4444" />
-                <Text style={{color:'#EF4444', fontSize:12, marginLeft:6}}>{forgotError}</Text>
-              </View>
-            ) : null}
-            {forgotMsg ? (
-              <View style={{backgroundColor:'#D1FAE5', borderRadius:8, padding:10, marginBottom:12, flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="checkmark-circle" size={16} color="#059669" />
-                <Text style={{color:'#059669', fontSize:12, marginLeft:6}}>{forgotMsg}</Text>
-              </View>
-            ) : null}
-
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.email')}</Text>
-            <TextInput value={forgotEmail} onChangeText={setForgotEmail} placeholder={t('auth.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none"
-              style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, fontSize:15, marginBottom:16, color:'#111'}} />
-
-            <TouchableOpacity onPress={handleForgotPassword} style={{
-              height:48, borderRadius:10, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:10
-            }}>
-              <Text style={{color:'#fff', fontWeight:'700', fontSize:15}}>{t('auth.send')}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => setForgotVisible(false)} style={{alignItems:'center', paddingVertical:8}}>
-              <Text style={{color:'#6B7280', fontSize:14}}>{t('auth.backToLogin')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        </KeyboardAvoidingView>
-      </Modal>
     </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
-
-const useCurrency = () => React.useContext(CurrencyContext);
-
-export default function App() {
-  const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
-  const [proBlocked, setProBlocked] = React.useState(false);
-
-  // Check if pro user needs verification
-  React.useEffect(() => {
-    (async () => {
-      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-      if (authRaw) {
-        const auth = JSON.parse(authRaw);
-        if (auth.role === 'professionaluser' && !auth.isVerified) {
-          setProBlocked(true);
-        } else {
-          setProBlocked(false);
-        }
-      }
-    })();
-  }, [isAuth]);
-
-  const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
-  const [liveRates, setLiveRates] = React.useState(null);
-
-  // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
-  React.useEffect(() => {
-    (async () => {
-      const didReset = await AsyncStorage.getItem('__RESET_V3__');
-      if (!didReset) {
-        // Reset everything including accounts to update default credentials
-        const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
-        await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
-        await AsyncStorage.setItem('__RESET_V3__', '1');
-        setIsAuth(false);
-      }
-    })();
-  }, []);
-  // === END RESET ===
-
-  // Fetch live exchange rates on mount and every 30 min
-  React.useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      const rates = await fetchLiveRates();
-      if (mounted && rates) setLiveRates(rates);
-    };
-    load();
-    const interval = setInterval(load, RATES_CACHE_MS);
-    return () => { mounted = false; clearInterval(interval); };
-  }, []);
-
-  // When liveRates arrive, update current currency rate
-  React.useEffect(() => {
-    if (liveRates && currency.code !== 'EUR') {
-      const live = liveRates[currency.code];
-      if (live && isFinite(live) && live !== currency.rate) {
-        setCurrencyState(prev => ({ ...prev, rate: live }));
-      }
-    }
-  }, [liveRates]);
-
-  const fmtPrice = React.useCallback((eurAmount) => {
-    const n = Number(eurAmount || 0) * currency.rate;
-    const dec = currency.decimals !== undefined ? currency.decimals : 2;
-    const formatted = n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return `${formatted} ${currency.symbol}`;
-  }, [currency]);
-
-  const setCurrency = React.useCallback(async (cur) => {
-    // Apply live rate if available
-    const updated = getCurrencyWithLiveRate(cur, liveRates || _liveRates);
-    setCurrencyState(updated);
-    await AsyncStorage.setItem('APP_CURRENCY', cur.code);
-  }, [liveRates]);
-
-  React.useEffect(() => {
-    (async () => {
-      const raw = await AsyncStorage.getItem(KEY_AUTH);
-      setIsAuth(!!raw);
-      const savedCur = await AsyncStorage.getItem('APP_CURRENCY');
-      if (savedCur) {
-        const found = CURRENCIES.find(c => c.code === savedCur);
-        if (found) {
-          const updated = getCurrencyWithLiveRate(found, _liveRates);
-          setCurrencyState(updated);
-        }
-      }
-    })();
-  }, []);
-
-  if (isAuth === null) {
-    return (
-      <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
-        <ActivityIndicator size="large" color={BRAND} />
-      </View>
-    );
-  }
-
-  if (!isAuth) {
-    return (
-      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-        <AuthScreen onLogin={() => setIsAuth(true)} />
-      </CurrencyContext.Provider>
-    );
-  }
-
-
-  if (proBlocked) {
-    return (
-      <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:32}}>
-          <View style={{alignItems:'center'}}>
-            <View style={{width:80, height:80, borderRadius:40, backgroundColor:'#FEF3C7', alignItems:'center', justifyContent:'center', marginBottom:24}}>
-              <Ionicons name="time-outline" size={40} color="#F59E0B" />
-            </View>
-            <Text style={{fontSize:24, fontWeight:'900', color:'#111', textAlign:'center', marginBottom:12}}>
-              En attente de validation
-            </Text>
-            <Text style={{fontSize:15, color:'#6B7280', textAlign:'center', lineHeight:22, marginBottom:24}}>
-              Vos documents sont en cours de vérification par notre équipe. Vous recevrez un email de confirmation une fois votre compte approuvé.
-            </Text>
-            <View style={{backgroundColor:'#F9FAFB', borderRadius:12, padding:16, width:'100%', marginBottom:24}}>
-              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
-                <Ionicons name="mail-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>Un email de confirmation vous sera envoyé</Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems:'center', marginBottom:12}}>
-                <Ionicons name="shield-checkmark-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>Vérification sous 24-48h ouvrées</Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems:'center'}}>
-                <Ionicons name="notifications-outline" size={20} color={BRAND} style={{marginRight:10}} />
-                <Text style={{fontSize:14, color:'#374151'}}>Vous serez notifié du résultat</Text>
-              </View>
-            </View>
-            <TouchableOpacity onPress={async () => {
-              try { await logoutUser(); } catch(e) {}
-              try { await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS']); } catch(e) {}
-              setProBlocked(false);
-              setIsAuth(false);
-            }} style={{height:52, borderRadius:14, backgroundColor:'#EF4444', alignItems:'center', justifyContent:'center', width:'100%', marginBottom:12}}>
-              <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>Se déconnecter</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={async () => {
-              // Check if verified now
-              try {
-                const data = await getDocumentStatus();
-                if (data.status && data.document_status?.is_verified) {
-                  const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-                  if (authRaw) {
-                    const auth = JSON.parse(authRaw);
-                    auth.isVerified = true;
-                    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(auth));
-                  }
-                  setProBlocked(false);
-                  Alert.alert('Compte approuvé', 'Votre compte a été vérifié. Bienvenue !');
-                } else {
-                  Alert.alert('En cours', 'Vos documents sont toujours en cours de vérification.');
-                }
-              } catch(e) { Alert.alert('Erreur', 'Impossible de vérifier le statut.'); }
-            }} style={{height:48, borderRadius:14, borderWidth:1, borderColor:BRAND, alignItems:'center', justifyContent:'center', width:'100%'}}>
-              <Text style={{color:BRAND, fontWeight:'700', fontSize:15}}>Vérifier le statut</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-      <NavigationContainer theme={navTheme}>
-        <MainNavigator onLogout={() => setIsAuth(false)} />
-      </NavigationContainer>
-    </CurrencyContext.Provider>
-  );
-}
-
-const styles = StyleSheet.create({
-  screen:{ flex:1, backgroundColor:"#fff" },
-
-  sectionHeader:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingHorizontal:GUTTER, paddingTop:6, paddingBottom:4 },
-  sectionTitle:{ fontSize:20, fontWeight:"700", color:"#111" },
-
-  inputRow:{ flexDirection:"row", alignItems:"center", paddingHorizontal:GUTTER, marginTop:8 },
-  input:{ flex:1, height:44, borderWidth:1, borderColor:"#E5E7EB", borderRadius:10, paddingHorizontal:12, fontSize:15, color:"#111" },
-  addBtn:{ width:44, height:44, borderRadius:10, backgroundColor:BRAND, alignItems:"center", justifyContent:"center", marginLeft:10 },
-
-  scanPill:{ height:32, paddingHorizontal:10, borderRadius:10, borderWidth:1, borderColor:BRAND, flexDirection:"row", alignItems:"center", justifyContent:"center" },
-  scanText:{ color:BRAND, fontWeight:"600", marginLeft:6, fontSize:13 },
-
-  dualRow:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingHorizontal:GUTTER, marginTop:14 },
-  dualLeft:{ flexDirection:"row", alignItems:"center" },
-  dualRight:{ flexDirection:"row", alignItems:"center" },
-  dualLabel:{ fontSize:15, color:"#333", marginLeft:12 },
-
-  row:{ flexDirection:"row", alignItems:"center", paddingVertical:10, paddingLeft:GUTTER, paddingRight:12 },
-  qtyInline:{ flexDirection:"row", alignItems:"center", marginLeft:12 },
-  qtyBtn:{ width:28, height:28, borderRadius:8, borderWidth:1, borderColor:"#E5E7EB", alignItems:"center", justifyContent:"center" },
-  qtyInput:{ width:48, height:32, borderWidth:1, borderColor:"#E5E7EB", borderRadius:8, textAlign:"center", fontSize:15, marginHorizontal:4 },
-
-  itemLabel:{ fontSize:16, color:"#111", marginLeft:12 },
-  crossed:{ textDecorationLine:"line-through", color:"#999" },
-  trashBtn:{ paddingHorizontal:8, marginLeft:8 },
-
-  square:{ width:CTRL, height:CTRL, borderRadius:6, borderWidth:1, borderColor:"#CBD5E1", alignItems:"center", justifyContent:"center" },
-  squareOn:{ backgroundColor:BRAND, borderColor:BRAND },
-
-  radioOuter:{ width:CTRL, height:CTRL, borderRadius:10, borderWidth:1, borderColor:"#CBD5E1", backgroundColor:"#fff", alignItems:"center", justifyContent:"center" },
-  radioInner:{ width:10, height:10, borderRadius:5, backgroundColor:BRAND },
-
-  h1:{ fontSize:20, fontWeight:"700", color:"#111", marginTop:6, marginBottom:6 },
-  muted:{ color:"#9AA", fontSize:15 },
-  empty:{ color:"#9AA", fontSize:15 },
-
-  bottomAreaWrap:{ position:"absolute", left:GUTTER, right:GUTTER, bottom:30 },
-  switchCenterRow:{ flexDirection:"row", alignItems:"center", justifyContent:"center", marginBottom:12 },
-  switchLabel:{ fontSize:15, color:"#333", marginLeft:10 },
-
-  bottomBtn:{ height:48, borderRadius:14, backgroundColor:BRAND, alignItems:"center", justifyContent:"center" },
-  bottomBtnText:{ color:"#fff", fontSize:16, fontWeight:"700" },
-
-  modalBackdrop:{ flex:1, backgroundColor:"rgba(0,0,0,0.4)", justifyContent:"center", alignItems:"center" },
-  modalBox:{ width:"80%", backgroundColor:"#fff", borderRadius:12, padding:20 },
-  modalTitle:{ fontSize:18, fontWeight:"700", marginBottom:12, textAlign:"center" },
-  modalInput:{ borderWidth:1, borderColor:"#DDD", borderRadius:8, padding:10, fontSize:16, marginBottom:16 },
-  modalRow:{ flexDirection:"row", justifyContent:"flex-end" },
-  modalBtnCancel:{ paddingVertical:10, paddingHorizontal:16, marginRight:10 },
-  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, backgroundColor:BRAND, borderRadius:8 },
-  modalBtnText:{ fontSize:15, color:"#333" },
-  modalBtnTextSave:{ fontSize:15, fontWeight:"700", color:"#fff" }
-});
-
 
 const LANGUAGES = [
   { code:'fr', label:'Français', flag:'🇫🇷' },
@@ -4419,7 +3558,6 @@ function FakeProfileScreen({ onLogout }) {
   const [editPostalCode, setEditPostalCode] = React.useState('');
   const [editCountry, setEditCountry] = React.useState('');
   const [geoLoading, setGeoLoading] = React.useState(false);
-  const [docStatuses, setDocStatuses] = React.useState(null);
   const [driverMode, setDriverMode] = React.useState(false);
   const [driverCountry, setDriverCountryState] = React.useState('FR');
   const [driverEarnings, setDriverEarnings] = React.useState({ total_year: 0, remaining: 3000, limit: 3000 });
@@ -4461,29 +3599,6 @@ function FakeProfileScreen({ onLogout }) {
           setDriverEarnings(earnings);
           const ok = await canDeliver();
           setDriverBlocked(!ok);
-        }
-      } catch(e) {}
-    })();
-    // Load document verification status for pro users
-    (async () => {
-      try {
-        const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-        const auth = authRaw ? JSON.parse(authRaw) : {};
-        if (auth.role === 'professionaluser') {
-          const data = await getDocumentStatus();
-          if (data.status && data.document_status) {
-            setDocStatuses(data.document_status);
-            // Update isVerified in profile
-            if (data.document_status.is_verified) {
-              const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
-              const prof = profRaw ? JSON.parse(profRaw) : {};
-              if (!prof.isVerified) {
-                prof.isVerified = true;
-                await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
-                setProfile(prof);
-              }
-            }
-          }
         }
       } catch(e) {}
     })();
@@ -4714,50 +3829,6 @@ function FakeProfileScreen({ onLogout }) {
             <Text style={{ color:'#fff', fontWeight:'700' }}>{t('profile.editProfile')}</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Document Verification Status (Pro users) */}
-        {profile.role === 'professionaluser' && (
-          <View style={{ paddingHorizontal:16, marginBottom:16 }}>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
-              {t('profile.verificationStatus') || 'Statut de vérification'}
-            </Text>
-            {!profile.isVerified && (
-              <View style={{ backgroundColor:'#FEF3C7', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                <Ionicons name="time-outline" size={20} color="#F59E0B" style={{marginRight:10}} />
-                <Text style={{ flex:1, fontSize:13, color:'#92400E' }}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
-              </View>
-            )}
-            {profile.isVerified && (
-              <View style={{ backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                <Ionicons name="checkmark-circle" size={20} color="#059669" style={{marginRight:10}} />
-                <Text style={{ flex:1, fontSize:13, color:'#065F46', fontWeight:'600' }}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
-              </View>
-            )}
-            {docStatuses && (
-              <View style={{ backgroundColor:'#fff', borderRadius:12, padding:14, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-                {[
-                  { key: 'kbiss_status', label: 'KBISS' },
-                  { key: 'iban_status', label: 'IBAN / RIB' },
-                  { key: 'identityCardFront_status', label: t('auth.docIdFront') || 'Carte d\'identité (recto)' },
-                  { key: 'identityCardBack_status', label: t('auth.docIdBack') || 'Carte d\'identité (verso)' },
-                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress') || 'Justificatif de domicile' },
-                ].map((doc, i) => {
-                  const status = docStatuses[doc.key] || 'pending';
-                  const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
-                  const color = status === 'approved' ? '#059669' : status === 'rejected' ? '#EF4444' : '#F59E0B';
-                  const label = status === 'approved' ? (t('profile.docApproved') || 'Approuvé') : status === 'rejected' ? (t('profile.docRejected') || 'Rejeté') : (t('profile.docPending') || 'En attente');
-                  return (
-                    <View key={i} style={{ flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth: i < 4 ? 1 : 0, borderBottomColor:'#F3F4F6' }}>
-                      <Ionicons name={icon} size={18} color={color} style={{marginRight:10}} />
-                      <Text style={{ flex:1, fontSize:14, fontWeight:'500', color:'#111' }}>{doc.label}</Text>
-                      <Text style={{ fontSize:12, fontWeight:'600', color }}>{label}</Text>
-                    </View>
-                  );
-                })}
-              </View>
-            )}
-          </View>
-        )}
 
         {/* Order History */}
         <View style={{ paddingHorizontal:16 }}>
