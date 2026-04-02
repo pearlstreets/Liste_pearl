@@ -4231,7 +4231,34 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Disconnect Button */}
-        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:0 }}>
+        {/* Become a driver */}
+        <View style={{ paddingHorizontal:16, marginTop:16 }}>
+          <TouchableOpacity onPress={() => {
+            const { Linking } = require('react-native');
+            Linking.openURL('pearl-delivery://').catch(() => {
+              Alert.alert(
+                t('profile.becomeDriver') || 'Devenir livreur',
+                t('profile.downloadDeliveryApp') || "Téléchargez l'app Pearl Delivery pour devenir livreur.",
+                [{ text: 'OK' }]
+              );
+            });
+          }} style={{
+            flexDirection:'row', alignItems:'center',
+            backgroundColor:'#fff', borderRadius:12, padding:16,
+            borderWidth:1, borderColor:'#E5E7EB',
+            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
+          }}>
+            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
+            <View style={{flex:1}}>
+              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Logout */}
+        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
           <TouchableOpacity onPress={() => {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
@@ -4277,31 +4304,6 @@ function FakeProfileScreen({ onLogout }) {
           </TouchableOpacity>
         </View>
 
-        {/* Become a driver */}
-        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
-          <TouchableOpacity onPress={() => {
-            const { Linking } = require('react-native');
-            Linking.openURL('pearl-delivery://').catch(() => {
-              Alert.alert(
-                t('profile.becomeDriver') || 'Devenir livreur',
-                t('profile.downloadDeliveryApp') || 'Téléchargez l\'app Pearl Delivery pour devenir livreur et gagner un complément de revenu.',
-                [{ text: 'OK' }]
-              );
-            });
-          }} style={{
-            flexDirection:'row', alignItems:'center', justifyContent:'center',
-            backgroundColor:'#fff', borderRadius:12, padding:16,
-            borderWidth:1, borderColor:'#E5E7EB',
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
-            <View style={{flex:1}}>
-              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-          </TouchableOpacity>
-        </View>
       </ScrollView>
 
       {/* Edit Profile Full Page Modal */}
