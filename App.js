@@ -3399,7 +3399,13 @@ function AuthScreen({ onLogin }) {
     if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email'); return; }
     if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
     setLoading(true);
-    try { const result = await loginUser(email.trim(), password); if (result.success) { setLoading(false); onLogin(); return; } } catch(e) {}
+    // Try Marketplace API with 5s timeout — if unavailable, fallback to local
+    try {
+      const apiPromise = loginUser(email.trim(), password);
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000));
+      const result = await Promise.race([apiPromise, timeoutPromise]);
+      if (result && result.success) { setLoading(false); onLogin(); return; }
+    } catch(e) { /* API unavailable — fallback to local */ }
     const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
     const accounts = raw ? JSON.parse(raw) : [];
     const input = email.trim().toLowerCase();
@@ -3422,7 +3428,12 @@ function AuthScreen({ onLogin }) {
     if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty') || 'Remplissez tous les champs'); return; }
     if (password.length < 6) { setError(t('auth.errorPasswordLength') || 'Minimum 6 caractères'); return; }
     setLoading(true);
-    try { const result = await registerUser({ username: pseudo.trim(), email: email.trim(), password, firstName: prenom.trim(), lastName: nom.trim() }); if (result.success) { setLoading(false); onLogin(); return; } } catch(e) {}
+    try {
+      const apiPromise = registerUser({ username: pseudo.trim(), email: email.trim(), password, firstName: prenom.trim(), lastName: nom.trim() });
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000));
+      const result = await Promise.race([apiPromise, timeoutPromise]);
+      if (result && result.success) { setLoading(false); onLogin(); return; }
+    } catch(e) { /* API unavailable — fallback to local */ }
     const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
     const accounts = raw ? JSON.parse(raw) : [];
     if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists') || 'Email déjà utilisé'); setLoading(false); return; }

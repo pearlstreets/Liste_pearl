@@ -36,7 +36,16 @@ async function apiFetch(endpoint, options = {}) {
 
   const url = `${BASE_URL}${endpoint}`;
 
-  let res = await fetch(url, { ...options, headers });
+  // Timeout after 5s to fallback to local quickly
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+
+  let res;
+  try {
+    res = await fetch(url, { ...options, headers, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
 
   // If 401, try to refresh the token
   if (res.status === 401 && tokens?.refresh) {
