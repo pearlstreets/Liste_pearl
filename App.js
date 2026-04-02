@@ -3451,6 +3451,9 @@ function AuthScreen({ onLogin }) {
             <Ionicons name="cart" size={30} color="#fff" />
           </View>
           <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl List</Text>
+          <Text style={{fontSize:13, color:'#9CA3AF', marginTop:6, textAlign:'center'}}>
+            {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets') : (t('auth.pearlSignupHint') || 'Créez un nouveau compte Pearl Streets')}
+          </Text>
         </View>
 
         {error ? (
@@ -3489,7 +3492,7 @@ function AuthScreen({ onLogin }) {
 
         <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={{alignItems:'center', paddingVertical:16}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
-            {isLogin ? t('auth.noAccount') + ' ' : t('auth.hasAccount') + ' '}
+            {isLogin ? (t('auth.noAccountPearl') || 'Pas de compte Pearl Streets ? ') : (t('auth.hasAccountPearl') || 'Déjà un compte Pearl Streets ? ')}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
