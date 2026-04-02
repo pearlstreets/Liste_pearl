@@ -3767,6 +3767,7 @@ function FakeProfileScreen({ onLogout }) {
   const [editPostalCode, setEditPostalCode] = React.useState('');
   const [editCountry, setEditCountry] = React.useState('');
   const [geoLoading, setGeoLoading] = React.useState(false);
+  const [driverInfoVisible, setDriverInfoVisible] = React.useState(false);
   const [docStatuses, setDocStatuses] = React.useState(null);
   const [driverMode, setDriverMode] = React.useState(false);
   const [driverCountry, setDriverCountryState] = React.useState('FR');
@@ -4233,16 +4234,7 @@ function FakeProfileScreen({ onLogout }) {
         {/* Disconnect Button */}
         {/* Become a driver */}
         <View style={{ paddingHorizontal:16, marginTop:16 }}>
-          <TouchableOpacity onPress={() => {
-            const { Linking } = require('react-native');
-            Linking.openURL('pearl-delivery://').catch(() => {
-              Alert.alert(
-                t('profile.becomeDriver') || 'Devenir livreur',
-                t('profile.downloadDeliveryApp') || "Téléchargez l'app Pearl Delivery pour devenir livreur.",
-                [{ text: 'OK' }]
-              );
-            });
-          }} style={{
+          <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
             flexDirection:'row', alignItems:'center',
             backgroundColor:'#fff', borderRadius:12, padding:16,
             borderWidth:1, borderColor:'#E5E7EB',
@@ -4305,6 +4297,97 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
       </ScrollView>
+
+      {/* Driver Info Full Page Modal */}
+      <Modal visible={driverInfoVisible} animationType="slide">
+        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
+          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
+            <TouchableOpacity onPress={() => setDriverInfoVisible(false)} style={{ marginRight:12, paddingLeft:16 }}>
+              <Ionicons name="arrow-back" size={24} color="#111" />
+            </TouchableOpacity>
+            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+          </View>
+          <ScrollView contentContainerStyle={{ padding:20, paddingBottom:40 }}>
+            {/* Hero */}
+            <View style={{ alignItems:'center', marginBottom:24 }}>
+              <View style={{ width:70, height:70, borderRadius:35, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12 }}>
+                <Ionicons name="bicycle" size={36} color="#fff" />
+              </View>
+              <Text style={{ fontSize:22, fontWeight:'900', color:'#111', textAlign:'center' }}>Pearl Delivery</Text>
+              <Text style={{ fontSize:14, color:'#6B7280', marginTop:6, textAlign:'center', lineHeight:20 }}>
+                {t('profile.driverInfoDesc') || 'Gagnez un complément de revenu en livrant des commandes dans votre ville.'}
+              </Text>
+            </View>
+
+            {/* Two types */}
+            <Text style={{ fontSize:17, fontWeight:'800', color:'#111', marginBottom:12 }}>{t('profile.driverTypes') || 'Deux façons de livrer'}</Text>
+
+            <View style={{ backgroundColor:'#fff', borderRadius:14, padding:16, marginBottom:12, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+              <View style={{ flexDirection:'row', alignItems:'center', marginBottom:8 }}>
+                <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:10}} />
+                <Text style={{ fontSize:16, fontWeight:'700', color:'#111' }}>{t('profile.driverParticulier') || 'Livreur Particulier'}</Text>
+              </View>
+              <Text style={{ fontSize:13, color:'#6B7280', lineHeight:20 }}>
+                {t('profile.driverParticulierInfo') || 'Aucun statut professionnel requis. Livrez quand vous voulez en complément de revenu, dans la limite du plafond annuel de votre pays.'}
+              </Text>
+            </View>
+
+            <View style={{ backgroundColor:'#fff', borderRadius:14, padding:16, marginBottom:20, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+              <View style={{ flexDirection:'row', alignItems:'center', marginBottom:8 }}>
+                <Ionicons name="storefront" size={22} color={BRAND} style={{marginRight:10}} />
+                <Text style={{ fontSize:16, fontWeight:'700', color:'#111' }}>{t('profile.driverPro') || 'Livreur Pro'}</Text>
+              </View>
+              <Text style={{ fontSize:13, color:'#6B7280', lineHeight:20 }}>
+                {t('profile.driverProInfo') || 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, KBISS.'}
+              </Text>
+            </View>
+
+            {/* Country limits */}
+            <Text style={{ fontSize:17, fontWeight:'800', color:'#111', marginBottom:12 }}>{t('profile.driverLimits') || 'Plafonds par pays (particuliers)'}</Text>
+
+            {[
+              { flag: '🇫🇷', name: 'France', limit: '3 000 €/an', status: 'ok', info: 'Micro-BIC — Abattement 50%' },
+              { flag: '🇧🇪', name: 'Belgique', limit: '7 700 €/an', status: 'ok', info: 'Taux fixe 10,7%' },
+              { flag: '🇬🇧', name: 'Royaume-Uni', limit: '1 000 £/an', status: 'ok', info: 'Trading Allowance' },
+              { flag: '🇩🇪', name: 'Allemagne', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
+              { flag: '🇮🇹', name: 'Italie', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
+              { flag: '🇪🇸', name: 'Espagne', limit: '—', status: 'blocked', info: 'Statut salarié obligatoire' },
+              { flag: '🇨🇭', name: 'Suisse', limit: '—', status: 'blocked', info: 'Statut salarié depuis 2023' },
+              { flag: '🇳🇱', name: 'Pays-Bas', limit: '—', status: 'strict', info: 'Risque de requalification' },
+              { flag: '🇵🇹', name: 'Portugal', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
+            ].map((c, i) => (
+              <View key={i} style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#fff', borderRadius:10, padding:12, marginBottom:8 }}>
+                <Text style={{ fontSize:20, marginRight:12 }}>{c.flag}</Text>
+                <View style={{ flex:1 }}>
+                  <Text style={{ fontSize:14, fontWeight:'600', color:'#111' }}>{c.name}</Text>
+                  <Text style={{ fontSize:11, color:'#6B7280' }}>{c.info}</Text>
+                </View>
+                <View style={{ alignItems:'flex-end' }}>
+                  <Text style={{ fontSize:13, fontWeight:'700', color: c.status === 'ok' ? BRAND : c.status === 'blocked' ? '#EF4444' : '#F59E0B' }}>{c.limit}</Text>
+                  <Ionicons name={c.status === 'ok' ? 'checkmark-circle' : c.status === 'blocked' ? 'close-circle' : 'alert-circle'} size={14} color={c.status === 'ok' ? BRAND : c.status === 'blocked' ? '#EF4444' : '#F59E0B'} style={{marginTop:2}} />
+                </View>
+              </View>
+            ))}
+
+            {/* CTA */}
+            <View style={{ marginTop:20 }}>
+              <TouchableOpacity onPress={() => {
+                const { Linking } = require('react-native');
+                setDriverInfoVisible(false);
+                Linking.openURL('pearl-delivery://').catch(() => {
+                  Alert.alert('Pearl Delivery', t('profile.downloadDeliveryApp') || "Téléchargez l'app Pearl Delivery sur l'App Store ou Google Play.", [{ text: 'OK' }]);
+                });
+              }} style={{ height:52, borderRadius:14, backgroundColor:BRAND, flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
+                <Ionicons name="bicycle" size={22} color="#fff" style={{marginRight:10}} />
+                <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('profile.openDeliveryApp') || "Ouvrir l'app Pearl Delivery"}</Text>
+              </TouchableOpacity>
+              <Text style={{ fontSize:11, color:'#9CA3AF', textAlign:'center', marginTop:10 }}>
+                {t('profile.driverLegalNote') || "L'inscription se fait directement dans l'app Pearl Delivery. Vous pouvez choisir entre livreur particulier ou professionnel."}
+              </Text>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
 
       {/* Edit Profile Full Page Modal */}
       <Modal visible={editVisible} animationType="slide">
