@@ -3383,6 +3383,7 @@ function AuthScreen({ onLogin }) {
   const [error, setError] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [langVisible, setLangVisible] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
@@ -3498,10 +3499,39 @@ function AuthScreen({ onLogin }) {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity onPress={async () => { const codes = ['fr','en','es','zh','ar','de','nl','it','pt','ja','th','sv','ru']; const idx = codes.indexOf(i18nAuth.language); await i18nAuth.changeLanguage(codes[(idx + 1) % codes.length]); }} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
+      <TouchableOpacity onPress={() => setLangVisible(true)} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
         <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
         <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
       </TouchableOpacity>
+
+      {/* Language Picker Modal */}
+      <Modal visible={langVisible} animationType="none" transparent={true}>
+        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
+          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'60%', paddingBottom:40}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.language') || 'Langue'}</Text>
+              <TouchableOpacity onPress={() => setLangVisible(false)} style={{padding:6}}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={LANGUAGES}
+              keyExtractor={(item) => item.code}
+              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
+              renderItem={({item: lang}) => (
+                <TouchableOpacity
+                  onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANG', lang.code); setLangVisible(false); }}
+                  style={{flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12, borderBottomWidth:1, borderBottomColor:'#F3F4F6', backgroundColor: i18nAuth.language === lang.code ? '#F0FDF4' : '#fff'}}
+                >
+                  <Text style={{fontSize:24, marginRight:14}}>{lang.flag}</Text>
+                  <Text style={{flex:1, fontSize:16, fontWeight: i18nAuth.language === lang.code ? '700' : '500', color: i18nAuth.language === lang.code ? BRAND : '#111'}}>{lang.label}</Text>
+                  {i18nAuth.language === lang.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
     </KeyboardAvoidingView>
   );
