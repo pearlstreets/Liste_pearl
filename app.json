@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "Pearl Delivery",
-    "slug": "pearl-delivery",
-    "scheme": "pearl-delivery",
+    "name": "Pearl List",
+    "slug": "pearl-list",
+    "scheme": "pearl-list",
+    "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "assetBundlePatterns": [
@@ -10,29 +11,47 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.pearlstreets.list",
       "infoPlist": {
-        "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste.",
-        "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo de liste."
+        "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste de courses.",
+        "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo.",
+        "NSLocationWhenInUseUsageDescription": "Pour trouver les magasins proches et optimiser la livraison.",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSExceptionDomains": {
+            "pythonapi.digiexports.in": {
+              "NSExceptionAllowsInsecureHTTPLoads": false,
+              "NSIncludesSubdomains": true
+            }
+          }
+        }
       }
     },
     "android": {
+      "package": "com.pearlstreets.list",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "CAMERA"
-      ]
+        "CAMERA",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "usesCleartextTraffic": false
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "ocrSpaceKey": "helloworld",
-      "pearlBaseUrl": "https://api.pearlstreets.example/mock"
+      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1"
     },
     "plugins": [
-      "expo-localization"
-    ]
+      "expo-localization",
+      "expo-location"
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    }
   }
 }

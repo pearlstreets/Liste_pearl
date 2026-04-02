@@ -3398,8 +3398,12 @@ function AuthScreen({ onLogin }) {
     if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty') || 'Veuillez saisir votre email et mot de passe'); return; }
     if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email'); return; }
     if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
+    // Rate limiting: max 5 attempts per minute
+    const { checkRateLimit } = require('./services/security');
+    const rateCheck = checkRateLimit('login', 5, 60000);
+    if (!rateCheck.allowed) { setError((t('auth.errorRateLimit') || 'Trop de tentatives. Réessayez dans') + ' ' + rateCheck.waitSeconds + 's'); return; }
     setLoading(true);
-    // Try Marketplace API with 5s timeout — if unavailable, fallback to local
+    // Try Marketplace API with timeout — if unavailable, fallback to local
     try {
       const apiPromise = loginUser(email.trim(), password);
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000));

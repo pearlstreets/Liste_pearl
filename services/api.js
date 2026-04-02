@@ -1,77 +1,102 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CONFIG } from "./config";
+import { sanitizeResponse, isTokenExpired, requestFingerprint } from "./security";
 
-// Base URL from config (local/staging/production)
+// Base URL from config
 const BASE_URL = CONFIG.API_URL;
-
 const TOKEN_KEY = "MARKETPLACE_TOKENS";
+const API_TIMEOUT = 8000; // 8s timeout
 
-// Store JWT tokens
+// ========== TOKEN MANAGEMENT ==========
+
 export async function saveTokens(access, refresh) {
-  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify({ access, refresh }));
+  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify({ access, refresh, savedAt: Date.now() }));
 }
 
-// Get stored tokens
 export async function getTokens() {
-  const raw = await AsyncStorage.getItem(TOKEN_KEY);
-  return raw ? JSON.parse(raw) : null;
+  try {
+    const raw = await AsyncStorage.getItem(TOKEN_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
 }
 
-// Clear tokens on logout
 export async function clearTokens() {
   await AsyncStorage.removeItem(TOKEN_KEY);
 }
 
-// Generic fetch with JWT auth and auto-refresh
+// ========== SECURE FETCH ==========
+
 async function apiFetch(endpoint, options = {}) {
   const tokens = await getTokens();
   const headers = {
     "Content-Type": "application/json",
+    "X-Request-ID": requestFingerprint(), // Track requests
     ...(options.headers || {}),
   };
 
-  if (tokens?.access) {
+  // Auto-refresh if token expired
+  if (tokens?.access && isTokenExpired(tokens.access) && tokens?.refresh) {
+    try {
+      const refreshRes = await fetchWithTimeout(`${BASE_URL}/admin/refresh-token/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh: tokens.refresh }),
+      });
+      if (refreshRes.ok) {
+        const data = await refreshRes.json();
+        if (data.access) {
+          await saveTokens(data.access, data.refresh || tokens.refresh);
+          headers["Authorization"] = `Bearer ${data.access}`;
+        }
+      }
+    } catch (e) { /* refresh failed */ }
+  } else if (tokens?.access) {
     headers["Authorization"] = `Bearer ${tokens.access}`;
   }
 
   const url = `${BASE_URL}${endpoint}`;
+  let res = await fetchWithTimeout(url, { ...options, headers });
 
-  // Timeout after 5s to fallback to local quickly
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
-
-  let res;
-  try {
-    res = await fetch(url, { ...options, headers, signal: controller.signal });
-  } finally {
-    clearTimeout(timeout);
-  }
-
-  // If 401, try to refresh the token
+  // If 401, try refresh once more
   if (res.status === 401 && tokens?.refresh) {
-    const refreshRes = await fetch(`${BASE_URL}/admin/refresh-token/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh: tokens.refresh }),
-    });
-
-    if (refreshRes.ok) {
-      const data = await refreshRes.json();
-      if (data.access) {
-        await saveTokens(data.access, tokens.refresh);
-        headers["Authorization"] = `Bearer ${data.access}`;
-        res = await fetch(url, { ...options, headers });
+    try {
+      const refreshRes = await fetchWithTimeout(`${BASE_URL}/admin/refresh-token/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh: tokens.refresh }),
+      });
+      if (refreshRes.ok) {
+        const data = await refreshRes.json();
+        if (data.access) {
+          await saveTokens(data.access, data.refresh || tokens.refresh);
+          headers["Authorization"] = `Bearer ${data.access}`;
+          res = await fetchWithTimeout(url, { ...options, headers });
+        }
       }
-    }
+    } catch (e) { /* refresh failed */ }
   }
 
   return res;
 }
 
-// Convenience methods
+// Fetch with AbortController timeout
+async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ========== API METHODS (with response sanitization) ==========
+
 export async function apiGet(endpoint) {
   const res = await apiFetch(endpoint, { method: "GET" });
-  return res.json();
+  const data = await res.json();
+  return sanitizeResponse(data);
 }
 
 export async function apiPost(endpoint, body) {
@@ -79,7 +104,8 @@ export async function apiPost(endpoint, body) {
     method: "POST",
     body: JSON.stringify(body),
   });
-  return res.json();
+  const data = await res.json();
+  return sanitizeResponse(data);
 }
 
 export async function apiPut(endpoint, body) {
@@ -87,27 +113,29 @@ export async function apiPut(endpoint, body) {
     method: "PUT",
     body: JSON.stringify(body),
   });
-  return res.json();
+  const data = await res.json();
+  return sanitizeResponse(data);
 }
 
 export async function apiDelete(endpoint) {
   const res = await apiFetch(endpoint, { method: "DELETE" });
-  return res.json();
+  const data = await res.json();
+  return sanitizeResponse(data);
 }
 
-// Multipart form data upload (for images, files)
 export async function apiUpload(endpoint, formData) {
   const tokens = await getTokens();
-  const headers = {};
+  const headers = { "X-Request-ID": requestFingerprint() };
   if (tokens?.access) {
     headers["Authorization"] = `Bearer ${tokens.access}`;
   }
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const res = await fetchWithTimeout(`${BASE_URL}${endpoint}`, {
     method: "POST",
     headers,
     body: formData,
   });
-  return res.json();
+  const data = await res.json();
+  return sanitizeResponse(data);
 }
 
 export { BASE_URL };

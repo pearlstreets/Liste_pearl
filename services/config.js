@@ -26,7 +26,7 @@ const ENV = {
 };
 
 // Active environment - change this to switch
-const ACTIVE_ENV = "local";
+const ACTIVE_ENV = "staging";
 
 export const CONFIG = ENV[ACTIVE_ENV];
 export default CONFIG;
