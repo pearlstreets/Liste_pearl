@@ -4052,7 +4052,8 @@ function FakeProfileScreen({ onLogout }) {
               <Ionicons name="camera" size={14} color="#fff" />
             </View>
           </TouchableOpacity>
-          <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:4 }}>{profile.pseudo || t('profile.pseudo')}</Text>
+          <Text style={{ fontSize:20, fontWeight:'900', color:'#111' }}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
+          {profile.pseudo ? <Text style={{ fontSize:14, color:'#6B7280', marginTop:2 }}>@{profile.pseudo}</Text> : null}
 
           <TouchableOpacity onPress={() => { setEditNom(profile.nom); setEditPrenom(profile.prenom); setEditPseudo(profile.pseudo||''); setEditEmail(profile.email||''); setShowPwdChange(false); setPwdError(''); setPwdSuccess(''); setEditVisible(true); }} style={{
             marginTop:6, paddingHorizontal:20, paddingVertical:10, borderRadius:10,
