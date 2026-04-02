@@ -3384,7 +3384,6 @@ function AuthScreen({ onLogin }) {
   const [showPwd, setShowPwd] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  // Init default account
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
@@ -3407,11 +3406,10 @@ function AuthScreen({ onLogin }) {
     const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
     if (!accountExists) { setError(t('auth.errorAccountNotFound') || 'Aucun compte trouvé'); setLoading(false); return; }
     if (accountExists.password !== password) { setError(t('auth.errorWrongPassword') || 'Mot de passe incorrect'); setLoading(false); return; }
-    const userKey = 'USER_' + accountExists.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...accountExists, userKey}));
-    const savedData = await AsyncStorage.getItem(userKey + '_DATA');
-    if (savedData) { const data = JSON.parse(savedData); if (data.profile) await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile)); }
-    else { await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: accountExists.pseudo, prenom: accountExists.prenom, nom: accountExists.nom, email: accountExists.email, photo: null })); }
+    const found = accountExists;
+    const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
+    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
     await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
     await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
     await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
@@ -3452,17 +3450,10 @@ function AuthScreen({ onLogin }) {
           </View>
           <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl List</Text>
           <Text style={{fontSize:13, color:'#9CA3AF', marginTop:6, textAlign:'center'}}>
-            {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets') : (t('auth.pearlSignupHint') || 'Créez un nouveau compte Pearl Streets')}
+            {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets ou Marketplace') : (t('auth.pearlSignupHint') || 'Créez un compte — utilisable sur l\'app et le site Marketplace')}
           </Text>
         </View>
-
-        {error ? (
-          <View style={{backgroundColor:'#FEE2E2', borderRadius:10, padding:12, marginBottom:16, flexDirection:'row', alignItems:'center'}}>
-            <Ionicons name="alert-circle" size={18} color="#EF4444" />
-            <Text style={{color:'#EF4444', fontSize:13, marginLeft:8, flex:1}}>{error}</Text>
-          </View>
-        ) : null}
-
+        {error ? (<View style={{backgroundColor:'#FEE2E2', borderRadius:10, padding:12, marginBottom:16, flexDirection:'row', alignItems:'center'}}><Ionicons name="alert-circle" size={18} color="#EF4444" /><Text style={{color:'#EF4444', fontSize:13, marginLeft:8, flex:1}}>{error}</Text></View>) : null}
         {!isLogin && (
           <>
             <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
@@ -3473,10 +3464,8 @@ function AuthScreen({ onLogin }) {
             <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
           </>
         )}
-
         <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
         <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none" style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-
         <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
         <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
           <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
@@ -3484,27 +3473,17 @@ function AuthScreen({ onLogin }) {
             <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading}
-          style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
+        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading} style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
           {loading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={{alignItems:'center', paddingVertical:16}}>
           <Text style={{color:'#6B7280', fontSize:15}}>
-            {isLogin ? (t('auth.noAccountPearl') || 'Pas de compte Pearl Streets ? ') : (t('auth.hasAccountPearl') || 'Déjà un compte Pearl Streets ? ')}
+            {isLogin ? (t('auth.noAccountPearl') || 'Pas de compte ? ') : (t('auth.hasAccountPearl') || 'Déjà un compte ? ')}
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
-
-      {/* Language selector */}
-      <TouchableOpacity onPress={async () => {
-        const codes = ['fr','en','es','zh','ar','de','nl','it','pt','ja','th','sv','ru'];
-        const idx = codes.indexOf(i18nAuth.language);
-        const next = codes[(idx + 1) % codes.length];
-        await i18nAuth.changeLanguage(next);
-      }} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
+      <TouchableOpacity onPress={async () => { const codes = ['fr','en','es','zh','ar','de','nl','it','pt','ja','th','sv','ru']; const idx = codes.indexOf(i18nAuth.language); await i18nAuth.changeLanguage(codes[(idx + 1) % codes.length]); }} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
         <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
         <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
       </TouchableOpacity>
@@ -3512,6 +3491,177 @@ function AuthScreen({ onLogin }) {
     </KeyboardAvoidingView>
   );
 }
+
+const useCurrency = () => React.useContext(CurrencyContext);
+
+export default function App() {
+  const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
+
+  // Check if pro user needs verification
+  React.useEffect(() => {
+    (async () => {
+      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+      if (authRaw) {
+        const auth = JSON.parse(authRaw);
+        if (auth.role === 'professionaluser' && !auth.isVerified) {
+          setProBlocked(true);
+        } else {
+          setProBlocked(false);
+        }
+      }
+    })();
+  }, [isAuth]);
+
+  const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
+  const [liveRates, setLiveRates] = React.useState(null);
+
+  // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
+  React.useEffect(() => {
+    (async () => {
+      const didReset = await AsyncStorage.getItem('__RESET_V3__');
+      if (!didReset) {
+        // Reset everything including accounts to update default credentials
+        const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
+        await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
+        await AsyncStorage.setItem('__RESET_V3__', '1');
+        setIsAuth(false);
+      }
+    })();
+  }, []);
+  // === END RESET ===
+
+  // Fetch live exchange rates on mount and every 30 min
+  React.useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      const rates = await fetchLiveRates();
+      if (mounted && rates) setLiveRates(rates);
+    };
+    load();
+    const interval = setInterval(load, RATES_CACHE_MS);
+    return () => { mounted = false; clearInterval(interval); };
+  }, []);
+
+  // When liveRates arrive, update current currency rate
+  React.useEffect(() => {
+    if (liveRates && currency.code !== 'EUR') {
+      const live = liveRates[currency.code];
+      if (live && isFinite(live) && live !== currency.rate) {
+        setCurrencyState(prev => ({ ...prev, rate: live }));
+      }
+    }
+  }, [liveRates]);
+
+  const fmtPrice = React.useCallback((eurAmount) => {
+    const n = Number(eurAmount || 0) * currency.rate;
+    const dec = currency.decimals !== undefined ? currency.decimals : 2;
+    const formatted = n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${formatted} ${currency.symbol}`;
+  }, [currency]);
+
+  const setCurrency = React.useCallback(async (cur) => {
+    // Apply live rate if available
+    const updated = getCurrencyWithLiveRate(cur, liveRates || _liveRates);
+    setCurrencyState(updated);
+    await AsyncStorage.setItem('APP_CURRENCY', cur.code);
+  }, [liveRates]);
+
+  React.useEffect(() => {
+    (async () => {
+      const raw = await AsyncStorage.getItem(KEY_AUTH);
+      setIsAuth(!!raw);
+      const savedCur = await AsyncStorage.getItem('APP_CURRENCY');
+      if (savedCur) {
+        const found = CURRENCIES.find(c => c.code === savedCur);
+        if (found) {
+          const updated = getCurrencyWithLiveRate(found, _liveRates);
+          setCurrencyState(updated);
+        }
+      }
+    })();
+  }, []);
+
+  if (isAuth === null) {
+    return (
+      <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
+        <ActivityIndicator size="large" color={BRAND} />
+      </View>
+    );
+  }
+
+  if (!isAuth) {
+    return (
+      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
+        <AuthScreen onLogin={() => setIsAuth(true)} />
+      </CurrencyContext.Provider>
+    );
+  }
+
+
+  return (
+    <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
+      <NavigationContainer theme={navTheme}>
+        <MainNavigator onLogout={() => setIsAuth(false)} />
+      </NavigationContainer>
+    </CurrencyContext.Provider>
+  );
+}
+
+const styles = StyleSheet.create({
+  screen:{ flex:1, backgroundColor:"#fff" },
+
+  sectionHeader:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingHorizontal:GUTTER, paddingTop:6, paddingBottom:4 },
+  sectionTitle:{ fontSize:20, fontWeight:"700", color:"#111" },
+
+  inputRow:{ flexDirection:"row", alignItems:"center", paddingHorizontal:GUTTER, marginTop:8 },
+  input:{ flex:1, height:44, borderWidth:1, borderColor:"#E5E7EB", borderRadius:10, paddingHorizontal:12, fontSize:15, color:"#111" },
+  addBtn:{ width:44, height:44, borderRadius:10, backgroundColor:BRAND, alignItems:"center", justifyContent:"center", marginLeft:10 },
+
+  scanPill:{ height:32, paddingHorizontal:10, borderRadius:10, borderWidth:1, borderColor:BRAND, flexDirection:"row", alignItems:"center", justifyContent:"center" },
+  scanText:{ color:BRAND, fontWeight:"600", marginLeft:6, fontSize:13 },
+
+  dualRow:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingHorizontal:GUTTER, marginTop:14 },
+  dualLeft:{ flexDirection:"row", alignItems:"center" },
+  dualRight:{ flexDirection:"row", alignItems:"center" },
+  dualLabel:{ fontSize:15, color:"#333", marginLeft:12 },
+
+  row:{ flexDirection:"row", alignItems:"center", paddingVertical:10, paddingLeft:GUTTER, paddingRight:12 },
+  qtyInline:{ flexDirection:"row", alignItems:"center", marginLeft:12 },
+  qtyBtn:{ width:28, height:28, borderRadius:8, borderWidth:1, borderColor:"#E5E7EB", alignItems:"center", justifyContent:"center" },
+  qtyInput:{ width:48, height:32, borderWidth:1, borderColor:"#E5E7EB", borderRadius:8, textAlign:"center", fontSize:15, marginHorizontal:4 },
+
+  itemLabel:{ fontSize:16, color:"#111", marginLeft:12 },
+  crossed:{ textDecorationLine:"line-through", color:"#999" },
+  trashBtn:{ paddingHorizontal:8, marginLeft:8 },
+
+  square:{ width:CTRL, height:CTRL, borderRadius:6, borderWidth:1, borderColor:"#CBD5E1", alignItems:"center", justifyContent:"center" },
+  squareOn:{ backgroundColor:BRAND, borderColor:BRAND },
+
+  radioOuter:{ width:CTRL, height:CTRL, borderRadius:10, borderWidth:1, borderColor:"#CBD5E1", backgroundColor:"#fff", alignItems:"center", justifyContent:"center" },
+  radioInner:{ width:10, height:10, borderRadius:5, backgroundColor:BRAND },
+
+  h1:{ fontSize:20, fontWeight:"700", color:"#111", marginTop:6, marginBottom:6 },
+  muted:{ color:"#9AA", fontSize:15 },
+  empty:{ color:"#9AA", fontSize:15 },
+
+  bottomAreaWrap:{ position:"absolute", left:GUTTER, right:GUTTER, bottom:30 },
+  switchCenterRow:{ flexDirection:"row", alignItems:"center", justifyContent:"center", marginBottom:12 },
+  switchLabel:{ fontSize:15, color:"#333", marginLeft:10 },
+
+  bottomBtn:{ height:48, borderRadius:14, backgroundColor:BRAND, alignItems:"center", justifyContent:"center" },
+  bottomBtnText:{ color:"#fff", fontSize:16, fontWeight:"700" },
+
+  modalBackdrop:{ flex:1, backgroundColor:"rgba(0,0,0,0.4)", justifyContent:"center", alignItems:"center" },
+  modalBox:{ width:"80%", backgroundColor:"#fff", borderRadius:12, padding:20 },
+  modalTitle:{ fontSize:18, fontWeight:"700", marginBottom:12, textAlign:"center" },
+  modalInput:{ borderWidth:1, borderColor:"#DDD", borderRadius:8, padding:10, fontSize:16, marginBottom:16 },
+  modalRow:{ flexDirection:"row", justifyContent:"flex-end" },
+  modalBtnCancel:{ paddingVertical:10, paddingHorizontal:16, marginRight:10 },
+  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, backgroundColor:BRAND, borderRadius:8 },
+  modalBtnText:{ fontSize:15, color:"#333" },
+  modalBtnTextSave:{ fontSize:15, fontWeight:"700", color:"#fff" }
+});
+
 
 const LANGUAGES = [
   { code:'fr', label:'Français', flag:'🇫🇷' },
@@ -3561,6 +3711,7 @@ function FakeProfileScreen({ onLogout }) {
   const [editPostalCode, setEditPostalCode] = React.useState('');
   const [editCountry, setEditCountry] = React.useState('');
   const [geoLoading, setGeoLoading] = React.useState(false);
+  const [docStatuses, setDocStatuses] = React.useState(null);
   const [driverMode, setDriverMode] = React.useState(false);
   const [driverCountry, setDriverCountryState] = React.useState('FR');
   const [driverEarnings, setDriverEarnings] = React.useState({ total_year: 0, remaining: 3000, limit: 3000 });
@@ -3602,6 +3753,28 @@ function FakeProfileScreen({ onLogout }) {
           setDriverEarnings(earnings);
           const ok = await canDeliver();
           setDriverBlocked(!ok);
+        }
+      } catch(e) {}
+    })();
+    // Load document verification status for pro users
+    (async () => {
+      try {
+        const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+        const auth = authRaw ? JSON.parse(authRaw) : {};
+        if (auth.role === 'professionaluser') {
+          if (data.status && data.document_status) {
+            setDocStatuses(data.document_status);
+            // Update isVerified in profile
+            if (data.document_status.is_verified) {
+              const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
+              const prof = profRaw ? JSON.parse(profRaw) : {};
+              if (!prof.isVerified) {
+                prof.isVerified = true;
+                await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
+                setProfile(prof);
+              }
+            }
+          }
         }
       } catch(e) {}
     })();
@@ -3832,6 +4005,50 @@ function FakeProfileScreen({ onLogout }) {
             <Text style={{ color:'#fff', fontWeight:'700' }}>{t('profile.editProfile')}</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Document Verification Status (Pro users) */}
+        {profile.role === 'professionaluser' && (
+          <View style={{ paddingHorizontal:16, marginBottom:16 }}>
+            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
+              {t('profile.verificationStatus') || 'Statut de vérification'}
+            </Text>
+            {!profile.isVerified && (
+              <View style={{ backgroundColor:'#FEF3C7', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
+                <Ionicons name="time-outline" size={20} color="#F59E0B" style={{marginRight:10}} />
+                <Text style={{ flex:1, fontSize:13, color:'#92400E' }}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
+              </View>
+            )}
+            {profile.isVerified && (
+              <View style={{ backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
+                <Ionicons name="checkmark-circle" size={20} color="#059669" style={{marginRight:10}} />
+                <Text style={{ flex:1, fontSize:13, color:'#065F46', fontWeight:'600' }}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
+              </View>
+            )}
+            {docStatuses && (
+              <View style={{ backgroundColor:'#fff', borderRadius:12, padding:14, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+                {[
+                  { key: 'kbiss_status', label: 'KBISS' },
+                  { key: 'iban_status', label: 'IBAN / RIB' },
+                  { key: 'identityCardFront_status', label: t('auth.docIdFront') || 'Carte d\'identité (recto)' },
+                  { key: 'identityCardBack_status', label: t('auth.docIdBack') || 'Carte d\'identité (verso)' },
+                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress') || 'Justificatif de domicile' },
+                ].map((doc, i) => {
+                  const status = docStatuses[doc.key] || 'pending';
+                  const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
+                  const color = status === 'approved' ? '#059669' : status === 'rejected' ? '#EF4444' : '#F59E0B';
+                  const label = status === 'approved' ? (t('profile.docApproved') || 'Approuvé') : status === 'rejected' ? (t('profile.docRejected') || 'Rejeté') : (t('profile.docPending') || 'En attente');
+                  return (
+                    <View key={i} style={{ flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth: i < 4 ? 1 : 0, borderBottomColor:'#F3F4F6' }}>
+                      <Ionicons name={icon} size={18} color={color} style={{marginRight:10}} />
+                      <Text style={{ flex:1, fontSize:14, fontWeight:'500', color:'#111' }}>{doc.label}</Text>
+                      <Text style={{ fontSize:12, fontWeight:'600', color }}>{label}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        )}
 
         {/* Order History */}
         <View style={{ paddingHorizontal:16 }}>
