@@ -40,6 +40,8 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
+import Toast from "./components/ui/Toast";
+import RepeatButton from "./components/ui/RepeatButton";
 const BRAND = "#00C29B";
 
 // Product image mapping — returns emoji + background color for product visuals
@@ -593,55 +595,7 @@ function parseMulti(input){
   return out;
 }
 
-// Toast notification component
-const Toast = ({ visible, message }) => {
-  const opacity = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    if (visible) {
-      Animated.sequence([
-        Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-        Animated.delay(1200),
-        Animated.timing(opacity, { toValue: 0, duration: 300, useNativeDriver: true }),
-      ]).start();
-    }
-  }, [visible, message]);
-  if (!visible) return null;
-  return (
-    <Animated.View style={{
-      position: 'absolute', top: Platform.OS === 'ios' ? 50 : 30, left: 20, right: 20, zIndex: 9999,
-      backgroundColor: '#111', borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16,
-      flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-      opacity, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8, elevation: 5,
-    }}>
-      <Ionicons name="checkmark-circle" size={20} color={BRAND} style={{ marginRight: 8 }} />
-      <Text style={{ color: '#fff', fontWeight: '600', fontSize: 14 }}>{message}</Text>
-    </Animated.View>
-  );
-};
-
-const RepeatButton = ({ onPress, onLongAction, style, children }) => {
-  const intervalRef = React.useRef(null);
-  const cbRef = React.useRef(onLongAction);
-  React.useEffect(() => { cbRef.current = onLongAction; }, [onLongAction]);
-  React.useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
-  const startRepeat = () => {
-    intervalRef.current = setInterval(() => { cbRef.current(); }, 80);
-  };
-  const stopRepeat = () => {
-    if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
-  };
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      onLongPress={startRepeat}
-      onPressOut={stopRepeat}
-      delayLongPress={200}
-      style={style}
-    >
-      {children}
-    </TouchableOpacity>
-  );
-};
+// Toast and RepeatButton extracted to components/ui/
 
 function ListScreen() {
   const { t } = useTranslation();

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "expo start"
   },
   "keywords": [],
@@ -37,6 +37,8 @@
   },
   "overrides": {},
   "devDependencies": {
+    "babel-jest": "^30.3.0",
+    "jest": "^30.3.0",
     "metro": "^0.83.1"
   }
 }
