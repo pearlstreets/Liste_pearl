@@ -1,5 +1,38 @@
 node_modules/
 .expo/
 dist/
+web-build/
 *.log
 .DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Local seed accounts (never ship demo passwords)
+data/seed-accounts.json
+
+# Build / test / export outputs
+/build/
+/coverage/
+/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Expo / EAS secrets
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Misc
+*.tsbuildinfo

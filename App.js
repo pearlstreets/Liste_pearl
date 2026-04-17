@@ -42,6 +42,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { openCamera } from "./utils/openCamera";
 import Toast from "./components/ui/Toast";
 import RepeatButton from "./components/ui/RepeatButton";
+import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
 const BRAND = "#00C29B";
 
 // Product image mapping — returns emoji + background color for product visuals
@@ -335,13 +336,9 @@ const KEY_FAV_SHOPS="KEY_FAV_SHOPS";
 const KEY_FAVS = "KEY_FAVS";
 const KEY_AUTH = "KEY_AUTH";
 const KEY_ACCOUNTS = "KEY_ACCOUNTS";
-// Marketplace user accounts — synced with backend when available
-// These accounts work offline and will merge with API accounts when backend is deployed
-const MARKETPLACE_ACCOUNTS = [
-  { pseudo: 'Remsko', prenom: 'Remsko', nom: 'Ganja', email: 'Remsko@live.fr', password: 'Test@123', role: 'user' },
-  { pseudo: 'King', prenom: 'King', nom: 'Dro', email: 'King@gmail.com', password: 'Test@123', role: 'user' },
-];
-const DEFAULT_ACCOUNT = MARKETPLACE_ACCOUNTS[0];
+// Marketplace user accounts — loaded from ./lib/seedAccounts (imported at top).
+// In production, accounts come from the backend. For local dev, drop a
+// `data/seed-accounts.json` file (gitignored) matching the .example schema.
 const GUTTER = 24;
 const CTRL = 20;
 const GAP = 10;

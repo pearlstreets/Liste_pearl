@@ -12,7 +12,7 @@ describe('normalizeText', () => {
   });
 
   test('removes special punctuation but keeps hyphen and apostrophe', () => {
-    expect(normalizeText("Saint-Émilion")).toBe('saint-emilion');
+    expect(normalizeText('Saint-Émilion')).toBe('saint-emilion');
     expect(normalizeText("d'Artagnan!")).toBe("d'artagnan");
   });
 

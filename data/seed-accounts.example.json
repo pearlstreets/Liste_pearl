@@ -1,0 +1,10 @@
+[
+  {
+    "pseudo": "DemoUser",
+    "prenom": "Demo",
+    "nom": "User",
+    "email": "demo@example.com",
+    "password": "ChangeMe@123",
+    "role": "user"
+  }
+]
