@@ -44,11 +44,18 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1"
+      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1",
+      "oneSignalAppId": "31f08293-ee05-4113-8868-f4ce3bd14104"
     },
     "plugins": [
       "expo-localization",
-      "expo-location"
+      "expo-location",
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "production"
+        }
+      ]
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
