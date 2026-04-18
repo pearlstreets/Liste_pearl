@@ -26,10 +26,11 @@ const ENV = {
 };
 
 // Active environment - change this to switch
-// "staging" = pythonapi.digiexports.in (needs deployed backend)
+// "production" = api.pearlstreets.com (live Pearl Streets marketplace)
+// "staging" = pythonapi.digiexports.in (currently DOWN - NXDOMAIN)
 // "local" = localhost:8000 (needs local Django server)
-// The app always falls back to local accounts if API is unavailable
-const ACTIVE_ENV = 'staging';
+// The app always falls back to local accounts and demo data if API is unavailable
+const ACTIVE_ENV = 'production';
 
 export const CONFIG = ENV[ACTIVE_ENV];
 export default CONFIG;
