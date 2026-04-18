@@ -10,6 +10,7 @@ import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, retryUnsyncedOrders } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
+import { FEATURES } from "./services/config";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 
 function __getUserItems(){
@@ -3558,8 +3559,11 @@ function FakeProfileScreen({ onLogout }) {
   // Track delivery status from API for delivery orders
   const [deliveryStatuses, setDeliveryStatuses] = React.useState({});
 
-  // Poll delivery status for recent delivery orders
+  // Poll delivery status for recent delivery orders.
+  // Skipped entirely when FEATURES.delivery is false (current prod state)
+  // to avoid hammering a 404 endpoint every 30 seconds.
   React.useEffect(() => {
+    if (!FEATURES.delivery) return undefined;
     let mounted = true;
     const pollDeliveryStatuses = async () => {
       const recentDeliveryOrders = orders.filter(o => o.mode === 'delivery' && o.deliveryStatus && o.deliveryStatus !== DELIVERY_STATUS.DELIVERED && o.deliveryStatus !== DELIVERY_STATUS.CANCELLED);
@@ -3582,7 +3586,7 @@ function FakeProfileScreen({ onLogout }) {
               }
             }
           }
-        } catch(e) {}
+        } catch(_e) {}
       }
     };
     if (orders.length > 0) {
@@ -3850,22 +3854,24 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Disconnect Button */}
-        {/* Become a driver */}
-        <View style={{ paddingHorizontal:16, marginTop:16 }}>
-          <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
-            flexDirection:'row', alignItems:'center',
-            backgroundColor:'#fff', borderRadius:12, padding:16,
-            borderWidth:1, borderColor:'#E5E7EB',
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
-            <View style={{flex:1}}>
-              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-          </TouchableOpacity>
-        </View>
+        {/* Become a driver — hidden while /delivery/* backend is 404 on prod */}
+        {FEATURES.delivery && (
+          <View style={{ paddingHorizontal:16, marginTop:16 }}>
+            <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
+              flexDirection:'row', alignItems:'center',
+              backgroundColor:'#fff', borderRadius:12, padding:16,
+              borderWidth:1, borderColor:'#E5E7EB',
+              shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
+            }}>
+              <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
+              <View style={{flex:1}}>
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver')}</Text>
+                <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Logout */}
         <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>

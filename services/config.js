@@ -33,4 +33,23 @@ const ENV = {
 const ACTIVE_ENV = 'production';
 
 export const CONFIG = ENV[ACTIVE_ENV];
+
+// Feature flags — hide UI for features whose backend endpoints are
+// currently 404 on production so users don't hit dead buttons.
+// Flip to true when the corresponding /delivery/* and /users/favorites/*
+// routes are deployed on api.pearlstreets.com.
+export const FEATURES = {
+  // /delivery/* entirely 404 on prod (no driver assignment backend).
+  // When false: hide "Become a driver" CTA, hide delivery-mode selector
+  // in checkout, don't poll delivery status.
+  delivery: ACTIVE_ENV !== 'production',
+  // /users/favorites/* 404 on prod. Local favorites still work (they
+  // persist in AsyncStorage), so keep this true — favorites UI remains
+  // usable, just without cross-device sync.
+  favoritesBackend: ACTIVE_ENV !== 'production',
+  // /users/register/ and /userprofessional/register/ return 500 on prod.
+  // Signup UI stays visible but shows a clearer error when the 500 hits.
+  signup: true,
+};
+
 export default CONFIG;
