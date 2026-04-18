@@ -47,7 +47,7 @@
   "overrides": {},
   "devDependencies": {
     "babel-jest": "^30.3.0",
-    "eslint": "^9.39.4",
+    "eslint": "^10.2.1",
     "eslint-config-expo": "^55.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
