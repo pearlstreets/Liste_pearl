@@ -43,12 +43,277 @@ import { openCamera } from "./utils/openCamera";
 import Toast from "./components/ui/Toast";
 import RepeatButton from "./components/ui/RepeatButton";
 import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
-import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
-import { CURRENCIES } from "./data/currencies";
-import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
-import { parseMulti } from "./lib/parseMulti";
 const BRAND = "#00C29B";
 
+// Product image mapping — returns emoji + background color for product visuals
+const PRODUCT_IMAGES = {
+  // Boulangerie / Pain
+  pain: { emoji: "🥖", bg: "#FEF3C7" },
+  baguette: { emoji: "🥖", bg: "#FEF3C7" },
+  brioche: { emoji: "🍞", bg: "#FEF3C7" },
+  croissant: { emoji: "🥐", bg: "#FEF3C7" },
+  "pain de mie": { emoji: "🍞", bg: "#FEF3C7" },
+  tartine: { emoji: "🍞", bg: "#FEF3C7" },
+  "pain complet": { emoji: "🍞", bg: "#FEF3C7" },
+  farine: { emoji: "🌾", bg: "#FEF3C7" },
+  levure: { emoji: "🌾", bg: "#FEF3C7" },
+  cereale: { emoji: "🌾", bg: "#FEF3C7" },
+  muesli: { emoji: "🌾", bg: "#FEF3C7" },
+  // Fruits
+  pomme: { emoji: "🍎", bg: "#FEE2E2" },
+  banane: { emoji: "🍌", bg: "#FEF9C3" },
+  orange: { emoji: "🍊", bg: "#FFEDD5" },
+  citron: { emoji: "🍋", bg: "#FEF9C3" },
+  raisin: { emoji: "🍇", bg: "#E9D5FF" },
+  fraise: { emoji: "🍓", bg: "#FEE2E2" },
+  cerise: { emoji: "🍒", bg: "#FEE2E2" },
+  pasteque: { emoji: "🍉", bg: "#DCFCE7" },
+  melon: { emoji: "🍈", bg: "#DCFCE7" },
+  ananas: { emoji: "🍍", bg: "#FEF9C3" },
+  mangue: { emoji: "🥭", bg: "#FFEDD5" },
+  poire: { emoji: "🍐", bg: "#DCFCE7" },
+  peche: { emoji: "🍑", bg: "#FFEDD5" },
+  abricot: { emoji: "🍑", bg: "#FFEDD5" },
+  kiwi: { emoji: "🥝", bg: "#DCFCE7" },
+  coco: { emoji: "🥥", bg: "#F3F4F6" },
+  fruit: { emoji: "🍎", bg: "#FEE2E2" },
+  clementine: { emoji: "🍊", bg: "#FFEDD5" },
+  mandarine: { emoji: "🍊", bg: "#FFEDD5" },
+  pamplemousse: { emoji: "🍊", bg: "#FFEDD5" },
+  litchi: { emoji: "🍇", bg: "#E9D5FF" },
+  myrtille: { emoji: "🫐", bg: "#DBEAFE" },
+  framboise: { emoji: "🍓", bg: "#FEE2E2" },
+  groseille: { emoji: "🍓", bg: "#FEE2E2" },
+  figue: { emoji: "🍇", bg: "#E9D5FF" },
+  datte: { emoji: "🍇", bg: "#E9D5FF" },
+  prune: { emoji: "🍑", bg: "#FFEDD5" },
+  grenade: { emoji: "🍎", bg: "#FEE2E2" },
+  // Légumes
+  tomate: { emoji: "🍅", bg: "#FEE2E2" },
+  carotte: { emoji: "🥕", bg: "#FFEDD5" },
+  salade: { emoji: "🥬", bg: "#DCFCE7" },
+  laitue: { emoji: "🥬", bg: "#DCFCE7" },
+  "pomme de terre": { emoji: "🥔", bg: "#FEF3C7" },
+  patate: { emoji: "🥔", bg: "#FEF3C7" },
+  avocat: { emoji: "🥑", bg: "#DCFCE7" },
+  champignon: { emoji: "🍄", bg: "#FEF3C7" },
+  mais: { emoji: "🌽", bg: "#FEF9C3" },
+  oignon: { emoji: "🧅", bg: "#FEF3C7" },
+  ail: { emoji: "🧄", bg: "#F3F4F6" },
+  courgette: { emoji: "🥒", bg: "#DCFCE7" },
+  concombre: { emoji: "🥒", bg: "#DCFCE7" },
+  poivron: { emoji: "🫑", bg: "#DCFCE7" },
+  brocoli: { emoji: "🥦", bg: "#DCFCE7" },
+  chou: { emoji: "🥬", bg: "#DCFCE7" },
+  epinard: { emoji: "🥬", bg: "#DCFCE7" },
+  haricot: { emoji: "🫘", bg: "#DCFCE7" },
+  "haricot vert": { emoji: "🫘", bg: "#DCFCE7" },
+  lentille: { emoji: "🫘", bg: "#FEF3C7" },
+  "pois chiche": { emoji: "🫘", bg: "#FEF3C7" },
+  "petit pois": { emoji: "🫛", bg: "#DCFCE7" },
+  betterave: { emoji: "🥕", bg: "#FEE2E2" },
+  radis: { emoji: "🥕", bg: "#FEE2E2" },
+  celeri: { emoji: "🥬", bg: "#DCFCE7" },
+  navet: { emoji: "🥔", bg: "#F3F4F6" },
+  poireau: { emoji: "🥬", bg: "#DCFCE7" },
+  fenouil: { emoji: "🥬", bg: "#DCFCE7" },
+  artichaut: { emoji: "🥬", bg: "#DCFCE7" },
+  asperge: { emoji: "🥬", bg: "#DCFCE7" },
+  aubergine: { emoji: "🍆", bg: "#E9D5FF" },
+  legume: { emoji: "🥬", bg: "#DCFCE7" },
+  persil: { emoji: "🌿", bg: "#DCFCE7" },
+  basilic: { emoji: "🌿", bg: "#DCFCE7" },
+  menthe: { emoji: "🌿", bg: "#DCFCE7" },
+  coriandre: { emoji: "🌿", bg: "#DCFCE7" },
+  herbe: { emoji: "🌿", bg: "#DCFCE7" },
+  gingembre: { emoji: "🫚", bg: "#FEF3C7" },
+  olive: { emoji: "🫒", bg: "#DCFCE7" },
+  // Viandes & Poissons
+  poulet: { emoji: "🍗", bg: "#FFEDD5" },
+  viande: { emoji: "🥩", bg: "#FEE2E2" },
+  steak: { emoji: "🥩", bg: "#FEE2E2" },
+  boeuf: { emoji: "🥩", bg: "#FEE2E2" },
+  veau: { emoji: "🥩", bg: "#FEE2E2" },
+  agneau: { emoji: "🥩", bg: "#FEE2E2" },
+  porc: { emoji: "🥩", bg: "#FEE2E2" },
+  dinde: { emoji: "🍗", bg: "#FFEDD5" },
+  canard: { emoji: "🍗", bg: "#FFEDD5" },
+  lapin: { emoji: "🍗", bg: "#FFEDD5" },
+  jambon: { emoji: "🥓", bg: "#FEE2E2" },
+  saucisse: { emoji: "🌭", bg: "#FEE2E2" },
+  saucisson: { emoji: "🌭", bg: "#FEE2E2" },
+  merguez: { emoji: "🌭", bg: "#FEE2E2" },
+  lardon: { emoji: "🥓", bg: "#FEE2E2" },
+  bacon: { emoji: "🥓", bg: "#FEE2E2" },
+  charcuterie: { emoji: "🥓", bg: "#FEE2E2" },
+  "foie gras": { emoji: "🍖", bg: "#FEE2E2" },
+  poisson: { emoji: "🐟", bg: "#DBEAFE" },
+  saumon: { emoji: "🐟", bg: "#DBEAFE" },
+  thon: { emoji: "🐟", bg: "#DBEAFE" },
+  cabillaud: { emoji: "🐟", bg: "#DBEAFE" },
+  sardine: { emoji: "🐟", bg: "#DBEAFE" },
+  truite: { emoji: "🐟", bg: "#DBEAFE" },
+  crevette: { emoji: "🦐", bg: "#FEE2E2" },
+  huitre: { emoji: "🦪", bg: "#E0E7FF" },
+  moule: { emoji: "🦪", bg: "#E0E7FF" },
+  "fruit de mer": { emoji: "🦐", bg: "#DBEAFE" },
+  crabe: { emoji: "🦀", bg: "#FEE2E2" },
+  homard: { emoji: "🦞", bg: "#FEE2E2" },
+  // Produits laitiers
+  yaourt: { emoji: "🥛", bg: "#EFF6FF" },
+  lait: { emoji: "🥛", bg: "#EFF6FF" },
+  fromage: { emoji: "🧀", bg: "#FEF9C3" },
+  beurre: { emoji: "🧈", bg: "#FEF9C3" },
+  creme: { emoji: "🥛", bg: "#EFF6FF" },
+  oeuf: { emoji: "🥚", bg: "#FEF3C7" },
+  compote: { emoji: "🍎", bg: "#FEE2E2" },
+  mozzarella: { emoji: "🧀", bg: "#FEF9C3" },
+  camembert: { emoji: "🧀", bg: "#FEF9C3" },
+  gruyere: { emoji: "🧀", bg: "#FEF9C3" },
+  emmental: { emoji: "🧀", bg: "#FEF9C3" },
+  parmesan: { emoji: "🧀", bg: "#FEF9C3" },
+  chevre: { emoji: "🧀", bg: "#FEF9C3" },
+  roquefort: { emoji: "🧀", bg: "#FEF9C3" },
+  // Féculents & Pâtes
+  riz: { emoji: "🍚", bg: "#F3F4F6" },
+  pate: { emoji: "🍝", bg: "#FEF3C7" },
+  pasta: { emoji: "🍝", bg: "#FEF3C7" },
+  spaghetti: { emoji: "🍝", bg: "#FEF3C7" },
+  nouille: { emoji: "🍝", bg: "#FEF3C7" },
+  couscous: { emoji: "🍚", bg: "#FEF3C7" },
+  semoule: { emoji: "🍚", bg: "#FEF3C7" },
+  quinoa: { emoji: "🍚", bg: "#FEF3C7" },
+  boulgour: { emoji: "🍚", bg: "#FEF3C7" },
+  // Boissons
+  eau: { emoji: "💧", bg: "#DBEAFE" },
+  jus: { emoji: "🧃", bg: "#FFEDD5" },
+  cafe: { emoji: "☕", bg: "#FEF3C7" },
+  the: { emoji: "🍵", bg: "#DCFCE7" },
+  tisane: { emoji: "🍵", bg: "#DCFCE7" },
+  soda: { emoji: "🥤", bg: "#DBEAFE" },
+  coca: { emoji: "🥤", bg: "#FEE2E2" },
+  limonade: { emoji: "🥤", bg: "#FEF9C3" },
+  biere: { emoji: "🍺", bg: "#FEF9C3" },
+  vin: { emoji: "🍷", bg: "#E9D5FF" },
+  champagne: { emoji: "🍾", bg: "#FEF9C3" },
+  whisky: { emoji: "🥃", bg: "#FEF3C7" },
+  sirop: { emoji: "🧃", bg: "#FFEDD5" },
+  boisson: { emoji: "🥤", bg: "#DBEAFE" },
+  smoothie: { emoji: "🥤", bg: "#DCFCE7" },
+  lemonade: { emoji: "🥤", bg: "#FEF9C3" },
+  // Sucré / Snacks
+  chocolat: { emoji: "🍫", bg: "#FEF3C7" },
+  biscuit: { emoji: "🍪", bg: "#FEF3C7" },
+  gateau: { emoji: "🎂", bg: "#FEE2E2" },
+  tarte: { emoji: "🥧", bg: "#FEE2E2" },
+  glace: { emoji: "🍦", bg: "#DBEAFE" },
+  bonbon: { emoji: "🍬", bg: "#FEF9C3" },
+  confiture: { emoji: "🍯", bg: "#FEE2E2" },
+  miel: { emoji: "🍯", bg: "#FEF3C7" },
+  sucre: { emoji: "🍬", bg: "#FEF9C3" },
+  "pop corn": { emoji: "🍿", bg: "#FEF9C3" },
+  popcorn: { emoji: "🍿", bg: "#FEF9C3" },
+  chips: { emoji: "🍿", bg: "#FEF9C3" },
+  cookie: { emoji: "🍪", bg: "#FEF3C7" },
+  nutella: { emoji: "🍫", bg: "#FEF3C7" },
+  cacao: { emoji: "🍫", bg: "#FEF3C7" },
+  dessert: { emoji: "🍰", bg: "#FEE2E2" },
+  crepe: { emoji: "🥞", bg: "#FEF3C7" },
+  gaufre: { emoji: "🧇", bg: "#FEF3C7" },
+  pancake: { emoji: "🥞", bg: "#FEF3C7" },
+  macaron: { emoji: "🍪", bg: "#E9D5FF" },
+  // Plats préparés
+  pizza: { emoji: "🍕", bg: "#FEE2E2" },
+  burger: { emoji: "🍔", bg: "#FEF3C7" },
+  hamburger: { emoji: "🍔", bg: "#FEF3C7" },
+  sandwich: { emoji: "🥪", bg: "#FEF3C7" },
+  wrap: { emoji: "🌯", bg: "#DCFCE7" },
+  kebab: { emoji: "🥙", bg: "#FEF3C7" },
+  tacos: { emoji: "🌮", bg: "#FEF9C3" },
+  sushi: { emoji: "🍣", bg: "#FEE2E2" },
+  soupe: { emoji: "🥣", bg: "#FFEDD5" },
+  salade: { emoji: "🥗", bg: "#DCFCE7" },
+  quiche: { emoji: "🥧", bg: "#FEF3C7" },
+  gratin: { emoji: "🥘", bg: "#FEF3C7" },
+  lasagne: { emoji: "🍝", bg: "#FEE2E2" },
+  ravioli: { emoji: "🥟", bg: "#FEF3C7" },
+  "plat prepare": { emoji: "🍱", bg: "#FFEDD5" },
+  conserve: { emoji: "🥫", bg: "#FEE2E2" },
+  surgelé: { emoji: "🧊", bg: "#DBEAFE" },
+  // Condiments & Épices
+  huile: { emoji: "🫒", bg: "#FEF9C3" },
+  vinaigre: { emoji: "🫒", bg: "#FEF9C3" },
+  sel: { emoji: "🧂", bg: "#F3F4F6" },
+  poivre: { emoji: "🧂", bg: "#F3F4F6" },
+  moutarde: { emoji: "🟡", bg: "#FEF9C3" },
+  ketchup: { emoji: "🍅", bg: "#FEE2E2" },
+  mayonnaise: { emoji: "🥚", bg: "#FEF9C3" },
+  sauce: { emoji: "🥫", bg: "#FEE2E2" },
+  epice: { emoji: "🌶️", bg: "#FEE2E2" },
+  piment: { emoji: "🌶️", bg: "#FEE2E2" },
+  curry: { emoji: "🌶️", bg: "#FEF9C3" },
+  paprika: { emoji: "🌶️", bg: "#FEE2E2" },
+  cumin: { emoji: "🌶️", bg: "#FEF3C7" },
+  // Hygiène & Maison
+  savon: { emoji: "🧴", bg: "#DBEAFE" },
+  shampoing: { emoji: "🧴", bg: "#DBEAFE" },
+  shampooing: { emoji: "🧴", bg: "#DBEAFE" },
+  dentifrice: { emoji: "🪥", bg: "#DBEAFE" },
+  lessive: { emoji: "🧺", bg: "#DBEAFE" },
+  papier: { emoji: "🧻", bg: "#F3F4F6" },
+  mouchoir: { emoji: "🧻", bg: "#F3F4F6" },
+  serviette: { emoji: "🧻", bg: "#F3F4F6" },
+  sac: { emoji: "🛍️", bg: "#F3F4F6" },
+  eponge: { emoji: "🧽", bg: "#FEF9C3" },
+  // Bébé & Animaux
+  couche: { emoji: "🍼", bg: "#EFF6FF" },
+  biberon: { emoji: "🍼", bg: "#EFF6FF" },
+  croquette: { emoji: "🐾", bg: "#FEF3C7" },
+  litiere: { emoji: "🐱", bg: "#F3F4F6" },
+};
+const DEFAULT_PRODUCT = { emoji: "🛒", bg: "#F3F4F6" };
+
+// Category keywords for fallback matching when no exact match is found
+const CATEGORY_FALLBACKS = [
+  { keywords: ["bio", "organic", "nature"], img: { emoji: "🌱", bg: "#DCFCE7" } },
+  { keywords: ["surgele", "congele", "frozen"], img: { emoji: "🧊", bg: "#DBEAFE" } },
+  { keywords: ["conserve", "boite", "bocal"], img: { emoji: "🥫", bg: "#FEE2E2" } },
+  { keywords: ["drink", "boisson", "soda", "jus"], img: { emoji: "🥤", bg: "#DBEAFE" } },
+  { keywords: ["viande", "meat", "poulet", "boeuf", "porc"], img: { emoji: "🥩", bg: "#FEE2E2" } },
+  { keywords: ["poisson", "fish", "mer"], img: { emoji: "🐟", bg: "#DBEAFE" } },
+  { keywords: ["legume", "vegetable", "vert"], img: { emoji: "🥬", bg: "#DCFCE7" } },
+  { keywords: ["fruit", "jus"], img: { emoji: "🍎", bg: "#FEE2E2" } },
+  { keywords: ["lait", "creme", "yaourt", "fromage", "dairy"], img: { emoji: "🥛", bg: "#EFF6FF" } },
+  { keywords: ["pain", "boulang", "patisserie"], img: { emoji: "🥖", bg: "#FEF3C7" } },
+  { keywords: ["gâteau", "gateau", "dessert", "sucre"], img: { emoji: "🍰", bg: "#FEE2E2" } },
+  { keywords: ["hygiene", "soin", "beaute", "douche", "bain"], img: { emoji: "🧴", bg: "#DBEAFE" } },
+  { keywords: ["menag", "nettoy", "produit"], img: { emoji: "🧹", bg: "#DBEAFE" } },
+];
+
+function getProductImage(name) {
+  const n = String(name || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Try exact/substring match from PRODUCT_IMAGES
+  for (const [key, val] of Object.entries(PRODUCT_IMAGES)) {
+    const kn = key.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (n.includes(kn)) return val;
+  }
+  // Fallback: try category keywords
+  for (const cat of CATEGORY_FALLBACKS) {
+    for (const kw of cat.keywords) {
+      const kwn = kw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (n.includes(kwn)) return cat.img;
+    }
+  }
+  // Final fallback: pick an emoji based on first letter for visual variety
+  const firstChar = n.charAt(0);
+  const letterEmojis = {
+    a:"🅰️",b:"🅱️",c:"©️",d:"🔶",e:"📧",f:"🎏",g:"🟢",h:"♓",i:"ℹ️",j:"🎷",
+    k:"🪁",l:"🍋",m:"Ⓜ️",n:"🔷",o:"⭕",p:"🅿️",q:"🔲",r:"®️",s:"💲",t:"✝️",
+    u:"⛎",v:"✅",w:"〰️",x:"❌",y:"💹",z:"💤"
+  };
+  if (letterEmojis[firstChar]) return { emoji: letterEmojis[firstChar], bg: "#F3F4F6" };
+  return DEFAULT_PRODUCT;
+}
 
 const ProductThumb = ({ name, size = 44 }) => {
   const img = getProductImage(name);
@@ -78,6 +343,186 @@ const GUTTER = 24;
 const CTRL = 20;
 const GAP = 10;
 
+// Stripe-supported currencies with symbols and approximate rates vs EUR
+const CURRENCIES = [
+  // Europe
+  { code:'EUR', symbol:'€', rate:1, name:'Euro', flag:'🇪🇺' },
+  { code:'GBP', symbol:'£', rate:0.86, name:'British Pound', flag:'🇬🇧' },
+  { code:'CHF', symbol:'CHF', rate:0.97, name:'Swiss Franc', flag:'🇨🇭' },
+  { code:'SEK', symbol:'kr', rate:11.2, name:'Swedish Krona', flag:'🇸🇪' },
+  { code:'NOK', symbol:'kr', rate:11.5, name:'Norwegian Krone', flag:'🇳🇴' },
+  { code:'DKK', symbol:'kr', rate:7.46, name:'Danish Krone', flag:'🇩🇰' },
+  { code:'PLN', symbol:'zł', rate:4.32, name:'Polish Zloty', flag:'🇵🇱' },
+  { code:'CZK', symbol:'Kč', rate:25.3, name:'Czech Koruna', flag:'🇨🇿' },
+  { code:'HUF', symbol:'Ft', rate:393, name:'Hungarian Forint', flag:'🇭🇺', decimals:0 },
+  { code:'RON', symbol:'lei', rate:4.97, name:'Romanian Leu', flag:'🇷🇴' },
+  { code:'BGN', symbol:'лв', rate:1.96, name:'Bulgarian Lev', flag:'🇧🇬' },
+  { code:'HRK', symbol:'kn', rate:7.53, name:'Croatian Kuna', flag:'🇭🇷' },
+  { code:'RSD', symbol:'din', rate:117, name:'Serbian Dinar', flag:'🇷🇸', decimals:0 },
+  { code:'BAM', symbol:'KM', rate:1.96, name:'Bosnia Mark', flag:'🇧🇦' },
+  { code:'MKD', symbol:'ден', rate:61.5, name:'Macedonian Denar', flag:'🇲🇰', decimals:0 },
+  { code:'ALL', symbol:'L', rate:103, name:'Albanian Lek', flag:'🇦🇱', decimals:0 },
+  { code:'MDL', symbol:'L', rate:19.3, name:'Moldovan Leu', flag:'🇲🇩' },
+  { code:'ISK', symbol:'kr', rate:149, name:'Icelandic Krona', flag:'🇮🇸', decimals:0 },
+  { code:'RUB', symbol:'₽', rate:99.5, name:'Russian Ruble', flag:'🇷🇺' },
+  { code:'UAH', symbol:'₴', rate:44.8, name:'Ukrainian Hryvnia', flag:'🇺🇦' },
+  { code:'BYN', symbol:'Br', rate:3.56, name:'Belarusian Ruble', flag:'🇧🇾' },
+  { code:'GEL', symbol:'₾', rate:2.95, name:'Georgian Lari', flag:'🇬🇪' },
+  { code:'AMD', symbol:'֏', rate:422, name:'Armenian Dram', flag:'🇦🇲', decimals:0 },
+  { code:'AZN', symbol:'₼', rate:1.85, name:'Azerbaijani Manat', flag:'🇦🇿' },
+  { code:'TRY', symbol:'₺', rate:34.8, name:'Turkish Lira', flag:'🇹🇷' },
+  // Americas
+  { code:'USD', symbol:'$', rate:1.09, name:'US Dollar', flag:'🇺🇸' },
+  { code:'CAD', symbol:'CA$', rate:1.48, name:'Canadian Dollar', flag:'🇨🇦' },
+  { code:'MXN', symbol:'MX$', rate:18.7, name:'Mexican Peso', flag:'🇲🇽' },
+  { code:'BRL', symbol:'R$', rate:5.42, name:'Brazilian Real', flag:'🇧🇷' },
+  { code:'ARS', symbol:'AR$', rate:940, name:'Argentine Peso', flag:'🇦🇷', decimals:0 },
+  { code:'CLP', symbol:'CL$', rate:1015, name:'Chilean Peso', flag:'🇨🇱', decimals:0 },
+  { code:'COP', symbol:'COL$', rate:4350, name:'Colombian Peso', flag:'🇨🇴', decimals:0 },
+  { code:'PEN', symbol:'S/', rate:4.05, name:'Peruvian Sol', flag:'🇵🇪' },
+  { code:'UYU', symbol:'$U', rate:43.2, name:'Uruguayan Peso', flag:'🇺🇾' },
+  { code:'PYG', symbol:'₲', rate:8200, name:'Paraguayan Guarani', flag:'🇵🇾', decimals:0 },
+  { code:'BOB', symbol:'Bs', rate:7.53, name:'Bolivian Boliviano', flag:'🇧🇴' },
+  { code:'VES', symbol:'Bs', rate:39.8, name:'Venezuelan Bolivar', flag:'🇻🇪' },
+  { code:'CRC', symbol:'₡', rate:556, name:'Costa Rican Colon', flag:'🇨🇷', decimals:0 },
+  { code:'PAB', symbol:'B/', rate:1.09, name:'Panamanian Balboa', flag:'🇵🇦' },
+  { code:'GTQ', symbol:'Q', rate:8.43, name:'Guatemalan Quetzal', flag:'🇬🇹' },
+  { code:'HNL', symbol:'L', rate:27.0, name:'Honduran Lempira', flag:'🇭🇳' },
+  { code:'NIO', symbol:'C$', rate:40.0, name:'Nicaraguan Cordoba', flag:'🇳🇮' },
+  { code:'DOP', symbol:'RD$', rate:64.5, name:'Dominican Peso', flag:'🇩🇴' },
+  { code:'JMD', symbol:'J$', rate:170, name:'Jamaican Dollar', flag:'🇯🇲', decimals:0 },
+  { code:'TTD', symbol:'TT$', rate:7.40, name:'Trinidad Dollar', flag:'🇹🇹' },
+  { code:'HTG', symbol:'G', rate:143, name:'Haitian Gourde', flag:'🇭🇹', decimals:0 },
+  { code:'BBD', symbol:'Bds$', rate:2.18, name:'Barbadian Dollar', flag:'🇧🇧' },
+  { code:'BSD', symbol:'B$', rate:1.09, name:'Bahamian Dollar', flag:'🇧🇸' },
+  { code:'XCD', symbol:'EC$', rate:2.94, name:'East Caribbean Dollar', flag:'🇦🇬' },
+  // Asia
+  { code:'JPY', symbol:'¥', rate:163, name:'Japanese Yen', flag:'🇯🇵', decimals:0 },
+  { code:'CNY', symbol:'¥', rate:7.85, name:'Chinese Yuan', flag:'🇨🇳' },
+  { code:'INR', symbol:'₹', rate:90.5, name:'Indian Rupee', flag:'🇮🇳' },
+  { code:'KRW', symbol:'₩', rate:1420, name:'Korean Won', flag:'🇰🇷', decimals:0 },
+  { code:'TWD', symbol:'NT$', rate:34.2, name:'Taiwan Dollar', flag:'🇹🇼' },
+  { code:'THB', symbol:'฿', rate:37.5, name:'Thai Baht', flag:'🇹🇭' },
+  { code:'SGD', symbol:'S$', rate:1.46, name:'Singapore Dollar', flag:'🇸🇬' },
+  { code:'HKD', symbol:'HK$', rate:8.52, name:'Hong Kong Dollar', flag:'🇭🇰' },
+  { code:'MYR', symbol:'RM', rate:4.82, name:'Malaysian Ringgit', flag:'🇲🇾' },
+  { code:'IDR', symbol:'Rp', rate:16800, name:'Indonesian Rupiah', flag:'🇮🇩', decimals:0 },
+  { code:'PHP', symbol:'₱', rate:61.2, name:'Philippine Peso', flag:'🇵🇭' },
+  { code:'VND', symbol:'₫', rate:27200, name:'Vietnamese Dong', flag:'🇻🇳', decimals:0 },
+  { code:'PKR', symbol:'₨', rate:303, name:'Pakistani Rupee', flag:'🇵🇰', decimals:0 },
+  { code:'BDT', symbol:'৳', rate:120, name:'Bangladeshi Taka', flag:'🇧🇩' },
+  { code:'LKR', symbol:'Rs', rate:330, name:'Sri Lankan Rupee', flag:'🇱🇰', decimals:0 },
+  { code:'NPR', symbol:'₨', rate:145, name:'Nepalese Rupee', flag:'🇳🇵', decimals:0 },
+  { code:'MMK', symbol:'K', rate:2290, name:'Myanmar Kyat', flag:'🇲🇲', decimals:0 },
+  { code:'KHR', symbol:'៛', rate:4420, name:'Cambodian Riel', flag:'🇰🇭', decimals:0 },
+  { code:'LAK', symbol:'₭', rate:23800, name:'Lao Kip', flag:'🇱🇦', decimals:0 },
+  { code:'MNT', symbol:'₮', rate:3750, name:'Mongolian Tugrik', flag:'🇲🇳', decimals:0 },
+  { code:'KZT', symbol:'₸', rate:530, name:'Kazakh Tenge', flag:'🇰🇿', decimals:0 },
+  { code:'UZS', symbol:'сўм', rate:13700, name:'Uzbek Som', flag:'🇺🇿', decimals:0 },
+  // Middle East
+  { code:'ILS', symbol:'₪', rate:3.92, name:'Israeli Shekel', flag:'🇮🇱' },
+  { code:'AED', symbol:'د.إ', rate:4.0, name:'UAE Dirham', flag:'🇦🇪' },
+  { code:'SAR', symbol:'﷼', rate:4.09, name:'Saudi Riyal', flag:'🇸🇦' },
+  { code:'QAR', symbol:'﷼', rate:3.97, name:'Qatari Riyal', flag:'🇶🇦' },
+  { code:'KWD', symbol:'د.ك', rate:0.33, name:'Kuwaiti Dinar', flag:'🇰🇼' },
+  { code:'BHD', symbol:'BD', rate:0.41, name:'Bahraini Dinar', flag:'🇧🇭' },
+  { code:'OMR', symbol:'﷼', rate:0.42, name:'Omani Rial', flag:'🇴🇲' },
+  { code:'JOD', symbol:'JD', rate:0.77, name:'Jordanian Dinar', flag:'🇯🇴' },
+  { code:'LBP', symbol:'ل.ل', rate:97500, name:'Lebanese Pound', flag:'🇱🇧', decimals:0 },
+  { code:'IQD', symbol:'ع.د', rate:1430, name:'Iraqi Dinar', flag:'🇮🇶', decimals:0 },
+  { code:'IRR', symbol:'﷼', rate:46000, name:'Iranian Rial', flag:'🇮🇷', decimals:0 },
+  { code:'SYP', symbol:'£S', rate:14200, name:'Syrian Pound', flag:'🇸🇾', decimals:0 },
+  { code:'YER', symbol:'﷼', rate:273, name:'Yemeni Rial', flag:'🇾🇪', decimals:0 },
+  // Africa
+  { code:'ZAR', symbol:'R', rate:19.8, name:'South African Rand', flag:'🇿🇦' },
+  { code:'NGN', symbol:'₦', rate:1690, name:'Nigerian Naira', flag:'🇳🇬', decimals:0 },
+  { code:'EGP', symbol:'E£', rate:52.3, name:'Egyptian Pound', flag:'🇪🇬' },
+  { code:'KES', symbol:'KSh', rate:140, name:'Kenyan Shilling', flag:'🇰🇪', decimals:0 },
+  { code:'MAD', symbol:'د.م.', rate:10.7, name:'Moroccan Dirham', flag:'🇲🇦' },
+  { code:'XOF', symbol:'CFA', rate:656, name:'Franc CFA (BCEAO)', flag:'🇸🇳', decimals:0 },
+  { code:'XAF', symbol:'FCFA', rate:656, name:'Franc CFA (BEAC)', flag:'🇨🇲', decimals:0 },
+  { code:'TND', symbol:'DT', rate:3.38, name:'Tunisian Dinar', flag:'🇹🇳' },
+  { code:'DZD', symbol:'د.ج', rate:146, name:'Algerian Dinar', flag:'🇩🇿', decimals:0 },
+  { code:'GHS', symbol:'GH₵', rate:16.2, name:'Ghanaian Cedi', flag:'🇬🇭' },
+  { code:'TZS', symbol:'TSh', rate:2820, name:'Tanzanian Shilling', flag:'🇹🇿', decimals:0 },
+  { code:'UGX', symbol:'USh', rate:4080, name:'Ugandan Shilling', flag:'🇺🇬', decimals:0 },
+  { code:'ETB', symbol:'Br', rate:62.5, name:'Ethiopian Birr', flag:'🇪🇹' },
+  { code:'RWF', symbol:'RF', rate:1420, name:'Rwandan Franc', flag:'🇷🇼', decimals:0 },
+  { code:'CDF', symbol:'FC', rate:3080, name:'Congolese Franc', flag:'🇨🇩', decimals:0 },
+  { code:'AOA', symbol:'Kz', rate:990, name:'Angolan Kwanza', flag:'🇦🇴', decimals:0 },
+  { code:'MZN', symbol:'MT', rate:69.5, name:'Mozambican Metical', flag:'🇲🇿' },
+  { code:'ZMW', symbol:'ZK', rate:29.5, name:'Zambian Kwacha', flag:'🇿🇲' },
+  { code:'BWP', symbol:'P', rate:14.8, name:'Botswana Pula', flag:'🇧🇼' },
+  { code:'MWK', symbol:'MK', rate:1890, name:'Malawian Kwacha', flag:'🇲🇼', decimals:0 },
+  { code:'NAD', symbol:'N$', rate:19.8, name:'Namibian Dollar', flag:'🇳🇦' },
+  { code:'SZL', symbol:'E', rate:19.8, name:'Eswatini Lilangeni', flag:'🇸🇿' },
+  { code:'LSL', symbol:'L', rate:19.8, name:'Lesotho Loti', flag:'🇱🇸' },
+  { code:'GMD', symbol:'D', rate:75.5, name:'Gambian Dalasi', flag:'🇬🇲' },
+  { code:'SLL', symbol:'Le', rate:24300, name:'Sierra Leonean Leone', flag:'🇸🇱', decimals:0 },
+  { code:'LRD', symbol:'L$', rate:210, name:'Liberian Dollar', flag:'🇱🇷', decimals:0 },
+  { code:'CVE', symbol:'$', rate:110, name:'Cape Verdean Escudo', flag:'🇨🇻', decimals:0 },
+  { code:'MGA', symbol:'Ar', rate:4950, name:'Malagasy Ariary', flag:'🇲🇬', decimals:0 },
+  { code:'MUR', symbol:'₨', rate:49.5, name:'Mauritian Rupee', flag:'🇲🇺' },
+  { code:'SCR', symbol:'₨', rate:14.8, name:'Seychellois Rupee', flag:'🇸🇨' },
+  { code:'DJF', symbol:'Fdj', rate:194, name:'Djiboutian Franc', flag:'🇩🇯', decimals:0 },
+  { code:'KMF', symbol:'CF', rate:492, name:'Comorian Franc', flag:'🇰🇲', decimals:0 },
+  { code:'SDG', symbol:'£SD', rate:658, name:'Sudanese Pound', flag:'🇸🇩', decimals:0 },
+  { code:'LYD', symbol:'LD', rate:5.28, name:'Libyan Dinar', flag:'🇱🇾' },
+  { code:'MRU', symbol:'UM', rate:43.2, name:'Mauritanian Ouguiya', flag:'🇲🇷' },
+  { code:'STN', symbol:'Db', rate:24.5, name:'São Tomé Dobra', flag:'🇸🇹' },
+  { code:'ERN', symbol:'Nfk', rate:16.3, name:'Eritrean Nakfa', flag:'🇪🇷' },
+  { code:'SOS', symbol:'Sh', rate:623, name:'Somali Shilling', flag:'🇸🇴', decimals:0 },
+  { code:'BIF', symbol:'FBu', rate:3130, name:'Burundian Franc', flag:'🇧🇮', decimals:0 },
+  // Oceania
+  { code:'AUD', symbol:'A$', rate:1.66, name:'Australian Dollar', flag:'🇦🇺' },
+  { code:'NZD', symbol:'NZ$', rate:1.79, name:'New Zealand Dollar', flag:'🇳🇿' },
+  { code:'FJD', symbol:'FJ$', rate:2.45, name:'Fijian Dollar', flag:'🇫🇯' },
+  { code:'PGK', symbol:'K', rate:4.32, name:'Papua New Guinean Kina', flag:'🇵🇬' },
+  { code:'WST', symbol:'T', rate:3.02, name:'Samoan Tala', flag:'🇼🇸' },
+  { code:'TOP', symbol:'T$', rate:2.56, name:'Tongan Paʻanga', flag:'🇹🇴' },
+  { code:'VUV', symbol:'VT', rate:130, name:'Vanuatu Vatu', flag:'🇻🇺', decimals:0 },
+  { code:'SBD', symbol:'SI$', rate:9.20, name:'Solomon Islands Dollar', flag:'🇸🇧' },
+  { code:'XPF', symbol:'F', rate:119, name:'Franc CFP', flag:'🇵🇫', decimals:0 },
+];
+// Live exchange rates cache
+let _liveRates = null;
+let _liveRatesTs = 0;
+const RATES_CACHE_MS = 30 * 60 * 1000; // 30 min cache
+
+async function fetchLiveRates() {
+  // Return cached if fresh
+  if (_liveRates && (Date.now() - _liveRatesTs) < RATES_CACHE_MS) return _liveRates;
+  try {
+    const codes = CURRENCIES.filter(c => c.code !== 'EUR').map(c => c.code).join(',');
+    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR&to=' + codes);
+    if (!resp.ok) throw new Error('API error');
+    const data = await resp.json();
+    if (data && data.rates) {
+      _liveRates = data.rates;
+      _liveRatesTs = Date.now();
+      return _liveRates;
+    }
+  } catch (e) {
+    // Fallback: try exchangerate.host
+    try {
+      const resp2 = await fetch('https://open.er-api.com/v6/latest/EUR');
+      const data2 = await resp2.json();
+      if (data2 && data2.rates) {
+        _liveRates = data2.rates;
+        _liveRatesTs = Date.now();
+        return _liveRates;
+      }
+    } catch (_) {}
+  }
+  return null; // Will use hardcoded fallback rates
+}
+
+function getCurrencyWithLiveRate(currObj, liveRates) {
+  if (!liveRates || currObj.code === 'EUR') return currObj;
+  const liveRate = liveRates[currObj.code];
+  if (liveRate && isFinite(liveRate)) return { ...currObj, rate: liveRate };
+  return currObj; // fallback to hardcoded rate
+}
 
 const CurrencyContext = React.createContext({ currency: CURRENCIES[0], fmtPrice: (n) => n.toFixed(2) + ' €' });
 
@@ -130,6 +575,22 @@ const QtyInput = ({ value, onCommit }) => {
   );
 };
 
+function parseMulti(input){
+  const str = (input || "").trim();
+  if (!str) return [];
+  const parts = str.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+  const out = [];
+  for (const part of parts) {
+    let m, name = null, qty = 1;
+    if (m = part.match(/^(\d+)\s+(.+)$/)) { name = m[2].trim(); qty = Math.max(1, parseInt(m[1], 10)); }
+    else if (m = part.match(/^(.+?)\s*[xX]\s*(\d+)$/)) { name = m[1].trim(); qty = Math.max(1, parseInt(m[2], 10)); }
+    else if (m = part.match(/^(.+?)\s*(\d+)\s*[xX]?$/)) { const n = m[1].trim(); const q = parseInt(m[2], 10); if (n) { name = n; qty = Math.max(1, q); } }
+    else { name = part; qty = 1; }
+    name = autocorrectName(name);
+    out.push({ name, qty });
+  }
+  return out;
+}
 
 // Toast and RepeatButton extracted to components/ui/
 
@@ -3202,7 +3663,7 @@ export default function App() {
 
   const setCurrency = React.useCallback(async (cur) => {
     // Apply live rate if available
-    const updated = getCurrencyWithLiveRate(cur, liveRates || getCachedLiveRates());
+    const updated = getCurrencyWithLiveRate(cur, liveRates || _liveRates);
     setCurrencyState(updated);
     await AsyncStorage.setItem('APP_CURRENCY', cur.code);
   }, [liveRates]);
@@ -3215,7 +3676,7 @@ export default function App() {
       if (savedCur) {
         const found = CURRENCIES.find(c => c.code === savedCur);
         if (found) {
-          const updated = getCurrencyWithLiveRate(found, getCachedLiveRates());
+          const updated = getCurrencyWithLiveRate(found, _liveRates);
           setCurrencyState(updated);
         }
       }

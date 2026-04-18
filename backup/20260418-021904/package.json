@@ -53,7 +53,6 @@
     "globals": "^17.5.0",
     "jest": "^30.3.0",
     "metro": "^0.83.1",
-    "prettier": "^3.8.3",
-    "typescript": "^6.0.3"
+    "prettier": "^3.8.3"
   }
 }
