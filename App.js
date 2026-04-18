@@ -7,7 +7,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
-import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
+import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, retryUnsyncedOrders } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
@@ -2039,7 +2039,14 @@ const CartScreen = () => {
     const filtered = PARIS_ADDRESSES.filter(a => a.toLowerCase().includes(q)).slice(0, 4);
     setAddressSuggestions(filtered);
   };
-  const totalPrice = cartItems.reduce((sum, it, i) => selectedCart[i] ? sum + (Number(it.price || 0) * Number(it.qty || 1)) : sum, 0);
+  const totalPrice = cartItems.reduce((sum, it, i) => {
+    if (!selectedCart[i]) return sum;
+    // Number('abc' || 0) === NaN — use (Number(x) || 0) instead so bad
+    // price strings from legacy cart data don't poison the running total.
+    const price = Number(it?.price) || 0;
+    const qty = Number(it?.qty) || 1;
+    return sum + price * qty;
+  }, 0);
 
   const loadCart = React.useCallback(async () => {
     try {
@@ -3227,6 +3234,14 @@ function AppInner() {
     })();
   }, []);
 
+  // Replay any orders that failed to sync last time (offline at placement,
+  // backend 5xx, token expired, etc). Runs once per auth transition.
+  // Silent on failure - retryUnsyncedOrders already swallows errors.
+  React.useEffect(() => {
+    if (!isAuth) return;
+    retryUnsyncedOrders().catch(() => {});
+  }, [isAuth]);
+
   if (isAuth === null) {
     return (
       <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
@@ -3448,13 +3463,14 @@ function FakeProfileScreen({ onLogout }) {
         pseudo: editPseudo.trim(),
         email: editEmail.trim(),
       });
-    } catch(e) {}
+    } catch(_e) {}
     // Also update local accounts as fallback
     try {
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
+      const accounts = safeParseArray(accRaw);
+      if (accounts.length > 0 && profile?.email) {
+        const targetEmail = String(profile.email).toLowerCase();
+        const idx = accounts.findIndex(a => a?.email && String(a.email).toLowerCase() === targetEmail);
         if (idx >= 0) {
           accounts[idx].pseudo = editPseudo.trim();
           accounts[idx].nom = editNom.trim();
@@ -3463,7 +3479,7 @@ function FakeProfileScreen({ onLogout }) {
           await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
         }
       }
-    } catch(e) {}
+    } catch(_e) {}
     setProfile(updated);
     await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
     setEditVisible(false);
@@ -3492,9 +3508,10 @@ function FakeProfileScreen({ onLogout }) {
       }
       // Fallback to local accounts
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
+      const accounts = safeParseArray(accRaw);
+      if (accounts.length > 0 && profile?.email) {
+        const targetEmail = String(profile.email).toLowerCase();
+        const idx = accounts.findIndex(a => a?.email && String(a.email).toLowerCase() === targetEmail);
         if (idx >= 0) {
           if (accounts[idx].password !== oldPassword) { setPwdError(apiResult.message || t('profile.pwdErrorOld')); return; }
           accounts[idx].password = newPassword;
@@ -3859,23 +3876,23 @@ function FakeProfileScreen({ onLogout }) {
                 // Sauvegarder les données du compte avant déconnexion
                 try {
                   const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-                  if (authRaw) {
-                    const auth = JSON.parse(authRaw);
-                    const userKey = auth.userKey || 'USER_' + auth.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                  const auth = safeParse(authRaw, null);
+                  if (auth && auth.email) {
+                    const userKey = auth.userKey || 'USER_' + String(auth.email).toLowerCase().replace(/[^a-z0-9]/g, '_');
                     const data = {
-                      profile: JSON.parse(await AsyncStorage.getItem(KEY_PROFILE) || 'null'),
-                      items: JSON.parse(await AsyncStorage.getItem(KEY_ITEMS) || '[]'),
-                      selected: JSON.parse(await AsyncStorage.getItem(KEY_SELECTED) || '[]'),
-                      cart: JSON.parse(await AsyncStorage.getItem(KEY_CART) || '[]'),
-                      orders: JSON.parse(await AsyncStorage.getItem(KEY_ORDER_HISTORY) || '[]'),
-                      favShops: JSON.parse(await AsyncStorage.getItem(KEY_FAV_SHOPS) || '[]'),
-                      favs: JSON.parse(await AsyncStorage.getItem(KEY_FAVS) || '[]'),
+                      profile: safeParse(await AsyncStorage.getItem(KEY_PROFILE), null),
+                      items: safeParseArray(await AsyncStorage.getItem(KEY_ITEMS)),
+                      selected: safeParseArray(await AsyncStorage.getItem(KEY_SELECTED)),
+                      cart: safeParseArray(await AsyncStorage.getItem(KEY_CART)),
+                      orders: safeParseArray(await AsyncStorage.getItem(KEY_ORDER_HISTORY)),
+                      favShops: safeParseArray(await AsyncStorage.getItem(KEY_FAV_SHOPS)),
+                      favs: safeParseArray(await AsyncStorage.getItem(KEY_FAVS)),
                     };
                     await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(data));
                   }
-                } catch(e) {}
+                } catch(_e) {}
                 // Logout from Marketplace API first (needs tokens)
-                try { await logoutUser(); } catch(e) {}
+                try { await logoutUser(); } catch(_e) {}
                 // Nettoyer les données courantes
                 try {
                   await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
