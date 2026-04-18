@@ -4,8 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "expo start"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:all": "eslint \"{App,index,i18n}.js\" \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
+    "format": "prettier --write \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
+    "build:web": "expo export --platform web --output-dir dist"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +46,15 @@
   },
   "overrides": {},
   "devDependencies": {
-    "metro": "^0.83.1"
+    "babel-jest": "^30.3.0",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^55.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.5.0",
+    "jest": "^30.3.0",
+    "metro": "^0.83.1",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
   }
 }

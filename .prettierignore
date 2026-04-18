@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+scripts/archive/
+*.lock
+*.log
+data/*.json
+locales/*.json

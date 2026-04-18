@@ -1,8 +1,8 @@
-import { apiGet } from "./api";
+import { apiGet } from './api';
 
 // Get all categories
 export async function getCategories() {
-  const data = await apiGet("/admin/categories-list/");
+  const data = await apiGet('/admin/categories-list/');
   if (Array.isArray(data)) return data;
   if (data.results) return data.results;
   if (data.data) return data.data;
@@ -41,7 +41,7 @@ export async function searchProducts(query) {
   // The Marketplace API may not have a direct search endpoint,
   // so we fetch all products and filter client-side as fallback
   const data = await apiGet(`/userprofessional/get/products/`);
-  const products = Array.isArray(data) ? data : (data.results || data.data || []);
+  const products = Array.isArray(data) ? data : data.results || data.data || [];
 
   if (!query) return products;
 
@@ -56,7 +56,7 @@ export async function searchProducts(query) {
 
 // Get all products (for building inventory)
 export async function getAllProducts() {
-  const data = await apiGet("/userprofessional/get/products/");
+  const data = await apiGet('/userprofessional/get/products/');
   if (Array.isArray(data)) return data;
   if (data.results) return data.results;
   if (data.data) return data.data;

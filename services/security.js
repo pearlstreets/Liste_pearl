@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ========== INPUT VALIDATION ==========
 
@@ -29,7 +29,9 @@ export function isStrongPassword(password) {
 
 // Sanitize phone number
 export function sanitizePhone(phone) {
-  return String(phone || '').replace(/[^0-9+\s()-]/g, '').trim();
+  return String(phone || '')
+    .replace(/[^0-9+\s()-]/g, '')
+    .trim();
 }
 
 // ========== RATE LIMITING ==========
@@ -42,7 +44,7 @@ export function checkRateLimit(key, maxAttempts = 5, windowMs = 60000) {
   if (!rateLimits[key]) rateLimits[key] = [];
 
   // Clean old attempts
-  rateLimits[key] = rateLimits[key].filter(t => now - t < windowMs);
+  rateLimits[key] = rateLimits[key].filter((t) => now - t < windowMs);
 
   if (rateLimits[key].length >= maxAttempts) {
     const waitMs = windowMs - (now - rateLimits[key][0]);
@@ -71,7 +73,9 @@ export async function secureGet(key) {
     if (!raw) return null;
     const { v } = JSON.parse(raw);
     return v;
-  } catch (e) { return null; }
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function secureRemove(key) {
@@ -86,7 +90,9 @@ export function isTokenExpired(token) {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp * 1000 < Date.now();
-  } catch (e) { return true; }
+  } catch (e) {
+    return true;
+  }
 }
 
 // ========== ANTI-TAMPERING ==========
@@ -96,7 +102,7 @@ export function simpleHash(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash |= 0;
   }
   return Math.abs(hash).toString(36);
