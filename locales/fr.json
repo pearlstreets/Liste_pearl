@@ -107,7 +107,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "magasin",
-    "shops": "magasins"
+    "shops": "magasins",
+    "error": "Erreur"
   },
   "favorites": {
     "noFavorites": "Aucun shop favori",
@@ -208,7 +209,8 @@
     "city": "Ville",
     "cityPlaceholder": "Paris",
     "country": "Pays",
-    "countryPlaceholder": "France"
+    "countryPlaceholder": "France",
+    "locationErrorNotFound": "Adresse introuvable pour cette position."
   },
   "auth": {
     "login": "Connexion",
@@ -514,5 +516,10 @@
     "Pack 12 rouleaux": "Pack 12 rouleaux",
     "Pack 6 rouleaux": "Pack 6 rouleaux",
     "Bidon – 2L – 40 lavages": "Bidon – 2L – 40 lavages"
+  },
+  "errorBoundary": {
+    "title": "Une erreur est survenue",
+    "message": "L'application a rencontré une erreur inattendue. Tes données sont en sécurité sur cet appareil.",
+    "retry": "Réessayer"
   }
 }

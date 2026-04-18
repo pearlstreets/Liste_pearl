@@ -107,7 +107,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "store",
-    "shops": "stores"
+    "shops": "stores",
+    "error": "Error"
   },
   "favorites": {
     "noFavorites": "No favorite shops",
@@ -208,7 +209,8 @@
     "city": "City",
     "cityPlaceholder": "New York",
     "country": "Country",
-    "countryPlaceholder": "United States"
+    "countryPlaceholder": "United States",
+    "locationErrorNotFound": "No address found for this location."
   },
   "auth": {
     "login": "Login",
@@ -514,5 +516,10 @@
     "Pack 12 rouleaux": "Pack 12 rolls",
     "Pack 6 rouleaux": "Pack 6 rolls",
     "Bidon – 2L – 40 lavages": "Jug – 2L – 40 washes"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "message": "The app hit an unexpected error. Your data is safe on this device.",
+    "retry": "Try again"
   }
 }

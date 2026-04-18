@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "winkel",
-    "shops": "winkels"
+    "shops": "winkels",
+    "error": "Fout"
   },
   "favorites": {
     "noFavorites": "Nog geen favoriete winkels",
@@ -166,7 +167,13 @@
     "city": "Stad",
     "cityPlaceholder": "Amsterdam",
     "country": "Land",
-    "countryPlaceholder": "Nederland"
+    "countryPlaceholder": "Nederland",
+    "locationDenied": "Toestemming geweigerd",
+    "locationDeniedMsg": "Sta locatietoegang toe in de instellingen.",
+    "locationError": "Kan locatie niet ophalen.",
+    "locationErrorNotFound": "Geen adres gevonden voor deze locatie.",
+    "locating": "Locatie bepalen...",
+    "useMyLocation": "Mijn huidige locatie gebruiken"
   },
   "auth": {
     "login": "Inloggen",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 rollen",
     "Pack 6 rouleaux": "Pack 6 rollen",
     "Bidon – 2L – 40 lavages": "Jerrycan – 2L – 40 wasbeurten"
+  },
+  "errorBoundary": {
+    "title": "Er ging iets mis",
+    "message": "De app kwam een onverwachte fout tegen. Je gegevens zijn veilig op dit apparaat.",
+    "retry": "Opnieuw proberen"
   }
 }

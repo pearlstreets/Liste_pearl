@@ -1,5 +1,6 @@
 import { apiPost } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeParse } from '../utils/safeParse';
 
 const KEY_CART = 'KEY_CART';
 const KEY_ORDER_HISTORY = 'KEY_ORDER_HISTORY';
@@ -7,17 +8,6 @@ const KEY_ORDER_HISTORY = 'KEY_ORDER_HISTORY';
 // Cart is managed locally and synced when placing an order
 // This hybrid approach works because the Marketplace backend
 // doesn't have dedicated cart endpoints yet
-
-// Safe JSON parse - returns fallback on malformed data instead of crashing
-function safeParse(raw, fallback) {
-  if (!raw) return fallback;
-  try {
-    const parsed = JSON.parse(raw);
-    return parsed == null ? fallback : parsed;
-  } catch (_e) {
-    return fallback;
-  }
-}
 
 // Get local cart
 export async function getCart() {

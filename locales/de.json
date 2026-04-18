@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "Geschäft",
-    "shops": "Geschäfte"
+    "shops": "Geschäfte",
+    "error": "Fehler"
   },
   "favorites": {
     "noFavorites": "Noch keine Lieblingsgeschäfte",
@@ -166,7 +167,13 @@
     "city": "Stadt",
     "cityPlaceholder": "Berlin",
     "country": "Land",
-    "countryPlaceholder": "Deutschland"
+    "countryPlaceholder": "Deutschland",
+    "locationDenied": "Berechtigung verweigert",
+    "locationDeniedMsg": "Bitte erlaube den Standortzugriff in den Einstellungen.",
+    "locationError": "Standort konnte nicht ermittelt werden.",
+    "locationErrorNotFound": "Keine Adresse für diesen Standort gefunden.",
+    "locating": "Standort wird ermittelt...",
+    "useMyLocation": "Meinen Standort verwenden"
   },
   "auth": {
     "login": "Anmelden",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Paket 12 Rollen",
     "Pack 6 rouleaux": "Paket 6 Rollen",
     "Bidon – 2L – 40 lavages": "Kanister – 2L – 40 Waschgänge"
+  },
+  "errorBoundary": {
+    "title": "Etwas ist schiefgelaufen",
+    "message": "Die App hat einen unerwarteten Fehler festgestellt. Deine Daten sind auf diesem Gerät sicher.",
+    "retry": "Erneut versuchen"
   }
 }

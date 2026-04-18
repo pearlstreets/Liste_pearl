@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "متجر",
-    "shops": "متاجر"
+    "shops": "متاجر",
+    "error": "خطأ"
   },
   "favorites": {
     "noFavorites": "لا توجد متاجر مفضلة حتى الآن",
@@ -166,7 +167,13 @@
     "city": "المدينة",
     "cityPlaceholder": "الرياض",
     "country": "البلد",
-    "countryPlaceholder": "المملكة العربية السعودية"
+    "countryPlaceholder": "المملكة العربية السعودية",
+    "locationDenied": "تم رفض الإذن",
+    "locationDeniedMsg": "يرجى السماح بالوصول إلى الموقع في الإعدادات.",
+    "locationError": "تعذر الحصول على الموقع.",
+    "locationErrorNotFound": "لم يتم العثور على عنوان لهذا الموقع.",
+    "locating": "جاري تحديد الموقع...",
+    "useMyLocation": "استخدم موقعي الحالي"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 لفافة",
     "Pack 6 rouleaux": "Pack 6 لفافة",
     "Bidon – 2L – 40 lavages": "عبوة – 2L – 40 غسلة"
+  },
+  "errorBoundary": {
+    "title": "حدث خطأ ما",
+    "message": "واجه التطبيق خطأ غير متوقع. بياناتك محفوظة على هذا الجهاز.",
+    "retry": "حاول مرة أخرى"
   }
 }

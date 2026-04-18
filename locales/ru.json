@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "магазин",
-    "shops": "магазины"
+    "shops": "магазины",
+    "error": "Ошибка"
   },
   "favorites": {
     "noFavorites": "Нет избранных магазинов",
@@ -166,7 +167,13 @@
     "city": "Город",
     "cityPlaceholder": "Москва",
     "country": "Страна",
-    "countryPlaceholder": "Россия"
+    "countryPlaceholder": "Россия",
+    "locationDenied": "Доступ запрещён",
+    "locationDeniedMsg": "Разрешите доступ к местоположению в настройках.",
+    "locationError": "Не удалось получить местоположение.",
+    "locationErrorNotFound": "Адрес для этого местоположения не найден.",
+    "locating": "Определение местоположения...",
+    "useMyLocation": "Использовать моё местоположение"
   },
   "auth": {
     "login": "Вход",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 рулонов",
     "Pack 6 rouleaux": "Pack 6 рулонов",
     "Bidon – 2L – 40 lavages": "Канистра – 2L – 40 стирок"
+  },
+  "errorBoundary": {
+    "title": "Что-то пошло не так",
+    "message": "Приложение столкнулось с неожиданной ошибкой. Ваши данные в безопасности на этом устройстве.",
+    "retry": "Повторить"
   }
 }

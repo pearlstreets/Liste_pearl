@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "butik",
-    "shops": "butiker"
+    "shops": "butiker",
+    "error": "Fel"
   },
   "favorites": {
     "noFavorites": "Inga favoritbutiker ännu",
@@ -166,7 +167,13 @@
     "city": "Stad",
     "cityPlaceholder": "Stockholm",
     "country": "Land",
-    "countryPlaceholder": "Sverige"
+    "countryPlaceholder": "Sverige",
+    "locationDenied": "Behörighet nekad",
+    "locationDeniedMsg": "Tillåt platsåtkomst i inställningarna.",
+    "locationError": "Kunde inte hämta platsen.",
+    "locationErrorNotFound": "Ingen adress hittades för denna plats.",
+    "locating": "Söker plats...",
+    "useMyLocation": "Använd min nuvarande plats"
   },
   "auth": {
     "login": "Logga in",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 rullar",
     "Pack 6 rouleaux": "Pack 6 rullar",
     "Bidon – 2L – 40 lavages": "Dunk – 2L – 40 tvättar"
+  },
+  "errorBoundary": {
+    "title": "Något gick fel",
+    "message": "Appen stötte på ett oväntat fel. Dina data är säkra på denna enhet.",
+    "retry": "Försök igen"
   }
 }

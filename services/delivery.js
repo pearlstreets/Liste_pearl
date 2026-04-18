@@ -1,14 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from './config';
+import { safeParse } from '../utils/safeParse';
 
-// Delivery API - connects to the same backend as Livraison-app
-// This allows Liste_Pearl orders to be picked up by delivery drivers
+// Delivery API - connects to the same backend as Livraison-app.
+// NOTE: as of April 2026, /delivery/* routes are 404 on production
+// (api.pearlstreets.com). deliveryFetch therefore returns null on any
+// failure and callers treat null as "feature unavailable".
 const DELIVERY_BASE =
   CONFIG.DELIVERY_API_URL || CONFIG.API_URL.replace('/api/v1', '') + '/api/v1/delivery';
+const DELIVERY_TIMEOUT_MS = 6000;
 
 async function getAuthHeaders() {
   const raw = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
-  const tokens = raw ? JSON.parse(raw) : null;
+  const tokens = safeParse(raw, null);
   const headers = { 'Content-Type': 'application/json' };
   if (tokens?.access) {
     headers['Authorization'] = `Bearer ${tokens.access}`;
@@ -16,11 +20,34 @@ async function getAuthHeaders() {
   return headers;
 }
 
+// Crash-proof delivery fetch.
+// - AbortController timeout prevents hanging forever
+// - Never throws: returns null on network error, 4xx/5xx, or non-JSON body
+// - Callers should treat null as "delivery backend unavailable"
 async function deliveryFetch(endpoint, options = {}) {
-  const headers = await getAuthHeaders();
-  const url = `${DELIVERY_BASE}${endpoint}`;
-  const res = await fetch(url, { ...options, headers: { ...headers, ...(options.headers || {}) } });
-  return res.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), DELIVERY_TIMEOUT_MS);
+  try {
+    const headers = await getAuthHeaders();
+    const url = `${DELIVERY_BASE}${endpoint}`;
+    const res = await fetch(url, {
+      ...options,
+      headers: { ...headers, ...(options.headers || {}) },
+      signal: controller.signal,
+    });
+    if (!res.ok) return null;
+    const contentType = res.headers?.get?.('content-type') || '';
+    if (!contentType.includes('application/json')) return null;
+    try {
+      return await res.json();
+    } catch (_e) {
+      return null;
+    }
+  } catch (_e) {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 // Create a delivery order - called when customer places an order in delivery mode
@@ -198,14 +225,14 @@ export async function toggleDriverMode(enabled, countryCode) {
       method: 'POST',
       body: JSON.stringify({ is_casual_driver: enabled, country: countryCode || 'FR' }),
     });
-  } catch (e) {}
+  } catch (_e) {}
   return enabled;
 }
 
 // Check if casual driver mode is active
 export async function isDriverMode() {
   const raw = await AsyncStorage.getItem(KEY_DRIVER_MODE);
-  return raw ? JSON.parse(raw) : false;
+  return !!safeParse(raw, false);
 }
 
 // Get casual driver earnings for current year
@@ -224,9 +251,9 @@ export async function getDriverEarnings() {
       await AsyncStorage.setItem(KEY_DRIVER_EARNINGS, JSON.stringify(enriched));
       return enriched;
     }
-  } catch (e) {}
+  } catch (_e) {}
   const raw = await AsyncStorage.getItem(KEY_DRIVER_EARNINGS);
-  return raw ? JSON.parse(raw) : { total_year: 0, remaining: limit, limit, country };
+  return safeParse(raw, { total_year: 0, remaining: limit, limit, country });
 }
 
 // Check if user can still deliver (under country threshold)

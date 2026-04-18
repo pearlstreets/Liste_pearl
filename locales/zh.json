@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "店铺",
-    "shops": "店铺"
+    "shops": "店铺",
+    "error": "错误"
   },
   "favorites": {
     "noFavorites": "还没有喜欢的店铺",
@@ -166,7 +167,13 @@
     "city": "城市",
     "cityPlaceholder": "北京",
     "country": "国家",
-    "countryPlaceholder": "中国"
+    "countryPlaceholder": "中国",
+    "locationDenied": "权限被拒绝",
+    "locationDeniedMsg": "请在设置中允许位置访问。",
+    "locationError": "无法获取位置。",
+    "locationErrorNotFound": "未找到此位置的地址。",
+    "locating": "定位中...",
+    "useMyLocation": "使用我当前的位置"
   },
   "auth": {
     "login": "登录",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "12卷包",
     "Pack 6 rouleaux": "6卷包",
     "Bidon – 2L – 40 lavages": "桶 – 2L – 40次洗衣"
+  },
+  "errorBoundary": {
+    "title": "出错了",
+    "message": "应用遇到意外错误。您的数据在此设备上是安全的。",
+    "retry": "重试"
   }
 }

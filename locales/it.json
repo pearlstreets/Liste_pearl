@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "negozio",
-    "shops": "negozi"
+    "shops": "negozi",
+    "error": "Errore"
   },
   "favorites": {
     "noFavorites": "Nessun negozio preferito ancora",
@@ -166,7 +167,13 @@
     "city": "Città",
     "cityPlaceholder": "Roma",
     "country": "Paese",
-    "countryPlaceholder": "Italia"
+    "countryPlaceholder": "Italia",
+    "locationDenied": "Autorizzazione negata",
+    "locationDeniedMsg": "Consenti l'accesso alla posizione nelle impostazioni.",
+    "locationError": "Impossibile ottenere la posizione.",
+    "locationErrorNotFound": "Nessun indirizzo trovato per questa posizione.",
+    "locating": "Localizzazione in corso...",
+    "useMyLocation": "Usa la mia posizione attuale"
   },
   "auth": {
     "login": "Accedi",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 rotoli",
     "Pack 6 rouleaux": "Pack 6 rotoli",
     "Bidon – 2L – 40 lavages": "Tanica – 2L – 40 lavaggi"
+  },
+  "errorBoundary": {
+    "title": "Qualcosa è andato storto",
+    "message": "L'app ha riscontrato un errore imprevisto. I tuoi dati sono al sicuro su questo dispositivo.",
+    "retry": "Riprova"
   }
 }

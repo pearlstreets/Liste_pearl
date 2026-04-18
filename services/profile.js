@@ -1,5 +1,6 @@
 import { apiGet, apiPost, apiUpload } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeParse } from '../utils/safeParse';
 
 const KEY_PROFILE = 'KEY_PROFILE';
 
@@ -32,34 +33,49 @@ export async function getProfile() {
       await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
       return profile;
     }
-  } catch (e) {
+  } catch (_e) {
     console.log('Failed to fetch profile from backend, using local cache');
   }
 
-  // Fallback to local profile
+  // Fallback to local profile (corrupted JSON → null, not crash)
   const raw = await AsyncStorage.getItem(KEY_PROFILE);
-  return raw ? JSON.parse(raw) : null;
+  return safeParse(raw, null);
 }
 
-// Update profile on backend
+// Update profile on backend.
+// Read current profile straight from local cache (never re-fetch from
+// backend here, to avoid overwriting freshly-edited fields with a stale
+// server snapshot when backend is slow/down).
 export async function updateProfile(profileData) {
-  const data = await apiPost('/users/update-profile/', {
-    firstName: profileData.prenom || profileData.firstName,
-    lastName: profileData.nom || profileData.lastName,
-    username: profileData.pseudo || profileData.username,
-    email: profileData.email,
-    phone: profileData.phone,
-  });
+  let data = {};
+  try {
+    data = await apiPost('/users/update-profile/', {
+      firstName: profileData.prenom || profileData.firstName,
+      lastName: profileData.nom || profileData.lastName,
+      username: profileData.pseudo || profileData.username,
+      email: profileData.email,
+      phone: profileData.phone,
+    });
+  } catch (e) {
+    // Backend unreachable — still persist changes locally so user's edits
+    // aren't lost. Sync can be retried later.
+    const raw = await AsyncStorage.getItem(KEY_PROFILE);
+    const current = safeParse(raw, {}) || {};
+    const updated = { ...current, ...profileData, _unsynced: true };
+    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
+    return { success: true, profile: updated, offline: true, message: e.message };
+  }
 
-  if (data.status || data.id) {
-    // Update local cache
-    const current = await getProfile();
+  if (data?.status || data?.id) {
+    const raw = await AsyncStorage.getItem(KEY_PROFILE);
+    const current = safeParse(raw, {}) || {};
     const updated = { ...current, ...profileData };
+    delete updated._unsynced;
     await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
     return { success: true, profile: updated };
   }
 
-  return { success: false, message: data.message || 'Update failed' };
+  return { success: false, message: data?.message || 'Update failed' };
 }
 
 // Upload profile photo
@@ -84,11 +100,11 @@ export async function updateAddress(addressData) {
 // Save user data locally (for offline support)
 export async function saveUserDataLocally(key, data) {
   const authRaw = await AsyncStorage.getItem('KEY_AUTH');
-  if (!authRaw) return;
-  const auth = JSON.parse(authRaw);
+  const auth = safeParse(authRaw, null);
+  if (!auth) return;
   const userKey = 'USER_' + (auth.email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
   const savedRaw = await AsyncStorage.getItem(userKey + '_DATA');
-  const saved = savedRaw ? JSON.parse(savedRaw) : {};
+  const saved = safeParse(savedRaw, {}) || {};
   saved[key] = data;
   await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(saved));
 }

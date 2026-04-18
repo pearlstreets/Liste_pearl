@@ -102,7 +102,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "loja",
-    "shops": "lojas"
+    "shops": "lojas",
+    "error": "Erro"
   },
   "favorites": {
     "noFavorites": "Nenhuma loja favorita ainda",
@@ -166,7 +167,13 @@
     "city": "Cidade",
     "cityPlaceholder": "Lisboa",
     "country": "País",
-    "countryPlaceholder": "Portugal"
+    "countryPlaceholder": "Portugal",
+    "locationDenied": "Permissão negada",
+    "locationDeniedMsg": "Permita o acesso à localização nas configurações.",
+    "locationError": "Não foi possível obter a localização.",
+    "locationErrorNotFound": "Nenhum endereço encontrado para esta localização.",
+    "locating": "Localizando...",
+    "useMyLocation": "Usar minha localização atual"
   },
   "auth": {
     "login": "Entrar",
@@ -416,5 +423,10 @@
     "Pack 12 rouleaux": "Pack 12 rolos",
     "Pack 6 rouleaux": "Pack 6 rolos",
     "Bidon – 2L – 40 lavages": "Galão – 2L – 40 lavagens"
+  },
+  "errorBoundary": {
+    "title": "Algo deu errado",
+    "message": "O app encontrou um erro inesperado. Seus dados estão seguros neste dispositivo.",
+    "retry": "Tentar novamente"
   }
 }

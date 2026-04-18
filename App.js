@@ -1,5 +1,6 @@
 import { autocorrectName } from "./utils/spellcheck";
 import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
+import { safeParse, safeParseArray } from "./utils/safeParse";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
@@ -42,6 +43,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { openCamera } from "./utils/openCamera";
 import Toast from "./components/ui/Toast";
 import RepeatButton from "./components/ui/RepeatButton";
+import ErrorBoundary from "./components/ui/ErrorBoundary";
 import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
 import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
 import { CURRENCIES } from "./data/currencies";
@@ -603,10 +605,13 @@ const ProductsScreen = () => {
   };
 
   const assignFast=(items,inv,mode)=>{
-    const sorted=[...inv].sort((a,b)=>parseMin(a.time)-parseMin(b.time));
+    const safeInv=Array.isArray(inv)?inv.filter(s=>s&&Array.isArray(s.items)):[];
+    if(safeInv.length===0) return [];
+    const sorted=[...safeInv].sort((a,b)=>parseMin(a.time)-parseMin(b.time));
     const map={};
     items.forEach(it=>{
       const chosen=sorted.find(s=>s.items.find(r=>r.name===it.name && r.available))||sorted[0];
+      if(!chosen) return;
       const row=chosen.items.find(r=>r.name===it.name)||{price:randPrice(it.name,chosen.name)};
       const key=chosen.name; if(!map[key]) map[key]={shop:chosen,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:row.price});
@@ -632,10 +637,10 @@ const ProductsScreen = () => {
   };
 
   const assignSingle=(items,inv)=>{
-    const hasAll=(s)=>items.every(it=>{const r=s.items.find(x=>x.name===it.name);return r&&r.available;});
-    const one=inv.find(hasAll);
+    const hasAll=(s)=>s&&Array.isArray(s.items)&&items.every(it=>{const r=s.items.find(x=>x.name===it.name);return r&&r.available;});
+    const one=(Array.isArray(inv)?inv:[]).find(hasAll);
     if(one){
-      return [{shop:one,products:items.map(it=>{const r=one.items.find(x=>x.name===it.name);return {title:it.name,qty:it.qty,price:r.price};})}];
+      return [{shop:one,products:items.map(it=>{const r=one.items.find(x=>x.name===it.name);return {title:it.name,qty:it.qty,price:r?r.price:randPrice(it.name,one.name)};})}];
     }
     let best=null;
     for(let i=0;i<inv.length;i++){
@@ -1208,7 +1213,7 @@ const ProductsScreen = () => {
                     });
                   });
                   const raw = await AsyncStorage.getItem(KEY_CART);
-                  const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
+                  const existing = safeParseArray(raw);
                   const merged = [...existing];
                   const duplicates = [];
                   const newOnly = [];
@@ -3135,15 +3140,15 @@ function AuthScreen({ onLogin }) {
 
 const useCurrency = () => React.useContext(CurrencyContext);
 
-export default function App() {
+function AppInner() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
 
   // Check if pro user needs verification
   React.useEffect(() => {
     (async () => {
       const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-      if (authRaw) {
-        const auth = JSON.parse(authRaw);
+      const auth = safeParse(authRaw, null);
+      if (auth) {
         if (auth.role === 'professionaluser' && !auth.isVerified) {
           setProBlocked(true);
         } else {
@@ -3245,6 +3250,17 @@ export default function App() {
         <MainNavigator onLogout={() => setIsAuth(false)} />
       </NavigationContainer>
     </CurrencyContext.Provider>
+  );
+}
+
+// Top-level wrapper: catches any render/lifecycle exception in the
+// component tree and shows a recoverable fallback instead of a white screen.
+export default function App() {
+  const { t } = useTranslation();
+  return (
+    <ErrorBoundary t={t}>
+      <AppInner />
+    </ErrorBoundary>
   );
 }
 
@@ -3402,14 +3418,14 @@ function FakeProfileScreen({ onLogout }) {
     (async () => {
       try {
         const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-        const auth = authRaw ? JSON.parse(authRaw) : {};
+        const auth = safeParse(authRaw, {}) || {};
         if (auth.role === 'professionaluser') {
           if (data.status && data.document_status) {
             setDocStatuses(data.document_status);
             // Update isVerified in profile
             if (data.document_status.is_verified) {
               const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
-              const prof = profRaw ? JSON.parse(profRaw) : {};
+              const prof = safeParse(profRaw, {}) || {};
               if (!prof.isVerified) {
                 prof.isVerified = true;
                 await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
@@ -3537,9 +3553,9 @@ function FakeProfileScreen({ onLogout }) {
             setDeliveryStatuses(prev => ({ ...prev, [order.id]: status }));
             // Update order in history
             const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
-            if (raw) {
-              const hist = JSON.parse(raw);
-              const idx = hist.findIndex(o => o.id === order.id);
+            const hist = safeParseArray(raw);
+            if (hist.length > 0) {
+              const idx = hist.findIndex(o => o && o.id === order.id);
               if (idx >= 0 && hist[idx].deliveryStatus !== status.status) {
                 hist[idx].deliveryStatus = status.status;
                 hist[idx].driverName = status.driver_name || '';
@@ -4200,7 +4216,7 @@ function FakeProfileScreen({ onLogout }) {
                     const { status } = await Location.requestForegroundPermissionsAsync();
                     if (status !== 'granted') {
                       setGeoLoading(false);
-                      Alert.alert(t('profile.locationDenied') || 'Permission refusée', t('profile.locationDeniedMsg') || 'Autorisez la localisation dans les réglages.');
+                      Alert.alert(t('profile.locationDenied'), t('profile.locationDeniedMsg'));
                       return;
                     }
                     const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
@@ -4215,12 +4231,12 @@ function FakeProfileScreen({ onLogout }) {
                       setEditPostalCode(r.postalCode || '');
                       setEditCountry(r.country || '');
                     } else {
-                      Alert.alert('Erreur', t('profile.locationError') || 'Adresse introuvable pour cette position.');
+                      Alert.alert(t('common.error'), t('profile.locationErrorNotFound'));
                     }
                     setGeoLoading(false);
                   } catch(e) {
                     setGeoLoading(false);
-                    Alert.alert('Erreur', t('profile.locationError') || 'Impossible de récupérer la position.');
+                    Alert.alert(t('common.error'), t('profile.locationError'));
                   }
                 }}
                 disabled={geoLoading}
@@ -4231,7 +4247,7 @@ function FakeProfileScreen({ onLogout }) {
                 ) : (
                   <Ionicons name="navigate" size={20} color="#00C29B" style={{marginRight:8}} />
                 )}
-                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? t('profile.locating') : t('profile.useMyLocation')}</Text>
               </TouchableOpacity>
 
               <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.street')}</Text>
