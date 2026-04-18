@@ -10,9 +10,10 @@
     "web": "expo start --web",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "eslint \"{App,index,i18n}.js\" \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"__tests__/**/*.js\"",
+    "lint": "eslint \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier --write \"{App,index,i18n}.js\" \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"__tests__/**/*.js\"",
+    "lint:all": "eslint \"{App,index,i18n}.js\" \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
+    "format": "prettier --write \"components/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" \"lib/**/*.js\" \"data/**/*.js\" \"__tests__/**/*.js\"",
     "build:web": "expo export --platform web --output-dir dist"
   },
   "keywords": [],

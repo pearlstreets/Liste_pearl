@@ -1,8 +1,8 @@
-import { apiGet, apiPost } from "./api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiGet, apiPost } from './api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const KEY_CART = "KEY_CART";
-const KEY_ORDER_HISTORY = "KEY_ORDER_HISTORY";
+const KEY_CART = 'KEY_CART';
+const KEY_ORDER_HISTORY = 'KEY_ORDER_HISTORY';
 
 // Cart is managed locally and synced when placing an order
 // This hybrid approach works because the Marketplace backend
@@ -22,9 +22,7 @@ export async function saveCart(cart) {
 // Add item to cart
 export async function addToCart(item) {
   const cart = await getCart();
-  const existing = cart.findIndex(
-    (c) => c.id === item.id && c.shop === item.shop
-  );
+  const existing = cart.findIndex((c) => c.id === item.id && c.shop === item.shop);
   if (existing >= 0) {
     cart[existing].qty = (cart[existing].qty || 1) + (item.qty || 1);
   } else {
@@ -53,7 +51,7 @@ export async function placeOrder(orderData) {
     id: Date.now(),
     date: new Date().toISOString(),
     ...orderData,
-    status: "confirmed",
+    status: 'confirmed',
   };
 
   // Save to local order history
@@ -64,7 +62,7 @@ export async function placeOrder(orderData) {
 
   // Try to sync with backend (orders endpoint may be disabled)
   try {
-    await apiPost("/userprofessional/create-new-orders/", {
+    await apiPost('/userprofessional/create-new-orders/', {
       products: orderData.items.map((item) => ({
         product_id: item.id,
         quantity: item.qty,
@@ -76,7 +74,7 @@ export async function placeOrder(orderData) {
     });
   } catch (e) {
     // Backend order endpoint may be commented out - local storage is the fallback
-    console.log("Order sync with backend skipped (endpoint may be inactive)");
+    console.log('Order sync with backend skipped (endpoint may be inactive)');
   }
 
   // Clear cart after order

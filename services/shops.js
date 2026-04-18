@@ -1,4 +1,4 @@
-import { apiGet } from "./api";
+import { apiGet } from './api';
 
 // Get company/shop details
 export async function getShopDetails(companyId) {
@@ -7,8 +7,8 @@ export async function getShopDetails(companyId) {
 
 // Get all professional users (vendors/shops)
 export async function getAllShops() {
-  const data = await apiGet("/admin/all-prousers-list/");
-  const users = Array.isArray(data) ? data : (data.results || data.data || []);
+  const data = await apiGet('/admin/all-prousers-list/');
+  const users = Array.isArray(data) ? data : data.results || data.data || [];
 
   // Map professional users to shop-like objects compatible with Liste_Pearl
   return users
@@ -17,11 +17,11 @@ export async function getAllShops() {
       const company = u.company || u.companyDetails || {};
       return {
         id: company.id || u.id,
-        name: company.companyName || company.name || u.userName || "Shop",
-        address: company.address || "",
-        city: company.city || "",
-        phone: u.phone || "",
-        email: u.email || "",
+        name: company.companyName || company.name || u.userName || 'Shop',
+        address: company.address || '',
+        city: company.city || '',
+        phone: u.phone || '',
+        email: u.email || '',
         image: company.coverPhoto || company.logo || null,
         rating: company.average_rating || 0,
         totalRatings: company.total_ratings || 0,
@@ -53,11 +53,11 @@ export async function getShopReviews(companyId) {
 
 // Submit feedback for a shop
 export async function submitShopFeedback(companyId, feedback) {
-  const { apiPost } = require("./api");
+  const { apiPost } = require('./api');
   return apiPost(`/users/company/${companyId}/feedback/`, feedback);
 }
 
 // Get home tab data (featured shops, etc.)
 export async function getHomeData() {
-  return apiGet("/users/home-tab/");
+  return apiGet('/users/home-tab/');
 }

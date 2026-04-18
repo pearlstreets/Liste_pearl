@@ -3,25 +3,25 @@
 
 const ENV = {
   local: {
-    API_URL: "http://localhost:8000/api/v1",
-    DELIVERY_API_URL: "http://localhost:8000/api/v1/delivery",
-    WEB_URL: "http://localhost:7002",
-    ADMIN_URL: "http://localhost:7001",
-    PRO_URL: "http://localhost:7003",
+    API_URL: 'http://localhost:8000/api/v1',
+    DELIVERY_API_URL: 'http://localhost:8000/api/v1/delivery',
+    WEB_URL: 'http://localhost:7002',
+    ADMIN_URL: 'http://localhost:7001',
+    PRO_URL: 'http://localhost:7003',
   },
   staging: {
-    API_URL: "https://pythonapi.digiexports.in/api/v1",
-    DELIVERY_API_URL: "https://pythonapi.digiexports.in/api/v1/delivery",
-    WEB_URL: "https://marketplace.digiexports.in",
-    ADMIN_URL: "https://admin.digiexports.in",
-    PRO_URL: "https://pro.digiexports.in",
+    API_URL: 'https://pythonapi.digiexports.in/api/v1',
+    DELIVERY_API_URL: 'https://pythonapi.digiexports.in/api/v1/delivery',
+    WEB_URL: 'https://marketplace.digiexports.in',
+    ADMIN_URL: 'https://admin.digiexports.in',
+    PRO_URL: 'https://pro.digiexports.in',
   },
   production: {
-    API_URL: "https://api.pearlstreets.com/api/v1",
-    DELIVERY_API_URL: "https://api.pearlstreets.com/api/v1/delivery",
-    WEB_URL: "https://marche.pearlstreets.com",
-    ADMIN_URL: "https://admin.pearlstreets.com",
-    PRO_URL: "https://pro.pearlstreets.com",
+    API_URL: 'https://api.pearlstreets.com/api/v1',
+    DELIVERY_API_URL: 'https://api.pearlstreets.com/api/v1/delivery',
+    WEB_URL: 'https://marche.pearlstreets.com',
+    ADMIN_URL: 'https://admin.pearlstreets.com',
+    PRO_URL: 'https://pro.pearlstreets.com',
   },
 };
 
@@ -29,7 +29,7 @@ const ENV = {
 // "staging" = pythonapi.digiexports.in (needs deployed backend)
 // "local" = localhost:8000 (needs local Django server)
 // The app always falls back to local accounts if API is unavailable
-const ACTIVE_ENV = "staging";
+const ACTIVE_ENV = 'staging';
 
 export const CONFIG = ENV[ACTIVE_ENV];
 export default CONFIG;

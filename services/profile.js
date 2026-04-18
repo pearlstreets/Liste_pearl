@@ -1,12 +1,12 @@
-import { apiGet, apiPost, apiUpload } from "./api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiGet, apiPost, apiUpload } from './api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const KEY_PROFILE = "KEY_PROFILE";
+const KEY_PROFILE = 'KEY_PROFILE';
 
 // Get user profile from backend
 export async function getProfile() {
   try {
-    const data = await apiGet("/users/get-users-profile/");
+    const data = await apiGet('/users/get-users-profile/');
     if (data && (data.id || data.user)) {
       const user = data.user || data;
       const profile = {
@@ -22,18 +22,18 @@ export async function getProfile() {
         photo: user.profileImage || null,
         gender: user.gender,
         dob: user.dob,
-        address: user.manualAddress?.address1 || "",
-        addressSupplement: user.manualAddress?.address2 || "",
-        city: user.manualAddress?.city || "",
-        postalCode: user.manualAddress?.postalCode || "",
-        country: user.manualAddress?.country || "",
-        role: user.role_name || user.role || "user",
+        address: user.manualAddress?.address1 || '',
+        addressSupplement: user.manualAddress?.address2 || '',
+        city: user.manualAddress?.city || '',
+        postalCode: user.manualAddress?.postalCode || '',
+        country: user.manualAddress?.country || '',
+        role: user.role_name || user.role || 'user',
       };
       await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
       return profile;
     }
   } catch (e) {
-    console.log("Failed to fetch profile from backend, using local cache");
+    console.log('Failed to fetch profile from backend, using local cache');
   }
 
   // Fallback to local profile
@@ -43,7 +43,7 @@ export async function getProfile() {
 
 // Update profile on backend
 export async function updateProfile(profileData) {
-  const data = await apiPost("/users/update-profile/", {
+  const data = await apiPost('/users/update-profile/', {
     firstName: profileData.prenom || profileData.firstName,
     lastName: profileData.nom || profileData.lastName,
     username: profileData.pseudo || profileData.username,
@@ -59,36 +59,36 @@ export async function updateProfile(profileData) {
     return { success: true, profile: updated };
   }
 
-  return { success: false, message: data.message || "Update failed" };
+  return { success: false, message: data.message || 'Update failed' };
 }
 
 // Upload profile photo
 export async function uploadProfilePhoto(uri) {
   const formData = new FormData();
-  formData.append("profileImage", {
+  formData.append('profileImage', {
     uri,
-    type: "image/jpeg",
-    name: "profile.jpg",
+    type: 'image/jpeg',
+    name: 'profile.jpg',
   });
 
-  const data = await apiUpload("/users/update-profile/", formData);
+  const data = await apiUpload('/users/update-profile/', formData);
   return data;
 }
 
 // Get/update address
 export async function updateAddress(addressData) {
-  const data = await apiPost("/users/get-automatic-address/", addressData);
+  const data = await apiPost('/users/get-automatic-address/', addressData);
   return data;
 }
 
 // Save user data locally (for offline support)
 export async function saveUserDataLocally(key, data) {
-  const authRaw = await AsyncStorage.getItem("KEY_AUTH");
+  const authRaw = await AsyncStorage.getItem('KEY_AUTH');
   if (!authRaw) return;
   const auth = JSON.parse(authRaw);
-  const userKey = "USER_" + (auth.email || "").toLowerCase().replace(/[^a-z0-9]/g, "_");
-  const savedRaw = await AsyncStorage.getItem(userKey + "_DATA");
+  const userKey = 'USER_' + (auth.email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const savedRaw = await AsyncStorage.getItem(userKey + '_DATA');
   const saved = savedRaw ? JSON.parse(savedRaw) : {};
   saved[key] = data;
-  await AsyncStorage.setItem(userKey + "_DATA", JSON.stringify(saved));
+  await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(saved));
 }
