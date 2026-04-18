@@ -6,29 +6,29 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pearlstreets.list",
+      "buildNumber": "1",
       "infoPlist": {
         "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste de courses.",
         "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo.",
         "NSLocationWhenInUseUsageDescription": "Pour trouver les magasins proches et optimiser la livraison.",
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": false,
-          "NSExceptionDomains": {
-            "pythonapi.digiexports.in": {
-              "NSExceptionAllowsInsecureHTTPLoads": false,
-              "NSIncludesSubdomains": true
-            }
-          }
-        }
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "package": "com.pearlstreets.list",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -36,15 +36,14 @@
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION"
-      ],
-      "usesCleartextTraffic": false
+      ]
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1"
+      "pearlBaseUrl": "https://api.pearlstreets.com/api/v1"
     },
     "plugins": [
       "expo-localization",
