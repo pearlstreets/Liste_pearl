@@ -33,8 +33,7 @@
   "submit": {
     "production": {
       "ios": {
-        "ascAppId": "PLACEHOLDER_FILL_AFTER_FIRST_BUILD",
-        "appleTeamId": "PLACEHOLDER_FILL_FROM_DEVELOPER_ACCOUNT"
+        "appleTeamId": "5R8LA6469V"
       }
     }
   }
