@@ -83,6 +83,8 @@ const GAP = 10;
 
 
 const CurrencyContext = React.createContext({ currency: CURRENCIES[0], fmtPrice: (n) => n.toFixed(2) + ' €' });
+const AuthContext = React.createContext({ isAuth: false, setIsAuth: () => {} });
+const useAuth = () => React.useContext(AuthContext);
 
 const Tab = createBottomTabNavigator();
 const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: BRAND, background: "#fff" } };
@@ -1896,6 +1898,8 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
 const CartScreen = () => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
+  const { isAuth, setIsAuth } = useAuth();
+  const [authGateVisible, setAuthGateVisible] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
@@ -2244,7 +2248,10 @@ const CartScreen = () => {
           <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(totalPrice)}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => setConfirmVisible(true)} style={{
+          <TouchableOpacity onPress={() => {
+            if (!isAuth) { setAuthGateVisible(true); return; }
+            setConfirmVisible(true);
+          }} style={{
             flex: 1, height: 44, borderRadius: 12, backgroundColor: BRAND,
             flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
           }}>
@@ -2925,6 +2932,10 @@ const CartScreen = () => {
           setCartSearchVisible(false);
         }}
       />
+      {/* Auth gate modal — shown when guest taps checkout */}
+      <Modal visible={authGateVisible} animationType="slide" onRequestClose={() => setAuthGateVisible(false)}>
+        <AuthScreen onLogin={() => { setIsAuth(true); setAuthGateVisible(false); setConfirmVisible(true); }} />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -2971,7 +2982,11 @@ function MainNavigator({ onLogout }) {
       <Tab.Screen name="products" component={ProductsScreen} />
       <Tab.Screen name="cart"  component={CartScreen} />
       <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} />}</Tab.Screen>
+      <Tab.Screen name="profile">{() => {
+        const { isAuth, setIsAuth } = useAuth();
+        if (!isAuth) return <AuthScreen onLogin={() => setIsAuth(true)} />;
+        return <FakeProfileScreen onLogout={onLogout} />;
+      }}</Tab.Screen>
     </Tab.Navigator>
   );
 }
@@ -3251,21 +3266,14 @@ function AppInner() {
     );
   }
 
-  if (!isAuth) {
-    return (
-      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-        <AuthScreen onLogin={() => setIsAuth(true)} />
-      </CurrencyContext.Provider>
-    );
-  }
-
-
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-      <NavigationContainer theme={navTheme}>
-        <MainNavigator onLogout={() => setIsAuth(false)} />
-      </NavigationContainer>
-    </CurrencyContext.Provider>
+    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
+        <NavigationContainer theme={navTheme}>
+          <MainNavigator onLogout={() => setIsAuth(false)} />
+        </NavigationContainer>
+      </CurrencyContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
