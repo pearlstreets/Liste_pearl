@@ -131,6 +131,8 @@
     "driverPro": "Livreur Professionnel",
     "driverProInfo": "Vous avez un statut professionnel (auto-entrepreneur, société). Aucune limite de revenus. Documents requis : carte d'identité, IBAN, KBISS.",
     "driverLimits": "Plafonds par pays (particuliers)",
+    "showOtherCountries": "Voir les autres pays",
+    "hideOtherCountries": "Masquer les autres pays",
     "openDeliveryApp": "Ouvrir l'app Pearl Delivery",
     "downloadDeliveryApp": "L'app Pearl Delivery n'est pas installée. Téléchargez-la pour devenir livreur.",
     "driverEarnings": "Gains cette année",
@@ -208,7 +210,9 @@
     "city": "Ville",
     "cityPlaceholder": "Paris",
     "country": "Pays",
-    "countryPlaceholder": "France"
+    "countryPlaceholder": "France",
+    "addAddress": "Ajouter une adresse",
+    "noAddresses": "Aucune adresse enregistrée"
   },
   "auth": {
     "login": "Connexion",

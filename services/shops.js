@@ -1,4 +1,4 @@
-import { apiGet } from "./api";
+import { apiGet, apiPost } from "./api";
 
 // Get company/shop details
 export async function getShopDetails(companyId) {
@@ -53,7 +53,6 @@ export async function getShopReviews(companyId) {
 
 // Submit feedback for a shop
 export async function submitShopFeedback(companyId, feedback) {
-  const { apiPost } = require("./api");
   return apiPost(`/users/company/${companyId}/feedback/`, feedback);
 }
 

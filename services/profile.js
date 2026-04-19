@@ -3,12 +3,36 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const KEY_PROFILE = "KEY_PROFILE";
 
+// Normalize a backend address object into app format
+function normalizeAddress(addr, index) {
+  if (!addr) return null;
+  return {
+    id: addr.id ? String(addr.id) : String(index + 1),
+    address: addr.address1 || addr.address || addr.street || "",
+    addressSupplement: addr.address2 || addr.addressSupplement || addr.complement || "",
+    city: addr.city || "",
+    postalCode: addr.postalCode || addr.postal_code || addr.zipCode || "",
+    country: addr.country || "",
+    label: addr.label || addr.name || "",
+  };
+}
+
 // Get user profile from backend
 export async function getProfile() {
   try {
     const data = await apiGet("/users/get-users-profile/");
     if (data && (data.id || data.user)) {
       const user = data.user || data;
+
+      // Extract addresses array from backend
+      const rawAddresses = user.addresses || user.shippingAddresses || user.deliveryAddresses || [];
+      let addresses = rawAddresses.map((a, i) => normalizeAddress(a, i)).filter(Boolean);
+
+      // If no addresses array, fall back to manualAddress
+      if (addresses.length === 0 && user.manualAddress?.address1) {
+        addresses = [normalizeAddress(user.manualAddress, 0)];
+      }
+
       const profile = {
         id: user.id,
         username: user.username,
@@ -22,6 +46,9 @@ export async function getProfile() {
         photo: user.profileImage || null,
         gender: user.gender,
         dob: user.dob,
+        addresses,
+        selectedAddressId: addresses[0]?.id || null,
+        // Keep flat fields for backward compatibility
         address: user.manualAddress?.address1 || "",
         addressSupplement: user.manualAddress?.address2 || "",
         city: user.manualAddress?.city || "",

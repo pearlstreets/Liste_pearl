@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import { Platform } from "react-native";
 import { CONFIG } from "./config";
 import { sanitizeResponse, isTokenExpired, requestFingerprint } from "./security";
 
@@ -7,21 +9,49 @@ const BASE_URL = CONFIG.API_URL;
 const TOKEN_KEY = "MARKETPLACE_TOKENS";
 const API_TIMEOUT = 8000; // 8s timeout
 
+// ========== SECURE TOKEN STORAGE ==========
+// Uses SecureStore (Keychain/Keystore) on native, AsyncStorage fallback on web
+
+const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
+
+async function secureSet(key, value) {
+  if (isNative) {
+    await SecureStore.setItemAsync(key, value);
+  } else {
+    await AsyncStorage.setItem(key, value);
+  }
+}
+
+async function secureGet(key) {
+  if (isNative) {
+    return SecureStore.getItemAsync(key);
+  }
+  return AsyncStorage.getItem(key);
+}
+
+async function secureRemove(key) {
+  if (isNative) {
+    await SecureStore.deleteItemAsync(key);
+  } else {
+    await AsyncStorage.removeItem(key);
+  }
+}
+
 // ========== TOKEN MANAGEMENT ==========
 
 export async function saveTokens(access, refresh) {
-  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify({ access, refresh, savedAt: Date.now() }));
+  await secureSet(TOKEN_KEY, JSON.stringify({ access, refresh, savedAt: Date.now() }));
 }
 
 export async function getTokens() {
   try {
-    const raw = await AsyncStorage.getItem(TOKEN_KEY);
+    const raw = await secureGet(TOKEN_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch { return null; }
 }
 
 export async function clearTokens() {
-  await AsyncStorage.removeItem(TOKEN_KEY);
+  await secureRemove(TOKEN_KEY);
 }
 
 // ========== SECURE FETCH ==========
@@ -30,7 +60,7 @@ async function apiFetch(endpoint, options = {}) {
   const tokens = await getTokens();
   const headers = {
     "Content-Type": "application/json",
-    "X-Request-ID": requestFingerprint(), // Track requests
+    "X-Request-ID": requestFingerprint(),
     ...(options.headers || {}),
   };
 
@@ -49,7 +79,7 @@ async function apiFetch(endpoint, options = {}) {
           headers["Authorization"] = `Bearer ${data.access}`;
         }
       }
-    } catch (e) { /* refresh failed */ }
+    } catch (e) { __DEV__ && console.warn('[api] token refresh failed:', e.message); }
   } else if (tokens?.access) {
     headers["Authorization"] = `Bearer ${tokens.access}`;
   }
@@ -73,7 +103,7 @@ async function apiFetch(endpoint, options = {}) {
           res = await fetchWithTimeout(url, { ...options, headers });
         }
       }
-    } catch (e) { /* refresh failed */ }
+    } catch (e) { __DEV__ && console.warn('[api] token refresh retry failed:', e.message); }
   }
 
   return res;
@@ -91,12 +121,23 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT) {
   }
 }
 
-// ========== API METHODS (with response sanitization) ==========
+// ========== SAFE JSON PARSE ==========
+
+async function safeJson(res) {
+  try {
+    const data = await res.json();
+    return sanitizeResponse(data);
+  } catch (e) {
+    __DEV__ && console.warn('[api] JSON parse failed:', e.message, 'status:', res.status);
+    return { error: true, message: 'Invalid server response', status: res.status };
+  }
+}
+
+// ========== API METHODS ==========
 
 export async function apiGet(endpoint) {
   const res = await apiFetch(endpoint, { method: "GET" });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return safeJson(res);
 }
 
 export async function apiPost(endpoint, body) {
@@ -104,8 +145,7 @@ export async function apiPost(endpoint, body) {
     method: "POST",
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return safeJson(res);
 }
 
 export async function apiPut(endpoint, body) {
@@ -113,14 +153,12 @@ export async function apiPut(endpoint, body) {
     method: "PUT",
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return safeJson(res);
 }
 
 export async function apiDelete(endpoint) {
   const res = await apiFetch(endpoint, { method: "DELETE" });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return safeJson(res);
 }
 
 export async function apiUpload(endpoint, formData) {
@@ -134,8 +172,7 @@ export async function apiUpload(endpoint, formData) {
     headers,
     body: formData,
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return safeJson(res);
 }
 
 export { BASE_URL };

@@ -33,7 +33,10 @@ const resources = {
 };
 
 // Get the device locale safely
-const deviceLocale = Localization.locale || 'en';
+const deviceLocale = (() => {
+  try { return Localization.getLocales()?.[0]?.languageTag || 'en'; }
+  catch { return 'en'; }
+})();
 const initialLanguage = deviceLocale.toLowerCase().startsWith('fr') ? 'fr' : 'en';
 
 i18n

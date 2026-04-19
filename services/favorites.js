@@ -34,7 +34,7 @@ export async function addShopFavorite(shopName, companyId) {
     await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(shops));
   }
   // Backend
-  try { await apiPost("/users/favorites/add/", { type: "shop", company_name: shopName, company_id: companyId || 0 }); } catch (e) {}
+  try { await apiPost("/users/favorites/add/", { type: "shop", company_name: shopName, company_id: companyId || 0 }); } catch (e) { __DEV__ && console.warn('[favorites] addShop sync:', e.message); }
 }
 
 // Remove shop from favorites (local + backend)
@@ -43,7 +43,7 @@ export async function removeShopFavorite(shopName) {
   const shops = raw ? JSON.parse(raw) : [];
   const updated = shops.filter(s => s !== shopName);
   await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(updated));
-  try { await apiPost("/users/favorites/remove/", { type: "shop", company_name: shopName }); } catch (e) {}
+  try { await apiPost("/users/favorites/remove/", { type: "shop", company_name: shopName }); } catch (e) { __DEV__ && console.warn('[favorites] removeShop sync:', e.message); }
 }
 
 // Add product to favorites (local + backend)
@@ -54,7 +54,7 @@ export async function addProductFavorite(product) {
     products.push({ name: product.name, detail: product.detail || '', price: product.price || 0 });
     await AsyncStorage.setItem(KEY_FAV_PRODUCTS, JSON.stringify(products));
   }
-  try { await apiPost("/users/favorites/add/", { type: "product", product_name: product.name, product_detail: product.detail, product_price: product.price }); } catch (e) {}
+  try { await apiPost("/users/favorites/add/", { type: "product", product_name: product.name, product_detail: product.detail, product_price: product.price }); } catch (e) { __DEV__ && console.warn('[favorites] addProduct sync:', e.message); }
 }
 
 // Remove product from favorites (local + backend)
@@ -63,5 +63,5 @@ export async function removeProductFavorite(productName) {
   const products = raw ? JSON.parse(raw) : [];
   const updated = products.filter(p => p.name !== productName);
   await AsyncStorage.setItem(KEY_FAV_PRODUCTS, JSON.stringify(updated));
-  try { await apiPost("/users/favorites/remove/", { type: "product", product_name: productName }); } catch (e) {}
+  try { await apiPost("/users/favorites/remove/", { type: "product", product_name: productName }); } catch (e) { __DEV__ && console.warn('[favorites] removeProduct sync:', e.message); }
 }

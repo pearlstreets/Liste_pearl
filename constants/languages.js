@@ -1,0 +1,15 @@
+export const LANGUAGES = [
+  { code:'fr', label:'Français', flag:'🇫🇷' },
+  { code:'en', label:'English', flag:'🇬🇧' },
+  { code:'es', label:'Español', flag:'🇪🇸' },
+  { code:'zh', label:'中文', flag:'🇨🇳' },
+  { code:'ar', label:'العربية', flag:'🇸🇦' },
+  { code:'de', label:'Deutsch', flag:'🇩🇪' },
+  { code:'nl', label:'Nederlands', flag:'🇳🇱' },
+  { code:'it', label:'Italiano', flag:'🇮🇹' },
+  { code:'pt', label:'Português', flag:'🇵🇹' },
+  { code:'ja', label:'日本語', flag:'🇯🇵' },
+  { code:'th', label:'ไทย', flag:'🇹🇭' },
+  { code:'sv', label:'Svenska', flag:'🇸🇪' },
+  { code:'ru', label:'Русский', flag:'🇷🇺' },
+];

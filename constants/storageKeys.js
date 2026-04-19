@@ -1,0 +1,10 @@
+export const KEY_ITEMS = "SG_ITEMS";
+export const KEY_SELECTED = "SG_SELECTED_FOR_PRODUCTS";
+export const KEY_CART = "KEY_CART";
+export const KEY_ORDER_HISTORY = "KEY_ORDER_HISTORY";
+export const KEY_PROFILE = "KEY_PROFILE";
+export const KEY_FAV_SHOPS = "KEY_FAV_SHOPS";
+export const KEY_FAVS = "KEY_FAVS";
+export const KEY_AUTH = "KEY_AUTH";
+export const KEY_ACCOUNTS = "KEY_ACCOUNTS";
+export const KEY_FAV_PRODUCTS = "KEY_FAV_PRODUCTS";

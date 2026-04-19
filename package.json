@@ -1,11 +1,15 @@
 {
-  "name": "pearl-delivery",
+  "name": "pearl-list",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "expo start"
+    "start": "expo start",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json}'",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +26,7 @@
     "expo-image-picker": "~17.0.10",
     "expo-localization": "~17.0.8",
     "expo-location": "~19.0.8",
+    "expo-secure-store": "~15.0.8",
     "expo-status-bar": "~3.0.9",
     "i18next": "^25.5.0",
     "react": "19.1.0",
@@ -29,14 +34,40 @@
     "react-i18next": "^15.7.3",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-onesignal": "^5.4.3",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "react-native-web": "^0.21.0",
     "react-native-worklets": "0.5.1"
   },
+  "jest": {
+    "preset": "react-native",
+    "setupFiles": [
+      "./jest.setup.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.claude/"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@react-native-async-storage|@sentry/react-native|native-base|react-native-svg)"
+    ]
+  },
   "overrides": {},
   "devDependencies": {
-    "metro": "^0.83.1"
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^55.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "jest": "^30.3.0",
+    "jest-expo": "^55.0.15",
+    "metro": "^0.83.1",
+    "onesignal-expo-plugin": "^2.4.0",
+    "prettier": "^3.8.2",
+    "react-test-renderer": "^19.1.0",
+    "typescript": "^6.0.2"
   }
 }

@@ -35,7 +35,9 @@
       },
       "permissions": [
         "CAMERA",
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ],
       "usesCleartextTraffic": false
     },
@@ -45,20 +47,19 @@
     },
     "extra": {
       "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1",
-      "oneSignalAppId": "31f08293-ee05-4113-8868-f4ce3bd14104"
+      "oneSignalAppId": "31f08293-ee05-4113-8868-f4ce3bd14104",
+      "eas": {
+        "projectId": "c2ae23d8-1884-47ae-b45c-feea16814db6"
+      }
     },
     "plugins": [
       "expo-localization",
       "expo-location",
-      [
-        "onesignal-expo-plugin",
-        {
-          "mode": "production"
-        }
-      ]
+      "expo-secure-store"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
-    }
+    },
+    "owner": "localidad"
   }
 }

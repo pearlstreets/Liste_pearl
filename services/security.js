@@ -62,7 +62,7 @@ export async function secureStore(key, value) {
   try {
     const data = JSON.stringify({ v: value, t: Date.now() });
     await AsyncStorage.setItem(SECURE_PREFIX + key, data);
-  } catch (e) {}
+  } catch (e) { __DEV__ && console.warn('[security]:', e.message); }
 }
 
 export async function secureGet(key) {
@@ -71,7 +71,7 @@ export async function secureGet(key) {
     if (!raw) return null;
     const { v } = JSON.parse(raw);
     return v;
-  } catch (e) { return null; }
+  } catch (e) { __DEV__ && console.warn('[security]:', e.message); return null; }
 }
 
 export async function secureRemove(key) {
@@ -86,7 +86,7 @@ export function isTokenExpired(token) {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp * 1000 < Date.now();
-  } catch (e) { return true; }
+  } catch (e) { __DEV__ && console.warn('[security]:', e.message); return true; }
 }
 
 // ========== ANTI-TAMPERING ==========

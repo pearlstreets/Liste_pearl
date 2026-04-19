@@ -131,6 +131,8 @@
     "driverPro": "Professional Driver",
     "driverProInfo": "You have a professional status (self-employed, company). No income limit. Required documents: ID card, IBAN, KBISS.",
     "driverLimits": "Country limits (individuals)",
+    "showOtherCountries": "Show other countries",
+    "hideOtherCountries": "Hide other countries",
     "openDeliveryApp": "Open Pearl Delivery app",
     "downloadDeliveryApp": "Pearl Delivery app is not installed. Download it to become a driver.",
     "driverEarnings": "Earnings this year",
@@ -208,7 +210,9 @@
     "city": "City",
     "cityPlaceholder": "New York",
     "country": "Country",
-    "countryPlaceholder": "United States"
+    "countryPlaceholder": "United States",
+    "addAddress": "Add an address",
+    "noAddresses": "No saved addresses"
   },
   "auth": {
     "login": "Login",

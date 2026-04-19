@@ -1,4 +1,4 @@
-import { apiPost, saveTokens, clearTokens, getTokens, apiGet } from "./api";
+import { apiPost, apiUpload, saveTokens, clearTokens, getTokens, apiGet } from "./api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const KEY_AUTH = "KEY_AUTH";
@@ -83,6 +83,7 @@ export async function logoutUser() {
     }
   } catch (e) {
     // Ignore logout API errors
+    __DEV__ && console.warn('[auth]:', e.message);
   }
   await clearTokens();
   await AsyncStorage.removeItem(KEY_AUTH);
@@ -121,8 +122,6 @@ export async function verifyOTP(otp) {
 
 // Register a professional user with company details and documents
 export async function registerProfessional({ email, password, phone, phoneCode, companyName, managerFullName, siret, vatNumber, sector, address, documents }) {
-  const { apiUpload } = require("./api");
-
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
