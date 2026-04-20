@@ -56,7 +56,7 @@
       "expo-localization",
       "expo-location",
       "expo-secure-store",
-      "onesignal-expo-plugin"
+      ["onesignal-expo-plugin", { "mode": "production" }]
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
