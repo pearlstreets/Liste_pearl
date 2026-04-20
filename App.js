@@ -50,6 +50,7 @@ import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } 
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
 import { parseMulti } from "./lib/parseMulti";
+import { ListSharingSection } from "./components/ui/ListSharing";
 const BRAND = "#00C29B";
 
 
@@ -2984,10 +2985,48 @@ function MainNavigator({ onLogout }) {
       <Tab.Screen name="favorites" component={FavoritesScreen} />
       <Tab.Screen name="profile">{() => {
         const { isAuth, setIsAuth } = useAuth();
-        if (!isAuth) return <AuthScreen onLogin={() => setIsAuth(true)} />;
+        if (!isAuth) return <GuestProfileScreen onLogin={() => setIsAuth(true)} />;
         return <FakeProfileScreen onLogout={onLogout} />;
       }}</Tab.Screen>
     </Tab.Navigator>
+  );
+}
+
+// ─── GuestProfileScreen — shown in profile tab when not logged in ─────────────
+function GuestProfileScreen({ onLogin }) {
+  const { t } = useTranslation();
+  const [authVisible, setAuthVisible] = React.useState(false);
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+        {/* Login banner */}
+        <View style={{ backgroundColor: '#fff', margin: 16, borderRadius: 16, padding: 20, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }}>
+          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: BRAND + '18', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+            <Ionicons name="person-outline" size={28} color={BRAND} />
+          </View>
+          <Text style={{ fontSize: 17, fontWeight: '700', color: '#111', marginBottom: 6, textAlign: 'center' }}>
+            {t('auth.loginTitle') || 'Se connecter'}
+          </Text>
+          <Text style={{ fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 18 }}>
+            {t('auth.guestHint') || 'Connectez-vous pour accéder à votre profil, vos commandes et plus.'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => setAuthVisible(true)}
+            style={{ backgroundColor: BRAND, borderRadius: 12, height: 46, paddingHorizontal: 32, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>{t('auth.login') || 'Connexion'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Share section — visible even as guest */}
+        <ListSharingSection requireAuth={() => setAuthVisible(true)} />
+
+        {/* Auth modal */}
+        <Modal visible={authVisible} animationType="slide" onRequestClose={() => setAuthVisible(false)}>
+          <AuthScreen onLogin={() => { setAuthVisible(false); onLogin(); }} />
+        </Modal>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -3881,8 +3920,11 @@ function FakeProfileScreen({ onLogout }) {
           </View>
         )}
 
+        {/* Share my list */}
+        <ListSharingSection ownerPseudo={profile?.pseudo || ''} />
+
         {/* Logout */}
-        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
+        <View style={{ paddingHorizontal:16, marginTop:8, marginBottom:30 }}>
           <TouchableOpacity onPress={() => {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
