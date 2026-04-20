@@ -107,7 +107,8 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "store",
-    "shops": "stores"
+    "shops": "stores",
+    "error": "Error"
   },
   "favorites": {
     "noFavorites": "No favorite shops",
@@ -208,7 +209,8 @@
     "city": "City",
     "cityPlaceholder": "New York",
     "country": "Country",
-    "countryPlaceholder": "United States"
+    "countryPlaceholder": "United States",
+    "locationErrorNotFound": "No address found for this location."
   },
   "auth": {
     "login": "Login",
@@ -514,5 +516,52 @@
     "Pack 12 rouleaux": "Pack 12 rolls",
     "Pack 6 rouleaux": "Pack 6 rolls",
     "Bidon – 2L – 40 lavages": "Jug – 2L – 40 washes"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "message": "The app hit an unexpected error. Your data is safe on this device.",
+    "retry": "Try again"
+  },
+  "shareList": {
+    "title": "Share my list",
+    "subtitle": "Invite friends to view or edit your list",
+    "invite": "Invite",
+    "join": "Join a list",
+    "inviteTitle": "Invite someone",
+    "inviteSubtitle": "They will receive a code to access your list",
+    "pseudoOrEmail": "Pseudo or email",
+    "pseudoPlaceholder": "@pseudo or email",
+    "permission": "Permission",
+    "permRead": "Read",
+    "permWrite": "Edit",
+    "generate": "Generate code",
+    "codeHint": "Share this code with",
+    "copy": "Copy",
+    "share": "Share",
+    "copied": "Copied!",
+    "done": "Done",
+    "joinTitle": "Join a list",
+    "joinSubtitle": "Enter the code shared by the list owner",
+    "ownerPseudo": "Owner's pseudo",
+    "enterCode": "Invite code",
+    "codePlaceholder": "XXXXXX",
+    "joinBtn": "Join",
+    "joined": "Joined!",
+    "joinedMsg": "You now have access to {{owner}}s list",
+    "sharedWith": "Shared with",
+    "joinedLists": "Lists I joined",
+    "noShares": "No shares yet — invite someone!",
+    "removeTitle": "Remove access",
+    "removeMsg": "This person will no longer see your list.",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "leaveTitle": "Leave this list",
+    "leaveMsg": "You will no longer have access to this list.",
+    "leave": "Leave",
+    "shareMsg": "Join my Pearl List! Code: {{code}} (shared by {{owner}})",
+    "pseudoRequired": "Please enter a pseudo or email",
+    "codeInvalid": "Please enter a valid code (min. 4 characters)",
+    "alreadyJoined": "You have already joined this list",
+    "joinError": "An error occurred. Please try again."
   }
 }

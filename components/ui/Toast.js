@@ -15,7 +15,7 @@ const Toast = ({ visible, message, brand = BRAND_DEFAULT }) => {
         Animated.timing(opacity, { toValue: 0, duration: 300, useNativeDriver: true }),
       ]).start();
     }
-  }, [visible, message]);
+  }, [visible, message, opacity]);
   if (!visible) return null;
   return (
     <Animated.View

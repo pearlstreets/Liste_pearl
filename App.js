@@ -1,14 +1,16 @@
 import { autocorrectName } from "./utils/spellcheck";
 import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
+import { safeParse, safeParseArray } from "./utils/safeParse";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
-import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
+import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, retryUnsyncedOrders } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
+import { FEATURES } from "./services/config";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 
 function __getUserItems(){
@@ -42,11 +44,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { openCamera } from "./utils/openCamera";
 import Toast from "./components/ui/Toast";
 import RepeatButton from "./components/ui/RepeatButton";
+import ErrorBoundary from "./components/ui/ErrorBoundary";
 import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
 import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
 import { parseMulti } from "./lib/parseMulti";
+import { ListSharingSection } from "./components/ui/ListSharing";
 const BRAND = "#00C29B";
 
 
@@ -80,6 +84,8 @@ const GAP = 10;
 
 
 const CurrencyContext = React.createContext({ currency: CURRENCIES[0], fmtPrice: (n) => n.toFixed(2) + ' €' });
+const AuthContext = React.createContext({ isAuth: false, setIsAuth: () => {} });
+const useAuth = () => React.useContext(AuthContext);
 
 const Tab = createBottomTabNavigator();
 const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: BRAND, background: "#fff" } };
@@ -603,10 +609,13 @@ const ProductsScreen = () => {
   };
 
   const assignFast=(items,inv,mode)=>{
-    const sorted=[...inv].sort((a,b)=>parseMin(a.time)-parseMin(b.time));
+    const safeInv=Array.isArray(inv)?inv.filter(s=>s&&Array.isArray(s.items)):[];
+    if(safeInv.length===0) return [];
+    const sorted=[...safeInv].sort((a,b)=>parseMin(a.time)-parseMin(b.time));
     const map={};
     items.forEach(it=>{
       const chosen=sorted.find(s=>s.items.find(r=>r.name===it.name && r.available))||sorted[0];
+      if(!chosen) return;
       const row=chosen.items.find(r=>r.name===it.name)||{price:randPrice(it.name,chosen.name)};
       const key=chosen.name; if(!map[key]) map[key]={shop:chosen,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:row.price});
@@ -632,10 +641,10 @@ const ProductsScreen = () => {
   };
 
   const assignSingle=(items,inv)=>{
-    const hasAll=(s)=>items.every(it=>{const r=s.items.find(x=>x.name===it.name);return r&&r.available;});
-    const one=inv.find(hasAll);
+    const hasAll=(s)=>s&&Array.isArray(s.items)&&items.every(it=>{const r=s.items.find(x=>x.name===it.name);return r&&r.available;});
+    const one=(Array.isArray(inv)?inv:[]).find(hasAll);
     if(one){
-      return [{shop:one,products:items.map(it=>{const r=one.items.find(x=>x.name===it.name);return {title:it.name,qty:it.qty,price:r.price};})}];
+      return [{shop:one,products:items.map(it=>{const r=one.items.find(x=>x.name===it.name);return {title:it.name,qty:it.qty,price:r?r.price:randPrice(it.name,one.name)};})}];
     }
     let best=null;
     for(let i=0;i<inv.length;i++){
@@ -1208,7 +1217,7 @@ const ProductsScreen = () => {
                     });
                   });
                   const raw = await AsyncStorage.getItem(KEY_CART);
-                  const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
+                  const existing = safeParseArray(raw);
                   const merged = [...existing];
                   const duplicates = [];
                   const newOnly = [];
@@ -1890,6 +1899,8 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
 const CartScreen = () => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
+  const { isAuth, setIsAuth } = useAuth();
+  const [authGateVisible, setAuthGateVisible] = React.useState(false);
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
@@ -2034,7 +2045,14 @@ const CartScreen = () => {
     const filtered = PARIS_ADDRESSES.filter(a => a.toLowerCase().includes(q)).slice(0, 4);
     setAddressSuggestions(filtered);
   };
-  const totalPrice = cartItems.reduce((sum, it, i) => selectedCart[i] ? sum + (Number(it.price || 0) * Number(it.qty || 1)) : sum, 0);
+  const totalPrice = cartItems.reduce((sum, it, i) => {
+    if (!selectedCart[i]) return sum;
+    // Number('abc' || 0) === NaN — use (Number(x) || 0) instead so bad
+    // price strings from legacy cart data don't poison the running total.
+    const price = Number(it?.price) || 0;
+    const qty = Number(it?.qty) || 1;
+    return sum + price * qty;
+  }, 0);
 
   const loadCart = React.useCallback(async () => {
     try {
@@ -2231,7 +2249,10 @@ const CartScreen = () => {
           <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(totalPrice)}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => setConfirmVisible(true)} style={{
+          <TouchableOpacity onPress={() => {
+            if (!isAuth) { setAuthGateVisible(true); return; }
+            setConfirmVisible(true);
+          }} style={{
             flex: 1, height: 44, borderRadius: 12, backgroundColor: BRAND,
             flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
           }}>
@@ -2912,6 +2933,10 @@ const CartScreen = () => {
           setCartSearchVisible(false);
         }}
       />
+      {/* Auth gate modal — shown when guest taps checkout */}
+      <Modal visible={authGateVisible} animationType="slide" onRequestClose={() => setAuthGateVisible(false)}>
+        <AuthScreen onLogin={() => { setIsAuth(true); setAuthGateVisible(false); setConfirmVisible(true); }} />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -2958,8 +2983,50 @@ function MainNavigator({ onLogout }) {
       <Tab.Screen name="products" component={ProductsScreen} />
       <Tab.Screen name="cart"  component={CartScreen} />
       <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} />}</Tab.Screen>
+      <Tab.Screen name="profile">{() => {
+        const { isAuth, setIsAuth } = useAuth();
+        if (!isAuth) return <GuestProfileScreen onLogin={() => setIsAuth(true)} />;
+        return <FakeProfileScreen onLogout={onLogout} />;
+      }}</Tab.Screen>
     </Tab.Navigator>
+  );
+}
+
+// ─── GuestProfileScreen — shown in profile tab when not logged in ─────────────
+function GuestProfileScreen({ onLogin }) {
+  const { t } = useTranslation();
+  const [authVisible, setAuthVisible] = React.useState(false);
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+        {/* Login banner */}
+        <View style={{ backgroundColor: '#fff', margin: 16, borderRadius: 16, padding: 20, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }}>
+          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: BRAND + '18', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+            <Ionicons name="person-outline" size={28} color={BRAND} />
+          </View>
+          <Text style={{ fontSize: 17, fontWeight: '700', color: '#111', marginBottom: 6, textAlign: 'center' }}>
+            {t('auth.loginTitle') || 'Se connecter'}
+          </Text>
+          <Text style={{ fontSize: 13, color: '#6b7280', textAlign: 'center', marginBottom: 18 }}>
+            {t('auth.guestHint') || 'Connectez-vous pour accéder à votre profil, vos commandes et plus.'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => setAuthVisible(true)}
+            style={{ backgroundColor: BRAND, borderRadius: 12, height: 46, paddingHorizontal: 32, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>{t('auth.login') || 'Connexion'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Share section — visible even as guest */}
+        <ListSharingSection requireAuth={() => setAuthVisible(true)} />
+
+        {/* Auth modal */}
+        <Modal visible={authVisible} animationType="slide" onRequestClose={() => setAuthVisible(false)}>
+          <AuthScreen onLogin={() => { setAuthVisible(false); onLogin(); }} />
+        </Modal>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -3135,15 +3202,15 @@ function AuthScreen({ onLogin }) {
 
 const useCurrency = () => React.useContext(CurrencyContext);
 
-export default function App() {
+function AppInner() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
 
   // Check if pro user needs verification
   React.useEffect(() => {
     (async () => {
       const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-      if (authRaw) {
-        const auth = JSON.parse(authRaw);
+      const auth = safeParse(authRaw, null);
+      if (auth) {
         if (auth.role === 'professionaluser' && !auth.isVerified) {
           setProBlocked(true);
         } else {
@@ -3222,6 +3289,14 @@ export default function App() {
     })();
   }, []);
 
+  // Replay any orders that failed to sync last time (offline at placement,
+  // backend 5xx, token expired, etc). Runs once per auth transition.
+  // Silent on failure - retryUnsyncedOrders already swallows errors.
+  React.useEffect(() => {
+    if (!isAuth) return;
+    retryUnsyncedOrders().catch(() => {});
+  }, [isAuth]);
+
   if (isAuth === null) {
     return (
       <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
@@ -3230,21 +3305,25 @@ export default function App() {
     );
   }
 
-  if (!isAuth) {
-    return (
-      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-        <AuthScreen onLogin={() => setIsAuth(true)} />
-      </CurrencyContext.Provider>
-    );
-  }
-
-
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-      <NavigationContainer theme={navTheme}>
-        <MainNavigator onLogout={() => setIsAuth(false)} />
-      </NavigationContainer>
-    </CurrencyContext.Provider>
+    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
+        <NavigationContainer theme={navTheme}>
+          <MainNavigator onLogout={() => setIsAuth(false)} />
+        </NavigationContainer>
+      </CurrencyContext.Provider>
+    </AuthContext.Provider>
+  );
+}
+
+// Top-level wrapper: catches any render/lifecycle exception in the
+// component tree and shows a recoverable fallback instead of a white screen.
+export default function App() {
+  const { t } = useTranslation();
+  return (
+    <ErrorBoundary t={t}>
+      <AppInner />
+    </ErrorBoundary>
   );
 }
 
@@ -3402,14 +3481,14 @@ function FakeProfileScreen({ onLogout }) {
     (async () => {
       try {
         const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-        const auth = authRaw ? JSON.parse(authRaw) : {};
+        const auth = safeParse(authRaw, {}) || {};
         if (auth.role === 'professionaluser') {
           if (data.status && data.document_status) {
             setDocStatuses(data.document_status);
             // Update isVerified in profile
             if (data.document_status.is_verified) {
               const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
-              const prof = profRaw ? JSON.parse(profRaw) : {};
+              const prof = safeParse(profRaw, {}) || {};
               if (!prof.isVerified) {
                 prof.isVerified = true;
                 await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
@@ -3432,13 +3511,14 @@ function FakeProfileScreen({ onLogout }) {
         pseudo: editPseudo.trim(),
         email: editEmail.trim(),
       });
-    } catch(e) {}
+    } catch(_e) {}
     // Also update local accounts as fallback
     try {
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
+      const accounts = safeParseArray(accRaw);
+      if (accounts.length > 0 && profile?.email) {
+        const targetEmail = String(profile.email).toLowerCase();
+        const idx = accounts.findIndex(a => a?.email && String(a.email).toLowerCase() === targetEmail);
         if (idx >= 0) {
           accounts[idx].pseudo = editPseudo.trim();
           accounts[idx].nom = editNom.trim();
@@ -3447,7 +3527,7 @@ function FakeProfileScreen({ onLogout }) {
           await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
         }
       }
-    } catch(e) {}
+    } catch(_e) {}
     setProfile(updated);
     await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
     setEditVisible(false);
@@ -3476,9 +3556,10 @@ function FakeProfileScreen({ onLogout }) {
       }
       // Fallback to local accounts
       const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
+      const accounts = safeParseArray(accRaw);
+      if (accounts.length > 0 && profile?.email) {
+        const targetEmail = String(profile.email).toLowerCase();
+        const idx = accounts.findIndex(a => a?.email && String(a.email).toLowerCase() === targetEmail);
         if (idx >= 0) {
           if (accounts[idx].password !== oldPassword) { setPwdError(apiResult.message || t('profile.pwdErrorOld')); return; }
           accounts[idx].password = newPassword;
@@ -3525,8 +3606,11 @@ function FakeProfileScreen({ onLogout }) {
   // Track delivery status from API for delivery orders
   const [deliveryStatuses, setDeliveryStatuses] = React.useState({});
 
-  // Poll delivery status for recent delivery orders
+  // Poll delivery status for recent delivery orders.
+  // Skipped entirely when FEATURES.delivery is false (current prod state)
+  // to avoid hammering a 404 endpoint every 30 seconds.
   React.useEffect(() => {
+    if (!FEATURES.delivery) return undefined;
     let mounted = true;
     const pollDeliveryStatuses = async () => {
       const recentDeliveryOrders = orders.filter(o => o.mode === 'delivery' && o.deliveryStatus && o.deliveryStatus !== DELIVERY_STATUS.DELIVERED && o.deliveryStatus !== DELIVERY_STATUS.CANCELLED);
@@ -3537,9 +3621,9 @@ function FakeProfileScreen({ onLogout }) {
             setDeliveryStatuses(prev => ({ ...prev, [order.id]: status }));
             // Update order in history
             const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
-            if (raw) {
-              const hist = JSON.parse(raw);
-              const idx = hist.findIndex(o => o.id === order.id);
+            const hist = safeParseArray(raw);
+            if (hist.length > 0) {
+              const idx = hist.findIndex(o => o && o.id === order.id);
               if (idx >= 0 && hist[idx].deliveryStatus !== status.status) {
                 hist[idx].deliveryStatus = status.status;
                 hist[idx].driverName = status.driver_name || '';
@@ -3549,7 +3633,7 @@ function FakeProfileScreen({ onLogout }) {
               }
             }
           }
-        } catch(e) {}
+        } catch(_e) {}
       }
     };
     if (orders.length > 0) {
@@ -3817,25 +3901,30 @@ function FakeProfileScreen({ onLogout }) {
         </View>
 
         {/* Disconnect Button */}
-        {/* Become a driver */}
-        <View style={{ paddingHorizontal:16, marginTop:16 }}>
-          <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
-            flexDirection:'row', alignItems:'center',
-            backgroundColor:'#fff', borderRadius:12, padding:16,
-            borderWidth:1, borderColor:'#E5E7EB',
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
-            <View style={{flex:1}}>
-              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-          </TouchableOpacity>
-        </View>
+        {/* Become a driver — hidden while /delivery/* backend is 404 on prod */}
+        {FEATURES.delivery && (
+          <View style={{ paddingHorizontal:16, marginTop:16 }}>
+            <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
+              flexDirection:'row', alignItems:'center',
+              backgroundColor:'#fff', borderRadius:12, padding:16,
+              borderWidth:1, borderColor:'#E5E7EB',
+              shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
+            }}>
+              <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
+              <View style={{flex:1}}>
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver')}</Text>
+                <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Share my list */}
+        <ListSharingSection ownerPseudo={profile?.pseudo || ''} />
 
         {/* Logout */}
-        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
+        <View style={{ paddingHorizontal:16, marginTop:8, marginBottom:30 }}>
           <TouchableOpacity onPress={() => {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
@@ -3843,23 +3932,23 @@ function FakeProfileScreen({ onLogout }) {
                 // Sauvegarder les données du compte avant déconnexion
                 try {
                   const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-                  if (authRaw) {
-                    const auth = JSON.parse(authRaw);
-                    const userKey = auth.userKey || 'USER_' + auth.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                  const auth = safeParse(authRaw, null);
+                  if (auth && auth.email) {
+                    const userKey = auth.userKey || 'USER_' + String(auth.email).toLowerCase().replace(/[^a-z0-9]/g, '_');
                     const data = {
-                      profile: JSON.parse(await AsyncStorage.getItem(KEY_PROFILE) || 'null'),
-                      items: JSON.parse(await AsyncStorage.getItem(KEY_ITEMS) || '[]'),
-                      selected: JSON.parse(await AsyncStorage.getItem(KEY_SELECTED) || '[]'),
-                      cart: JSON.parse(await AsyncStorage.getItem(KEY_CART) || '[]'),
-                      orders: JSON.parse(await AsyncStorage.getItem(KEY_ORDER_HISTORY) || '[]'),
-                      favShops: JSON.parse(await AsyncStorage.getItem(KEY_FAV_SHOPS) || '[]'),
-                      favs: JSON.parse(await AsyncStorage.getItem(KEY_FAVS) || '[]'),
+                      profile: safeParse(await AsyncStorage.getItem(KEY_PROFILE), null),
+                      items: safeParseArray(await AsyncStorage.getItem(KEY_ITEMS)),
+                      selected: safeParseArray(await AsyncStorage.getItem(KEY_SELECTED)),
+                      cart: safeParseArray(await AsyncStorage.getItem(KEY_CART)),
+                      orders: safeParseArray(await AsyncStorage.getItem(KEY_ORDER_HISTORY)),
+                      favShops: safeParseArray(await AsyncStorage.getItem(KEY_FAV_SHOPS)),
+                      favs: safeParseArray(await AsyncStorage.getItem(KEY_FAVS)),
                     };
                     await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(data));
                   }
-                } catch(e) {}
+                } catch(_e) {}
                 // Logout from Marketplace API first (needs tokens)
-                try { await logoutUser(); } catch(e) {}
+                try { await logoutUser(); } catch(_e) {}
                 // Nettoyer les données courantes
                 try {
                   await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
@@ -4200,7 +4289,7 @@ function FakeProfileScreen({ onLogout }) {
                     const { status } = await Location.requestForegroundPermissionsAsync();
                     if (status !== 'granted') {
                       setGeoLoading(false);
-                      Alert.alert(t('profile.locationDenied') || 'Permission refusée', t('profile.locationDeniedMsg') || 'Autorisez la localisation dans les réglages.');
+                      Alert.alert(t('profile.locationDenied'), t('profile.locationDeniedMsg'));
                       return;
                     }
                     const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
@@ -4215,12 +4304,12 @@ function FakeProfileScreen({ onLogout }) {
                       setEditPostalCode(r.postalCode || '');
                       setEditCountry(r.country || '');
                     } else {
-                      Alert.alert('Erreur', t('profile.locationError') || 'Adresse introuvable pour cette position.');
+                      Alert.alert(t('common.error'), t('profile.locationErrorNotFound'));
                     }
                     setGeoLoading(false);
                   } catch(e) {
                     setGeoLoading(false);
-                    Alert.alert('Erreur', t('profile.locationError') || 'Impossible de récupérer la position.');
+                    Alert.alert(t('common.error'), t('profile.locationError'));
                   }
                 }}
                 disabled={geoLoading}
@@ -4231,7 +4320,7 @@ function FakeProfileScreen({ onLogout }) {
                 ) : (
                   <Ionicons name="navigate" size={20} color="#00C29B" style={{marginRight:8}} />
                 )}
-                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
+                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? t('profile.locating') : t('profile.useMyLocation')}</Text>
               </TouchableOpacity>
 
               <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.street')}</Text>

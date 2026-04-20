@@ -51,7 +51,7 @@ async function apiFetch(endpoint, options = {}) {
           headers['Authorization'] = `Bearer ${data.access}`;
         }
       }
-    } catch (e) {
+    } catch (_e) {
       /* refresh failed */
     }
   } else if (tokens?.access) {
@@ -77,7 +77,7 @@ async function apiFetch(endpoint, options = {}) {
           res = await fetchWithTimeout(url, { ...options, headers });
         }
       }
-    } catch (e) {
+    } catch (_e) {
       /* refresh failed */
     }
   }
@@ -99,10 +99,30 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT) {
 
 // ========== API METHODS (with response sanitization) ==========
 
+// Parse response safely - never crashes on HTML/empty/malformed bodies.
+// Throws a clean Error with .status and .data on HTTP errors.
+async function parseResponse(res, method, endpoint) {
+  const contentType = res.headers?.get?.('content-type') || '';
+  let data = null;
+  if (contentType.includes('application/json')) {
+    try {
+      data = await res.json();
+    } catch (_e) {
+      data = null;
+    }
+  }
+  if (!res.ok) {
+    const err = new Error(`API ${method} ${endpoint} failed: ${res.status}`);
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return sanitizeResponse(data || {});
+}
+
 export async function apiGet(endpoint) {
   const res = await apiFetch(endpoint, { method: 'GET' });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return parseResponse(res, 'GET', endpoint);
 }
 
 export async function apiPost(endpoint, body) {
@@ -110,8 +130,7 @@ export async function apiPost(endpoint, body) {
     method: 'POST',
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return parseResponse(res, 'POST', endpoint);
 }
 
 export async function apiPut(endpoint, body) {
@@ -119,14 +138,12 @@ export async function apiPut(endpoint, body) {
     method: 'PUT',
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return parseResponse(res, 'PUT', endpoint);
 }
 
 export async function apiDelete(endpoint) {
   const res = await apiFetch(endpoint, { method: 'DELETE' });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return parseResponse(res, 'DELETE', endpoint);
 }
 
 export async function apiUpload(endpoint, formData) {
@@ -140,8 +157,7 @@ export async function apiUpload(endpoint, formData) {
     headers,
     body: formData,
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return parseResponse(res, 'POST', endpoint);
 }
 
 export { BASE_URL };
