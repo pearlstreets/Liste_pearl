@@ -4,6 +4,10 @@ import { KEY_AUTH, KEY_PROFILE } from '../constants/storageKeys';
 import { loginUser, logoutUser } from '../services/auth';
 import { clearTokens } from '../services/api';
 
+function _getOneSignal() {
+  try { const m = require('react-native-onesignal'); return m.OneSignal || m.default || m; } catch { return null; }
+}
+
 export function useAuth() {
   const [isAuth, setIsAuth] = useState(null); // null = loading
   const [user, setUser] = useState(null);
@@ -21,11 +25,16 @@ export function useAuth() {
     if (result.success) {
       setUser(result.user);
       setIsAuth(true);
+      try {
+        const OS = _getOneSignal();
+        if (OS && result.user?.id) OS.login(String(result.user.id));
+      } catch {}
     }
     return result;
   }, []);
 
   const logout = useCallback(async () => {
+    try { const OS = _getOneSignal(); if (OS) OS.logout(); } catch {}
     await logoutUser();
     await AsyncStorage.removeItem(KEY_AUTH);
     await AsyncStorage.removeItem(KEY_PROFILE);
