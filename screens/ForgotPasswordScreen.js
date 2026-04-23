@@ -5,6 +5,16 @@ import { useTranslation } from 'react-i18next';
 import { forgotPassword as apiForgotPassword, resetPassword as apiResetPassword } from '../services/auth';
 import { BRAND } from '../constants/brand';
 
+// 5s timeout for API calls — matches the pattern used by handleLogin /
+// handleSignup in AuthScreen so a dead backend can't hang the UI.
+const API_TIMEOUT_MS = 5000;
+function withTimeout(promise, ms = API_TIMEOUT_MS) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms)),
+  ]);
+}
+
 // 3 internal stages: 'email' → request code | 'reset' → enter code + new pwd
 // | 'done' → success. Wires services/auth.js forgotPassword / resetPassword.
 export default function ForgotPasswordScreen({ onBack }) {
@@ -41,7 +51,7 @@ export default function ForgotPasswordScreen({ onBack }) {
     }
     setLoading(true);
     try {
-      const result = await apiForgotPassword(trimmed);
+      const result = await withTimeout(apiForgotPassword(trimmed));
       if (result?.status !== false) {
         setInfo(t('auth.forgot.codeSent'));
         setStage('reset');
@@ -62,7 +72,7 @@ export default function ForgotPasswordScreen({ onBack }) {
     if (newPwd !== confirmPwd) { setError(t('auth.errorPasswordMismatch')); return; }
     setLoading(true);
     try {
-      const result = await apiResetPassword(email.trim(), code.trim(), newPwd);
+      const result = await withTimeout(apiResetPassword(email.trim(), code.trim(), newPwd));
       if (result?.status !== false) {
         setStage('done');
       } else {
