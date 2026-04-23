@@ -243,7 +243,9 @@
       "sessionInvalid": "Sitzung abgelaufen. Bitte neu starten.",
       "invalidPhone": "Ungültige Telefonnummer.",
       "serviceDown": "Dienst vorübergehend nicht verfügbar."
-    }
+    },
+    "resendIn": "Erneut senden in",
+    "resendCode": "Code erneut senden"
   },
   "cart": {
     "today": "Heute",

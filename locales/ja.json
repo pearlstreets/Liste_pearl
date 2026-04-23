@@ -243,7 +243,9 @@
       "sessionInvalid": "セッションの有効期限が切れました。最初からやり直してください。",
       "invalidPhone": "無効な電話番号です。",
       "serviceDown": "サービスは一時的に利用できません。"
-    }
+    },
+    "resendIn": "再送信",
+    "resendCode": "コードを再送信"
   },
   "cart": {
     "today": "今日",

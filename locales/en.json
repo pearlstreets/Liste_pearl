@@ -345,7 +345,9 @@
       "sessionInvalid": "Session expired. Please start over.",
       "invalidPhone": "Invalid phone number.",
       "serviceDown": "Service temporarily unavailable."
-    }
+    },
+    "resendIn": "Resend in",
+    "resendCode": "Resend code"
   },
   "cart": {
     "today": "Today",

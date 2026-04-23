@@ -243,7 +243,9 @@
       "sessionInvalid": "Sessie verlopen. Start opnieuw.",
       "invalidPhone": "Ongeldig telefoonnummer.",
       "serviceDown": "Service tijdelijk niet beschikbaar."
-    }
+    },
+    "resendIn": "Opnieuw verzenden over",
+    "resendCode": "Code opnieuw verzenden"
   },
   "cart": {
     "today": "Vandaag",

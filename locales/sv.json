@@ -243,7 +243,9 @@
       "sessionInvalid": "Sessionen har gått ut. Börja om.",
       "invalidPhone": "Ogiltigt telefonnummer.",
       "serviceDown": "Tjänsten är tillfälligt otillgänglig."
-    }
+    },
+    "resendIn": "Skicka igen om",
+    "resendCode": "Skicka kod igen"
   },
   "cart": {
     "today": "Idag",

@@ -243,7 +243,9 @@
       "sessionInvalid": "Sessão expirada. Recomece.",
       "invalidPhone": "Número de telefone inválido.",
       "serviceDown": "Serviço temporariamente indisponível."
-    }
+    },
+    "resendIn": "Reenviar em",
+    "resendCode": "Reenviar código"
   },
   "cart": {
     "today": "Hoje",
