@@ -9,6 +9,7 @@ import { BRAND } from '../constants/brand';
 import { KEY_AUTH, KEY_PROFILE, KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ACCOUNTS } from '../constants/storageKeys';
 import { MARKETPLACE_ACCOUNTS } from '../constants/accounts';
 import { LANGUAGES } from '../constants/languages';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
 
 function AuthScreen({ onLogin }) {
   const { t, i18n: i18nAuth } = useTranslation();
@@ -22,6 +23,7 @@ function AuthScreen({ onLogin }) {
   const [showPwd, setShowPwd] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [langVisible, setLangVisible] = React.useState(false);
+  const [showForgot, setShowForgot] = React.useState(false);
 
   // Sync all Marketplace accounts to local storage
   React.useEffect(() => {
@@ -81,6 +83,13 @@ function AuthScreen({ onLogin }) {
     onLogin();
   };
 
+  // Forgot-password flow: dedicated self-contained screen, wires
+  // services/auth.js forgotPassword + resetPassword (which were imported
+  // but never called before session C).
+  if (showForgot) {
+    return <ForgotPasswordScreen onBack={() => { setShowForgot(false); setError(''); }} />;
+  }
+
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
@@ -119,6 +128,11 @@ function AuthScreen({ onLogin }) {
             <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
+        {isLogin && (
+          <TouchableOpacity onPress={() => { setShowForgot(true); setError(''); }} style={{alignSelf:'flex-end', marginTop:-12, marginBottom:12, paddingVertical:4, paddingHorizontal:4}}>
+            <Text style={{color:BRAND, fontSize:13, fontWeight:'600'}}>{t('auth.forgotPasswordLink')}</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading} style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
           {loading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
         </TouchableOpacity>
