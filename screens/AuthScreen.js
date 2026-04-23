@@ -3,13 +3,17 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Modal, ScrollVie
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { loginUser, registerUser, forgotPassword as apiForgotPassword } from '../services/auth';
+import { saveTokens } from '../services/api';
 import { checkRateLimit } from '../services/security';
 import { BRAND } from '../constants/brand';
 import { KEY_AUTH, KEY_PROFILE, KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ACCOUNTS } from '../constants/storageKeys';
 import { MARKETPLACE_ACCOUNTS } from '../constants/accounts';
 import { LANGUAGES } from '../constants/languages';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import useOtpSender from '../services/otpauth/useOtpSender';
+import { getFirebaseApp } from '../services/otpauth/firebase';
 
 function AuthScreen({ onLogin }) {
   const { t, i18n: i18nAuth } = useTranslation();
@@ -24,6 +28,89 @@ function AuthScreen({ onLogin }) {
   const [loading, setLoading] = React.useState(false);
   const [langVisible, setLangVisible] = React.useState(false);
   const [showForgot, setShowForgot] = React.useState(false);
+
+  // ── Phone OTP login state ──────────────────────────────────────
+  const [showPhone, setShowPhone] = React.useState(false);
+  const [phoneInput, setPhoneInput] = React.useState('');
+  const [phoneCode, setPhoneCode] = React.useState('');
+  const [phoneStage, setPhoneStage] = React.useState('enter-phone'); // 'enter-phone' | 'enter-code'
+  const [resendTimer, setResendTimer] = React.useState(0);
+
+  // Countdown resend cooldown — user can re-request an OTP only once
+  // the timer hits 0. Prevents accidental spam and mirrors the 60 s
+  // window used elsewhere (AppUser OtpVerification, Livraison_pearl).
+  React.useEffect(() => {
+    if (resendTimer <= 0) return undefined;
+    const iv = setInterval(() => setResendTimer((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(iv);
+  }, [resendTimer]);
+
+  // Firebase reCAPTCHA verifier for Expo. The <FirebaseRecaptchaVerifierModal />
+  // renders below; the hook uses this ref to call signInWithPhoneNumber().
+  // firebaseConfig is loaded lazily from services/otpauth/firebase.js options.
+  const recaptchaVerifier = React.useRef(null);
+  const [firebaseOptions, setFirebaseOptions] = React.useState(null);
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const app = await getFirebaseApp();
+        if (app?.options) setFirebaseOptions(app.options);
+      } catch (_) {}
+    })();
+  }, []);
+
+  const { sendOtp, verifyOtp, reset: resetOtp, loading: otpLoading, error: otpError, shouldFallback } =
+    useOtpSender({ platform: 'app-liste', recaptchaVerifier });
+
+  const handlePhoneSend = async () => {
+    if (!phoneInput.trim()) return;
+    if (resendTimer > 0) return;
+    const ok = await sendOtp({ phone: phoneInput.trim(), channel: 'sms' });
+    if (ok) {
+      setPhoneStage('enter-code');
+      setResendTimer(60);
+      setError('');
+    } else if (shouldFallback) {
+      setError(t('auth.phoneUnavailable') || 'Phone login temporarily unavailable. Please use email.');
+      setShowPhone(false);
+    } else {
+      setError(otpError || t('auth.phoneSendFailed') || 'Failed to send code.');
+    }
+  };
+
+  const handlePhoneVerify = async () => {
+    if (phoneCode.length < 4) return;
+    const result = await verifyOtp({ code: phoneCode });
+    if (!result) {
+      setError(otpError || t('auth.phoneVerifyFailed') || 'Invalid code. Try again.');
+      return;
+    }
+    // Save tokens & minimal profile, then call onLogin
+    try {
+      await saveTokens(result.accessToken, result.refreshToken);
+      const authData = {
+        id: result.userId,
+        phone: result.phoneE164 || phoneInput.trim(),
+        role: result.userType || 'user',
+        pseudo: '',
+        prenom: '',
+        nom: '',
+        email: '',
+        photo: null,
+      };
+      await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(authData));
+      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(authData));
+    } catch (_) {}
+    onLogin();
+  };
+
+  const handlePhoneBack = () => {
+    resetOtp();
+    setPhoneCode('');
+    setPhoneStage('enter-phone');
+    if (phoneStage === 'enter-phone') setShowPhone(false);
+  };
+  // ──────────────────────────────────────────────────────────────
 
   // Sync all Marketplace accounts to local storage
   React.useEffect(() => {
@@ -142,11 +229,107 @@ function AuthScreen({ onLogin }) {
             <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
+        {isLogin && (
+          <TouchableOpacity onPress={() => { setShowPhone(true); setError(''); setPhoneStage('enter-phone'); }} style={{alignItems:'center', paddingBottom:8}}>
+            <Text style={{color:BRAND, fontSize:14, fontWeight:'600', textDecorationLine:'underline'}}>
+              {t('auth.loginWithPhone') || 'Se connecter avec un téléphone'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <TouchableOpacity onPress={() => setLangVisible(true)} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
         <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
         <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
       </TouchableOpacity>
+
+      {/* Phone OTP Login Modal */}
+      <Modal visible={showPhone} animationType="slide" transparent={false} onRequestClose={handlePhoneBack}>
+        <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+          {/* Invisible reCAPTCHA for Firebase Phone Auth in Expo managed.
+              Must be rendered BEFORE sendOtp() is called so the ref is populated. */}
+          {firebaseOptions && (
+            <FirebaseRecaptchaVerifierModal
+              ref={recaptchaVerifier}
+              firebaseConfig={firebaseOptions}
+              attemptInvisibleVerification={true}
+            />
+          )}
+          <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <TouchableOpacity onPress={handlePhoneBack} style={{paddingHorizontal:16, paddingTop:12}}>
+              <Ionicons name="arrow-back" size={26} color="#111" />
+            </TouchableOpacity>
+            <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24, paddingVertical:30}} keyboardShouldPersistTaps="handled">
+              <View style={{alignItems:'center', marginBottom:24}}>
+                <Ionicons name="phone-portrait-outline" size={48} color={BRAND} />
+                <Text style={{fontSize:22, fontWeight:'800', color:'#111', marginTop:12}}>
+                  {t('auth.phoneLoginTitle') || 'Connexion par téléphone'}
+                </Text>
+                <Text style={{fontSize:13, color:'#9CA3AF', marginTop:6, textAlign:'center'}}>
+                  {phoneStage === 'enter-phone'
+                    ? (t('auth.phoneLoginSubtitle') || 'Entrez votre numéro pour recevoir un code SMS.')
+                    : (t('auth.phoneCodeSubtitle') || 'Entrez le code reçu par SMS.')}
+                </Text>
+              </View>
+              {!!otpError && (
+                <View style={{backgroundColor:'#FEE2E2', borderRadius:10, padding:12, marginBottom:16, flexDirection:'row', alignItems:'center'}}>
+                  <Ionicons name="alert-circle" size={18} color="#EF4444" />
+                  <Text style={{color:'#EF4444', fontSize:13, marginLeft:8, flex:1}}>{otpError}</Text>
+                </View>
+              )}
+              {phoneStage === 'enter-phone' ? (
+                <>
+                  <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>
+                    {t('auth.phoneNumber') || 'Numéro de téléphone'}
+                  </Text>
+                  <TextInput
+                    value={phoneInput}
+                    onChangeText={setPhoneInput}
+                    placeholder="+33 6 12 34 56 78"
+                    keyboardType="phone-pad"
+                    autoCapitalize="none"
+                    style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:20, color:'#111'}}
+                  />
+                  <TouchableOpacity onPress={handlePhoneSend} disabled={!phoneInput.trim() || otpLoading} style={{height:52, borderRadius:14, backgroundColor: (!phoneInput.trim() || otpLoading) ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center'}}>
+                    {otpLoading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('auth.sendCode') || 'Envoyer le code'}</Text>}
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <>
+                  <Text style={{fontSize:13, color:'#6B7280', textAlign:'center', marginBottom:16}}>
+                    {t('auth.codeSentTo') || 'Code envoyé à'} <Text style={{fontWeight:'700', color:'#111'}}>{phoneInput.trim()}</Text>
+                  </Text>
+                  <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>
+                    {t('auth.otpCode') || 'Code de vérification'}
+                  </Text>
+                  <TextInput
+                    value={phoneCode}
+                    onChangeText={setPhoneCode}
+                    placeholder="123456"
+                    keyboardType="number-pad"
+                    maxLength={6}
+                    style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:22, marginBottom:20, color:'#111', letterSpacing:8, textAlign:'center'}}
+                  />
+                  <TouchableOpacity onPress={handlePhoneVerify} disabled={phoneCode.length < 6 || otpLoading} style={{height:52, borderRadius:14, backgroundColor: (phoneCode.length < 6 || otpLoading) ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
+                    {otpLoading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('auth.verifyCode') || 'Vérifier'}</Text>}
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={handlePhoneSend} disabled={resendTimer > 0 || otpLoading} style={{alignItems:'center', paddingVertical:8, marginBottom:4}}>
+                    <Text style={{color: resendTimer > 0 ? '#9CA3AF' : BRAND, fontSize:13, fontWeight:'600'}}>
+                      {resendTimer > 0
+                        ? `${t('auth.resendIn') || 'Renvoyer dans'} ${resendTimer}s`
+                        : (t('auth.resendCode') || 'Renvoyer le code')}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={handlePhoneBack} style={{alignItems:'center', paddingVertical:12}}>
+                    <Text style={{color:BRAND, fontSize:14, fontWeight:'600', textDecorationLine:'underline'}}>
+                      {t('auth.changeNumber') || 'Changer de numéro'}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </Modal>
 
       {/* Language Picker Modal */}
       <Modal visible={langVisible} animationType="none" transparent={true}>
