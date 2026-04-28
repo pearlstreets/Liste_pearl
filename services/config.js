@@ -45,7 +45,7 @@ const ENV = {
 // IMPORTANT pour test sur device physique : remplace "localhost" par l'IP
 // LAN du Mac (`ipconfig getifaddr en0` → ex: 192.168.1.15) car localhost
 // résout sur le téléphone, pas sur ton Mac.
-const ACTIVE_ENV = "production";
+const ACTIVE_ENV = "local";
 
 export const CONFIG = ENV[ACTIVE_ENV];
 export default CONFIG;
