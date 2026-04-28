@@ -8,3 +8,4 @@ export const KEY_FAVS = "KEY_FAVS";
 export const KEY_AUTH = "KEY_AUTH";
 export const KEY_ACCOUNTS = "KEY_ACCOUNTS";
 export const KEY_FAV_PRODUCTS = "KEY_FAV_PRODUCTS";
+export const KEY_GUEST = "KEY_GUEST";

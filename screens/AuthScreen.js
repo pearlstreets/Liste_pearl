@@ -3,7 +3,9 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Modal, ScrollVie
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+// expo-firebase-recaptcha is archived — load lazily so the app boots even if missing
+let FirebaseRecaptchaVerifierModal = null;
+try { FirebaseRecaptchaVerifierModal = require('expo-firebase-recaptcha').FirebaseRecaptchaVerifierModal; } catch (_) {}
 import { loginUser, registerUser, forgotPassword as apiForgotPassword } from '../services/auth';
 import { saveTokens } from '../services/api';
 import { checkRateLimit } from '../services/security';
@@ -15,7 +17,7 @@ import ForgotPasswordScreen from './ForgotPasswordScreen';
 import useOtpSender from '../services/otpauth/useOtpSender';
 import { getFirebaseApp } from '../services/otpauth/firebase';
 
-function AuthScreen({ onLogin }) {
+function AuthScreen({ onLogin, onContinueAsGuest }) {
   const { t, i18n: i18nAuth } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(true);
   const [email, setEmail] = React.useState('');
@@ -247,7 +249,7 @@ function AuthScreen({ onLogin }) {
         <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
           {/* Invisible reCAPTCHA for Firebase Phone Auth in Expo managed.
               Must be rendered BEFORE sendOtp() is called so the ref is populated. */}
-          {firebaseOptions && (
+          {firebaseOptions && FirebaseRecaptchaVerifierModal && (
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}
               firebaseConfig={firebaseOptions}
@@ -330,6 +332,14 @@ function AuthScreen({ onLogin }) {
           </KeyboardAvoidingView>
         </SafeAreaView>
       </Modal>
+
+      {isLogin && onContinueAsGuest && (
+        <TouchableOpacity onPress={onContinueAsGuest} style={{alignItems:'center', paddingBottom:20}}>
+          <Text style={{color:'#9CA3AF', fontSize:14}}>
+            {t('auth.continueAsGuest') || 'Continuer sans compte →'}
+          </Text>
+        </TouchableOpacity>
+      )}
 
       {/* Language Picker Modal */}
       <Modal visible={langVisible} animationType="none" transparent={true}>

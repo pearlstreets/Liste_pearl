@@ -18,6 +18,7 @@ import { PillScan } from '../components/PillScan';
 import { Toast } from '../components/Toast';
 import { Radio } from '../components/Radio';
 import { styles } from '../styles/shared';
+import { ListSharingSection } from '../components/ui/ListSharing';
 
 function parseMulti(input){
   const str = (input || "").trim();
@@ -36,7 +37,7 @@ function parseMulti(input){
   return out;
 }
 
-function ListScreen() {
+function ListScreen({ isGuest = false, onLogin }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { notifyCartUpdate, notifyProductsReset } = useCartEvents();
@@ -237,6 +238,12 @@ function ListScreen() {
           </View>
         }
         contentContainerStyle={{ paddingBottom: 160 }}
+        ListFooterComponent={() => (
+          <ListSharingSection
+            ownerPseudo=""
+            requireAuth={isGuest && onLogin ? onLogin : undefined}
+          />
+        )}
       />
 
       <View style={styles.bottomAreaWrap}>

@@ -29,7 +29,7 @@ const Square = ({ value, onPress }) => (
   </TouchableOpacity>
 );
 
-function ProfileScreen({ onLogout }) {
+function ProfileScreen({ onLogout, isGuest = false, onLogin }) {
   const { t, i18n: i18nInstance } = useTranslation();
   const { currency, setCurrency, fmtPrice } = useCurrency();
   const navigation = useNavigation();
@@ -379,6 +379,23 @@ function ProfileScreen({ onLogout }) {
       </View>
     );
   };
+
+  if (isGuest) {
+    return (
+      <SafeAreaView style={{ flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center', paddingHorizontal:32 }}>
+        <Ionicons name="person-circle-outline" size={72} color="#D1D5DB" />
+        <Text style={{ fontSize:22, fontWeight:'800', color:'#111', marginTop:16, textAlign:'center' }}>
+          {t('auth.guestProfileTitle') || 'Pas encore connecté'}
+        </Text>
+        <Text style={{ fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center', lineHeight:20 }}>
+          {t('auth.guestProfileHint') || 'Créez un compte ou connectez-vous pour accéder à votre profil, vos commandes et vos livraisons.'}
+        </Text>
+        <TouchableOpacity onPress={onLogin} style={{ marginTop:28, height:52, borderRadius:14, backgroundColor:'#00C29B', paddingHorizontal:40, alignItems:'center', justifyContent:'center' }}>
+          <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('auth.loginBtn') || 'Se connecter'}</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>

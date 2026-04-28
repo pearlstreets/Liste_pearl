@@ -108,6 +108,49 @@ export async function updateAddress(addressData) {
   return data;
 }
 
+// ─── Multi-address CRUD against the Pearl Streets UserAddress endpoints ───
+// These mirror the AppUser/WebsiteUser endpoints so pearl-list shares the
+// same source of truth — the addresses you manage here surface across the
+// whole ecosystem (checkout, delivery, admin).
+import { apiPut, apiDelete } from "./api";
+
+function _coerceAddressForBackend(a) {
+  // pearl-list local shape → backend UserAddress payload
+  return {
+    house_building: a.address || a.house_building || "",
+    road_area_colony: a.addressSupplement || a.road_area_colony || "",
+    pincode: a.postalCode || a.pincode || "",
+    city: a.city || "",
+    country: a.country || "",
+    address_type: a.address_type || "home",
+    is_default: !!a.is_default,
+  };
+}
+
+export async function listUserAddresses() {
+  try {
+    const res = await apiGet("/users/addresses/");
+    const list = res?.data || res?.addresses || [];
+    return Array.isArray(list) ? list.map((a, i) => normalizeAddress(a, i)) : [];
+  } catch (_) { return []; }
+}
+
+export async function createUserAddress(addr) {
+  return apiPost("/users/addresses/", _coerceAddressForBackend(addr));
+}
+
+export async function updateUserAddress(id, addr) {
+  return apiPut(`/users/addresses/${id}/`, _coerceAddressForBackend(addr));
+}
+
+export async function deleteUserAddress(id) {
+  return apiDelete(`/users/addresses/${id}/`);
+}
+
+export async function setDefaultUserAddress(id) {
+  return apiPost(`/users/addresses/${id}/set-default/`, {});
+}
+
 // Save user data locally (for offline support)
 export async function saveUserDataLocally(key, data) {
   const authRaw = await AsyncStorage.getItem("KEY_AUTH");

@@ -5,11 +5,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { initOneSignalOnce } from './services/oneSignalInit';
 import { BRAND } from './constants/brand';
-import { KEY_AUTH } from './constants/storageKeys';
+import { KEY_AUTH, KEY_GUEST } from './constants/storageKeys';
 import { CURRENCIES, fetchLiveRates, getCurrencyWithLiveRate, RATES_CACHE_MS, _liveRates } from './constants/currencies';
 import CurrencyContext from './context/CurrencyContext';
 import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import { retryUnsyncedOrders } from './services/orders';
 import MainNavigator from './navigation/MainNavigator';
 import AuthScreen from './screens/AuthScreen';
 
@@ -24,6 +25,7 @@ const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: B
 
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null);
+  const [isGuest, setIsGuest] = React.useState(false);
   const [proBlocked, setProBlocked] = React.useState(false);
   const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
   const [liveRates, setLiveRates] = React.useState(null);
@@ -78,11 +80,14 @@ export default function App() {
     await AsyncStorage.setItem('APP_CURRENCY', cur.code);
   }, [liveRates]);
 
-  // Restore auth state and saved currency
+  // Restore auth state, saved currency, and retry unsynced orders
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_AUTH);
+      const guest = await AsyncStorage.getItem(KEY_GUEST);
       setIsAuth(!!raw);
+      if (!raw && guest === '1') setIsGuest(true);
+      if (raw) retryUnsyncedOrders().catch(() => {});
       const savedCur = await AsyncStorage.getItem('APP_CURRENCY');
       if (savedCur) {
         const found = CURRENCIES.find(c => c.code === savedCur);
@@ -102,11 +107,18 @@ export default function App() {
     );
   }
 
-  if (!isAuth) {
+  const handleLogin = () => { setIsAuth(true); setIsGuest(false); AsyncStorage.removeItem(KEY_GUEST); };
+  const handleGuest = () => { setIsGuest(true); AsyncStorage.setItem(KEY_GUEST, '1'); };
+  const handleLogout = () => {
+    setIsAuth(false); setIsGuest(false);
+    AsyncStorage.removeItem(KEY_GUEST);
+  };
+
+  if (!isAuth && !isGuest) {
     return (
       <ErrorBoundary>
         <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-          <AuthScreen onLogin={() => setIsAuth(true)} />
+          <AuthScreen onLogin={handleLogin} onContinueAsGuest={handleGuest} />
         </CurrencyContext.Provider>
       </ErrorBoundary>
     );
@@ -117,7 +129,11 @@ export default function App() {
       <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
         <CartProvider>
           <NavigationContainer theme={navTheme}>
-            <MainNavigator onLogout={() => setIsAuth(false)} />
+            <MainNavigator
+              onLogout={handleLogout}
+              isGuest={isGuest}
+              onLogin={handleLogin}
+            />
           </NavigationContainer>
         </CartProvider>
       </CurrencyContext.Provider>

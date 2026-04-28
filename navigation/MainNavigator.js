@@ -19,7 +19,7 @@ const ICONS = {
   cart: { focused: "bag-handle", unfocused: "bag-handle-outline" },
 };
 
-export default function MainNavigator({ onLogout }) {
+export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
   const { t } = useTranslation();
 
   const getTabName = (key) => {
@@ -49,11 +49,11 @@ export default function MainNavigator({ onLogout }) {
         },
       })}
     >
-      <Tab.Screen name="myList" component={ListScreen} />
+      <Tab.Screen name="myList">{() => <ListScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
       <Tab.Screen name="products" component={ProductsScreen} />
-      <Tab.Screen name="cart" component={CartScreen} />
-      <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="profile">{() => <ProfileScreen onLogout={onLogout} />}</Tab.Screen>
+      <Tab.Screen name="cart">{() => <CartScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
+      <Tab.Screen name="favorites">{() => <FavoritesScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
+      <Tab.Screen name="profile">{() => <ProfileScreen onLogout={onLogout} isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
     </Tab.Navigator>
   );
 }

@@ -15,7 +15,7 @@ import { ProductThumb } from '../constants/productImages';
 import CurrencyContext from '../context/CurrencyContext';
 import { useCartEvents } from '../context/CartContext';
 import { styles } from '../styles/shared';
-import { getCart, saveCart, clearCart as clearCartService, placeOrder } from '../services/orders';
+import { getCart, saveCart, clearCart as clearCartService, placeOrder, syncOrderToBackend } from '../services/orders';
 import { createDeliveryOrder, DELIVERY_STATUS, getDeliveryStatusInfo } from '../services/delivery';
 
 const useCurrency = () => React.useContext(CurrencyContext);
@@ -219,6 +219,7 @@ const CartScreen = () => {
   };
   const [deliveryAddress, setDeliveryAddress] = React.useState('12 Rue de Rivoli, 75004 Paris');
   const [deliveryInfo, setDeliveryInfo] = React.useState('');
+  const [selectedAddressId, setSelectedAddressId] = React.useState(null);
   const [editingAddress, setEditingAddress] = React.useState(false);
   const [tempAddress, setTempAddress] = React.useState('');
   const [tempInfo, setTempInfo] = React.useState('');
@@ -297,9 +298,24 @@ const CartScreen = () => {
           const p = JSON.parse(raw);
           const addrs = p.addresses || [];
           const formatted = addrs.map(a => [a.address, a.postalCode, a.city].filter(Boolean).join(', ')).filter(a => a.length > 0);
-          if (formatted.length > 0) { setUserAddresses(formatted); return; }
+          if (formatted.length > 0) {
+            setUserAddresses(formatted);
+            // Pré-remplir avec l'adresse sélectionnée dans le profil
+            const selId = p.selectedAddressId || null;
+            const selAddr = selId ? addrs.find(a => a.id === selId) : addrs[0];
+            if (selAddr) {
+              const selFormatted = [selAddr.address, selAddr.postalCode, selAddr.city].filter(Boolean).join(', ');
+              if (selFormatted) setDeliveryAddress(selFormatted);
+            }
+            setSelectedAddressId(selId || addrs[0]?.id || null);
+            return;
+          }
           // Fallback: single address
-          if (p.address) { setUserAddresses([[p.address, p.postalCode, p.city].filter(Boolean).join(', ')]); return; }
+          if (p.address) {
+            setUserAddresses([[p.address, p.postalCode, p.city].filter(Boolean).join(', ')]);
+            setDeliveryAddress([p.address, p.postalCode, p.city].filter(Boolean).join(', '));
+            return;
+          }
         }
       } catch(e) {}
     })();
@@ -1047,10 +1063,12 @@ const CartScreen = () => {
               slot: selectedSlot || '',
               deliveryDate: deliveryDateLabel,
               address: orderMode === 'delivery' ? deliveryAddress : '',
+              address_id: orderMode === 'delivery' ? (selectedAddressId || null) : null,
               deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
             };
             history.unshift(order);
             await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
+            syncOrderToBackend(order).catch(() => {});
 
             // If delivery mode, create delivery assignment for Livraison-app drivers
             if (orderMode === 'delivery') {
