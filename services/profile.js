@@ -47,7 +47,7 @@ export async function getProfile() {
         gender: user.gender,
         dob: user.dob,
         addresses,
-        selectedAddressId: addresses[0]?.id || null,
+        selectedAddressId: (addresses.find(a => a?.is_default) || addresses[0])?.id || null,
         // Keep flat fields for backward compatibility
         address: user.manualAddress?.address1 || "",
         addressSupplement: user.manualAddress?.address2 || "",

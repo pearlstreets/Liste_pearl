@@ -17,6 +17,8 @@ import { useCartEvents } from '../context/CartContext';
 import { styles } from '../styles/shared';
 import { getCart, saveCart, clearCart as clearCartService, placeOrder, syncOrderToBackend } from '../services/orders';
 import { createDeliveryOrder, DELIVERY_STATUS, getDeliveryStatusInfo } from '../services/delivery';
+import { PaymentModal } from '../components/ui/PaymentSheet';
+import { STRIPE_PUBLISHABLE_KEY } from '../services/stripe';
 
 const useCurrency = () => React.useContext(CurrencyContext);
 
@@ -175,6 +177,7 @@ const CartScreen = () => {
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
+  const [paymentVisible, setPaymentVisible] = React.useState(false);
   const [selectedCart, setSelectedCart] = React.useState({});
   const [orderMode, setOrderMode] = React.useState('delivery'); // 'delivery' | 'collect'
   const [cartSearchVisible, setCartSearchVisible] = React.useState(false);
@@ -289,7 +292,8 @@ const CartScreen = () => {
     }
   }, [deliverySlots]);
 
-  const [userAddresses, setUserAddresses] = React.useState([]);
+  const [userAddresses, setUserAddresses] = React.useState([]); // [{id, label}]
+  const [tempAddressId, setTempAddressId] = React.useState(null);
   React.useEffect(() => {
     (async () => {
       try {
@@ -297,7 +301,7 @@ const CartScreen = () => {
         if (raw) {
           const p = JSON.parse(raw);
           const addrs = p.addresses || [];
-          const formatted = addrs.map(a => [a.address, a.postalCode, a.city].filter(Boolean).join(', ')).filter(a => a.length > 0);
+          const formatted = addrs.map(a => ({ id: a.id || null, label: [a.address, a.postalCode, a.city].filter(Boolean).join(', ') })).filter(a => a.label.length > 0);
           if (formatted.length > 0) {
             setUserAddresses(formatted);
             // Pré-remplir avec l'adresse sélectionnée dans le profil
@@ -312,7 +316,7 @@ const CartScreen = () => {
           }
           // Fallback: single address
           if (p.address) {
-            setUserAddresses([[p.address, p.postalCode, p.city].filter(Boolean).join(', ')]);
+            setUserAddresses([{ id: null, label: [p.address, p.postalCode, p.city].filter(Boolean).join(', ') }]);
             setDeliveryAddress([p.address, p.postalCode, p.city].filter(Boolean).join(', '));
             return;
           }
@@ -323,10 +327,11 @@ const CartScreen = () => {
 
   const filterAddresses = (text) => {
     setTempAddress(text);
+    setTempAddressId(null); // free text = no known ID until user picks a suggestion
     if (userAddresses.length === 0) { setAddressSuggestions([]); return; }
     if (text.length < 1) { setAddressSuggestions(userAddresses.slice(0, 5)); return; }
     const q = text.toLowerCase();
-    const filtered = userAddresses.filter(a => a.toLowerCase().includes(q)).slice(0, 5);
+    const filtered = userAddresses.filter(a => a.label.toLowerCase().includes(q)).slice(0, 5);
     setAddressSuggestions(filtered);
   };
   const totalPrice = cartItems.reduce((sum, it, i) => selectedCart[i] ? sum + (Number(it.price || 0) * Number(it.qty || 1)) : sum, 0);
@@ -712,11 +717,11 @@ const CartScreen = () => {
                         {addressSuggestions.map((addr, i) => (
                           <TouchableOpacity
                             key={i}
-                            onPress={() => { setTempAddress(addr); setAddressSuggestions([]); }}
+                            onPress={() => { setTempAddress(addr.label); setTempAddressId(addr.id); setAddressSuggestions([]); }}
                             style={{paddingHorizontal:12, paddingVertical:10, borderBottomWidth: i < addressSuggestions.length - 1 ? 1 : 0, borderBottomColor:'#F3F4F6', flexDirection:'row', alignItems:'center'}}
                           >
                             <Ionicons name="location-outline" size={14} color="#9CA3AF" />
-                            <Text style={{fontSize:13, color:'#374151', marginLeft:8}}>{addr}</Text>
+                            <Text style={{fontSize:13, color:'#374151', marginLeft:8}}>{addr.label}</Text>
                           </TouchableOpacity>
                         ))}
                       </View>
@@ -739,7 +744,7 @@ const CartScreen = () => {
                         <Text style={{color:'#666', fontWeight:'600', fontSize:13}}>{t('profile.cancel')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => { setDeliveryAddress(tempAddress); setDeliveryInfo(tempInfo); setEditingAddress(false); setAddressSuggestions([]); }}
+                        onPress={() => { setDeliveryAddress(tempAddress); setDeliveryInfo(tempInfo); setSelectedAddressId(tempAddressId); setEditingAddress(false); setAddressSuggestions([]); }}
                         style={{flex:1, height:36, borderRadius:8, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
                       >
                         <Text style={{color:'#fff', fontWeight:'600', fontSize:13}}>{t('profile.validate')}</Text>
@@ -881,7 +886,7 @@ const CartScreen = () => {
                     return;
                   }
                   setConfirmVisible(false);
-                  setOrderVisible(true);
+                  setPaymentVisible(true);
                 }}
                 style={{height:52, borderRadius:14, backgroundColor: selectedSlot ? BRAND : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
               >
@@ -1033,6 +1038,20 @@ const CartScreen = () => {
         </KeyboardAvoidingView>
       </Modal>
 
+
+      <PaymentModal
+        visible={paymentVisible}
+        onClose={() => setPaymentVisible(false)}
+        onSuccess={() => {
+          setPaymentVisible(false);
+          setOrderVisible(true);
+        }}
+        orderId={String(Date.now())}
+        totalLabel={fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 : 0))}
+        publishableKey={STRIPE_PUBLISHABLE_KEY}
+        amountCents={Math.round((totalPrice + (orderMode === 'delivery' ? 9.99 : 0)) * 100)}
+        currency="eur"
+      />
 
       <OrderTracker
         visible={orderVisible}
