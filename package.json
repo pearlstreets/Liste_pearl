@@ -57,7 +57,15 @@
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@react-native-async-storage|@sentry/react-native|native-base|react-native-svg)"
     ]
   },
-  "overrides": {},
+  "overrides": {
+    "@xmldom/xmldom": "^0.9.10",
+    "minimatch": "^9.0.5",
+    "picomatch": "^4.0.4",
+    "semver": "^7.7.4",
+    "uuid": "^11.1.0",
+    "xml2js": "^0.6.2",
+    "postcss": "^8.5.4"
+  },
   "devDependencies": {
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.3.3",

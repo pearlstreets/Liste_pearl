@@ -138,14 +138,17 @@ function ProfileScreen({ onLogout, isGuest = false, onLogin }) {
       } catch(e) {}
     })();
     // Load document verification status for pro users
+    // TODO: wire to a real endpoint (services/profile.js) — currently a no-op stub.
     (async () => {
       try {
         const authRaw = await AsyncStorage.getItem(KEY_AUTH);
         const auth = authRaw ? JSON.parse(authRaw) : {};
         if (auth.role === 'professionaluser') {
-          if (data.status && data.document_status) {
+          // Placeholder — no endpoint yet. When wired, replace `data` with an
+          // actual API response (e.g. `const data = await getDocumentStatus()`).
+          const data = null;
+          if (data && data.status && data.document_status) {
             setDocStatuses(data.document_status);
-            // Update isVerified in profile
             if (data.document_status.is_verified) {
               const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
               const prof = profRaw ? JSON.parse(profRaw) : {};

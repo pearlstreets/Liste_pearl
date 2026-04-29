@@ -176,6 +176,7 @@ const SearchItem = React.memo(({ item, selectedItems, onQtyChange, onQtyDelta, t
   </View>
   );
 });
+SearchItem.displayName = 'SearchItem';
 
 export default function SearchPopup({ visible, initialQuery = "", data, shopNameFilter, shopName, onClose, onSelect, fmtPrice: fmtPriceProp }) {
   const { t } = useTranslation();

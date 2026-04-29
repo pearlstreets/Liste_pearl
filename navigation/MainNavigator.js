@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { BRAND } from '../constants/brand';
-import ListScreen from '../screens/ListScreen';
-import ProductsScreen from '../screens/ProductsScreen';
-import CartScreen from '../screens/CartScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+
+// Lazy-load 5 tab screens — keep startup bundle minimal, load each tab on first focus.
+const ListScreen = lazy(() => import('../screens/ListScreen'));
+const ProductsScreen = lazy(() => import('../screens/ProductsScreen'));
+const CartScreen = lazy(() => import('../screens/CartScreen'));
+const FavoritesScreen = lazy(() => import('../screens/FavoritesScreen'));
+const ProfileScreen = lazy(() => import('../screens/ProfileScreen'));
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +21,20 @@ const ICONS = {
   favorites: { focused: "heart", unfocused: "heart-outline" },
   cart: { focused: "bag-handle", unfocused: "bag-handle-outline" },
 };
+
+function ScreenFallback() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ActivityIndicator size="large" color={BRAND} />
+    </View>
+  );
+}
+
+const wrap = (Component, props = {}) => (
+  <Suspense fallback={<ScreenFallback />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
   const { t } = useTranslation();
@@ -49,11 +66,11 @@ export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
         },
       })}
     >
-      <Tab.Screen name="myList">{() => <ListScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
-      <Tab.Screen name="products" component={ProductsScreen} />
-      <Tab.Screen name="cart">{() => <CartScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
-      <Tab.Screen name="favorites">{() => <FavoritesScreen isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
-      <Tab.Screen name="profile">{() => <ProfileScreen onLogout={onLogout} isGuest={isGuest} onLogin={onLogin} />}</Tab.Screen>
+      <Tab.Screen name="myList">{() => wrap(ListScreen, { isGuest, onLogin })}</Tab.Screen>
+      <Tab.Screen name="products">{() => wrap(ProductsScreen)}</Tab.Screen>
+      <Tab.Screen name="cart">{() => wrap(CartScreen, { isGuest, onLogin })}</Tab.Screen>
+      <Tab.Screen name="favorites">{() => wrap(FavoritesScreen, { isGuest, onLogin })}</Tab.Screen>
+      <Tab.Screen name="profile">{() => wrap(ProfileScreen, { onLogout, isGuest, onLogin })}</Tab.Screen>
     </Tab.Navigator>
   );
 }

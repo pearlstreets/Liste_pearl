@@ -188,7 +188,7 @@ export const PRODUCT_IMAGES = {
   tacos: { emoji: "🌮", bg: "#FEF9C3" },
   sushi: { emoji: "🍣", bg: "#FEE2E2" },
   soupe: { emoji: "🥣", bg: "#FFEDD5" },
-  salade: { emoji: "🥗", bg: "#DCFCE7" },
+  "salade composee": { emoji: "🥗", bg: "#DCFCE7" },
   quiche: { emoji: "🥧", bg: "#FEF3C7" },
   gratin: { emoji: "🥘", bg: "#FEF3C7" },
   lasagne: { emoji: "🍝", bg: "#FEE2E2" },
