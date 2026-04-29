@@ -60,7 +60,9 @@ export async function getProfile() {
       return profile;
     }
   } catch (e) {
-    console.log("Failed to fetch profile from backend, using local cache");
+    // Gate behind __DEV__ so production builds don't pollute the device log
+    // (and don't leak the cache-fallback fact to anyone reading the console).
+    if (__DEV__) console.warn('[profile] failed to fetch from backend, using local cache:', e?.message);
   }
 
   // Fallback to local profile
