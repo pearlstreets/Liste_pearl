@@ -107,18 +107,12 @@ export async function placeOrder(orderData) {
   // Clear cart
   await clearCart();
 
-  // Attempt backend sync
+  // Attempt backend sync (only succeeds when items carry marketplace catalog IDs)
   const synced = await _syncOrderToBackend(order);
   if (synced) {
     order.synced = true;
     orders[0] = order;
     await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(orders));
-  } else {
-    // Queue for retry
-    const unsyncedRaw = await AsyncStorage.getItem(KEY_UNSYNCED);
-    const unsynced = unsyncedRaw ? JSON.parse(unsyncedRaw) : [];
-    unsynced.push(order);
-    await AsyncStorage.setItem(KEY_UNSYNCED, JSON.stringify(unsynced));
   }
 
   return order;
