@@ -126,9 +126,18 @@ export async function getWithIntegrity(key) {
 
 // ========== REQUEST SECURITY ==========
 
-// Generate request fingerprint
+// Generate request fingerprint (X-Request-ID; trace-only, not security-bearing
+// — but use the platform CSPRNG anyway so the same helper is safe to reuse if
+// the value is ever read for a security-relevant comparison).
 export function requestFingerprint() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  try {
+    const buf = new Uint8Array(9);
+    (globalThis.crypto || global.crypto).getRandomValues(buf);
+    const hex = Array.from(buf).map((b) => b.toString(16).padStart(2, '0')).join('');
+    return Date.now().toString(36) + hex;
+  } catch {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  }
 }
 
 // Sanitize API response — strip potentially dangerous fields
