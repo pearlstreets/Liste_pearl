@@ -3,9 +3,10 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Modal, ScrollVie
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-// expo-firebase-recaptcha is archived — load lazily so the app boots even if missing
-let FirebaseRecaptchaVerifierModal = null;
-try { FirebaseRecaptchaVerifierModal = require('expo-firebase-recaptcha').FirebaseRecaptchaVerifierModal; } catch (_) {}
+// Phone OTP login uses Twilio/WhatsApp providers (server-side). Firebase
+// reCAPTCHA path is intentionally absent — `expo-firebase-recaptcha` is archived
+// and pulled an entire vulnerable dep chain (uuid<14, expo-firebase-core, etc.)
+// without ever being functional in production. See services/otpauth/README.md.
 import { loginUser, registerUser, forgotPassword as apiForgotPassword } from '../services/auth';
 import { saveTokens } from '../services/api';
 import { checkRateLimit } from '../services/security';
@@ -15,7 +16,6 @@ import { MARKETPLACE_ACCOUNTS } from '../constants/accounts';
 import { LANGUAGES } from '../constants/languages';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import useOtpSender from '../services/otpauth/useOtpSender';
-import { getFirebaseApp } from '../services/otpauth/firebase';
 
 function AuthScreen({ onLogin, onContinueAsGuest }) {
   const { t, i18n: i18nAuth } = useTranslation();
@@ -47,22 +47,11 @@ function AuthScreen({ onLogin, onContinueAsGuest }) {
     return () => clearInterval(iv);
   }, [resendTimer]);
 
-  // Firebase reCAPTCHA verifier for Expo. The <FirebaseRecaptchaVerifierModal />
-  // renders below; the hook uses this ref to call signInWithPhoneNumber().
-  // firebaseConfig is loaded lazily from services/otpauth/firebase.js options.
-  const recaptchaVerifier = React.useRef(null);
-  const [firebaseOptions, setFirebaseOptions] = React.useState(null);
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const app = await getFirebaseApp();
-        if (app?.options) setFirebaseOptions(app.options);
-      } catch (_) {}
-    })();
-  }, []);
-
+  // Phone OTP via Twilio/WhatsApp (server-side providers). Firebase phone-auth
+  // path is permanently disabled in this client — the hook will report
+  // `shouldFallback=true` if the backend returns provider="firebase".
   const { sendOtp, verifyOtp, reset: resetOtp, loading: otpLoading, error: otpError, shouldFallback } =
-    useOtpSender({ platform: 'app-liste', recaptchaVerifier });
+    useOtpSender({ platform: 'app-liste' });
 
   const handlePhoneSend = async () => {
     if (!phoneInput.trim()) return;
@@ -247,15 +236,6 @@ function AuthScreen({ onLogin, onContinueAsGuest }) {
       {/* Phone OTP Login Modal */}
       <Modal visible={showPhone} animationType="slide" transparent={false} onRequestClose={handlePhoneBack}>
         <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-          {/* Invisible reCAPTCHA for Firebase Phone Auth in Expo managed.
-              Must be rendered BEFORE sendOtp() is called so the ref is populated. */}
-          {firebaseOptions && FirebaseRecaptchaVerifierModal && (
-            <FirebaseRecaptchaVerifierModal
-              ref={recaptchaVerifier}
-              firebaseConfig={firebaseOptions}
-              attemptInvisibleVerification={true}
-            />
-          )}
           <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <TouchableOpacity onPress={handlePhoneBack} style={{paddingHorizontal:16, paddingTop:12}}>
               <Ionicons name="arrow-back" size={26} color="#111" />
