@@ -154,3 +154,43 @@ export async function getOrder(orderId) {
   const orders = await getOrders();
   return orders.find((o) => o.id === orderId);
 }
+
+// ─── Checkout (appelé par CheckoutScreen) ─────────────────────────────────────
+// Orchestre : place l'ordre localement + sync backend + déclenche delivery_pearl
+
+export async function processCheckout({ items, address, delivery_method, payment_method, total_amount }) {
+  const order = await placeOrder({
+    items,
+    address,
+    mode: delivery_method,
+    payment_method,
+    total: total_amount,
+  });
+
+  // Si le client choisit Pearl delivery, on crée l'assignment côté backend
+  if (delivery_method === 'delivery_pearl') {
+    try {
+      const { createDeliveryOrder } = await import('./delivery');
+      await createDeliveryOrder({
+        id: order.id,
+        items: items.map(i => ({
+          name: i.name || i.title,
+          qty: i.qty || 1,
+          price: i.price || 0,
+          company_id: i.company_id,
+          category_id: i.category_id,
+        })),
+        address: [address.street, address.city, address.postalCode, address.country].filter(Boolean).join(', '),
+        customerName: address.fullName || '',
+        customerPhone: address.phone || '',
+        total: total_amount,
+        mode: 'delivery_pearl',
+      });
+    } catch (err) {
+      // Non-bloquant : l'order local existe, le driver le verra via polling
+      __DEV__ && console.warn('[processCheckout] delivery trigger failed:', err?.message);
+    }
+  }
+
+  return order;
+}

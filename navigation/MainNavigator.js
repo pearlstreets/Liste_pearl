@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { BRAND } from '../constants/brand';
 
@@ -11,8 +12,10 @@ const ProductsScreen = lazy(() => import('../screens/ProductsScreen'));
 const CartScreen = lazy(() => import('../screens/CartScreen'));
 const FavoritesScreen = lazy(() => import('../screens/FavoritesScreen'));
 const ProfileScreen = lazy(() => import('../screens/ProfileScreen'));
+const CheckoutScreen = lazy(() => import('../screens/CheckoutScreen'));
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const ICONS = {
   profile: { focused: "person", unfocused: "person-outline" },
@@ -36,7 +39,7 @@ const wrap = (Component, props = {}) => (
   </Suspense>
 );
 
-export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
+function TabNavigator({ onLogout, isGuest, onLogin }) {
   const { t } = useTranslation();
 
   const getTabName = (key) => {
@@ -72,5 +75,21 @@ export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
       <Tab.Screen name="favorites">{() => wrap(FavoritesScreen, { isGuest, onLogin })}</Tab.Screen>
       <Tab.Screen name="profile">{() => wrap(ProfileScreen, { onLogout, isGuest, onLogin })}</Tab.Screen>
     </Tab.Navigator>
+  );
+}
+
+export default function MainNavigator({ onLogout, isGuest = false, onLogin }) {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs">
+        {() => <TabNavigator onLogout={onLogout} isGuest={isGuest} onLogin={onLogin} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="Checkout"
+        options={{ headerShown: true, title: 'Checkout', headerBackTitle: '' }}
+      >
+        {(props) => wrap(CheckoutScreen, props)}
+      </Stack.Screen>
+    </Stack.Navigator>
   );
 }
