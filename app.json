@@ -21,7 +21,7 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": false,
           "NSExceptionDomains": {
-            "pythonapi.digiexports.in": {
+            "api.pearlstreets.com": {
               "NSExceptionAllowsInsecureHTTPLoads": false,
               "NSIncludesSubdomains": true
             }
@@ -49,7 +49,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1",
+      "pearlBaseUrl": "https://api.pearlstreets.com/api/v1",
       "oneSignalAppId": "31f08293-ee05-4113-8868-f4ce3bd14104",
       "eas": {
         "projectId": "c2ae23d8-1884-47ae-b45c-feea16814db6"
@@ -59,7 +59,14 @@
       "expo-localization",
       "expo-location",
       "expo-secure-store",
-      ["onesignal-expo-plugin", { "mode": "production", "disableNSE": true }]
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "production",
+          "disableNSE": true
+        }
+      ],
+      "@sentry/react-native"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
