@@ -6,3 +6,14 @@ dist/
 .env
 .env.local
 .env.*.local
+.env.otpv2
+.env.production.template
+*.mobileprovision
+*.p12
+*.cer
+google-services.json
+android/app/google-services.json
+GoogleService-Info.plist
+ios/
+android/
+.claude/

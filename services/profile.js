@@ -153,6 +153,12 @@ export async function setDefaultUserAddress(id) {
   return apiPost(`/users/addresses/${id}/set-default/`, {});
 }
 
+// Get document verification status for professional users
+export async function getDocumentStatus() {
+  const data = await apiGet('/userprofessional/document-status/');
+  return data;
+}
+
 // Save user data locally (for offline support)
 export async function saveUserDataLocally(key, data) {
   const authRaw = await AsyncStorage.getItem("KEY_AUTH");

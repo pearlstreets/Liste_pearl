@@ -3,7 +3,25 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import * as Sentry from '@sentry/react-native';
 import { initOneSignalOnce } from './services/oneSignalInit';
+
+// Sentry — init au module-load. No-op si DSN absent (dev). Envoie les
+// erreurs vers projet `pearl-list` sur sentry.io (org `localidad`) en prod.
+const _sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
+if (_sentryDsn && _sentryDsn.startsWith('https://') && !_sentryDsn.includes('YOUR_')) {
+  try {
+    Sentry.init({
+      dsn: _sentryDsn,
+      environment: __DEV__ ? 'development' : 'production',
+      enableAutoSessionTracking: true,
+      tracesSampleRate: 0.1,
+      attachStacktrace: true,
+    });
+  } catch (e) {
+    if (__DEV__) console.info('[sentry] init failed:', e?.message);
+  }
+}
 import { BRAND } from './constants/brand';
 import { KEY_AUTH, KEY_GUEST } from './constants/storageKeys';
 import { CURRENCIES, fetchLiveRates, getCurrencyWithLiveRate, RATES_CACHE_MS, _liveRates } from './constants/currencies';

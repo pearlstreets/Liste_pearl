@@ -62,3 +62,41 @@ export async function getAllProducts() {
   if (data.data) return data.data;
   return [];
 }
+
+// ───────────────────────────────────────────────────────────────────────
+// Catalogue marketplace par catégorie — endpoint dédié 2026-04-30.
+// Slugs disponibles : food_drink, product_purchase, music, travel,
+// relaxation, aesthetics, experiences, art_and_culture.
+// Réponse par item: { id, name, productType, category_slug, price,
+// currency, image, company_id, company_name, description }.
+// ───────────────────────────────────────────────────────────────────────
+
+const _norm = (data) => {
+  if (Array.isArray(data)) return data;
+  if (data?.results && Array.isArray(data.results)) return data.results;
+  if (data?.data && Array.isArray(data.data)) return data.data;
+  return [];
+};
+
+export async function getProductsByCategory(slug, opts = {}) {
+  const { page = 1, pageSize = 50, productType } = opts;
+  const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
+  if (productType) params.set("productType", productType);
+  const data = await apiGet(`/users/products-by-category/${encodeURIComponent(slug)}/?${params}`);
+  return _norm(data);
+}
+
+// Shortcut Food & drink (pizza, burger, drinks, …)
+export const getFoodDrinkProducts = (opts) => getProductsByCategory("food_drink", opts);
+
+// Shortcut Product purchase (épicerie + biens)
+export const getProductPurchaseProducts = (opts) => getProductsByCategory("product_purchase", opts);
+
+// Catalogue "courses" : Food & drink + Product purchase en parallèle
+export async function getShoppableCatalog(opts = {}) {
+  const [foodDrink, productPurchase] = await Promise.all([
+    getFoodDrinkProducts(opts).catch(() => []),
+    getProductPurchaseProducts(opts).catch(() => []),
+  ]);
+  return { foodDrink, productPurchase };
+}

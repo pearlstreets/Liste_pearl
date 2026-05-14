@@ -86,7 +86,10 @@ export async function logoutUser() {
     __DEV__ && console.warn('[auth]:', e.message);
   }
   await clearTokens();
-  await AsyncStorage.removeItem(KEY_AUTH);
+  // Effacer KEY_AUTH ET KEY_PROFILE — l'ancien profil persisté dans AsyncStorage
+  // pouvait fuir à l'utilisateur suivant sur le même device (race entre logout
+  // et premier rendu post-login).
+  await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE]);
 }
 
 // Forgot password

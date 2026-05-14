@@ -7,7 +7,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { DeviceEventEmitter } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from '../services/profile';
+import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto, getDocumentStatus } from '../services/profile';
 import { logoutUser, updatePassword as apiUpdatePassword } from '../services/auth';
 import { getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from '../services/delivery';
 import { getLocales } from 'expo-localization';
@@ -138,15 +138,12 @@ function ProfileScreen({ onLogout, isGuest = false, onLogin }) {
       } catch(e) {}
     })();
     // Load document verification status for pro users
-    // TODO: wire to a real endpoint (services/profile.js) — currently a no-op stub.
     (async () => {
       try {
         const authRaw = await AsyncStorage.getItem(KEY_AUTH);
         const auth = authRaw ? JSON.parse(authRaw) : {};
         if (auth.role === 'professionaluser') {
-          // Placeholder — no endpoint yet. When wired, replace `data` with an
-          // actual API response (e.g. `const data = await getDocumentStatus()`).
-          const data = null;
+          const data = await getDocumentStatus();
           if (data && data.status && data.document_status) {
             setDocStatuses(data.document_status);
             if (data.document_status.is_verified) {

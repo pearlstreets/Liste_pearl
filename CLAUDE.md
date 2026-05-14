@@ -5,6 +5,12 @@ Projets frères (même utilisateur, mêmes conventions i18n/sécurité/git) :
 - `/Users/remsko/Pearl Streets Marketplace 1.0/` — monorepo principal (6 apps)
 - `/Users/remsko/Livraison_pearl/` — app chauffeur-livreur `pearl-delivery`
 
+## Principe directeur (toute action)
+
+Fais en sorte que ce soit logique, simple, complet, fonctionnel, rapide et optimisé, afin d'éviter tout crash et de ne perdre aucune information importante.
+
+**Plafond d'exploration : max 2 tool calls avant d'agir.** Table « Où chercher » ci-dessous → `Read` fichier cible → `Edit`. Si le chemin est dans la table, pas de grep/find en plus. Si ambigu : 1 question, pas de recherche. Grep autorisé seulement pour chercher une chaîne précise dans le code, et toujours scopé à un sous-dossier.
+
 ## Commandes
 
 ```bash
