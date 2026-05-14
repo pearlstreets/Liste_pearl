@@ -31,21 +31,25 @@ export default function CheckoutScreen({ navigation, route }) {
   const placeOrder = async () => {
     setSubmitting(true);
     try {
-      const { processCheckout } = await import('../services/orders').catch(() => ({}));
-      if (typeof processCheckout === 'function') {
-        await processCheckout({
-          items: cartItems,
-          address,
-          delivery_method: deliveryMethod === 'fast' ? 'delivery_pearl' : 'standard',
-          payment_method: paymentMethod,
-          total_amount: totalAmount,
-        });
-      }
-      Alert.alert('Commande confirmée', `Total: ${totalAmount.toFixed(2)} €`, [
+      const { processCheckout } = await import('../services/orders');
+      const order = await processCheckout({
+        items: cartItems,
+        address,
+        delivery_method: deliveryMethod === 'fast' ? 'delivery_pearl' : 'standard',
+        payment_method: paymentMethod,
+        total_amount: totalAmount,
+      });
+
+      const title = order?.synced ? 'Commande confirmée' : 'Commande enregistrée';
+      const message = order?.synced
+        ? `Votre commande a été transmise au vendeur. Total : ${totalAmount.toFixed(2)} €`
+        : `Commande sauvegardée localement. Paiement et confirmation sur place. Total : ${totalAmount.toFixed(2)} €`;
+
+      Alert.alert(title, message, [
         { text: 'OK', onPress: () => navigation.navigate('List') },
       ]);
     } catch (err) {
-      Alert.alert('Erreur', err?.message || 'Échec du paiement, réessaye.');
+      Alert.alert('Erreur', err?.message || 'Échec de la commande, réessayez.');
     } finally {
       setSubmitting(false);
     }

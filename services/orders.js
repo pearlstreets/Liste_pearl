@@ -74,13 +74,19 @@ async function _syncOrderToBackend(order) {
   let allOk = true;
   for (const { company_id, category_id } of Object.values(groups)) {
     try {
+      const addr = order.address;
+      const deliveryAddrStr = addr && typeof addr === 'object'
+        ? [addr.street, addr.city, addr.postalCode, addr.country].filter(Boolean).join(', ')
+        : (addr || '');
+
       await apiPost(`/users/order/create/${company_id}/${category_id}/`, {
         order_ref: String(order.id),
         delivery_mode: order.mode || "collect",
-        delivery_address: order.address || "",
+        delivery_address: deliveryAddrStr,
         ...(order.address_id ? { address_id: order.address_id } : {}),
       });
-    } catch (_) {
+    } catch (err) {
+      if (__DEV__) console.warn(`[sync] failed for ${company_id}/${category_id}:`, err?.message || err);
       allOk = false;
     }
   }
