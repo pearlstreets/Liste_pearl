@@ -123,3 +123,9 @@ Toujours énumérer chaque fichier explicitement par son chemin.
 ### Référence incident
 
 2026-04-19 : `git add App.js` a embarqué un refactor préexistant de 5014 lignes dans un commit "feat(notifications)". Split corrigé en 2 commits (`99e8b1f`). Cette procédure existe pour empêcher la récurrence.
+
+## État opérationnel
+
+- Branche active : `claude/session-C-otp-forgot` (3 commits en avance sur `origin/claude/session-C-otp-forgot`).
+  Commits non poussés : `f90951d` (services/screens/.gitignore harden), `95abff7` (address serialize fix), `ba1cf2a` (ITSAppUsesNonExemptEncryption iOS).
+  L'utilisateur décide quand push/merge — pas d'action auto.
