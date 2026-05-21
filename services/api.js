@@ -51,7 +51,7 @@ async function apiFetch(endpoint, options = {}) {
           headers['Authorization'] = `Bearer ${data.access}`;
         }
       }
-    } catch (e) {
+    } catch {
       /* refresh failed */
     }
   } else if (tokens?.access) {
@@ -77,7 +77,7 @@ async function apiFetch(endpoint, options = {}) {
           res = await fetchWithTimeout(url, { ...options, headers });
         }
       }
-    } catch (e) {
+    } catch {
       /* refresh failed */
     }
   }

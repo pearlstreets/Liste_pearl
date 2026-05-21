@@ -64,7 +64,7 @@ export async function secureStore(key, value) {
   try {
     const data = JSON.stringify({ v: value, t: Date.now() });
     await AsyncStorage.setItem(SECURE_PREFIX + key, data);
-  } catch (e) {}
+  } catch {}
 }
 
 export async function secureGet(key) {
@@ -73,7 +73,7 @@ export async function secureGet(key) {
     if (!raw) return null;
     const { v } = JSON.parse(raw);
     return v;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -90,7 +90,7 @@ export function isTokenExpired(token) {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp * 1000 < Date.now();
-  } catch (e) {
+  } catch {
     return true;
   }
 }

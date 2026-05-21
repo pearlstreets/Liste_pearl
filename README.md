@@ -1,4 +1,4 @@
-# Pearl Delivery
+# Pearl List
 
 A React Native / Expo app for grocery shopping lists and on-demand delivery, with a companion web app sharing the same favorites and accounts.
 

@@ -36,8 +36,7 @@
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION"
-      ],
-      "usesCleartextTraffic": false
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -48,7 +47,8 @@
     },
     "plugins": [
       "expo-localization",
-      "expo-location"
+      "expo-location",
+      "expo-font"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0

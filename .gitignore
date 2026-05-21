@@ -18,6 +18,9 @@ data/seed-accounts.json
 /coverage/
 /tmp/
 
+# Local snapshots / backups (not part of the project)
+/backup/
+
 # IDE
 .vscode/
 .idea/

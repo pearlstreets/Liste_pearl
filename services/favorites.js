@@ -21,7 +21,7 @@ export async function syncFavorites() {
       await AsyncStorage.setItem(KEY_FAV_PRODUCTS, JSON.stringify(products));
       return { shops: shopNames, products };
     }
-  } catch (e) {}
+  } catch {}
   // Fallback to local
   const shopsRaw = await AsyncStorage.getItem(KEY_FAV_SHOPS);
   const prodsRaw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
@@ -47,7 +47,7 @@ export async function addShopFavorite(shopName, companyId) {
       company_name: shopName,
       company_id: companyId || 0,
     });
-  } catch (e) {}
+  } catch {}
 }
 
 // Remove shop from favorites (local + backend)
@@ -58,7 +58,7 @@ export async function removeShopFavorite(shopName) {
   await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(updated));
   try {
     await apiPost('/users/favorites/remove/', { type: 'shop', company_name: shopName });
-  } catch (e) {}
+  } catch {}
 }
 
 // Add product to favorites (local + backend)
@@ -76,7 +76,7 @@ export async function addProductFavorite(product) {
       product_detail: product.detail,
       product_price: product.price,
     });
-  } catch (e) {}
+  } catch {}
 }
 
 // Remove product from favorites (local + backend)
@@ -87,5 +87,5 @@ export async function removeProductFavorite(productName) {
   await AsyncStorage.setItem(KEY_FAV_PRODUCTS, JSON.stringify(updated));
   try {
     await apiPost('/users/favorites/remove/', { type: 'product', product_name: productName });
-  } catch (e) {}
+  } catch {}
 }

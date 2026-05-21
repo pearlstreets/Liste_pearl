@@ -5,6 +5,7 @@ module.exports = {
   },
   testMatch: ['**/__tests__/**/*.test.js'],
   testPathIgnorePatterns: ['/node_modules/', '/backup/', '/scripts/archive/'],
+  modulePathIgnorePatterns: ['<rootDir>/backup/'],
   moduleFileExtensions: ['js', 'jsx', 'json'],
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|expo|expo-.*|@expo|@expo/.*|react-native-.*)',

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   Modal,
   View,
@@ -9,13 +9,12 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { addProduct } from '../lib/SelectedProducts';
-import { autocorrectName, normalizeText } from '../utils/spellcheck';
+import { autocorrectName } from '../utils/spellcheck';
 import SEARCH_MAP from '../data/search-map.json';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -400,14 +399,14 @@ export default function SearchPopup({
   visible,
   initialQuery = '',
   data,
-  shopNameFilter,
+  _shopNameFilter,
   shopName,
   onClose,
   onSelect,
   fmtPrice: fmtPriceProp,
 }) {
   const { t } = useTranslation();
-  const formatPrice = fmtPriceProp || ((v) => fmtEuro(v) + ' €');
+  const formatPrice = useMemo(() => fmtPriceProp || ((v) => fmtEuro(v) + ' €'), [fmtPriceProp]);
   const [query, setQuery] = useState(initialQuery || '');
   const [results, setResults] = useState([]);
   // Track items with qty > 0: { [itemId]: { item, qty } }
@@ -543,17 +542,16 @@ export default function SearchPopup({
       const enriched = { ...item, qty };
       try {
         addProduct(enriched);
-      } catch (e) {}
+      } catch {}
       try {
         onSelect && onSelect(enriched);
-      } catch (e) {}
+      } catch {}
     }
     onClose();
   }, [selectedItems, onSelect, onClose]);
 
   const selList = Object.values(selectedItems).reverse();
   const totalCount = selList.reduce((s, a) => s + a.qty, 0);
-  const totalPrice = selList.reduce((s, a) => s + a.item.price * a.qty, 0);
 
   const renderItem = useCallback(
     ({ item }) => (

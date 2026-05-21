@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from './api';
+import { apiPost } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_CART = 'KEY_CART';
@@ -72,7 +72,7 @@ export async function placeOrder(orderData) {
       delivery_address: orderData.address,
       total: orderData.total,
     });
-  } catch (e) {
+  } catch {
     // Backend order endpoint may be commented out - local storage is the fallback
     console.log('Order sync with backend skipped (endpoint may be inactive)');
   }

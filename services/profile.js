@@ -32,7 +32,7 @@ export async function getProfile() {
       await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
       return profile;
     }
-  } catch (e) {
+  } catch {
     console.log('Failed to fetch profile from backend, using local cache');
   }
 

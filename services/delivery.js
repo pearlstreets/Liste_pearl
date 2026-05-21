@@ -198,7 +198,7 @@ export async function toggleDriverMode(enabled, countryCode) {
       method: 'POST',
       body: JSON.stringify({ is_casual_driver: enabled, country: countryCode || 'FR' }),
     });
-  } catch (e) {}
+  } catch {}
   return enabled;
 }
 
@@ -224,7 +224,7 @@ export async function getDriverEarnings() {
       await AsyncStorage.setItem(KEY_DRIVER_EARNINGS, JSON.stringify(enriched));
       return enriched;
     }
-  } catch (e) {}
+  } catch {}
   const raw = await AsyncStorage.getItem(KEY_DRIVER_EARNINGS);
   return raw ? JSON.parse(raw) : { total_year: 0, remaining: limit, limit, country };
 }
