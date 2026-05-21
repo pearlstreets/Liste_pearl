@@ -1887,7 +1887,7 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
   );
 };
 
-const CartScreen = () => {
+const CartScreen = ({ isAuth }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const [cartItems, setCartItems] = React.useState([]);
@@ -2231,7 +2231,7 @@ const CartScreen = () => {
           <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(totalPrice)}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => setConfirmVisible(true)} style={{
+          <TouchableOpacity onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setConfirmVisible(true); }} style={{
             flex: 1, height: 44, borderRadius: 12, backgroundColor: BRAND,
             flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
           }}>
@@ -2916,7 +2916,7 @@ const CartScreen = () => {
   );
 };
 
-function MainNavigator({ onLogout }) {
+function MainNavigator({ onLogout, isAuth }) {
   const { t } = useTranslation();
   
   const ICONS = {
@@ -2956,14 +2956,14 @@ function MainNavigator({ onLogout }) {
     >
       <Tab.Screen name="myList" component={ListScreen} />
       <Tab.Screen name="products" component={ProductsScreen} />
-      <Tab.Screen name="cart"  component={CartScreen} />
+      <Tab.Screen name="cart">{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} />}</Tab.Screen>
+      <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-function AuthScreen({ onLogin }) {
+function AuthScreen({ onLogin, onClose }) {
   const { t, i18n: i18nAuth } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(true);
   const [email, setEmail] = React.useState('');
@@ -3050,11 +3050,18 @@ function AuthScreen({ onLogin }) {
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-      {!isLogin && (
-        <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }} style={{paddingHorizontal:16, paddingTop:12}}>
-          <Ionicons name="arrow-back" size={26} color="#111" />
-        </TouchableOpacity>
-      )}
+      <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingHorizontal:16, paddingTop:12, minHeight:34}}>
+        {!isLogin ? (
+          <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }}>
+            <Ionicons name="arrow-back" size={26} color="#111" />
+          </TouchableOpacity>
+        ) : <View />}
+        {onClose ? (
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="close" size={28} color="#111" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
       <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24, paddingVertical:30}} keyboardShouldPersistTaps="handled">
         <View style={{alignItems:'center', marginBottom:24}}>
           <View style={{width:60, height:60, borderRadius:30, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
@@ -3138,6 +3145,12 @@ const useCurrency = () => React.useContext(CurrencyContext);
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
   const [proBlocked, setProBlocked] = React.useState(false);
+  const [authVisible, setAuthVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('OPEN_AUTH', () => setAuthVisible(true));
+    return () => sub.remove();
+  }, []);
 
   // Check if pro user needs verification
   React.useEffect(() => {
@@ -3216,20 +3229,17 @@ export default function App() {
     );
   }
 
-  if (!isAuth) {
-    return (
-      <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
-        <AuthScreen onLogin={() => setIsAuth(true)} />
-      </CurrencyContext.Provider>
-    );
-  }
-
-
   return (
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <NavigationContainer theme={navTheme}>
-        <MainNavigator onLogout={() => setIsAuth(false)} />
+        <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
+      <Modal visible={authVisible} animationType="slide" onRequestClose={() => setAuthVisible(false)}>
+        <AuthScreen
+          onLogin={() => { setIsAuth(true); setAuthVisible(false); }}
+          onClose={() => setAuthVisible(false)}
+        />
+      </Modal>
     </CurrencyContext.Provider>
   );
 }
@@ -3306,7 +3316,7 @@ const LANGUAGES = [
   { code:'ru', label:'Русский', flag:'🇷🇺' },
 ];
 
-function FakeProfileScreen({ onLogout }) {
+function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
   const { currency, setCurrency, fmtPrice } = useCurrency();
   const navigation = useNavigation();
@@ -3408,6 +3418,10 @@ function FakeProfileScreen({ onLogout }) {
       } catch(e) {}
     })();
   }, [loadProfile, loadOrders]));
+
+  React.useEffect(() => {
+    if (isAuth) { loadProfile(); loadOrders(); }
+  }, [isAuth, loadProfile, loadOrders]);
 
   const saveProfile = async () => {
     const updated = { ...profile, nom: editNom.trim(), prenom: editPrenom.trim(), pseudo: editPseudo.trim(), email: editEmail.trim() };
@@ -3602,6 +3616,21 @@ function FakeProfileScreen({ onLogout }) {
       </View>
     );
   };
+
+  if (!isAuth) {
+    return (
+      <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
+        <View style={{ flex:1, alignItems:'center', justifyContent:'center', padding:32 }}>
+          <Ionicons name="person-circle-outline" size={88} color="#CBD5E1" />
+          <Text style={{ fontSize:19, fontWeight:'800', color:'#111', marginTop:16, textAlign:'center' }}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
+          <Text style={{ fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center', lineHeight:20 }}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
+          <TouchableOpacity onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={{ marginTop:24, backgroundColor:BRAND, paddingHorizontal:36, paddingVertical:14, borderRadius:14 }}>
+            <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('auth.loginBtn') || 'Se connecter'}</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
