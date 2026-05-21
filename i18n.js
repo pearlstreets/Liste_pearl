@@ -32,9 +32,11 @@ const resources = {
   ru: { translation: ru },
 };
 
-// Get the device locale safely
+// Get the device locale safely and map to a supported language
+const SUPPORTED_LANGUAGES = Object.keys(resources); // ['fr','en','es','zh','ar','de','nl','it','pt','ja','th','sv','ru']
 const deviceLocale = Localization.locale || 'en';
-const initialLanguage = deviceLocale.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+const deviceLang = deviceLocale.toLowerCase().split(/[-_]/)[0]; // e.g. 'zh-Hans-CN' → 'zh'
+const initialLanguage = SUPPORTED_LANGUAGES.includes(deviceLang) ? deviceLang : 'en';
 
 i18n
   .use(initReactI18next)
@@ -45,7 +47,6 @@ i18n
     interpolation: {
       escapeValue: false
     },
-    compatibilityJSON: 'v3'
   });
 
 // Restore saved language preference

@@ -1,9 +1,8 @@
 import { autocorrectName } from "./utils/spellcheck";
-import { isOptimized, setOptimized, getMode } from "./utils/distributionMode";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword } from "./services/auth";
+import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
@@ -69,6 +68,7 @@ const KEY_ORDER_HISTORY = "KEY_ORDER_HISTORY";
 const KEY_PROFILE = "KEY_PROFILE";
 const KEY_FAV_SHOPS="KEY_FAV_SHOPS";
 const KEY_FAVS = "KEY_FAVS";
+const KEY_FAV_PRODUCTS = "KEY_FAV_PRODUCTS";
 const KEY_AUTH = "KEY_AUTH";
 const KEY_ACCOUNTS = "KEY_ACCOUNTS";
 // Marketplace user accounts — loaded from ./lib/seedAccounts (imported at top).
@@ -1574,7 +1574,6 @@ const ProductsScreen = () => {
     </SafeAreaView>
   );
 };
-const KEY_FAV_PRODUCTS = "KEY_FAV_PRODUCTS";
 
 const FavoritesScreen = () => {
   const { t } = useTranslation();
@@ -3137,6 +3136,7 @@ const useCurrency = () => React.useContext(CurrencyContext);
 
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
+  const [proBlocked, setProBlocked] = React.useState(false);
 
   // Check if pro user needs verification
   React.useEffect(() => {
@@ -3155,21 +3155,6 @@ export default function App() {
 
   const [currency, setCurrencyState] = React.useState(CURRENCIES[0]);
   const [liveRates, setLiveRates] = React.useState(null);
-
-  // === ONE-TIME RESET: clear everything except profile — remove this block after first launch ===
-  React.useEffect(() => {
-    (async () => {
-      const didReset = await AsyncStorage.getItem('__RESET_V5__');
-      if (!didReset) {
-        // Reset everything including accounts to update default credentials
-        const keysToDelete = [KEY_ITEMS, KEY_SELECTED, KEY_CART, KEY_ORDER_HISTORY, KEY_FAV_SHOPS, KEY_FAVS, KEY_ACCOUNTS, KEY_AUTH, KEY_PROFILE, 'MARKETPLACE_TOKENS'];
-        await Promise.all(keysToDelete.map(k => AsyncStorage.removeItem(k)));
-        await AsyncStorage.setItem('__RESET_V5__', '1');
-        setIsAuth(false);
-      }
-    })();
-  }, []);
-  // === END RESET ===
 
   // Fetch live exchange rates on mount and every 30 min
   React.useEffect(() => {
@@ -3404,7 +3389,8 @@ function FakeProfileScreen({ onLogout }) {
         const authRaw = await AsyncStorage.getItem(KEY_AUTH);
         const auth = authRaw ? JSON.parse(authRaw) : {};
         if (auth.role === 'professionaluser') {
-          if (data.status && data.document_status) {
+          const data = await getDocumentStatus();
+          if (data && data.status && data.document_status) {
             setDocStatuses(data.document_status);
             // Update isVerified in profile
             if (data.document_status.is_verified) {
