@@ -120,6 +120,8 @@
     "products": "Products"
   },
   "profile": {
+    "guestTitle": "You're not logged in",
+    "guestHint": "Log in to manage your profile, your orders and delivery.",
     "editProfile": "Edit profile",
     "driverSection": "Delivery",
     "becomeDriver": "Become a driver",

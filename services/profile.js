@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiUpload } from './api';
+import { apiGet, apiPost, apiPut, apiUpload } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_PROFILE = 'KEY_PROFILE';
@@ -60,6 +60,26 @@ export async function updateProfile(profileData) {
   }
 
   return { success: false, message: data.message || 'Update failed' };
+}
+
+// Save the user's delivery address to the Marketplace backend,
+// so it stays in sync with the address set on the website / user app.
+export async function updateUserAddress(userId, address) {
+  if (!userId) return { success: false };
+  try {
+    const data = await apiPut(`/users/update-profile/?id=${userId}`, {
+      manualAddress: {
+        address1: address.address || '',
+        address2: address.addressSupplement || '',
+        city: address.city || '',
+        postalCode: address.postalCode || '',
+        country: address.country || '',
+      },
+    });
+    return { success: !!(data && (data.status || data.id || data.statusCode === 200)), data };
+  } catch {
+    return { success: false };
+  }
 }
 
 // Upload profile photo

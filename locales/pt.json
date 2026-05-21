@@ -110,6 +110,8 @@
     "searchPlaceholder": "Pesquisar um favorito..."
   },
   "profile": {
+    "guestTitle": "Você não está conectado",
+    "guestHint": "Faça login para gerenciar seu perfil, seus pedidos e a entrega.",
     "editProfile": "Editar perfil",
     "pseudo": "Nome de usuário",
     "firstName": "Primeiro nome",

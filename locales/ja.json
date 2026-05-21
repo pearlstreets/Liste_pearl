@@ -110,6 +110,8 @@
     "searchPlaceholder": "お気に入りを検索..."
   },
   "profile": {
+    "guestTitle": "ログインしていません",
+    "guestHint": "プロフィール、注文、配達を管理するにはログインしてください。",
     "editProfile": "プロフィールを編集",
     "pseudo": "ユーザー名",
     "firstName": "名",

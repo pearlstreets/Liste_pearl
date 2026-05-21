@@ -110,6 +110,8 @@
     "searchPlaceholder": "Ein Favorit suchen..."
   },
   "profile": {
+    "guestTitle": "Du bist nicht angemeldet",
+    "guestHint": "Melde dich an, um dein Profil, deine Bestellungen und die Lieferung zu verwalten.",
     "editProfile": "Profil bearbeiten",
     "pseudo": "Benutzername",
     "firstName": "Vorname",

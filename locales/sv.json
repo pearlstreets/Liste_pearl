@@ -110,6 +110,8 @@
     "searchPlaceholder": "Sök en favorit..."
   },
   "profile": {
+    "guestTitle": "Du är inte inloggad",
+    "guestHint": "Logga in för att hantera din profil, dina beställningar och leverans.",
     "editProfile": "Redigera profil",
     "pseudo": "Användarnamn",
     "firstName": "Förnamn",

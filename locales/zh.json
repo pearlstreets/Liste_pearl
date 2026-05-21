@@ -110,6 +110,8 @@
     "searchPlaceholder": "搜索收藏..."
   },
   "profile": {
+    "guestTitle": "您尚未登录",
+    "guestHint": "登录以管理您的个人资料、订单和配送。",
     "editProfile": "编辑个人资料",
     "pseudo": "用户名",
     "firstName": "名字",

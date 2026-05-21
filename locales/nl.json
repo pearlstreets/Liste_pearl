@@ -110,6 +110,8 @@
     "searchPlaceholder": "Zoeken naar een favoriet..."
   },
   "profile": {
+    "guestTitle": "Je bent niet ingelogd",
+    "guestHint": "Log in om je profiel, je bestellingen en bezorging te beheren.",
     "editProfile": "Profiel bewerken",
     "pseudo": "Gebruikersnaam",
     "firstName": "Voornaam",

@@ -110,6 +110,8 @@
     "searchPlaceholder": "Buscar un favorito..."
   },
   "profile": {
+    "guestTitle": "No has iniciado sesión",
+    "guestHint": "Inicia sesión para gestionar tu perfil, tus pedidos y la entrega.",
     "editProfile": "Editar perfil",
     "pseudo": "Nombre de usuario",
     "firstName": "Nombre",

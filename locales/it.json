@@ -110,6 +110,8 @@
     "searchPlaceholder": "Cerca un preferito..."
   },
   "profile": {
+    "guestTitle": "Non hai effettuato l'accesso",
+    "guestHint": "Accedi per gestire il tuo profilo, i tuoi ordini e la consegna.",
     "editProfile": "Modifica profilo",
     "pseudo": "Nome utente",
     "firstName": "Nome",

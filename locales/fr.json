@@ -120,6 +120,8 @@
     "products": "Produits"
   },
   "profile": {
+    "guestTitle": "Vous n'êtes pas connecté",
+    "guestHint": "Connectez-vous pour gérer votre profil, vos commandes et la livraison.",
     "editProfile": "Modifier profil",
     "driverSection": "Livraison",
     "becomeDriver": "Devenir livreur",

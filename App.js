@@ -6,7 +6,7 @@ import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPasswor
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
-import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
+import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, updateUserAddress, uploadProfilePhoto } from "./services/profile";
 import { getTokens } from "./services/api";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 
@@ -48,6 +48,16 @@ import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
 import { parseMulti } from "./lib/parseMulti";
 const BRAND = "#00C29B";
+
+// Design system tokens — "modern delivery marketplace" look.
+const THEME = {
+  brand: '#111827', brandDark: '#1F2937', brandSoft: '#F0F1F3',
+  bg: '#FFFFFF', card: '#FFFFFF', subtle: '#F1F3F5',
+  ink: '#0F172A', muted: '#64748B', faint: '#94A3B8',
+  border: '#ECEEF1', danger: '#EF4444', dangerSoft: '#FEE2E2',
+  shadow: { shadowColor: '#0F172A', shadowOpacity: 0.06, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
+  shadowSm: { shadowColor: '#0F172A', shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
+};
 
 
 const ProductThumb = ({ name, size = 44 }) => {
@@ -134,6 +144,54 @@ const QtyInput = ({ value, onCommit }) => {
 
 // Toast and RepeatButton extracted to components/ui/
 
+const lstyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 2 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 14, height: 38, borderRadius: 19 },
+  scanTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
+  inputWrap: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
+  input: { flex: 1, height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  addBtn: { width: 52, height: 52, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginLeft: 10, ...THEME.shadow },
+  toolRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
+  pill: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, marginRight: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pillOn: { backgroundColor: THEME.brand },
+  pillTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
+  pillTxtOn: { color: '#fff' },
+  delPill: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, backgroundColor: THEME.dangerSoft },
+  delTxt: { color: THEME.danger, fontWeight: '800', fontSize: 12.5, marginLeft: 4 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 12, paddingHorizontal: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
+  checkOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  itemName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  itemNameCrossed: { textDecorationLine: 'line-through', color: THEME.faint, fontWeight: '600' },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, height: 36, paddingHorizontal: 2 },
+  stepBtn: { width: 30, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  stepQty: { width: 40, textAlign: 'center', fontSize: 15, fontWeight: '700', color: THEME.faint },
+  doneBtn: { width: 34, height: 34, borderRadius: 12, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
+  doneBtnOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  empty: { alignItems: 'center', justifyContent: 'center', paddingTop: 70, paddingHorizontal: 50 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  hideTxt: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
+  cta: { height: 54, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'center', paddingHorizontal: 28 },
+  modalBox: { backgroundColor: THEME.card, borderRadius: 22, padding: 22 },
+  modalTitle: { fontSize: 18, fontWeight: '800', color: THEME.ink, marginBottom: 14 },
+  modalInput: { height: 50, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink },
+  modalRow: { flexDirection: 'row', marginTop: 16 },
+  modalCancel: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle, marginRight: 8 },
+  modalSave: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand, marginLeft: 8 },
+  modalCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
+  modalSaveTxt: { color: '#fff', fontWeight: '800', fontSize: 15 },
+});
+
 function ListScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -151,13 +209,20 @@ function ListScreen() {
   const [editId, setEditId] = useState(null);
   const [editText, setEditText] = useState("");
 
+  const hydrated = React.useRef(false);
   useEffect(() => { (async () => {
     try {
       const s = await AsyncStorage.getItem("SG_ITEMS");
       if (s) setItems(JSON.parse(s));
     } catch {}
+    hydrated.current = true;
   })(); }, []);
-  useEffect(() => { AsyncStorage.setItem("SG_ITEMS", JSON.stringify(items)).catch(() => {}); }, [items]);
+  // Persist only after the initial load — otherwise the empty initial state
+  // overwrites the saved list on every cold start.
+  useEffect(() => {
+    if (!hydrated.current) return;
+    AsyncStorage.setItem("SG_ITEMS", JSON.stringify(items)).catch(() => {});
+  }, [items]);
 
   // Reload items when returning to this tab (e.g. after adding to cart crosses them off)
   useFocusEffect(React.useCallback(() => {
@@ -191,7 +256,6 @@ function ListScreen() {
   const setQty  = (id, q) => setItems(items.map(it => it.id === id ? { ...it, qty: q } : it));
   const toggleSelected = id => setItems(items.map(it => it.id === id ? { ...it, selected: !it.selected } : it));
   const toggleCrossed  = id => setItems(items.map(it => it.id === id ? { ...it, crossed: !it.crossed, selected: it.crossed ? it.selected : false } : it));
-  const removeOne      = id => setItems(items.filter(it => it.id !== id));
 
   const toggleSelectAll = () => {
     const v = !selectAll; setSelectAll(v);
@@ -215,48 +279,54 @@ function ListScreen() {
   const renderItem = ({ item }) => {
     const isCrossed = !!item.crossed;
     return (
-    <View style={styles.row}>
-      {/* Checkbox — grisée si barré */}
-      <View style={isCrossed ? {opacity:0.3} : undefined}>
-        <Square value={!!item.selected} onPress={() => !isCrossed && toggleSelected(item.id)} />
-      </View>
+    <View style={[lstyles.card, isCrossed && { opacity: 0.62 }]}>
+      {/* Select checkbox */}
+      <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
+        <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
+          {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color="#fff" /> : null}
+        </View>
+      </TouchableOpacity>
 
-      {/* Quantité — grisée si barré */}
-      <View style={[styles.qtyInline, isCrossed && {opacity:0.3}]}>
-        <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="remove" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
+      {/* Name — tap to edit */}
+      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
+        <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{item.name}</Text>
+      </TouchableOpacity>
+
+      {/* Quantity stepper */}
+      <View style={[lstyles.stepper, isCrossed && { opacity: 0.5 }]}>
+        <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={lstyles.stepBtn}><Ionicons name="remove" size={16} color={THEME.ink} /></RepeatButton>
         {isCrossed ? (
-          <Text style={{ width:48, height:32, lineHeight:32, textAlign:'center', fontSize:15, color:'#9CA3AF' }}>{item.qty || 1}</Text>
+          <Text style={lstyles.stepQty}>{item.qty || 1}</Text>
         ) : (
           <QtyInput value={item.qty || 1} onCommit={(q) => setQty(item.id, q)} />
         )}
-        <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={[styles.qtyBtn, isCrossed && { borderColor:'#E5E7EB' }]}><Ionicons name="add" size={16} color={isCrossed ? '#D1D5DB' : undefined} /></RepeatButton>
+        <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={lstyles.stepBtn}><Ionicons name="add" size={16} color={THEME.ink} /></RepeatButton>
       </View>
 
-      {/* Nom — barré si crossed */}
-      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} style={{ flex:1, opacity: isCrossed ? 0.4 : 1 }}>
-        <Text numberOfLines={1} style={[styles.itemLabel, isCrossed && styles.crossed]}>{item.name}</Text>
+      {/* Done toggle */}
+      <TouchableOpacity onPress={() => toggleCrossed(item.id)} activeOpacity={0.7} style={{ marginLeft: 10 }}>
+        <View style={[lstyles.doneBtn, isCrossed && lstyles.doneBtnOn]}>
+          <Ionicons name="checkmark" size={17} color={isCrossed ? '#fff' : THEME.faint} />
+        </View>
       </TouchableOpacity>
-
-      {/* Poubelle — toujours visible */}
-      <TouchableOpacity onPress={() => removeOne(item.id)} style={{padding:4, marginLeft:0}}>
-        <Ionicons name="trash-outline" size={18} color="#C33" />
-      </TouchableOpacity>
-      {/* Radio barrer/débarrer — toujours visible et non grisé */}
-      <Radio style={{ marginLeft: 2, marginRight: 20 }} value={isCrossed} onPress={() => toggleCrossed(item.id)} />
     </View>
     );
   };
 
   const Header = (
-    <View style={{ marginTop: 24 }}>
-      <View>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t('tabs.myList')}</Text>
-          <PillScan />
+    <View style={lstyles.header}>
+      <View style={lstyles.headerRow}>
+        <View style={{ flex: 1 }}>
+          <Text style={lstyles.title}>{t('tabs.myList')}</Text>
+          <Text style={lstyles.subtitle}>{items.length} {t('listScreen.deleteItem', { count: items.length })}</Text>
         </View>
+        <TouchableOpacity onPress={async () => { await openCamera(); }} activeOpacity={0.8} style={lstyles.scanBtn}>
+          <Ionicons name="scan-outline" size={17} color={THEME.brandDark} />
+          <Text style={lstyles.scanTxt}>{t('listScreen.scan')}</Text>
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.inputRow}>
+      <View style={lstyles.inputWrap}>
         <TextInput
           autoCorrect={true}
           spellCheck={true}
@@ -267,35 +337,23 @@ function ListScreen() {
           value={text}
           onChangeText={setText}
           placeholder={t('listScreen.inputPlaceholder')}
-          style={styles.input}
+          placeholderTextColor={THEME.faint}
+          style={lstyles.input}
           returnKeyType="done"
           onSubmitEditing={addFromInput}
         />
-        <TouchableOpacity onPress={addFromInput} style={styles.addBtn}>
-          <Ionicons name="add" size={20} color="#fff" />
+        <TouchableOpacity onPress={addFromInput} activeOpacity={0.85} style={lstyles.addBtn}>
+          <Ionicons name="add" size={26} color="#fff" />
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:GUTTER, marginTop:14 }}>
-        {/* Toggle Tout sélectionner / Tout barrer */}
-        <View style={{ flexDirection:'row' }}>
-          <TouchableOpacity onPress={toggleSelectAll} style={{
-            paddingVertical:6, paddingHorizontal:12, alignItems:'center', borderRadius:8, marginRight:8,
-            backgroundColor: selectAll ? BRAND : 'transparent',
-            borderWidth: selectAll ? 0 : 1.5, borderColor: selectAll ? BRAND : '#D1D5DB'
-          }}>
-            <Text style={{ fontSize:12, fontWeight:'600', color: selectAll ? '#fff' : '#555' }}>{t('listScreen.selectAll')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleStrikeAll} style={{
-            paddingVertical:6, paddingHorizontal:12, alignItems:'center', borderRadius:8,
-            backgroundColor: strikeAll ? BRAND : 'transparent',
-            borderWidth: strikeAll ? 0 : 1.5, borderColor: strikeAll ? BRAND : '#D1D5DB'
-          }}>
-            <Text style={{ fontSize:12, fontWeight:'600', color: strikeAll ? '#fff' : '#555' }}>{t('listScreen.strikeAll')}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Bouton supprimer */}
+      <View style={lstyles.toolRow}>
+        <TouchableOpacity onPress={toggleSelectAll} activeOpacity={0.8} style={[lstyles.pill, selectAll && lstyles.pillOn]}>
+          <Text style={[lstyles.pillTxt, selectAll && lstyles.pillTxtOn]}>{t('listScreen.selectAll')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleStrikeAll} activeOpacity={0.8} style={[lstyles.pill, strikeAll && lstyles.pillOn]}>
+          <Text style={[lstyles.pillTxt, strikeAll && lstyles.pillTxtOn]}>{t('listScreen.strikeAll')}</Text>
+        </TouchableOpacity>
         {items.some(it => it.selected) && (
           <TouchableOpacity onPress={() => {
             const count = items.filter(it => it.selected).length;
@@ -304,13 +362,11 @@ function ListScreen() {
               { text: t('listScreen.delete'), style: 'destructive', onPress: () => {
                 setItems(prev => prev.filter(it => !it.selected));
                 setSelectAll(false);
-
               }}
             ]);
-          }} style={{ marginLeft:'auto', flexDirection:'row', alignItems:'center',
-            paddingVertical:6, paddingHorizontal:12, borderRadius:8, backgroundColor:'#FEE2E2' }}>
-            <Ionicons name="trash-outline" size={16} color="#EF4444" />
-            <Text style={{ color:'#EF4444', fontWeight:'700', fontSize:12, marginLeft:4 }}>{items.filter(it => it.selected).length}</Text>
+          }} activeOpacity={0.8} style={lstyles.delPill}>
+            <Ionicons name="trash-outline" size={15} color={THEME.danger} />
+            <Text style={lstyles.delTxt}>{items.filter(it => it.selected).length}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -318,30 +374,34 @@ function ListScreen() {
   );
 
   return (
-    <View style={{flex:1}}>
+    <View style={lstyles.screen}>
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={lstyles.screen} edges={['top']}>
       <FlatList
         data={visible}
         keyExtractor={(it) => it.id}
         renderItem={renderItem}
         ListHeaderComponent={Header}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={{ alignItems:'center', justifyContent:'center', paddingTop:200, paddingHorizontal:40 }}>
-            <Ionicons name="list-outline" size={56} color="#E5E7EB" />
-            <Text style={{ textAlign:'center', marginTop:16, fontSize:16, fontWeight:'600', color:'#374151' }}>{t('listScreen.noItems')}</Text>
+          <View style={lstyles.empty}>
+            <View style={lstyles.emptyCircle}>
+              <Ionicons name="cart-outline" size={44} color="#fff" />
+            </View>
+            <Text style={lstyles.emptyTitle}>{t('listScreen.noItems')}</Text>
+            <Text style={lstyles.emptyHint}>{t('listScreen.inputPlaceholder')}</Text>
           </View>
         }
-        contentContainerStyle={{ paddingBottom: 160 }}
+        contentContainerStyle={{ paddingBottom: 180 }}
       />
 
-      <View style={styles.bottomAreaWrap}>
-        <View style={styles.switchCenterRow}>
-          <Switch value={hideCrossed} onValueChange={setHideCrossed} style={{ transform:[{ scale:0.9 }] }} />
-          <Text style={styles.switchLabel}>{t('listScreen.hideStriked')}</Text>
+      <View style={lstyles.bottomWrap}>
+        <View style={lstyles.hideRow}>
+          <Switch value={hideCrossed} onValueChange={setHideCrossed} trackColor={{ true: THEME.brand, false: '#D7DCE3' }} thumbColor="#fff" style={{ transform:[{ scale:0.85 }] }} />
+          <Text style={lstyles.hideTxt}>{t('listScreen.hideStriked')}</Text>
         </View>
-        <TouchableOpacity style={styles.bottomBtn} onPress={async ()=>{
+        <TouchableOpacity activeOpacity={0.9} style={lstyles.cta} onPress={async ()=>{
         try{
           const all = Array.isArray(items) ? items : [];
           // D'abord les items cochés, sinon tous les items non-barrés, sinon tous
@@ -366,18 +426,19 @@ function ListScreen() {
         DeviceEventEmitter.emit('PRODUCTS_RESET');
         navigation.navigate("products");
       }}>
-          <Text style={styles.bottomBtnText}>{t('listScreen.findExactProducts')}</Text>
+          <Ionicons name="bag-check-outline" size={20} color="#fff" />
+          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}</Text>
         </TouchableOpacity>
       </View>
 
       <Modal visible={editVisible} transparent animationType="fade">
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>{t('listScreen.editItem')}</Text>
+        <View style={lstyles.modalBackdrop}>
+          <View style={lstyles.modalBox}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.editItem')}</Text>
             <TextInput
               value={editText}
               onChangeText={setEditText}
-              style={styles.modalInput}
+              style={lstyles.modalInput}
               autoFocus
               autoCorrect={true}
               spellCheck={true}
@@ -385,12 +446,12 @@ function ListScreen() {
               keyboardType="default"
               textContentType="none"
             />
-            <View style={styles.modalRow}>
-              <Pressable onPress={closeEdit} style={styles.modalBtnCancel}>
-                <Text style={styles.modalBtnText}>{t('listScreen.cancel')}</Text>
+            <View style={lstyles.modalRow}>
+              <Pressable onPress={closeEdit} style={lstyles.modalCancel}>
+                <Text style={lstyles.modalCancelTxt}>{t('listScreen.cancel')}</Text>
               </Pressable>
-              <Pressable onPress={saveEdit} style={styles.modalBtnSave}>
-                <Text style={styles.modalBtnTextSave}>{t('listScreen.save')}</Text>
+              <Pressable onPress={saveEdit} style={lstyles.modalSave}>
+                <Text style={lstyles.modalSaveTxt}>{t('listScreen.save')}</Text>
               </Pressable>
             </View>
           </View>
@@ -424,6 +485,105 @@ function Placeholder({ title }) {
 
 
 const SEARCH_MAP = require('./data/search-map.json');
+
+const prodStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  clearBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+
+  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
+  segTxtOn: { color: THEME.ink },
+
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 12 },
+  chip: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, marginRight: 8, marginBottom: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  chipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  chipTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
+  chipTxtOn: { color: '#fff' },
+
+  summaryCard: { marginTop: 12, marginHorizontal: 20, padding: 14, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  summaryTitle: { fontSize: 13, fontWeight: '700', color: THEME.muted },
+  summaryStats: { flexDirection: 'row', marginTop: 10 },
+  statBox: { flex: 1 },
+  statValue: { fontSize: 18, fontWeight: '800', color: THEME.ink },
+  statLabel: { fontSize: 11.5, fontWeight: '600', color: THEME.faint, marginTop: 1 },
+  statDivider: { width: 1, backgroundColor: THEME.border, marginHorizontal: 4 },
+
+  infoBanner: { marginHorizontal: 20, marginTop: 10, padding: 14, borderRadius: 16, backgroundColor: THEME.brandSoft, flexDirection: 'row', alignItems: 'center' },
+  infoTxt: { flex: 1, fontSize: 13, color: THEME.brandDark, fontWeight: '600', marginLeft: 10, lineHeight: 18 },
+
+  card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  cardOn: { borderColor: THEME.brand, borderWidth: 2 },
+  cardHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  cardHeadLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  shopIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  metaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4, flexWrap: 'wrap' },
+  metaChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, marginRight: 6, marginTop: 2 },
+  metaTxt: { fontSize: 12, color: THEME.muted, marginLeft: 4, fontWeight: '600' },
+  shopFavBtn: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
+
+  feeRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  feeTxt: { fontSize: 12.5, color: THEME.muted, fontWeight: '600', marginLeft: 4 },
+
+  productRow: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: THEME.border },
+  productLine: { flexDirection: 'row', alignItems: 'center' },
+  qtyBadge: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8, marginRight: 8 },
+  qtyBadgeTxt: { fontSize: 12.5, fontWeight: '800' },
+  productTitle: { flex: 1, fontSize: 15, fontWeight: '700', color: THEME.ink, marginRight: 10 },
+  addedTag: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
+  addedTagTxt: { color: THEME.brand, fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
+  searchBtn: { backgroundColor: THEME.brand, paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10, flexDirection: 'row', alignItems: 'center' },
+  searchBtnTxt: { color: '#fff', fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
+
+  picked: { marginTop: 10, padding: 12, backgroundColor: THEME.subtle, borderRadius: 14 },
+  pickedRow: { flexDirection: 'row', alignItems: 'center' },
+  pickedBody: { flex: 1, marginLeft: 10 },
+  pickedName: { fontSize: 15, fontWeight: '700', color: THEME.ink },
+  pickedDetail: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  pickedPriceRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4 },
+  pickedPrice: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  pickedUnit: { fontSize: 11, color: THEME.faint, marginLeft: 6, fontWeight: '600' },
+  pickedFav: { marginLeft: 8 },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 12, height: 34, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border, marginLeft: 'auto' },
+  stepBtn: { width: 28, height: 28, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
+  stepBtnAdd: { width: 28, height: 28, borderRadius: 9, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  stepBtnDel: { width: 28, height: 28, borderRadius: 9, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+  stepQty: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginHorizontal: 6, minWidth: 18, textAlign: 'center' },
+
+  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 12, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
+  addMoreTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13.5, marginLeft: 6 },
+  totalsBox: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: THEME.border },
+  totalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  totalLabel: { fontSize: 13.5, fontWeight: '700', color: THEME.muted },
+  totalValue: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
+  grandLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
+  grandValue: { fontSize: 15, fontWeight: '800', color: THEME.brand },
+
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 70, paddingHorizontal: 50 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, paddingBottom: Platform.OS === 'ios' ? 30 : 16, ...THEME.shadow },
+  bottomList: { maxHeight: 220, paddingHorizontal: 20, paddingTop: 14 },
+  bottomItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  bottomItemBody: { flex: 1, marginLeft: 10 },
+  bottomItemName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
+  bottomItemShop: { fontSize: 11.5, color: THEME.muted, fontWeight: '600', marginTop: 1 },
+  bottomItemQty: { fontSize: 12.5, fontWeight: '700', color: THEME.muted, marginRight: 10 },
+  bottomItemPrice: { fontSize: 13.5, fontWeight: '800', color: THEME.brand },
+  bottomSummary: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 8 },
+  bottomCount: { fontSize: 14, fontWeight: '700', color: THEME.muted },
+  bottomTotal: { fontSize: 18, fontWeight: '800', color: THEME.brand },
+  cta: { marginHorizontal: 20, height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+});
 
 const ProductsScreen = () => {
   const { t } = useTranslation();
@@ -871,62 +1031,85 @@ const ProductsScreen = () => {
 
 
   const Chip=({label,active,onPress})=>(
-    <TouchableOpacity onPress={onPress} style={[{paddingVertical:6,paddingHorizontal:10,borderRadius:10,borderWidth:1,borderColor:"#ddd",marginHorizontal:4}, active && {backgroundColor:BRAND,borderColor:BRAND}]}>
-      <Text style={[{fontWeight:"500"}, active && {color:"#fff"}]}>{label}</Text>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[prodStyles.chip, active && prodStyles.chipOn]}>
+      <Text style={[prodStyles.chipTxt, active && prodStyles.chipTxtOn]}>{label}</Text>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <View style={prodStyles.screen}>
+    <SafeAreaView style={prodStyles.screen} edges={['top']}>
       {/* Header avec titre + bouton effacer */}
-      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:16, paddingTop:14, paddingBottom:8}}>
-        <Text style={{fontSize:22, fontWeight:'900', color:'#111'}}>{t('tabs.products')}</Text>
-        {groups.length > 0 && (
-          <TouchableOpacity onPress={async () => {
-            await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-            setGroups([]); setSummary({price:0,time:0,shops:0});
-            setPopupSelectedItems([]); setCheckedShops({});
-            setShowingDefaults(true);
-          }} style={{padding:6}}>
-            <Ionicons name="trash-outline" size={22} color="#EF4444" />
-          </TouchableOpacity>
-        )}
-      </View>
-      {/* Mode */}
-      <View style={{flexDirection:"row",marginHorizontal:16}}>
-        <TouchableOpacity onPress={()=>setMode("collect")} style={[{flex:1,borderWidth:1,borderColor:"#ccc",borderRadius:10,paddingVertical:8,marginRight:8,alignItems:"center"}, mode==="collect" && {backgroundColor:BRAND,borderColor:BRAND}]}>
-          <Text style={[{color:"#555",fontWeight:"500"}, mode==="collect" && {color:"#fff",fontWeight:"600"}]}>{t('productsScreen.clickAndCollect')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>setMode("delivery")} style={[{flex:1,borderWidth:1,borderColor:"#ccc",borderRadius:10,paddingVertical:8,marginLeft:8,alignItems:"center"}, mode==="delivery" && {backgroundColor:BRAND,borderColor:BRAND}]}>
-          <Text style={[{color:"#555",fontWeight:"500"}, mode==="delivery" && {color:"#fff",fontWeight:"600"}]}>{t('productsScreen.delivery')}</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={prodStyles.header}>
+        <View style={prodStyles.headerRow}>
+          <View style={{flex:1}}>
+            <Text style={prodStyles.title}>{t('tabs.products')}</Text>
+            <Text style={prodStyles.subtitle}>{summary.shops} {t('productsScreen.shops')?.replace(/[•·]/g,'').trim() || 'shops'}</Text>
+          </View>
+          {groups.length > 0 && (
+            <TouchableOpacity activeOpacity={0.8} onPress={async () => {
+              await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+              setGroups([]); setSummary({price:0,time:0,shops:0});
+              setPopupSelectedItems([]); setCheckedShops({});
+              setShowingDefaults(true);
+            }} style={prodStyles.clearBtn}>
+              <Ionicons name="trash-outline" size={18} color={THEME.danger} />
+            </TouchableOpacity>
+          )}
+        </View>
 
-      {/* Stratégies */}
-      <View style={{flexDirection:"row",justifyContent:"center",marginTop:8}}>
-        <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
-        <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
-        <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
-        <Chip label={t('productsScreen.strategies.singleShop')}  active={strategy==='single'} onPress={()=>setStrategy('single')} />
+        {/* Mode */}
+        <View style={prodStyles.segment}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>setMode("collect")} style={[prodStyles.segBtn, mode==="collect" && prodStyles.segBtnOn]}>
+            <Ionicons name="bag-handle-outline" size={16} color={mode==="collect" ? THEME.brand : THEME.muted} />
+            <Text style={[prodStyles.segTxt, mode==="collect" && prodStyles.segTxtOn]}>{t('productsScreen.clickAndCollect')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>setMode("delivery")} style={[prodStyles.segBtn, mode==="delivery" && prodStyles.segBtnOn]}>
+            <Ionicons name="bicycle-outline" size={16} color={mode==="delivery" ? THEME.brand : THEME.muted} />
+            <Text style={[prodStyles.segTxt, mode==="delivery" && prodStyles.segTxtOn]}>{t('productsScreen.delivery')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Stratégies */}
+        <View style={prodStyles.chipRow}>
+          <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
+          <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
+          <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
+          <Chip label={t('productsScreen.strategies.singleShop')}  active={strategy==='single'} onPress={()=>setStrategy('single')} />
+        </View>
       </View>
 
       {/* Résumé */}
-      <View style={{marginTop:10,marginHorizontal:16,padding:12,borderRadius:12,backgroundColor:"#F4F6F6"}}>
-        <Text style={{fontWeight:"600"}}>{t('productsScreen.proposal')}{strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop')}</Text>
-        <Text style={{marginTop:4}}>{t('productsScreen.total')}<Text style={{fontWeight:"700"}}>{fmtPrice(summary.price)}</Text>{t('productsScreen.time')}<Text style={{fontWeight:"700"}}>{summary.time}{t('productsScreen.minutes')}</Text>{t('productsScreen.shops')}<Text style={{fontWeight:"700"}}>{summary.shops}</Text></Text>
+      <View style={prodStyles.summaryCard}>
+        <Text style={prodStyles.summaryTitle}>{t('productsScreen.proposal')}{strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop')}</Text>
+        <View style={prodStyles.summaryStats}>
+          <View style={prodStyles.statBox}>
+            <Text style={prodStyles.statValue}>{fmtPrice(summary.price)}</Text>
+            <Text style={prodStyles.statLabel}>{t('productsScreen.total').replace(/[:•]/g,'').trim() || 'Total'}</Text>
+          </View>
+          <View style={prodStyles.statDivider} />
+          <View style={prodStyles.statBox}>
+            <Text style={prodStyles.statValue}>{summary.time}{t('productsScreen.minutes')}</Text>
+            <Text style={prodStyles.statLabel}>{t('productsScreen.time').replace(/[:•]/g,'').trim() || 'Temps'}</Text>
+          </View>
+          <View style={prodStyles.statDivider} />
+          <View style={prodStyles.statBox}>
+            <Text style={prodStyles.statValue}>{summary.shops}</Text>
+            <Text style={prodStyles.statLabel}>{t('productsScreen.shops').replace(/[:•]/g,'').trim() || 'Shops'}</Text>
+          </View>
+        </View>
       </View>
 
-     
       {/* Bandeau info quand liste vide */}
       {showingDefaults && !loading && (
-        <View style={{marginHorizontal:16, marginTop:8, padding:14, borderRadius:12, backgroundColor:'#FEF3C7', flexDirection:'row', alignItems:'center'}}>
-          <Ionicons name="information-circle" size={18} color="#F59E0B" style={{marginRight:10}} />
-          <Text style={{flex:1, fontSize:13, color:'#92400E'}}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
+        <View style={prodStyles.infoBanner}>
+          <Ionicons name="information-circle" size={18} color={THEME.brand} />
+          <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
         </View>
       )}
 
       {loading ? (
-        <ActivityIndicator style={{marginTop:24}} />
+        <ActivityIndicator style={{marginTop:24}} color={THEME.brand} />
       ) : (
         <FlatList
           data={(function(){
@@ -959,46 +1142,61 @@ const ProductsScreen = () => {
                 setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
                 setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
               }}
-              style={{backgroundColor:"#fff",padding:16,marginVertical:8,marginHorizontal:16,borderRadius:12,shadowColor:"#000",shadowOpacity:0.05,shadowRadius:5,
-                borderWidth: checkedShops[index] ? 2 : 0, borderColor: checkedShops[index] ? BRAND : "transparent"
-              }}>
-              <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                <View style={{flexDirection:"row",alignItems:"center",flex:1}}>
+              style={[prodStyles.card, checkedShops[index] && prodStyles.cardOn]}>
+              <View style={prodStyles.cardHead}>
+                <View style={prodStyles.cardHeadLeft}>
                   <Square value={!!checkedShops[index]} onPress={()=>{
                     const wasChecked = !!checkedShops[index];
                     setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
                     setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
                   }} />
-                  <Text style={{fontWeight:"bold",fontSize:16,marginLeft:popupSelectedItems.length > 0 ? 10 : 0}}>{item?.name||t('productsScreen.defaultShop')}</Text>
+                  <View style={prodStyles.shopIcon}>
+                    <Ionicons name="storefront" size={22} color={THEME.brand} />
+                  </View>
+                  <View style={{flex:1}}>
+                    <Text numberOfLines={1} style={prodStyles.shopName}>{item?.name||t('productsScreen.defaultShop')}</Text>
+                    <View style={prodStyles.metaRow}>
+                      {item?.distance ? (
+                        <View style={prodStyles.metaChip}>
+                          <Ionicons name="location-outline" size={12} color={THEME.muted} />
+                          <Text style={prodStyles.metaTxt}>{item.distance}</Text>
+                        </View>
+                      ) : null}
+                      {item?.time ? (
+                        <View style={prodStyles.metaChip}>
+                          <Ionicons name="time-outline" size={12} color={THEME.muted} />
+                          <Text style={prodStyles.metaTxt}>{item.time}</Text>
+                        </View>
+                      ) : null}
+                    </View>
+                  </View>
                 </View>
-                <View style={{flexDirection:"row",alignItems:"center"}}>
-                  <TouchableOpacity
-                    onPress={()=>toggleShopFav({name:item?.name})}
-                    style={{
-                      borderWidth:1,
-                      borderColor: isShopFav(item?.name) ? "#00C29B" : "#ddd",
-                      backgroundColor: isShopFav(item?.name) ? "#E8FCF7" : "#fff",
-                      borderRadius:10,
-                      paddingVertical:6,
-                      paddingHorizontal:10,
-                      marginRight:8
-                    }}
-                  >
-                    <Ionicons
-                      name={isShopFav(item?.name) ? "heart" : "heart-outline"}
-                      size={16}
-                      color={isShopFav(item?.name) ? "#00C29B" : "#6B7280"}
-                    />
-                  </TouchableOpacity>
-                  <Text style={{color:"#666"}}>{(item?.distance||"")+(item?.time?(" • "+item.time):"")}</Text>
-                </View>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={()=>toggleShopFav({name:item?.name})}
+                  style={[prodStyles.shopFavBtn, {
+                    borderColor: isShopFav(item?.name) ? THEME.brand : THEME.border,
+                    backgroundColor: isShopFav(item?.name) ? THEME.brandSoft : THEME.card,
+                  }]}
+                >
+                  <Ionicons
+                    name={isShopFav(item?.name) ? "heart" : "heart-outline"}
+                    size={17}
+                    color={isShopFav(item?.name) ? THEME.brand : THEME.muted}
+                  />
+                </TouchableOpacity>
               </View>
-              {mode==="delivery" ? <Text style={{color:"#666",marginTop:6}}>{t('productsScreen.deliveryFee')}{fmtPrice(item?.deliveryFee||0)}</Text> : null}
+              {mode==="delivery" ? (
+                <View style={prodStyles.feeRow}>
+                  <Ionicons name="bicycle-outline" size={14} color={THEME.muted} />
+                  <Text style={prodStyles.feeTxt}>{t('productsScreen.deliveryFee')}{fmtPrice(item?.deliveryFee||0)}</Text>
+                </View>
+              ) : null}
 
               {/* Display original products with quantity controls */}
               {(Array.isArray(item?.products)?item.__renderItems:[]).map((p,i)=>(
-                <View key={i} style={{marginTop:12}}>
-                  <View style={{flexDirection:"row",alignItems:"center"}}>
+                <View key={i} style={prodStyles.productRow}>
+                  <View style={prodStyles.productLine}>
                     {/* Qty + Title — green if matched product found, red if not */}
                     {(() => {
                       const pName = String(p?.title || p?.name || '').toLowerCase().trim();
@@ -1012,19 +1210,19 @@ const ProductsScreen = () => {
                       const needed = Number(p?.qty || 1);
                       const isMatched = matchedQty >= needed;
                       const qtyColor = isMatched ? BRAND : '#EF4444';
-                      return <><Text style={{fontSize:14,fontWeight:"800",color:qtyColor,marginRight:6}}>x{needed}</Text>
-                    <Text numberOfLines={1} style={{flex:1,fontSize:15,fontWeight:"600",color:"#111",marginRight:10}}>{String(p?.title||'')}</Text>
+                      return <><View style={[prodStyles.qtyBadge, {backgroundColor: isMatched ? THEME.brandSoft : THEME.dangerSoft}]}><Text style={[prodStyles.qtyBadgeTxt, {color:qtyColor}]}>x{needed}</Text></View>
+                    <Text numberOfLines={1} style={prodStyles.productTitle}>{String(p?.title||'')}</Text>
                     {isMatched ? (
-                      <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'#ECFDF5',paddingHorizontal:10,paddingVertical:6,borderRadius:6}}>
-                        <Ionicons name="checkmark-circle" size={14} color={BRAND} style={{marginRight:4}} />
-                        <Text style={{color:BRAND,fontWeight:"700",fontSize:13}}>{t('cart.added') || 'Ajouté'}</Text>
+                      <View style={prodStyles.addedTag}>
+                        <Ionicons name="checkmark-circle" size={14} color={BRAND} />
+                        <Text style={prodStyles.addedTagTxt}>{t('cart.added') || 'Ajouté'}</Text>
                       </View>
                     ) : (
-                      <TouchableOpacity style={{backgroundColor:BRAND,paddingHorizontal:10,paddingVertical:6,borderRadius:6}} onPress={()=>{ __setActiveQuery(String(p?.title||p?.name||''));  __setInitialQuery(String(p?.title||p?.name||"")); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}><Text style={{color:"#fff",fontWeight:"600",fontSize:13}}>{t('productsScreen.search')}</Text></TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.85} style={prodStyles.searchBtn} onPress={()=>{ __setActiveQuery(String(p?.title||p?.name||''));  __setInitialQuery(String(p?.title||p?.name||"")); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}><Ionicons name="search" size={13} color="#fff" /><Text style={prodStyles.searchBtnTxt}>{t('productsScreen.search')}</Text></TouchableOpacity>
                     )}</>;
                     })()}
                   </View>
-                  
+
                   {/* Show matching selected items below each product */}
                   {popupSelectedItems
                     .filter(selected => {
@@ -1039,8 +1237,8 @@ const ProductsScreen = () => {
                       return productWords.some(pw => selectedWords.some(sw => sw.includes(pw) || pw.includes(sw)));
                     })
                     .map(selectedItem => (
-                      <View key={selectedItem.id} style={{marginTop:8,padding:12,backgroundColor:"#F9FAFB",borderRadius:10}}>
-                        <View style={{flexDirection:"row",alignItems:"center"}}>
+                      <View key={selectedItem.id} style={prodStyles.picked}>
+                        <View style={prodStyles.pickedRow}>
                           <Square
                             value={selectedItem.checked !== false}
                             onPress={() => {
@@ -1071,42 +1269,40 @@ const ProductsScreen = () => {
                             }}
                           />
                           <View style={{width:10}} />
-                          <ProductThumb name={selectedItem.name} size={40} />
-                          <View style={{flex:1,marginLeft:10}}>
-                            <Text style={{fontSize:16,fontWeight:"700",color:"#111"}}>{selectedItem.name}</Text>
-                            <Text style={{fontSize:12,color:"#6B7280",marginTop:2}}>
-                              {selectedItem.detail}
-                            </Text>
-                            <View style={{flexDirection:"row",alignItems:"center",marginTop:4}}>
-                              <Text style={{fontSize:16,fontWeight:"800",color:"#111"}}>{fmtPrice(selectedItem.price)}</Text>
-                              {selectedItem.unitPrice && <Text style={{fontSize:11,color:"#9CA3AF",marginLeft:6}}>{selectedItem.unitPrice}</Text>}
-                              <TouchableOpacity onPress={() => toggleProductFav(selectedItem)} style={{marginLeft:8}}>
-                                <Ionicons name={favProductNames.has(selectedItem.name) ? "heart" : "heart-outline"} size={18} color={favProductNames.has(selectedItem.name) ? "#EF4444" : "#9CA3AF"} />
+                          <ProductThumb name={selectedItem.name} size={44} />
+                          <View style={prodStyles.pickedBody}>
+                            <Text style={prodStyles.pickedName}>{selectedItem.name}</Text>
+                            {selectedItem.detail ? <Text style={prodStyles.pickedDetail}>{selectedItem.detail}</Text> : null}
+                            <View style={prodStyles.pickedPriceRow}>
+                              <Text style={prodStyles.pickedPrice}>{fmtPrice(selectedItem.price)}</Text>
+                              {selectedItem.unitPrice && <Text style={prodStyles.pickedUnit}>{selectedItem.unitPrice}</Text>}
+                              <TouchableOpacity onPress={() => toggleProductFav(selectedItem)} style={prodStyles.pickedFav}>
+                                <Ionicons name={favProductNames.has(selectedItem.name) ? "heart" : "heart-outline"} size={18} color={favProductNames.has(selectedItem.name) ? THEME.danger : THEME.faint} />
                               </TouchableOpacity>
                             </View>
                           </View>
-                          <View style={{flexDirection:"row",alignItems:"center",marginLeft:"auto"}}>
+                          <View style={prodStyles.stepper}>
                             {(selectedItem.qty || 1) <= 1 ? (
                               <TouchableOpacity
                                 onPress={() => setPopupSelectedItems(prev => prev.filter(si => si.id !== selectedItem.id))}
-                                style={{width:28,height:28,borderRadius:14,borderWidth:1.5,borderColor:"#EF4444",alignItems:"center",justifyContent:"center"}}
+                                style={prodStyles.stepBtnDel}
                               >
-                                <Ionicons name="trash-outline" size={14} color="#EF4444" />
+                                <Ionicons name="trash-outline" size={14} color={THEME.danger} />
                               </TouchableOpacity>
                             ) : (
                               <RepeatButton
                                 onPress={() => setPopupSelectedItems(prev => prev.map(si => si.id === selectedItem.id ? {...si, qty: (si.qty || 1) - 1} : si))}
                                 onLongAction={() => setPopupSelectedItems(prev => prev.map(si => si.id === selectedItem.id ? {...si, qty: Math.max(1, (si.qty || 1) - 1)} : si))}
-                                style={{width:28,height:28,borderRadius:14,borderWidth:1.5,borderColor:"#D1D5DB",alignItems:"center",justifyContent:"center"}}
+                                style={prodStyles.stepBtn}
                               >
-                                <Ionicons name="remove" size={14} color="#555" />
+                                <Ionicons name="remove" size={14} color={THEME.ink} />
                               </RepeatButton>
                             )}
-                            <Text style={{fontSize:15,fontWeight:"700",color:"#111",marginHorizontal:6,minWidth:18,textAlign:"center"}}>{selectedItem.qty || 1}</Text>
+                            <Text style={prodStyles.stepQty}>{selectedItem.qty || 1}</Text>
                             <RepeatButton
                               onPress={() => setPopupSelectedItems(prev => prev.map(si => si.id === selectedItem.id ? {...si, qty: (si.qty || 1) + 1} : si))}
                               onLongAction={() => setPopupSelectedItems(prev => prev.map(si => si.id === selectedItem.id ? {...si, qty: (si.qty || 1) + 1} : si))}
-                              style={{width:28,height:28,borderRadius:14,backgroundColor:BRAND,alignItems:"center",justifyContent:"center"}}
+                              style={prodStyles.stepBtnAdd}
                             >
                               <Ionicons name="add" size={14} color="#fff" />
                             </RepeatButton>
@@ -1126,76 +1322,82 @@ const ProductsScreen = () => {
                 return <>
                   {/* Bouton ajouter un produit supplémentaire */}
                   <TouchableOpacity
+                    activeOpacity={0.85}
                     onPress={() => { __setActiveQuery(''); __setInitialQuery(''); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}
-                    style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:8, borderRadius:10, borderWidth:1, borderColor:BRAND, borderStyle:'dashed'}}
+                    style={prodStyles.addMoreBtn}
                   >
-                    <Ionicons name="add-circle-outline" size={18} color={BRAND} style={{marginRight:6}} />
-                    <Text style={{color:BRAND, fontWeight:'600', fontSize:14}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+                    <Ionicons name="add-circle-outline" size={18} color={THEME.brandDark} />
+                    <Text style={prodStyles.addMoreTxt}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
                   </TouchableOpacity>
 
-                  <View style={{marginTop:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                    <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{t('productsScreen.productsTotal')}</Text>
-                    <Text style={{fontSize:15,fontWeight:"700",color:"#374151"}}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
-                  </View>
-                  <View style={{marginTop:6,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                    <Text style={{fontSize:15,fontWeight:"700", color:"#111"}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
-                    <Text style={{fontWeight:"700", fontSize:15, color:BRAND}}>{fmtPrice(liveTotal)}</Text>
-                  </View>
-                  {mode==="delivery" ? (
-                    <View style={{marginTop:4,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-                      <Text style={{color:"#444"}}>{t('productsScreen.totalWithDelivery')}</Text>
-                      <Text style={{fontWeight:"700"}}>{fmtPrice(liveTotalWithDelivery)}</Text>
+                  <View style={prodStyles.totalsBox}>
+                    <View style={prodStyles.totalRow}>
+                      <Text style={prodStyles.totalLabel}>{t('productsScreen.productsTotal')}</Text>
+                      <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
                     </View>
-                  ) : null}
+                    <View style={[prodStyles.totalRow, {marginTop:6}]}>
+                      <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+                      <Text style={prodStyles.grandValue}>{fmtPrice(liveTotal)}</Text>
+                    </View>
+                    {mode==="delivery" ? (
+                      <View style={[prodStyles.totalRow, {marginTop:6}]}>
+                        <Text style={prodStyles.totalLabel}>{t('productsScreen.totalWithDelivery')}</Text>
+                        <Text style={prodStyles.totalValue}>{fmtPrice(liveTotalWithDelivery)}</Text>
+                      </View>
+                    ) : null}
+                  </View>
                 </>;
               })()}
             </TouchableOpacity>
           )}
           ListEmptyComponent={
-            <View style={{flex:1, alignItems:'center', justifyContent:'center', paddingTop:80, paddingHorizontal:40}}>
-              <Ionicons name="cart-outline" size={56} color="#E5E7EB" />
-              <Text style={{textAlign:"center", marginTop:16, fontSize:16, fontWeight:'600', color:"#374151"}}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
-              <Text style={{textAlign:"center", marginTop:8, fontSize:13, color:"#9CA3AF"}}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
+            <View style={prodStyles.empty}>
+              <View style={prodStyles.emptyCircle}>
+                <Ionicons name="cart-outline" size={44} color="#fff" />
+              </View>
+              <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
+              <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
             </View>
           }
-          contentContainerStyle={{paddingBottom: 100}}
+          contentContainerStyle={{paddingBottom: 220}}
         />
       )}
 
       {/* Panneau produits sélectionnés en bas */}
       {Object.values(checkedShops).some(v=>v) && (
-        <View style={{position:"absolute",bottom:0,left:0,right:0,backgroundColor:'#fff',borderTopLeftRadius:20,borderTopRightRadius:20,shadowColor:"#000",shadowOpacity:0.15,shadowRadius:10,elevation:8,paddingBottom:Platform.OS==='ios'?30:16}}>
+        <View style={prodStyles.bottomWrap}>
           {/* Liste des produits sélectionnés — max 3.5 visibles */}
           <FlatList
             data={popupSelectedItems.filter(si => checkedShops[si.shopIndex])}
             keyExtractor={(item) => String(item.id)}
             horizontal={false}
-            style={{maxHeight:220, paddingHorizontal:16, paddingTop:12}}
+            style={prodStyles.bottomList}
             showsVerticalScrollIndicator={true}
             renderItem={({item: si}) => (
-              <View style={{flexDirection:'row', alignItems:'center', paddingVertical:6, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-                <ProductThumb name={si.name} size={32} />
-                <View style={{flex:1, marginLeft:8}}>
-                  <Text style={{fontSize:13, fontWeight:'600', color:'#111'}} numberOfLines={1}>{si.name}</Text>
-                  <Text style={{fontSize:11, color:'#6B7280'}}>{si.shop}</Text>
+              <View style={prodStyles.bottomItem}>
+                <ProductThumb name={si.name} size={36} />
+                <View style={prodStyles.bottomItemBody}>
+                  <Text style={prodStyles.bottomItemName} numberOfLines={1}>{si.name}</Text>
+                  <Text style={prodStyles.bottomItemShop}>{si.shop}</Text>
                 </View>
-                <Text style={{fontSize:12, fontWeight:'600', color:'#374151', marginRight:8}}>x{si.qty||1}</Text>
-                <Text style={{fontSize:13, fontWeight:'700', color:BRAND}}>{fmtPrice((si.price||0)*(si.qty||1))}</Text>
+                <Text style={prodStyles.bottomItemQty}>x{si.qty||1}</Text>
+                <Text style={prodStyles.bottomItemPrice}>{fmtPrice((si.price||0)*(si.qty||1))}</Text>
               </View>
             )}
           />
           {/* Nombre de produits sélectionnés + total */}
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingHorizontal:16, paddingTop:8, paddingBottom:6}}>
-            <Text style={{fontSize:14, fontWeight:'700', color:'#374151'}}>
+          <View style={prodStyles.bottomSummary}>
+            <Text style={prodStyles.bottomCount}>
               {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)} {t('productsScreen.quantity') || 'produits'}
             </Text>
-            <Text style={{fontSize:16, fontWeight:'800', color:BRAND}}>
+            <Text style={prodStyles.bottomTotal}>
               {fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}
             </Text>
           </View>
           {/* Bouton ajouter au panier */}
-          <View style={{paddingHorizontal:16}}>
+          <View>
             <TouchableOpacity
+              activeOpacity={0.9}
               onPress={async ()=>{
                 try {
                   const cartItems = [];
@@ -1233,10 +1435,10 @@ const ProductsScreen = () => {
                   }
                 } catch(e){}
               }}
-              style={{height:50,borderRadius:14,backgroundColor:BRAND,flexDirection:"row",alignItems:"center",justifyContent:"center"}}
+              style={prodStyles.cta}
             >
-              <Ionicons name="cart" size={20} color="#fff" style={{marginRight:8}} />
-              <Text style={{color:"#fff",fontSize:16,fontWeight:"700"}}>
+              <Ionicons name="cart" size={20} color="#fff" />
+              <Text style={prodStyles.ctaTxt}>
                 {t('cart.addToCart')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)})
               </Text>
             </TouchableOpacity>
@@ -1573,8 +1775,40 @@ const ProductsScreen = () => {
       </Modal>
 
     </SafeAreaView>
+    </View>
   );
 };
+
+const favStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
+  segTxtOn: { color: THEME.ink },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, height: 48, marginTop: 12 },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, padding: 0 },
+  card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  cardRow: { flexDirection: 'row', alignItems: 'center' },
+  shopIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  cardBody: { flex: 1, marginLeft: 12, marginRight: 8 },
+  cardTitle: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  cardSub: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  metaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6, flexWrap: 'wrap' },
+  metaChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, marginRight: 6 },
+  metaTxt: { fontSize: 12, color: THEME.muted, marginLeft: 4, fontWeight: '600' },
+  priceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 4 },
+  price: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  unitPrice: { fontSize: 11, color: THEME.faint, marginLeft: 6, fontWeight: '600' },
+  favBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+});
 
 const FavoritesScreen = () => {
   const { t } = useTranslation();
@@ -1642,72 +1876,95 @@ const FavoritesScreen = () => {
 
   const isEmpty = tab === 'shops' ? shopDetails.length === 0 : favProducts.length === 0;
 
-  return (
-    <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-    <SafeAreaView style={styles.screen}>
+  const Header = (
+    <View style={favStyles.header}>
+      <Text style={favStyles.title}>{t('tabs.favorites')}</Text>
+      <Text style={favStyles.subtitle}>
+        {tab === 'shops'
+          ? `${shopDetails.length} ${t('favorites.shops') || 'Shops'}`
+          : `${favProducts.length} ${t('favorites.products') || 'Produits'}`}
+      </Text>
+
       {/* Toggle Shops / Produits */}
-      <View style={{flexDirection:'row', marginHorizontal:16, marginTop:12, marginBottom:8}}>
-        <TouchableOpacity onPress={() => { setTab('shops'); setSearchQuery(''); }} style={{flex:1, borderWidth:1, borderColor: tab==='shops' ? BRAND : '#ccc', borderRadius:10, paddingVertical:8, marginRight:8, alignItems:'center', backgroundColor: tab==='shops' ? BRAND : '#fff'}}>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Ionicons name="storefront-outline" size={16} color={tab==='shops' ? '#fff' : '#555'} style={{marginRight:6}} />
-            <Text style={{color: tab==='shops' ? '#fff' : '#555', fontWeight:'600'}}>{t('favorites.shops') || 'Shops'}</Text>
-          </View>
+      <View style={favStyles.segment}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => { setTab('shops'); setSearchQuery(''); }} style={[favStyles.segBtn, tab === 'shops' && favStyles.segBtnOn]}>
+          <Ionicons name={tab === 'shops' ? 'storefront' : 'storefront-outline'} size={16} color={tab === 'shops' ? THEME.brand : THEME.muted} />
+          <Text style={[favStyles.segTxt, tab === 'shops' && favStyles.segTxtOn]}>{t('favorites.shops') || 'Shops'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setTab('products'); setSearchQuery(''); }} style={{flex:1, borderWidth:1, borderColor: tab==='products' ? BRAND : '#ccc', borderRadius:10, paddingVertical:8, marginLeft:8, alignItems:'center', backgroundColor: tab==='products' ? BRAND : '#fff'}}>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Ionicons name="heart-outline" size={16} color={tab==='products' ? '#fff' : '#555'} style={{marginRight:6}} />
-            <Text style={{color: tab==='products' ? '#fff' : '#555', fontWeight:'600'}}>{t('favorites.products') || 'Produits'}</Text>
-          </View>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => { setTab('products'); setSearchQuery(''); }} style={[favStyles.segBtn, tab === 'products' && favStyles.segBtnOn]}>
+          <Ionicons name={tab === 'products' ? 'heart' : 'heart-outline'} size={16} color={tab === 'products' ? THEME.brand : THEME.muted} />
+          <Text style={[favStyles.segTxt, tab === 'products' && favStyles.segTxtOn]}>{t('favorites.products') || 'Produits'}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Search */}
-      <View style={{ paddingHorizontal:16, paddingBottom:4 }}>
-        <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#fff', borderRadius:12, paddingHorizontal:12, paddingVertical:10, borderWidth:1, borderColor:'#E5E7EB' }}>
-          <Ionicons name="search-outline" size={18} color="#9CA3AF" />
-          <TextInput value={searchQuery} onChangeText={setSearchQuery}
-            placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder') || 'Rechercher un shop') : (t('favorites.searchProductPlaceholder') || 'Rechercher un produit')}
-            placeholderTextColor="#9CA3AF" style={{ flex:1, marginLeft:8, fontSize:15, color:'#111', padding:0 }} />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={18} color="#9CA3AF" />
-            </TouchableOpacity>
-          )}
-        </View>
+      <View style={favStyles.searchWrap}>
+        <Ionicons name="search-outline" size={18} color={THEME.faint} />
+        <TextInput value={searchQuery} onChangeText={setSearchQuery}
+          placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder') || 'Rechercher un shop') : (t('favorites.searchProductPlaceholder') || 'Rechercher un produit')}
+          placeholderTextColor={THEME.faint} style={favStyles.searchInput} />
+        {searchQuery.length > 0 && (
+          <TouchableOpacity onPress={() => setSearchQuery('')}>
+            <Ionicons name="close-circle" size={18} color={THEME.faint} />
+          </TouchableOpacity>
+        )}
       </View>
+    </View>
+  );
 
+  return (
+    <View style={favStyles.screen}>
+    <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <SafeAreaView style={favStyles.screen} edges={['top']}>
       {isEmpty ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 40}}>
-          <Ionicons name={tab === 'shops' ? "storefront-outline" : "heart-outline"} size={56} color="#E5E7EB" />
-          <Text style={{fontSize: 16, fontWeight: '600', color: '#374151', marginTop: 16, textAlign: 'center'}}>
-            {tab === 'shops' ? (t('favorites.noFavorites') || 'Aucun shop favori') : (t('favorites.noFavProducts') || 'Aucun produit favori')}
-          </Text>
-          <Text style={{fontSize: 13, color: '#9CA3AF', marginTop: 8, textAlign: 'center'}}>
-            {tab === 'shops' ? (t('favorites.addFromProducts') || 'Ajoutez depuis l\'onglet Produits') : (t('favorites.addProductHint') || 'Appuyez sur le coeur d\'un produit pour l\'ajouter')}
-          </Text>
-        </View>
+        <>
+          {Header}
+          <View style={favStyles.empty}>
+            <View style={favStyles.emptyCircle}>
+              <Ionicons name={tab === 'shops' ? "storefront-outline" : "heart-outline"} size={44} color="#fff" />
+            </View>
+            <Text style={favStyles.emptyTitle}>
+              {tab === 'shops' ? (t('favorites.noFavorites') || 'Aucun shop favori') : (t('favorites.noFavProducts') || 'Aucun produit favori')}
+            </Text>
+            <Text style={favStyles.emptyHint}>
+              {tab === 'shops' ? (t('favorites.addFromProducts') || 'Ajoutez depuis l\'onglet Produits') : (t('favorites.addProductHint') || 'Appuyez sur le coeur d\'un produit pour l\'ajouter')}
+            </Text>
+          </View>
+        </>
       ) : tab === 'shops' ? (
         <FlatList
           data={filteredShops}
           keyExtractor={(item) => item.name}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{paddingVertical: 8}}
+          ListHeaderComponent={Header}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 24}}
           renderItem={({item}) => (
-            <View style={{ backgroundColor:'#fff', marginHorizontal:16, marginVertical:6, borderRadius:12, padding:16, shadowColor:'#000', shadowOpacity:0.05, shadowRadius:5, elevation:2 }}>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
-                <View style={{flex:1}}>
-                  <View style={{flexDirection:'row', alignItems:'center', marginBottom:4}}>
-                    <Ionicons name="storefront" size={18} color={BRAND} style={{marginRight:8}} />
-                    <Text style={{fontSize:16, fontWeight:'700', color:'#111'}}>{item.name}</Text>
-                  </View>
-                  {item.address ? <Text style={{fontSize:13, color:'#6B7280', marginTop:2}}>{item.address}</Text> : null}
-                  <View style={{flexDirection:'row', alignItems:'center', marginTop:6}}>
-                    {item.distance ? <><Ionicons name="location-outline" size={13} color="#6B7280" /><Text style={{fontSize:12, color:'#6B7280', marginLeft:4}}>{item.distance}</Text></> : null}
-                    {item.time ? <><Ionicons name="time-outline" size={13} color="#6B7280" style={{marginLeft:10}} /><Text style={{fontSize:12, color:'#6B7280', marginLeft:4}}>{item.time}</Text></> : null}
+            <View style={favStyles.card}>
+              <View style={favStyles.cardRow}>
+                <View style={favStyles.shopIcon}>
+                  <Ionicons name="storefront" size={22} color={THEME.brand} />
+                </View>
+                <View style={favStyles.cardBody}>
+                  <Text style={favStyles.cardTitle}>{item.name}</Text>
+                  {item.address ? <Text style={favStyles.cardSub}>{item.address}</Text> : null}
+                  <View style={favStyles.metaRow}>
+                    {item.distance ? (
+                      <View style={favStyles.metaChip}>
+                        <Ionicons name="location-outline" size={12} color={THEME.muted} />
+                        <Text style={favStyles.metaTxt}>{item.distance}</Text>
+                      </View>
+                    ) : null}
+                    {item.time ? (
+                      <View style={favStyles.metaChip}>
+                        <Ionicons name="time-outline" size={12} color={THEME.muted} />
+                        <Text style={favStyles.metaTxt}>{item.time}</Text>
+                      </View>
+                    ) : null}
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => removeShopFav(item.name)} style={{ width:34, height:34, borderRadius:17, backgroundColor:'#FEE2E2', alignItems:'center', justifyContent:'center' }}>
-                  <Ionicons name="heart-dislike-outline" size={16} color="#EF4444" />
+                <TouchableOpacity onPress={() => removeShopFav(item.name)} activeOpacity={0.8} style={favStyles.favBtn}>
+                  <Ionicons name="heart-dislike-outline" size={17} color={THEME.danger} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -1718,30 +1975,255 @@ const FavoritesScreen = () => {
           data={filteredProducts}
           keyExtractor={(item, i) => (item.name||'') + i}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{paddingVertical: 8}}
+          ListHeaderComponent={Header}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 24}}
           renderItem={({item}) => (
-            <View style={{ backgroundColor:'#fff', marginHorizontal:16, marginVertical:6, borderRadius:12, padding:14, shadowColor:'#000', shadowOpacity:0.05, shadowRadius:5, elevation:2, flexDirection:'row', alignItems:'center' }}>
-              <ProductThumb name={item.name} size={44} />
-              <View style={{flex:1, marginLeft:12}}>
-                <Text style={{fontSize:15, fontWeight:'700', color:'#111'}}>{item.name}</Text>
-                {item.detail ? <Text style={{fontSize:12, color:'#6B7280', marginTop:2}}>{item.detail}</Text> : null}
-                <View style={{flexDirection:'row', alignItems:'baseline', marginTop:4}}>
-                  <Text style={{fontSize:15, fontWeight:'800', color:'#111'}}>{fmtPrice(item.price || 0)}</Text>
-                  {item.unitPrice ? <Text style={{fontSize:11, color:'#9CA3AF', marginLeft:6}}>{item.unitPrice}</Text> : null}
+            <View style={favStyles.card}>
+              <View style={favStyles.cardRow}>
+                <ProductThumb name={item.name} size={44} />
+                <View style={favStyles.cardBody}>
+                  <Text style={favStyles.cardTitle}>{item.name}</Text>
+                  {item.detail ? <Text style={favStyles.cardSub}>{item.detail}</Text> : null}
+                  <View style={favStyles.priceRow}>
+                    <Text style={favStyles.price}>{fmtPrice(item.price || 0)}</Text>
+                    {item.unitPrice ? <Text style={favStyles.unitPrice}>{item.unitPrice}</Text> : null}
+                  </View>
                 </View>
+                <TouchableOpacity onPress={() => removeProductFav(item.name)} activeOpacity={0.8} style={favStyles.favBtn}>
+                  <Ionicons name="heart-dislike-outline" size={17} color={THEME.danger} />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={() => removeProductFav(item.name)} style={{ width:34, height:34, borderRadius:17, backgroundColor:'#FEE2E2', alignItems:'center', justifyContent:'center' }}>
-                <Ionicons name="heart-dislike-outline" size={16} color="#EF4444" />
-              </TouchableOpacity>
             </View>
           )}
         />
       )}
     </SafeAreaView>
     </KeyboardAvoidingView>
+    </View>
   );
 };
 // Simulated order tracking modal
+const cartStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  clearBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+
+  card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  cardOn: { borderColor: THEME.brand, borderWidth: 2 },
+  shopHead: { flexDirection: 'row', alignItems: 'center', paddingBottom: 12, marginBottom: 2, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  shopIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginLeft: 10, marginRight: 10 },
+  shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  shopMeta: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+
+  check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
+  checkOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+
+  productRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
+  productDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
+  productBody: { flex: 1, marginLeft: 10, marginRight: 10 },
+  productName: { fontSize: 15, fontWeight: '700', color: THEME.ink },
+  productDetail: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  productSide: { alignItems: 'flex-end' },
+  productPrice: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  productUnit: { fontSize: 11, color: THEME.faint, marginTop: 2, fontWeight: '600' },
+  productDelBtn: { width: 30, height: 30, borderRadius: 10, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center', marginTop: 6 },
+
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, height: 34, paddingHorizontal: 3, marginTop: 8, alignSelf: 'flex-start' },
+  stepBtn: { width: 28, height: 28, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
+  stepQty: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginHorizontal: 8, minWidth: 18, textAlign: 'center' },
+
+  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 12, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
+  addMoreTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13.5, marginLeft: 6 },
+
+  subtotalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 4, borderTopWidth: 1, borderTopColor: THEME.border },
+  subtotalLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
+  subtotalValue: { fontSize: 15, fontWeight: '800', color: THEME.brand },
+
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 14, paddingBottom: Platform.OS === 'ios' ? 28 : 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  bottomRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  bottomCount: { fontSize: 13.5, fontWeight: '700', color: THEME.muted },
+  bottomCountVal: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
+  bottomTotalLabel: { fontSize: 16, fontWeight: '800', color: THEME.ink },
+  bottomTotalVal: { fontSize: 20, fontWeight: '900', color: THEME.brand },
+  cta: { marginTop: 12, height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  ctaDisabled: { backgroundColor: THEME.faint },
+
+  // Bottom sheet modals
+  sheetBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, ...THEME.shadow },
+  sheetGrabber: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 2 },
+  sheetHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 14 },
+  sheetTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  sheetTitleRow: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  closeBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+
+  // Segmented control (delivery / collect)
+  segment: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
+  segTxtOn: { color: THEME.ink },
+
+  // Shop block inside confirm sheet
+  shopBlock: { marginTop: 14, padding: 14, backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  shopBlockHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
+  shopBlockName: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
+  miniRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8 },
+  miniName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  miniPrice: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
+  miniStepper: { flexDirection: 'row', alignItems: 'center', width: 96, justifyContent: 'space-between' },
+  miniStepBtn: { width: 30, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle },
+  miniStepBtnDel: { width: 30, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.dangerSoft },
+  miniStepQty: { fontSize: 14, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  blockAddBtn: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', marginTop: 8, marginBottom: 4, paddingHorizontal: 12, height: 34, borderRadius: 10, backgroundColor: THEME.subtle },
+  blockAddTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.ink, marginLeft: 6 },
+  blockSubtotal: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, marginTop: 4, borderTopWidth: 1, borderTopColor: THEME.border },
+  blockSubLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
+  blockSubVal: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
+
+  feeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingHorizontal: 2 },
+  feeLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
+  feeValue: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
+  feeValueFree: { fontSize: 13.5, fontWeight: '800', color: THEME.brand },
+
+  // Info card (collect / address)
+  infoCard: { marginTop: 16, padding: 14, borderRadius: 16, backgroundColor: THEME.subtle },
+  infoCardHead: { flexDirection: 'row', alignItems: 'center' },
+  infoIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  infoTitle: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  infoSub: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  infoNote: { fontSize: 12.5, color: THEME.faint, marginTop: 10, marginLeft: 48, fontWeight: '600' },
+
+  addrCard: { marginTop: 16, padding: 14, borderRadius: 16, backgroundColor: THEME.subtle },
+  addrHeadRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  addrHeadLeft: { flexDirection: 'row', alignItems: 'center' },
+  addrTitle: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
+  addrEditTxt: { fontSize: 13, fontWeight: '700', color: THEME.brand },
+  addrFieldLabel: { fontSize: 12, fontWeight: '700', color: THEME.muted, marginBottom: 6 },
+  addrInput: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 12, paddingHorizontal: 14, height: 46, fontSize: 14, color: THEME.ink },
+  addrSuggestBox: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 12, marginTop: 6, overflow: 'hidden' },
+  addrSuggestRow: { paddingHorizontal: 14, paddingVertical: 11, flexDirection: 'row', alignItems: 'center' },
+  addrSuggestTxt: { fontSize: 13, color: THEME.ink, marginLeft: 8, fontWeight: '600' },
+  addrBtnRow: { flexDirection: 'row', marginTop: 14, gap: 10 },
+  addrCancelBtn: { flex: 1, height: 44, borderRadius: 12, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
+  addrCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 14 },
+  addrSaveBtn: { flex: 1, height: 44, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  addrSaveTxt: { color: '#fff', fontWeight: '800', fontSize: 14 },
+  addrDisplay: { marginTop: 10, marginLeft: 28 },
+  addrDisplayRow: { flexDirection: 'row', alignItems: 'center' },
+  addrDisplayTxt: { fontSize: 13, color: THEME.ink, marginLeft: 6, flex: 1, fontWeight: '600' },
+  addrDisplaySub: { fontSize: 12.5, color: THEME.muted, marginLeft: 6, fontWeight: '600' },
+
+  // Slot picker
+  slotSection: { marginTop: 18 },
+  slotSectionHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
+  slotSectionTitle: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
+  dayPill: { paddingHorizontal: 14, height: 38, borderRadius: 12, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  dayPillOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  dayPillTxt: { fontSize: 13, fontWeight: '700', color: THEME.muted },
+  dayPillTxtOn: { color: '#fff' },
+  periodGroup: { marginBottom: 14 },
+  periodHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  periodLabel: { fontSize: 11.5, fontWeight: '800', color: THEME.muted, marginLeft: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
+  slotGrid: { flexDirection: 'row', flexWrap: 'wrap' },
+  slotChip: { width: '31.5%', marginBottom: 8, paddingVertical: 9, borderRadius: 12, alignItems: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  slotChipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  slotChipTxt: { fontSize: 11, fontWeight: '700', color: THEME.muted },
+  slotChipTxtOn: { color: '#fff' },
+  noSlots: { padding: 22, alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 16 },
+  noSlotsTxt: { fontSize: 13, color: THEME.muted, marginTop: 8, fontWeight: '600' },
+
+  // Totals box
+  totalsBox: { marginTop: 16, padding: 14, backgroundColor: THEME.subtle, borderRadius: 16 },
+  slotBanner: { flexDirection: 'row', alignItems: 'center', marginBottom: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  slotBannerDay: { fontSize: 13, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
+  slotBannerTime: { fontSize: 13, color: THEME.brand, fontWeight: '700', marginLeft: 6 },
+  totalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
+  totalLabel: { fontSize: 13.5, color: THEME.muted, fontWeight: '600' },
+  totalValue: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
+  totalValueFree: { fontSize: 13.5, fontWeight: '700', color: THEME.brand },
+  grandRow: { borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  grandLabel: { fontSize: 17, fontWeight: '900', color: THEME.ink },
+  grandValue: { fontSize: 17, fontWeight: '900', color: THEME.brand },
+  itemsCaption: { fontSize: 12, color: THEME.faint, textAlign: 'center', marginTop: 12, fontWeight: '600' },
+
+  sheetFooter: { paddingHorizontal: 20, paddingTop: 12, gap: 10 },
+  primaryBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  primaryBtnDisabled: { backgroundColor: THEME.faint },
+  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  ghostBtn: { height: 46, borderRadius: 14, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  ghostBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
+
+  // Search field inside modals
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, height: 46 },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: THEME.ink, padding: 0 },
+
+  // Picker product row (shop products / add products lists)
+  pickerRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 10, marginBottom: 8, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pickerRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand },
+  pickerBody: { flex: 1, marginLeft: 12, marginRight: 10 },
+  pickerName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  pickerDetail: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
+  pickerPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 3 },
+  pickerPrice: { fontSize: 14, fontWeight: '800', color: THEME.ink },
+  pickerUnit: { fontSize: 10.5, color: THEME.faint, marginLeft: 4, fontWeight: '600' },
+  pickerAddBtn: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand },
+  pickerAddPill: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brand, paddingHorizontal: 12, height: 36, borderRadius: 12 },
+  pickerAddPillTxt: { fontSize: 13, fontWeight: '700', color: '#fff', marginLeft: 4 },
+  pickerInCart: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, paddingHorizontal: 10, height: 32, borderRadius: 10 },
+  pickerInCartTxt: { fontSize: 12, fontWeight: '700', color: THEME.muted, marginLeft: 4 },
+  pickerStepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, paddingHorizontal: 3, height: 36 },
+  pickerStepBtn: { width: 30, height: 30, borderRadius: 9, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card },
+  pickerStepQty: { fontSize: 14, fontWeight: '800', color: THEME.ink, marginHorizontal: 12 },
+  pickerEmpty: { alignItems: 'center', paddingVertical: 34 },
+  pickerEmptyTxt: { fontSize: 14, color: THEME.muted, fontWeight: '600' },
+  addedSummary: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 },
+  addedSummaryTitle: { fontSize: 13, fontWeight: '800', color: THEME.ink, marginBottom: 4 },
+  addedSummaryLine: { fontSize: 12, color: THEME.muted, fontWeight: '600' },
+
+  // OrderTracker
+  trackerHeader: { paddingHorizontal: 20, paddingTop: 56, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  trackerHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  trackerTitle: { fontSize: 24, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  trackerOrderNo: { fontSize: 13, color: THEME.muted, marginTop: 3, fontWeight: '600' },
+  etaWrap: { alignItems: 'center', paddingVertical: 26 },
+  etaCircle: { width: 108, height: 108, borderRadius: 54, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: THEME.brand },
+  etaValue: { fontSize: 19, fontWeight: '900', color: THEME.brandDark, marginTop: 2 },
+  etaCaption: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginTop: 14 },
+  stepsWrap: { paddingHorizontal: 24 },
+  stepItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+  stepDot: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  stepDotOn: { backgroundColor: THEME.brand },
+  stepDotOff: { backgroundColor: THEME.subtle },
+  stepConnector: { position: 'absolute', left: 17, top: 36, width: 2, height: 20 },
+  stepLabelWrap: { marginLeft: 14, flex: 1 },
+  stepLabel: { fontSize: 15 },
+  stepLabelOn: { fontWeight: '700', color: THEME.ink },
+  stepLabelOff: { fontWeight: '600', color: THEME.faint },
+  trackerSummaryScroll: { marginTop: 14, marginHorizontal: 20, maxHeight: 240 },
+  trackerSummaryCard: { padding: 14, backgroundColor: THEME.subtle, borderRadius: 16 },
+  trackerSummaryTitle: { fontSize: 13, fontWeight: '800', color: THEME.muted, marginBottom: 10 },
+  trackerShopRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+  trackerShopName: { fontSize: 13, fontWeight: '700', color: THEME.brandDark, marginLeft: 6 },
+  trackerLineRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3, paddingLeft: 20 },
+  trackerLineName: { color: THEME.ink, fontSize: 13, flex: 1, fontWeight: '600' },
+  trackerLinePrice: { color: THEME.ink, fontSize: 13, fontWeight: '600' },
+  trackerTotalRow: { borderTopWidth: 1, borderTopColor: THEME.border, marginTop: 6, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' },
+  trackerTotalLabel: { fontSize: 15, fontWeight: '900', color: THEME.ink },
+  trackerTotalValue: { fontSize: 15, fontWeight: '900', color: THEME.brand },
+  trackerFooter: { paddingHorizontal: 20, paddingTop: 18, paddingBottom: Platform.OS === 'ios' ? 34 : 16 },
+});
+
 const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
@@ -1780,68 +2262,59 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <SafeAreaView style={cartStyles.screen} edges={[]}>
         {/* Header */}
-        <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ fontSize: 22, fontWeight: '800', color: '#111' }}>{t('cart.orderTracking')}</Text>
-            <TouchableOpacity onPress={onCancel || onClose} style={{ padding: 6 }}>
-              <Ionicons name="close" size={24} color="#666" />
+        <View style={cartStyles.trackerHeader}>
+          <View style={cartStyles.trackerHeaderRow}>
+            <Text style={cartStyles.trackerTitle}>{t('cart.orderTracking')}</Text>
+            <TouchableOpacity onPress={onCancel || onClose} activeOpacity={0.8} style={cartStyles.closeBtn}>
+              <Ionicons name="close" size={20} color={THEME.muted} />
             </TouchableOpacity>
           </View>
-          <Text style={{ color: '#6B7280', marginTop: 4 }}>N° {orderNumber}</Text>
+          <Text style={cartStyles.trackerOrderNo}>N° {orderNumber}</Text>
         </View>
 
         {/* ETA */}
-        <View style={{ alignItems: 'center', paddingVertical: 24 }}>
-          <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: currentStep >= 4 ? '#ECFDF5' : '#F0FDF4', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: BRAND }}>
+        <View style={cartStyles.etaWrap}>
+          <View style={cartStyles.etaCircle}>
             {currentStep >= 4 ? (
-              <Ionicons name="checkmark" size={50} color={BRAND} />
+              <Ionicons name="checkmark" size={50} color={THEME.brand} />
             ) : (
               <>
-                <Ionicons name="time-outline" size={36} color={BRAND} />
-                <Text style={{ fontSize: 18, fontWeight: '800', color: BRAND, marginTop: 2 }}>{eta} min</Text>
+                <Ionicons name="time-outline" size={34} color={THEME.brand} />
+                <Text style={cartStyles.etaValue}>{eta} min</Text>
               </>
             )}
           </View>
-          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111', marginTop: 12 }}>
+          <Text style={cartStyles.etaCaption}>
             {currentStep >= 4 ? (isCollect ? t('cart.orderCollected') : t('cart.orderArrived')) : (isCollect ? t('cart.estimatedPickup') : t('cart.estimatedDelivery'))}
           </Text>
         </View>
 
         {/* Steps */}
-        <View style={{ paddingHorizontal: 24 }}>
+        <View style={cartStyles.stepsWrap}>
           {steps.map((step, i) => (
-            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-              <View style={{
-                width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center',
-                backgroundColor: i <= currentStep ? BRAND : '#F3F4F6',
-              }}>
-                <Ionicons name={step.icon} size={18} color={i <= currentStep ? '#fff' : '#9CA3AF'} />
+            <View key={i} style={cartStyles.stepItem}>
+              <View style={[cartStyles.stepDot, i <= currentStep ? cartStyles.stepDotOn : cartStyles.stepDotOff]}>
+                <Ionicons name={step.icon} size={18} color={i <= currentStep ? '#fff' : THEME.faint} />
               </View>
               {i < steps.length - 1 && (
-                <View style={{
-                  position: 'absolute', left: 17, top: 36, width: 2, height: 20,
-                  backgroundColor: i < currentStep ? BRAND : '#E5E7EB'
-                }} />
+                <View style={[cartStyles.stepConnector, { backgroundColor: i < currentStep ? THEME.brand : THEME.border }]} />
               )}
-              <View style={{ marginLeft: 14, flex: 1 }}>
-                <Text style={{
-                  fontSize: 15, fontWeight: i <= currentStep ? '700' : '500',
-                  color: i <= currentStep ? '#111' : '#9CA3AF'
-                }}>{step.label}</Text>
+              <View style={cartStyles.stepLabelWrap}>
+                <Text style={[cartStyles.stepLabel, i <= currentStep ? cartStyles.stepLabelOn : cartStyles.stepLabelOff]}>{step.label}</Text>
               </View>
               {i <= currentStep && (
-                <Ionicons name="checkmark" size={18} color={BRAND} />
+                <Ionicons name="checkmark" size={18} color={THEME.brand} />
               )}
             </View>
           ))}
         </View>
 
         {/* Order summary */}
-        <ScrollView style={{ marginTop: 16, marginHorizontal: 20, maxHeight: 260 }}>
-          <View style={{ padding: 16, backgroundColor: '#F9FAFB', borderRadius: 12 }}>
-            <Text style={{ fontSize: 14, fontWeight: '700', color: '#111', marginBottom: 8 }}>{t('cart.summary')}</Text>
+        <ScrollView style={cartStyles.trackerSummaryScroll} showsVerticalScrollIndicator={false}>
+          <View style={cartStyles.trackerSummaryCard}>
+            <Text style={cartStyles.trackerSummaryTitle}>{t('cart.summary')}</Text>
             {(() => {
               const grouped = {};
               (items || []).forEach(it => {
@@ -1851,34 +2324,32 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
               });
               return Object.entries(grouped).map(([shop, shopItems], si) => (
                 <View key={si} style={{ marginBottom: 10 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                    <Ionicons name="storefront-outline" size={14} color={BRAND} />
-                    <Text style={{ fontSize: 13, fontWeight: '700', color: BRAND, marginLeft: 6 }}>{shop === '__other__' ? t('cart.otherShop') : shop}</Text>
+                  <View style={cartStyles.trackerShopRow}>
+                    <Ionicons name="storefront" size={14} color={THEME.brand} />
+                    <Text style={cartStyles.trackerShopName}>{shop === '__other__' ? t('cart.otherShop') : shop}</Text>
                   </View>
                   {shopItems.map((it, i) => (
-                    <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3, paddingLeft: 20 }}>
-                      <Text style={{ color: '#374151', fontSize: 13, flex: 1 }}>{it.qty || 1}x {t('productNames.' + (it.name || it.title), { defaultValue: it.name || it.title })}</Text>
-                      <Text style={{ color: '#374151', fontSize: 13 }}>{fmtPrice(Number(it.price || 0) * Number(it.qty || 1))}</Text>
+                    <View key={i} style={cartStyles.trackerLineRow}>
+                      <Text style={cartStyles.trackerLineName}>{it.qty || 1}x {t('productNames.' + (it.name || it.title), { defaultValue: it.name || it.title })}</Text>
+                      <Text style={cartStyles.trackerLinePrice}>{fmtPrice(Number(it.price || 0) * Number(it.qty || 1))}</Text>
                     </View>
                   ))}
                 </View>
               ));
             })()}
-            <View style={{ borderTopWidth: 1, borderTopColor: '#E5E7EB', marginTop: 4, paddingTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 16, fontWeight: '800' }}>{t('cart.total')}</Text>
-              <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(total || 0)}</Text>
+            <View style={cartStyles.trackerTotalRow}>
+              <Text style={cartStyles.trackerTotalLabel}>{t('cart.total')}</Text>
+              <Text style={cartStyles.trackerTotalValue}>{fmtPrice(total || 0)}</Text>
             </View>
           </View>
         </ScrollView>
 
         {/* Close button */}
         {currentStep >= 4 && (
-          <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-            <TouchableOpacity onPress={onClose} style={{
-              height: 48, borderRadius: 14, backgroundColor: BRAND,
-              alignItems: 'center', justifyContent: 'center'
-            }}>
-              <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>{t('cart.done')}</Text>
+          <View style={cartStyles.trackerFooter}>
+            <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={cartStyles.primaryBtn}>
+              <Ionicons name="checkmark-circle" size={20} color="#fff" />
+              <Text style={cartStyles.primaryBtnTxt}>{t('cart.done')}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -2112,51 +2583,63 @@ const CartScreen = ({ isAuth }) => {
 
   if (cartItems.length === 0) {
     return (
-      <SafeAreaView style={styles.screen}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 40 }}>
-          <Ionicons name="bag-handle-outline" size={64} color="#E5E7EB" />
-          <Text style={{ fontSize: 18, fontWeight: '600', color: '#111', marginTop: 16, textAlign: 'center' }}>
-            {t('cart.emptyCart')}
-          </Text>
-          <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 8, textAlign: 'center' }}>
-            {t('cart.addProductsFromTab')}
-          </Text>
-        </View>
-      </SafeAreaView>
+      <View style={cartStyles.screen}>
+        <SafeAreaView style={cartStyles.screen} edges={['top']}>
+          <View style={cartStyles.header}>
+            <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
+            <Text style={cartStyles.subtitle}>0 {t('productsScreen.quantity')}</Text>
+          </View>
+          <View style={cartStyles.empty}>
+            <View style={cartStyles.emptyCircle}>
+              <Ionicons name="bag-handle-outline" size={44} color="#fff" />
+            </View>
+            <Text style={cartStyles.emptyTitle}>{t('cart.emptyCart')}</Text>
+            <Text style={cartStyles.emptyHint}>{t('cart.addProductsFromTab')}</Text>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <View style={cartStyles.screen}>
+    <SafeAreaView style={cartStyles.screen} edges={['top']}>
       {/* Header avec titre + poubelle */}
-      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:16, paddingTop:14, paddingBottom:8}}>
-        <Text style={{fontSize:22, fontWeight:'900', color:'#111'}}>{t('tabs.cart')}</Text>
-        <TouchableOpacity onPress={clearCart} style={{padding:6}}>
-          <Ionicons name="trash-outline" size={22} color="#EF4444" />
-        </TouchableOpacity>
+      <View style={cartStyles.header}>
+        <View style={cartStyles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
+            <Text style={cartStyles.subtitle}>{cartItems.reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
+          </View>
+          <TouchableOpacity onPress={clearCart} activeOpacity={0.8} style={cartStyles.clearBtn}>
+            <Ionicons name="trash-outline" size={19} color={THEME.danger} />
+          </TouchableOpacity>
+        </View>
       </View>
       <FlatList
         data={groupedCart}
         keyExtractor={(item, i) => item.shop + i}
-        contentContainerStyle={{ paddingVertical: 8, paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 4, paddingBottom: 200 }}
         renderItem={({ item: group }) => {
           const allSelected = group.items.every(it => selectedCart[it._originalIndex]);
           const someSelected = group.items.some(it => selectedCart[it._originalIndex]);
           return (
-          <View style={{
-            backgroundColor: '#fff', marginHorizontal: 16, marginVertical: 6,
-            borderRadius: 12, padding: 16,
-            shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 5, elevation: 2,
-            borderWidth: someSelected ? 2 : 0, borderColor: someSelected ? '#00C29B' : 'transparent'
-          }}>
+          <View style={[cartStyles.card, someSelected && cartStyles.cardOn]}>
             {/* Shop header - shown once */}
             <TouchableOpacity activeOpacity={0.7} onPress={() => toggleShopSelection(group)}
-              style={{ flexDirection:'row', alignItems:'center', marginBottom:12, paddingBottom:10, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-              <Square value={someSelected} onPress={() => toggleShopSelection(group)} />
-              <Ionicons name="storefront-outline" size={16} color="#00C29B" style={{marginLeft:8}} />
-              <View style={{flex:1, marginLeft:6}}>
-                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{group.shop}</Text>
-                <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>
+              style={cartStyles.shopHead}>
+              <TouchableOpacity onPress={() => toggleShopSelection(group)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
+                <View style={[cartStyles.check, someSelected && cartStyles.checkOn]}>
+                  {someSelected ? <Ionicons name="checkmark" size={15} color="#fff" /> : null}
+                </View>
+              </TouchableOpacity>
+              <View style={cartStyles.shopIcon}>
+                <Ionicons name="storefront" size={18} color={THEME.brand} />
+              </View>
+              <View style={{flex:1}}>
+                <Text style={cartStyles.shopName}>{group.shop}</Text>
+                <Text style={cartStyles.shopMeta}>
                   {group.items.reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')} • {fmtPrice(group.items.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}
                 </Text>
               </View>
@@ -2167,31 +2650,35 @@ const CartScreen = ({ isAuth }) => {
               const idx = item._originalIndex;
               return (
               <TouchableOpacity key={idx} activeOpacity={0.9} onPress={() => setSelectedCart(prev => ({...prev, [idx]: !prev[idx]}))}
-                style={{ flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth: pi < group.items.length - 1 ? 1 : 0, borderBottomColor:'#F3F4F6' }}>
-                <View style={{ marginRight: 10 }}>
-                  <Square value={!!selectedCart[idx]} onPress={() => setSelectedCart(prev => ({...prev, [idx]: !prev[idx]}))} />
+                style={[cartStyles.productRow, pi < group.items.length - 1 && cartStyles.productDivider]}>
+                <TouchableOpacity onPress={() => setSelectedCart(prev => ({...prev, [idx]: !prev[idx]}))} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
+                  <View style={[cartStyles.check, !!selectedCart[idx] && cartStyles.checkOn]}>
+                    {!!selectedCart[idx] ? <Ionicons name="checkmark" size={15} color="#fff" /> : null}
+                  </View>
+                </TouchableOpacity>
+                <View style={{ marginLeft: 10 }}>
+                  <ProductThumb name={item.name || item.title} size={44} />
                 </View>
-                <ProductThumb name={item.name || item.title} size={44} />
-                <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '700', color: '#111' }}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
-                  {item.detail ? <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }} numberOfLines={1}>{t('productDetails.' + item.detail, { defaultValue: item.detail })}</Text> : null}
-                  <View style={{ flexDirection:'row', alignItems:'center', marginTop: 8 }}>
-                    <TouchableOpacity onPress={() => updateQty(idx, -1)} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, paddingVertical: 3, paddingHorizontal: 9 }}>
-                      <Text style={{ fontSize: 15 }}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={{ fontWeight: '600', marginHorizontal: 10 }}>{item.qty || 1}</Text>
-                    <TouchableOpacity onPress={() => updateQty(idx, 1)} style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, paddingVertical: 3, paddingHorizontal: 9 }}>
-                      <Text style={{ fontSize: 15 }}>+</Text>
-                    </TouchableOpacity>
+                <View style={cartStyles.productBody}>
+                  <Text style={cartStyles.productName}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
+                  {item.detail ? <Text style={cartStyles.productDetail} numberOfLines={1}>{t('productDetails.' + item.detail, { defaultValue: item.detail })}</Text> : null}
+                  <View style={cartStyles.stepper}>
+                    <RepeatButton onPress={() => updateQty(idx, -1)} onLongAction={() => updateQty(idx, -1)} style={cartStyles.stepBtn}>
+                      <Ionicons name="remove" size={16} color={THEME.ink} />
+                    </RepeatButton>
+                    <Text style={cartStyles.stepQty}>{item.qty || 1}</Text>
+                    <RepeatButton onPress={() => updateQty(idx, 1)} onLongAction={() => updateQty(idx, 1)} style={cartStyles.stepBtn}>
+                      <Ionicons name="add" size={16} color={THEME.ink} />
+                    </RepeatButton>
                   </View>
                 </View>
-                <View style={{ alignItems:'flex-end' }}>
-                  <Text style={{ fontSize: 16, fontWeight: '800', color: '#111' }}>
+                <View style={cartStyles.productSide}>
+                  <Text style={cartStyles.productPrice}>
                     {fmtPrice(Number(item.price || 0) * Number(item.qty || 1))}
                   </Text>
-                  {item.unitPrice ? <Text style={{ fontSize: 11, color: '#9CA3AF', marginTop: 2 }}>{item.unitPrice}</Text> : null}
-                  <TouchableOpacity onPress={() => removeFromCart(idx)} style={{ padding: 6, marginTop: 4 }}>
-                    <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                  {item.unitPrice ? <Text style={cartStyles.productUnit}>{item.unitPrice}</Text> : null}
+                  <TouchableOpacity onPress={() => removeFromCart(idx)} activeOpacity={0.8} style={cartStyles.productDelBtn}>
+                    <Ionicons name="trash-outline" size={15} color={THEME.danger} />
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
@@ -2201,94 +2688,73 @@ const CartScreen = ({ isAuth }) => {
             {/* Bouton ajouter produit */}
             <TouchableOpacity
               onPress={() => openShopProducts(group.shop)}
-              style={{marginTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:10, borderRadius:12, backgroundColor:BRAND}}
+              activeOpacity={0.85}
+              style={cartStyles.addMoreBtn}
             >
-              <Ionicons name="add-circle" size={20} color="#fff" style={{marginRight:8}} />
-              <Text style={{color:'#fff', fontWeight:'700', fontSize:15}}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+              <Ionicons name="add-circle-outline" size={18} color={THEME.brandDark} />
+              <Text style={cartStyles.addMoreTxt}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
             </TouchableOpacity>
 
             {/* Shop subtotal */}
-            <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingTop:10, marginTop:6, borderTopWidth:1, borderTopColor:'#F3F4F6' }}>
-              <Text style={{ fontSize:13, color:'#6B7280' }}>{group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
-              <Text style={{ fontSize:15, fontWeight:'700', color:BRAND }}>{fmtPrice(group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}</Text>
+            <View style={cartStyles.subtotalRow}>
+              <Text style={cartStyles.subtotalLabel}>{group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
+              <Text style={cartStyles.subtotalValue}>{fmtPrice(group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}</Text>
             </View>
           </View>
           );
         }}
       />
       {Object.values(selectedCart).some(v => v) && (
-      <View style={{
-        position: 'absolute', bottom: 20, left: GUTTER, right: GUTTER,
-        backgroundColor: '#fff', borderRadius: 14, padding: 12, paddingBottom: 10,
-        shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5
-      }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-          <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('productsScreen.productsTotal')}</Text>
-          <Text style={{ fontSize: 13, fontWeight: '600', color: '#374151' }}>{cartItems.filter((_, i) => selectedCart[i]).reduce((s, it) => s + Number(it.qty || 1), 0)}</Text>
+      <View style={cartStyles.bottomWrap}>
+        <View style={cartStyles.bottomRow}>
+          <Text style={cartStyles.bottomCount}>{t('productsScreen.productsTotal')}</Text>
+          <Text style={cartStyles.bottomCountVal}>{cartItems.filter((_, i) => selectedCart[i]).reduce((s, it) => s + Number(it.qty || 1), 0)}</Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-          <Text style={{ fontSize: 16, fontWeight: '700' }}>{t('cart.total')}</Text>
-          <Text style={{ fontSize: 16, fontWeight: '800', color: BRAND }}>{fmtPrice(totalPrice)}</Text>
+        <View style={[cartStyles.bottomRow, { marginTop: 6 }]}>
+          <Text style={cartStyles.bottomTotalLabel}>{t('cart.total')}</Text>
+          <Text style={cartStyles.bottomTotalVal}>{fmtPrice(totalPrice)}</Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setConfirmVisible(true); }} style={{
-            flex: 1, height: 44, borderRadius: 12, backgroundColor: BRAND,
-            flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
-          }}>
-            <Ionicons name="bicycle" size={16} color="#fff" style={{ marginRight: 6 }} />
-            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>{t('cart.confirmOrder')}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setConfirmVisible(true); }} style={cartStyles.cta}>
+          <Ionicons name="bicycle" size={20} color="#fff" />
+          <Text style={cartStyles.ctaTxt}>{t('cart.confirmOrder')}</Text>
+        </TouchableOpacity>
       </View>
       )}
 
       {/* Modal de confirmation de commande */}
       <Modal visible={confirmVisible} animationType="slide" transparent={true}>
         <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'85%', paddingBottom:40}}>
+        <View style={cartStyles.sheetBackdrop}>
+          <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 36 }]}>
             {/* Header */}
-            <View style={{padding:20, paddingBottom:0}}>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom:16}}>
-                <Text style={{fontSize:20, fontWeight:'800', color:'#111'}}>{t('cart.confirmOrder')}</Text>
-                <TouchableOpacity onPress={() => setConfirmVisible(false)} style={{padding:6}}>
-                  <Ionicons name="close" size={24} color="#666" />
-                </TouchableOpacity>
-              </View>
-              {/* Toggle Livraison / Click & Collect */}
-              <View style={{flexDirection:'row', backgroundColor:'#F3F4F6', borderRadius:14, padding:4, marginBottom:16}}>
-                <TouchableOpacity
-                  onPress={() => setOrderMode('delivery')}
-                  style={{
-                    flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center',
-                    paddingVertical:10, borderRadius:12,
-                    backgroundColor: orderMode === 'delivery' ? '#fff' : 'transparent',
-                    shadowColor: orderMode === 'delivery' ? '#000' : 'transparent',
-                    shadowOpacity: orderMode === 'delivery' ? 0.08 : 0,
-                    shadowRadius: 4, elevation: orderMode === 'delivery' ? 2 : 0,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={16} color={orderMode === 'delivery' ? BRAND : '#9CA3AF'} />
-                  <Text style={{marginLeft:6, fontSize:14, fontWeight:'700', color: orderMode === 'delivery' ? BRAND : '#9CA3AF'}}>{t('cart.delivery')}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setOrderMode('collect')}
-                  style={{
-                    flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center',
-                    paddingVertical:10, borderRadius:12,
-                    backgroundColor: orderMode === 'collect' ? '#fff' : 'transparent',
-                    shadowColor: orderMode === 'collect' ? '#000' : 'transparent',
-                    shadowOpacity: orderMode === 'collect' ? 0.08 : 0,
-                    shadowRadius: 4, elevation: orderMode === 'collect' ? 2 : 0,
-                  }}
-                >
-                  <Ionicons name="bag-handle-outline" size={16} color={orderMode === 'collect' ? BRAND : '#9CA3AF'} />
-                  <Text style={{marginLeft:6, fontSize:14, fontWeight:'700', color: orderMode === 'collect' ? BRAND : '#9CA3AF'}}>{t('productsScreen.clickAndCollect')}</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={cartStyles.sheetGrabber} />
+            <View style={cartStyles.sheetHeader}>
+              <Text style={cartStyles.sheetTitle}>{t('cart.confirmOrder')}</Text>
+              <TouchableOpacity onPress={() => setConfirmVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
+            {/* Toggle Livraison / Click & Collect */}
+            <View style={cartStyles.segment}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setOrderMode('delivery')}
+                style={[cartStyles.segBtn, orderMode === 'delivery' && cartStyles.segBtnOn]}
+              >
+                <Ionicons name="bicycle-outline" size={16} color={orderMode === 'delivery' ? THEME.brand : THEME.muted} />
+                <Text style={[cartStyles.segTxt, orderMode === 'delivery' && cartStyles.segTxtOn]}>{t('cart.delivery')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setOrderMode('collect')}
+                style={[cartStyles.segBtn, orderMode === 'collect' && cartStyles.segBtnOn]}
+              >
+                <Ionicons name="bag-handle-outline" size={16} color={orderMode === 'collect' ? THEME.brand : THEME.muted} />
+                <Text style={[cartStyles.segTxt, orderMode === 'collect' && cartStyles.segTxtOn]}>{t('productsScreen.clickAndCollect')}</Text>
+              </TouchableOpacity>
             </View>
 
-            <ScrollView style={{paddingHorizontal:20}} contentContainerStyle={{paddingBottom:10}} keyboardShouldPersistTaps="handled">
+            <ScrollView style={{paddingHorizontal:20, marginTop:4}} contentContainerStyle={{paddingBottom:10}} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
               {/* Résumé par magasin */}
               {(() => {
                 const selected = cartItems.map((it, idx) => ({...it, _origIdx: idx})).filter((_, i) => selectedCart[i]);
@@ -2299,19 +2765,19 @@ const CartScreen = ({ isAuth }) => {
                   grouped[shop].push(it);
                 });
                 return Object.entries(grouped).map(([shop, items], si) => (
-                  <View key={si} style={{marginTop:16}}>
-                    <View style={{flexDirection:'row', alignItems:'center', marginBottom:8}}>
-                      <Ionicons name="storefront-outline" size={16} color={BRAND} />
-                      <Text style={{fontSize:15, fontWeight:'700', color:BRAND, marginLeft:8}}>{shop}</Text>
+                  <View key={si} style={cartStyles.shopBlock}>
+                    <View style={cartStyles.shopBlockHead}>
+                      <Ionicons name="storefront" size={16} color={THEME.brand} />
+                      <Text style={cartStyles.shopBlockName}>{shop}</Text>
                     </View>
                     {items.map((it, i) => (
-                      <View key={i} style={{flexDirection:'row', alignItems:'center', paddingVertical:8}}>
-                        <ProductThumb name={it.name || it.title} size={36} />
+                      <View key={i} style={[cartStyles.miniRow, i < items.length - 1 && cartStyles.productDivider]}>
+                        <ProductThumb name={it.name || it.title} size={40} />
                         <View style={{flex:1, marginLeft:10}}>
-                          <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{it.name || it.title}</Text>
-                          <Text style={{fontSize:12, color:'#9CA3AF'}}>{fmtPrice(Number(it.price||0) * Number(it.qty||1))}</Text>
+                          <Text style={cartStyles.miniName}>{it.name || it.title}</Text>
+                          <Text style={cartStyles.miniPrice}>{fmtPrice(Number(it.price||0) * Number(it.qty||1))}</Text>
                         </View>
-                        <View style={{flexDirection:'row', alignItems:'center', width:84, justifyContent:'space-between'}}>
+                        <View style={cartStyles.miniStepper}>
                           <RepeatButton
                             onPress={() => {
                               if ((it.qty || 1) <= 1) {
@@ -2327,11 +2793,11 @@ const CartScreen = ({ isAuth }) => {
                             onLongAction={() => {
                               setCartItems(prev => { const u = [...prev]; const q = u[it._origIdx].qty || 1; if (q > 1) u[it._origIdx] = {...u[it._origIdx], qty: q - 1}; return u; });
                             }}
-                            style={{width:28, height:28, borderRadius:7, alignItems:'center', justifyContent:'center', backgroundColor: (it.qty || 1) <= 1 ? '#FEE2E2' : '#fff', borderWidth: (it.qty || 1) <= 1 ? 0 : 1, borderColor:'#E5E7EB'}}
+                            style={(it.qty || 1) <= 1 ? cartStyles.miniStepBtnDel : cartStyles.miniStepBtn}
                           >
-                            <Ionicons name={(it.qty || 1) <= 1 ? "trash-outline" : "remove"} size={14} color={(it.qty || 1) <= 1 ? '#EF4444' : '#111'} />
+                            <Ionicons name={(it.qty || 1) <= 1 ? "trash-outline" : "remove"} size={14} color={(it.qty || 1) <= 1 ? THEME.danger : THEME.ink} />
                           </RepeatButton>
-                          <Text style={{fontSize:13, fontWeight:'700', color:'#111', textAlign:'center'}}>{it.qty || 1}</Text>
+                          <Text style={cartStyles.miniStepQty}>{it.qty || 1}</Text>
                           <RepeatButton
                             onPress={() => {
                               setCartItems(prev => { const u = [...prev]; u[it._origIdx] = {...u[it._origIdx], qty: (u[it._origIdx].qty || 1) + 1}; return u; });
@@ -2339,125 +2805,130 @@ const CartScreen = ({ isAuth }) => {
                             onLongAction={() => {
                               setCartItems(prev => { const u = [...prev]; u[it._origIdx] = {...u[it._origIdx], qty: (u[it._origIdx].qty || 1) + 1}; return u; });
                             }}
-                            style={{width:28, height:28, borderRadius:7, alignItems:'center', justifyContent:'center', backgroundColor:'#fff', borderWidth:1, borderColor:'#E5E7EB'}}
+                            style={cartStyles.miniStepBtn}
                           >
-                            <Ionicons name="add" size={14} color="#111" />
+                            <Ionicons name="add" size={14} color={THEME.ink} />
                           </RepeatButton>
                         </View>
                       </View>
                     ))}
                     {/* Bouton ajouter produits */}
                     <TouchableOpacity
+                      activeOpacity={0.85}
                       onPress={() => {
                         setAddProductSearch('');
                         setCartItems(prev => prev.map(it => ({...it, _addQty: 0})));
                         setAddProductShop(shop);
                       }}
-                      style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:8, marginBottom:8, paddingVertical:8, borderRadius:10, backgroundColor:'#111', alignSelf:'flex-start', width:'50%'}}
+                      style={cartStyles.blockAddBtn}
                     >
-                      <Ionicons name="add-circle-outline" size={14} color="#fff" />
-                      <Text style={{fontSize:12, fontWeight:'600', color:'#fff', marginLeft:6}}>{t('cart.addProducts')}</Text>
+                      <Ionicons name="add-circle-outline" size={15} color={THEME.ink} />
+                      <Text style={cartStyles.blockAddTxt}>{t('cart.addProducts')}</Text>
                     </TouchableOpacity>
-                    <View style={{borderTopWidth:1, borderTopColor:'#F3F4F6', flexDirection:'row', justifyContent:'space-between', paddingTop:8}}>
-                      <Text style={{fontSize:13, color:'#6B7280'}}>{t('cart.subtotal')} {shop === '__other__' ? t('cart.otherShop') : shop}</Text>
-                      <Text style={{fontSize:13, fontWeight:'700', color:'#111'}}>{fmtPrice(items.reduce((s,it) => s + Number(it.price||0) * Number(it.qty||1), 0))}</Text>
+                    <View style={cartStyles.blockSubtotal}>
+                      <Text style={cartStyles.blockSubLabel}>{t('cart.subtotal')} {shop === '__other__' ? t('cart.otherShop') : shop}</Text>
+                      <Text style={cartStyles.blockSubVal}>{fmtPrice(items.reduce((s,it) => s + Number(it.price||0) * Number(it.qty||1), 0))}</Text>
                     </View>
                   </View>
                 ));
               })()}
 
               {/* Frais de livraison */}
-              <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:10}}>
-                <Text style={{fontSize:13, color:'#6B7280'}}>{orderMode === 'delivery' ? t('cart.deliveryFee') : t('cart.collectFee')}</Text>
-                <Text style={{fontSize:13, fontWeight:'700', color: orderMode === 'collect' ? BRAND : '#111'}}>{orderMode === 'delivery' ? fmtPrice(9.99) : t('cart.free')}</Text>
+              <View style={cartStyles.feeRow}>
+                <Text style={cartStyles.feeLabel}>{orderMode === 'delivery' ? t('cart.deliveryFee') : t('cart.collectFee')}</Text>
+                <Text style={orderMode === 'collect' ? cartStyles.feeValueFree : cartStyles.feeValue}>{orderMode === 'delivery' ? fmtPrice(9.99) : t('cart.free')}</Text>
               </View>
 
               {/* Adresse de livraison ou Click & Collect */}
               {orderMode === 'collect' && (
-                <View style={{marginTop:20, padding:14, backgroundColor:'#FFF7ED', borderRadius:12}}>
-                  <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <View style={{width:32, height:32, borderRadius:16, backgroundColor:'#FFEDD5', alignItems:'center', justifyContent:'center'}}>
-                      <Ionicons name="storefront-outline" size={18} color="#F97316" />
+                <View style={cartStyles.infoCard}>
+                  <View style={cartStyles.infoCardHead}>
+                    <View style={cartStyles.infoIcon}>
+                      <Ionicons name="storefront" size={18} color={THEME.brand} />
                     </View>
                     <View style={{marginLeft:10, flex:1}}>
-                      <Text style={{fontSize:14, fontWeight:'700', color:'#111'}}>{t('cart.storePickup')}</Text>
-                      <Text style={{fontSize:12, color:'#6B7280', marginTop:2}}>{t('cart.readyIn1Hour')}</Text>
+                      <Text style={cartStyles.infoTitle}>{t('cart.storePickup')}</Text>
+                      <Text style={cartStyles.infoSub}>{t('cart.readyIn1Hour')}</Text>
                     </View>
                   </View>
-                  <Text style={{fontSize:13, color:'#9CA3AF', marginTop:8, marginLeft:42}}>{t('cart.presentAtDesk')}</Text>
+                  <Text style={cartStyles.infoNote}>{t('cart.presentAtDesk')}</Text>
                 </View>
               )}
-              {orderMode === 'delivery' && <View style={{marginTop:20, padding:14, backgroundColor:'#F9FAFB', borderRadius:12}}>
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-                  <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <Ionicons name="location-outline" size={18} color={BRAND} />
-                    <Text style={{fontSize:14, fontWeight:'700', color:'#111', marginLeft:8}}>{t('cart.deliveryAddress')}</Text>
+              {orderMode === 'delivery' && <View style={cartStyles.addrCard}>
+                <View style={cartStyles.addrHeadRow}>
+                  <View style={cartStyles.addrHeadLeft}>
+                    <Ionicons name="location" size={18} color={THEME.brand} />
+                    <Text style={cartStyles.addrTitle}>{t('cart.deliveryAddress')}</Text>
                   </View>
                   <TouchableOpacity onPress={() => { setTempAddress(deliveryAddress); setTempInfo(deliveryInfo); setAddressSuggestions([]); setEditingAddress(true); }}>
-                    <Text style={{fontSize:13, fontWeight:'600', color:BRAND}}>{t('cart.edit')}</Text>
+                    <Text style={cartStyles.addrEditTxt}>{t('cart.edit')}</Text>
                   </TouchableOpacity>
                 </View>
                 {editingAddress ? (
-                  <View style={{marginTop:10}}>
+                  <View style={{marginTop:12}}>
                     {/* Champ adresse */}
-                    <Text style={{fontSize:12, fontWeight:'600', color:'#6B7280', marginBottom:4}}>{t('cart.address')}</Text>
+                    <Text style={cartStyles.addrFieldLabel}>{t('cart.address')}</Text>
                     <TextInput
                       value={tempAddress}
                       onChangeText={filterAddresses}
-                      style={{backgroundColor:'#fff', borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, paddingHorizontal:12, paddingVertical:10, fontSize:14, color:'#111'}}
+                      style={cartStyles.addrInput}
+                      placeholderTextColor={THEME.faint}
                       autoFocus={true}
                       placeholder={t('cart.enterAddress')}
                     />
                     {/* Suggestions */}
                     {addressSuggestions.length > 0 && (
-                      <View style={{backgroundColor:'#fff', borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, marginTop:4, overflow:'hidden'}}>
+                      <View style={cartStyles.addrSuggestBox}>
                         {addressSuggestions.map((addr, i) => (
                           <TouchableOpacity
                             key={i}
                             onPress={() => { setTempAddress(addr); setAddressSuggestions([]); }}
-                            style={{paddingHorizontal:12, paddingVertical:10, borderBottomWidth: i < addressSuggestions.length - 1 ? 1 : 0, borderBottomColor:'#F3F4F6', flexDirection:'row', alignItems:'center'}}
+                            style={[cartStyles.addrSuggestRow, i < addressSuggestions.length - 1 && cartStyles.productDivider]}
                           >
-                            <Ionicons name="location-outline" size={14} color="#9CA3AF" />
-                            <Text style={{fontSize:13, color:'#374151', marginLeft:8}}>{addr}</Text>
+                            <Ionicons name="location-outline" size={14} color={THEME.faint} />
+                            <Text style={cartStyles.addrSuggestTxt}>{addr}</Text>
                           </TouchableOpacity>
                         ))}
                       </View>
                     )}
                     {/* Infos complémentaires */}
-                    <Text style={{fontSize:12, fontWeight:'600', color:'#6B7280', marginTop:12, marginBottom:4}}>{t('cart.additionalInfo')}</Text>
+                    <Text style={[cartStyles.addrFieldLabel, { marginTop: 12 }]}>{t('cart.additionalInfo')}</Text>
                     <TextInput
                       value={tempInfo}
                       onChangeText={setTempInfo}
-                      style={{backgroundColor:'#fff', borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, paddingHorizontal:12, paddingVertical:10, fontSize:14, color:'#111'}}
+                      style={cartStyles.addrInput}
+                      placeholderTextColor={THEME.faint}
                       placeholder={t('cart.additionalInfoPlaceholder')}
                       multiline={false}
                     />
                     {/* Boutons */}
-                    <View style={{flexDirection:'row', marginTop:12, gap:8}}>
+                    <View style={cartStyles.addrBtnRow}>
                       <TouchableOpacity
                         onPress={() => { setEditingAddress(false); setAddressSuggestions([]); }}
-                        style={{flex:1, height:36, borderRadius:8, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center'}}
+                        activeOpacity={0.85}
+                        style={cartStyles.addrCancelBtn}
                       >
-                        <Text style={{color:'#666', fontWeight:'600', fontSize:13}}>{t('profile.cancel')}</Text>
+                        <Text style={cartStyles.addrCancelTxt}>{t('profile.cancel')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => { setDeliveryAddress(tempAddress); setDeliveryInfo(tempInfo); setEditingAddress(false); setAddressSuggestions([]); }}
-                        style={{flex:1, height:36, borderRadius:8, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
+                        activeOpacity={0.9}
+                        style={cartStyles.addrSaveBtn}
                       >
-                        <Text style={{color:'#fff', fontWeight:'600', fontSize:13}}>{t('profile.validate')}</Text>
+                        <Text style={cartStyles.addrSaveTxt}>{t('profile.validate')}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 ) : (
-                  <View style={{marginTop:8, marginLeft:26}}>
-                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                      <Ionicons name="home-outline" size={14} color="#6B7280" />
-                      <Text style={{fontSize:13, color:'#374151', marginLeft:6, flex:1}}>{deliveryAddress}</Text>
+                  <View style={cartStyles.addrDisplay}>
+                    <View style={cartStyles.addrDisplayRow}>
+                      <Ionicons name="home-outline" size={14} color={THEME.muted} />
+                      <Text style={cartStyles.addrDisplayTxt}>{deliveryAddress}</Text>
                     </View>
                     {deliveryInfo ? (
-                      <View style={{flexDirection:'row', alignItems:'center', marginTop:4}}>
-                        <Ionicons name="business-outline" size={14} color="#9CA3AF" />
-                        <Text style={{fontSize:12, color:'#9CA3AF', marginLeft:6}}>{deliveryInfo}</Text>
+                      <View style={[cartStyles.addrDisplayRow, { marginTop: 4 }]}>
+                        <Ionicons name="business-outline" size={14} color={THEME.faint} />
+                        <Text style={cartStyles.addrDisplaySub}>{deliveryInfo}</Text>
                       </View>
                     ) : null}
                   </View>
@@ -2465,12 +2936,12 @@ const CartScreen = ({ isAuth }) => {
               </View>}
 
               {/* Créneau de livraison */}
-              <View style={{marginTop:12}}>
-                <View style={{flexDirection:'row', alignItems:'center', marginBottom:14}}>
-                  <View style={{width:32, height:32, borderRadius:16, backgroundColor:'#F0FDF4', alignItems:'center', justifyContent:'center'}}>
-                    <Ionicons name="time-outline" size={18} color={BRAND} />
+              <View style={cartStyles.slotSection}>
+                <View style={cartStyles.slotSectionHead}>
+                  <View style={cartStyles.infoIcon}>
+                    <Ionicons name="time" size={18} color={THEME.brand} />
                   </View>
-                  <Text style={{fontSize:15, fontWeight:'700', color:'#111', marginLeft:10}}>{t('cart.deliverySlot')}</Text>
+                  <Text style={cartStyles.slotSectionTitle}>{t('cart.deliverySlot')}</Text>
                 </View>
 
                 {/* Sélecteur de jour - ligne horizontale */}
@@ -2480,14 +2951,11 @@ const CartScreen = ({ isAuth }) => {
                     return (
                     <TouchableOpacity
                       key={i}
+                      activeOpacity={0.85}
                       onPress={() => { setSelectedDateIndex(i); setSelectedSlot(null); }}
-                      style={{
-                        paddingHorizontal:14, paddingVertical:8, borderRadius:20, marginRight:8,
-                        backgroundColor: active ? BRAND : 'transparent',
-                        borderWidth: active ? 0 : 1, borderColor:'#E5E7EB',
-                      }}
+                      style={[cartStyles.dayPill, active && cartStyles.dayPillOn]}
                     >
-                      <Text style={{fontSize:13, fontWeight:'600', color: active ? '#fff' : '#374151'}}>{day.label} {day.date.getDate()}</Text>
+                      <Text style={[cartStyles.dayPillTxt, active && cartStyles.dayPillTxtOn]}>{day.label} {day.date.getDate()}</Text>
                     </TouchableOpacity>
                     );
                   })}
@@ -2507,26 +2975,22 @@ const CartScreen = ({ isAuth }) => {
                     });
                     if (periodSlots.length === 0) return null;
                     return (
-                      <View key={pi} style={{marginBottom:14}}>
-                        <View style={{flexDirection:'row', alignItems:'center', marginBottom:8}}>
+                      <View key={pi} style={cartStyles.periodGroup}>
+                        <View style={cartStyles.periodHead}>
                           <Ionicons name={period.icon} size={14} color={period.color} />
-                          <Text style={{fontSize:12, fontWeight:'700', color:'#6B7280', marginLeft:6, textTransform:'uppercase', letterSpacing:0.5}}>{period.label}</Text>
+                          <Text style={cartStyles.periodLabel}>{period.label}</Text>
                         </View>
-                        <View style={{flexDirection:'row', flexWrap:'wrap'}}>
+                        <View style={cartStyles.slotGrid}>
                           {periodSlots.map((slot, si) => {
                             const active = selectedSlot === slot;
                             return (
                             <TouchableOpacity
                               key={si}
+                              activeOpacity={0.85}
                               onPress={() => setSelectedSlot(slot)}
-                              style={{
-                                width:'31.5%', marginRight: (si % 3 < 2) ? '2.75%' : 0, marginBottom:8,
-                                paddingVertical:8, borderRadius:10, alignItems:'center',
-                                backgroundColor: active ? BRAND : 'transparent',
-                                borderWidth:1, borderColor: active ? BRAND : '#E5E7EB',
-                              }}
+                              style={[cartStyles.slotChip, { marginRight: (si % 3 < 2) ? '2.75%' : 0 }, active && cartStyles.slotChipOn]}
                             >
-                              <Text style={{fontSize:11, fontWeight:'600', color: active ? '#fff' : '#374151'}}>{slot}</Text>
+                              <Text style={[cartStyles.slotChipTxt, active && cartStyles.slotChipTxtOn]}>{slot}</Text>
                             </TouchableOpacity>
                             );
                           })}
@@ -2535,48 +2999,49 @@ const CartScreen = ({ isAuth }) => {
                     );
                   });
                 })() : (
-                  <View style={{padding:20, alignItems:'center', backgroundColor:'#F9FAFB', borderRadius:12}}>
-                    <Ionicons name="time-outline" size={28} color="#D1D5DB" />
-                    <Text style={{fontSize:13, color:'#9CA3AF', marginTop:8}}>{t('cart.noSlots')}</Text>
+                  <View style={cartStyles.noSlots}>
+                    <Ionicons name="time-outline" size={28} color={THEME.faint} />
+                    <Text style={cartStyles.noSlotsTxt}>{t('cart.noSlots')}</Text>
                   </View>
                 )}
 
               </View>
 
               {/* Total + résumé créneau */}
-              <View style={{marginTop:16, padding:14, backgroundColor:'#F9FAFB', borderRadius:12}}>
+              <View style={cartStyles.totalsBox}>
                 {selectedSlot && (
-                  <View style={{flexDirection:'row', alignItems:'center', marginBottom:10, paddingBottom:10, borderBottomWidth:1, borderBottomColor:'#E5E7EB'}}>
-                    <Ionicons name="time-outline" size={16} color={BRAND} />
-                    <Text style={{fontSize:13, fontWeight:'700', color:'#111', marginLeft:8}}>
+                  <View style={cartStyles.slotBanner}>
+                    <Ionicons name="time" size={16} color={THEME.brand} />
+                    <Text style={cartStyles.slotBannerDay}>
                       {deliveryDays[selectedDateIndex]?.label} {deliveryDays[selectedDateIndex]?.sub}
                     </Text>
-                    <Text style={{fontSize:13, color:BRAND, fontWeight:'600', marginLeft:6}}>{selectedSlot}</Text>
+                    <Text style={cartStyles.slotBannerTime}>{selectedSlot}</Text>
                   </View>
                 )}
-                <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:6}}>
-                  <Text style={{fontSize:14, color:'#6B7280'}}>{t('cart.subtotal')}</Text>
-                  <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{fmtPrice(totalPrice)}</Text>
+                <View style={cartStyles.totalRow}>
+                  <Text style={cartStyles.totalLabel}>{t('cart.subtotal')}</Text>
+                  <Text style={cartStyles.totalValue}>{fmtPrice(totalPrice)}</Text>
                 </View>
-                <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:6}}>
-                  <Text style={{fontSize:14, color:'#6B7280'}}>{orderMode === 'delivery' ? t('cart.delivery') : t('cart.collect')}</Text>
-                  <Text style={{fontSize:14, fontWeight:'600', color: orderMode === 'collect' ? BRAND : '#111'}}>{orderMode === 'delivery' ? fmtPrice(9.99) : t('cart.free')}</Text>
+                <View style={cartStyles.totalRow}>
+                  <Text style={cartStyles.totalLabel}>{orderMode === 'delivery' ? t('cart.delivery') : t('cart.collect')}</Text>
+                  <Text style={orderMode === 'collect' ? cartStyles.totalValueFree : cartStyles.totalValue}>{orderMode === 'delivery' ? fmtPrice(9.99) : t('cart.free')}</Text>
                 </View>
-                <View style={{borderTopWidth:1, borderTopColor:'#E5E7EB', paddingTop:8, flexDirection:'row', justifyContent:'space-between'}}>
-                  <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('cart.total')}</Text>
-                  <Text style={{fontSize:18, fontWeight:'800', color:BRAND}}>{fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 : 0))}</Text>
+                <View style={cartStyles.grandRow}>
+                  <Text style={cartStyles.grandLabel}>{t('cart.total')}</Text>
+                  <Text style={cartStyles.grandValue}>{fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 : 0))}</Text>
                 </View>
               </View>
 
               {/* Nombre articles */}
-              <Text style={{fontSize:12, color:'#9CA3AF', textAlign:'center', marginTop:10}}>
+              <Text style={cartStyles.itemsCaption}>
                 {cartItems.filter((_, i) => selectedCart[i]).length} {t('cart.itemsSelected', {count: cartItems.filter((_, i) => selectedCart[i]).length})}
               </Text>
             </ScrollView>
 
             {/* Boutons */}
-            <View style={{paddingHorizontal:20, marginTop:10, gap:10}}>
+            <View style={cartStyles.sheetFooter}>
               <TouchableOpacity
+                activeOpacity={0.9}
                 onPress={() => {
                   if (!selectedSlot) {
                     Alert.alert(t('cart.slotRequired'), t('cart.slotRequiredMsg'));
@@ -2585,46 +3050,48 @@ const CartScreen = ({ isAuth }) => {
                   setConfirmVisible(false);
                   setOrderVisible(true);
                 }}
-                style={{height:52, borderRadius:14, backgroundColor: selectedSlot ? BRAND : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
+                style={[cartStyles.primaryBtn, !selectedSlot && cartStyles.primaryBtnDisabled]}
               >
-                <Ionicons name="checkmark-circle" size={20} color="#fff" style={{marginRight:8}} />
-                <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('cart.confirmOrder')}</Text>
+                <Ionicons name="checkmark-circle" size={20} color="#fff" />
+                <Text style={cartStyles.primaryBtnTxt}>{t('cart.confirmOrder')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={0.85}
                 onPress={() => setConfirmVisible(false)}
-                style={{height:44, borderRadius:14, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center'}}
+                style={cartStyles.ghostBtn}
               >
-                <Text style={{color:'#666', fontWeight:'600'}}>{t('profile.cancel')}</Text>
+                <Text style={cartStyles.ghostBtnTxt}>{t('profile.cancel')}</Text>
               </TouchableOpacity>
             </View>
           </View>
           {/* Popup ajouter produits - overlay dans la modal */}
           {!!addProductShop && (
-            <View style={{position:'absolute', top:0, left:0, right:0, bottom:0, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-              <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
-                <View style={{padding:20, paddingBottom:12, flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                  <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <Ionicons name="storefront-outline" size={18} color={BRAND} />
-                    <Text style={{fontSize:17, fontWeight:'800', color:'#111', marginLeft:8}}>{addProductShop}</Text>
+            <View style={cartStyles.sheetBackdrop}>
+              <View style={[cartStyles.sheet, { maxHeight: '74%', paddingBottom: 36 }]}>
+                <View style={cartStyles.sheetGrabber} />
+                <View style={cartStyles.sheetHeader}>
+                  <View style={cartStyles.sheetTitleRow}>
+                    <Ionicons name="storefront" size={18} color={THEME.brand} />
+                    <Text style={[cartStyles.sheetTitle, { fontSize: 18, marginLeft: 8 }]} numberOfLines={1}>{addProductShop}</Text>
                   </View>
-                  <TouchableOpacity onPress={() => setAddProductShop(null)} style={{padding:6}}>
-                    <Ionicons name="close" size={24} color="#666" />
+                  <TouchableOpacity onPress={() => setAddProductShop(null)} activeOpacity={0.8} style={cartStyles.closeBtn}>
+                    <Ionicons name="close" size={20} color={THEME.muted} />
                   </TouchableOpacity>
                 </View>
                 {/* Barre de recherche */}
                 <View style={{paddingHorizontal:20, marginBottom:12}}>
-                  <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', borderRadius:10, paddingHorizontal:12, paddingVertical:8}}>
-                    <Ionicons name="search-outline" size={16} color="#9CA3AF" />
+                  <View style={cartStyles.searchWrap}>
+                    <Ionicons name="search-outline" size={18} color={THEME.faint} />
                     <TextInput
                       value={addProductSearch}
                       onChangeText={setAddProductSearch}
                       placeholder="Rechercher un produit..."
-                      placeholderTextColor="#9CA3AF"
-                      style={{flex:1, marginLeft:8, fontSize:14, color:'#111', padding:0}}
+                      placeholderTextColor={THEME.faint}
+                      style={cartStyles.searchInput}
                     />
                     {addProductSearch.length > 0 && (
                       <TouchableOpacity onPress={() => setAddProductSearch('')}>
-                        <Ionicons name="close-circle" size={16} color="#9CA3AF" />
+                        <Ionicons name="close-circle" size={18} color={THEME.faint} />
                       </TouchableOpacity>
                     )}
                   </View>
@@ -2633,29 +3100,33 @@ const CartScreen = ({ isAuth }) => {
                   data={cartItems.map((it, idx) => ({...it, _idx: idx})).filter(it => (it.shop || '__other__') === addProductShop && (!addProductSearch || (it.name || it.title || '').toLowerCase().includes(addProductSearch.toLowerCase())))}
                   keyExtractor={(it, i) => String(i)}
                   style={{paddingHorizontal:20}}
+                  showsVerticalScrollIndicator={false}
                   renderItem={({item}) => {
                     const qty = item._addQty || 0;
                     const isAdded = qty > 0;
                     return (
-                    <View style={{flexDirection:'row', alignItems:'center', paddingVertical:10, paddingHorizontal:10, marginBottom:6, borderRadius:12, backgroundColor: isAdded ? '#F0FDF4' : 'transparent', borderWidth: isAdded ? 1 : 0, borderColor: isAdded ? '#BBF7D0' : 'transparent'}}>
+                    <View style={[cartStyles.pickerRow, isAdded && cartStyles.pickerRowOn]}>
                       <ProductThumb name={item.name || item.title} size={40} />
-                      <View style={{flex:1, marginLeft:12}}>
-                        <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
-                        <Text style={{fontSize:12, color:'#9CA3AF'}}>{fmtPrice(Number(item.price||0))}</Text>
+                      <View style={cartStyles.pickerBody}>
+                        <Text style={cartStyles.pickerName}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
+                        <View style={cartStyles.pickerPriceRow}>
+                          <Text style={cartStyles.pickerPrice}>{fmtPrice(Number(item.price||0))}</Text>
+                        </View>
                       </View>
                       {qty === 0 ? (
                         <TouchableOpacity
+                          activeOpacity={0.85}
                           onPress={() => {
                             const updated = [...cartItems];
                             updated[item._idx] = {...updated[item._idx], _addQty: 1};
                             setCartItems(updated);
                           }}
-                          style={{width:36, height:36, borderRadius:10, alignItems:'center', justifyContent:'center', backgroundColor:BRAND}}
+                          style={cartStyles.pickerAddBtn}
                         >
                           <Ionicons name="add" size={20} color="#fff" />
                         </TouchableOpacity>
                       ) : (
-                        <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', borderRadius:10, paddingHorizontal:4, paddingVertical:2}}>
+                        <View style={cartStyles.pickerStepper}>
                           <RepeatButton
                             onPress={() => {
                               setCartItems(prev => { const u = [...prev]; u[item._idx] = {...u[item._idx], _addQty: Math.max(0, (u[item._idx]._addQty || 0) - 1)}; return u; });
@@ -2663,11 +3134,11 @@ const CartScreen = ({ isAuth }) => {
                             onLongAction={() => {
                               setCartItems(prev => { const u = [...prev]; u[item._idx] = {...u[item._idx], _addQty: Math.max(0, (u[item._idx]._addQty || 0) - 1)}; return u; });
                             }}
-                            style={{width:30, height:30, borderRadius:8, alignItems:'center', justifyContent:'center', backgroundColor:'#fff'}}
+                            style={cartStyles.pickerStepBtn}
                           >
-                            <Ionicons name="remove" size={16} color="#111" />
+                            <Ionicons name="remove" size={16} color={THEME.ink} />
                           </RepeatButton>
-                          <Text style={{fontSize:14, fontWeight:'700', color:'#111', marginHorizontal:12}}>{qty}</Text>
+                          <Text style={cartStyles.pickerStepQty}>{qty}</Text>
                           <RepeatButton
                             onPress={() => {
                               setCartItems(prev => { const u = [...prev]; u[item._idx] = {...u[item._idx], _addQty: (u[item._idx]._addQty || 0) + 1}; return u; });
@@ -2675,9 +3146,9 @@ const CartScreen = ({ isAuth }) => {
                             onLongAction={() => {
                               setCartItems(prev => { const u = [...prev]; u[item._idx] = {...u[item._idx], _addQty: (u[item._idx]._addQty || 0) + 1}; return u; });
                             }}
-                            style={{width:30, height:30, borderRadius:8, alignItems:'center', justifyContent:'center', backgroundColor:'#fff'}}
+                            style={cartStyles.pickerStepBtn}
                           >
-                            <Ionicons name="add" size={16} color="#111" />
+                            <Ionicons name="add" size={16} color={THEME.ink} />
                           </RepeatButton>
                         </View>
                       )}
@@ -2685,8 +3156,8 @@ const CartScreen = ({ isAuth }) => {
                     );
                   }}
                   ListEmptyComponent={
-                    <View style={{alignItems:'center', paddingVertical:30}}>
-                      <Text style={{fontSize:14, color:'#6B7280'}}>{t('cart.noProductsInShop')}</Text>
+                    <View style={cartStyles.pickerEmpty}>
+                      <Text style={cartStyles.pickerEmptyTxt}>{t('cart.noProductsInShop')}</Text>
                     </View>
                   }
                 />
@@ -2695,17 +3166,18 @@ const CartScreen = ({ isAuth }) => {
                   const added = cartItems.filter(it => (it.shop || '__other__') === addProductShop && (it._addQty || 0) > 0);
                   if (added.length === 0) return null;
                   return (
-                    <View style={{paddingHorizontal:20, paddingTop:10, paddingBottom:4}}>
-                      <Text style={{fontSize:13, fontWeight:'700', color:'#111', marginBottom:4}}>{added.length} {t('cart.productsSelected', {count: added.length})}</Text>
+                    <View style={cartStyles.addedSummary}>
+                      <Text style={cartStyles.addedSummaryTitle}>{added.length} {t('cart.productsSelected', {count: added.length})}</Text>
                       {added.map((it, i) => (
-                        <Text key={i} style={{fontSize:12, color:'#6B7280'}}>• {it.name || it.title} x{it._addQty}</Text>
+                        <Text key={i} style={cartStyles.addedSummaryLine}>• {it.name || it.title} x{it._addQty}</Text>
                       ))}
                     </View>
                   );
                 })()}
                 {/* Bouton Ajouter en bas */}
-                <View style={{paddingHorizontal:20, paddingTop:8}}>
+                <View style={{paddingHorizontal:20, paddingTop:10}}>
                   <TouchableOpacity
+                    activeOpacity={0.9}
                     onPress={() => {
                       // Mettre à jour les quantités et sélectionner les produits avec _addQty > 0
                       const updated = [...cartItems];
@@ -2723,9 +3195,10 @@ const CartScreen = ({ isAuth }) => {
                       setSelectedCart(newSelected);
                       setAddProductShop(null);
                     }}
-                    style={{height:48, borderRadius:12, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
+                    style={cartStyles.primaryBtn}
                   >
-                    <Text style={{color:'#fff', fontWeight:'700', fontSize:15}}>{t('cart.addToOrder')}</Text>
+                    <Ionicons name="checkmark-circle" size={20} color="#fff" />
+                    <Text style={cartStyles.primaryBtnTxt}>{t('cart.addToOrder')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -2803,32 +3276,33 @@ const CartScreen = ({ isAuth }) => {
 
       {/* Modal liste produits du shop */}
       <Modal visible={shopProductsVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'85%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+        <View style={cartStyles.sheetBackdrop}>
+          <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 36 }]}>
+            <View style={cartStyles.sheetGrabber} />
+            <View style={cartStyles.sheetHeader}>
               <View style={{flex:1}}>
-                <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{shopProductsName}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:2}}>{shopProductsList.length} {t('productsScreen.quantity') || 'produits'}</Text>
+                <Text style={[cartStyles.sheetTitle, { fontSize: 18 }]} numberOfLines={1}>{shopProductsName}</Text>
+                <Text style={cartStyles.subtitle}>{shopProductsList.length} {t('productsScreen.quantity') || 'produits'}</Text>
               </View>
-              <TouchableOpacity onPress={() => setShopProductsVisible(false)} style={{padding:6}}>
-                <Ionicons name="close" size={24} color="#666" />
+              <TouchableOpacity onPress={() => setShopProductsVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
               </TouchableOpacity>
             </View>
 
             {/* Barre de recherche */}
-            <View style={{paddingHorizontal:20, paddingVertical:10}}>
-              <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', borderRadius:10, paddingHorizontal:12, paddingVertical:8}}>
-                <Ionicons name="search-outline" size={16} color="#9CA3AF" />
+            <View style={{paddingHorizontal:20, paddingBottom:12}}>
+              <View style={cartStyles.searchWrap}>
+                <Ionicons name="search-outline" size={18} color={THEME.faint} />
                 <TextInput
                   value={shopProductsSearch}
                   onChangeText={setShopProductsSearch}
                   placeholder={t('favorites.searchProductPlaceholder') || 'Rechercher un produit...'}
-                  placeholderTextColor="#9CA3AF"
-                  style={{flex:1, marginLeft:8, fontSize:14, color:'#111', padding:0}}
+                  placeholderTextColor={THEME.faint}
+                  style={cartStyles.searchInput}
                 />
                 {shopProductsSearch.length > 0 && (
                   <TouchableOpacity onPress={() => setShopProductsSearch('')}>
-                    <Ionicons name="close-circle" size={16} color="#9CA3AF" />
+                    <Ionicons name="close-circle" size={18} color={THEME.faint} />
                   </TouchableOpacity>
                 )}
               </View>
@@ -2841,25 +3315,27 @@ const CartScreen = ({ isAuth }) => {
               }
               keyExtractor={(item, i) => item.name + i}
               keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{paddingHorizontal:16, paddingBottom:16}}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingHorizontal:20, paddingBottom:16}}
               renderItem={({item: product}) => (
-                <View style={{flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
+                <View style={cartStyles.pickerRow}>
                   <ProductThumb name={product.name} size={40} />
-                  <View style={{flex:1, marginLeft:10}}>
-                    <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{product.name}</Text>
-                    {product.detail ? <Text style={{fontSize:12, color:'#6B7280', marginTop:1}}>{product.detail}</Text> : null}
-                    <View style={{flexDirection:'row', alignItems:'baseline', marginTop:2}}>
-                      <Text style={{fontSize:14, fontWeight:'700', color:'#111'}}>{fmtPrice(product.price||0)}</Text>
-                      {product.unitPrice ? <Text style={{fontSize:10, color:'#9CA3AF', marginLeft:4}}>{product.unitPrice}</Text> : null}
+                  <View style={cartStyles.pickerBody}>
+                    <Text style={cartStyles.pickerName}>{product.name}</Text>
+                    {product.detail ? <Text style={cartStyles.pickerDetail}>{product.detail}</Text> : null}
+                    <View style={cartStyles.pickerPriceRow}>
+                      <Text style={cartStyles.pickerPrice}>{fmtPrice(product.price||0)}</Text>
+                      {product.unitPrice ? <Text style={cartStyles.pickerUnit}>{product.unitPrice}</Text> : null}
                     </View>
                   </View>
                   {product.inCart ? (
-                    <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#F3F4F6', paddingHorizontal:10, paddingVertical:6, borderRadius:8}}>
-                      <Ionicons name="checkmark-circle" size={14} color="#9CA3AF" style={{marginRight:4}} />
-                      <Text style={{fontSize:12, fontWeight:'600', color:'#9CA3AF'}}>{t('cart.inCart') || 'Dans le panier'}</Text>
+                    <View style={cartStyles.pickerInCart}>
+                      <Ionicons name="checkmark-circle" size={14} color={THEME.muted} />
+                      <Text style={cartStyles.pickerInCartTxt}>{t('cart.inCart') || 'Dans le panier'}</Text>
                     </View>
                   ) : (
                     <TouchableOpacity
+                      activeOpacity={0.85}
                       onPress={async () => {
                         const newItem = {
                           name: product.name, detail: product.detail || '',
@@ -2875,10 +3351,10 @@ const CartScreen = ({ isAuth }) => {
                         // Mark as in cart
                         setShopProductsList(prev => prev.map(p => p.name === product.name ? {...p, inCart: true} : p));
                       }}
-                      style={{flexDirection:'row', alignItems:'center', backgroundColor:BRAND, paddingHorizontal:12, paddingVertical:8, borderRadius:8}}
+                      style={cartStyles.pickerAddPill}
                     >
-                      <Ionicons name="add" size={16} color="#fff" style={{marginRight:4}} />
-                      <Text style={{fontSize:13, fontWeight:'700', color:'#fff'}}>{t('cart.add') || 'Ajouter'}</Text>
+                      <Ionicons name="add" size={16} color="#fff" />
+                      <Text style={cartStyles.pickerAddPillTxt}>{t('cart.add') || 'Ajouter'}</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -2913,6 +3389,7 @@ const CartScreen = ({ isAuth }) => {
         }}
       />
     </SafeAreaView>
+    </View>
   );
 };
 
@@ -2946,7 +3423,7 @@ function MainNavigator({ onLogout, isAuth }) {
         headerTitle: getTabName(route.name),
         tabBarLabel: getTabName(route.name),
         tabBarActiveTintColor: BRAND,
-        tabBarStyle: { height: 62 },
+        tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28 },
         tabBarIcon: ({ focused, color, size }) => {
           const iconSet = ICONS[route.name] || { focused:"ellipse", unfocused:"ellipse-outline" };
           const name = focused ? iconSet.focused : iconSet.unfocused;
@@ -2954,14 +3431,70 @@ function MainNavigator({ onLogout, isAuth }) {
         },
       })}
     >
-      <Tab.Screen name="myList" component={ListScreen} />
-      <Tab.Screen name="products" component={ProductsScreen} />
-      <Tab.Screen name="cart">{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
-      <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="profile">{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="cart" options={{ headerShown: false }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="favorites" component={FavoritesScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
     </Tab.Navigator>
   );
 }
+
+const authStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+
+  // Top bar (back / close)
+  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingTop: 60, paddingBottom: 4, minHeight: 46 },
+  topBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+
+  // Scroll body
+  scrollBody: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 24 },
+
+  // Brand header
+  brandHeader: { alignItems: 'center', marginBottom: 28 },
+  brandLogo: { width: 72, height: 72, borderRadius: 24, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginBottom: 16, ...THEME.shadow },
+  brandTitle: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  brandSubtitle: { fontSize: 13, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 19, fontWeight: '600' },
+
+  // Error banner
+  errorBanner: { backgroundColor: THEME.dangerSoft, borderRadius: 14, padding: 14, marginBottom: 18, flexDirection: 'row', alignItems: 'center' },
+  errorTxt: { color: THEME.danger, fontSize: 13, marginLeft: 8, flex: 1, fontWeight: '600' },
+
+  // Form fields
+  fieldGroup: { marginBottom: 14 },
+  fieldLabel: { fontSize: 13, fontWeight: '600', color: THEME.muted, marginBottom: 6 },
+  field: { height: 52, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
+  pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.subtle, borderRadius: 14 },
+  pwdInput: { flex: 1, height: 52, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
+  pwdEye: { paddingHorizontal: 14, height: 52, alignItems: 'center', justifyContent: 'center' },
+
+  // Primary button
+  primaryBtn: { height: 54, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 4, ...THEME.shadow },
+  primaryBtnDisabled: { backgroundColor: THEME.faint, shadowOpacity: 0, elevation: 0 },
+  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16 },
+
+  // Toggle-mode link
+  toggleLink: { alignItems: 'center', paddingVertical: 18 },
+  toggleTxt: { color: THEME.muted, fontSize: 14.5, fontWeight: '600' },
+  toggleTxtBrand: { color: THEME.brand, fontWeight: '800', fontSize: 14.5 },
+
+  // Language picker button
+  langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
+  langBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
+
+  // Language picker modal
+  langBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
+  langSheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '62%', paddingBottom: 36 },
+  langHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 4 },
+  langHeadRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  langHeadTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink, letterSpacing: -0.3 },
+  langClose: { width: 34, height: 34, borderRadius: 11, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  langRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 14, borderRadius: 14, marginBottom: 4 },
+  langRowActive: { backgroundColor: THEME.brandSoft },
+  langFlag: { fontSize: 24, marginRight: 14 },
+  langLabel: { flex: 1, fontSize: 15.5, fontWeight: '600', color: THEME.ink },
+  langLabelActive: { fontWeight: '800', color: THEME.brandDark },
+});
 
 function AuthScreen({ onLogin, onClose }) {
   const { t, i18n: i18nAuth } = useTranslation();
@@ -3049,86 +3582,103 @@ function AuthScreen({ onLogin, onClose }) {
 
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-    <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-      <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingHorizontal:16, paddingTop:12, minHeight:34}}>
+    <SafeAreaView style={authStyles.screen} edges={[]}>
+      <View style={authStyles.topBar}>
         {!isLogin ? (
-          <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }}>
-            <Ionicons name="arrow-back" size={26} color="#111" />
+          <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }} style={authStyles.topBtn} activeOpacity={0.7}>
+            <Ionicons name="arrow-back" size={22} color={THEME.ink} />
           </TouchableOpacity>
-        ) : <View />}
+        ) : <View style={{ width: 38, height: 38 }} />}
         {onClose ? (
-          <TouchableOpacity onPress={onClose}>
-            <Ionicons name="close" size={28} color="#111" />
+          <TouchableOpacity onPress={onClose} style={authStyles.topBtn} activeOpacity={0.7}>
+            <Ionicons name="close" size={22} color={THEME.ink} />
           </TouchableOpacity>
         ) : null}
       </View>
-      <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center', paddingHorizontal:24, paddingVertical:30}} keyboardShouldPersistTaps="handled">
-        <View style={{alignItems:'center', marginBottom:24}}>
-          <View style={{width:60, height:60, borderRadius:30, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12}}>
-            <Ionicons name="cart" size={30} color="#fff" />
+      <ScrollView contentContainerStyle={authStyles.scrollBody} keyboardShouldPersistTaps="handled">
+        <View style={authStyles.brandHeader}>
+          <View style={authStyles.brandLogo}>
+            <Ionicons name="cart" size={34} color="#fff" />
           </View>
-          <Text style={{fontSize:24, fontWeight:'900', color:'#111'}}>Pearl List</Text>
-          <Text style={{fontSize:13, color:'#9CA3AF', marginTop:6, textAlign:'center'}}>
+          <Text style={authStyles.brandTitle}>Pearl List</Text>
+          <Text style={authStyles.brandSubtitle}>
             {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets ou Marketplace') : (t('auth.pearlSignupHint') || 'Créez un compte — utilisable sur l\'app et le site Marketplace')}
           </Text>
         </View>
-        {error ? (<View style={{backgroundColor:'#FEE2E2', borderRadius:10, padding:12, marginBottom:16, flexDirection:'row', alignItems:'center'}}><Ionicons name="alert-circle" size={18} color="#EF4444" /><Text style={{color:'#EF4444', fontSize:13, marginLeft:8, flex:1}}>{error}</Text></View>) : null}
+        {error ? (
+          <View style={authStyles.errorBanner}>
+            <Ionicons name="alert-circle" size={18} color={THEME.danger} />
+            <Text style={authStyles.errorTxt}>{error}</Text>
+          </View>
+        ) : null}
         {!isLogin && (
           <>
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.pseudo')}</Text>
-            <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.firstName')}</Text>
-            <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-            <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('profile.lastName')}</Text>
-            <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
+            <View style={authStyles.fieldGroup}>
+              <Text style={authStyles.fieldLabel}>{t('profile.pseudo')}</Text>
+              <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+            </View>
+            <View style={authStyles.fieldGroup}>
+              <Text style={authStyles.fieldLabel}>{t('profile.firstName')}</Text>
+              <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+            </View>
+            <View style={authStyles.fieldGroup}>
+              <Text style={authStyles.fieldLabel}>{t('profile.lastName')}</Text>
+              <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+            </View>
           </>
         )}
-        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-        <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none" style={{borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, padding:14, fontSize:15, marginBottom:12, color:'#111'}} />
-        <Text style={{fontSize:13, fontWeight:'600', color:'#374151', marginBottom:4}}>{t('auth.password')}</Text>
-        <View style={{flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#E5E7EB', borderRadius:12, marginBottom:20}}>
-          <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} secureTextEntry={!showPwd} style={{flex:1, padding:14, fontSize:15, color:'#111'}} />
-          <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={{paddingRight:14}}>
-            <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color="#9CA3AF" />
-          </TouchableOpacity>
+        <View style={authStyles.fieldGroup}>
+          <Text style={authStyles.fieldLabel}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
+          <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
         </View>
-        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading} style={{height:52, borderRadius:14, backgroundColor: loading ? '#9CA3AF' : BRAND, alignItems:'center', justifyContent:'center', marginBottom:16}}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
+        <View style={authStyles.fieldGroup}>
+          <Text style={authStyles.fieldLabel}>{t('auth.password')}</Text>
+          <View style={authStyles.pwdRow}>
+            <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+            <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
+              <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
+          {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={{alignItems:'center', paddingVertical:16}}>
-          <Text style={{color:'#6B7280', fontSize:15}}>
+        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={authStyles.toggleLink} activeOpacity={0.7}>
+          <Text style={authStyles.toggleTxt}>
             {isLogin ? (t('auth.noAccountPearl') || 'Pas de compte ? ') : (t('auth.hasAccountPearl') || 'Déjà un compte ? ')}
-            <Text style={{color:BRAND, fontWeight:'800', fontSize:15}}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
+            <Text style={authStyles.toggleTxtBrand}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity onPress={() => setLangVisible(true)} style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal:24, marginBottom:12, paddingVertical:12, borderRadius:12, backgroundColor:'#fff'}}>
-        <Ionicons name="globe-outline" size={18} color="#6B7280" style={{marginRight:8}} />
-        <Text style={{fontSize:14, fontWeight:'600', color:'#374151'}}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
+      <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
+        <Ionicons name="globe-outline" size={18} color={THEME.muted} />
+        <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
       </TouchableOpacity>
 
       {/* Language Picker Modal */}
       <Modal visible={langVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'60%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.language') || 'Langue'}</Text>
-              <TouchableOpacity onPress={() => setLangVisible(false)} style={{padding:6}}>
-                <Ionicons name="close" size={24} color="#666" />
+        <View style={authStyles.langBackdrop}>
+          <View style={authStyles.langSheet}>
+            <View style={authStyles.langHandle} />
+            <View style={authStyles.langHeadRow}>
+              <Text style={authStyles.langHeadTitle}>{t('profile.language') || 'Langue'}</Text>
+              <TouchableOpacity onPress={() => setLangVisible(false)} style={authStyles.langClose} activeOpacity={0.7}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
               </TouchableOpacity>
             </View>
             <FlatList
               data={LANGUAGES}
               keyExtractor={(item) => item.code}
-              contentContainerStyle={{paddingHorizontal:16, paddingVertical:8}}
+              contentContainerStyle={{paddingHorizontal:14, paddingVertical:10}}
               renderItem={({item: lang}) => (
                 <TouchableOpacity
                   onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANG', lang.code); setLangVisible(false); }}
-                  style={{flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:12, borderBottomWidth:1, borderBottomColor:'#F3F4F6', backgroundColor: i18nAuth.language === lang.code ? '#F0FDF4' : '#fff'}}
+                  activeOpacity={0.7}
+                  style={[authStyles.langRow, i18nAuth.language === lang.code && authStyles.langRowActive]}
                 >
-                  <Text style={{fontSize:24, marginRight:14}}>{lang.flag}</Text>
-                  <Text style={{flex:1, fontSize:16, fontWeight: i18nAuth.language === lang.code ? '700' : '500', color: i18nAuth.language === lang.code ? BRAND : '#111'}}>{lang.label}</Text>
-                  {i18nAuth.language === lang.code && <Ionicons name="checkmark-circle" size={20} color={BRAND} />}
+                  <Text style={authStyles.langFlag}>{lang.flag}</Text>
+                  <Text style={[authStyles.langLabel, i18nAuth.language === lang.code && authStyles.langLabelActive]}>{lang.label}</Text>
+                  {i18nAuth.language === lang.code && <Ionicons name="checkmark-circle" size={20} color={THEME.brand} />}
                 </TouchableOpacity>
               )}
             />
@@ -3316,6 +3866,222 @@ const LANGUAGES = [
   { code:'ru', label:'Русский', flag:'🇷🇺' },
 ];
 
+const profStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+
+  // Custom in-screen header
+  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+
+  // Profile identity card
+  profileCard: { backgroundColor: THEME.card, borderRadius: 16, marginHorizontal: 20, marginTop: 8, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  avatarWrap: { width: 60, height: 60, marginBottom: 8 },
+  avatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#9ca3af', alignItems: 'center', justifyContent: 'center', borderWidth: 2.5, borderColor: '#3B82F6', overflow: 'hidden' },
+  avatarImg: { width: 60, height: 60 },
+  avatarInitials: { fontSize: 24, fontWeight: '900', color: '#fff' },
+  avatarBadge: { position: 'absolute', bottom: 0, right: 0, width: 24, height: 24, borderRadius: 12, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: THEME.card, zIndex: 10 },
+  profileName: { fontSize: 19, fontWeight: '900', color: THEME.ink, letterSpacing: -0.3 },
+  profileHandle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  editBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 16, height: 34, borderRadius: 12, marginTop: 10 },
+  editBtnTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
+
+  // Section
+  section: { marginTop: 14, paddingHorizontal: 20 },
+  sectionHeadRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  sectionTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, letterSpacing: -0.3 },
+  sectionCount: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
+
+  // Verification banners
+  banner: { flexDirection: 'row', alignItems: 'center', borderRadius: 14, padding: 14, marginBottom: 10 },
+  bannerWarn: { backgroundColor: '#FEF3C7' },
+  bannerOk: { backgroundColor: THEME.brandSoft },
+  bannerTxt: { flex: 1, fontSize: 13, fontWeight: '600', marginLeft: 10, lineHeight: 18 },
+
+  // Document status card
+  docCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 6, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  docRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, paddingHorizontal: 10 },
+  docDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
+  docIcon: { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  docLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
+  docStatusPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  docStatusTxt: { fontSize: 11.5, fontWeight: '800' },
+
+  // Order card
+  orderCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  orderRow: { flexDirection: 'row', alignItems: 'center' },
+  orderIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  orderBody: { flex: 1, marginLeft: 12, marginRight: 8 },
+  orderTitle: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  orderStatusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 3 },
+  orderDot: { width: 7, height: 7, borderRadius: 4, marginRight: 6 },
+  orderStatusTxt: { fontSize: 12.5, fontWeight: '700' },
+  orderShops: { fontSize: 12.5, color: THEME.muted, marginTop: 3, fontWeight: '600' },
+  orderDate: { fontSize: 11.5, color: THEME.faint, marginTop: 2, fontWeight: '600' },
+  orderSide: { alignItems: 'flex-end' },
+  modePill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: THEME.subtle, marginBottom: 4 },
+  modePillTxt: { fontSize: 10, fontWeight: '800', color: THEME.muted },
+  orderPrice: { fontSize: 15.5, fontWeight: '900', color: THEME.ink },
+
+  // Settings rows
+  settingsCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm, overflow: 'hidden' },
+  settingRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 11, paddingHorizontal: 14 },
+  settingDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
+  settingIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center' },
+  settingBody: { flex: 1, marginLeft: 12, marginRight: 8 },
+  settingLabel: { fontSize: 15, fontWeight: '700', color: THEME.ink },
+  settingValue: { fontSize: 12.5, color: THEME.muted, marginTop: 1, fontWeight: '600' },
+
+  // Driver CTA card
+  driverCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: THEME.border },
+  driverIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  driverBody: { flex: 1, marginLeft: 12, marginRight: 8 },
+  driverTitle: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  driverSub: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+
+  // Logout
+  logoutBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.dangerSoft, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  logoutTxt: { fontSize: 15.5, fontWeight: '800', color: THEME.danger, marginLeft: 8 },
+
+  // Empty state
+  empty: { backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 16, paddingHorizontal: 24, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  emptyCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+
+  // Guest screen
+  guestWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 40 },
+  guestTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  guestHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
+  guestBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
+  guestBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+
+  // Full-page modal header
+  modalScreen: { flex: 1, backgroundColor: THEME.bg },
+  modalHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 56, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  modalBack: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  modalTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, flex: 1, letterSpacing: -0.4 },
+  modalHeaderPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, backgroundColor: THEME.brandSoft },
+  modalHeaderPillTxt: { fontSize: 12, fontWeight: '800', color: THEME.brandDark },
+
+  // Form fields
+  fieldLabel: { fontSize: 12.5, fontWeight: '700', color: THEME.muted, marginBottom: 6 },
+  field: { height: 52, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink },
+  fieldGroup: { marginBottom: 16 },
+  fieldRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
+
+  // Generic white card inside modals
+  modalCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+
+  // Geolocation button
+  geoBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 50, borderRadius: 14, backgroundColor: THEME.brandSoft, marginBottom: 20 },
+  geoBtnTxt: { fontSize: 14.5, fontWeight: '700', color: THEME.brandDark, marginLeft: 8 },
+
+  // Password change collapsible
+  pwdToggle: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, borderWidth: 1, borderColor: THEME.border, paddingVertical: 14, paddingHorizontal: 14, marginBottom: 22, ...THEME.shadowSm },
+  pwdToggleTxt: { flex: 1, fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
+  pwdPanel: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, padding: 16, marginBottom: 22, ...THEME.shadowSm },
+  pwdPanelHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
+  pwdPanelTitle: { flex: 1, fontSize: 15, fontWeight: '800', color: THEME.ink, marginLeft: 8 },
+  pwdAlert: { borderRadius: 12, padding: 10, marginBottom: 12, flexDirection: 'row', alignItems: 'center' },
+  pwdAlertTxt: { fontSize: 12.5, fontWeight: '600', marginLeft: 6, flex: 1 },
+
+  // Button row (cancel / save)
+  btnRow: { flexDirection: 'row', gap: 12 },
+  cancelBtn: { flex: 1, height: 52, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  cancelBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
+  saveBtn: { flex: 1, height: 52, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  saveBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 15 },
+
+  // Primary full-width button
+  primaryBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  primaryBtnDisabled: { backgroundColor: THEME.faint },
+  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+
+  // Picker rows (language / currency)
+  pickerRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pickerRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand, borderWidth: 2 },
+  pickerFlag: { fontSize: 24, marginRight: 14 },
+  pickerName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  pickerNameOn: { color: THEME.brandDark, fontWeight: '800' },
+  pickerSub: { fontSize: 12, color: THEME.faint, marginTop: 2, fontWeight: '600' },
+
+  // Sheet footer (confirm button area)
+  sheetFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 34 : 16 },
+
+  // Driver info modal hero
+  driverHero: { alignItems: 'center', marginBottom: 22 },
+  driverHeroIcon: { width: 72, height: 72, borderRadius: 24, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  driverHeroTitle: { fontSize: 22, fontWeight: '900', color: THEME.ink, textAlign: 'center', letterSpacing: -0.4 },
+  driverHeroSub: { fontSize: 14, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 20, fontWeight: '600' },
+  driverTypeCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  driverTypeHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  driverTypeIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  driverTypeTitle: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  driverTypeTxt: { fontSize: 13, color: THEME.muted, lineHeight: 20, fontWeight: '600' },
+  limitRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  limitFlag: { fontSize: 22, marginRight: 12 },
+  limitName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  limitInfo: { fontSize: 11.5, color: THEME.muted, marginTop: 1, fontWeight: '600' },
+  limitValue: { fontSize: 13, fontWeight: '800' },
+  legalNote: { fontSize: 11.5, color: THEME.faint, textAlign: 'center', marginTop: 10, lineHeight: 16, fontWeight: '600' },
+
+  // Order detail rows
+  detailInfoRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  detailInfoLabel: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
+  detailInfoValue: { fontSize: 13, fontWeight: '700', color: THEME.ink, marginLeft: 6 },
+  driverChip: { backgroundColor: THEME.brandSoft, borderRadius: 12, padding: 12, marginBottom: 10, flexDirection: 'row', alignItems: 'center' },
+  driverChipIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  driverChipName: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
+  driverChipSub: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
+  driverChipCall: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  costBlock: { borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 12, marginTop: 4 },
+  costRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
+  costLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
+  costValue: { fontSize: 13, fontWeight: '700', color: THEME.ink },
+  costValueFree: { fontSize: 13, fontWeight: '700', color: THEME.brand },
+  grandRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 10, marginTop: 4 },
+  grandLabel: { fontSize: 16, fontWeight: '900', color: THEME.ink },
+  grandValue: { fontSize: 16, fontWeight: '900', color: THEME.brand },
+  statusCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 14, marginBottom: 12 },
+  statusCardIcon: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  statusCardLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
+  statusCardValue: { fontSize: 16, fontWeight: '800', marginTop: 1 },
+  shopBlock: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  shopBlockHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  shopBlockIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  shopBlockName: { fontSize: 15, fontWeight: '800', color: THEME.ink },
+  detailItemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  detailItemDivider: { borderTopWidth: 1, borderTopColor: THEME.border },
+  detailItemBody: { flex: 1, marginLeft: 10 },
+  detailItemName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  detailItemMeta: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  detailItemPrice: { fontSize: 14, fontWeight: '800', color: THEME.ink },
+  detailFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 34 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
+
+  // Reorder bottom sheet
+  sheetBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '78%', paddingBottom: Platform.OS === 'ios' ? 32 : 20, ...THEME.shadow },
+  sheetGrabber: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 2 },
+  sheetHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 14 },
+  sheetTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  selectAllPill: { paddingHorizontal: 12, height: 32, borderRadius: 10, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  selectAllTxt: { fontSize: 12, fontWeight: '700', color: THEME.ink },
+  closeBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  reorderRow: { flexDirection: 'row', alignItems: 'center', padding: 12, marginBottom: 8, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  reorderRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand },
+  reorderBody: { flex: 1, marginLeft: 10 },
+  reorderName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  reorderShop: { fontSize: 11.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
+  reorderSide: { alignItems: 'flex-end' },
+  reorderQty: { fontSize: 13, fontWeight: '700', color: THEME.muted },
+  reorderPrice: { fontSize: 13.5, fontWeight: '800', color: THEME.brand, marginTop: 2 },
+  reorderTotalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
+  reorderTotalLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
+  reorderTotalValue: { fontSize: 17, fontWeight: '900', color: THEME.brand },
+});
+
 function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
   const { currency, setCurrency, fmtPrice } = useCurrency();
@@ -3456,6 +4222,10 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
   const saveAddress = async () => {
     const updated = { ...profile, address: editAddress.trim(), addressSupplement: editAddressSupplement.trim(), city: editCity.trim(), postalCode: editPostalCode.trim(), country: editCountry.trim() };
+    // Sync to the Marketplace backend so the address matches the website / user app
+    try {
+      if (profile.id) await updateUserAddress(profile.id, updated);
+    } catch(e) {}
     setProfile(updated);
     await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
     setAddressVisible(false);
@@ -3521,7 +4291,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     } catch(e) { return iso; }
   };
 
-  const initials = (profile.prenom?profile.prenom[0]:'') + (profile.nom?profile.nom[0]:'');
+  const initials = (profile.prenom || profile.nom || '').trim().charAt(0).toUpperCase();
+  // Avatar ring reflects the user's status — a new user (no orders yet) gets a blue ring.
+  const statusRingColor = (orders.length === 0) ? '#3B82F6' : BRAND;
 
   // Track delivery status from API for delivery orders
   const [deliveryStatuses, setDeliveryStatuses] = React.useState({});
@@ -3619,13 +4391,19 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
   if (!isAuth) {
     return (
-      <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-        <View style={{ flex:1, alignItems:'center', justifyContent:'center', padding:32 }}>
-          <Ionicons name="person-circle-outline" size={88} color="#CBD5E1" />
-          <Text style={{ fontSize:19, fontWeight:'800', color:'#111', marginTop:16, textAlign:'center' }}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
-          <Text style={{ fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center', lineHeight:20 }}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
-          <TouchableOpacity onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={{ marginTop:24, backgroundColor:BRAND, paddingHorizontal:36, paddingVertical:14, borderRadius:14 }}>
-            <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('auth.loginBtn') || 'Se connecter'}</Text>
+      <SafeAreaView style={profStyles.screen} edges={['top']}>
+        <View style={profStyles.header}>
+          <Text style={profStyles.title}>{t('tabs.profile')}</Text>
+        </View>
+        <View style={profStyles.guestWrap}>
+          <View style={profStyles.emptyCircle}>
+            <Ionicons name="person-outline" size={44} color="#fff" />
+          </View>
+          <Text style={profStyles.guestTitle}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
+          <Text style={profStyles.guestHint}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={profStyles.guestBtn}>
+            <Ionicons name="log-in-outline" size={20} color="#fff" />
+            <Text style={profStyles.guestBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -3633,58 +4411,55 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   }
 
   return (
-    <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-      <ScrollView contentContainerStyle={{ paddingBottom:20 }} keyboardShouldPersistTaps="handled">
+    <SafeAreaView style={profStyles.screen} edges={['top']}>
+      <View style={profStyles.header}>
+        <Text style={profStyles.title}>{t('tabs.profile')}</Text>
+        <Text style={profStyles.subtitle}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
+      </View>
+      <ScrollView contentContainerStyle={{ paddingBottom:28 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         {/* Profile Card */}
-        <View style={{ alignItems:'center', paddingVertical:24 }}>
-          <TouchableOpacity onPress={pickPhoto} activeOpacity={0.8} style={{ width:100, height:100, marginBottom:12 }}>
-            <View style={{
-              width:100, height:100, borderRadius:50, backgroundColor:'#E0F7F1',
-              alignItems:'center', justifyContent:'center',
-              borderWidth:3, borderColor:'#00C29B', overflow:'hidden'
-            }}>
+        <View style={profStyles.profileCard}>
+          <TouchableOpacity onPress={pickPhoto} activeOpacity={0.8} style={profStyles.avatarWrap}>
+            <View style={[profStyles.avatar, { borderColor: statusRingColor }]}>
               {profile.photo && (profile.photo.startsWith('/') || profile.photo.startsWith('file')) ? (
-                <Image source={{ uri: profile.photo }} style={{ width:100, height:100 }} />
+                <Image source={{ uri: profile.photo }} style={profStyles.avatarImg} />
               ) : (
-                <Text style={{ fontSize:36, fontWeight:'800', color:'#00C29B' }}>{initials || '👤'}</Text>
+                <Text style={profStyles.avatarInitials}>{initials || '👤'}</Text>
               )}
             </View>
-            <View style={{ position:'absolute', bottom:0, right:0, width:30, height:30, borderRadius:15,
-              backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center', borderWidth:2, borderColor:'#fff', zIndex:10 }}>
+            <View style={profStyles.avatarBadge}>
               <Ionicons name="camera" size={14} color="#fff" />
             </View>
           </TouchableOpacity>
-          <Text style={{ fontSize:20, fontWeight:'900', color:'#111' }}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
-          {profile.pseudo ? <Text style={{ fontSize:14, color:'#6B7280', marginTop:2 }}>@{profile.pseudo}</Text> : null}
+          <Text style={profStyles.profileName}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
+          {profile.pseudo ? <Text style={profStyles.profileHandle}>@{profile.pseudo}</Text> : null}
 
-          <TouchableOpacity onPress={() => { setEditNom(profile.nom); setEditPrenom(profile.prenom); setEditPseudo(profile.pseudo||''); setEditEmail(profile.email||''); setShowPwdChange(false); setPwdError(''); setPwdSuccess(''); setEditVisible(true); }} style={{
-            marginTop:6, paddingHorizontal:20, paddingVertical:10, borderRadius:10,
-            backgroundColor:'#00C29B'
-          }}>
-            <Text style={{ color:'#fff', fontWeight:'700' }}>{t('profile.editProfile')}</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => { setEditNom(profile.nom); setEditPrenom(profile.prenom); setEditPseudo(profile.pseudo||''); setEditEmail(profile.email||''); setShowPwdChange(false); setPwdError(''); setPwdSuccess(''); setEditVisible(true); }} style={profStyles.editBtn}>
+            <Ionicons name="create-outline" size={16} color={THEME.brandDark} />
+            <Text style={profStyles.editBtnTxt}>{t('profile.editProfile')}</Text>
           </TouchableOpacity>
         </View>
 
         {/* Document Verification Status (Pro users) */}
         {profile.role === 'professionaluser' && (
-          <View style={{ paddingHorizontal:16, marginBottom:16 }}>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
-              {t('profile.verificationStatus') || 'Statut de vérification'}
-            </Text>
+          <View style={profStyles.section}>
+            <View style={profStyles.sectionHeadRow}>
+              <Text style={profStyles.sectionTitle}>{t('profile.verificationStatus') || 'Statut de vérification'}</Text>
+            </View>
             {!profile.isVerified && (
-              <View style={{ backgroundColor:'#FEF3C7', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                <Ionicons name="time-outline" size={20} color="#F59E0B" style={{marginRight:10}} />
-                <Text style={{ flex:1, fontSize:13, color:'#92400E' }}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
+              <View style={[profStyles.banner, profStyles.bannerWarn]}>
+                <Ionicons name="time-outline" size={20} color="#B45309" />
+                <Text style={[profStyles.bannerTxt, { color:'#92400E' }]}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
               </View>
             )}
             {profile.isVerified && (
-              <View style={{ backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                <Ionicons name="checkmark-circle" size={20} color="#059669" style={{marginRight:10}} />
-                <Text style={{ flex:1, fontSize:13, color:'#065F46', fontWeight:'600' }}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
+              <View style={[profStyles.banner, profStyles.bannerOk]}>
+                <Ionicons name="checkmark-circle" size={20} color={THEME.brandDark} />
+                <Text style={[profStyles.bannerTxt, { color:THEME.brandDark }]}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
               </View>
             )}
             {docStatuses && (
-              <View style={{ backgroundColor:'#fff', borderRadius:12, padding:14, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
+              <View style={profStyles.docCard}>
                 {[
                   { key: 'kbiss_status', label: 'KBISS' },
                   { key: 'iban_status', label: 'IBAN / RIB' },
@@ -3694,13 +4469,18 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 ].map((doc, i) => {
                   const status = docStatuses[doc.key] || 'pending';
                   const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
-                  const color = status === 'approved' ? '#059669' : status === 'rejected' ? '#EF4444' : '#F59E0B';
+                  const color = status === 'approved' ? THEME.brand : status === 'rejected' ? THEME.danger : '#F59E0B';
+                  const tint = status === 'approved' ? THEME.brandSoft : status === 'rejected' ? THEME.dangerSoft : '#FEF3C7';
                   const label = status === 'approved' ? (t('profile.docApproved') || 'Approuvé') : status === 'rejected' ? (t('profile.docRejected') || 'Rejeté') : (t('profile.docPending') || 'En attente');
                   return (
-                    <View key={i} style={{ flexDirection:'row', alignItems:'center', paddingVertical:10, borderBottomWidth: i < 4 ? 1 : 0, borderBottomColor:'#F3F4F6' }}>
-                      <Ionicons name={icon} size={18} color={color} style={{marginRight:10}} />
-                      <Text style={{ flex:1, fontSize:14, fontWeight:'500', color:'#111' }}>{doc.label}</Text>
-                      <Text style={{ fontSize:12, fontWeight:'600', color }}>{label}</Text>
+                    <View key={i} style={[profStyles.docRow, i < 4 && profStyles.docDivider]}>
+                      <View style={[profStyles.docIcon, { backgroundColor: tint }]}>
+                        <Ionicons name={icon} size={17} color={color} />
+                      </View>
+                      <Text style={profStyles.docLabel}>{doc.label}</Text>
+                      <View style={[profStyles.docStatusPill, { backgroundColor: tint }]}>
+                        <Text style={[profStyles.docStatusTxt, { color }]}>{label}</Text>
+                      </View>
                     </View>
                   );
                 })}
@@ -3710,149 +4490,125 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         )}
 
         {/* Order History */}
-        <View style={{ paddingHorizontal:16 }}>
-          <Text style={{ fontSize:18, fontWeight:'800', color:'#111', marginBottom:12 }}>
-            {t('profile.orderHistory')}
-          </Text>
+        <View style={profStyles.section}>
+          <View style={profStyles.sectionHeadRow}>
+            <Text style={profStyles.sectionTitle}>{t('profile.orderHistory')}</Text>
+            {orders.length > 0 ? <Text style={profStyles.sectionCount}>{orders.length}</Text> : null}
+          </View>
 
           {orders.length === 0 ? (
-            <View style={{ backgroundColor:'#fff', borderRadius:12, padding:24, alignItems:'center' }}>
-              <Ionicons name="receipt-outline" size={40} color="#E5E7EB" />
-              <Text style={{ color:'#9CA3AF', marginTop:8 }}>{t('profile.noOrders')}</Text>
+            <View style={profStyles.empty}>
+              <View style={profStyles.emptyCircle}>
+                <Ionicons name="receipt-outline" size={24} color="#fff" />
+              </View>
+              <Text style={profStyles.emptyTitle}>{t('profile.noOrders')}</Text>
             </View>
           ) : (
             <>
               {orders.slice(0,3).map((order) => {
                 const status = getOrderStatus(order);
                 return (
-                <TouchableOpacity key={order.id} activeOpacity={0.8} onPress={() => setDetailOrder(order)}
-                  style={{ backgroundColor:'#fff', borderRadius:12, padding:14, marginBottom:10,
-                    shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-                  }}>
-                  <View style={{ flexDirection:'row', alignItems:'center' }}>
-                    <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#F3F4F6',
-                      alignItems:'center', justifyContent:'center', marginRight:10, flexShrink:0 }}>
-                      <Ionicons name={status.icon} size={18} color={status.color} />
+                <TouchableOpacity key={order.id} activeOpacity={0.8} onPress={() => setDetailOrder(order)} style={profStyles.orderCard}>
+                  <View style={profStyles.orderRow}>
+                    <View style={profStyles.orderIcon}>
+                      <Ionicons name={status.icon} size={20} color={THEME.brand} />
                     </View>
-                    <View style={{flex:1}}>
-                      <Text style={{ fontWeight:'700', color:'#111' }} numberOfLines={1}>{t('profile.orderNumber')} #{String(order.id).slice(-4)}</Text>
-                      <View style={{ flexDirection:'row', alignItems:'center', marginTop:3 }}>
-                        <View style={{ width:8, height:8, borderRadius:4, backgroundColor: status.color, marginRight:6 }} />
-                        <Text style={{ fontSize:12, fontWeight:'600', color: status.color }}>{status.label}</Text>
+                    <View style={profStyles.orderBody}>
+                      <Text style={profStyles.orderTitle} numberOfLines={1}>{t('profile.orderNumber')} #{String(order.id).slice(-4)}</Text>
+                      <View style={profStyles.orderStatusRow}>
+                        <View style={[profStyles.orderDot, { backgroundColor: status.color }]} />
+                        <Text style={[profStyles.orderStatusTxt, { color: status.color }]}>{status.label}</Text>
                       </View>
                       {(order.shops && order.shops.length > 0) ? (
-                        <Text style={{ fontSize:12, color:'#374151', marginTop:2 }} numberOfLines={1}>{order.shops.join(', ')}</Text>
+                        <Text style={profStyles.orderShops} numberOfLines={1}>{order.shops.join(', ')}</Text>
                       ) : null}
-                      <Text style={{ fontSize:11, color:'#9CA3AF', marginTop:2 }}>{fmtDate(order.date)}</Text>
+                      <Text style={profStyles.orderDate}>{fmtDate(order.date)}</Text>
                     </View>
-                    <View style={{ alignItems:'flex-end', marginLeft:10, flexShrink:0 }}>
-                      <View style={{ paddingHorizontal:8, paddingVertical:2, borderRadius:6, marginBottom:4,
-                        backgroundColor:'#F3F4F6' }}>
-                        <Text style={{ fontSize:10, fontWeight:'700', color:'#374151' }}>
+                    <View style={profStyles.orderSide}>
+                      <View style={profStyles.modePill}>
+                        <Text style={profStyles.modePillTxt}>
                           {order.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
                         </Text>
                       </View>
-                      <Text style={{ fontWeight:'800', color:'#111', fontSize:15 }}>
-                        {fmtPrice(order.total||0)}
-                      </Text>
-                      <Ionicons name="chevron-forward" size={16} color="#9CA3AF" style={{marginTop:4}} />
+                      <Text style={profStyles.orderPrice}>{fmtPrice(order.total||0)}</Text>
+                      <Ionicons name="chevron-forward" size={16} color={THEME.faint} style={{marginTop:4}} />
                     </View>
                   </View>
                 </TouchableOpacity>
                 );
               })}
               {orders.length > 0 && (
-                <TouchableOpacity onPress={() => setAllOrdersVisible(true)} style={{
-                  paddingVertical:12, borderRadius:10, backgroundColor:'#00C29B', alignItems:'center', marginTop:4
-                }}>
-                  <Text style={{ color:'#fff', fontWeight:'700', fontSize:14 }}>{t('profile.openAllHistory')} ({orders.length})</Text>
+                <TouchableOpacity activeOpacity={0.85} onPress={() => setAllOrdersVisible(true)} style={profStyles.primaryBtn}>
+                  <Ionicons name="time-outline" size={18} color="#fff" />
+                  <Text style={profStyles.primaryBtnTxt}>{t('profile.openAllHistory')} ({orders.length})</Text>
                 </TouchableOpacity>
               )}
             </>
           )}
         </View>
 
-        {/* Address Button */}
-        <View style={{ paddingHorizontal:16, marginTop:16 }}>
-          <TouchableOpacity onPress={() => { setEditAddress(profile.address||''); setEditAddressSupplement(profile.addressSupplement||''); setEditCity(profile.city||''); setEditPostalCode(profile.postalCode||''); setEditCountry(profile.country||''); setAddressVisible(true); }} style={{
-            flexDirection:'row', alignItems:'center', justifyContent:'space-between',
-            backgroundColor:'#fff', borderRadius:12, padding:14,
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Ionicons name="location-outline" size={20} color="#00C29B" style={{ marginRight:10 }} />
-              <Text style={{ fontSize:15, fontWeight:'600', color:'#111' }}>{t('profile.deliveryAddress')}</Text>
-            </View>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Text style={{ fontSize:14, color:'#6B7280', marginRight:6 }} numberOfLines={1}>
-                {profile.address ? (profile.address.length > 20 ? profile.address.substring(0,20)+'…' : profile.address) : t('profile.noAddress')}
-              </Text>
-              <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-            </View>
-          </TouchableOpacity>
+        {/* Preferences */}
+        <View style={profStyles.section}>
+          <View style={profStyles.settingsCard}>
+            {/* Address */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => { setEditAddress(profile.address||''); setEditAddressSupplement(profile.addressSupplement||''); setEditCity(profile.city||''); setEditPostalCode(profile.postalCode||''); setEditCountry(profile.country||''); setAddressVisible(true); }} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="location-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('profile.deliveryAddress')}</Text>
+                <Text style={profStyles.settingValue} numberOfLines={1}>
+                  {profile.address ? (profile.address.length > 28 ? profile.address.substring(0,28)+'…' : profile.address) : t('profile.noAddress')}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+
+            {/* Language */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setLangVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="language-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('profile.language')}</Text>
+                <Text style={profStyles.settingValue}>
+                  {LANGUAGES.find(l => l.code === i18nInstance.language)?.flag || '🌐'} {({'fr':'Français','en':'English','es':'Español','zh':'中文','ar':'العربية','de':'Deutsch','nl':'Nederlands','it':'Italiano','pt':'Português','ja':'日本語','th':'ไทย','sv':'Svenska','ru':'Русский'})[i18nInstance.language] || i18nInstance.language}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+
+            {/* Currency */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={profStyles.settingRow}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="cash-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('profile.currency')}</Text>
+                <Text style={profStyles.settingValue}>{currency.flag} {currency.code}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Language Button */}
-        <View style={{ paddingHorizontal:16, marginTop:12 }}>
-          <TouchableOpacity onPress={() => setLangVisible(true)} style={{
-            flexDirection:'row', alignItems:'center', justifyContent:'space-between',
-            backgroundColor:'#fff', borderRadius:12, padding:14,
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Ionicons name="language-outline" size={20} color="#00C29B" style={{ marginRight:10 }} />
-              <Text style={{ fontSize:15, fontWeight:'600', color:'#111' }}>{t('profile.language')}</Text>
-            </View>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Text style={{ fontSize:14, color:'#6B7280', marginRight:6 }}>
-                {({'fr':'Français','en':'English','es':'Español','zh':'中文','ar':'العربية','de':'Deutsch','nl':'Nederlands','it':'Italiano','pt':'Português','ja':'日本語','th':'ไทย','sv':'Svenska','ru':'Русский'})[i18nInstance.language] || i18nInstance.language}
-              </Text>
-              <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Currency Button */}
-        <View style={{ paddingHorizontal:16, marginTop:12 }}>
-          <TouchableOpacity onPress={() => setCurrencyVisible(true)} style={{
-            flexDirection:'row', alignItems:'center', justifyContent:'space-between',
-            backgroundColor:'#fff', borderRadius:12, padding:14,
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Text style={{ fontSize:20, marginRight:10 }}>💱</Text>
-              <Text style={{ fontSize:15, fontWeight:'600', color:'#111' }}>{t('profile.currency')}</Text>
-            </View>
-            <View style={{ flexDirection:'row', alignItems:'center' }}>
-              <Text style={{ fontSize:14, color:'#6B7280', marginRight:6 }}>
-                {currency.flag} {currency.code}
-              </Text>
-              <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Disconnect Button */}
         {/* Become a driver */}
-        <View style={{ paddingHorizontal:16, marginTop:16 }}>
-          <TouchableOpacity onPress={() => setDriverInfoVisible(true)} style={{
-            flexDirection:'row', alignItems:'center',
-            backgroundColor:'#fff', borderRadius:12, padding:16,
-            borderWidth:1, borderColor:'#E5E7EB',
-            shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-          }}>
-            <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:12}} />
-            <View style={{flex:1}}>
-              <Text style={{ fontSize:15, fontWeight:'700', color:'#111' }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-              <Text style={{ fontSize:12, color:'#6B7280', marginTop:2 }}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
+        <View style={profStyles.section}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => setDriverInfoVisible(true)} style={profStyles.driverCard}>
+            <View style={profStyles.driverIcon}>
+              <Ionicons name="bicycle" size={22} color="#fff" />
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+            <View style={profStyles.driverBody}>
+              <Text style={profStyles.driverTitle}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+              <Text style={profStyles.driverSub}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
           </TouchableOpacity>
         </View>
 
         {/* Logout */}
-        <View style={{ paddingHorizontal:16, marginTop:16, marginBottom:30 }}>
-          <TouchableOpacity onPress={() => {
+        <View style={[profStyles.section, { marginBottom: 8 }]}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
               { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
@@ -3888,12 +4644,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 if (onLogout) onLogout();
               }}
             ]);
-          }} style={{
-            paddingVertical:14, borderRadius:12,
-            backgroundColor:'#EF4444', alignItems:'center', flexDirection:'row', justifyContent:'center'
-          }}>
-            <Ionicons name="log-out-outline" size={20} color="#fff" style={{ marginRight:8 }} />
-            <Text style={{ fontSize:16, fontWeight:'700', color:'#fff' }}>{t('profile.logout')}</Text>
+          }} style={profStyles.logoutBtn}>
+            <Ionicons name="log-out-outline" size={20} color={THEME.danger} />
+            <Text style={profStyles.logoutTxt}>{t('profile.logout')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -3901,50 +4654,58 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Driver Info Full Page Modal */}
       <Modal visible={driverInfoVisible} animationType="slide">
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-            <TouchableOpacity onPress={() => setDriverInfoVisible(false)} style={{ marginRight:12, paddingLeft:16 }}>
-              <Ionicons name="arrow-back" size={24} color="#111" />
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setDriverInfoVisible(false)} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+            <Text style={profStyles.modalTitle}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ padding:20, paddingBottom:40 }}>
+          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:40 }} showsVerticalScrollIndicator={false}>
             {/* Hero */}
-            <View style={{ alignItems:'center', marginBottom:24 }}>
-              <View style={{ width:70, height:70, borderRadius:35, backgroundColor:BRAND, alignItems:'center', justifyContent:'center', marginBottom:12 }}>
+            <View style={profStyles.driverHero}>
+              <View style={profStyles.driverHeroIcon}>
                 <Ionicons name="bicycle" size={36} color="#fff" />
               </View>
-              <Text style={{ fontSize:22, fontWeight:'900', color:'#111', textAlign:'center' }}>Pearl Delivery</Text>
-              <Text style={{ fontSize:14, color:'#6B7280', marginTop:6, textAlign:'center', lineHeight:20 }}>
+              <Text style={profStyles.driverHeroTitle}>Pearl Delivery</Text>
+              <Text style={profStyles.driverHeroSub}>
                 {t('profile.driverInfoDesc') || 'Gagnez un complément de revenu en livrant des commandes dans votre ville.'}
               </Text>
             </View>
 
             {/* Two types */}
-            <Text style={{ fontSize:17, fontWeight:'800', color:'#111', marginBottom:12 }}>{t('profile.driverTypes') || 'Deux façons de livrer'}</Text>
+            <View style={profStyles.sectionHeadRow}>
+              <Text style={profStyles.sectionTitle}>{t('profile.driverTypes') || 'Deux façons de livrer'}</Text>
+            </View>
 
-            <View style={{ backgroundColor:'#fff', borderRadius:14, padding:16, marginBottom:12, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-              <View style={{ flexDirection:'row', alignItems:'center', marginBottom:8 }}>
-                <Ionicons name="bicycle" size={22} color={BRAND} style={{marginRight:10}} />
-                <Text style={{ fontSize:16, fontWeight:'700', color:'#111' }}>{t('profile.driverParticulier') || 'Livreur Particulier'}</Text>
+            <View style={profStyles.driverTypeCard}>
+              <View style={profStyles.driverTypeHead}>
+                <View style={profStyles.driverTypeIcon}>
+                  <Ionicons name="bicycle" size={19} color={THEME.brand} />
+                </View>
+                <Text style={profStyles.driverTypeTitle}>{t('profile.driverParticulier') || 'Livreur Particulier'}</Text>
               </View>
-              <Text style={{ fontSize:13, color:'#6B7280', lineHeight:20 }}>
+              <Text style={profStyles.driverTypeTxt}>
                 {t('profile.driverParticulierInfo') || 'Aucun statut professionnel requis. Livrez quand vous voulez en complément de revenu, dans la limite du plafond annuel de votre pays.'}
               </Text>
             </View>
 
-            <View style={{ backgroundColor:'#fff', borderRadius:14, padding:16, marginBottom:20, shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-              <View style={{ flexDirection:'row', alignItems:'center', marginBottom:8 }}>
-                <Ionicons name="storefront" size={22} color={BRAND} style={{marginRight:10}} />
-                <Text style={{ fontSize:16, fontWeight:'700', color:'#111' }}>{t('profile.driverPro') || 'Livreur Pro'}</Text>
+            <View style={[profStyles.driverTypeCard, { marginBottom: 18 }]}>
+              <View style={profStyles.driverTypeHead}>
+                <View style={profStyles.driverTypeIcon}>
+                  <Ionicons name="storefront" size={19} color={THEME.brand} />
+                </View>
+                <Text style={profStyles.driverTypeTitle}>{t('profile.driverPro') || 'Livreur Pro'}</Text>
               </View>
-              <Text style={{ fontSize:13, color:'#6B7280', lineHeight:20 }}>
+              <Text style={profStyles.driverTypeTxt}>
                 {t('profile.driverProInfo') || 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, KBISS.'}
               </Text>
             </View>
 
             {/* Country limits */}
-            <Text style={{ fontSize:17, fontWeight:'800', color:'#111', marginBottom:12 }}>{t('profile.driverLimits') || 'Plafonds par pays (particuliers)'}</Text>
+            <View style={profStyles.sectionHeadRow}>
+              <Text style={profStyles.sectionTitle}>{t('profile.driverLimits') || 'Plafonds par pays (particuliers)'}</Text>
+            </View>
 
             {[
               { flag: '🇫🇷', name: 'France', limit: '3 000 €/an', status: 'ok', info: 'Micro-BIC — Abattement 50%' },
@@ -3956,23 +4717,26 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               { flag: '🇨🇭', name: 'Suisse', limit: '—', status: 'blocked', info: 'Statut salarié depuis 2023' },
               { flag: '🇳🇱', name: 'Pays-Bas', limit: '—', status: 'strict', info: 'Risque de requalification' },
               { flag: '🇵🇹', name: 'Portugal', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
-            ].map((c, i) => (
-              <View key={i} style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#fff', borderRadius:10, padding:12, marginBottom:8 }}>
-                <Text style={{ fontSize:20, marginRight:12 }}>{c.flag}</Text>
+            ].map((c, i) => {
+              const limitColor = c.status === 'ok' ? THEME.brand : c.status === 'blocked' ? THEME.danger : '#F59E0B';
+              return (
+              <View key={i} style={profStyles.limitRow}>
+                <Text style={profStyles.limitFlag}>{c.flag}</Text>
                 <View style={{ flex:1 }}>
-                  <Text style={{ fontSize:14, fontWeight:'600', color:'#111' }}>{c.name}</Text>
-                  <Text style={{ fontSize:11, color:'#6B7280' }}>{c.info}</Text>
+                  <Text style={profStyles.limitName}>{c.name}</Text>
+                  <Text style={profStyles.limitInfo}>{c.info}</Text>
                 </View>
                 <View style={{ alignItems:'flex-end' }}>
-                  <Text style={{ fontSize:13, fontWeight:'700', color: c.status === 'ok' ? BRAND : c.status === 'blocked' ? '#EF4444' : '#F59E0B' }}>{c.limit}</Text>
-                  <Ionicons name={c.status === 'ok' ? 'checkmark-circle' : c.status === 'blocked' ? 'close-circle' : 'alert-circle'} size={14} color={c.status === 'ok' ? BRAND : c.status === 'blocked' ? '#EF4444' : '#F59E0B'} style={{marginTop:2}} />
+                  <Text style={[profStyles.limitValue, { color: limitColor }]}>{c.limit}</Text>
+                  <Ionicons name={c.status === 'ok' ? 'checkmark-circle' : c.status === 'blocked' ? 'close-circle' : 'alert-circle'} size={14} color={limitColor} style={{marginTop:2}} />
                 </View>
               </View>
-            ))}
+              );
+            })}
 
             {/* CTA */}
-            <View style={{ marginTop:20 }}>
-              <TouchableOpacity onPress={async () => {
+            <View style={{ marginTop:18 }}>
+              <TouchableOpacity activeOpacity={0.85} onPress={async () => {
                 const { Linking, Platform } = require('react-native');
                 try {
                   const canOpen = await Linking.canOpenURL('pearl-delivery://');
@@ -3994,11 +4758,11 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     ].filter(Boolean)
                   );
                 }
-              }} style={{ height:52, borderRadius:14, backgroundColor:BRAND, flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
-                <Ionicons name="bicycle" size={22} color="#fff" style={{marginRight:10}} />
-                <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('profile.openDeliveryApp') || "Ouvrir l'app Pearl Delivery"}</Text>
+              }} style={profStyles.primaryBtn}>
+                <Ionicons name="bicycle" size={22} color="#fff" />
+                <Text style={profStyles.primaryBtnTxt}>{t('profile.openDeliveryApp') || "Ouvrir l'app Pearl Delivery"}</Text>
               </TouchableOpacity>
-              <Text style={{ fontSize:11, color:'#9CA3AF', textAlign:'center', marginTop:10 }}>
+              <Text style={profStyles.legalNote}>
                 {t('profile.driverLegalNote') || "L'inscription se fait directement dans l'app Pearl Delivery. Vous pouvez choisir entre livreur particulier ou professionnel."}
               </Text>
             </View>
@@ -4008,93 +4772,102 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Edit Profile Full Page Modal */}
       <Modal visible={editVisible} animationType="slide">
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <KeyboardAvoidingView style={{ flex:1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-              <TouchableOpacity onPress={() => setEditVisible(false)} style={{ marginRight:12 }}>
-                <Ionicons name="arrow-back" size={24} color="#111" />
+            <View style={profStyles.modalHeader}>
+              <TouchableOpacity onPress={() => setEditVisible(false)} style={profStyles.modalBack}>
+                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
               </TouchableOpacity>
-              <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.editProfile')}</Text>
+              <Text style={profStyles.modalTitle}>{t('profile.editProfile')}</Text>
             </View>
-            <ScrollView contentContainerStyle={{ padding:20 }} keyboardShouldPersistTaps="handled">
-              <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.pseudo')}</Text>
-              <TextInput value={editPseudo} onChangeText={setEditPseudo} placeholder={t('profile.pseudoPlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.pseudo')}</Text>
+                <TextInput value={editPseudo} onChangeText={setEditPseudo} placeholder={t('profile.pseudoPlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.firstName')}</Text>
-              <TextInput value={editPrenom} onChangeText={setEditPrenom} placeholder={t('profile.firstNamePlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.firstName')}</Text>
+                <TextInput value={editPrenom} onChangeText={setEditPrenom} placeholder={t('profile.firstNamePlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.lastName')}</Text>
-              <TextInput value={editNom} onChangeText={setEditNom} placeholder={t('profile.lastNamePlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.lastName')}</Text>
+                <TextInput value={editNom} onChangeText={setEditNom} placeholder={t('profile.lastNamePlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.email')}</Text>
-              <TextInput value={editEmail} onChangeText={setEditEmail} placeholder={t('profile.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none"
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.email')}</Text>
+                <TextInput value={editEmail} onChangeText={setEditEmail} placeholder={t('profile.emailPlaceholder')} keyboardType="email-address" autoCapitalize="none"
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
               {/* Password change section */}
               {!showPwdChange ? (
-                <TouchableOpacity onPress={() => { setShowPwdChange(true); setPwdError(''); setPwdSuccess(''); setOldPassword(''); setNewPassword(''); setConfirmPassword(''); }}
-                  style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, paddingHorizontal:16, borderRadius:10, backgroundColor:'#fff', borderWidth:1, borderColor:'#E5E7EB', marginBottom:24 }}>
-                  <Ionicons name="lock-closed-outline" size={18} color="#00C29B" />
-                  <Text style={{ fontSize:15, fontWeight:'600', color:'#111', marginLeft:10, flex:1 }}>{t('profile.changePassword')}</Text>
-                  <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
+                <TouchableOpacity activeOpacity={0.8} onPress={() => { setShowPwdChange(true); setPwdError(''); setPwdSuccess(''); setOldPassword(''); setNewPassword(''); setConfirmPassword(''); }}
+                  style={profStyles.pwdToggle}>
+                  <View style={profStyles.settingIcon}>
+                    <Ionicons name="lock-closed-outline" size={18} color="#fff" />
+                  </View>
+                  <Text style={profStyles.pwdToggleTxt}>{t('profile.changePassword')}</Text>
+                  <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
                 </TouchableOpacity>
               ) : (
-                <View style={{ backgroundColor:'#fff', borderRadius:10, borderWidth:1, borderColor:'#E5E7EB', padding:16, marginBottom:24 }}>
-                  <View style={{ flexDirection:'row', alignItems:'center', marginBottom:14 }}>
-                    <Ionicons name="lock-closed-outline" size={18} color="#00C29B" />
-                    <Text style={{ fontSize:15, fontWeight:'700', color:'#111', marginLeft:8, flex:1 }}>{t('profile.changePassword')}</Text>
-                    <TouchableOpacity onPress={() => setShowPwdChange(false)}>
-                      <Ionicons name="close" size={20} color="#9CA3AF" />
+                <View style={profStyles.pwdPanel}>
+                  <View style={profStyles.pwdPanelHead}>
+                    <Ionicons name="lock-closed-outline" size={18} color={THEME.brand} />
+                    <Text style={profStyles.pwdPanelTitle}>{t('profile.changePassword')}</Text>
+                    <TouchableOpacity onPress={() => setShowPwdChange(false)} style={profStyles.closeBtn}>
+                      <Ionicons name="close" size={18} color={THEME.muted} />
                     </TouchableOpacity>
                   </View>
 
                   {pwdError ? (
-                    <View style={{ backgroundColor:'#FEE2E2', borderRadius:8, padding:10, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                      <Ionicons name="alert-circle" size={16} color="#EF4444" />
-                      <Text style={{ color:'#EF4444', fontSize:12, marginLeft:6 }}>{pwdError}</Text>
+                    <View style={[profStyles.pwdAlert, { backgroundColor: THEME.dangerSoft }]}>
+                      <Ionicons name="alert-circle" size={16} color={THEME.danger} />
+                      <Text style={[profStyles.pwdAlertTxt, { color: THEME.danger }]}>{pwdError}</Text>
                     </View>
                   ) : null}
                   {pwdSuccess ? (
-                    <View style={{ backgroundColor:'#D1FAE5', borderRadius:8, padding:10, marginBottom:12, flexDirection:'row', alignItems:'center' }}>
-                      <Ionicons name="checkmark-circle" size={16} color="#059669" />
-                      <Text style={{ color:'#059669', fontSize:12, marginLeft:6 }}>{pwdSuccess}</Text>
+                    <View style={[profStyles.pwdAlert, { backgroundColor: THEME.brandSoft }]}>
+                      <Ionicons name="checkmark-circle" size={16} color={THEME.brandDark} />
+                      <Text style={[profStyles.pwdAlertTxt, { color: THEME.brandDark }]}>{pwdSuccess}</Text>
                     </View>
                   ) : null}
 
-                  <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.oldPassword')}</Text>
-                  <TextInput value={oldPassword} onChangeText={setOldPassword} placeholder={t('profile.currentPasswordPlaceholder')} secureTextEntry
-                    style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:12, fontSize:15, backgroundColor:'#F8FAFC' }} />
+                  <View style={profStyles.fieldGroup}>
+                    <Text style={profStyles.fieldLabel}>{t('profile.oldPassword')}</Text>
+                    <TextInput value={oldPassword} onChangeText={setOldPassword} placeholder={t('profile.currentPasswordPlaceholder')} secureTextEntry
+                      placeholderTextColor={THEME.faint} style={profStyles.field} />
+                  </View>
 
-                  <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.newPassword')}</Text>
-                  <TextInput value={newPassword} onChangeText={setNewPassword} placeholder={t('profile.newPassword')} secureTextEntry
-                    style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:12, fontSize:15, backgroundColor:'#F8FAFC' }} />
+                  <View style={profStyles.fieldGroup}>
+                    <Text style={profStyles.fieldLabel}>{t('profile.newPassword')}</Text>
+                    <TextInput value={newPassword} onChangeText={setNewPassword} placeholder={t('profile.newPassword')} secureTextEntry
+                      placeholderTextColor={THEME.faint} style={profStyles.field} />
+                  </View>
 
-                  <Text style={{ fontSize:13, color:'#6B7280', marginBottom:4 }}>{t('profile.confirmPassword')}</Text>
-                  <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('profile.confirmPassword')} secureTextEntry
-                    style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:14, fontSize:15, backgroundColor:'#F8FAFC' }} />
+                  <View style={[profStyles.fieldGroup, { marginBottom: 4 }]}>
+                    <Text style={profStyles.fieldLabel}>{t('profile.confirmPassword')}</Text>
+                    <TextInput value={confirmPassword} onChangeText={setConfirmPassword} placeholder={t('profile.confirmPassword')} secureTextEntry
+                      placeholderTextColor={THEME.faint} style={profStyles.field} />
+                  </View>
 
-                  <TouchableOpacity onPress={handleChangePassword} style={{
-                    paddingVertical:12, borderRadius:10, backgroundColor:'#00C29B', alignItems:'center'
-                  }}>
-                    <Text style={{ fontWeight:'700', color:'#fff', fontSize:15 }}>{t('profile.validate')}</Text>
+                  <TouchableOpacity activeOpacity={0.85} onPress={handleChangePassword} style={[profStyles.primaryBtn, { marginTop: 12 }]}>
+                    <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.validate')}</Text>
                   </TouchableOpacity>
                 </View>
               )}
 
-              <View style={{ flexDirection:'row' }}>
-                <TouchableOpacity onPress={() => setEditVisible(false)} style={{
-                  flex:1, paddingVertical:14, borderRadius:10, borderWidth:1, borderColor:'#E5E7EB',
-                  alignItems:'center', marginRight:8, backgroundColor:'#fff'
-                }}>
-                  <Text style={{ fontWeight:'600', color:'#6B7280' }}>{t('profile.cancel')}</Text>
+              <View style={profStyles.btnRow}>
+                <TouchableOpacity activeOpacity={0.85} onPress={() => setEditVisible(false)} style={profStyles.cancelBtn}>
+                  <Text style={profStyles.cancelBtnTxt}>{t('profile.cancel')}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={saveProfile} style={{
-                  flex:1, paddingVertical:14, borderRadius:10, backgroundColor:'#00C29B', alignItems:'center'
-                }}>
-                  <Text style={{ fontWeight:'700', color:'#fff' }}>{t('profile.save')}</Text>
+                <TouchableOpacity activeOpacity={0.85} onPress={saveProfile} style={profStyles.saveBtn}>
+                  <Text style={profStyles.saveBtnTxt}>{t('profile.save')}</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -4104,45 +4877,38 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Language Selector Full Page Modal */}
       <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-            <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={{ marginRight:12 }}>
-              <Ionicons name="arrow-back" size={24} color="#111" />
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.language')}</Text>
+            <Text style={profStyles.modalTitle}>{t('profile.language')}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ padding:16, paddingBottom:100 }}>
+          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
             {LANGUAGES.map(lang => {
               const currentLang = i18nInstance.language || 'fr';
               const isActive = currentLang === lang.code || currentLang.startsWith(lang.code);
               const isSelected = pendingLang === lang.code || (!pendingLang && isActive);
               return (
-                <TouchableOpacity key={lang.code} onPress={() => setPendingLang(lang.code)} style={{
-                  flexDirection:'row', alignItems:'center', backgroundColor: isSelected ? '#E0F7F1' : '#fff',
-                  borderRadius:12, padding:16, marginBottom:8,
-                  borderWidth: isSelected ? 2 : 1, borderColor: isSelected ? '#00C29B' : '#E5E7EB'
-                }}>
-                  <Text style={{ fontSize:24, marginRight:14 }}>{lang.flag}</Text>
-                  <Text style={{ fontSize:16, fontWeight: isSelected ? '800' : '500', color: isSelected ? '#00C29B' : '#111', flex:1 }}>{lang.label}</Text>
-                  {isSelected && <Ionicons name="checkmark-circle" size={22} color="#00C29B" />}
+                <TouchableOpacity key={lang.code} activeOpacity={0.8} onPress={() => setPendingLang(lang.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
+                  <Text style={profStyles.pickerFlag}>{lang.flag}</Text>
+                  <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn, { flex:1 }]}>{lang.label}</Text>
+                  {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
           {/* Confirm button */}
-          <SafeAreaView style={{ backgroundColor:'#F8FAFC' }}>
-            <View style={{ paddingHorizontal:16, paddingVertical:12 }}>
-              <TouchableOpacity onPress={async () => {
+          <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
+            <View style={profStyles.sheetFooter}>
+              <TouchableOpacity activeOpacity={0.85} onPress={async () => {
                 const lang = pendingLang || i18nInstance.language;
                 i18nInstance.changeLanguage(lang);
                 await AsyncStorage.setItem('APP_LANGUAGE', lang);
                 setPendingLang(null);
                 setLangVisible(false);
-              }} style={{
-                height:50, borderRadius:14, backgroundColor: pendingLang ? '#00C29B' : '#9CA3AF',
-                alignItems:'center', justifyContent:'center'
-              }}>
-                <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('profile.confirm')}</Text>
+              }} style={[profStyles.primaryBtn, !pendingLang && profStyles.primaryBtnDisabled]}>
+                <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -4151,46 +4917,39 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Currency Selector Full Page Modal */}
       <Modal visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-            <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={{ marginRight:12 }}>
-              <Ionicons name="arrow-back" size={24} color="#111" />
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.currency')}</Text>
+            <Text style={profStyles.modalTitle}>{t('profile.currency')}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ padding:16, paddingBottom:100 }}>
+          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
             {CURRENCIES.map(curr => {
               const isSelected = pendingCurrency === curr.code || (!pendingCurrency && currency.code === curr.code);
               return (
-                <TouchableOpacity key={curr.code} onPress={() => setPendingCurrency(curr.code)} style={{
-                  flexDirection:'row', alignItems:'center', backgroundColor: isSelected ? '#E0F7F1' : '#fff',
-                  borderRadius:12, padding:16, marginBottom:8,
-                  borderWidth: isSelected ? 2 : 1, borderColor: isSelected ? '#00C29B' : '#E5E7EB'
-                }}>
-                  <Text style={{ fontSize:24, marginRight:14 }}>{curr.flag}</Text>
+                <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
+                  <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
                   <View style={{ flex:1 }}>
-                    <Text style={{ fontSize:16, fontWeight: isSelected ? '800' : '500', color: isSelected ? '#00C29B' : '#111' }}>{curr.name}</Text>
-                    <Text style={{ fontSize:12, color:'#9CA3AF', marginTop:2 }}>{curr.code}</Text>
+                    <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{curr.name}</Text>
+                    <Text style={profStyles.pickerSub}>{curr.code}</Text>
                   </View>
-                  {isSelected && <Ionicons name="checkmark-circle" size={22} color="#00C29B" />}
+                  {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
           {/* Confirm button */}
-          <SafeAreaView style={{ backgroundColor:'#F8FAFC' }}>
-            <View style={{ paddingHorizontal:16, paddingVertical:12 }}>
-              <TouchableOpacity onPress={() => {
+          <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
+            <View style={profStyles.sheetFooter}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => {
                 const code = pendingCurrency || currency.code;
                 const found = CURRENCIES.find(c => c.code === code);
                 if (found) setCurrency(found);
                 setPendingCurrency(null);
                 setCurrencyVisible(false);
-              }} style={{
-                height:50, borderRadius:14, backgroundColor: pendingCurrency ? '#00C29B' : '#9CA3AF',
-                alignItems:'center', justifyContent:'center'
-              }}>
-                <Text style={{ color:'#fff', fontWeight:'800', fontSize:16 }}>{t('profile.confirm')}</Text>
+              }} style={[profStyles.primaryBtn, !pendingCurrency && profStyles.primaryBtnDisabled]}>
+                <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -4199,17 +4958,18 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Delivery Address Full Page Modal */}
       <Modal visible={addressVisible} animationType="slide">
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <KeyboardAvoidingView style={{ flex:1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-              <TouchableOpacity onPress={() => setAddressVisible(false)} style={{ marginRight:12 }}>
-                <Ionicons name="arrow-back" size={24} color="#111" />
+            <View style={profStyles.modalHeader}>
+              <TouchableOpacity onPress={() => setAddressVisible(false)} style={profStyles.modalBack}>
+                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
               </TouchableOpacity>
-              <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.deliveryAddress')}</Text>
+              <Text style={profStyles.modalTitle}>{t('profile.deliveryAddress')}</Text>
             </View>
-            <ScrollView contentContainerStyle={{ padding:20 }} keyboardShouldPersistTaps="handled">
+            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
               {/* Bouton géolocalisation */}
               <TouchableOpacity
+                activeOpacity={0.85}
                 onPress={async () => {
                   try {
                     setGeoLoading(true);
@@ -4240,52 +5000,53 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   }
                 }}
                 disabled={geoLoading}
-                style={{ flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:14, borderRadius:12, backgroundColor: geoLoading ? '#F3F4F6' : '#E0F7F1', marginBottom:20 }}
+                style={[profStyles.geoBtn, geoLoading && { backgroundColor: THEME.subtle }]}
               >
                 {geoLoading ? (
-                  <ActivityIndicator color="#00C29B" style={{marginRight:8}} />
+                  <ActivityIndicator color={THEME.brand} />
                 ) : (
-                  <Ionicons name="navigate" size={20} color="#00C29B" style={{marginRight:8}} />
+                  <Ionicons name="navigate" size={19} color={THEME.brandDark} />
                 )}
-                <Text style={{ fontSize:15, fontWeight:'700', color:'#00C29B' }}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
+                <Text style={profStyles.geoBtnTxt}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
               </TouchableOpacity>
 
-              <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.street')}</Text>
-              <TextInput value={editAddress} onChangeText={setEditAddress} placeholder={t('profile.streetPlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.street')}</Text>
+                <TextInput value={editAddress} onChangeText={setEditAddress} placeholder={t('profile.streetPlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.addressSupplement')}</Text>
-              <TextInput value={editAddressSupplement} onChangeText={setEditAddressSupplement} placeholder={t('profile.supplementPlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:16, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.addressSupplement')}</Text>
+                <TextInput value={editAddressSupplement} onChangeText={setEditAddressSupplement} placeholder={t('profile.supplementPlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <View style={{ flexDirection:'row', gap:12, marginBottom:16 }}>
+              <View style={profStyles.fieldRow}>
                 <View style={{ flex:1 }}>
-                  <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.postalCode')}</Text>
+                  <Text style={profStyles.fieldLabel}>{t('profile.postalCode')}</Text>
                   <TextInput value={editPostalCode} onChangeText={setEditPostalCode} placeholder={t('profile.postalCodePlaceholder')} keyboardType="number-pad"
-                    style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, fontSize:16, backgroundColor:'#fff' }} />
+                    placeholderTextColor={THEME.faint} style={profStyles.field} />
                 </View>
                 <View style={{ flex:2 }}>
-                  <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.city')}</Text>
+                  <Text style={profStyles.fieldLabel}>{t('profile.city')}</Text>
                   <TextInput value={editCity} onChangeText={setEditCity} placeholder={t('profile.cityPlaceholder')}
-                    style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, fontSize:16, backgroundColor:'#fff' }} />
+                    placeholderTextColor={THEME.faint} style={profStyles.field} />
                 </View>
               </View>
 
-              <Text style={{ fontSize:13, fontWeight:'600', color:'#6B7280', marginBottom:4 }}>{t('profile.country')}</Text>
-              <TextInput value={editCountry} onChangeText={setEditCountry} placeholder={t('profile.countryPlaceholder')}
-                style={{ borderWidth:1, borderColor:'#E5E7EB', borderRadius:10, padding:12, marginBottom:24, fontSize:16, backgroundColor:'#fff' }} />
+              <View style={[profStyles.fieldGroup, { marginBottom: 24 }]}>
+                <Text style={profStyles.fieldLabel}>{t('profile.country')}</Text>
+                <TextInput value={editCountry} onChangeText={setEditCountry} placeholder={t('profile.countryPlaceholder')}
+                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+              </View>
 
-              <View style={{ flexDirection:'row' }}>
-                <TouchableOpacity onPress={() => setAddressVisible(false)} style={{
-                  flex:1, paddingVertical:14, borderRadius:10, borderWidth:1, borderColor:'#E5E7EB',
-                  alignItems:'center', marginRight:8, backgroundColor:'#fff'
-                }}>
-                  <Text style={{ fontWeight:'600', color:'#6B7280' }}>{t('profile.cancel')}</Text>
+              <View style={profStyles.btnRow}>
+                <TouchableOpacity activeOpacity={0.85} onPress={() => setAddressVisible(false)} style={profStyles.cancelBtn}>
+                  <Text style={profStyles.cancelBtnTxt}>{t('profile.cancel')}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={saveAddress} style={{
-                  flex:1, paddingVertical:14, borderRadius:10, backgroundColor:'#00C29B', alignItems:'center'
-                }}>
-                  <Text style={{ fontWeight:'700', color:'#fff' }}>{t('profile.save')}</Text>
+                <TouchableOpacity activeOpacity={0.85} onPress={saveAddress} style={profStyles.saveBtn}>
+                  <Text style={profStyles.saveBtnTxt}>{t('profile.save')}</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -4295,48 +5056,42 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* All Orders Full Page Modal */}
       <Modal visible={allOrdersVisible} animationType="none">
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-            <TouchableOpacity onPress={() => setAllOrdersVisible(false)} style={{ marginRight:12 }}>
-              <Ionicons name="arrow-back" size={24} color="#111" />
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setAllOrdersVisible(false)} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>{t('profile.allOrders')}</Text>
+            <Text style={profStyles.modalTitle}>{t('profile.allOrders')}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ padding:16, paddingBottom:40 }}>
+          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 }} showsVerticalScrollIndicator={false}>
             {orders.map((order) => {
               const status = getOrderStatus(order);
               return (
               <TouchableOpacity key={order.id} activeOpacity={0.8} onPress={() => { setAllOrdersVisible(false); setTimeout(() => setDetailOrder(order), 300); }}
-                style={{ backgroundColor:'#fff', borderRadius:12, padding:14, marginBottom:10,
-                  shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1
-                }}>
-                <View style={{ flexDirection:'row', alignItems:'center' }}>
-                  <View style={{ width:36, height:36, borderRadius:18, backgroundColor: '#F3F4F6',
-                    alignItems:'center', justifyContent:'center', marginRight:10, flexShrink:0 }}>
-                    <Ionicons name={status.icon} size={18} color={status.color} />
+                style={profStyles.orderCard}>
+                <View style={profStyles.orderRow}>
+                  <View style={profStyles.orderIcon}>
+                    <Ionicons name={status.icon} size={20} color={THEME.brand} />
                   </View>
-                  <View style={{flex:1}}>
-                    <Text style={{ fontWeight:'700', color:'#111' }} numberOfLines={1}>{t('profile.orderNumber')} #{String(order.id).slice(-4)}</Text>
-                    <View style={{ flexDirection:'row', alignItems:'center', marginTop:3 }}>
-                      <View style={{ width:8, height:8, borderRadius:4, backgroundColor: status.color, marginRight:6 }} />
-                      <Text style={{ fontSize:12, fontWeight:'600', color: status.color }}>{status.label}</Text>
+                  <View style={profStyles.orderBody}>
+                    <Text style={profStyles.orderTitle} numberOfLines={1}>{t('profile.orderNumber')} #{String(order.id).slice(-4)}</Text>
+                    <View style={profStyles.orderStatusRow}>
+                      <View style={[profStyles.orderDot, { backgroundColor: status.color }]} />
+                      <Text style={[profStyles.orderStatusTxt, { color: status.color }]}>{status.label}</Text>
                     </View>
                     {(order.shops && order.shops.length > 0) ? (
-                      <Text style={{ fontSize:12, color:'#374151', marginTop:2 }} numberOfLines={1}>{order.shops.join(', ')}</Text>
+                      <Text style={profStyles.orderShops} numberOfLines={1}>{order.shops.join(', ')}</Text>
                     ) : null}
-                    <Text style={{ fontSize:11, color:'#9CA3AF', marginTop:2 }}>{fmtDate(order.date)}</Text>
+                    <Text style={profStyles.orderDate}>{fmtDate(order.date)}</Text>
                   </View>
-                  <View style={{ alignItems:'flex-end', marginLeft:10, flexShrink:0 }}>
-                    <View style={{ paddingHorizontal:8, paddingVertical:2, borderRadius:6, marginBottom:4,
-                      backgroundColor:'#F3F4F6' }}>
-                      <Text style={{ fontSize:10, fontWeight:'700', color:'#374151' }}>
+                  <View style={profStyles.orderSide}>
+                    <View style={profStyles.modePill}>
+                      <Text style={profStyles.modePillTxt}>
                         {order.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
                       </Text>
                     </View>
-                    <Text style={{ fontWeight:'800', color:'#111', fontSize:15 }}>
-                      {fmtPrice(order.total||0)}
-                    </Text>
-                    <Ionicons name="chevron-forward" size={16} color="#9CA3AF" style={{marginTop:4}} />
+                    <Text style={profStyles.orderPrice}>{fmtPrice(order.total||0)}</Text>
+                    <Ionicons name="chevron-forward" size={16} color={THEME.faint} style={{marginTop:4}} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -4348,91 +5103,89 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
       {/* Order Detail Full Page Modal */}
       <Modal visible={!!detailOrder} animationType="none">
-        <SafeAreaView style={{ flex:1, backgroundColor:'#F8FAFC' }}>
-          <View style={{ flexDirection:'row', alignItems:'center', paddingHorizontal:16, paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#F3F4F6' }}>
-            <TouchableOpacity onPress={() => setDetailOrder(null)} style={{ marginRight:12 }}>
-              <Ionicons name="arrow-back" size={24} color="#111" />
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setDetailOrder(null)} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={{ fontSize:18, fontWeight:'800', color:'#111', flex:1 }}>
+            <Text style={profStyles.modalTitle}>
               {t('profile.orderNumber')} #{detailOrder ? String(detailOrder.id).slice(-4) : ''}
             </Text>
             {detailOrder && (
-              <View style={{ paddingHorizontal:10, paddingVertical:4, borderRadius:8,
-                backgroundColor:'#D1FAE5' }}>
-                <Text style={{ fontSize:11, fontWeight:'700', color:'#059669' }}>
+              <View style={profStyles.modalHeaderPill}>
+                <Text style={profStyles.modalHeaderPillTxt}>
                   {detailOrder.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
                 </Text>
               </View>
             )}
           </View>
           {detailOrder && (
-            <ScrollView style={{flex:1}} contentContainerStyle={{ padding:20, paddingBottom:20 }}>
+            <ScrollView style={{flex:1}} contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 }} showsVerticalScrollIndicator={false}>
               {/* Infos commande */}
-              <View style={{ backgroundColor:'#fff', borderRadius:12, padding:16, marginBottom:14,
-                shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-                <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
-                  <Ionicons name="calendar-outline" size={16} color="#00C29B" />
-                  <Text style={{ fontSize:13, color:'#6B7280', marginLeft:8 }}>{t('profile.orderedOn')}</Text>
-                  <Text style={{ fontSize:13, fontWeight:'700', color:'#111', marginLeft:6 }}>{fmtDate(detailOrder.date)}</Text>
+              <View style={[profStyles.modalCard, { marginBottom: 12 }]}>
+                <View style={profStyles.detailInfoRow}>
+                  <Ionicons name="calendar-outline" size={16} color={THEME.brand} />
+                  <Text style={profStyles.detailInfoLabel}>{t('profile.orderedOn')}</Text>
+                  <Text style={profStyles.detailInfoValue}>{fmtDate(detailOrder.date)}</Text>
                 </View>
                 {detailOrder.slot ? (
-                  <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
-                    <Ionicons name="time-outline" size={16} color="#00C29B" />
-                    <Text style={{ fontSize:13, color:'#6B7280', marginLeft:8 }}>{detailOrder.mode === 'collect' ? t('cart.collect') : t('cart.delivery')}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111', marginLeft:6 }}>
+                  <View style={profStyles.detailInfoRow}>
+                    <Ionicons name="time-outline" size={16} color={THEME.brand} />
+                    <Text style={profStyles.detailInfoLabel}>{detailOrder.mode === 'collect' ? t('cart.collect') : t('cart.delivery')}</Text>
+                    <Text style={profStyles.detailInfoValue}>
                       {detailOrder.deliveryDate ? detailOrder.deliveryDate + ', ' : ''}{detailOrder.slot}
                     </Text>
                   </View>
                 ) : null}
                 {detailOrder.mode === 'delivery' && detailOrder.address ? (
-                  <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
-                    <Ionicons name="home-outline" size={16} color="#00C29B" />
-                    <Text style={{ fontSize:13, color:'#6B7280', marginLeft:8 }}>{t('profile.address')}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'700', color:'#111', marginLeft:6, flex:1 }} numberOfLines={2}>{detailOrder.address}</Text>
+                  <View style={profStyles.detailInfoRow}>
+                    <Ionicons name="home-outline" size={16} color={THEME.brand} />
+                    <Text style={profStyles.detailInfoLabel}>{t('profile.address')}</Text>
+                    <Text style={[profStyles.detailInfoValue, { flex:1 }]} numberOfLines={2}>{detailOrder.address}</Text>
                   </View>
                 ) : null}
                 {detailOrder.mode === 'collect' ? (
-                  <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
-                    <Ionicons name="storefront-outline" size={16} color="#00C29B" />
-                    <Text style={{ fontSize:13, color:'#6B7280', marginLeft:8 }}>{t('profile.storePickup')}</Text>
+                  <View style={profStyles.detailInfoRow}>
+                    <Ionicons name="storefront-outline" size={16} color={THEME.brand} />
+                    <Text style={profStyles.detailInfoLabel}>{t('profile.storePickup')}</Text>
                   </View>
                 ) : null}
                 {/* Driver info (from Livraison-app) */}
                 {detailOrder.mode === 'delivery' && (detailOrder.driverName || deliveryStatuses[detailOrder.id]?.driver_name) ? (
-                  <View style={{ backgroundColor:'#F0FDF4', borderRadius:10, padding:12, marginBottom:10, flexDirection:'row', alignItems:'center' }}>
-                    <View style={{ width:36, height:36, borderRadius:18, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center', marginRight:10 }}>
+                  <View style={profStyles.driverChip}>
+                    <View style={profStyles.driverChipIcon}>
                       <Ionicons name="bicycle" size={18} color="#fff" />
                     </View>
                     <View style={{ flex:1 }}>
-                      <Text style={{ fontSize:13, fontWeight:'700', color:'#111' }}>
+                      <Text style={profStyles.driverChipName}>
                         {deliveryStatuses[detailOrder.id]?.driver_name || detailOrder.driverName}
                       </Text>
-                      <Text style={{ fontSize:12, color:'#6B7280' }}>
+                      <Text style={profStyles.driverChipSub}>
                         {deliveryStatuses[detailOrder.id]?.estimated_arrival || detailOrder.estimatedArrival || t('orderStatus.onTheWay')}
                       </Text>
                     </View>
                     {(deliveryStatuses[detailOrder.id]?.driver_phone || detailOrder.driverPhone) ? (
-                      <TouchableOpacity style={{ width:36, height:36, borderRadius:18, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center' }}>
+                      <TouchableOpacity style={profStyles.driverChipCall}>
                         <Ionicons name="call" size={16} color="#fff" />
                       </TouchableOpacity>
                     ) : null}
                   </View>
                 ) : null}
                 {/* Coûts */}
-                <View style={{ borderTopWidth:1, borderTopColor:'#F3F4F6', paddingTop:10, marginTop:2 }}>
-                  <View style={{ flexDirection:'row', justifyContent:'space-between', marginBottom:4 }}>
-                    <Text style={{ fontSize:13, color:'#6B7280' }}>{t('profile.subtotal')}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'600', color:'#111' }}>{fmtPrice(detailOrder.subtotal != null ? detailOrder.subtotal : (detailOrder.total||0) - (detailOrder.deliveryFee||0))}</Text>
+                <View style={profStyles.costBlock}>
+                  <View style={profStyles.costRow}>
+                    <Text style={profStyles.costLabel}>{t('profile.subtotal')}</Text>
+                    <Text style={profStyles.costValue}>{fmtPrice(detailOrder.subtotal != null ? detailOrder.subtotal : (detailOrder.total||0) - (detailOrder.deliveryFee||0))}</Text>
                   </View>
-                  <View style={{ flexDirection:'row', justifyContent:'space-between', marginBottom:4 }}>
-                    <Text style={{ fontSize:13, color:'#6B7280' }}>{detailOrder.mode === 'delivery' ? t('profile.deliveryFee') : t('profile.collectFee')}</Text>
-                    <Text style={{ fontSize:13, fontWeight:'600', color: (detailOrder.deliveryFee||0) === 0 ? '#00C29B' : '#111' }}>
+                  <View style={profStyles.costRow}>
+                    <Text style={profStyles.costLabel}>{detailOrder.mode === 'delivery' ? t('profile.deliveryFee') : t('profile.collectFee')}</Text>
+                    <Text style={(detailOrder.deliveryFee||0) === 0 ? profStyles.costValueFree : profStyles.costValue}>
                       {(detailOrder.deliveryFee||0) === 0 ? t('cart.free') : fmtPrice(detailOrder.deliveryFee||0)}
                     </Text>
                   </View>
-                  <View style={{ flexDirection:'row', justifyContent:'space-between', borderTopWidth:1, borderTopColor:'#F3F4F6', paddingTop:6, marginTop:4 }}>
-                    <Text style={{ fontSize:16, fontWeight:'800', color:'#111' }}>{t('cart.total')}</Text>
-                    <Text style={{ fontSize:16, fontWeight:'900', color:'#00C29B' }}>{fmtPrice(detailOrder.total||0)}</Text>
+                  <View style={profStyles.grandRow}>
+                    <Text style={profStyles.grandLabel}>{t('cart.total')}</Text>
+                    <Text style={profStyles.grandValue}>{fmtPrice(detailOrder.total||0)}</Text>
                   </View>
                 </View>
               </View>
@@ -4441,20 +5194,22 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               {(() => {
                 const status = getOrderStatus(detailOrder);
                 return (
-                  <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#F0FDF4', borderRadius:12, padding:14, marginBottom:12 }}>
-                    <View style={{ width:40, height:40, borderRadius:20, backgroundColor: status.color + '20', alignItems:'center', justifyContent:'center', marginRight:12 }}>
+                  <View style={profStyles.statusCard}>
+                    <View style={[profStyles.statusCardIcon, { backgroundColor: status.color + '20' }]}>
                       <Ionicons name={status.icon} size={20} color={status.color} />
                     </View>
                     <View style={{flex:1}}>
-                      <Text style={{ fontSize:13, color:'#6B7280' }}>{t('profile.orderTracking')}</Text>
-                      <Text style={{ fontSize:16, fontWeight:'700', color: status.color }}>{status.label}</Text>
+                      <Text style={profStyles.statusCardLabel}>{t('profile.orderTracking')}</Text>
+                      <Text style={[profStyles.statusCardValue, { color: status.color }]}>{status.label}</Text>
                     </View>
                   </View>
                 );
               })()}
 
               {/* Produits par shop */}
-              <Text style={{ fontSize:16, fontWeight:'800', color:'#111', marginBottom:12, marginTop:8 }}>{t('profile.productDetails')}</Text>
+              <View style={[profStyles.sectionHeadRow, { marginTop: 6 }]}>
+                <Text style={profStyles.sectionTitle}>{t('profile.productDetails')}</Text>
+              </View>
               {(() => {
                 const byShop = {};
                 (detailOrder.items||[]).forEach(it => {
@@ -4463,21 +5218,21 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   byShop[s].push(it);
                 });
                 return Object.entries(byShop).map(([shop, items]) => (
-                  <View key={shop} style={{ backgroundColor:'#fff', borderRadius:12, padding:14, marginBottom:12,
-                    shadowColor:'#000', shadowOpacity:0.04, shadowRadius:4, elevation:1 }}>
-                    <View style={{ flexDirection:'row', alignItems:'center', marginBottom:10 }}>
-                      <Ionicons name="storefront-outline" size={16} color="#00C29B" />
-                      <Text style={{ fontSize:15, fontWeight:'700', color:'#111', marginLeft:8 }}>{shop === '__other__' ? t('cart.otherShop') : shop}</Text>
+                  <View key={shop} style={profStyles.shopBlock}>
+                    <View style={profStyles.shopBlockHead}>
+                      <View style={profStyles.shopBlockIcon}>
+                        <Ionicons name="storefront-outline" size={17} color={THEME.brand} />
+                      </View>
+                      <Text style={profStyles.shopBlockName}>{shop === '__other__' ? t('cart.otherShop') : shop}</Text>
                     </View>
                     {items.map((it, idx) => (
-                      <View key={idx} style={{ flexDirection:'row', alignItems:'center', paddingVertical:8,
-                        borderTopWidth: idx > 0 ? 1 : 0, borderTopColor:'#F3F4F6' }}>
+                      <View key={idx} style={[profStyles.detailItemRow, idx > 0 && profStyles.detailItemDivider]}>
                         <ProductThumb name={it.name||it.title} size={36} />
-                        <View style={{ flex:1, marginLeft:10 }}>
-                          <Text style={{ fontSize:14, fontWeight:'600', color:'#374151' }} numberOfLines={1}>{it.name||it.title}</Text>
-                          <Text style={{ fontSize:12, color:'#9CA3AF', marginTop:2 }}>{t('cart.qty')}: {it.qty||1} × {fmtPrice((it.price||0))}</Text>
+                        <View style={profStyles.detailItemBody}>
+                          <Text style={profStyles.detailItemName} numberOfLines={1}>{it.name||it.title}</Text>
+                          <Text style={profStyles.detailItemMeta}>{t('cart.qty')}: {it.qty||1} × {fmtPrice((it.price||0))}</Text>
                         </View>
-                        <Text style={{ fontWeight:'700', color:'#374151', fontSize:14 }}>
+                        <Text style={profStyles.detailItemPrice}>
                           {fmtPrice((it.price||0)*(it.qty||1))}
                         </Text>
                       </View>
@@ -4491,8 +5246,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
           {/* Bouton recommander fixe en bas */}
           {detailOrder && (
-            <View style={{ paddingHorizontal:20, paddingVertical:12, borderTopWidth:1, borderTopColor:'#F3F4F6', backgroundColor:'#fff' }}>
+            <View style={profStyles.detailFooter}>
               <TouchableOpacity
+                activeOpacity={0.85}
                 onPress={() => {
                   const items = (detailOrder.items||[]).map((it, i) => ({
                     id: i,
@@ -4507,10 +5263,10 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   setReorderItems(items);
                   setReorderVisible(true);
                 }}
-                style={{ height:50, borderRadius:14, backgroundColor:'#00C29B', flexDirection:'row', alignItems:'center', justifyContent:'center' }}
+                style={profStyles.primaryBtn}
               >
-                <Ionicons name="cart-outline" size={20} color="#fff" style={{marginRight:8}} />
-                <Text style={{ color:'#fff', fontWeight:'700', fontSize:16 }}>{t('profile.reorder') || 'Recommander'}</Text>
+                <Ionicons name="cart-outline" size={20} color="#fff" />
+                <Text style={profStyles.primaryBtnTxt}>{t('profile.reorder') || 'Recommander'}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -4519,20 +5275,21 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Modal sélection recommander — AU MÊME NIVEAU */}
-      <Modal visible={reorderVisible} animationType="none" transparent={true}>
-        <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
-          <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'75%', paddingBottom:40}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
-              <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('profile.reorder') || 'Recommander'}</Text>
+      <Modal visible={reorderVisible} animationType="slide" transparent={true}>
+        <View style={profStyles.sheetBackdrop}>
+          <View style={profStyles.sheet}>
+            <View style={profStyles.sheetGrabber} />
+            <View style={profStyles.sheetHeader}>
+              <Text style={profStyles.sheetTitle}>{t('profile.reorder') || 'Recommander'}</Text>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <TouchableOpacity onPress={() => {
                   const allSelected = reorderItems.every(it => it.selected);
                   setReorderItems(prev => prev.map(it => ({...it, selected: !allSelected})));
-                }} style={{paddingHorizontal:10, paddingVertical:6, borderRadius:8, backgroundColor:'#F3F4F6', marginRight:10}}>
-                  <Text style={{fontSize:12, fontWeight:'600', color:'#374151'}}>{reorderItems.every(it => it.selected) ? t('listScreen.deselectAll') : t('listScreen.selectAll')}</Text>
+                }} style={profStyles.selectAllPill}>
+                  <Text style={profStyles.selectAllTxt}>{reorderItems.every(it => it.selected) ? t('listScreen.deselectAll') : t('listScreen.selectAll')}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setReorderVisible(false)} style={{padding:4}}>
-                  <Ionicons name="close" size={24} color="#666" />
+                <TouchableOpacity onPress={() => setReorderVisible(false)} style={profStyles.closeBtn}>
+                  <Ionicons name="close" size={18} color={THEME.muted} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -4540,34 +5297,36 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             <FlatList
               data={reorderItems}
               keyExtractor={(item) => String(item.id)}
-              contentContainerStyle={{padding:16}}
+              contentContainerStyle={{paddingHorizontal:20, paddingTop:4, paddingBottom:12}}
+              showsVerticalScrollIndicator={false}
               renderItem={({item}) => (
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => setReorderItems(prev => prev.map(it => it.id === item.id ? {...it, selected: !it.selected} : it))}
-                  style={{flexDirection:'row', alignItems:'center', padding:12, marginBottom:6, backgroundColor: item.selected ? '#F0FDF4' : '#F9FAFB', borderRadius:10, borderWidth: item.selected ? 1 : 0, borderColor: item.selected ? '#BBF7D0' : 'transparent'}}
+                  style={[profStyles.reorderRow, item.selected && profStyles.reorderRowOn]}
                 >
                   <Square value={item.selected} onPress={() => setReorderItems(prev => prev.map(it => it.id === item.id ? {...it, selected: !it.selected} : it))} />
-                  <View style={{width:8}} />
+                  <View style={{width:10}} />
                   <ProductThumb name={item.name} size={40} />
-                  <View style={{flex:1, marginLeft:10}}>
-                    <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{item.name}</Text>
-                    {item.shop ? <Text style={{fontSize:11, color:'#6B7280', marginTop:2}}>{item.shop}</Text> : null}
+                  <View style={profStyles.reorderBody}>
+                    <Text style={profStyles.reorderName}>{item.name}</Text>
+                    {item.shop ? <Text style={profStyles.reorderShop}>{item.shop}</Text> : null}
                   </View>
-                  <View style={{alignItems:'flex-end'}}>
-                    <Text style={{fontSize:13, fontWeight:'700', color:'#374151'}}>x{item.qty||1}</Text>
-                    <Text style={{fontSize:13, fontWeight:'700', color:BRAND, marginTop:2}}>{fmtPrice((item.price||0)*(item.qty||1))}</Text>
+                  <View style={profStyles.reorderSide}>
+                    <Text style={profStyles.reorderQty}>x{item.qty||1}</Text>
+                    <Text style={profStyles.reorderPrice}>{fmtPrice((item.price||0)*(item.qty||1))}</Text>
                   </View>
                 </TouchableOpacity>
               )}
             />
 
-            <View style={{paddingHorizontal:16, gap:8}}>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                <Text style={{fontSize:15, fontWeight:'700', color:'#111'}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
-                <Text style={{fontSize:15, fontWeight:'700', color:BRAND}}>{fmtPrice(reorderItems.filter(it => it.selected).reduce((s, it) => s + (Number(it.price||0) * Number(it.qty||1)), 0))}</Text>
-              </View>
+            <View style={profStyles.reorderTotalRow}>
+              <Text style={profStyles.reorderTotalLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+              <Text style={profStyles.reorderTotalValue}>{fmtPrice(reorderItems.filter(it => it.selected).reduce((s, it) => s + (Number(it.price||0) * Number(it.qty||1)), 0))}</Text>
+            </View>
+            <View style={profStyles.sheetFooter}>
               <TouchableOpacity
+                activeOpacity={0.85}
                 onPress={async () => {
                   const selected = reorderItems.filter(it => it.selected).map(it => ({
                     name: it.name, detail: it.detail, unitPrice: it.unitPrice,
@@ -4583,13 +5342,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   navigation.navigate('cart');
                 }}
                 disabled={!reorderItems.some(it => it.selected)}
-                style={{height:50, borderRadius:14, backgroundColor: reorderItems.some(it => it.selected) ? '#00C29B' : '#9CA3AF', flexDirection:'row', alignItems:'center', justifyContent:'center'}}
+                style={[profStyles.primaryBtn, !reorderItems.some(it => it.selected) && profStyles.primaryBtnDisabled]}
               >
-                <Ionicons name="cart-outline" size={20} color="#fff" style={{marginRight:8}} />
-                <Text style={{color:'#fff', fontWeight:'700', fontSize:16}}>{t('cart.addToCart') || 'Ajouter au panier'} ({reorderItems.filter(it => it.selected).reduce((s, it) => s + (it.qty||1), 0)})</Text>
+                <Ionicons name="cart-outline" size={20} color="#fff" />
+                <Text style={profStyles.primaryBtnTxt}>{t('cart.addToCart') || 'Ajouter au panier'} ({reorderItems.filter(it => it.selected).reduce((s, it) => s + (it.qty||1), 0)})</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setReorderVisible(false)} style={{height:44, borderRadius:14, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center'}}>
-                <Text style={{color:'#666', fontWeight:'600'}}>{t('profile.cancel')}</Text>
+              <TouchableOpacity onPress={() => setReorderVisible(false)} style={[profStyles.cancelBtn, { marginTop: 10 }]}>
+                <Text style={profStyles.cancelBtnTxt}>{t('profile.cancel')}</Text>
               </TouchableOpacity>
             </View>
           </View>
