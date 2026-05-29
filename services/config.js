@@ -25,11 +25,12 @@ const ENV = {
   },
 };
 
-// Active environment - change this to switch
+// Active environment - selected automatically by build mode
 // "staging" = pythonapi.digiexports.in (needs deployed backend)
 // "local" = localhost:8000 (needs local Django server)
+// "production" = api.pearlstreets.com (release builds)
 // The app always falls back to local accounts if API is unavailable
-const ACTIVE_ENV = 'local';
+const ACTIVE_ENV = __DEV__ ? 'local' : 'production';
 
 export const CONFIG = ENV[ACTIVE_ENV];
 export default CONFIG;

@@ -20,7 +20,14 @@ async function deliveryFetch(endpoint, options = {}) {
   const headers = await getAuthHeaders();
   const url = `${DELIVERY_BASE}${endpoint}`;
   const res = await fetch(url, { ...options, headers: { ...headers, ...(options.headers || {}) } });
-  return res.json();
+  if (!res.ok) {
+    throw new Error(`Delivery API ${res.status} on ${endpoint}`);
+  }
+  try {
+    return await res.json();
+  } catch {
+    throw new Error(`Delivery API returned invalid JSON on ${endpoint}`);
+  }
 }
 
 // Create a delivery order - called when customer places an order in delivery mode
@@ -33,6 +40,7 @@ export async function createDeliveryOrder(orderData) {
       pickup_address: orderData.shops?.map((s) => s.address || s.name).join(', ') || '',
       pickup_shop_names: orderData.shops || [],
       delivery_address: orderData.address || '',
+      address_id: orderData.addressId || null,
       delivery_info: orderData.deliveryInfo || '',
       customer_name: orderData.customerName || '',
       customer_phone: orderData.customerPhone || '',

@@ -6,7 +6,8 @@ import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPasswor
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
-import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, updateUserAddress, uploadProfilePhoto } from "./services/profile";
+import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
+import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 
@@ -47,14 +48,15 @@ import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } 
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
 import { parseMulti } from "./lib/parseMulti";
-const BRAND = "#00C29B";
+const BRAND = "#09d7aa";
 
 // Design system tokens — "modern delivery marketplace" look.
 const THEME = {
-  brand: '#111827', brandDark: '#1F2937', brandSoft: '#F0F1F3',
+  brand: '#09d7aa', brandDark: '#07b896', brandSoft: '#E0FAF3',
   bg: '#FFFFFF', card: '#FFFFFF', subtle: '#F1F3F5',
   ink: '#0F172A', muted: '#64748B', faint: '#94A3B8',
   border: '#ECEEF1', danger: '#EF4444', dangerSoft: '#FEE2E2',
+  accent: '#FFB547', accentSoft: '#FFF3E0', info: '#3B82F6', infoSoft: '#DBEAFE',
   shadow: { shadowColor: '#0F172A', shadowOpacity: 0.06, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
   shadowSm: { shadowColor: '#0F172A', shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
 };
@@ -157,7 +159,8 @@ const lstyles = StyleSheet.create({
   addBtn: { width: 52, height: 52, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginLeft: 10, ...THEME.shadow },
   toolRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
   pill: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, marginRight: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  pillOn: { backgroundColor: THEME.brand },
+  pillOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  pillOnDark: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   pillTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
   pillTxtOn: { color: '#fff' },
   delPill: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, backgroundColor: THEME.dangerSoft },
@@ -167,13 +170,22 @@ const lstyles = StyleSheet.create({
   checkOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   itemName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   itemNameCrossed: { textDecorationLine: 'line-through', color: THEME.faint, fontWeight: '600' },
-  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, height: 36, paddingHorizontal: 2 },
-  stepBtn: { width: 30, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  stepQty: { width: 40, textAlign: 'center', fontSize: 15, fontWeight: '700', color: THEME.faint },
-  doneBtn: { width: 34, height: 34, borderRadius: 12, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
-  doneBtnOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 10, height: 30, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border },
+  stepBtn: { width: 24, height: 24, borderRadius: 7, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  stepQty: { minWidth: 26, textAlign: 'center', fontSize: 13, fontWeight: '800', color: THEME.ink, marginHorizontal: 2 },
+  unitChip: { marginLeft: 6, minWidth: 30, height: 30, paddingHorizontal: 7, borderRadius: 9, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
+  unitChipOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
+  unitChipTxt: { fontSize: 12, fontWeight: '700', color: THEME.faint },
+  unitChipTxtOn: { color: '#fff' },
+  unitGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 14, marginHorizontal: -4 },
+  unitOpt: { minWidth: 64, height: 44, paddingHorizontal: 14, margin: 4, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
+  unitOptOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
+  unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
+  unitOptTxtOn: { color: '#fff' },
+  doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
+  doneBtnOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   empty: { alignItems: 'center', justifyContent: 'center', paddingTop: 70, paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(9,215,170,0.95)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
@@ -209,6 +221,8 @@ function ListScreen() {
   const [editId, setEditId] = useState(null);
   const [editText, setEditText] = useState("");
 
+  const [unitPickerId, setUnitPickerId] = useState(null);
+
   const hydrated = React.useRef(false);
   useEffect(() => { (async () => {
     try {
@@ -240,9 +254,9 @@ function ListScreen() {
     setItems(prev => {
       const base = [...prev];
       for (const p of parsed) {
-        const idx = base.findIndex(b => b.name.toLowerCase() === p.name.toLowerCase());
+        const idx = base.findIndex(b => b.name.toLowerCase() === p.name.toLowerCase() && (b.unit || 'u') === (p.unit || 'u'));
         if (idx >= 0) base[idx] = { ...base[idx], qty: (base[idx].qty || 1) + p.qty };
-        else base.push({ id: String(Date.now()) + Math.random().toString(36).slice(2), name: p.name, qty: p.qty, crossed: false, selected: true });
+        else base.push({ id: String(Date.now()) + Math.random().toString(36).slice(2), name: p.name, qty: p.qty, unit: p.unit || 'u', crossed: false, selected: true });
       }
       return base;
     });
@@ -254,6 +268,7 @@ function ListScreen() {
   const onMinus = id => setItems(items.map(it => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it));
   const onPlus  = id => setItems(items.map(it => it.id === id ? { ...it, qty: (it.qty || 1) + 1 } : it));
   const setQty  = (id, q) => setItems(items.map(it => it.id === id ? { ...it, qty: q } : it));
+  const setUnit = (id, u) => setItems(items.map(it => it.id === id ? { ...it, unit: u } : it));
   const toggleSelected = id => setItems(items.map(it => it.id === id ? { ...it, selected: !it.selected } : it));
   const toggleCrossed  = id => setItems(items.map(it => it.id === id ? { ...it, crossed: !it.crossed, selected: it.crossed ? it.selected : false } : it));
 
@@ -294,19 +309,32 @@ function ListScreen() {
 
       {/* Quantity stepper */}
       <View style={[lstyles.stepper, isCrossed && { opacity: 0.5 }]}>
-        <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={lstyles.stepBtn}><Ionicons name="remove" size={16} color={THEME.ink} /></RepeatButton>
+        <RepeatButton onPress={() => !isCrossed && onMinus(item.id)} onLongAction={() => !isCrossed && onMinus(item.id)} style={lstyles.stepBtn}><Ionicons name="remove" size={14} color={THEME.ink} /></RepeatButton>
         {isCrossed ? (
           <Text style={lstyles.stepQty}>{item.qty || 1}</Text>
         ) : (
           <QtyInput value={item.qty || 1} onCommit={(q) => setQty(item.id, q)} />
         )}
-        <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={lstyles.stepBtn}><Ionicons name="add" size={16} color={THEME.ink} /></RepeatButton>
+        <RepeatButton onPress={() => !isCrossed && onPlus(item.id)} onLongAction={() => !isCrossed && onPlus(item.id)} style={lstyles.stepBtn}><Ionicons name="add" size={14} color={THEME.ink} /></RepeatButton>
       </View>
+
+      {/* Unit chip — tap to choose kg/g/L/mL/cL/mg */}
+      <TouchableOpacity
+        onPress={() => !isCrossed && setUnitPickerId(item.id)}
+        activeOpacity={0.7}
+        disabled={isCrossed}
+        hitSlop={{top:6,bottom:6,left:4,right:4}}
+        style={[lstyles.unitChip, (item.unit && item.unit !== 'u') && lstyles.unitChipOn, isCrossed && { opacity: 0.5 }]}
+      >
+        <Text style={[lstyles.unitChipTxt, (item.unit && item.unit !== 'u') && lstyles.unitChipTxtOn]} numberOfLines={1}>
+          {item.unit && item.unit !== 'u' ? item.unit : 'u'}
+        </Text>
+      </TouchableOpacity>
 
       {/* Done toggle */}
       <TouchableOpacity onPress={() => toggleCrossed(item.id)} activeOpacity={0.7} style={{ marginLeft: 10 }}>
         <View style={[lstyles.doneBtn, isCrossed && lstyles.doneBtnOn]}>
-          <Ionicons name="checkmark" size={17} color={isCrossed ? '#fff' : THEME.faint} />
+          <Ionicons name="checkmark" size={15} color={isCrossed ? '#fff' : THEME.faint} />
         </View>
       </TouchableOpacity>
     </View>
@@ -351,7 +379,7 @@ function ListScreen() {
         <TouchableOpacity onPress={toggleSelectAll} activeOpacity={0.8} style={[lstyles.pill, selectAll && lstyles.pillOn]}>
           <Text style={[lstyles.pillTxt, selectAll && lstyles.pillTxtOn]}>{t('listScreen.selectAll')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={toggleStrikeAll} activeOpacity={0.8} style={[lstyles.pill, strikeAll && lstyles.pillOn]}>
+        <TouchableOpacity onPress={toggleStrikeAll} activeOpacity={0.8} style={[lstyles.pill, strikeAll && lstyles.pillOnDark]}>
           <Text style={[lstyles.pillTxt, strikeAll && lstyles.pillTxtOn]}>{t('listScreen.strikeAll')}</Text>
         </TouchableOpacity>
         {items.some(it => it.selected) && (
@@ -430,6 +458,35 @@ function ListScreen() {
           <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Unit picker modal */}
+      <Modal visible={unitPickerId !== null} transparent animationType="fade" onRequestClose={() => setUnitPickerId(null)}>
+        <Pressable style={lstyles.modalBackdrop} onPress={() => setUnitPickerId(null)}>
+          <Pressable style={lstyles.modalBox} onPress={() => {}}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.unit')}</Text>
+            <View style={lstyles.unitGrid}>
+              {['u','g','kg','mL','cL','L','mg'].map((u) => {
+                const current = items.find(i => i.id === unitPickerId)?.unit || 'u';
+                const active = current === u;
+                return (
+                  <Pressable
+                    key={u}
+                    onPress={() => { setUnit(unitPickerId, u); setUnitPickerId(null); }}
+                    style={[lstyles.unitOpt, active && lstyles.unitOptOn]}
+                  >
+                    <Text style={[lstyles.unitOptTxt, active && lstyles.unitOptTxtOn]}>{u}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+            <View style={[lstyles.modalRow, { marginTop: 14 }]}>
+              <Pressable onPress={() => setUnitPickerId(null)} style={[lstyles.modalCancel, { flex: 1, marginRight: 0 }]}>
+                <Text style={lstyles.modalCancelTxt}>{t('listScreen.cancel')}</Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       <Modal visible={editVisible} transparent animationType="fade">
         <View style={lstyles.modalBackdrop}>
@@ -1818,7 +1875,7 @@ const FavoritesScreen = () => {
   const [shopDetails, setShopDetails] = React.useState([]);
   const [favProducts, setFavProducts] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
-  const BRAND = "#00C29B";
+  const BRAND = "#09d7aa";
 
   // Load favorite shops
   const loadFavShops = React.useCallback(async () => {
@@ -2187,6 +2244,8 @@ const cartStyles = StyleSheet.create({
   pickerStepQty: { fontSize: 14, fontWeight: '800', color: THEME.ink, marginHorizontal: 12 },
   pickerEmpty: { alignItems: 'center', paddingVertical: 34 },
   pickerEmptyTxt: { fontSize: 14, color: THEME.muted, fontWeight: '600' },
+  addrPickBadge: { marginLeft: 8, paddingHorizontal: 7, height: 18, borderRadius: 6, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  addrPickBadgeTxt: { fontSize: 9.5, fontWeight: '800', color: THEME.brandDark, letterSpacing: 0.3 },
   addedSummary: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 },
   addedSummaryTitle: { fontSize: 13, fontWeight: '800', color: THEME.ink, marginBottom: 4 },
   addedSummaryLine: { fontSize: 12, color: THEME.muted, fontWeight: '600' },
@@ -2358,9 +2417,33 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
   );
 };
 
+const formatSavedAddress = (a) =>
+  a
+    ? [
+        a.house_building,
+        a.road_area_colony,
+        [a.pincode, a.city].filter(Boolean).join(' ').trim(),
+        a.state,
+      ]
+        .map((s) => (s || '').toString().trim())
+        .filter(Boolean)
+        .join(', ')
+    : '';
+
+const formatAddressContact = (a) =>
+  a
+    ? [
+        [a.first_name, a.last_name].filter(Boolean).join(' ').trim(),
+        [a.phone_code, a.phone_number].filter(Boolean).join(' ').trim(),
+      ]
+        .filter(Boolean)
+        .join('  •  ')
+    : '';
+
 const CartScreen = ({ isAuth }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
+  const navigation = useNavigation();
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
@@ -2406,12 +2489,10 @@ const CartScreen = ({ isAuth }) => {
     setShopProductsSearch('');
     setShopProductsVisible(true);
   };
-  const [deliveryAddress, setDeliveryAddress] = React.useState('12 Rue de Rivoli, 75004 Paris');
-  const [deliveryInfo, setDeliveryInfo] = React.useState('');
-  const [editingAddress, setEditingAddress] = React.useState(false);
-  const [tempAddress, setTempAddress] = React.useState('');
-  const [tempInfo, setTempInfo] = React.useState('');
-  const [addressSuggestions, setAddressSuggestions] = React.useState([]);
+  const [addresses, setAddresses] = React.useState([]);
+  const [addressesLoading, setAddressesLoading] = React.useState(false);
+  const [selectedAddressId, setSelectedAddressId] = React.useState(null);
+  const [addressPickerVisible, setAddressPickerVisible] = React.useState(false);
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [addProductShop, setAddProductShop] = React.useState(null); // shop name for add product popup
@@ -2477,34 +2558,29 @@ const CartScreen = ({ isAuth }) => {
     }
   }, [deliverySlots]);
 
-  const PARIS_ADDRESSES = [
-    '1 Avenue des Champs-Élysées, 75008 Paris',
-    '10 Rue de la Paix, 75002 Paris',
-    '12 Rue de Rivoli, 75004 Paris',
-    '25 Boulevard Saint-Germain, 75005 Paris',
-    '33 Rue du Faubourg Saint-Honoré, 75008 Paris',
-    '5 Place de la République, 75003 Paris',
-    '8 Rue de Bretagne, 75003 Paris',
-    '15 Avenue de l\'Opéra, 75001 Paris',
-    '42 Rue Oberkampf, 75011 Paris',
-    '20 Boulevard de Belleville, 75020 Paris',
-    '7 Rue Mouffetard, 75005 Paris',
-    '18 Rue des Abbesses, 75018 Paris',
-    '3 Place du Trocadéro, 75016 Paris',
-    '55 Rue de la Roquette, 75011 Paris',
-    '30 Avenue de la Grande Armée, 75017 Paris',
-    '14 Rue du Commerce, 75015 Paris',
-    '9 Boulevard Voltaire, 75011 Paris',
-    '22 Rue de Turbigo, 75003 Paris',
-  ];
+  const loadAddresses = React.useCallback(async () => {
+    setAddressesLoading(true);
+    try {
+      const list = await fetchAddresses();
+      const arr = Array.isArray(list) ? list : [];
+      setAddresses(arr);
+      setSelectedAddressId((prev) => {
+        if (prev != null && arr.some((a) => String(a.id) === String(prev))) return prev;
+        const def = arr.find((a) => a.is_default) || arr[0];
+        return def ? def.id : null;
+      });
+    } catch (e) {
+      setAddresses([]);
+    }
+    setAddressesLoading(false);
+  }, []);
 
-  const filterAddresses = (text) => {
-    setTempAddress(text);
-    if (text.length < 2) { setAddressSuggestions([]); return; }
-    const q = text.toLowerCase();
-    const filtered = PARIS_ADDRESSES.filter(a => a.toLowerCase().includes(q)).slice(0, 4);
-    setAddressSuggestions(filtered);
-  };
+  const selectedAddress = React.useMemo(
+    () => addresses.find((a) => String(a.id) === String(selectedAddressId)) || null,
+    [addresses, selectedAddressId],
+  );
+  const deliveryAddress = formatSavedAddress(selectedAddress);
+  const recipient = formatAddressContact(selectedAddress);
   const totalPrice = cartItems.reduce((sum, it, i) => selectedCart[i] ? sum + (Number(it.price || 0) * Number(it.qty || 1)) : sum, 0);
 
   const loadCart = React.useCallback(async () => {
@@ -2522,7 +2598,7 @@ const CartScreen = ({ isAuth }) => {
     }
   }, []);
 
-  useFocusEffect(React.useCallback(() => { loadCart(); }, [loadCart]));
+  useFocusEffect(React.useCallback(() => { loadCart(); loadAddresses(); }, [loadCart, loadAddresses]));
 
   // Reload cart when products are added from Products screen
   React.useEffect(() => {
@@ -2860,78 +2936,30 @@ const CartScreen = ({ isAuth }) => {
                     <Ionicons name="location" size={18} color={THEME.brand} />
                     <Text style={cartStyles.addrTitle}>{t('cart.deliveryAddress')}</Text>
                   </View>
-                  <TouchableOpacity onPress={() => { setTempAddress(deliveryAddress); setTempInfo(deliveryInfo); setAddressSuggestions([]); setEditingAddress(true); }}>
-                    <Text style={cartStyles.addrEditTxt}>{t('cart.edit')}</Text>
+                  <TouchableOpacity onPress={() => setAddressPickerVisible(true)}>
+                    <Text style={cartStyles.addrEditTxt}>{selectedAddress ? t('cart.edit') : t('profile.addrAdd', 'Add New Address')}</Text>
                   </TouchableOpacity>
                 </View>
-                {editingAddress ? (
-                  <View style={{marginTop:12}}>
-                    {/* Champ adresse */}
-                    <Text style={cartStyles.addrFieldLabel}>{t('cart.address')}</Text>
-                    <TextInput
-                      value={tempAddress}
-                      onChangeText={filterAddresses}
-                      style={cartStyles.addrInput}
-                      placeholderTextColor={THEME.faint}
-                      autoFocus={true}
-                      placeholder={t('cart.enterAddress')}
-                    />
-                    {/* Suggestions */}
-                    {addressSuggestions.length > 0 && (
-                      <View style={cartStyles.addrSuggestBox}>
-                        {addressSuggestions.map((addr, i) => (
-                          <TouchableOpacity
-                            key={i}
-                            onPress={() => { setTempAddress(addr); setAddressSuggestions([]); }}
-                            style={[cartStyles.addrSuggestRow, i < addressSuggestions.length - 1 && cartStyles.productDivider]}
-                          >
-                            <Ionicons name="location-outline" size={14} color={THEME.faint} />
-                            <Text style={cartStyles.addrSuggestTxt}>{addr}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    )}
-                    {/* Infos complémentaires */}
-                    <Text style={[cartStyles.addrFieldLabel, { marginTop: 12 }]}>{t('cart.additionalInfo')}</Text>
-                    <TextInput
-                      value={tempInfo}
-                      onChangeText={setTempInfo}
-                      style={cartStyles.addrInput}
-                      placeholderTextColor={THEME.faint}
-                      placeholder={t('cart.additionalInfoPlaceholder')}
-                      multiline={false}
-                    />
-                    {/* Boutons */}
-                    <View style={cartStyles.addrBtnRow}>
-                      <TouchableOpacity
-                        onPress={() => { setEditingAddress(false); setAddressSuggestions([]); }}
-                        activeOpacity={0.85}
-                        style={cartStyles.addrCancelBtn}
-                      >
-                        <Text style={cartStyles.addrCancelTxt}>{t('profile.cancel')}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => { setDeliveryAddress(tempAddress); setDeliveryInfo(tempInfo); setEditingAddress(false); setAddressSuggestions([]); }}
-                        activeOpacity={0.9}
-                        style={cartStyles.addrSaveBtn}
-                      >
-                        <Text style={cartStyles.addrSaveTxt}>{t('profile.validate')}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                ) : (
+                {selectedAddress ? (
                   <View style={cartStyles.addrDisplay}>
                     <View style={cartStyles.addrDisplayRow}>
                       <Ionicons name="home-outline" size={14} color={THEME.muted} />
                       <Text style={cartStyles.addrDisplayTxt}>{deliveryAddress}</Text>
                     </View>
-                    {deliveryInfo ? (
+                    {recipient ? (
                       <View style={[cartStyles.addrDisplayRow, { marginTop: 4 }]}>
-                        <Ionicons name="business-outline" size={14} color={THEME.faint} />
-                        <Text style={cartStyles.addrDisplaySub}>{deliveryInfo}</Text>
+                        <Ionicons name="person-outline" size={14} color={THEME.faint} />
+                        <Text style={cartStyles.addrDisplaySub}>{recipient}</Text>
                       </View>
                     ) : null}
                   </View>
+                ) : (
+                  <TouchableOpacity onPress={() => setAddressPickerVisible(true)} activeOpacity={0.7} style={cartStyles.addrDisplay}>
+                    <View style={cartStyles.addrDisplayRow}>
+                      <Ionicons name="alert-circle-outline" size={14} color={THEME.faint} />
+                      <Text style={cartStyles.addrDisplaySub}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
+                    </View>
+                  </TouchableOpacity>
                 )}
               </View>}
 
@@ -3238,6 +3266,7 @@ const CartScreen = ({ isAuth }) => {
               slot: selectedSlot || '',
               deliveryDate: deliveryDateLabel,
               address: orderMode === 'delivery' ? deliveryAddress : '',
+              addressId: orderMode === 'delivery' ? selectedAddressId : null,
               deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
             };
             history.unshift(order);
@@ -3248,13 +3277,19 @@ const CartScreen = ({ isAuth }) => {
               try {
                 const profileRaw = await AsyncStorage.getItem(KEY_PROFILE);
                 const profile = profileRaw ? JSON.parse(profileRaw) : {};
+                const recipientName = selectedAddress
+                  ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim()
+                  : '';
+                const recipientPhone = selectedAddress
+                  ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim()
+                  : '';
                 await createDeliveryOrder({
                   id: orderId,
                   shops,
                   address: deliveryAddress,
-                  deliveryInfo,
-                  customerName: (profile.prenom || '') + ' ' + (profile.nom || ''),
-                  customerPhone: profile.phone || '',
+                  addressId: selectedAddressId,
+                  customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
+                  customerPhone: recipientPhone || profile.phone || '',
                   items: cartItems,
                   total: totalPrice + deliveryFee,
                   deliveryFee,
@@ -3360,6 +3395,77 @@ const CartScreen = ({ isAuth }) => {
                 </View>
               )}
             />
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal sélection adresse de livraison */}
+      <Modal visible={addressPickerVisible} animationType="none" transparent={true} onRequestClose={() => setAddressPickerVisible(false)}>
+        <View style={cartStyles.sheetBackdrop}>
+          <View style={[cartStyles.sheet, { maxHeight: '82%', paddingBottom: 32 }]}>
+            <View style={cartStyles.sheetGrabber} />
+            <View style={cartStyles.sheetHeader}>
+              <View style={{ flex: 1 }}>
+                <Text style={[cartStyles.sheetTitle, { fontSize: 18 }]}>{t('cart.deliveryAddress')}</Text>
+                <Text style={cartStyles.subtitle}>{t('profile.addrSelect', 'Select delivery address')}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setAddressPickerVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
+            {addressesLoading && addresses.length === 0 ? (
+              <View style={{ paddingVertical: 44, alignItems: 'center' }}>
+                <ActivityIndicator color={THEME.brand} />
+              </View>
+            ) : addresses.length === 0 ? (
+              <View style={cartStyles.pickerEmpty}>
+                <Ionicons name="location-outline" size={30} color={THEME.faint} />
+                <Text style={[cartStyles.pickerEmptyTxt, { marginTop: 8 }]}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
+                <TouchableOpacity
+                  onPress={() => { setAddressPickerVisible(false); navigation.navigate('profile'); }}
+                  activeOpacity={0.9}
+                  style={[cartStyles.addrSaveBtn, { flex: 0, paddingHorizontal: 22, marginTop: 16 }]}
+                >
+                  <Text style={cartStyles.addrSaveTxt}>{t('profile.addrAdd', 'Add New Address')}</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 12 }} showsVerticalScrollIndicator={false}>
+                {addresses.map((item) => {
+                  const isOn = String(item.id) === String(selectedAddressId);
+                  const isWork = item.address_type === 'work';
+                  const line = formatSavedAddress(item);
+                  const who = formatAddressContact(item);
+                  return (
+                    <TouchableOpacity
+                      key={String(item.id)}
+                      activeOpacity={0.85}
+                      onPress={() => { setSelectedAddressId(item.id); setAddressPickerVisible(false); }}
+                      style={[cartStyles.pickerRow, isOn && cartStyles.pickerRowOn]}
+                    >
+                      <View style={cartStyles.infoIcon}>
+                        <Ionicons name={isWork ? 'briefcase' : 'home'} size={16} color={THEME.brand} />
+                      </View>
+                      <View style={cartStyles.pickerBody}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={cartStyles.pickerName}>{isWork ? t('profile.addrWork', 'Work') : t('profile.addrHome', 'Home')}</Text>
+                          {item.is_default && (
+                            <View style={cartStyles.addrPickBadge}>
+                              <Text style={cartStyles.addrPickBadgeTxt}>{t('profile.addrDefault', 'Default')}</Text>
+                            </View>
+                          )}
+                        </View>
+                        {!!who && <Text style={cartStyles.addrDisplaySub} numberOfLines={1}>{who}</Text>}
+                        {!!line && <Text style={cartStyles.pickerDetail} numberOfLines={2}>{line}</Text>}
+                      </View>
+                      {isOn
+                        ? <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />
+                        : <Ionicons name="ellipse-outline" size={22} color={THEME.border} />}
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            )}
           </View>
         </View>
       </Modal>
@@ -3815,7 +3921,7 @@ const styles = StyleSheet.create({
   row:{ flexDirection:"row", alignItems:"center", paddingVertical:10, paddingLeft:GUTTER, paddingRight:12 },
   qtyInline:{ flexDirection:"row", alignItems:"center", marginLeft:12 },
   qtyBtn:{ width:28, height:28, borderRadius:8, borderWidth:1, borderColor:"#E5E7EB", alignItems:"center", justifyContent:"center" },
-  qtyInput:{ width:48, height:32, borderWidth:1, borderColor:"#E5E7EB", borderRadius:8, textAlign:"center", fontSize:15, marginHorizontal:4 },
+  qtyInput:{ minWidth:26, height:24, textAlign:"center", fontSize:13, fontWeight:'800', color:THEME.ink, marginHorizontal:2, paddingVertical:0 },
 
   itemLabel:{ fontSize:16, color:"#111", marginLeft:12 },
   crossed:{ textDecorationLine:"line-through", color:"#999" },
@@ -4080,7 +4186,38 @@ const profStyles = StyleSheet.create({
   reorderTotalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
   reorderTotalLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
   reorderTotalValue: { fontSize: 17, fontWeight: '900', color: THEME.brand },
+
+  // Delivery address — list, cards & form
+  addrSectionTitle: { fontSize: 15, fontWeight: '800', color: THEME.ink, marginBottom: 12 },
+  addrCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, padding: 14, marginBottom: 12, ...THEME.shadowSm },
+  addrCardOn: { borderColor: THEME.brand, borderWidth: 2, padding: 13 },
+  addrCardHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  addrTypeIcon: { width: 26, height: 26, borderRadius: 9, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  addrType: { fontSize: 14.5, fontWeight: '800', color: THEME.ink },
+  addrBadge: { backgroundColor: 'rgba(0,194,155,0.9)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 7, marginLeft: 8 },
+  addrBadgeTxt: { fontSize: 9.5, fontWeight: '800', color: '#fff', letterSpacing: 0.4, textTransform: 'uppercase' },
+  addrCheck: { width: 24, height: 24, borderRadius: 12, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center' },
+  addrName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginBottom: 3 },
+  addrText: { fontSize: 13, color: THEME.muted, fontWeight: '600', lineHeight: 19 },
+  addrDivider: { height: 1, backgroundColor: THEME.border, marginVertical: 12 },
+  addrActions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  addrAction: { flexDirection: 'row', alignItems: 'center' },
+  addrActionTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginLeft: 7 },
+  addrEmpty: { alignItems: 'center', paddingVertical: 44 },
+  addrEmptyIcon: { width: 58, height: 58, borderRadius: 20, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  addrEmptyTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted },
+  addrFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 30 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
+  addrTypeBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  addrTypeBtnOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand, borderWidth: 2 },
+  addrTypeBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted, marginLeft: 8 },
+  addrTypeBtnTxtOn: { color: THEME.brandDark, fontWeight: '800' },
 });
+
+const EMPTY_ADDR_FORM = {
+  first_name: '', last_name: '', phone_code: '+33', phone_number: '',
+  house_building: '', road_area_colony: '', pincode: '', city: '',
+  state: '', address_type: 'home', countryFlag: 'FR', lat: null, lang: null,
+};
 
 function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
@@ -4107,12 +4244,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [pendingLang, setPendingLang] = React.useState(null);
   const [currencyVisible, setCurrencyVisible] = React.useState(false);
   const [pendingCurrency, setPendingCurrency] = React.useState(null);
-  const [addressVisible, setAddressVisible] = React.useState(false);
-  const [editAddress, setEditAddress] = React.useState('');
-  const [editAddressSupplement, setEditAddressSupplement] = React.useState('');
-  const [editCity, setEditCity] = React.useState('');
-  const [editPostalCode, setEditPostalCode] = React.useState('');
-  const [editCountry, setEditCountry] = React.useState('');
+  const [addressListVisible, setAddressListVisible] = React.useState(false);
+  const [addresses, setAddresses] = React.useState([]);
+  const [addressLoading, setAddressLoading] = React.useState(false);
+  const [addressFormVisible, setAddressFormVisible] = React.useState(false);
+  const [editingAddressId, setEditingAddressId] = React.useState(null);
+  const [addrForm, setAddrForm] = React.useState(EMPTY_ADDR_FORM);
+  const [addrSaving, setAddrSaving] = React.useState(false);
   const [geoLoading, setGeoLoading] = React.useState(false);
   const [driverInfoVisible, setDriverInfoVisible] = React.useState(false);
   const [docStatuses, setDocStatuses] = React.useState(null);
@@ -4142,9 +4280,17 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       if (raw) setOrders(JSON.parse(raw));
     } catch(e) {}
   }, []);
+  const loadAddresses = React.useCallback(async () => {
+    setAddressLoading(true);
+    try {
+      const list = await fetchAddresses();
+      setAddresses(Array.isArray(list) ? list : []);
+    } catch(e) {}
+    setAddressLoading(false);
+  }, []);
 
   useFocusEffect(React.useCallback(() => {
-    loadProfile(); loadOrders();
+    loadProfile(); loadOrders(); loadAddresses();
     // Load driver mode status for regular users
     (async () => {
       try {
@@ -4183,7 +4329,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         }
       } catch(e) {}
     })();
-  }, [loadProfile, loadOrders]));
+  }, [loadProfile, loadOrders, loadAddresses]));
 
   React.useEffect(() => {
     if (isAuth) { loadProfile(); loadOrders(); }
@@ -4220,16 +4366,114 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     setEditVisible(false);
   };
 
-  const saveAddress = async () => {
-    const updated = { ...profile, address: editAddress.trim(), addressSupplement: editAddressSupplement.trim(), city: editCity.trim(), postalCode: editPostalCode.trim(), country: editCountry.trim() };
-    // Sync to the Marketplace backend so the address matches the website / user app
-    try {
-      if (profile.id) await updateUserAddress(profile.id, updated);
-    } catch(e) {}
-    setProfile(updated);
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
-    setAddressVisible(false);
+  const setAF = (k, v) => setAddrForm(f => ({ ...f, [k]: v }));
+
+  const openAddressList = () => { setAddressListVisible(true); loadAddresses(); };
+
+  const openAddAddress = () => {
+    setEditingAddressId(null);
+    setAddrForm(EMPTY_ADDR_FORM);
+    setAddressFormVisible(true);
   };
+
+  const openEditAddress = (item) => {
+    setEditingAddressId(item.id);
+    setAddrForm({
+      first_name: item.first_name || '', last_name: item.last_name || '',
+      phone_code: item.phone_code || '+33', phone_number: item.phone_number || '',
+      house_building: item.house_building || '', road_area_colony: item.road_area_colony || '',
+      pincode: item.pincode || '', city: item.city || '', state: item.state || '',
+      address_type: item.address_type === 'work' ? 'work' : 'home',
+      countryFlag: item.countryFlag || 'FR',
+      lat: item.lat ?? null, lang: item.lang ?? null,
+    });
+    setAddressFormVisible(true);
+  };
+
+  const submitAddress = async () => {
+    if (!addrForm.first_name.trim() || !addrForm.house_building.trim() || !addrForm.city.trim()) {
+      Alert.alert(t('profile.deliveryAddress'), t('profile.pwdErrorEmpty'));
+      return;
+    }
+    setAddrSaving(true);
+    try {
+      const payload = {
+        first_name: addrForm.first_name.trim(),
+        last_name: addrForm.last_name.trim(),
+        phone_code: (addrForm.phone_code || '').trim() || '+33',
+        phone_number: addrForm.phone_number.trim(),
+        house_building: addrForm.house_building.trim(),
+        road_area_colony: addrForm.road_area_colony.trim(),
+        pincode: addrForm.pincode.trim(),
+        city: addrForm.city.trim(),
+        state: addrForm.state.trim(),
+        address_type: addrForm.address_type,
+        countryFlag: addrForm.countryFlag || 'FR',
+        lat: addrForm.lat, lang: addrForm.lang,
+      };
+      if (editingAddressId) await updateAddress(editingAddressId, payload);
+      else await createAddress(payload);
+      await loadAddresses();
+      setAddressFormVisible(false);
+    } catch (e) {
+      Alert.alert(t('profile.deliveryAddress'), t('profile.addrSaveError', 'Could not save the address.'));
+    }
+    setAddrSaving(false);
+  };
+
+  const confirmDeleteAddress = (id) => {
+    Alert.alert(
+      t('profile.deliveryAddress'),
+      t('profile.addrDeleteConfirm', 'Delete this address?'),
+      [
+        { text: t('profile.cancel'), style: 'cancel' },
+        { text: t('profile.delete', 'Delete'), style: 'destructive', onPress: async () => {
+          try { await deleteAddressById(id); await loadAddresses(); } catch (e) {}
+        } },
+      ]
+    );
+  };
+
+  const selectDefaultAddress = async (id) => {
+    setAddresses(prev => prev.map(a => ({ ...a, is_default: a.id === id })));
+    try { await makeAddressDefault(id); } catch (e) {}
+    loadAddresses();
+  };
+
+  const addressGeo = async () => {
+    try {
+      setGeoLoading(true);
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setGeoLoading(false);
+        Alert.alert(t('profile.locationDenied'), t('profile.locationDeniedMsg'));
+        return;
+      }
+      const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+      const results = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+      const r = results && results[0];
+      if (r) {
+        setAddrForm(f => ({
+          ...f,
+          house_building: ((r.streetNumber || '') + ' ' + (r.street || r.name || '')).trim() || f.house_building,
+          road_area_colony: r.district || r.subregion || f.road_area_colony,
+          city: r.city || r.region || f.city,
+          pincode: r.postalCode || f.pincode,
+          state: r.region || f.state,
+          countryFlag: r.isoCountryCode || f.countryFlag,
+          lat: loc.coords.latitude, lang: loc.coords.longitude,
+        }));
+      } else {
+        Alert.alert(t('profile.deliveryAddress'), t('profile.locationError'));
+      }
+      setGeoLoading(false);
+    } catch (e) {
+      setGeoLoading(false);
+      Alert.alert(t('profile.deliveryAddress'), t('profile.locationError'));
+    }
+  };
+
+  const defaultAddress = addresses.find(a => a.is_default) || addresses[0] || null;
 
   const handleChangePassword = async () => {
     setPwdError(''); setPwdSuccess('');
@@ -4551,14 +4795,14 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         <View style={profStyles.section}>
           <View style={profStyles.settingsCard}>
             {/* Address */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => { setEditAddress(profile.address||''); setEditAddressSupplement(profile.addressSupplement||''); setEditCity(profile.city||''); setEditPostalCode(profile.postalCode||''); setEditCountry(profile.country||''); setAddressVisible(true); }} style={[profStyles.settingRow, profStyles.settingDivider]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={openAddressList} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>
                 <Ionicons name="location-outline" size={19} color="#fff" />
               </View>
               <View style={profStyles.settingBody}>
                 <Text style={profStyles.settingLabel}>{t('profile.deliveryAddress')}</Text>
                 <Text style={profStyles.settingValue} numberOfLines={1}>
-                  {profile.address ? (profile.address.length > 28 ? profile.address.substring(0,28)+'…' : profile.address) : t('profile.noAddress')}
+                  {defaultAddress ? [defaultAddress.house_building, defaultAddress.city].filter(Boolean).join(', ') : t('profile.noAddress')}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
@@ -4956,97 +5200,169 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         </SafeAreaView>
       </Modal>
 
-      {/* Delivery Address Full Page Modal */}
-      <Modal visible={addressVisible} animationType="slide">
+      {/* Delivery Address — saved addresses list */}
+      <Modal visible={addressListVisible} animationType="slide" onRequestClose={() => setAddressListVisible(false)}>
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
-          <KeyboardAvoidingView style={{ flex:1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View style={profStyles.modalHeader}>
+            <TouchableOpacity onPress={() => setAddressListVisible(false)} style={profStyles.modalBack}>
+              <Ionicons name="arrow-back" size={20} color={THEME.ink} />
+            </TouchableOpacity>
+            <Text style={profStyles.modalTitle}>{t('profile.deliveryAddress')}</Text>
+          </View>
+          {addressLoading && addresses.length === 0 ? (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator color={THEME.brand} size="large" />
+            </View>
+          ) : (
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+              <Text style={profStyles.addrSectionTitle}>{t('profile.addrSelect', 'Select delivery address')}</Text>
+              {addresses.length === 0 ? (
+                <View style={profStyles.addrEmpty}>
+                  <View style={profStyles.addrEmptyIcon}>
+                    <Ionicons name="location-outline" size={26} color="#fff" />
+                  </View>
+                  <Text style={profStyles.addrEmptyTxt}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
+                </View>
+              ) : addresses.map((item) => {
+                const isDef = !!item.is_default;
+                const isWork = item.address_type === 'work';
+                const fullAddr = [item.house_building, item.road_area_colony, [item.pincode, item.city].filter(Boolean).join(' '), item.state].filter(Boolean).join(', ');
+                const who = [item.first_name, item.last_name].filter(Boolean).join(' ');
+                const phone = [item.phone_code, item.phone_number].filter(Boolean).join(' ');
+                return (
+                  <TouchableOpacity key={String(item.id)} activeOpacity={0.85} onPress={() => !isDef && selectDefaultAddress(item.id)} style={[profStyles.addrCard, isDef && profStyles.addrCardOn]}>
+                    <View style={profStyles.addrCardHead}>
+                      <View style={profStyles.addrTypeIcon}>
+                        <Ionicons name={isWork ? 'briefcase' : 'home'} size={14} color="#fff" />
+                      </View>
+                      <Text style={profStyles.addrType}>{isWork ? t('profile.addrWork', 'Work') : t('profile.addrHome', 'Home')}</Text>
+                      {isDef && (
+                        <View style={profStyles.addrBadge}>
+                          <Text style={profStyles.addrBadgeTxt}>{t('profile.addrDefault', 'Default')}</Text>
+                        </View>
+                      )}
+                      <View style={{ flex: 1 }} />
+                      {isDef && (
+                        <View style={profStyles.addrCheck}>
+                          <Ionicons name="checkmark" size={15} color="#fff" />
+                        </View>
+                      )}
+                    </View>
+                    {!!(who || phone) && (
+                      <Text style={profStyles.addrName} numberOfLines={1}>{[who, phone].filter(Boolean).join('  •  ')}</Text>
+                    )}
+                    <Text style={profStyles.addrText}>{fullAddr}</Text>
+                    <View style={profStyles.addrDivider} />
+                    <View style={profStyles.addrActions}>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => openEditAddress(item)} style={profStyles.addrAction} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                        <Ionicons name="create-outline" size={17} color={THEME.ink} />
+                        <Text style={profStyles.addrActionTxt}>{t('profile.edit', 'Edit')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.7} onPress={() => confirmDeleteAddress(item.id)} style={profStyles.addrAction} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                        <Ionicons name="trash-outline" size={17} color={THEME.danger} />
+                        <Text style={[profStyles.addrActionTxt, { color: THEME.danger }]}>{t('profile.delete', 'Delete')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          )}
+          <View style={profStyles.addrFooter}>
+            <TouchableOpacity activeOpacity={0.9} onPress={openAddAddress} style={profStyles.primaryBtn}>
+              <Ionicons name="add" size={20} color="#fff" />
+              <Text style={profStyles.primaryBtnTxt}>{t('profile.addrAdd', 'Add New Address')}</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Delivery Address — add / edit form */}
+      <Modal visible={addressFormVisible} animationType="slide" onRequestClose={() => setAddressFormVisible(false)}>
+        <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View style={profStyles.modalHeader}>
-              <TouchableOpacity onPress={() => setAddressVisible(false)} style={profStyles.modalBack}>
+              <TouchableOpacity onPress={() => setAddressFormVisible(false)} style={profStyles.modalBack}>
                 <Ionicons name="arrow-back" size={20} color={THEME.ink} />
               </TouchableOpacity>
-              <Text style={profStyles.modalTitle}>{t('profile.deliveryAddress')}</Text>
+              <Text style={profStyles.modalTitle}>{editingAddressId ? t('profile.addrEditTitle', 'Edit Address') : t('profile.addrAdd', 'Add New Address')}</Text>
             </View>
-            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-              {/* Bouton géolocalisation */}
-              <TouchableOpacity
-                activeOpacity={0.85}
-                onPress={async () => {
-                  try {
-                    setGeoLoading(true);
-                    const { status } = await Location.requestForegroundPermissionsAsync();
-                    if (status !== 'granted') {
-                      setGeoLoading(false);
-                      Alert.alert(t('profile.locationDenied') || 'Permission refusée', t('profile.locationDeniedMsg') || 'Autorisez la localisation dans les réglages.');
-                      return;
-                    }
-                    const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-                    const results = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
-                    const r = results && results[0];
-                    if (r) {
-                      const num = r.streetNumber || '';
-                      const street = r.street || r.name || '';
-                      setEditAddress((num + ' ' + street).trim());
-                      setEditAddressSupplement(r.district || r.subregion || '');
-                      setEditCity(r.city || r.region || '');
-                      setEditPostalCode(r.postalCode || '');
-                      setEditCountry(r.country || '');
-                    } else {
-                      Alert.alert('Erreur', t('profile.locationError') || 'Adresse introuvable pour cette position.');
-                    }
-                    setGeoLoading(false);
-                  } catch(e) {
-                    setGeoLoading(false);
-                    Alert.alert('Erreur', t('profile.locationError') || 'Impossible de récupérer la position.');
-                  }
-                }}
-                disabled={geoLoading}
-                style={[profStyles.geoBtn, geoLoading && { backgroundColor: THEME.subtle }]}
-              >
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 20 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+              <TouchableOpacity activeOpacity={0.85} onPress={addressGeo} disabled={geoLoading} style={[profStyles.geoBtn, geoLoading && { backgroundColor: THEME.subtle }]}>
                 {geoLoading ? (
                   <ActivityIndicator color={THEME.brand} />
                 ) : (
                   <Ionicons name="navigate" size={19} color={THEME.brandDark} />
                 )}
-                <Text style={profStyles.geoBtnTxt}>{geoLoading ? (t('profile.locating') || 'Localisation en cours...') : (t('profile.useMyLocation') || 'Utiliser ma position actuelle')}</Text>
+                <Text style={profStyles.geoBtnTxt}>{geoLoading ? t('profile.locating') : t('profile.useMyLocation')}</Text>
               </TouchableOpacity>
 
               <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.addrType', 'Address type')}</Text>
+                <View style={{ flexDirection: 'row', gap: 12 }}>
+                  {[['home', 'home', t('profile.addrHome', 'Home')], ['work', 'briefcase', t('profile.addrWork', 'Work')]].map(([key, icon, label]) => {
+                    const on = addrForm.address_type === key;
+                    return (
+                      <TouchableOpacity key={key} activeOpacity={0.8} onPress={() => setAF('address_type', key)} style={[profStyles.addrTypeBtn, on && profStyles.addrTypeBtnOn]}>
+                        <Ionicons name={on ? icon : icon + '-outline'} size={17} color={on ? THEME.brandDark : THEME.muted} />
+                        <Text style={[profStyles.addrTypeBtnTxt, on && profStyles.addrTypeBtnTxtOn]}>{label}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View style={profStyles.fieldRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={profStyles.fieldLabel}>{t('profile.firstName')}</Text>
+                  <TextInput value={addrForm.first_name} onChangeText={(v) => setAF('first_name', v)} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={profStyles.fieldLabel}>{t('profile.lastName')}</Text>
+                  <TextInput value={addrForm.last_name} onChangeText={(v) => setAF('last_name', v)} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
+                </View>
+              </View>
+
+              <View style={profStyles.fieldGroup}>
+                <Text style={profStyles.fieldLabel}>{t('profile.addrPhone', 'Phone')}</Text>
+                <View style={{ flexDirection: 'row', gap: 12 }}>
+                  <TextInput value={addrForm.phone_code} onChangeText={(v) => setAF('phone_code', v)} placeholder="+33" placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[profStyles.field, { width: 88 }]} />
+                  <TextInput value={addrForm.phone_number} onChangeText={(v) => setAF('phone_number', v)} placeholder="6 12 34 56 78" placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[profStyles.field, { flex: 1 }]} />
+                </View>
+              </View>
+
+              <View style={profStyles.fieldGroup}>
                 <Text style={profStyles.fieldLabel}>{t('profile.street')}</Text>
-                <TextInput value={editAddress} onChangeText={setEditAddress} placeholder={t('profile.streetPlaceholder')}
-                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+                <TextInput value={addrForm.house_building} onChangeText={(v) => setAF('house_building', v)} placeholder={t('profile.streetPlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
               </View>
 
               <View style={profStyles.fieldGroup}>
                 <Text style={profStyles.fieldLabel}>{t('profile.addressSupplement')}</Text>
-                <TextInput value={editAddressSupplement} onChangeText={setEditAddressSupplement} placeholder={t('profile.supplementPlaceholder')}
-                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+                <TextInput value={addrForm.road_area_colony} onChangeText={(v) => setAF('road_area_colony', v)} placeholder={t('profile.supplementPlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
               </View>
 
               <View style={profStyles.fieldRow}>
-                <View style={{ flex:1 }}>
+                <View style={{ flex: 1 }}>
                   <Text style={profStyles.fieldLabel}>{t('profile.postalCode')}</Text>
-                  <TextInput value={editPostalCode} onChangeText={setEditPostalCode} placeholder={t('profile.postalCodePlaceholder')} keyboardType="number-pad"
-                    placeholderTextColor={THEME.faint} style={profStyles.field} />
+                  <TextInput value={addrForm.pincode} onChangeText={(v) => setAF('pincode', v)} placeholder={t('profile.postalCodePlaceholder')} keyboardType="number-pad" placeholderTextColor={THEME.faint} style={profStyles.field} />
                 </View>
-                <View style={{ flex:2 }}>
+                <View style={{ flex: 2 }}>
                   <Text style={profStyles.fieldLabel}>{t('profile.city')}</Text>
-                  <TextInput value={editCity} onChangeText={setEditCity} placeholder={t('profile.cityPlaceholder')}
-                    placeholderTextColor={THEME.faint} style={profStyles.field} />
+                  <TextInput value={addrForm.city} onChangeText={(v) => setAF('city', v)} placeholder={t('profile.cityPlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
                 </View>
               </View>
 
               <View style={[profStyles.fieldGroup, { marginBottom: 24 }]}>
-                <Text style={profStyles.fieldLabel}>{t('profile.country')}</Text>
-                <TextInput value={editCountry} onChangeText={setEditCountry} placeholder={t('profile.countryPlaceholder')}
-                  placeholderTextColor={THEME.faint} style={profStyles.field} />
+                <Text style={profStyles.fieldLabel}>{t('profile.addrState', 'State / Region')}</Text>
+                <TextInput value={addrForm.state} onChangeText={(v) => setAF('state', v)} placeholder={t('profile.addrState', 'State / Region')} placeholderTextColor={THEME.faint} style={profStyles.field} />
               </View>
 
               <View style={profStyles.btnRow}>
-                <TouchableOpacity activeOpacity={0.85} onPress={() => setAddressVisible(false)} style={profStyles.cancelBtn}>
+                <TouchableOpacity activeOpacity={0.85} onPress={() => setAddressFormVisible(false)} style={profStyles.cancelBtn}>
                   <Text style={profStyles.cancelBtnTxt}>{t('profile.cancel')}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.85} onPress={saveAddress} style={profStyles.saveBtn}>
-                  <Text style={profStyles.saveBtnTxt}>{t('profile.save')}</Text>
+                <TouchableOpacity activeOpacity={0.85} onPress={submitAddress} disabled={addrSaving} style={profStyles.saveBtn}>
+                  {addrSaving ? <ActivityIndicator color="#fff" /> : <Text style={profStyles.saveBtnTxt}>{t('profile.save')}</Text>}
                 </TouchableOpacity>
               </View>
             </ScrollView>
