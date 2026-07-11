@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
-import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories } from "./services/products";
+import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import SearchPopup from './components/SearchPopup';
 import * as Location from 'expo-location';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -3499,13 +3499,211 @@ const CartScreen = ({ isAuth }) => {
   );
 };
 
+// ── Écran BOUTIQUES : vrais shops Pearl Streets (product_purchase) + produits ──
+// Catalogue réel via getShopsByCategory('product_purchase'). Tap shop → ses vrais
+// produits → ajout panier (KEY_CART, champ `shop` réel) → checkout collect/livraison
+// existant. Aucune donnée mockée.
+const ShopsScreen = () => {
+  const { t } = useTranslation();
+  const { fmtPrice } = useCurrency();
+  const [shops, setShops] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [selectedShop, setSelectedShop] = React.useState(null);
+  const [toast, setToast] = React.useState('');
+
+  const load = React.useCallback(async () => {
+    setError(false);
+    try {
+      const data = await getShopsByCategory('product_purchase');
+      setShops(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setError(true);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
+  React.useEffect(() => { load(); }, [load]);
+
+  const onRefresh = () => { setRefreshing(true); load(); };
+
+  const addToCart = async (shop, product) => {
+    try {
+      const raw = await AsyncStorage.getItem(KEY_CART);
+      const existing = raw ? (JSON.parse(raw) || []) : [];
+      const idx = existing.findIndex(e =>
+        String(e.name || '').toLowerCase().trim() === String(product.name || '').toLowerCase().trim() &&
+        String(e.shop || '').toLowerCase().trim() === String(shop.name || '').toLowerCase().trim()
+      );
+      if (idx >= 0) {
+        existing[idx].qty = (existing[idx].qty || 1) + 1;
+        existing[idx].price = product.price || existing[idx].price;
+      } else {
+        existing.push({
+          name: product.name,
+          detail: product.subcategory || product.description || '',
+          unitPrice: '',
+          qty: 1,
+          price: product.price || 0,
+          shop: shop.name,
+          shopId: shop.id,
+          image: product.image || '',
+          category: 'product_purchase',
+        });
+      }
+      await AsyncStorage.setItem(KEY_CART, JSON.stringify(existing));
+      setToast(`${product.name} — ${t('shops.added', 'ajouté au panier')}`);
+      setTimeout(() => setToast(''), 1600);
+    } catch (e) {}
+  };
+
+  const renderShopCard = ({ item }) => (
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => setSelectedShop(item)}>
+      <View style={shopStyles.cover}>
+        {item.cover ? (
+          <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
+        ) : (
+          <View style={[shopStyles.coverImg, shopStyles.coverPlaceholder]}>
+            <Ionicons name="storefront" size={30} color={BRAND} />
+          </View>
+        )}
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={shopStyles.shopName} numberOfLines={1}>{item.name}</Text>
+        {item.address ? <Text style={shopStyles.shopAddr} numberOfLines={1}>{item.address}</Text> : null}
+        <View style={shopStyles.badgeRow}>
+          <View style={shopStyles.badge}><Text style={shopStyles.badgeTxt}>{item.products.length} {t('shops.products', 'produits')}</Text></View>
+          <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  const renderProduct = ({ item }) => (
+    <View style={shopStyles.prodRow}>
+      {item.image ? (
+        <Image source={{ uri: item.image }} style={shopStyles.prodImg} resizeMode="cover" />
+      ) : (
+        <View style={[shopStyles.prodImg, shopStyles.coverPlaceholder]}><Ionicons name="cube-outline" size={22} color={THEME.faint} /></View>
+      )}
+      <View style={{ flex: 1 }}>
+        <Text style={shopStyles.prodName} numberOfLines={2}>{item.name}</Text>
+        {item.subcategory ? <Text style={shopStyles.prodSub} numberOfLines={1}>{item.subcategory}</Text> : null}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={shopStyles.prodPrice}>{fmtPrice(item.price)}</Text>
+          {item.promo ? <Text style={shopStyles.prodBase}>{fmtPrice(item.basePrice)}</Text> : null}
+        </View>
+      </View>
+      <TouchableOpacity style={shopStyles.addBtn} onPress={() => addToCart(selectedShop, item)}>
+        <Ionicons name="add" size={22} color="#fff" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={shopStyles.screen} edges={['top']}>
+      <View style={shopStyles.header}>
+        <Text style={shopStyles.title}>{t('shops.title', 'Boutiques')}</Text>
+        <Text style={shopStyles.subtitle}>{t('shops.subtitle', 'Achat de produits — click & collect ou livraison')}</Text>
+      </View>
+
+      {loading ? (
+        <View style={shopStyles.center}><ActivityIndicator size="large" color={BRAND} /></View>
+      ) : error ? (
+        <View style={shopStyles.center}>
+          <Ionicons name="cloud-offline-outline" size={40} color={THEME.faint} />
+          <Text style={shopStyles.emptyTxt}>{t('shops.error', 'Impossible de charger les boutiques')}</Text>
+          <TouchableOpacity style={shopStyles.retryBtn} onPress={() => { setLoading(true); load(); }}>
+            <Text style={shopStyles.retryTxt}>{t('shops.retry', 'Réessayer')}</Text>
+          </TouchableOpacity>
+        </View>
+      ) : shops.length === 0 ? (
+        <View style={shopStyles.center}>
+          <Ionicons name="storefront-outline" size={40} color={THEME.faint} />
+          <Text style={shopStyles.emptyTxt}>{t('shops.empty', 'Aucune boutique disponible')}</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={shops}
+          keyExtractor={(s) => String(s.id)}
+          renderItem={renderShopCard}
+          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={BRAND} />}
+        />
+      )}
+
+      {/* Détail d'une boutique : ses vrais produits */}
+      <Modal visible={!!selectedShop} animationType="slide" onRequestClose={() => setSelectedShop(null)}>
+        <SafeAreaView style={shopStyles.screen} edges={['top']}>
+          <View style={shopStyles.detailHeader}>
+            <TouchableOpacity onPress={() => setSelectedShop(null)} style={shopStyles.backBtn}>
+              <Ionicons name="chevron-back" size={24} color={THEME.ink} />
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <Text style={shopStyles.detailTitle} numberOfLines={1}>{selectedShop?.name}</Text>
+              {selectedShop?.address ? <Text style={shopStyles.shopAddr} numberOfLines={1}>{selectedShop.address}</Text> : null}
+            </View>
+          </View>
+          <FlatList
+            data={selectedShop?.products || []}
+            keyExtractor={(p) => String(p.id)}
+            renderItem={renderProduct}
+            contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+            ListEmptyComponent={<Text style={shopStyles.emptyTxt}>{t('shops.noProducts', 'Aucun produit')}</Text>}
+          />
+        </SafeAreaView>
+      </Modal>
+
+      {toast ? (
+        <View style={shopStyles.toast}><Ionicons name="checkmark-circle" size={18} color="#fff" /><Text style={shopStyles.toastTxt}>{toast}</Text></View>
+      ) : null}
+    </SafeAreaView>
+  );
+};
+
+const shopStyles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: THEME.bg },
+  header: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 },
+  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  subtitle: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
+  emptyTxt: { fontSize: 14, color: THEME.muted, marginTop: 12, fontWeight: '600', textAlign: 'center' },
+  retryBtn: { marginTop: 16, backgroundColor: BRAND, paddingHorizontal: 22, paddingVertical: 11, borderRadius: 12 },
+  retryTxt: { color: '#fff', fontWeight: '800' },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  cover: { marginRight: 12 },
+  coverImg: { width: 64, height: 64, borderRadius: 14, backgroundColor: THEME.subtle },
+  coverPlaceholder: { alignItems: 'center', justifyContent: 'center' },
+  shopName: { fontSize: 16, fontWeight: '800', color: THEME.ink },
+  shopAddr: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '500' },
+  badgeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
+  badge: { backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  badgeTxt: { color: THEME.brandDark, fontSize: 12, fontWeight: '800' },
+  detailHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  detailTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink },
+  prodRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: THEME.border },
+  prodImg: { width: 56, height: 56, borderRadius: 12, backgroundColor: THEME.subtle, marginRight: 12 },
+  prodName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  prodSub: { fontSize: 11, color: THEME.faint, marginTop: 1, fontWeight: '600' },
+  prodPrice: { fontSize: 15, fontWeight: '900', color: THEME.brandDark, marginTop: 3 },
+  prodBase: { fontSize: 12, color: THEME.faint, marginLeft: 8, marginTop: 4, textDecorationLine: 'line-through' },
+  addBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
+  toast: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: THEME.ink, borderRadius: 14, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
+  toastTxt: { color: '#fff', fontWeight: '700', marginLeft: 8, flex: 1 },
+});
+
 function MainNavigator({ onLogout, isAuth }) {
   const { t } = useTranslation();
-  
+
   const ICONS = {
     "profile": { focused: "person", unfocused: "person-outline" },
     "myList": { focused: "reorder-three", unfocused: "reorder-three-outline" },
     "products": { focused: "cart",           unfocused: "cart-outline" },
+    "shops": { focused: "storefront",      unfocused: "storefront-outline" },
     "favorites":  { focused: "heart",          unfocused: "heart-outline" },
     "cart":   { focused: "bag-handle",     unfocused: "bag-handle-outline" }
   };
@@ -3514,6 +3712,7 @@ function MainNavigator({ onLogout, isAuth }) {
     const tabNames = {
       myList: t('tabs.myList'),
       products: t('tabs.products'),
+      shops: t('tabs.shops', 'Boutiques'),
       favorites: t('tabs.favorites'),
       cart: t('tabs.cart'),
       profile: t('tabs.profile')
@@ -3539,6 +3738,7 @@ function MainNavigator({ onLogout, isAuth }) {
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
       <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="cart" options={{ headerShown: false }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="favorites" component={FavoritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
