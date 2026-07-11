@@ -4562,6 +4562,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 hist[idx].driverName = status.driver_name || '';
                 hist[idx].driverPhone = status.driver_phone || '';
                 hist[idx].estimatedArrival = status.estimated_arrival || '';
+                hist[idx].deliveryCode = status.delivery_code || hist[idx].deliveryCode || '';
                 await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(hist));
               }
             }
@@ -5487,6 +5488,24 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     ) : null}
                   </View>
                 ) : null}
+                {/* Code livreur : à communiquer au livreur pour valider la remise */}
+                {(() => {
+                  const code = deliveryStatuses[detailOrder.id]?.delivery_code || detailOrder.deliveryCode;
+                  const st = deliveryStatuses[detailOrder.id]?.status || detailOrder.deliveryStatus;
+                  if (detailOrder.mode !== 'delivery' || !code
+                      || st === DELIVERY_STATUS.DELIVERED || st === DELIVERY_STATUS.CANCELLED) return null;
+                  return (
+                    <View style={{ marginTop: 10, marginBottom: 4, padding: 12, borderRadius: 12,
+                      backgroundColor: '#EAF9F3', borderWidth: 1, borderColor: '#62D4AC', alignItems: 'center' }}>
+                      <Text style={{ fontSize: 12, color: '#0B7A5B', fontWeight: '600' }}>
+                        {t('orderStatus.deliveryCode', 'Code à donner au livreur')}
+                      </Text>
+                      <Text style={{ fontSize: 26, letterSpacing: 6, fontWeight: '800', color: '#0B7A5B', marginTop: 4 }}>
+                        {code}
+                      </Text>
+                    </View>
+                  );
+                })()}
                 {/* Coûts */}
                 <View style={profStyles.costBlock}>
                   <View style={profStyles.costRow}>

@@ -6,20 +6,55 @@ import { CONFIG } from './config';
 const DELIVERY_BASE =
   CONFIG.DELIVERY_API_URL || CONFIG.API_URL.replace('/api/v1', '') + '/api/v1/delivery';
 
-async function getAuthHeaders() {
-  const raw = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
-  const tokens = raw ? JSON.parse(raw) : null;
-  const headers = { 'Content-Type': 'application/json' };
-  if (tokens?.access) {
-    headers['Authorization'] = `Bearer ${tokens.access}`;
+const TOKENS_KEY = 'MARKETPLACE_TOKENS';
+// Endpoint de refresh partagé avec services/api.js (même chaîne de tokens).
+const REFRESH_URL = `${CONFIG.API_URL.replace(/\/$/, '')}/admin/refresh-token/`;
+
+async function getStoredTokens() {
+  const raw = await AsyncStorage.getItem(TOKENS_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+
+function authHeaders(tokens, extra = {}) {
+  return {
+    'Content-Type': 'application/json',
+    ...(tokens?.access ? { Authorization: `Bearer ${tokens.access}` } : {}),
+    ...extra,
+  };
+}
+
+// Rafraîchit MARKETPLACE_TOKENS via /admin/refresh-token/ (comme api.js).
+async function refreshTokens(tokens) {
+  if (!tokens?.refresh) return null;
+  try {
+    const res = await fetch(REFRESH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh: tokens.refresh }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.access) return null;
+    const next = { access: data.access, refresh: data.refresh || tokens.refresh, savedAt: Date.now() };
+    await AsyncStorage.setItem(TOKENS_KEY, JSON.stringify(next));
+    return next;
+  } catch {
+    return null;
   }
-  return headers;
 }
 
 async function deliveryFetch(endpoint, options = {}) {
-  const headers = await getAuthHeaders();
+  const tokens = await getStoredTokens();
   const url = `${DELIVERY_BASE}${endpoint}`;
-  const res = await fetch(url, { ...options, headers: { ...headers, ...(options.headers || {}) } });
+  let res = await fetch(url, { ...options, headers: authHeaders(tokens, options.headers || {}) });
+  // Sur 401 (access token expiré), on rafraîchit une fois et on rejoue —
+  // sinon la synchro commande/statut échouerait en silence (perte d'info).
+  if (res.status === 401) {
+    const refreshed = await refreshTokens(tokens);
+    if (refreshed) {
+      res = await fetch(url, { ...options, headers: authHeaders(refreshed, options.headers || {}) });
+    }
+  }
   if (!res.ok) {
     throw new Error(`Delivery API ${res.status} on ${endpoint}`);
   }
@@ -37,7 +72,11 @@ export async function createDeliveryOrder(orderData) {
     method: 'POST',
     body: JSON.stringify({
       order_id: orderData.id,
-      pickup_address: orderData.shops?.map((s) => s.address || s.name).join(', ') || '',
+      pickup_address:
+        (orderData.shops || [])
+          .map((s) => (typeof s === 'string' ? s : (s && (s.address || s.name)) || ''))
+          .filter(Boolean)
+          .join(', ') || '',
       pickup_shop_names: orderData.shops || [],
       delivery_address: orderData.address || '',
       address_id: orderData.addressId || null,
@@ -221,7 +260,7 @@ export async function getDriverEarnings() {
   const country = await getDriverCountry();
   const limit = getCountryLimit(country).limit;
   try {
-    const data = await deliveryFetch('/earnings/');
+    const data = await deliveryFetch('/casual-earnings/');
     if (data && data.total_year !== undefined) {
       const enriched = {
         ...data,
@@ -243,23 +282,11 @@ export async function canDeliver() {
   return (earnings.total_year || 0) < earnings.limit;
 }
 
-// Get available deliveries for casual drivers
-export async function getAvailableDeliveries() {
-  return deliveryFetch('/available/');
-}
-
-// Accept a delivery as casual driver
-export async function acceptDelivery(assignmentId) {
-  return deliveryFetch(`/accept/${assignmentId}/`, { method: 'POST' });
-}
-
-// Update delivery status
-export async function updateDeliveryStatusDriver(assignmentId, status) {
-  return deliveryFetch(`/status/${assignmentId}/`, {
-    method: 'PATCH',
-    body: JSON.stringify({ status }),
-  });
-}
+// NB : les wrappers côté-livreur (available/accept/status-PATCH) ont été retirés.
+// Un client pearl-list (token Users) est rejeté par les endpoints driver
+// (IsDeliveryDriver → 403), /accept/{id}/ n'existe pas, et PATCH /status/{id}/
+// entrait en collision avec la route client GET status/{id}/. Le mode livreur
+// occasionnel se pilote via toggleDriverMode + getDriverEarnings uniquement.
 
 // Delivery status constants (matching Livraison-app flow)
 export const DELIVERY_STATUS = {
