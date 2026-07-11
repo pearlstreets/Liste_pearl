@@ -712,6 +712,12 @@ const ProductsScreen = () => {
   const [loading,setLoading]=React.useState(true);
   const [groups,setGroups]=React.useState([]);   // [{name,distance,time,deliveryFee,products:[{title,qty,price}],subtotal,grandTotal}]
   const [summary,setSummary]=React.useState({price:0,time:0,shops:0});
+  // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
+  const [realShops,setRealShops]=React.useState(null);
+  React.useEffect(()=>{ let a=true; (async()=>{
+    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(Array.isArray(d)?d:[]); }
+    catch(e){ if(a) setRealShops([]); }
+  })(); return ()=>{a=false}; },[]);
 
 
   const parseMin=(t)=>{if(!t)return 0;const m=String(t).match(/(\d+)/);return m?Number(m[1]):0;};
@@ -780,6 +786,37 @@ const ProductsScreen = () => {
   };
 
   const buildInventory=(items)=>{
+    // VRAIS shops Pearl Streets (product_purchase) si chargés : on matche chaque
+    // article de la liste user contre les vrais produits du shop → vrai prix +
+    // disponibilité honnête. Frais/ETA/distance = estimations stables par shop
+    // (le vrai frais de livraison est résolu à la commande via delivery-options).
+    if (Array.isArray(realShops) && realShops.length > 0) {
+      return realShops.map(shop=>{
+        const fee = Number(seededRand(hashStr("fee_"+shop.name),1.5,4.0).toFixed(2));
+        const timeMin = 5 + (hashStr("t_"+shop.name) % 15);
+        const distKm = (0.4 + (hashStr("d_"+shop.name) % 20)/10).toFixed(1);
+        return {
+          name: shop.name,
+          shopId: shop.id,
+          distance: distKm+" km",
+          time: timeMin+" min",
+          fee,
+          items: items.map(it=>{
+            const inm = norm(it.name);
+            const match = (shop.products||[]).find(p=>{
+              const pn = norm(p.name);
+              return pn && inm && (pn.includes(inm) || inm.includes(pn));
+            });
+            return {
+              name: it.name, qty: it.qty,
+              available: !!match,
+              price: match ? Number(Number(match.price).toFixed(2)) : Number(randPrice(it.name,shop.name).toFixed(2)),
+            };
+          })
+        };
+      });
+    }
+    // Fallback échantillon (pré-chargement / hors-ligne) — remplacé par le réel dès chargement.
     const shops=[
       {name:"Carrefour Market", distance:"0.9 km", time:"9 min",  fee:Number(seededRand(hashStr("fee_carrefour"),1.5,4.0).toFixed(2))},
       {name:"Intermarché Sud", distance:"0.8 km", time:"10 min", fee:Number(seededRand(hashStr("fee_inter"),1.5,4.0).toFixed(2))},
@@ -1054,7 +1091,7 @@ const ProductsScreen = () => {
       }
     }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); }
     finally{ setLoading(false); }
-  },[mode,strategy]);
+  },[mode,strategy,realShops]);
 
   React.useEffect(()=>{ refresh(); },[refresh]);
   useFocusEffect(React.useCallback(()=>{ refresh(); },[refresh]));
