@@ -790,7 +790,11 @@ const ProductsScreen = () => {
     // article de la liste user contre les vrais produits du shop → vrai prix +
     // disponibilité honnête. Frais/ETA/distance = estimations stables par shop
     // (le vrai frais de livraison est résolu à la commande via delivery-options).
-    if (Array.isArray(realShops) && realShops.length > 0) {
+    // realShops : null = pas encore chargé (échantillon transitoire) ; [] = chargé
+    // mais AUCUNE vraie boutique (vide/hors-ligne) → inventaire vide (on n'affiche
+    // JAMAIS l'échantillon comme s'il était réel) ; [..] = vrais shops.
+    if (Array.isArray(realShops)) {
+      if (realShops.length === 0) return [];
       return realShops.map(shop=>{
         const fee = Number(seededRand(hashStr("fee_"+shop.name),1.5,4.0).toFixed(2));
         const timeMin = 5 + (hashStr("t_"+shop.name) % 15);
@@ -805,7 +809,16 @@ const ProductsScreen = () => {
             const inm = norm(it.name);
             const match = (shop.products||[]).find(p=>{
               const pn = norm(p.name);
-              return pn && inm && (pn.includes(inm) || inm.includes(pn));
+              if (!pn || !inm) return false;
+              if (pn === inm) return true;                                  // égalité exacte
+              const ptok = pn.split(/\s+/).filter(Boolean);
+              const itok = inm.split(/\s+/).filter(Boolean);
+              // article multi-mots : tous ses mots présents dans le produit
+              if (itok.length >= 2 && itok.every(w=>ptok.includes(w))) return true;
+              // mot unique : uniquement si assez long (>=6) ET mot ENTIER du produit
+              // (évite « eau »→« eau de parfum », « pain »→« pain au chocolat »)
+              if (itok.length === 1 && inm.length >= 6 && ptok.includes(inm)) return true;
+              return false;
             });
             return {
               name: it.name, qty: it.qty,
@@ -816,7 +829,7 @@ const ProductsScreen = () => {
         };
       });
     }
-    // Fallback échantillon (pré-chargement / hors-ligne) — remplacé par le réel dès chargement.
+    // realShops === null : chargement en cours → échantillon transitoire (bref).
     const shops=[
       {name:"Carrefour Market", distance:"0.9 km", time:"9 min",  fee:Number(seededRand(hashStr("fee_carrefour"),1.5,4.0).toFixed(2))},
       {name:"Intermarché Sud", distance:"0.8 km", time:"10 min", fee:Number(seededRand(hashStr("fee_inter"),1.5,4.0).toFixed(2))},
@@ -928,6 +941,12 @@ const ProductsScreen = () => {
 
   const buildProposal=(items)=>{
     const inv=buildInventory(items);
+    // Aucune boutique (vraies boutiques chargées mais vides / hors-ligne) : on
+    // renvoie des groupes vides — les stratégies planteraient sur un inv vide,
+    // et l'écran affiche son état vide (ListEmptyComponent) au lieu de fausses boutiques.
+    if (!Array.isArray(inv) || inv.length === 0) {
+      return { groups: [], summary: { price: 0, time: 0, shops: 0 } };
+    }
     let assigned;
     if(strategy==='eco') assigned=assignEco(items,inv);
     else if(strategy==='fast') assigned=assignFast(items,inv,mode);
