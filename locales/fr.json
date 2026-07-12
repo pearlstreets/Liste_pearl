@@ -65,7 +65,9 @@
     "noMatchTitle": "Aucun produit trouvé pour votre liste",
     "noMatchSub": "Ces boutiques ne vendent pas ces articles. Vérifiez les noms ou parcourez les Boutiques.",
     "searchToPrice": "Appuyez sur « Chercher » pour choisir vos produits et voir le prix.",
-    "searchToPriceShop": "Recherchez un produit pour voir le prix."
+    "searchToPriceShop": "Recherchez un produit pour voir le prix.",
+    "shopUnit": "boutique",
+    "shopUnitPlural": "boutiques"
   },
   "searchPopup": {
     "header": "De quoi avez-vous besoin ?",

@@ -1200,6 +1200,20 @@ const ProductsScreen = () => {
           <View style={{flex:1}}>
             <Text style={prodStyles.title}>{t('tabs.products')}</Text>
           </View>
+          {/* Nombre de boutiques de la proposition, aligné à droite du titre.
+              Même calcul que la carte résumé (Set des shops de popupSelectedItems)
+              → toujours cohérent avec le compteur "Boutiques" de la carte. */}
+          {(() => {
+            const n = new Set((Array.isArray(popupSelectedItems) ? popupSelectedItems : []).map(si => si.shop).filter(Boolean)).size;
+            if (n <= 0) return null;
+            return (
+              <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, paddingHorizontal:10, paddingVertical:5, borderRadius:999 }}>
+                <Ionicons name="storefront" size={15} color={THEME.brand} />
+                <Text style={{ marginLeft:6, fontSize:15, fontWeight:'800', color:THEME.ink }}>{n}</Text>
+                <Text style={{ marginLeft:4, fontSize:12, fontWeight:'700', color:THEME.muted }}>{n > 1 ? t('productsScreen.shopUnitPlural', 'boutiques') : t('productsScreen.shopUnit', 'boutique')}</Text>
+              </View>
+            );
+          })()}
         </View>
       </View>
 
@@ -2806,6 +2820,9 @@ const CartScreen = ({ isAuth }) => {
           id: orderId, shops, address: deliveryAddress, addressId: selectedAddressId,
           customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
           customerPhone: recipientPhone || profile.phone || '',
+          // coords client si l'adresse a été géolocalisée (lang = longitude côté modèle)
+          dropoffLat: selectedAddress?.lat ?? null,
+          dropoffLng: selectedAddress?.lang ?? null,
           items: selectedItems, total: subtotal + deliveryFee, deliveryFee,
           slot: selectedSlot || '', deliveryDate: deliveryDateLabel, mode: 'delivery',
         });
@@ -3707,6 +3724,10 @@ const ShopsScreen = () => {
           price: product.price || 0,
           shop: shop.name,
           shopId: shop.id,
+          // productId réel → le serveur valide le vrai prix catalogue et résout
+          // les coords boutique pour l'itinéraire livreur (createDeliveryOrder).
+          productId: product.id,
+          companyId: shop.id,
           image: product.image || '',
           category: 'product_purchase',
         });

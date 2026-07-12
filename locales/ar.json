@@ -60,7 +60,9 @@
     "noMatchTitle": "لم يتم العثور على منتجات لقائمتك",
     "noMatchSub": "هذه المتاجر لا تبيع هذه العناصر. تحقق من الأسماء أو تصفح المتاجر.",
     "searchToPrice": "اضغط على « بحث » لاختيار منتجاتك ورؤية السعر.",
-    "searchToPriceShop": "ابحث عن منتج لرؤية السعر."
+    "searchToPriceShop": "ابحث عن منتج لرؤية السعر.",
+    "shopUnit": "متجر",
+    "shopUnitPlural": "متاجر"
   },
   "searchPopup": {
     "header": "ماذا تحتاج؟",

@@ -60,7 +60,9 @@
     "noMatchTitle": "リストに一致する商品が見つかりません",
     "noMatchSub": "これらの店舗ではこれらの商品を販売していません。名前を確認するか、店舗を見てみてください。",
     "searchToPrice": "「検索」をタップして商品を選び、価格を確認してください。",
-    "searchToPriceShop": "商品を検索して価格を確認してください。"
+    "searchToPriceShop": "商品を検索して価格を確認してください。",
+    "shopUnit": "店舗",
+    "shopUnitPlural": "店舗"
   },
   "searchPopup": {
     "header": "何が必要ですか？",

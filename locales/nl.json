@@ -60,7 +60,9 @@
     "noMatchTitle": "Geen producten gevonden voor je lijst",
     "noMatchSub": "Deze winkels verkopen deze artikelen niet. Controleer de namen of blader door de Winkels.",
     "searchToPrice": "Tik op Zoeken om je producten te kiezen en de prijs te zien.",
-    "searchToPriceShop": "Zoek een product om de prijs te zien."
+    "searchToPriceShop": "Zoek een product om de prijs te zien.",
+    "shopUnit": "winkel",
+    "shopUnitPlural": "winkels"
   },
   "searchPopup": {
     "header": "Wat heb je nodig?",
