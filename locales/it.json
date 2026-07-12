@@ -58,7 +58,9 @@
     "continueShopping": "Continua lo shopping",
     "notFound": "non trovato/i in negozio",
     "noMatchTitle": "Nessun prodotto trovato per la tua lista",
-    "noMatchSub": "Questi negozi non vendono questi articoli. Controlla i nomi o esplora i Negozi."
+    "noMatchSub": "Questi negozi non vendono questi articoli. Controlla i nomi o esplora i Negozi.",
+    "searchToPrice": "Tocca Cerca per scegliere i tuoi prodotti e vedere il prezzo.",
+    "searchToPriceShop": "Cerca un prodotto per vedere il prezzo."
   },
   "searchPopup": {
     "header": "Cosa ti serve?",

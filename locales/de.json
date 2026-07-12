@@ -58,7 +58,9 @@
     "continueShopping": "Weiter einkaufen",
     "notFound": "nicht im Shop gefunden",
     "noMatchTitle": "Keine Produkte für deine Liste gefunden",
-    "noMatchSub": "Diese Shops verkaufen diese Artikel nicht. Prüfe die Namen oder durchstöbere die Shops."
+    "noMatchSub": "Diese Shops verkaufen diese Artikel nicht. Prüfe die Namen oder durchstöbere die Shops.",
+    "searchToPrice": "Tippe auf Suchen, um deine Produkte zu wählen und den Preis zu sehen.",
+    "searchToPriceShop": "Suche ein Produkt, um den Preis zu sehen."
   },
   "searchPopup": {
     "header": "Was brauchst du?",

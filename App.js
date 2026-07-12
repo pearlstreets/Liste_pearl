@@ -1103,17 +1103,11 @@ const ProductsScreen = () => {
       const {groups,summary,unmatched}=buildProposal(items);
       setGroups(groups); setSummary(summary);
       setUnmatchedNames(Array.isArray(unmatched) ? unmatched : []);
-
-      // Auto-fill product details from search-map for all products
-      if (groups.length > 0 && items.length > 0) {
-        const autoFilled = autoFillProducts(items, groups);
-        setPopupSelectedItems(autoFilled.length > 0 ? autoFilled : []);
-        setCheckedShops({});
-      } else {
-        // Aucune boutique proposée (rien de trouvé) : pas de produits « pris »
-        setPopupSelectedItems([]);
-        setCheckedShops({});
-      }
+      // Aucun pré-remplissage automatique : AUCUN prix tant que l'utilisateur
+      // n'a pas cherché ET choisi un vrai produit (via « Chercher »). Le total
+      // ne reflète donc QUE ce qui a été explicitement sélectionné.
+      setPopupSelectedItems([]);
+      setCheckedShops({});
     }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); setUnmatchedNames([]); }
     finally{ setLoading(false); }
   },[mode,strategy,realShops]);
@@ -1203,23 +1197,28 @@ const ProductsScreen = () => {
           Plus de « temps » inventé ni de total gonflé par la duplication. */}
       {realShops !== null && groups.length > 0 && (() => {
         const sel = Array.isArray(popupSelectedItems) ? popupSelectedItems : [];
-        const g = Array.isArray(groups) ? groups : [];
-        let price, qty, shopsN;
-        if (sel.length > 0) {
-          // Source normale : les produits réellement proposés (mêmes prix que les cartes).
-          price = sel.reduce((s,si)=>s+Number(si.price||0)*Number(si.qty||1),0);
-          qty = sel.reduce((s,si)=>s+Number(si.qty||1),0);
-          shopsN = new Set(sel.map(si=>si.shop).filter(Boolean)).size;
-        } else {
-          // Repli sur les groupes (mêmes boutiques que les cartes) pour ne jamais
-          // afficher 0 à tort quand l'auto-remplissage catalogue n'a rien trouvé.
-          price = g.reduce((s,shop)=>s+Number(shop.subtotal||0),0);
-          qty = g.reduce((s,shop)=>s+(shop.products||[]).reduce((a,p)=>a+Number(p.qty||1),0),0);
-          shopsN = g.length;
+        const title = t('productsScreen.proposal') + (strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop'));
+        // Prix UNIQUEMENT à partir des produits que l'utilisateur a cherchés et
+        // choisis. Tant que rien n'est choisi : pas de prix, juste une invite.
+        if (sel.length === 0) {
+          return (
+            <View style={prodStyles.summaryCard}>
+              <Text style={prodStyles.summaryTitle}>{title}</Text>
+              <View style={{ flexDirection:'row', alignItems:'center', marginTop:10 }}>
+                <Ionicons name="search-outline" size={18} color={THEME.brand} />
+                <Text style={{ flex:1, marginLeft:10, fontSize:13, color:THEME.muted, fontWeight:'600', lineHeight:18 }}>
+                  {t('productsScreen.searchToPrice', 'Appuyez sur « Chercher » pour choisir vos produits et voir le prix.')}
+                </Text>
+              </View>
+            </View>
+          );
         }
+        const price = sel.reduce((s,si)=>s+Number(si.price||0)*Number(si.qty||1),0);
+        const qty = sel.reduce((s,si)=>s+Number(si.qty||1),0);
+        const shopsN = new Set(sel.map(si=>si.shop).filter(Boolean)).size;
         return (
         <View style={prodStyles.summaryCard}>
-          <Text style={prodStyles.summaryTitle}>{t('productsScreen.proposal')}{strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop')}</Text>
+          <Text style={prodStyles.summaryTitle}>{title}</Text>
           <View style={prodStyles.summaryStats}>
             <View style={prodStyles.statBox}>
               <Text style={prodStyles.statValue}>{fmtPrice(price)}</Text>
@@ -1418,7 +1417,7 @@ const ProductsScreen = () => {
                             }}
                           />
                           <View style={{width:10}} />
-                          <ProductThumb name={selectedItem.name} size={44} />
+                          <ProductImage uri={selectedItem.image} name={selectedItem.name} size={44} />
                           <View style={prodStyles.pickedBody}>
                             <Text style={prodStyles.pickedName}>{selectedItem.name}</Text>
                             {selectedItem.detail ? <Text style={prodStyles.pickedDetail}>{selectedItem.detail}</Text> : null}
@@ -1479,22 +1478,31 @@ const ProductsScreen = () => {
                     <Text style={prodStyles.addMoreTxt}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
                   </TouchableOpacity>
 
-                  <View style={prodStyles.totalsBox}>
-                    <View style={prodStyles.totalRow}>
-                      <Text style={prodStyles.totalLabel}>{t('productsScreen.productsTotal')}</Text>
-                      <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
+                  {shopSelected.length === 0 ? (
+                    <View style={[prodStyles.totalsBox, { flexDirection:'row', alignItems:'center' }]}>
+                      <Ionicons name="search-outline" size={16} color={THEME.faint} />
+                      <Text style={{ marginLeft:8, fontSize:12.5, color:THEME.faint, fontWeight:'600', flex:1 }}>
+                        {t('productsScreen.searchToPriceShop', 'Recherchez un produit pour voir le prix.')}
+                      </Text>
                     </View>
-                    <View style={[prodStyles.totalRow, {marginTop:6}]}>
-                      <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
-                      <Text style={prodStyles.grandValue}>{fmtPrice(liveTotal)}</Text>
-                    </View>
-                    {mode==="delivery" ? (
-                      <View style={[prodStyles.totalRow, {marginTop:6}]}>
-                        <Text style={prodStyles.totalLabel}>{t('productsScreen.totalWithDelivery')}</Text>
-                        <Text style={prodStyles.totalValue}>{fmtPrice(liveTotalWithDelivery)}</Text>
+                  ) : (
+                    <View style={prodStyles.totalsBox}>
+                      <View style={prodStyles.totalRow}>
+                        <Text style={prodStyles.totalLabel}>{t('productsScreen.productsTotal')}</Text>
+                        <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
                       </View>
-                    ) : null}
-                  </View>
+                      <View style={[prodStyles.totalRow, {marginTop:6}]}>
+                        <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+                        <Text style={prodStyles.grandValue}>{fmtPrice(liveTotal)}</Text>
+                      </View>
+                      {mode==="delivery" ? (
+                        <View style={[prodStyles.totalRow, {marginTop:6}]}>
+                          <Text style={prodStyles.totalLabel}>{t('productsScreen.totalWithDelivery')}</Text>
+                          <Text style={prodStyles.totalValue}>{fmtPrice(liveTotalWithDelivery)}</Text>
+                        </View>
+                      ) : null}
+                    </View>
+                  )}
                 </>;
               })()}
             </TouchableOpacity>
@@ -1533,7 +1541,7 @@ const ProductsScreen = () => {
             showsVerticalScrollIndicator={true}
             renderItem={({item: si}) => (
               <View style={prodStyles.bottomItem}>
-                <ProductThumb name={si.name} size={36} />
+                <ProductImage uri={si.image} name={si.name} size={36} />
                 <View style={prodStyles.bottomItemBody}>
                   <Text style={prodStyles.bottomItemName} numberOfLines={1}>{si.name}</Text>
                   <Text style={prodStyles.bottomItemShop}>{si.shop}</Text>
@@ -1565,7 +1573,8 @@ const ProductsScreen = () => {
                     cartItems.push({
                       name: si.name, detail: si.detail||si.subtitle||'',
                       unitPrice: si.unitPrice||si.pricePerKg||'',
-                      qty: si.qty||1, price: si.price||0, shop: si.shop
+                      qty: si.qty||1, price: si.price||0, shop: si.shop,
+                      image: si.image||'', shopId: si.shopId,
                     });
                   });
                   const raw = await AsyncStorage.getItem(KEY_CART);
@@ -1609,7 +1618,16 @@ const ProductsScreen = () => {
             initialQuery={__initialQuery}
             shopName={__activeShopName}
             fmtPrice={fmtPrice}
-            onClose={()=>__setSearchVisible(false)} 
+            data={(() => {
+              // Vrais produits de la boutique active → « Chercher » cherche dans
+              // le VRAI catalogue de la boutique (plus dans le catalogue local).
+              const shop = (realShops||[]).find(s => s.name === __activeShopName);
+              return shop ? (shop.products||[]).map(p => ({
+                id: p.id, name: p.name, detail: p.subcategory || p.description || '',
+                price: Number(p.price)||0, image: p.image || '', available: true,
+              })) : [];
+            })()}
+            onClose={()=>__setSearchVisible(false)}
             onSelect={(it)=>{
               try{
                 // Add the selected item to the popup selected items list
@@ -1790,7 +1808,7 @@ const ProductsScreen = () => {
                   </View>
                   {group.items.map(si => (
                     <View key={si.id} style={{flexDirection:'row', alignItems:'center', padding:10, marginBottom:6, backgroundColor:'#F9FAFB', borderRadius:10}}>
-                      <ProductThumb name={si.name} size={36} />
+                      <ProductImage uri={si.image} name={si.name} size={36} />
                       <View style={{flex:1, marginLeft:10}}>
                         <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{si.name}</Text>
                         <Text style={{fontSize:11, color:'#6B7280'}}>{si.detail}</Text>
@@ -1853,7 +1871,8 @@ const ProductsScreen = () => {
                       unitPrice: si.unitPrice||si.pricePerKg||'',
                       qty: si.qty||1,
                       price: si.price||0,
-                      shop: si.shop
+                      shop: si.shop,
+                      image: si.image||'',
                     }));
                     await AsyncStorage.setItem(KEY_CART, JSON.stringify(newCart));
                     DeviceEventEmitter.emit('CART_UPDATED');

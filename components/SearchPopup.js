@@ -11,6 +11,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { addProduct } from '../lib/SelectedProducts';
@@ -276,23 +277,31 @@ const SearchItem = React.memo(
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: hasQty ? '#D1FAE5' : '#F3F4F6',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 12,
-            }}
-          >
-            {hasQty ? (
-              <Ionicons name="checkmark-circle" size={24} color={BRAND} />
-            ) : (
-              <Text style={{ fontSize: 22 }}>{emoji}</Text>
-            )}
-          </View>
+          {(!hasQty && item.image) ? (
+            <Image
+              source={{ uri: item.image }}
+              style={{ width: 44, height: 44, borderRadius: 14, marginRight: 12, backgroundColor: '#F3F4F6' }}
+              resizeMode="cover"
+            />
+          ) : (
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 22,
+                backgroundColor: hasQty ? '#D1FAE5' : '#F3F4F6',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 12,
+              }}
+            >
+              {hasQty ? (
+                <Ionicons name="checkmark-circle" size={24} color={BRAND} />
+              ) : (
+                <Text style={{ fontSize: 22 }}>{emoji}</Text>
+              )}
+            </View>
+          )}
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: '800', color: '#111' }} numberOfLines={1}>
               {translatedName}
@@ -429,14 +438,24 @@ export default function SearchPopup({
       unitPrice: it.unitPrice || it.pricePerKg || it.price_per_kg || it.secondaryPrice || '',
       available: typeof it.available === 'boolean' ? it.available : true,
       thumb: it.thumb || null,
+      image: it.image || '',
     }));
   }, [data]);
+
+  // Mode « boutique réelle » : quand une liste de produits réels est fournie
+  // (data), on cherche UNIQUEMENT dedans (jamais le catalogue local search-map).
+  const hasData = Array.isArray(data) && data.length > 0;
 
   useEffect(() => {
     const q = autocorrectName(query || '');
     const qn = norm(q);
     if (!qn) {
-      // Show all products when search is empty
+      // Recherche vide : en mode boutique réelle → tous les produits de la
+      // boutique ; sinon (legacy) → tout le catalogue local.
+      if (hasData) {
+        setResults(dataset.map((it) => enrich(it, fmtPriceProp)));
+        return;
+      }
       const all = [];
       const seen = new Set();
       const skipCat = new Set([
@@ -469,7 +488,9 @@ export default function SearchPopup({
       const inDetail = norm(it.detail).includes(qn);
       if (inName || inDetail) out.push(enrich(it, fmtPriceProp));
     }
-    if (out.length === 0) {
+    // Repli sur le catalogue local UNIQUEMENT hors mode boutique réelle : en mode
+    // boutique réelle, si le produit n'est pas dans la boutique → « Aucun résultat ».
+    if (out.length === 0 && !hasData) {
       const seen = new Set();
       Object.keys(SEARCH_MAP || {}).forEach((k) => {
         const kn = norm(k);
@@ -501,7 +522,7 @@ export default function SearchPopup({
       }
     }
     setResults(out);
-  }, [query, dataset, fmtPriceProp]);
+  }, [query, dataset, fmtPriceProp, hasData]);
 
   const onQtyChange = useCallback((item, qty) => {
     setSelectedItems((prev) => {

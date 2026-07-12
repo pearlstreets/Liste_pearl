@@ -58,7 +58,9 @@
     "continueShopping": "Fortsätt handla",
     "notFound": "hittades inte i butik",
     "noMatchTitle": "Inga produkter hittades för din lista",
-    "noMatchSub": "Dessa butiker säljer inte dessa varor. Kontrollera namnen eller bläddra bland butikerna."
+    "noMatchSub": "Dessa butiker säljer inte dessa varor. Kontrollera namnen eller bläddra bland butikerna.",
+    "searchToPrice": "Tryck på Sök för att välja dina produkter och se priset.",
+    "searchToPriceShop": "Sök efter en produkt för att se priset."
   },
   "searchPopup": {
     "header": "Vad behöver du?",
