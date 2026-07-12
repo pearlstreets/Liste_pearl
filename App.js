@@ -813,6 +813,7 @@ const ProductsScreen = () => {
         return {
           name: shop.name,
           shopId: shop.id,
+          cover: shop.cover, // vraie image de la boutique (Pearl Streets)
           distance: distKm+" km",
           time: timeMin+" min",
           fee,
@@ -987,7 +988,7 @@ const ProductsScreen = () => {
     const groups=assigned.map(g=>{
       const subtotal=g.products.reduce((a,p)=>a+Number(p.price||0)*Number(p.qty||1),0);
       const fee=mode==='delivery'?Number(g.shop.fee||0):0;
-      return {name:g.shop.name,distance:g.shop.distance,time:g.shop.time,deliveryFee:fee,products:g.products,subtotal,grandTotal:subtotal+fee};
+      return {name:g.shop.name,cover:g.shop.cover,distance:g.shop.distance,time:g.shop.time,deliveryFee:fee,products:g.products,subtotal,grandTotal:subtotal+fee};
     });
     // Chaque boutique n'affiche QUE les articles qui lui sont réellement
     // affectés par la stratégie (plus de duplication « tous les produits dans
@@ -1276,9 +1277,13 @@ const ProductsScreen = () => {
                     setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
                     setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
                   }} />
-                  <View style={prodStyles.shopIcon}>
-                    <Ionicons name="storefront" size={22} color={THEME.brand} />
-                  </View>
+                  {item?.cover ? (
+                    <Image source={{ uri: item.cover }} style={prodStyles.shopIcon} resizeMode="cover" />
+                  ) : (
+                    <View style={prodStyles.shopIcon}>
+                      <Ionicons name="storefront" size={22} color={THEME.brand} />
+                    </View>
+                  )}
                   <View style={{flex:1}}>
                     <Text numberOfLines={1} style={prodStyles.shopName}>{item?.name||t('productsScreen.defaultShop')}</Text>
                     <View style={prodStyles.metaRow}>
