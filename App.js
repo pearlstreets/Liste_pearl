@@ -5219,7 +5219,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         <View style={profStyles.profileCard}>
           <TouchableOpacity onPress={pickPhoto} activeOpacity={0.8} style={profStyles.avatarWrap}>
             <View style={[profStyles.avatar, { borderColor: statusRingColor }]}>
-              {profile.photo && (profile.photo.startsWith('/') || profile.photo.startsWith('file')) ? (
+              {profile.photo && (/^(https?:|data:|file:|content:)/i.test(profile.photo) || profile.photo.startsWith('/')) ? (
                 <Image source={{ uri: profile.photo }} style={profStyles.avatarImg} />
               ) : (
                 <Text style={profStyles.avatarInitials}>{initials || '👤'}</Text>
