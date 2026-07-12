@@ -334,7 +334,16 @@
     "paymentFailed": "支払いに失敗しました。",
     "paymentError": "支払いエラー。",
     "paymentUnavailable": "このバージョンではカード支払いを利用できません。",
-    "amountConfirmedByShop": "参考金額です。最終的な料金と合計は店舗が確定します。"
+    "amountConfirmedByShop": "参考金額です。最終的な料金と合計は店舗が確定します。",
+    "paymentMethods": "支払い方法",
+    "paymentMethodsHint": "支払い用のカード",
+    "addCard": "カードを追加",
+    "noCards": "保存されたカードがありません。",
+    "addCardNeedsBuild": "カードの追加にはアプリの完全版が必要です。",
+    "deleteCard": "カードを削除",
+    "delete": "削除",
+    "saveCard": "カードを保存",
+    "newCard": "新しいカード"
   },
   "orderStatus": {
     "confirmed": "注文確認済み",

@@ -432,7 +432,16 @@
     "paymentFailed": "Payment failed.",
     "paymentError": "Payment error.",
     "paymentUnavailable": "Card payment unavailable in this version.",
-    "amountConfirmedByShop": "Indicative amount. Final fees and total confirmed by the shop."
+    "amountConfirmedByShop": "Indicative amount. Final fees and total confirmed by the shop.",
+    "paymentMethods": "Payment methods",
+    "paymentMethodsHint": "Your cards to pay",
+    "addCard": "Add a card",
+    "noCards": "No saved card.",
+    "addCardNeedsBuild": "Adding a card requires the full app version.",
+    "deleteCard": "Delete card",
+    "delete": "Delete",
+    "saveCard": "Save card",
+    "newCard": "New card"
   },
   "orderStatus": {
     "confirmed": "Order confirmed",

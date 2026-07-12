@@ -2,7 +2,31 @@
 // Une commande payée (is_paid=True) devient visible dans le dashboard du PRO.
 // Endpoints IDENTIQUES à ceux d'AppUser (flux prod éprouvé). BASE_URL inclut déjà
 // /api/v1, donc les chemins commencent à /users et /payment.
-import { apiPost, apiPut } from './api';
+import { apiGet, apiPost, apiPut, apiDelete } from './api';
+
+// ===== Cartes enregistrées (UserSaveCard) — mêmes endpoints qu'AppUser =====
+// Une carte = { id, stripe_payment_method_id, brand, last4, exp_month, exp_year }.
+
+// Liste les cartes enregistrées du user (pur appel API, marche même en Expo Go).
+export async function getSavedCardsApi() {
+  const data = await apiGet('/payment/user/saved-cards/');
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  if (data && Array.isArray(data.results)) return data.results;
+  if (data && Array.isArray(data.cards)) return data.cards;
+  return [];
+}
+
+// Enregistre une carte tokenisée (PaymentMethod) pour réutilisation. Idempotent
+// côté serveur sur (user, stripe_payment_method_id).
+export function saveCardApi(stripePaymentMethodId) {
+  return apiPost('/payment/user/save-card/', { stripe_payment_method_id: stripePaymentMethodId });
+}
+
+// Supprime une carte enregistrée (détache de Stripe + retire la ligne).
+export function deleteSavedCardApi(cardId) {
+  return apiDelete(`/payment/user/saved-cards/${cardId}/`);
+}
 
 // 1) Ajoute un produit au panier serveur du user.
 //    order_type_key = INT (mapping cart/add) : 3=Delivery, 2=Click and Collect.

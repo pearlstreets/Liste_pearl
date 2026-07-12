@@ -334,7 +334,16 @@
     "paymentFailed": "O pagamento falhou.",
     "paymentError": "Erro de pagamento.",
     "paymentUnavailable": "Pagamento com cartão indisponível nesta versão.",
-    "amountConfirmedByShop": "Valor indicativo. Taxas e total finais confirmados pela loja."
+    "amountConfirmedByShop": "Valor indicativo. Taxas e total finais confirmados pela loja.",
+    "paymentMethods": "Métodos de pagamento",
+    "paymentMethodsHint": "Os teus cartões para pagar",
+    "addCard": "Adicionar um cartão",
+    "noCards": "Nenhum cartão guardado.",
+    "addCardNeedsBuild": "Adicionar um cartão requer a versão completa da app.",
+    "deleteCard": "Eliminar cartão",
+    "delete": "Eliminar",
+    "saveCard": "Guardar cartão",
+    "newCard": "Novo cartão"
   },
   "orderStatus": {
     "confirmed": "Pedido confirmado",

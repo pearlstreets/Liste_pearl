@@ -334,7 +334,16 @@
     "paymentFailed": "فشل الدفع.",
     "paymentError": "خطأ في الدفع.",
     "paymentUnavailable": "الدفع بالبطاقة غير متاح في هذه النسخة.",
-    "amountConfirmedByShop": "مبلغ تقديري. الرسوم والإجمالي النهائي يؤكدهما المتجر."
+    "amountConfirmedByShop": "مبلغ تقديري. الرسوم والإجمالي النهائي يؤكدهما المتجر.",
+    "paymentMethods": "طرق الدفع",
+    "paymentMethodsHint": "بطاقاتك للدفع",
+    "addCard": "إضافة بطاقة",
+    "noCards": "لا توجد بطاقة محفوظة.",
+    "addCardNeedsBuild": "تتطلب إضافة بطاقة النسخة الكاملة من التطبيق.",
+    "deleteCard": "حذف البطاقة",
+    "delete": "حذف",
+    "saveCard": "حفظ البطاقة",
+    "newCard": "بطاقة جديدة"
   },
   "orderStatus": {
     "confirmed": "تم تأكيد الطلب",

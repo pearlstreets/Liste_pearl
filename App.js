@@ -14,6 +14,7 @@ import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS,
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
+import PaymentMethodsModal from "./components/PaymentMethodsModal";
 
 function __getUserItems(){
   try { if (typeof items !== "undefined" && Array.isArray(items)) return items; } catch(_) {}
@@ -4771,6 +4772,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [pendingLang, setPendingLang] = React.useState(null);
   const [currencyVisible, setCurrencyVisible] = React.useState(false);
   const [pendingCurrency, setPendingCurrency] = React.useState(null);
+  const [paymentMethodsVisible, setPaymentMethodsVisible] = React.useState(false); // section Moyens de paiement (cartes)
   const [favVisible, setFavVisible] = React.useState(false); // Favoris déplacé dans Profil (dispo sans connexion)
   const [addressListVisible, setAddressListVisible] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
@@ -5329,6 +5331,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         <Text style={profStyles.subtitle}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
       </View>
       {favModal}
+      {paymentMethodsVisible ? (
+        <PaymentMethodsModal visible={paymentMethodsVisible} t={t} onClose={() => setPaymentMethodsVisible(false)} />
+      ) : null}
       <ScrollView contentContainerStyle={{ paddingBottom:28 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         {/* Profile Card */}
         <View style={profStyles.profileCard}>
@@ -5503,13 +5508,25 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             </TouchableOpacity>
 
             {/* Currency */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={profStyles.settingRow}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>
                 <Ionicons name="cash-outline" size={19} color="#fff" />
               </View>
               <View style={profStyles.settingBody}>
                 <Text style={profStyles.settingLabel}>{t('profile.currency')}</Text>
                 <Text style={profStyles.settingValue}>{currency.flag} {currency.code}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+
+            {/* Moyens de paiement (cartes enregistrées) */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setPaymentMethodsVisible(true)} style={profStyles.settingRow}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="card-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('cart.paymentMethods', 'Moyens de paiement')}</Text>
+                <Text style={profStyles.settingValue}>{t('cart.paymentMethodsHint', 'Vos cartes pour payer')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>

@@ -334,7 +334,16 @@
     "paymentFailed": "支付失败。",
     "paymentError": "支付错误。",
     "paymentUnavailable": "此版本暂不支持银行卡支付。",
-    "amountConfirmedByShop": "金额仅供参考。最终费用和总额由店铺确认。"
+    "amountConfirmedByShop": "金额仅供参考。最终费用和总额由店铺确认。",
+    "paymentMethods": "支付方式",
+    "paymentMethodsHint": "用于支付的银行卡",
+    "addCard": "添加银行卡",
+    "noCards": "暂无已保存的银行卡。",
+    "addCardNeedsBuild": "添加银行卡需要完整版应用。",
+    "deleteCard": "删除银行卡",
+    "delete": "删除",
+    "saveCard": "保存银行卡",
+    "newCard": "新银行卡"
   },
   "orderStatus": {
     "confirmed": "订单已确认",
