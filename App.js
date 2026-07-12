@@ -4102,7 +4102,7 @@ const authStyles = StyleSheet.create({
   toggleTxtBrand: { color: THEME.brand, fontWeight: '800', fontSize: 14.5 },
 
   // Language picker button
-  langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
+  langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginTop: 16, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
   langBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
 
   // Language picker modal
