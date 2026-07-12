@@ -323,7 +323,17 @@
     "payAtDelivery": "الدفع عند التوصيل",
     "orderConfirmedTitle": "تم تأكيد الطلب",
     "orderConfirmedCollect": "سيتم تجهيز طلبك للاستلام. تابِع حالته في الملف الشخصي > الطلبات.",
-    "orderConfirmedDelivery": "سيتولى أحد عمّال التوصيل طلبك. تابِع حالته في الملف الشخصي > الطلبات."
+    "orderConfirmedDelivery": "سيتولى أحد عمّال التوصيل طلبك. تابِع حالته في الملف الشخصي > الطلبات.",
+    "orderCreateFailed": "تعذّر إنشاء الطلب في المتجر. حاول مرة أخرى.",
+    "payByCard": "الدفع بالبطاقة",
+    "payNow": "ادفع الآن",
+    "cancel": "إلغاء",
+    "securedByStripe": "دفع آمن عبر Stripe",
+    "cardIncomplete": "أدخل بطاقة صالحة.",
+    "cardDeclined": "تم رفض البطاقة.",
+    "paymentFailed": "فشل الدفع.",
+    "paymentError": "خطأ في الدفع.",
+    "paymentUnavailable": "الدفع بالبطاقة غير متاح في هذه النسخة."
   },
   "orderStatus": {
     "confirmed": "تم تأكيد الطلب",

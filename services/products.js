@@ -19,6 +19,31 @@ export async function getCategories() {
   return [];
 }
 
+// Résout le category_id NUMÉRIQUE (requis dans l'URL /users/order/create/<company>/<category>/)
+// à partir du slug porté par les items Boutiques (ex 'product_purchase'). Les produits
+// n'exposent que le slug ; on mappe slug→id via /admin/categories-list/ (mis en cache
+// module-level). Retourne null si introuvable (l'appelant garde alors le flux local).
+let _categoryIdBySlug = null;
+export async function resolveCategoryId(slug) {
+  if (!slug) return null;
+  if (!_categoryIdBySlug) {
+    try {
+      const cats = await getCategories();
+      const map = {};
+      (Array.isArray(cats) ? cats : []).forEach((c) => {
+        const s = c?.slug || c?.category_slug || c?.categorySlug || c?.name;
+        const id = c?.id ?? c?.category_id ?? c?.pk;
+        if (s != null && id != null) map[String(s).toLowerCase()] = id;
+      });
+      _categoryIdBySlug = map;
+    } catch (e) {
+      _categoryIdBySlug = null;
+      return null;
+    }
+  }
+  return _categoryIdBySlug[String(slug).toLowerCase()] ?? null;
+}
+
 // Get subcategories for a category
 export async function getSubcategories(categoryId) {
   const data = await apiGet(`/admin/subcategories/${categoryId}/`);

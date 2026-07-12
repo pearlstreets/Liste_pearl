@@ -1,6 +1,8 @@
 // Marketplace + Delivery API Configuration
 // Switch between environments by changing the active config
 
+import Constants from 'expo-constants';
+
 const ENV = {
   local: {
     API_URL: 'http://localhost:8000/api/v1',
@@ -38,4 +40,12 @@ const ENV = {
 const ACTIVE_ENV = 'production';
 
 export const CONFIG = ENV[ACTIVE_ENV];
+
+// Clé publishable Stripe (identique à AppUser / .env prod). Une publishable key
+// est safe à embarquer côté client. Source: app.json extra.stripePublishableKey,
+// fallback en dur pour les cas où expoConfig.extra n'est pas résolu.
+export const STRIPE_PUBLISHABLE_KEY =
+  (Constants?.expoConfig?.extra?.stripePublishableKey) ||
+  'pk_live_51R8hqCArfIzMjUBjIDVUlchS37nktlFM2cdugW3ocvqBwdi8GxPuKkaKTlnGdX2Qb0yVbAK9JivZlUOAvgygP8Pe00JEBclh24';
+
 export default CONFIG;

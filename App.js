@@ -3,13 +3,17 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
-import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory } from "./services/products";
+import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
 import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
+// Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
+import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
+import { StripeAvailable } from "./services/stripeNative";
+import CardPaymentModal from "./components/CardPaymentModal";
 
 function __getUserItems(){
   try { if (typeof items !== "undefined" && Array.isArray(items)) return items; } catch(_) {}
@@ -2843,6 +2847,74 @@ const CartScreen = ({ isAuth }) => {
     return order;
   }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId]);
 
+  // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
+  const [cardModalVisible, setCardModalVisible] = React.useState(false);
+  const [pendingPayment, setPendingPayment] = React.useState(null); // { orders:[{orderId,shopName}], totalLabel }
+
+  // Pré-étape carte : crée la/les vraie(s) commande(s) Marketplace (mode defer,
+  // sans card_id) puis ouvre le modal de paiement. Renvoie true si le tunnel carte
+  // démarre ; false → l'appelant CONSERVE le flux LOCAL existant (Expo Go sans SDK,
+  // ou items sans vrais ids Marketplace — ex chemin « Produits » simulé).
+  const maybeStartCardCheckout = React.useCallback(async () => {
+    if (!StripeAvailable) return false;
+    const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
+    // Éligibles = items d'une vraie boutique (productId + companyId RÉELS).
+    const eligible = selectedItems.filter(it => it && it.productId != null && it.companyId != null);
+    if (eligible.length === 0) return false;
+    // category_id NUMÉRIQUE requis dans l'URL order/create (résolu depuis le slug).
+    const categoryId = await resolveCategoryId(eligible[0].category || 'product_purchase');
+    if (categoryId == null) return false;
+    // Une commande Marketplace par boutique (invariant serveur mono-vendeur).
+    const byCompany = {};
+    eligible.forEach(it => { const k = String(it.companyId); (byCompany[k] = byCompany[k] || []).push(it); });
+    const otKeyInt = orderMode === 'delivery' ? 3 : 2;   // cart/add : INT
+    const otKeyStr = orderMode === 'delivery' ? '3' : '2'; // update-meta : CLÉ STRING
+    const orders = [];
+    try {
+      for (const k of Object.keys(byCompany)) {
+        const group = byCompany[k];
+        const companyId = group[0].companyId;
+        for (const it of group) {
+          const r = await addToCartApi({ product_id: it.productId, company_id: companyId, quantity: it.qty || 1, order_type_key: otKeyInt });
+          if (!r || r.status === false) throw new Error((r && r.message) || 'cart/add');
+        }
+        if (orderMode === 'delivery' && selectedAddressId) {
+          try { await updateCartMetaApi(companyId, otKeyStr, { new_order_type: 'Delivery', address_id: selectedAddressId }); } catch (_) {}
+        }
+        const body = {};
+        if (orderMode === 'delivery' && selectedAddressId) body.address_id = selectedAddressId;
+        const oc = await createOrderApi(companyId, categoryId, body);
+        const orderId = (oc && (oc.order_id || (oc.data && oc.data.order_id))) || null;
+        if (!oc || oc.status === false || !orderId) throw new Error((oc && oc.message) || 'order/create');
+        orders.push({ orderId, shopName: group[0].shop || '' });
+      }
+    } catch (e) {
+      Alert.alert(t('cart.confirmOrder'), t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.'));
+      return false;
+    }
+    if (orders.length === 0) return false;
+    const grand = eligible.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0) + (orderMode === 'delivery' ? 9.99 : 0);
+    setPendingPayment({ orders, totalLabel: fmtPrice(grand) });
+    setCardModalVisible(true);
+    return true;
+  }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t]);
+
+  // Paiement réussi → on rejoue la confirmation LOCALE existante (historique +
+  // course livreur + tracker), INCHANGÉE. La commande pro est désormais payée.
+  const onCardPaySuccess = React.useCallback(async () => {
+    setCardModalVisible(false);
+    setPendingPayment(null);
+    const ok = await placeOrder();
+    if (ok) { setConfirmVisible(false); setOrderVisible(true); }
+    placingRef.current = false; setPlacing(false);
+  }, [placeOrder]);
+
+  const onCardPayCancel = React.useCallback(() => {
+    setCardModalVisible(false);
+    setPendingPayment(null);
+    placingRef.current = false; setPlacing(false);
+  }, []);
+
   // Group cart items by shop (must be before early return to respect hooks order)
   const groupedCart = React.useMemo(() => {
     const groups = {};
@@ -3306,11 +3378,17 @@ const CartScreen = ({ isAuth }) => {
                   if (placingRef.current) return; // idempotence : ignore les taps rapides
                   placingRef.current = true;
                   setPlacing(true);
+                  let cardStarted = false;
                   try {
+                    // Option A : tente le paiement carte réel (crée la commande
+                    // Marketplace + ouvre le modal). Si indisponible/inéligible →
+                    // on retombe sur le flux LOCAL existant, inchangé.
+                    cardStarted = await maybeStartCardCheckout();
+                    if (cardStarted) { setPlacing(false); return; } // le modal prend le relais
                     const ok = await placeOrder();
                     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
                     else { Alert.alert(t('cart.emptyCart'), t('cart.addProductsFromTab')); }
-                  } finally { placingRef.current = false; setPlacing(false); }
+                  } finally { if (!cardStarted) { placingRef.current = false; setPlacing(false); } }
                 }}
                 style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
               >
@@ -3484,6 +3562,18 @@ const CartScreen = ({ isAuth }) => {
         onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
         onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
       />
+
+      {/* Paiement carte (Option A) — monté uniquement en build natif (StripeAvailable) */}
+      {cardModalVisible && pendingPayment ? (
+        <CardPaymentModal
+          visible={cardModalVisible}
+          orders={pendingPayment.orders}
+          totalLabel={pendingPayment.totalLabel}
+          t={t}
+          onSuccess={onCardPaySuccess}
+          onCancel={onCardPayCancel}
+        />
+      ) : null}
 
       {/* Modal liste produits du shop */}
       <Modal visible={shopProductsVisible} animationType="none" transparent={true}>

@@ -48,6 +48,7 @@
     },
     "extra": {
       "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1",
+      "stripePublishableKey": "pk_live_51R8hqCArfIzMjUBjIDVUlchS37nktlFM2cdugW3ocvqBwdi8GxPuKkaKTlnGdX2Qb0yVbAK9JivZlUOAvgygP8Pe00JEBclh24",
       "eas": {
         "projectId": "c2ae23d8-1884-47ae-b45c-feea16814db6"
       }
@@ -55,7 +56,8 @@
     "plugins": [
       "expo-localization",
       "expo-location",
-      "expo-font"
+      "expo-font",
+      "@stripe/stripe-react-native"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0

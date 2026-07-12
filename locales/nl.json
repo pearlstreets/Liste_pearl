@@ -323,7 +323,17 @@
     "payAtDelivery": "Te betalen bij levering",
     "orderConfirmedTitle": "Bestelling bevestigd",
     "orderConfirmedCollect": "Je bestelling wordt klaargemaakt om af te halen. Volg de status in Profiel > Bestellingen.",
-    "orderConfirmedDelivery": "Een bezorger neemt je bestelling in behandeling. Volg de status in Profiel > Bestellingen."
+    "orderConfirmedDelivery": "Een bezorger neemt je bestelling in behandeling. Volg de status in Profiel > Bestellingen.",
+    "orderCreateFailed": "Kon de bestelling niet aanmaken in de Marketplace. Probeer opnieuw.",
+    "payByCard": "Betalen met kaart",
+    "payNow": "Nu betalen",
+    "cancel": "Annuleren",
+    "securedByStripe": "Betaling beveiligd door Stripe",
+    "cardIncomplete": "Voer een geldige kaart in.",
+    "cardDeclined": "Kaart geweigerd.",
+    "paymentFailed": "Betaling mislukt.",
+    "paymentError": "Betalingsfout.",
+    "paymentUnavailable": "Kaartbetaling niet beschikbaar in deze versie."
   },
   "orderStatus": {
     "confirmed": "Bestelling bevestigd",

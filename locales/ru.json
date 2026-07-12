@@ -323,7 +323,17 @@
     "payAtDelivery": "Оплата при доставке",
     "orderConfirmedTitle": "Заказ подтверждён",
     "orderConfirmedCollect": "Ваш заказ будет подготовлен к самовывозу. Следите за его статусом в разделе Профиль > Заказы.",
-    "orderConfirmedDelivery": "Курьер займётся вашим заказом. Следите за его статусом в разделе Профиль > Заказы."
+    "orderConfirmedDelivery": "Курьер займётся вашим заказом. Следите за его статусом в разделе Профиль > Заказы.",
+    "orderCreateFailed": "Не удалось создать заказ в Marketplace. Повторите попытку.",
+    "payByCard": "Оплата картой",
+    "payNow": "Оплатить",
+    "cancel": "Отмена",
+    "securedByStripe": "Платёж защищён Stripe",
+    "cardIncomplete": "Введите действительную карту.",
+    "cardDeclined": "Карта отклонена.",
+    "paymentFailed": "Платёж не прошёл.",
+    "paymentError": "Ошибка платежа.",
+    "paymentUnavailable": "Оплата картой недоступна в этой версии."
   },
   "orderStatus": {
     "confirmed": "Заказ подтверждён",

@@ -421,7 +421,17 @@
     "payAtDelivery": "Pay on delivery",
     "orderConfirmedTitle": "Order confirmed",
     "orderConfirmedCollect": "Your order will be prepared for pickup. Track its status in Profile > Orders.",
-    "orderConfirmedDelivery": "A driver will pick up your order. Track its status in Profile > Orders."
+    "orderConfirmedDelivery": "A driver will pick up your order. Track its status in Profile > Orders.",
+    "orderCreateFailed": "Couldn't create the order on the Marketplace. Please try again.",
+    "payByCard": "Card payment",
+    "payNow": "Pay now",
+    "cancel": "Cancel",
+    "securedByStripe": "Payment secured by Stripe",
+    "cardIncomplete": "Enter a valid card.",
+    "cardDeclined": "Card declined.",
+    "paymentFailed": "Payment failed.",
+    "paymentError": "Payment error.",
+    "paymentUnavailable": "Card payment unavailable in this version."
   },
   "orderStatus": {
     "confirmed": "Order confirmed",

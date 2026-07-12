@@ -323,7 +323,17 @@
     "payAtDelivery": "配達時にお支払い",
     "orderConfirmedTitle": "注文が確定しました",
     "orderConfirmedCollect": "ご注文は受け取り用に準備されます。ステータスはプロフィール > 注文でご確認いただけます。",
-    "orderConfirmedDelivery": "配達員がご注文をお届けします。ステータスはプロフィール > 注文でご確認いただけます。"
+    "orderConfirmedDelivery": "配達員がご注文をお届けします。ステータスはプロフィール > 注文でご確認いただけます。",
+    "orderCreateFailed": "マーケットプレイスで注文を作成できませんでした。もう一度お試しください。",
+    "payByCard": "カード支払い",
+    "payNow": "今すぐ支払う",
+    "cancel": "キャンセル",
+    "securedByStripe": "Stripe による安全な支払い",
+    "cardIncomplete": "有効なカードを入力してください。",
+    "cardDeclined": "カードが拒否されました。",
+    "paymentFailed": "支払いに失敗しました。",
+    "paymentError": "支払いエラー。",
+    "paymentUnavailable": "このバージョンではカード支払いを利用できません。"
   },
   "orderStatus": {
     "confirmed": "注文確認済み",

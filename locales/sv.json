@@ -323,7 +323,17 @@
     "payAtDelivery": "Betalas vid leverans",
     "orderConfirmedTitle": "Beställning bekräftad",
     "orderConfirmedCollect": "Din beställning förbereds för upphämtning. Följ dess status i Profil > Beställningar.",
-    "orderConfirmedDelivery": "Ett bud tar hand om din beställning. Följ dess status i Profil > Beställningar."
+    "orderConfirmedDelivery": "Ett bud tar hand om din beställning. Följ dess status i Profil > Beställningar.",
+    "orderCreateFailed": "Det gick inte att skapa beställningen i Marketplace. Försök igen.",
+    "payByCard": "Betala med kort",
+    "payNow": "Betala nu",
+    "cancel": "Avbryt",
+    "securedByStripe": "Betalning säkrad av Stripe",
+    "cardIncomplete": "Ange ett giltigt kort.",
+    "cardDeclined": "Kortet nekades.",
+    "paymentFailed": "Betalningen misslyckades.",
+    "paymentError": "Betalningsfel.",
+    "paymentUnavailable": "Kortbetalning är inte tillgänglig i den här versionen."
   },
   "orderStatus": {
     "confirmed": "Beställning bekräftad",

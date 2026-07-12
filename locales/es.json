@@ -323,7 +323,17 @@
     "payAtDelivery": "A pagar en la entrega",
     "orderConfirmedTitle": "Pedido confirmado",
     "orderConfirmedCollect": "Tu pedido se preparará para la recogida. Sigue su estado en Perfil > Pedidos.",
-    "orderConfirmedDelivery": "Un repartidor se encargará de tu pedido. Sigue su estado en Perfil > Pedidos."
+    "orderConfirmedDelivery": "Un repartidor se encargará de tu pedido. Sigue su estado en Perfil > Pedidos.",
+    "orderCreateFailed": "No se pudo crear el pedido en el Marketplace. Inténtalo de nuevo.",
+    "payByCard": "Pago con tarjeta",
+    "payNow": "Pagar ahora",
+    "cancel": "Cancelar",
+    "securedByStripe": "Pago protegido por Stripe",
+    "cardIncomplete": "Introduce una tarjeta válida.",
+    "cardDeclined": "Tarjeta rechazada.",
+    "paymentFailed": "El pago ha fallado.",
+    "paymentError": "Error de pago.",
+    "paymentUnavailable": "Pago con tarjeta no disponible en esta versión."
   },
   "orderStatus": {
     "confirmed": "Pedido confirmado",
