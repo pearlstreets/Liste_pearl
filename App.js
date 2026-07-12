@@ -4321,6 +4321,14 @@ const profStyles = StyleSheet.create({
   guestHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   guestBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
   guestBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  // Guest hero (design soigné) + préférences accessibles sans connexion
+  guestHero: { margin: 20, borderRadius: 22, backgroundColor: THEME.brand, paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
+  guestHeroIcon: { width: 78, height: 78, borderRadius: 39, backgroundColor: 'rgba(255,255,255,0.18)', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  guestHeroTitle: { fontSize: 20, fontWeight: '900', color: '#fff', textAlign: 'center', letterSpacing: -0.3 },
+  guestHeroHint: { fontSize: 13, color: 'rgba(255,255,255,0.92)', textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },
+  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 14, marginTop: 18 },
+  guestHeroBtnTxt: { color: THEME.brand, fontWeight: '800', fontSize: 15, marginLeft: 8 },
+  guestPrefTitle: { fontSize: 12, fontWeight: '800', color: THEME.faint, marginBottom: 10, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.6 },
 
   // Full-page modal header
   modalScreen: { flex: 1, backgroundColor: THEME.bg },
@@ -4899,17 +4907,130 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         <View style={profStyles.header}>
           <Text style={profStyles.title}>{t('tabs.profile')}</Text>
         </View>
-        <View style={profStyles.guestWrap}>
-          <View style={profStyles.emptyCircle}>
-            <Ionicons name="person-outline" size={44} color="#fff" />
+        <ScrollView contentContainerStyle={{ paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+          {/* Hero connexion — design soigné */}
+          <View style={profStyles.guestHero}>
+            <View style={profStyles.guestHeroIcon}>
+              <Ionicons name="person-circle-outline" size={54} color="#fff" />
+            </View>
+            <Text style={profStyles.guestHeroTitle}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
+            <Text style={profStyles.guestHeroHint}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={profStyles.guestHeroBtn}>
+              <Ionicons name="log-in-outline" size={20} color={THEME.brand} />
+              <Text style={profStyles.guestHeroBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={profStyles.guestTitle}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
-          <Text style={profStyles.guestHint}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={profStyles.guestBtn}>
-            <Ionicons name="log-in-outline" size={20} color="#fff" />
-            <Text style={profStyles.guestBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
-          </TouchableOpacity>
-        </View>
+
+          {/* Préférences — accessibles SANS connexion */}
+          <View style={profStyles.section}>
+            <Text style={profStyles.guestPrefTitle}>{t('profile.preferences', 'Préférences')}</Text>
+            <View style={profStyles.settingsCard}>
+              {/* Langue */}
+              <TouchableOpacity activeOpacity={0.8} onPress={() => setLangVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+                <View style={profStyles.settingIcon}>
+                  <Ionicons name="language-outline" size={19} color="#fff" />
+                </View>
+                <View style={profStyles.settingBody}>
+                  <Text style={profStyles.settingLabel}>{t('profile.language')}</Text>
+                  <Text style={profStyles.settingValue}>
+                    {LANGUAGES.find(l => l.code === i18nInstance.language)?.flag || '🌐'} {({'fr':'Français','en':'English','es':'Español','zh':'中文','ar':'العربية','de':'Deutsch','nl':'Nederlands','it':'Italiano','pt':'Português','ja':'日本語','th':'ไทย','sv':'Svenska','ru':'Русский'})[i18nInstance.language] || i18nInstance.language}
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+              </TouchableOpacity>
+              {/* Devise */}
+              <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={profStyles.settingRow}>
+                <View style={profStyles.settingIcon}>
+                  <Ionicons name="cash-outline" size={19} color="#fff" />
+                </View>
+                <View style={profStyles.settingBody}>
+                  <Text style={profStyles.settingLabel}>{t('profile.currency')}</Text>
+                  <Text style={profStyles.settingValue}>{currency.flag} {currency.code}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Sélecteur de langue (dispo sans connexion) */}
+        <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
+          <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+            <View style={profStyles.modalHeader}>
+              <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={profStyles.modalBack}>
+                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
+              </TouchableOpacity>
+              <Text style={profStyles.modalTitle}>{t('profile.language')}</Text>
+            </View>
+            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
+              {LANGUAGES.map(lang => {
+                const currentLang = i18nInstance.language || 'fr';
+                const isActive = currentLang === lang.code || currentLang.startsWith(lang.code);
+                const isSelected = pendingLang === lang.code || (!pendingLang && isActive);
+                return (
+                  <TouchableOpacity key={lang.code} activeOpacity={0.8} onPress={() => setPendingLang(lang.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
+                    <Text style={profStyles.pickerFlag}>{lang.flag}</Text>
+                    <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn, { flex:1 }]}>{lang.label}</Text>
+                    {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
+              <View style={profStyles.sheetFooter}>
+                <TouchableOpacity activeOpacity={0.85} onPress={async () => {
+                  const lang = pendingLang || i18nInstance.language;
+                  i18nInstance.changeLanguage(lang);
+                  await AsyncStorage.setItem('APP_LANGUAGE', lang);
+                  setPendingLang(null);
+                  setLangVisible(false);
+                }} style={[profStyles.primaryBtn, !pendingLang && profStyles.primaryBtnDisabled]}>
+                  <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+          </SafeAreaView>
+        </Modal>
+
+        {/* Sélecteur de devise (dispo sans connexion) */}
+        <Modal visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
+          <SafeAreaView style={profStyles.modalScreen} edges={[]}>
+            <View style={profStyles.modalHeader}>
+              <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={profStyles.modalBack}>
+                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
+              </TouchableOpacity>
+              <Text style={profStyles.modalTitle}>{t('profile.currency')}</Text>
+            </View>
+            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
+              {CURRENCIES.map(curr => {
+                const isSelected = pendingCurrency === curr.code || (!pendingCurrency && currency.code === curr.code);
+                return (
+                  <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
+                    <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
+                    <View style={{ flex:1 }}>
+                      <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{curr.name}</Text>
+                      <Text style={profStyles.pickerSub}>{curr.code}</Text>
+                    </View>
+                    {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
+              <View style={profStyles.sheetFooter}>
+                <TouchableOpacity activeOpacity={0.85} onPress={() => {
+                  const code = pendingCurrency || currency.code;
+                  const found = CURRENCIES.find(c => c.code === code);
+                  if (found) setCurrency(found);
+                  setPendingCurrency(null);
+                  setCurrencyVisible(false);
+                }} style={[profStyles.primaryBtn, !pendingCurrency && profStyles.primaryBtnDisabled]}>
+                  <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+          </SafeAreaView>
+        </Modal>
       </SafeAreaView>
     );
   }
