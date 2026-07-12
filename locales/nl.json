@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Nog geen favoriete winkels",
     "addFromProducts": "Voeg je favoriete winkels toe van het tabblad Producten",
-    "searchPlaceholder": "Zoeken naar een favoriet..."
+    "searchPlaceholder": "Zoeken naar een favoriet...",
+    "manageHint": "Je favoriete winkels en producten"
   },
   "profile": {
     "guestTitle": "Je bent niet ingelogd",

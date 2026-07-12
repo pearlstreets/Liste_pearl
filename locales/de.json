@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Noch keine Lieblingsgeschäfte",
     "addFromProducts": "Fügen Sie Ihre Lieblingsgeschäfte auf der Registerkarte Produkte hinzu",
-    "searchPlaceholder": "Ein Favorit suchen..."
+    "searchPlaceholder": "Ein Favorit suchen...",
+    "manageHint": "Deine Lieblingsshops und -produkte"
   },
   "profile": {
     "guestTitle": "Du bist nicht angemeldet",

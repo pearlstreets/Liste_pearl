@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Нет избранных магазинов",
     "addFromProducts": "Добавьте ваши любимые магазины из вкладки Товары",
-    "searchPlaceholder": "Поиск избранного..."
+    "searchPlaceholder": "Поиск избранного...",
+    "manageHint": "Ваши любимые магазины и товары"
   },
   "profile": {
     "guestTitle": "Вы не вошли в систему",

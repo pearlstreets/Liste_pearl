@@ -127,7 +127,8 @@
     "searchPlaceholder": "Search a shop...",
     "searchProductPlaceholder": "Search a product...",
     "shops": "Shops",
-    "products": "Products"
+    "products": "Products",
+    "manageHint": "Your favorite shops and products"
   },
   "profile": {
     "guestTitle": "You're not logged in",

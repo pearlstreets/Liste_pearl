@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "还没有喜欢的店铺",
     "addFromProducts": "从产品选项卡添加你喜欢的店铺",
-    "searchPlaceholder": "搜索收藏..."
+    "searchPlaceholder": "搜索收藏...",
+    "manageHint": "您收藏的商店和商品"
   },
   "profile": {
     "guestTitle": "您尚未登录",

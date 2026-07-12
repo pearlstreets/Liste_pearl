@@ -74,6 +74,22 @@ const ProductThumb = ({ name, size = 44 }) => {
   );
 };
 
+// Vignette produit : vraie photo (URL http/https ou data:) si disponible — ex.
+// produits ajoutés depuis Boutiques — sinon repli sur la pastille emoji.
+const ProductImage = ({ uri, name, size = 44 }) => {
+  const ok = uri && typeof uri === 'string' && (/^https?:\/\//i.test(uri) || uri.startsWith('data:'));
+  if (ok) {
+    return (
+      <Image
+        source={{ uri }}
+        style={{ width: size, height: size, borderRadius: Math.max(10, Math.round(size * 0.28)), backgroundColor: THEME.subtle }}
+        resizeMode="cover"
+      />
+    );
+  }
+  return <ProductThumb name={name} size={size} />;
+};
+
 const KEY_ITEMS = "SG_ITEMS";
 const KEY_SELECTED = "SG_SELECTED_FOR_PRODUCTS";
 const KEY_CART = "KEY_CART";
@@ -1915,7 +1931,7 @@ const favStyles = StyleSheet.create({
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 });
 
-const FavoritesScreen = () => {
+const FavoritesScreen = ({ onClose }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const [tab, setTab] = React.useState('shops'); // 'shops' | 'products'
@@ -1972,13 +1988,23 @@ const FavoritesScreen = () => {
   const isEmpty = tab === 'shops' ? shopDetails.length === 0 : favProducts.length === 0;
 
   const Header = (
-    <View style={favStyles.header}>
-      <Text style={favStyles.title}>{t('tabs.favorites')}</Text>
-      <Text style={favStyles.subtitle}>
-        {tab === 'shops'
-          ? `${shopDetails.length} ${t('favorites.shops') || 'Shops'}`
-          : `${favProducts.length} ${t('favorites.products') || 'Produits'}`}
-      </Text>
+    <View style={[favStyles.header, onClose && { paddingTop: 54 }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {onClose ? (
+          <TouchableOpacity onPress={onClose} accessibilityRole="button" accessibilityLabel={t('profile.back', 'Retour')}
+            style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
+            <Ionicons name="arrow-back" size={20} color={THEME.ink} />
+          </TouchableOpacity>
+        ) : null}
+        <View style={{ flex: 1 }}>
+          <Text style={favStyles.title}>{t('tabs.favorites')}</Text>
+          <Text style={favStyles.subtitle}>
+            {tab === 'shops'
+              ? `${shopDetails.length} ${t('favorites.shops') || 'Boutiques'}`
+              : `${favProducts.length} ${t('favorites.products') || 'Produits'}`}
+          </Text>
+        </View>
+      </View>
 
       {/* Toggle Shops / Produits */}
       <View style={favStyles.segment}>
@@ -2821,7 +2847,7 @@ const CartScreen = ({ isAuth }) => {
                   </View>
                 </TouchableOpacity>
                 <View style={{ marginLeft: 10 }}>
-                  <ProductThumb name={item.name || item.title} size={44} />
+                  <ProductImage uri={item.image} name={item.name || item.title} size={44} />
                 </View>
                 <View style={cartStyles.productBody}>
                   <Text style={cartStyles.productName}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
@@ -2936,7 +2962,7 @@ const CartScreen = ({ isAuth }) => {
                     </View>
                     {items.map((it, i) => (
                       <View key={i} style={[cartStyles.miniRow, i < items.length - 1 && cartStyles.productDivider]}>
-                        <ProductThumb name={it.name || it.title} size={40} />
+                        <ProductImage uri={it.image} name={it.name || it.title} size={40} />
                         <View style={{flex:1, marginLeft:10}}>
                           <Text style={cartStyles.miniName}>{it.name || it.title}</Text>
                           <Text style={cartStyles.miniPrice}>{fmtPrice(Number(it.price||0) * Number(it.qty||1))}</Text>
@@ -3791,7 +3817,6 @@ function MainNavigator({ onLogout, isAuth }) {
     // Optimiseur = comparaison de prix (icône distincte du Panier)
     "products": { focused: "pricetags",      unfocused: "pricetags-outline" },
     "shops": { focused: "storefront",      unfocused: "storefront-outline" },
-    "favorites":  { focused: "heart",          unfocused: "heart-outline" },
     "cart":   { focused: "bag-handle",     unfocused: "bag-handle-outline" }
   };
 
@@ -3800,7 +3825,6 @@ function MainNavigator({ onLogout, isAuth }) {
       myList: t('tabs.myList'),
       products: t('tabs.products'),
       shops: t('tabs.shops', 'Boutiques'),
-      favorites: t('tabs.favorites'),
       cart: t('tabs.cart'),
       profile: t('tabs.profile')
     };
@@ -3827,7 +3851,6 @@ function MainNavigator({ onLogout, isAuth }) {
       <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
-      <Tab.Screen name="favorites" component={FavoritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
     </Tab.Navigator>
   );
@@ -4540,6 +4563,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [pendingLang, setPendingLang] = React.useState(null);
   const [currencyVisible, setCurrencyVisible] = React.useState(false);
   const [pendingCurrency, setPendingCurrency] = React.useState(null);
+  const [favVisible, setFavVisible] = React.useState(false); // Favoris déplacé dans Profil (dispo sans connexion)
   const [addressListVisible, setAddressListVisible] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(false);
@@ -4930,6 +4954,15 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     );
   };
 
+  // Favoris présenté en plein écran depuis Profil (fini l'onglet dédié). Monté à
+  // l'ouverture seulement → rechargement frais des favoris (stockés localement,
+  // donc dispo même sans connexion).
+  const favModal = favVisible ? (
+    <Modal visible animationType="slide" onRequestClose={() => setFavVisible(false)}>
+      <FavoritesScreen onClose={() => setFavVisible(false)} />
+    </Modal>
+  ) : null;
+
   if (!isAuth) {
     return (
       <SafeAreaView style={profStyles.screen} edges={['top']}>
@@ -4948,6 +4981,22 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <Ionicons name="log-in-outline" size={20} color={THEME.brand} />
               <Text style={profStyles.guestHeroBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Favoris — accessibles SANS connexion (stockés localement) */}
+          <View style={profStyles.section}>
+            <View style={profStyles.settingsCard}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={profStyles.settingRow}>
+                <View style={profStyles.settingIcon}>
+                  <Ionicons name="heart-outline" size={19} color="#fff" />
+                </View>
+                <View style={profStyles.settingBody}>
+                  <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
+                  <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Préférences — accessibles SANS connexion */}
@@ -5060,6 +5109,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             </SafeAreaView>
           </SafeAreaView>
         </Modal>
+        {favModal}
       </SafeAreaView>
     );
   }
@@ -5070,6 +5120,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         <Text style={profStyles.title}>{t('tabs.profile')}</Text>
         <Text style={profStyles.subtitle}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
       </View>
+      {favModal}
       <ScrollView contentContainerStyle={{ paddingBottom:28 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         {/* Profile Card */}
         <View style={profStyles.profileCard}>
@@ -5204,6 +5255,17 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         {/* Preferences */}
         <View style={profStyles.section}>
           <View style={profStyles.settingsCard}>
+            {/* Favoris */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="heart-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
+                <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
             {/* Address */}
             <TouchableOpacity activeOpacity={0.8} onPress={openAddressList} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>

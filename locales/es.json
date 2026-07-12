@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Sin tiendas favoritas aún",
     "addFromProducts": "Agrega tus tiendas favoritas desde la pestaña Productos",
-    "searchPlaceholder": "Buscar un favorito..."
+    "searchPlaceholder": "Buscar un favorito...",
+    "manageHint": "Tus tiendas y productos favoritos"
   },
   "profile": {
     "guestTitle": "No has iniciado sesión",

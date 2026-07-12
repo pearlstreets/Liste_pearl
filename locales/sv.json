@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Inga favoritbutiker ännu",
     "addFromProducts": "Lägg till dina favoritbutiker från fliken Produkter",
-    "searchPlaceholder": "Sök en favorit..."
+    "searchPlaceholder": "Sök en favorit...",
+    "manageHint": "Dina favoritbutiker och produkter"
   },
   "profile": {
     "guestTitle": "Du är inte inloggad",

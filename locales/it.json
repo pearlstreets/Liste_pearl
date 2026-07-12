@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "Nessun negozio preferito ancora",
     "addFromProducts": "Aggiungi i tuoi negozi preferiti dalla scheda Prodotti",
-    "searchPlaceholder": "Cerca un preferito..."
+    "searchPlaceholder": "Cerca un preferito...",
+    "manageHint": "I tuoi negozi e prodotti preferiti"
   },
   "profile": {
     "guestTitle": "Non hai effettuato l'accesso",

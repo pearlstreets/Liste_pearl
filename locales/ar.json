@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "لا توجد متاجر مفضلة حتى الآن",
     "addFromProducts": "أضف متاجرك المفضلة من علامة التبويب المنتجات",
-    "searchPlaceholder": "البحث عن مفضل..."
+    "searchPlaceholder": "البحث عن مفضل...",
+    "manageHint": "متاجرك ومنتجاتك المفضلة"
   },
   "profile": {
     "guestTitle": "لم تسجّل الدخول",

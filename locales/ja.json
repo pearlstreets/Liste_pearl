@@ -117,7 +117,8 @@
   "favorites": {
     "noFavorites": "まだお気に入りの店舗はありません",
     "addFromProducts": "商品タブからお気に入りの店舗を追加してください",
-    "searchPlaceholder": "お気に入りを検索..."
+    "searchPlaceholder": "お気に入りを検索...",
+    "manageHint": "お気に入りの店舗と商品"
   },
   "profile": {
     "guestTitle": "ログインしていません",
