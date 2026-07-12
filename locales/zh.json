@@ -55,7 +55,10 @@
     "noItems": "没有项目",
     "clear": "清除",
     "quantity": "数量",
-    "continueShopping": "继续购物"
+    "continueShopping": "继续购物",
+    "notFound": "在店铺中未找到",
+    "noMatchTitle": "未找到与您清单匹配的商品",
+    "noMatchSub": "这些商店不出售这些商品。请检查名称或浏览商店。"
   },
   "searchPopup": {
     "header": "你需要什么？",

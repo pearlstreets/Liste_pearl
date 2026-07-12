@@ -55,7 +55,10 @@
     "noItems": "Nessun articolo",
     "clear": "Cancella",
     "quantity": "quantità",
-    "continueShopping": "Continua lo shopping"
+    "continueShopping": "Continua lo shopping",
+    "notFound": "non trovato/i in negozio",
+    "noMatchTitle": "Nessun prodotto trovato per la tua lista",
+    "noMatchSub": "Questi negozi non vendono questi articoli. Controlla i nomi o esplora i Negozi."
   },
   "searchPopup": {
     "header": "Cosa ti serve?",

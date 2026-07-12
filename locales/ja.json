@@ -55,7 +55,10 @@
     "noItems": "アイテムなし",
     "clear": "クリア",
     "quantity": "数量",
-    "continueShopping": "買い物を続ける"
+    "continueShopping": "買い物を続ける",
+    "notFound": "店舗に見つかりません",
+    "noMatchTitle": "リストに一致する商品が見つかりません",
+    "noMatchSub": "これらの店舗ではこれらの商品を販売していません。名前を確認するか、店舗を見てみてください。"
   },
   "searchPopup": {
     "header": "何が必要ですか？",

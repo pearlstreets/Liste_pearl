@@ -723,6 +723,7 @@ const ProductsScreen = () => {
   const [loading,setLoading]=React.useState(true);
   const [groups,setGroups]=React.useState([]);   // [{name,distance,time,deliveryFee,products:[{title,qty,price}],subtotal,grandTotal}]
   const [summary,setSummary]=React.useState({price:0,time:0,shops:0});
+  const [unmatchedNames,setUnmatchedNames]=React.useState([]); // articles de la liste sans correspondance dans les vraies boutiques
   // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
   const [realShops,setRealShops]=React.useState(null);
   React.useEffect(()=>{ let a=true; (async()=>{
@@ -947,20 +948,29 @@ const ProductsScreen = () => {
 
   const buildProposal=(items)=>{
     const inv=buildInventory(items);
-    // Aucune boutique (vraies boutiques chargées mais vides / hors-ligne) : on
-    // renvoie des groupes vides — les stratégies planteraient sur un inv vide,
-    // et l'écran affiche son état vide (ListEmptyComponent) au lieu de fausses boutiques.
+    // Aucune boutique (vraies boutiques chargées mais vides / hors-ligne).
     if (!Array.isArray(inv) || inv.length === 0) {
-      return { groups: [], summary: { price: 0, time: 0, shops: 0 } };
+      return { groups: [], summary: { price: 0, time: 0, shops: 0 }, unmatched: items.map(i=>i.name) };
+    }
+    // On ne propose une boutique ET un prix QUE pour les articles réellement
+    // trouvés (nom correspondant à un vrai produit d'au moins une boutique).
+    // Un article introuvable (ex. « Q », ou une liste sans correspondance) ne
+    // génère NI prix NI boutique : il est remonté comme « non trouvé ».
+    const isAvail = (it) => inv.some(s => { const r=s.items.find(x=>x.name===it.name); return r && r.available; });
+    const availableItems = items.filter(isAvail);
+    const unmatched = items.filter(it => !isAvail(it)).map(it => it.name);
+    if (availableItems.length === 0) {
+      return { groups: [], summary: { price: 0, time: 0, shops: 0 }, unmatched };
     }
     let assigned;
-    if(strategy==='eco') assigned=assignEco(items,inv);
-    else if(strategy==='fast') assigned=assignFast(items,inv,mode);
-    else if(strategy==='single') assigned=assignSingle(items,inv);
-    else assigned=assignBalanced(items,inv);
+    if(strategy==='eco') assigned=assignEco(availableItems,inv);
+    else if(strategy==='fast') assigned=assignFast(availableItems,inv,mode);
+    else if(strategy==='single') assigned=assignSingle(availableItems,inv);
+    else assigned=assignBalanced(availableItems,inv);
 
-    // Dupliquer certains produits dans d'autres shops pour comparaison
-    const dupeNames = items.filter(it => {
+    // Comparaison de prix : dupliquer certains articles TROUVÉS dans d'autres
+    // boutiques qui les ont réellement (available).
+    const dupeNames = availableItems.filter(it => {
       const n = (it.name||'').toLowerCase();
       return n.includes('pat') || n.includes('pât') || n.includes('pizza') || n.includes('riz') || n.includes('lait') || n.includes('oeuf') || n.includes('œuf') || n.includes('poulet');
     }).map(it => it.name);
@@ -973,7 +983,7 @@ const ProductsScreen = () => {
           const pb = b.items.find(x => x.name === dName)?.price || 99;
           return pa - pb;
         }).slice(0, 2);
-        const origItem = items.find(it => it.name === dName);
+        const origItem = availableItems.find(it => it.name === dName);
         toAdd.forEach(s => {
           const row = s.items.find(x => x.name === dName);
           let existing = assigned.find(g => g.shop.name === s.name);
@@ -1001,7 +1011,7 @@ const ProductsScreen = () => {
     });
     const priceTotal=groups.reduce((a,g)=>a+g.grandTotal,0);
     const time=(mode==='collect')?groups.reduce((a,g)=>a+parseMin(g.time),0):Math.max(...groups.map(g=>parseMin(g.time)),0);
-    return {groups,summary:{price:priceTotal,time,shops:groups.length}};
+    return {groups,summary:{price:priceTotal,time,shops:groups.length},unmatched};
   };
 
   // Damerau-Levenshtein distance for fuzzy matching
@@ -1090,18 +1100,21 @@ const ProductsScreen = () => {
     setLoading(true);
     try{
       const items=await loadSelected();
-      const {groups,summary}=buildProposal(items);
+      const {groups,summary,unmatched}=buildProposal(items);
       setGroups(groups); setSummary(summary);
+      setUnmatchedNames(Array.isArray(unmatched) ? unmatched : []);
 
       // Auto-fill product details from search-map for all products
       if (groups.length > 0 && items.length > 0) {
         const autoFilled = autoFillProducts(items, groups);
-        if (autoFilled.length > 0) {
-          setPopupSelectedItems(autoFilled);
-          setCheckedShops({});
-        }
+        setPopupSelectedItems(autoFilled.length > 0 ? autoFilled : []);
+        setCheckedShops({});
+      } else {
+        // Aucune boutique proposée (rien de trouvé) : pas de produits « pris »
+        setPopupSelectedItems([]);
+        setCheckedShops({});
       }
-    }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); }
+    }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); setUnmatchedNames([]); }
     finally{ setLoading(false); }
   },[mode,strategy,realShops]);
 
@@ -1188,7 +1201,7 @@ const ProductsScreen = () => {
       {/* Résumé — dérivé des produits réellement proposés (source unique :
           popupSelectedItems), cohérent avec les totaux par boutique plus bas.
           Plus de « temps » inventé ni de total gonflé par la duplication. */}
-      {realShops !== null && (() => {
+      {realShops !== null && groups.length > 0 && (() => {
         const sel = Array.isArray(popupSelectedItems) ? popupSelectedItems : [];
         const g = Array.isArray(groups) ? groups : [];
         let price, qty, shopsN;
@@ -1232,6 +1245,16 @@ const ProductsScreen = () => {
         <View style={prodStyles.infoBanner}>
           <Ionicons name="information-circle" size={18} color={THEME.brand} />
           <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
+        </View>
+      )}
+
+      {/* Articles non trouvés dans les vraies boutiques (correspondance partielle) */}
+      {!loading && realShops !== null && !showingDefaults && groups.length > 0 && unmatchedNames.length > 0 && (
+        <View style={[prodStyles.infoBanner, { backgroundColor: THEME.dangerSoft }]}>
+          <Ionicons name="alert-circle" size={18} color={THEME.danger} />
+          <Text style={[prodStyles.infoTxt, { color: THEME.danger }]}>
+            {unmatchedNames.length} {t('productsScreen.notFound', 'non trouvé(s) en boutique')} : {unmatchedNames.slice(0,6).join(', ')}{unmatchedNames.length > 6 ? '…' : ''}
+          </Text>
         </View>
       )}
 
@@ -1479,10 +1502,19 @@ const ProductsScreen = () => {
           ListEmptyComponent={
             <View style={prodStyles.empty}>
               <View style={prodStyles.emptyCircle}>
-                <Ionicons name="cart-outline" size={44} color="#fff" />
+                <Ionicons name={unmatchedNames.length > 0 ? "search-outline" : "cart-outline"} size={44} color="#fff" />
               </View>
-              <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
-              <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
+              {unmatchedNames.length > 0 ? (
+                <>
+                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.noMatchTitle', 'Aucun produit trouvé pour votre liste')}</Text>
+                  <Text style={prodStyles.emptyHint}>{t('productsScreen.noMatchSub', 'Ces boutiques ne vendent pas ces articles. Vérifiez les noms ou parcourez les Boutiques.')}</Text>
+                </>
+              ) : (
+                <>
+                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
+                  <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
+                </>
+              )}
             </View>
           }
           contentContainerStyle={{paddingBottom: 220}}

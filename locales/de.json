@@ -55,7 +55,10 @@
     "noItems": "Keine Artikel",
     "clear": "Löschen",
     "quantity": "Menge",
-    "continueShopping": "Weiter einkaufen"
+    "continueShopping": "Weiter einkaufen",
+    "notFound": "nicht im Shop gefunden",
+    "noMatchTitle": "Keine Produkte für deine Liste gefunden",
+    "noMatchSub": "Diese Shops verkaufen diese Artikel nicht. Prüfe die Namen oder durchstöbere die Shops."
   },
   "searchPopup": {
     "header": "Was brauchst du?",

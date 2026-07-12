@@ -60,7 +60,10 @@
     "addProduct": "Add a product",
     "defaultProducts": "Add items to My List then tap \"Find exact products\" to see results here.",
     "quantity": "quantity",
-    "continueShopping": "Continue shopping"
+    "continueShopping": "Continue shopping",
+    "notFound": "not found in shops",
+    "noMatchTitle": "No products found for your list",
+    "noMatchSub": "These shops do not sell these items. Check the names or browse the Shops."
   },
   "searchPopup": {
     "header": "What do you need?",

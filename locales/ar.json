@@ -55,7 +55,10 @@
     "noItems": "لا توجد عناصر",
     "clear": "مسح",
     "quantity": "كمية",
-    "continueShopping": "متابعة التسوق"
+    "continueShopping": "متابعة التسوق",
+    "notFound": "غير موجود في المتاجر",
+    "noMatchTitle": "لم يتم العثور على منتجات لقائمتك",
+    "noMatchSub": "هذه المتاجر لا تبيع هذه العناصر. تحقق من الأسماء أو تصفح المتاجر."
   },
   "searchPopup": {
     "header": "ماذا تحتاج؟",

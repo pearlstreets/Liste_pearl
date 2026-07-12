@@ -55,7 +55,10 @@
     "noItems": "Inga varor",
     "clear": "Rensa",
     "quantity": "antal",
-    "continueShopping": "Fortsätt handla"
+    "continueShopping": "Fortsätt handla",
+    "notFound": "hittades inte i butik",
+    "noMatchTitle": "Inga produkter hittades för din lista",
+    "noMatchSub": "Dessa butiker säljer inte dessa varor. Kontrollera namnen eller bläddra bland butikerna."
   },
   "searchPopup": {
     "header": "Vad behöver du?",

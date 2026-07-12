@@ -55,7 +55,10 @@
     "noItems": "Geen items",
     "clear": "Wissen",
     "quantity": "aantal",
-    "continueShopping": "Verder winkelen"
+    "continueShopping": "Verder winkelen",
+    "notFound": "niet in winkels gevonden",
+    "noMatchTitle": "Geen producten gevonden voor je lijst",
+    "noMatchSub": "Deze winkels verkopen deze artikelen niet. Controleer de namen of blader door de Winkels."
   },
   "searchPopup": {
     "header": "Wat heb je nodig?",
