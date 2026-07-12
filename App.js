@@ -3693,7 +3693,7 @@ const ShopsScreen = () => {
 
       {/* Détail d'une boutique : ses vrais produits */}
       <Modal visible={!!selectedShop} animationType="slide" onRequestClose={() => setSelectedShop(null)}>
-        <SafeAreaView style={shopStyles.screen} edges={['top']}>
+        <View style={shopStyles.screen}>
           <View style={shopStyles.detailHeader}>
             <TouchableOpacity onPress={() => setSelectedShop(null)} style={shopStyles.backBtn}>
               <Ionicons name="chevron-back" size={24} color={THEME.ink} />
@@ -3713,7 +3713,7 @@ const ShopsScreen = () => {
           {toast ? (
             <View style={shopStyles.toast}><Ionicons name="checkmark-circle" size={18} color="#fff" /><Text style={shopStyles.toastTxt}>{toast}</Text></View>
           ) : null}
-        </SafeAreaView>
+        </View>
       </Modal>
 
       {toast ? (
@@ -3741,7 +3741,7 @@ const shopStyles = StyleSheet.create({
   badgeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
   badge: { backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   badgeTxt: { color: THEME.brandDark, fontSize: 12, fontWeight: '800' },
-  detailHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: THEME.border },
+  detailHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingTop: 56, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: THEME.border },
   backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
   detailTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink },
   prodRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: THEME.border },

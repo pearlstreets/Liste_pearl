@@ -77,6 +77,13 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
     }
     const rows = Array.isArray(data) ? data : (data && (data.results || data.data)) || [];
     if (!rows.length) break;
+    // Le backend peut renvoyer les images en tableau OU en chaîne : on
+    // normalise vers la 1ʳᵉ URL exploitable.
+    const firstUrl = (v, fallback) => {
+      if (Array.isArray(v)) return v.find((u) => typeof u === 'string' && u) || fallback || '';
+      if (typeof v === 'string' && v) return v;
+      return fallback || '';
+    };
     rows.forEach((p) => {
       const shopId = p.company_id;
       if (!shopId) return;
@@ -84,7 +91,7 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         byShop.set(shopId, {
           id: shopId,
           name: p.company_name || 'Boutique',
-          cover: p.company_cover_photo || '',
+          cover: firstUrl(p.company_cover_photo),
           address: p.company_address || '',
           phone: p.company_phone || '',
           refCode: p.company_ref_code || '',
@@ -100,7 +107,8 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         price: Number(hasPromo ? p.promotional_price : p.price) || 0,
         basePrice: Number(p.price) || 0,
         promo: hasPromo,
-        image: p.image || '',
+        // image = tableau d'URLs côté backend → 1ʳᵉ image (fallback galerie).
+        image: firstUrl(p.image, firstUrl(p.gallery)),
         description: p.description || '',
         subcategory: p.subcategory_name || p.subcategory_slug || '',
       });
