@@ -1278,9 +1278,9 @@ const ProductsScreen = () => {
                     setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
                   }} />
                   {item?.cover ? (
-                    <Image source={{ uri: item.cover }} style={prodStyles.shopIcon} resizeMode="cover" />
+                    <Image source={{ uri: item.cover }} style={[prodStyles.shopIcon, { marginLeft: 10 }]} resizeMode="cover" />
                   ) : (
-                    <View style={prodStyles.shopIcon}>
+                    <View style={[prodStyles.shopIcon, { marginLeft: 10 }]}>
                       <Ionicons name="storefront" size={22} color={THEME.brand} />
                     </View>
                   )}
