@@ -3710,6 +3710,9 @@ const ShopsScreen = () => {
             contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
             ListEmptyComponent={<Text style={shopStyles.emptyTxt}>{t('shops.noProducts', 'Aucun produit')}</Text>}
           />
+          {toast ? (
+            <View style={shopStyles.toast}><Ionicons name="checkmark-circle" size={18} color="#fff" /><Text style={shopStyles.toastTxt}>{toast}</Text></View>
+          ) : null}
         </SafeAreaView>
       </Modal>
 
