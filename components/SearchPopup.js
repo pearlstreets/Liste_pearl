@@ -617,7 +617,7 @@ export default function SearchPopup({
             }}
           >
             {/* Header */}
-            <View style={{ paddingHorizontal: 16, paddingTop: 10, paddingBottom: 0 }}>
+            <View style={{ padding: 16, paddingBottom: 0 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -664,13 +664,13 @@ export default function SearchPopup({
                   {t('searchPopup.noResults') || 'No results'}
                 </Text>
               }
-              contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 12, paddingTop: 2 }}
+              contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20, paddingTop: 10 }}
               keyboardShouldPersistTaps="handled"
               style={{ flex: 1 }}
             />
 
             {/* Bottom: selected items list + Terminer */}
-            <View style={{ backgroundColor: '#fff' }}>
+            <SafeAreaView style={{ backgroundColor: '#fff' }}>
               {selList.length > 0 && (
                 <View style={{ borderTopWidth: 1, borderTopColor: '#E5E7EB' }}>
                   <ScrollView
@@ -794,7 +794,7 @@ export default function SearchPopup({
                   </View>
                 </View>
               )}
-              <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: Platform.OS === 'ios' ? 18 : 12 }}>
+              <View style={{ paddingHorizontal: 16, paddingVertical: 10 }}>
                 <TouchableOpacity
                   onPress={handleFinish}
                   activeOpacity={0.9}
@@ -813,7 +813,7 @@ export default function SearchPopup({
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </SafeAreaView>
           </View>
         </View>
       </KeyboardAvoidingView>

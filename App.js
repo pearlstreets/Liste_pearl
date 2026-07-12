@@ -638,8 +638,8 @@ const prodStyles = StyleSheet.create({
   emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
-  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, paddingBottom: Platform.OS === 'ios' ? 30 : 16, ...THEME.shadow },
-  bottomList: { maxHeight: 220, paddingHorizontal: 20, paddingTop: 14 },
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, paddingBottom: Platform.OS === 'ios' ? 12 : 10, ...THEME.shadow },
+  bottomList: { maxHeight: 220, paddingHorizontal: 20, paddingTop: 6 },
   bottomItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: THEME.border },
   bottomItemBody: { flex: 1, marginLeft: 10 },
   bottomItemName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
@@ -1388,32 +1388,8 @@ const ProductsScreen = () => {
               {/* Display original products with quantity controls */}
               {(Array.isArray(item?.products)?item.__renderItems:[]).map((p,i)=>(
                 <View key={i} style={prodStyles.productRow}>
-                  <View style={prodStyles.productLine}>
-                    {/* Qty + Title — green if matched product found, red if not */}
-                    {(() => {
-                      const pName = String(p?.title || p?.name || '').toLowerCase().trim();
-                      const pWords = pName.split(/\s+/).filter(w => w.length > 2);
-                      const matchedQty = popupSelectedItems.filter(si => {
-                        if (si.shopIndex !== index) return false;
-                        const sName = String(si.name || '').toLowerCase().trim();
-                        const sWords = sName.split(/\s+/).filter(w => w.length > 2);
-                        return pWords.some(pw => sWords.some(sw => sw.includes(pw) || pw.includes(sw)));
-                      }).reduce((s, si) => s + (si.qty || 1), 0);
-                      const needed = Number(p?.qty || 1);
-                      const isMatched = matchedQty >= needed;
-                      const qtyColor = isMatched ? BRAND : '#EF4444';
-                      return <><View style={[prodStyles.qtyBadge, {backgroundColor: isMatched ? THEME.brandSoft : THEME.dangerSoft}]}><Text style={[prodStyles.qtyBadgeTxt, {color:qtyColor}]}>x{needed}</Text></View>
-                    <Text numberOfLines={1} style={prodStyles.productTitle}>{String(p?.title||'')}</Text>
-                    {isMatched ? (
-                      <View style={prodStyles.addedTag}>
-                        <Ionicons name="checkmark-circle" size={14} color={BRAND} />
-                        <Text style={prodStyles.addedTagTxt}>{t('cart.added') || 'Ajouté'}</Text>
-                      </View>
-                    ) : (
-                      <TouchableOpacity activeOpacity={0.85} style={prodStyles.searchBtn} onPress={()=>openShopSearch(String(item?.name||''), index, String(p?.title||p?.name||''))}><Ionicons name="search" size={13} color="#fff" /><Text style={prodStyles.searchBtnTxt}>{t('productsScreen.search')}</Text></TouchableOpacity>
-                    )}</>;
-                    })()}
-                  </View>
+                  {/* Ligne « x1 <article> / Ajouté » retirée : le vrai produit résolu
+                      est affiché directement ci-dessous. */}
 
                   {/* Show matching selected items below each product */}
                   {popupSelectedItems
