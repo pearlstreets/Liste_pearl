@@ -720,7 +720,7 @@ const ProductsScreen = () => {
       await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(out));
     }catch(e){}
   };
-  const [strategy,setStrategy]=React.useState("single");  // 'eco' | 'fast' | 'balanced' | 'single'
+  const [strategy,setStrategy]=React.useState("balanced");  // 'eco' | 'fast' | 'balanced'
   const [loading,setLoading]=React.useState(true);
   const [groups,setGroups]=React.useState([]);   // [{name,distance,time,deliveryFee,products:[{title,qty,price}],subtotal,grandTotal}]
   const [summary,setSummary]=React.useState({price:0,time:0,shops:0});
@@ -1256,10 +1256,9 @@ const ProductsScreen = () => {
 
         {/* Stratégies */}
         <View style={prodStyles.chipRow}>
-          <Chip label={t('productsScreen.strategies.singleShop')}  active={strategy==='single'} onPress={()=>setStrategy('single')} />
+          <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
           <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
-          <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
         </View>
         </View>
 
