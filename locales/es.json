@@ -57,7 +57,7 @@
     "quantity": "cantidad",
     "continueShopping": "Seguir comprando",
     "notFound": "no encontrado(s) en tienda",
-    "noMatchTitle": "No se encontraron productos para tu lista",
+    "noMatchTitle": "No se encontraron productos\npara tu lista",
     "noMatchSub": "Estas tiendas no venden estos artículos. Revisa los nombres o explora las Tiendas.",
     "searchToPrice": "Pulsa Buscar para elegir tus productos y ver el precio.",
     "searchToPriceShop": "Busca un producto para ver el precio.",

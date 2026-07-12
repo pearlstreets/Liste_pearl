@@ -633,7 +633,7 @@ const prodStyles = StyleSheet.create({
   grandLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
   grandValue: { fontSize: 15, fontWeight: '800', color: THEME.brand },
 
-  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 70, paddingHorizontal: 50 },
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
   emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
@@ -1551,7 +1551,7 @@ const ProductsScreen = () => {
               </View>
               {unmatchedNames.length > 0 ? (
                 <>
-                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.noMatchTitle', 'Aucun produit trouvé pour votre liste')}</Text>
+                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.noMatchTitle', 'Aucun produit trouvé\npour votre liste')}</Text>
                   <Text style={prodStyles.emptyHint}>{t('productsScreen.noMatchSub', 'Ces boutiques ne vendent pas ces articles. Vérifiez les noms ou parcourez les Boutiques.')}</Text>
                 </>
               ) : (
@@ -1563,7 +1563,11 @@ const ProductsScreen = () => {
             </View>
             )
           }
-          contentContainerStyle={{paddingBottom: 240}}
+          contentContainerStyle={
+            ((loading || realShops === null) || !(Array.isArray(groups) && groups.length > 0))
+              ? { flexGrow: 1, paddingBottom: 24 }
+              : { paddingBottom: 240 }
+          }
         />
 
       {/* Panneau produits sélectionnés en bas */}
@@ -5348,17 +5352,6 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         {/* Preferences */}
         <View style={profStyles.section}>
           <View style={profStyles.settingsCard}>
-            {/* Favoris */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
-              <View style={profStyles.settingIcon}>
-                <Ionicons name="heart-outline" size={19} color="#fff" />
-              </View>
-              <View style={profStyles.settingBody}>
-                <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
-                <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-            </TouchableOpacity>
             {/* Address */}
             <TouchableOpacity activeOpacity={0.8} onPress={openAddressList} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>
@@ -5369,6 +5362,17 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <Text style={profStyles.settingValue} numberOfLines={1}>
                   {defaultAddress ? [defaultAddress.house_building, defaultAddress.city].filter(Boolean).join(', ') : t('profile.noAddress')}
                 </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+            {/* Favoris */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="heart-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
+                <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>

@@ -62,7 +62,7 @@
     "quantity": "quantity",
     "continueShopping": "Continue shopping",
     "notFound": "not found in shops",
-    "noMatchTitle": "No products found for your list",
+    "noMatchTitle": "No products found\nfor your list",
     "noMatchSub": "These shops do not sell these items. Check the names or browse the Shops.",
     "searchToPrice": "Tap Search to choose your products and see the price.",
     "searchToPriceShop": "Search for a product to see the price.",

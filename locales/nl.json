@@ -57,7 +57,7 @@
     "quantity": "aantal",
     "continueShopping": "Verder winkelen",
     "notFound": "niet in winkels gevonden",
-    "noMatchTitle": "Geen producten gevonden voor je lijst",
+    "noMatchTitle": "Geen producten gevonden\nvoor je lijst",
     "noMatchSub": "Deze winkels verkopen deze artikelen niet. Controleer de namen of blader door de Winkels.",
     "searchToPrice": "Tik op Zoeken om je producten te kiezen en de prijs te zien.",
     "searchToPriceShop": "Zoek een product om de prijs te zien.",

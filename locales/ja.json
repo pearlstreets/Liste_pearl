@@ -57,7 +57,7 @@
     "quantity": "数量",
     "continueShopping": "買い物を続ける",
     "notFound": "店舗に見つかりません",
-    "noMatchTitle": "リストに一致する商品が見つかりません",
+    "noMatchTitle": "リストに一致する\n商品が見つかりません",
     "noMatchSub": "これらの店舗ではこれらの商品を販売していません。名前を確認するか、店舗を見てみてください。",
     "searchToPrice": "「検索」をタップして商品を選び、価格を確認してください。",
     "searchToPriceShop": "商品を検索して価格を確認してください。",
