@@ -1120,11 +1120,36 @@ const ProductsScreen = () => {
       const {groups,summary,unmatched}=buildProposal(items);
       setGroups(groups); setSummary(summary);
       setUnmatchedNames(Array.isArray(unmatched) ? unmatched : []);
-      // Aucun pré-remplissage automatique : AUCUN prix tant que l'utilisateur
-      // n'a pas cherché ET choisi un vrai produit (via « Chercher »). Le total
-      // ne reflète donc QUE ce qui a été explicitement sélectionné.
-      setPopupSelectedItems([]);
-      setCheckedShops({});
+      // Par DÉFAUT : on résout chaque article trouvé vers le VRAI produit le plus
+      // proche de la boutique (nom, prix, image réels) et on l'affiche pré-coché.
+      // L'utilisateur peut le changer via « Chercher ». Le matching est le MÊME
+      // que buildInventory (jamais un produit sans rapport, ex. pas « papier »
+      // pour « panier »).
+      const findReal = (shopProducts, itemName) => {
+        const inm = norm(itemName); if (!inm) return null;
+        return (shopProducts || []).find(p => {
+          const pn = norm(p.name); if (!pn) return false;
+          if (pn === inm) return true;
+          const ptok = pn.split(/\s+/).filter(Boolean);
+          const itok = inm.split(/\s+/).filter(Boolean);
+          if (itok.length >= 2 && itok.every(w => ptok.includes(w))) return true;
+          if (itok.length === 1 && inm.length >= 6 && ptok.includes(inm)) return true;
+          return false;
+        }) || null;
+      };
+      const picked = []; let __idc = Date.now(); const csAuto = {};
+      groups.forEach((g, shopIndex) => {
+        const shop = (realShops || []).find(s => s.name === g.name);
+        (g.products || []).forEach(p => {
+          const real = shop ? findReal(shop.products, p.title) : null;
+          if (!real) return;
+          if (picked.some(x => x.shopIndex === shopIndex && x.name === real.name)) return;
+          picked.push({ id: __idc++, name: real.name, detail: real.subcategory || '', price: Number(real.price) || 0, image: real.image || '', qty: p.qty || 1, shop: g.name, shopIndex, checked: true });
+          csAuto[shopIndex] = true;
+        });
+      });
+      setPopupSelectedItems(picked);
+      setCheckedShops(csAuto);
     }catch(e){ setGroups([]); setSummary({price:0,time:0,shops:0}); setUnmatchedNames([]); }
     finally{ setLoading(false); }
   },[mode,strategy,realShops]);
@@ -1216,6 +1241,7 @@ const ProductsScreen = () => {
     })()}
         ListHeaderComponent={(
           <View>
+        <View style={{ paddingHorizontal: 20, paddingTop: 8 }}>
         {/* Mode */}
         <View style={prodStyles.segment}>
           <TouchableOpacity activeOpacity={0.8} onPress={()=>setMode("collect")} style={[prodStyles.segBtn, mode==="collect" && prodStyles.segBtnOn]}>
@@ -1234,6 +1260,7 @@ const ProductsScreen = () => {
           <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
           <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
+        </View>
         </View>
 
       {/* Résumé — dérivé des produits réellement proposés (source unique :
