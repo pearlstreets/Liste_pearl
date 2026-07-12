@@ -60,7 +60,13 @@ export async function placeOrder(orderData) {
   orders.unshift(order);
   await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(orders));
 
-  // Try to sync with backend (orders endpoint may be disabled)
+  // ⚠️ NE PAS CÂBLER CE CHEMIN. Cette fonction placeOrder(services) est du code mort :
+  // le panier (App.js) utilise son propre placeOrder local. Et l'endpoint ci-dessous
+  // (/userprofessional/create-new-orders/) crée une commande ORPHELINE (son serializer
+  // n'écrit ni company, ni store, ni user, ni items) → INVISIBLE du dashboard pro (qui
+  // filtre is_paid=True + OrderItem→Product de sa company). Pour qu'une commande atteigne
+  // réellement le pro : tunnel /users/cart/add/ → /users/order/create/<company>/<cat>/
+  // (+ paiement Stripe pour passer is_paid=True). Cf mémoire pearl-list-order-payment.
   try {
     await apiPost('/userprofessional/create-new-orders/', {
       products: orderData.items.map((item) => ({
