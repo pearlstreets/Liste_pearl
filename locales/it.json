@@ -4,7 +4,8 @@
     "products": "Prodotti",
     "favorites": "Preferiti",
     "cart": "Carrello",
-    "profile": "Profilo"
+    "profile": "Profilo",
+    "shops": "Negozi"
   },
   "listScreen": {
     "scan": "Scansiona",
@@ -31,16 +32,16 @@
     "addItems": "Aggiungi Articoli",
     "strategies": {
       "balanced": "Equilibrato",
-      "totalPrice": "Prezzo totale",
-      "time": "Tempo",
-      "singleShop": "Un negozio"
+      "totalPrice": "Più economico",
+      "time": "Più veloce",
+      "singleShop": "Un solo negozio"
     },
     "proposal": "Proposta: ",
     "proposalTypes": {
       "balanced": "Equilibrato",
-      "economic": "Economico",
-      "fast": "Veloce",
-      "singleShop": "Ottimizzato"
+      "economic": "Più economico",
+      "fast": "Più veloce",
+      "singleShop": "Un solo negozio"
     },
     "total": "Totale: ",
     "time": " • Tempo: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Ortolano Biologico",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Negozi",
+    "subtitle": "Acquisto di prodotti · click & collect o consegna",
+    "products": "prodotti",
+    "added": "aggiunto al carrello",
+    "error": "Impossibile caricare i negozi",
+    "retry": "Riprova",
+    "empty": "Nessun negozio disponibile",
+    "noProducts": "Nessun prodotto"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Provincia / Regione",
     "addrEmpty": "Nessun indirizzo salvato",
     "addrDeleteConfirm": "Eliminare questo indirizzo?",
-    "addrSaveError": "Impossibile salvare l'indirizzo."
+    "addrSaveError": "Impossibile salvare l'indirizzo.",
+    "back": "Indietro",
+    "close": "Chiudi"
   },
   "auth": {
     "login": "Accedi",
@@ -296,7 +307,15 @@
       "dec": "dic"
     },
     "addedToCartSub": "aggiunti al carrello",
-    "added": "Aggiunto"
+    "added": "Aggiunto",
+    "addressRequired": "Indirizzo richiesto",
+    "addressRequiredMsg": "Aggiungi un indirizzo di consegna per continuare.",
+    "payment": "Pagamento",
+    "payAtPickup": "Da pagare al ritiro",
+    "payAtDelivery": "Da pagare alla consegna",
+    "orderConfirmedTitle": "Ordine confermato",
+    "orderConfirmedCollect": "Il tuo ordine sarà preparato per il ritiro. Segui lo stato in Profilo > Ordini.",
+    "orderConfirmedDelivery": "Un corriere si occuperà del tuo ordine. Segui lo stato in Profilo > Ordini."
   },
   "orderStatus": {
     "confirmed": "Ordine confermato",

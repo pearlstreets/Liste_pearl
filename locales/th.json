@@ -4,7 +4,8 @@
     "products": "สินค้า",
     "favorites": "รายการโปรด",
     "cart": "ตะกร้า",
-    "profile": "โปรไฟล์"
+    "profile": "โปรไฟล์",
+    "shops": "ร้านค้า"
   },
   "listScreen": {
     "scan": "สแกน",
@@ -31,16 +32,16 @@
     "addItems": "เพิ่มรายการ",
     "strategies": {
       "balanced": "สมดุล",
-      "totalPrice": "ราคารวม",
-      "time": "เวลา",
-      "singleShop": "ร้านค้าเดียว"
+      "totalPrice": "ถูกที่สุด",
+      "time": "เร็วที่สุด",
+      "singleShop": "ร้านเดียว"
     },
     "proposal": "ข้อเสนอ: ",
     "proposalTypes": {
       "balanced": "สมดุล",
-      "economic": "ประหยัด",
-      "fast": "รวดเร็ว",
-      "singleShop": "ปรับให้เหมาะสม"
+      "economic": "ถูกที่สุด",
+      "fast": "เร็วที่สุด",
+      "singleShop": "ร้านเดียว"
     },
     "total": "รวม: ",
     "time": " • เวลา: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "ร้านสินค้าเกษตรอินทรีย์",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "ร้านค้า",
+    "subtitle": "ซื้อสินค้า · รับที่ร้านหรือจัดส่ง",
+    "products": "สินค้า",
+    "added": "เพิ่มลงตะกร้าแล้ว",
+    "error": "ไม่สามารถโหลดร้านค้าได้",
+    "retry": "ลองอีกครั้ง",
+    "empty": "ไม่มีร้านค้าที่พร้อมให้บริการ",
+    "noProducts": "ไม่มีสินค้า"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "จังหวัด / ภูมิภาค",
     "addrEmpty": "ยังไม่มีที่อยู่ที่บันทึกไว้",
     "addrDeleteConfirm": "ลบที่อยู่นี้?",
-    "addrSaveError": "ไม่สามารถบันทึกที่อยู่ได้"
+    "addrSaveError": "ไม่สามารถบันทึกที่อยู่ได้",
+    "back": "กลับ",
+    "close": "ปิด"
   },
   "auth": {
     "login": "เข้าสู่ระบบ",
@@ -296,7 +307,15 @@
       "dec": "ธ.ค."
     },
     "addedToCartSub": "เพิ่มลงตะกร้าแล้ว",
-    "added": "Added"
+    "added": "Added",
+    "addressRequired": "ต้องระบุที่อยู่",
+    "addressRequiredMsg": "เพิ่มที่อยู่จัดส่งเพื่อดำเนินการต่อ.",
+    "payment": "การชำระเงิน",
+    "payAtPickup": "ชำระเงินเมื่อรับสินค้า",
+    "payAtDelivery": "ชำระเงินปลายทาง",
+    "orderConfirmedTitle": "ยืนยันคำสั่งซื้อแล้ว",
+    "orderConfirmedCollect": "คำสั่งซื้อของคุณกำลังถูกเตรียมเพื่อรับที่ร้าน ติดตามสถานะได้ที่ โปรไฟล์ > คำสั่งซื้อ.",
+    "orderConfirmedDelivery": "พนักงานจัดส่งจะมารับคำสั่งซื้อของคุณ ติดตามสถานะได้ที่ โปรไฟล์ > คำสั่งซื้อ."
   },
   "orderStatus": {
     "confirmed": "ยืนยันคำสั่งซื้อแล้ว",

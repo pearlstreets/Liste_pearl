@@ -4,7 +4,8 @@
     "products": "Produits",
     "favorites": "Favoris",
     "cart": "Panier",
-    "profile": "Profil"
+    "profile": "Profil",
+    "shops": "Boutiques"
   },
   "listScreen": {
     "scan": "Scan",
@@ -32,21 +33,21 @@
     "addItems": "Ajouter des articles",
     "strategies": {
       "balanced": "Équilibré",
-      "totalPrice": "Prix total",
-      "time": "Temps",
-      "singleShop": "1 magasin"
+      "totalPrice": "Moins cher",
+      "time": "Plus rapide",
+      "singleShop": "Un seul magasin"
     },
     "proposal": "Proposition: ",
     "proposalTypes": {
-      "balanced": "Équilibrée",
-      "economic": "Économique",
-      "fast": "Rapide",
-      "singleShop": "Optimisé"
+      "balanced": "Équilibré",
+      "economic": "Moins cher",
+      "fast": "Plus rapide",
+      "singleShop": "Un seul magasin"
     },
     "total": "Total: ",
     "time": " • Temps: ",
     "minutes": " min",
-    "shops": " • Shops: ",
+    "shops": " • Boutiques: ",
     "defaultShop": "Boutique",
     "deliveryFee": "Frais de livraison: ",
     "productsTotal": "Total produits",
@@ -102,7 +103,15 @@
     "intermarcheSud": "Intermarché Sud",
     "primeurBio": "Primeur Bio",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Centre"
+    "monoprixCentre": "Monoprix Centre",
+    "title": "Boutiques",
+    "subtitle": "Achat de produits · click & collect ou livraison",
+    "products": "produits",
+    "added": "ajouté au panier",
+    "error": "Impossible de charger les boutiques",
+    "retry": "Réessayer",
+    "empty": "Aucune boutique disponible",
+    "noProducts": "Aucun produit"
   },
   "common": {
     "euroSymbol": " €",
@@ -117,7 +126,7 @@
     "addProductHint": "Appuyez sur le coeur d'un produit pour l'ajouter",
     "searchPlaceholder": "Rechercher un shop...",
     "searchProductPlaceholder": "Rechercher un produit...",
-    "shops": "Shops",
+    "shops": "Boutiques",
     "products": "Produits"
   },
   "profile": {
@@ -225,7 +234,9 @@
     "addrState": "Région / Département",
     "addrEmpty": "Aucune adresse enregistrée",
     "addrDeleteConfirm": "Supprimer cette adresse ?",
-    "addrSaveError": "Impossible d'enregistrer l'adresse."
+    "addrSaveError": "Impossible d'enregistrer l'adresse.",
+    "back": "Retour",
+    "close": "Fermer"
   },
   "auth": {
     "login": "Connexion",
@@ -394,7 +405,15 @@
       "dec": "déc"
     },
     "addedToCartSub": "ajoutés au panier",
-    "added": "Ajouté"
+    "added": "Ajouté",
+    "addressRequired": "Adresse requise",
+    "addressRequiredMsg": "Ajoutez une adresse de livraison pour continuer.",
+    "payment": "Paiement",
+    "payAtPickup": "À payer au retrait",
+    "payAtDelivery": "À payer à la livraison",
+    "orderConfirmedTitle": "Commande confirmée",
+    "orderConfirmedCollect": "Votre commande sera préparée pour le retrait. Suivez son statut dans Profil > Commandes.",
+    "orderConfirmedDelivery": "Un livreur va prendre en charge votre commande. Suivez son statut dans Profil > Commandes."
   },
   "orderStatus": {
     "confirmed": "Commande confirmée",

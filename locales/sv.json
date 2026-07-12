@@ -4,7 +4,8 @@
     "products": "Produkter",
     "favorites": "Favoriter",
     "cart": "Kundvagn",
-    "profile": "Profil"
+    "profile": "Profil",
+    "shops": "Butiker"
   },
   "listScreen": {
     "scan": "Skanna",
@@ -31,16 +32,16 @@
     "addItems": "Lägg Till Varor",
     "strategies": {
       "balanced": "Balanserad",
-      "totalPrice": "Totalt pris",
-      "time": "Tid",
-      "singleShop": "En butik"
+      "totalPrice": "Billigast",
+      "time": "Snabbast",
+      "singleShop": "En enda butik"
     },
     "proposal": "Förslag: ",
     "proposalTypes": {
       "balanced": "Balanserad",
-      "economic": "Ekonomisk",
-      "fast": "Snabb",
-      "singleShop": "Optimerad"
+      "economic": "Billigast",
+      "fast": "Snabbast",
+      "singleShop": "En enda butik"
     },
     "total": "Totalt: ",
     "time": " • Tid: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Ekologisk Grönsakshandlare",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Butiker",
+    "subtitle": "Köp av produkter · click & collect eller leverans",
+    "products": "produkter",
+    "added": "tillagd i varukorgen",
+    "error": "Det gick inte att ladda butikerna",
+    "retry": "Försök igen",
+    "empty": "Inga butiker tillgängliga",
+    "noProducts": "Inga produkter"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Region / Län",
     "addrEmpty": "Inga sparade adresser ännu",
     "addrDeleteConfirm": "Ta bort den här adressen?",
-    "addrSaveError": "Det gick inte att spara adressen."
+    "addrSaveError": "Det gick inte att spara adressen.",
+    "back": "Tillbaka",
+    "close": "Stäng"
   },
   "auth": {
     "login": "Logga in",
@@ -296,7 +307,15 @@
       "dec": "dec"
     },
     "addedToCartSub": "tillagda i varukorgen",
-    "added": "Added"
+    "added": "Added",
+    "addressRequired": "Adress krävs",
+    "addressRequiredMsg": "Lägg till en leveransadress för att fortsätta.",
+    "payment": "Betalning",
+    "payAtPickup": "Betalas vid upphämtning",
+    "payAtDelivery": "Betalas vid leverans",
+    "orderConfirmedTitle": "Beställning bekräftad",
+    "orderConfirmedCollect": "Din beställning förbereds för upphämtning. Följ dess status i Profil > Beställningar.",
+    "orderConfirmedDelivery": "Ett bud tar hand om din beställning. Följ dess status i Profil > Beställningar."
   },
   "orderStatus": {
     "confirmed": "Beställning bekräftad",

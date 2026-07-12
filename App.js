@@ -341,6 +341,13 @@ function ListScreen() {
     );
   };
 
+  // Articles envoyés vers l'optimiseur : JAMAIS les articles barrés.
+  // Priorité aux articles cochés ; sinon tous les non-barrés. Un seul critère,
+  // visible dans le libellé du bouton (fini le fallback caché « tout envoyer »).
+  const selectableItems = items.filter(it => it && !it.crossed);
+  const selectedForSend = selectableItems.filter(it => it.selected || it.checked);
+  const itemsToSend = selectedForSend.length ? selectedForSend : selectableItems;
+
   const Header = (
     <View style={lstyles.header}>
       <View style={lstyles.headerRow}>
@@ -429,33 +436,21 @@ function ListScreen() {
           <Switch value={hideCrossed} onValueChange={setHideCrossed} trackColor={{ true: THEME.brand, false: '#D7DCE3' }} thumbColor="#fff" style={{ transform:[{ scale:0.85 }] }} />
           <Text style={lstyles.hideTxt}>{t('listScreen.hideStriked')}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.9} style={lstyles.cta} onPress={async ()=>{
+        <TouchableOpacity activeOpacity={0.9} style={[lstyles.cta, itemsToSend.length === 0 && { opacity: 0.5 }]} disabled={itemsToSend.length === 0}
+        accessibilityRole="button" accessibilityLabel={t('listScreen.findExactProducts')} onPress={async ()=>{
         try{
-          const all = Array.isArray(items) ? items : [];
-          // D'abord les items cochés, sinon tous les items non-barrés, sinon tous
-          let chosen = all.filter(it=>it && (it.selected || it.checked)).map(it=>({
+          // Un seul critère : les articles à envoyer (non barrés), jamais les barrés.
+          const chosen = itemsToSend.map(it=>({
             name: String(it.name||it.title||'').trim(),
             qty: Number(it.qty||it.quantity||1)
-          }));
-          if (!chosen.length) {
-            chosen = all.filter(it=>it && !it.crossed).map(it=>({
-              name: String(it.name||it.title||'').trim(),
-              qty: Number(it.qty||it.quantity||1)
-            }));
-          }
-          if (!chosen.length) {
-            chosen = all.map(it=>({
-              name: String(it.name||it.title||'').trim(),
-              qty: Number(it.qty||it.quantity||1)
-            }));
-          }
+          })).filter(it=>it.name);
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
         DeviceEventEmitter.emit('PRODUCTS_RESET');
         navigation.navigate("products");
       }}>
           <Ionicons name="bag-check-outline" size={20} color="#fff" />
-          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}</Text>
+          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}{itemsToSend.length > 0 ? ` (${itemsToSend.length})` : ''}</Text>
         </TouchableOpacity>
       </View>
 
@@ -708,7 +703,7 @@ const ProductsScreen = () => {
       await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(out));
     }catch(e){}
   };
-  const [strategy,setStrategy]=React.useState("balanced");  // 'eco' | 'fast' | 'balanced' | 'single'
+  const [strategy,setStrategy]=React.useState("single");  // 'eco' | 'fast' | 'balanced' | 'single'
   const [loading,setLoading]=React.useState(true);
   const [groups,setGroups]=React.useState([]);   // [{name,distance,time,deliveryFee,products:[{title,qty,price}],subtotal,grandTotal}]
   const [summary,setSummary]=React.useState({price:0,time:0,shops:0});
@@ -823,34 +818,19 @@ const ProductsScreen = () => {
             return {
               name: it.name, qty: it.qty,
               available: !!match,
-              price: match ? Number(Number(match.price).toFixed(2)) : Number(randPrice(it.name,shop.name).toFixed(2)),
+              // Prix RÉEL du produit s'il existe dans la boutique, sinon null :
+              // on n'invente JAMAIS de prix. Un article non trouvé est marqué
+              // indisponible et exclu des totaux (badge « à vérifier » côté UI).
+              price: match ? Number(Number(match.price).toFixed(2)) : null,
             };
           })
         };
       });
     }
-    // realShops === null : chargement en cours → échantillon transitoire (bref).
-    const shops=[
-      {name:"Carrefour Market", distance:"0.9 km", time:"9 min",  fee:Number(seededRand(hashStr("fee_carrefour"),1.5,4.0).toFixed(2))},
-      {name:"Intermarché Sud", distance:"0.8 km", time:"10 min", fee:Number(seededRand(hashStr("fee_inter"),1.5,4.0).toFixed(2))},
-      {name:"Primeur Bio",     distance:"0.5 km", time:"7 min",  fee:Number(seededRand(hashStr("fee_bio"),1.5,4.0).toFixed(2))},
-      {name:"Leclerc Meaux",   distance:"1.8 km", time:"8 min",  fee:Number(seededRand(hashStr("fee_leclerc"),1.5,4.0).toFixed(2))},
-      {name:"Monoprix Centre", distance:"1.2 km", time:"6 min",  fee:Number(seededRand(hashStr("fee_mono"),1.5,4.0).toFixed(2))},
-      {name:"Auchan City",     distance:"1.5 km", time:"11 min", fee:Number(seededRand(hashStr("fee_auchan"),1.5,4.0).toFixed(2))},
-      {name:"Lidl Express",    distance:"0.7 km", time:"5 min",  fee:Number(seededRand(hashStr("fee_lidl"),1.5,4.0).toFixed(2))},
-      {name:"Casino Shop",     distance:"1.0 km", time:"8 min",  fee:Number(seededRand(hashStr("fee_casino"),1.5,4.0).toFixed(2))}
-    ];
-    return shops.map(s=>({
-      ...s,
-      items: items.map(it=>{
-        const avail = (hashStr(it.name+"_avail_"+s.name)%100)<85;
-        return {
-          name: it.name, qty: it.qty,
-          available: avail,
-          price: Number(randPrice(it.name,s.name).toFixed(2))
-        };
-      })
-    }));
+    // realShops === null : catalogue en cours de chargement → AUCUN inventaire.
+    // On n'affiche jamais de fausses boutiques (mieux vaut un bref indicateur de
+    // chargement qu'un faux catalogue). L'écran gère cet état avec un spinner.
+    return [];
   };
 
   const assignEco=(items,inv)=>{
@@ -862,7 +842,7 @@ const ProductsScreen = () => {
         if(r && r.available && (!best || r.price<best.price)) best={shop:s, row:r};
       });
       if(!best){const s=inv[Math.floor(Math.random()*inv.length)];
-        best={shop:s,row:{name:it.name,price:randPrice(it.name,s.name),qty:it.qty}};}
+        best={shop:s,row:{name:it.name,price:null,qty:it.qty}};} // aucune boutique ne l'a → prix null (exclu des totaux)
       const key=best.shop.name;
       if(!map[key]) map[key]={shop:best.shop,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:best.row.price});
@@ -875,7 +855,7 @@ const ProductsScreen = () => {
     const map={};
     items.forEach(it=>{
       const chosen=sorted.find(s=>s.items.find(r=>r.name===it.name && r.available))||sorted[0];
-      const row=chosen.items.find(r=>r.name===it.name)||{price:randPrice(it.name,chosen.name)};
+      const row=chosen.items.find(r=>r.name===it.name)||{price:null};
       const key=chosen.name; if(!map[key]) map[key]={shop:chosen,products:[]};
       map[key].products.push({title:it.name,qty:it.qty,price:row.price});
     });
@@ -889,8 +869,11 @@ const ProductsScreen = () => {
       let best=null;
       inv.forEach(s=>{
         const r=s.items.find(x=>x.name===it.name);
-        const unit=r&&r.available?r.price:randPrice(it.name,s.name)*1.1;
-        const score=unit + alpha*parseMin(s.time);
+        const avail=!!(r&&r.available);
+        const unit=avail?r.price:null; // prix réel si dispo, sinon null (jamais inventé)
+        // Score interne : prix réel si dispo, sinon forte pénalité (préférer une
+        // boutique qui l'a) — sans exposer de prix fabriqué.
+        const score=(avail?r.price:9999) + alpha*parseMin(s.time);
         if(!best || score<best.score) best={shop:s,price:unit,score};
       });
       const key=best.shop.name; if(!map[key]) map[key]={shop:best.shop,products:[]};
@@ -922,6 +905,12 @@ const ProductsScreen = () => {
         if(!best || score<best.score) best={si,sj,score};
       }
     }
+    // Sécurité : 0 ou 1 boutique (ou aucune paire trouvée) → tout sur la 1ʳᵉ
+    // boutique (évite un crash sur best.si quand inv contient moins de 2 shops).
+    if(!best){
+      const s=inv[0];
+      return [{shop:s,products:items.map(it=>{const r=s.items.find(x=>x.name===it.name);return {title:it.name,qty:it.qty,price:(r&&r.available)?r.price:null};})}];
+    }
     const res={};
     items.forEach(it=>{
       const ri=best.si.items.find(x=>x.name===it.name);
@@ -929,7 +918,7 @@ const ProductsScreen = () => {
       const pi=ri&&ri.available?ri.price:Infinity;
       const pj=rj&&rj.available?rj.price:Infinity;
       const chosen=(pi<=pj)?{shop:best.si,price:pi}:{shop:best.sj,price:pj};
-      if(!isFinite(chosen.price)) chosen.price=randPrice(it.name,"fallback")*1.25;
+      if(!isFinite(chosen.price)) chosen.price=null; // aucune des 2 boutiques ne l'a → prix null
       const key=chosen.shop.name; if(!res[key]) res[key]={shop:chosen.shop,products:[]};
       res[key].products.push({title:it.name,qty:it.qty,price:chosen.price});
     });
@@ -984,25 +973,10 @@ const ProductsScreen = () => {
       const fee=mode==='delivery'?Number(g.shop.fee||0):0;
       return {name:g.shop.name,distance:g.shop.distance,time:g.shop.time,deliveryFee:fee,products:g.products,subtotal,grandTotal:subtotal+fee};
     });
-    // Favoris en haut de liste
-    // Ensure ALL products appear in ALL shops (with shop-specific prices)
-    groups.forEach(g => {
-      const shopInv = inv.find(s => s.name === g.name);
-      if (!shopInv) return;
-      items.forEach(it => {
-        const already = g.products.some(p => norm(p.title) === norm(it.name));
-        if (!already) {
-          const row = shopInv.items.find(x => x.name === it.name);
-          if (row) {
-            g.products.push({ title: it.name, qty: it.qty, price: row.price });
-          }
-        }
-      });
-      // Recalculate totals
-      g.subtotal = g.products.reduce((a, p) => a + Number(p.price || 0) * Number(p.qty || 1), 0);
-      g.grandTotal = g.subtotal + (mode === 'delivery' ? Number(g.deliveryFee || 0) : 0);
-    });
-
+    // Chaque boutique n'affiche QUE les articles qui lui sont réellement
+    // affectés par la stratégie (plus de duplication « tous les produits dans
+    // toutes les boutiques » : les cartes étaient identiques et les totaux faux).
+    // Favoris en haut de liste.
     groups.sort((a,b) => {
       const aFav = favShops.includes(a.name) ? 0 : 1;
       const bFav = favShops.includes(b.name) ? 0 : 1;
@@ -1069,19 +1043,21 @@ const ProductsScreen = () => {
       const product = mapResults ? mapResults[0] : null;
       if (!product) return;
 
-      // Add product to EVERY shop that has it in their products list
+      // N'ajouter le produit qu'aux boutiques où il est RÉELLEMENT affecté par
+      // la stratégie (présent dans group.products) — fini « chaque produit dans
+      // chaque boutique » qui rendait toutes les cartes identiques.
       groups.forEach((group, shopIndex) => {
         const shopProduct = (group.products || []).find(p => {
           const pName = norm(p.title);
           return pName === key || pName.includes(key) || key.includes(pName);
         });
-        // Always add — every shop should show every product
+        if (!shopProduct) return; // non affecté à cette boutique → on ne l'affiche pas
         filled.push({
           id: idCounter++,
           name: product.name,
           detail: product.detail || '',
           unitPrice: product.unitPrice || '',
-          price: shopProduct ? (product.price || shopProduct.price || 0) : (product.price || 0),
+          price: product.price || shopProduct.price || 0,
           qty: item.qty || 1,
           shop: group.name,
           shopIndex: shopIndex,
@@ -1185,43 +1161,64 @@ const ProductsScreen = () => {
 
         {/* Stratégies */}
         <View style={prodStyles.chipRow}>
-          <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
+          <Chip label={t('productsScreen.strategies.singleShop')}  active={strategy==='single'} onPress={()=>setStrategy('single')} />
           <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
-          <Chip label={t('productsScreen.strategies.singleShop')}  active={strategy==='single'} onPress={()=>setStrategy('single')} />
+          <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
         </View>
       </View>
 
-      {/* Résumé */}
-      <View style={prodStyles.summaryCard}>
-        <Text style={prodStyles.summaryTitle}>{t('productsScreen.proposal')}{strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop')}</Text>
-        <View style={prodStyles.summaryStats}>
-          <View style={prodStyles.statBox}>
-            <Text style={prodStyles.statValue}>{fmtPrice(summary.price)}</Text>
-            <Text style={prodStyles.statLabel}>{t('productsScreen.total').replace(/[:•]/g,'').trim() || 'Total'}</Text>
-          </View>
-          <View style={prodStyles.statDivider} />
-          <View style={prodStyles.statBox}>
-            <Text style={prodStyles.statValue}>{summary.time}{t('productsScreen.minutes')}</Text>
-            <Text style={prodStyles.statLabel}>{t('productsScreen.time').replace(/[:•]/g,'').trim() || 'Temps'}</Text>
-          </View>
-          <View style={prodStyles.statDivider} />
-          <View style={prodStyles.statBox}>
-            <Text style={prodStyles.statValue}>{summary.shops}</Text>
-            <Text style={prodStyles.statLabel}>{t('productsScreen.shops').replace(/[:•]/g,'').trim() || 'Shops'}</Text>
+      {/* Résumé — dérivé des produits réellement proposés (source unique :
+          popupSelectedItems), cohérent avec les totaux par boutique plus bas.
+          Plus de « temps » inventé ni de total gonflé par la duplication. */}
+      {realShops !== null && (() => {
+        const sel = Array.isArray(popupSelectedItems) ? popupSelectedItems : [];
+        const g = Array.isArray(groups) ? groups : [];
+        let price, qty, shopsN;
+        if (sel.length > 0) {
+          // Source normale : les produits réellement proposés (mêmes prix que les cartes).
+          price = sel.reduce((s,si)=>s+Number(si.price||0)*Number(si.qty||1),0);
+          qty = sel.reduce((s,si)=>s+Number(si.qty||1),0);
+          shopsN = new Set(sel.map(si=>si.shop).filter(Boolean)).size;
+        } else {
+          // Repli sur les groupes (mêmes boutiques que les cartes) pour ne jamais
+          // afficher 0 à tort quand l'auto-remplissage catalogue n'a rien trouvé.
+          price = g.reduce((s,shop)=>s+Number(shop.subtotal||0),0);
+          qty = g.reduce((s,shop)=>s+(shop.products||[]).reduce((a,p)=>a+Number(p.qty||1),0),0);
+          shopsN = g.length;
+        }
+        return (
+        <View style={prodStyles.summaryCard}>
+          <Text style={prodStyles.summaryTitle}>{t('productsScreen.proposal')}{strategy==="balanced"?t('productsScreen.proposalTypes.balanced'):strategy==="eco"?t('productsScreen.proposalTypes.economic'):strategy==="fast"?t('productsScreen.proposalTypes.fast'):t('productsScreen.proposalTypes.singleShop')}</Text>
+          <View style={prodStyles.summaryStats}>
+            <View style={prodStyles.statBox}>
+              <Text style={prodStyles.statValue}>{fmtPrice(price)}</Text>
+              <Text style={prodStyles.statLabel}>{t('productsScreen.total').replace(/[:•]/g,'').trim() || 'Total'}</Text>
+            </View>
+            <View style={prodStyles.statDivider} />
+            <View style={prodStyles.statBox}>
+              <Text style={prodStyles.statValue}>{qty}</Text>
+              <Text style={prodStyles.statLabel}>{(t('productsScreen.quantity')||'Articles').replace(/[:•]/g,'').trim()}</Text>
+            </View>
+            <View style={prodStyles.statDivider} />
+            <View style={prodStyles.statBox}>
+              <Text style={prodStyles.statValue}>{shopsN}</Text>
+              <Text style={prodStyles.statLabel}>{t('productsScreen.shops').replace(/[:•]/g,'').trim() || 'Boutiques'}</Text>
+            </View>
           </View>
         </View>
-      </View>
+        );
+      })()}
 
       {/* Bandeau info quand liste vide */}
-      {showingDefaults && !loading && (
+      {showingDefaults && !loading && realShops !== null && (
         <View style={prodStyles.infoBanner}>
           <Ionicons name="information-circle" size={18} color={THEME.brand} />
           <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
         </View>
       )}
 
-      {loading ? (
+      {(loading || realShops === null) ? (
         <ActivityIndicator style={{marginTop:24}} color={THEME.brand} />
       ) : (
         <FlatList
@@ -1269,18 +1266,13 @@ const ProductsScreen = () => {
                   <View style={{flex:1}}>
                     <Text numberOfLines={1} style={prodStyles.shopName}>{item?.name||t('productsScreen.defaultShop')}</Text>
                     <View style={prodStyles.metaRow}>
-                      {item?.distance ? (
-                        <View style={prodStyles.metaChip}>
-                          <Ionicons name="location-outline" size={12} color={THEME.muted} />
-                          <Text style={prodStyles.metaTxt}>{item.distance}</Text>
-                        </View>
-                      ) : null}
-                      {item?.time ? (
-                        <View style={prodStyles.metaChip}>
-                          <Ionicons name="time-outline" size={12} color={THEME.muted} />
-                          <Text style={prodStyles.metaTxt}>{item.time}</Text>
-                        </View>
-                      ) : null}
+                      {/* Info HONNÊTE : nombre d'articles affectés à cette boutique.
+                          On n'affiche plus de distance/temps inventés (pas de vraie
+                          géoloc/ETA côté app ; le vrai frais est calculé à la commande). */}
+                      <View style={prodStyles.metaChip}>
+                        <Ionicons name="pricetags-outline" size={12} color={THEME.muted} />
+                        <Text style={prodStyles.metaTxt}>{(item?.products || item?.__renderItems || []).length} {t('productsScreen.quantity') || 'articles'}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -1939,19 +1931,9 @@ const FavoritesScreen = () => {
       const raw = await AsyncStorage.getItem(KEY_FAV_SHOPS);
       const arr = raw ? JSON.parse(raw) : [];
       setFavShops(Array.isArray(arr) ? arr : []);
-      const details = (Array.isArray(arr) ? arr : []).map(shopName => {
-        const shopData = [
-          {name: "Carrefour Market", distance: "0.9 km", time: "9 min", address: "12 Rue du Commerce"},
-          {name: "Intermarché Sud", distance: "0.8 km", time: "10 min", address: "45 Avenue du Sud"},
-          {name: "Primeur Bio", distance: "0.5 km", time: "7 min", address: "8 Place du Marché"},
-          {name: "Leclerc Meaux", distance: "1.8 km", time: "8 min", address: "Zone Commerciale Meaux"},
-          {name: "Monoprix Centre", distance: "1.2 km", time: "6 min", address: "Centre Ville"},
-          {name: "Auchan City", distance: "1.5 km", time: "11 min", address: "23 Boulevard Haussmann"},
-          {name: "Lidl Express", distance: "0.7 km", time: "5 min", address: "6 Rue des Lilas"},
-          {name: "Casino Shop", distance: "1.0 km", time: "8 min", address: "18 Avenue de la République"}
-        ].find(s => s.name === shopName);
-        return shopData || {name: shopName, distance: "", time: "", address: ""};
-      });
+      // Les boutiques favorites sont de vraies boutiques Pearl Streets (ajoutées
+      // par nom). On n'invente plus de distance/horaire/adresse : on affiche le nom.
+      const details = (Array.isArray(arr) ? arr : []).map(shopName => ({ name: shopName, distance: "", time: "", address: "" }));
       setShopDetails(details);
     } catch(e) { setFavShops([]); setShopDetails([]); }
   }, []);
@@ -2339,39 +2321,26 @@ const cartStyles = StyleSheet.create({
   trackerFooter: { paddingHorizontal: 20, paddingTop: 18, paddingBottom: Platform.OS === 'ios' ? 34 : 16 },
 });
 
-const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
+const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const isCollect = mode === 'collect';
+  // Suivi HONNÊTE : la commande est réellement créée à la confirmation. On
+  // n'affiche donc plus de fausse progression temporisée ni de « Livré » simulé.
+  // Seule l'étape « confirmée » est validée ; la suite est le parcours à venir,
+  // suivi en temps réel dans Profil > Commandes.
   const steps = isCollect ? [
-    { icon: "checkmark-circle", label: t('orderStatus.confirmed'), delay: 0 },
-    { icon: "storefront", label: t('orderStatus.preparing'), delay: 2500 },
-    { icon: "bag-handle", label: t('orderStatus.ready'), delay: 6000 },
-    { icon: "walk", label: t('orderStatus.waitingPickup'), delay: 10000 },
-    { icon: "checkmark-done", label: t('orderStatus.collected'), delay: 13000 },
+    { icon: "checkmark-circle", label: t('orderStatus.confirmed') },
+    { icon: "storefront", label: t('orderStatus.preparing') },
+    { icon: "bag-handle", label: t('orderStatus.ready') },
+    { icon: "checkmark-done", label: t('orderStatus.collected') },
   ] : [
-    { icon: "checkmark-circle", label: t('orderStatus.confirmed'), delay: 0 },
-    { icon: "storefront", label: t('orderStatus.preparing'), delay: 2500 },
-    { icon: "bicycle", label: t('orderStatus.onTheWay'), delay: 6000 },
-    { icon: "location", label: t('orderStatus.almostThere'), delay: 10000 },
-    { icon: "home", label: t('orderStatus.delivered'), delay: 13000 },
+    { icon: "checkmark-circle", label: t('orderStatus.confirmed') },
+    { icon: "storefront", label: t('orderStatus.preparing') },
+    { icon: "bicycle", label: t('orderStatus.onTheWay') },
+    { icon: "home", label: t('orderStatus.delivered') },
   ];
-  const [currentStep, setCurrentStep] = React.useState(0);
-  const [orderNumber] = React.useState(() => "SG-" + Math.floor(10000 + Math.random() * 90000));
-  const [eta, setEta] = React.useState(25);
-
-  React.useEffect(() => {
-    if (!visible) { setCurrentStep(0); setEta(25); return; }
-    const timers = steps.map((s, i) => {
-      if (i === 0) return null;
-      return setTimeout(() => setCurrentStep(i), s.delay);
-    });
-    // ETA countdown
-    const interval = setInterval(() => {
-      setEta(prev => Math.max(0, prev - 1));
-    }, 1000);
-    return () => { timers.forEach(t => t && clearTimeout(t)); clearInterval(interval); };
-  }, [visible]);
+  const currentStep = 0; // « confirmée » uniquement — les étapes suivantes sont informatives
 
   if (!visible) return null;
 
@@ -2386,23 +2355,17 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
               <Ionicons name="close" size={20} color={THEME.muted} />
             </TouchableOpacity>
           </View>
-          <Text style={cartStyles.trackerOrderNo}>N° {orderNumber}</Text>
+          <Text style={cartStyles.trackerOrderNo}>N° {orderNo || '—'}</Text>
         </View>
 
-        {/* ETA */}
+        {/* Confirmation (état honnête, sans ETA simulée) */}
         <View style={cartStyles.etaWrap}>
           <View style={cartStyles.etaCircle}>
-            {currentStep >= 4 ? (
-              <Ionicons name="checkmark" size={50} color={THEME.brand} />
-            ) : (
-              <>
-                <Ionicons name="time-outline" size={34} color={THEME.brand} />
-                <Text style={cartStyles.etaValue}>{eta} min</Text>
-              </>
-            )}
+            <Ionicons name="checkmark" size={50} color={THEME.brand} />
           </View>
-          <Text style={cartStyles.etaCaption}>
-            {currentStep >= 4 ? (isCollect ? t('cart.orderCollected') : t('cart.orderArrived')) : (isCollect ? t('cart.estimatedPickup') : t('cart.estimatedDelivery'))}
+          <Text style={cartStyles.etaCaption}>{t('cart.orderConfirmedTitle', 'Commande confirmée')}</Text>
+          <Text style={[cartStyles.stepLabel, cartStyles.stepLabelOff, { textAlign: 'center', marginTop: 6, paddingHorizontal: 34 }]}>
+            {isCollect ? t('cart.orderConfirmedCollect', 'Votre commande sera préparée pour le retrait. Suivez son statut dans Profil > Commandes.') : t('cart.orderConfirmedDelivery', 'Un livreur va prendre en charge votre commande. Suivez son statut dans Profil > Commandes.')}
           </Text>
         </View>
 
@@ -2456,18 +2419,20 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode }) => {
               <Text style={cartStyles.trackerTotalLabel}>{t('cart.total')}</Text>
               <Text style={cartStyles.trackerTotalValue}>{fmtPrice(total || 0)}</Text>
             </View>
+            <View style={[cartStyles.trackerLineRow, { paddingLeft: 0, marginTop: 8 }]}>
+              <Text style={cartStyles.trackerLineName}>{t('cart.payment', 'Paiement')}</Text>
+              <Text style={cartStyles.trackerLinePrice}>{isCollect ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
+            </View>
           </View>
         </ScrollView>
 
-        {/* Close button */}
-        {currentStep >= 4 && (
-          <View style={cartStyles.trackerFooter}>
-            <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={cartStyles.primaryBtn}>
-              <Ionicons name="checkmark-circle" size={20} color="#fff" />
-              <Text style={cartStyles.primaryBtnTxt}>{t('cart.done')}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        {/* Terminé — toujours disponible (la commande est déjà enregistrée) */}
+        <View style={cartStyles.trackerFooter}>
+          <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={cartStyles.primaryBtn} accessibilityRole="button" accessibilityLabel={t('cart.done')}>
+            <Ionicons name="checkmark-circle" size={20} color="#fff" />
+            <Text style={cartStyles.primaryBtnTxt}>{t('cart.done')}</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </Modal>
   );
@@ -2503,6 +2468,9 @@ const CartScreen = ({ isAuth }) => {
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
+  const [placedOrder, setPlacedOrder] = React.useState(null); // snapshot de la commande passée (pour le suivi)
+  const [placing, setPlacing] = React.useState(false);
+  const placingRef = React.useRef(false); // garde d'idempotence anti double-création
   const [selectedCart, setSelectedCart] = React.useState({});
   const [orderMode, setOrderMode] = React.useState('delivery'); // 'delivery' | 'collect'
   const [cartSearchVisible, setCartSearchVisible] = React.useState(false);
@@ -2666,6 +2634,7 @@ const CartScreen = ({ isAuth }) => {
     const updated = cartItems.filter((_, i) => i !== index);
     setCartItems(updated);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
   };
 
   const updateQty = async (index, delta) => {
@@ -2675,6 +2644,7 @@ const CartScreen = ({ isAuth }) => {
     });
     setCartItems(updated);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
   };
 
   const clearCart = async () => {
@@ -2687,10 +2657,72 @@ const CartScreen = ({ isAuth }) => {
           setCartItems([]);
           setSelectedCart({});
           await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+          DeviceEventEmitter.emit('CART_COUNT_CHANGED');
         }}
       ]
     );
   };
+
+  // Crée la commande AU MOMENT de la confirmation (plus au « Terminé » du suivi).
+  // Conséquences : le suivi devient purement informatif, fermer la croix n'annule
+  // plus rien silencieusement, on ne commande QUE les articles sélectionnés, et
+  // les articles NON sélectionnés restent dans le panier (aucune perte).
+  const placeOrder = React.useCallback(async () => {
+    const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
+    if (selectedItems.length === 0) return null;
+    const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
+    const subtotal = selectedItems.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
+    const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
+    const selectedDay = deliveryDays[selectedDateIndex];
+    const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
+    const orderId = Date.now();
+    const order = {
+      id: orderId,
+      date: new Date().toISOString(),
+      items: selectedItems,
+      total: subtotal + deliveryFee,
+      subtotal,
+      deliveryFee,
+      shops,
+      mode: orderMode,
+      slot: selectedSlot || '',
+      deliveryDate: deliveryDateLabel,
+      address: orderMode === 'delivery' ? deliveryAddress : '',
+      addressId: orderMode === 'delivery' ? selectedAddressId : null,
+      deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
+    };
+    try {
+      const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
+      const history = raw ? JSON.parse(raw) : [];
+      history.unshift(order);
+      await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
+    } catch (e) {}
+    // Livraison → créer la course réelle pour l'app Livreur (Pearl Streets)
+    if (orderMode === 'delivery') {
+      try {
+        const profileRaw = await AsyncStorage.getItem(KEY_PROFILE);
+        const profile = profileRaw ? JSON.parse(profileRaw) : {};
+        const recipientName = selectedAddress ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim() : '';
+        const recipientPhone = selectedAddress ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim() : '';
+        await createDeliveryOrder({
+          id: orderId, shops, address: deliveryAddress, addressId: selectedAddressId,
+          customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
+          customerPhone: recipientPhone || profile.phone || '',
+          items: selectedItems, total: subtotal + deliveryFee, deliveryFee,
+          slot: selectedSlot || '', deliveryDate: deliveryDateLabel, mode: 'delivery',
+        });
+      } catch (e) {}
+    }
+    // Retirer du panier UNIQUEMENT les articles commandés (garder le reste)
+    const remaining = cartItems.filter((_, i) => !selectedCart[i]);
+    setCartItems(remaining);
+    const sel = {}; remaining.forEach((_, i) => { sel[i] = true; });
+    setSelectedCart(sel);
+    await AsyncStorage.setItem(KEY_CART, JSON.stringify(remaining));
+    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+    setPlacedOrder({ items: selectedItems, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6) });
+    return order;
+  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId]);
 
   // Group cart items by shop (must be before early return to respect hooks order)
   const groupedCart = React.useMemo(() => {
@@ -3114,6 +3146,10 @@ const CartScreen = ({ isAuth }) => {
                   <Text style={cartStyles.grandLabel}>{t('cart.total')}</Text>
                   <Text style={cartStyles.grandValue}>{fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 : 0))}</Text>
                 </View>
+                <View style={[cartStyles.totalRow, { marginTop: 10, marginBottom: 0 }]}>
+                  <Text style={cartStyles.totalLabel}>{t('cart.payment', 'Paiement')}</Text>
+                  <Text style={cartStyles.totalValue}>{orderMode === 'collect' ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
+                </View>
               </View>
 
               {/* Nombre articles */}
@@ -3124,21 +3160,48 @@ const CartScreen = ({ isAuth }) => {
 
             {/* Boutons */}
             <View style={cartStyles.sheetFooter}>
+              {(() => {
+                const missingAddress = orderMode === 'delivery' && !selectedAddress;
+                // Le bouton reste TAPPABLE quand l'adresse manque : il guide alors vers
+                // le sélecteur d'adresse (plus de branche morte). Il n'est vraiment
+                // désactivé que sans créneau ou pendant l'envoi.
+                const disabled = placing || !selectedSlot;
+                return (
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => {
+                disabled={disabled}
+                accessibilityRole="button"
+                accessibilityLabel={missingAddress ? t('cart.addressRequired', 'Adresse requise') : t('cart.confirmOrder')}
+                onPress={async () => {
                   if (!selectedSlot) {
                     Alert.alert(t('cart.slotRequired'), t('cart.slotRequiredMsg'));
                     return;
                   }
-                  setConfirmVisible(false);
-                  setOrderVisible(true);
+                  // En livraison, une adresse est obligatoire (sinon le livreur
+                  // n'a pas de destination). On ouvre directement le sélecteur.
+                  if (orderMode === 'delivery' && !selectedAddress) {
+                    Alert.alert(t('cart.addressRequired', 'Adresse requise'), t('cart.addressRequiredMsg', 'Ajoutez une adresse de livraison pour continuer.'));
+                    setAddressPickerVisible(true);
+                    return;
+                  }
+                  if (placingRef.current) return; // idempotence : ignore les taps rapides
+                  placingRef.current = true;
+                  setPlacing(true);
+                  try {
+                    const ok = await placeOrder();
+                    if (ok) { setConfirmVisible(false); setOrderVisible(true); }
+                    else { Alert.alert(t('cart.emptyCart'), t('cart.addProductsFromTab')); }
+                  } finally { placingRef.current = false; setPlacing(false); }
                 }}
-                style={[cartStyles.primaryBtn, !selectedSlot && cartStyles.primaryBtnDisabled]}
+                style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
               >
-                <Ionicons name="checkmark-circle" size={20} color="#fff" />
-                <Text style={cartStyles.primaryBtnTxt}>{t('cart.confirmOrder')}</Text>
+                {placing ? <ActivityIndicator color="#fff" /> : (<>
+                  <Ionicons name={missingAddress ? 'location-outline' : 'checkmark-circle'} size={20} color="#fff" />
+                  <Text style={cartStyles.primaryBtnTxt}>{missingAddress ? t('cart.addressRequired', 'Adresse requise') : t('cart.confirmOrder')}</Text>
+                </>)}
               </TouchableOpacity>
+                );
+              })()}
               <TouchableOpacity
                 activeOpacity={0.85}
                 onPress={() => setConfirmVisible(false)}
@@ -3295,74 +3358,12 @@ const CartScreen = ({ isAuth }) => {
 
       <OrderTracker
         visible={orderVisible}
-        items={cartItems}
-        total={totalPrice}
-        mode={orderMode}
-        onCancel={() => setOrderVisible(false)}
-        onClose={async () => {
-          setOrderVisible(false);
-          // Save to order history
-          try {
-            const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
-            const history = raw ? JSON.parse(raw) : [];
-            const shops = [...new Set(cartItems.map(i => i.shop).filter(Boolean))];
-            const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
-            const selectedDay = deliveryDays[selectedDateIndex];
-            const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
-            const orderId = Date.now();
-            const order = {
-              id: orderId,
-              date: new Date().toISOString(),
-              items: cartItems,
-              total: totalPrice + deliveryFee,
-              subtotal: totalPrice,
-              deliveryFee,
-              shops,
-              mode: orderMode,
-              slot: selectedSlot || '',
-              deliveryDate: deliveryDateLabel,
-              address: orderMode === 'delivery' ? deliveryAddress : '',
-              addressId: orderMode === 'delivery' ? selectedAddressId : null,
-              deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
-            };
-            history.unshift(order);
-            await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
-
-            // If delivery mode, create delivery assignment for Livraison-app drivers
-            if (orderMode === 'delivery') {
-              try {
-                const profileRaw = await AsyncStorage.getItem(KEY_PROFILE);
-                const profile = profileRaw ? JSON.parse(profileRaw) : {};
-                const recipientName = selectedAddress
-                  ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim()
-                  : '';
-                const recipientPhone = selectedAddress
-                  ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim()
-                  : '';
-                await createDeliveryOrder({
-                  id: orderId,
-                  shops,
-                  address: deliveryAddress,
-                  addressId: selectedAddressId,
-                  customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
-                  customerPhone: recipientPhone || profile.phone || '',
-                  items: cartItems,
-                  total: totalPrice + deliveryFee,
-                  deliveryFee,
-                  slot: selectedSlot || '',
-                  deliveryDate: deliveryDateLabel,
-                  mode: 'delivery',
-                });
-              } catch(e) {
-                console.log('Delivery order sync skipped:', e.message);
-              }
-            }
-          } catch(e) {}
-          // Clear cart after order
-          setCartItems([]);
-          setSelectedCart({});
-          await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-        }}
+        items={placedOrder?.items || []}
+        total={placedOrder?.total || 0}
+        mode={placedOrder?.mode || orderMode}
+        orderNo={placedOrder?.orderNo}
+        onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
+        onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
       />
 
       {/* Modal liste produits du shop */}
@@ -3439,6 +3440,7 @@ const CartScreen = ({ isAuth }) => {
                         updated.forEach((_, i) => { sel[i] = true; });
                         setSelectedCart(sel);
                         await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+                        DeviceEventEmitter.emit('CART_COUNT_CHANGED');
                         // Mark as in cart
                         setShopProductsList(prev => prev.map(p => p.name === product.name ? {...p, inCart: true} : p));
                       }}
@@ -3547,6 +3549,7 @@ const CartScreen = ({ isAuth }) => {
           updated.forEach((_, i) => { sel[i] = true; });
           setSelectedCart(sel);
           await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
+          DeviceEventEmitter.emit('CART_COUNT_CHANGED');
           setCartSearchVisible(false);
         }}
       />
@@ -3611,6 +3614,7 @@ const ShopsScreen = () => {
         });
       }
       await AsyncStorage.setItem(KEY_CART, JSON.stringify(existing));
+      DeviceEventEmitter.emit('CART_UPDATED');
       setToast(`${product.name} — ${t('shops.added', 'ajouté au panier')}`);
       setTimeout(() => setToast(''), 1600);
     } catch (e) {}
@@ -3653,7 +3657,8 @@ const ShopsScreen = () => {
           {item.promo ? <Text style={shopStyles.prodBase}>{fmtPrice(item.basePrice)}</Text> : null}
         </View>
       </View>
-      <TouchableOpacity style={shopStyles.addBtn} onPress={() => addToCart(selectedShop, item)}>
+      <TouchableOpacity style={shopStyles.addBtn} onPress={() => addToCart(selectedShop, item)}
+        accessibilityRole="button" accessibilityLabel={`${t('cart.add', 'Ajouter')} ${item.name}`} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
         <Ionicons name="add" size={22} color="#fff" />
       </TouchableOpacity>
     </View>
@@ -3695,7 +3700,8 @@ const ShopsScreen = () => {
       <Modal visible={!!selectedShop} animationType="slide" onRequestClose={() => setSelectedShop(null)}>
         <View style={shopStyles.screen}>
           <View style={shopStyles.detailHeader}>
-            <TouchableOpacity onPress={() => setSelectedShop(null)} style={shopStyles.backBtn}>
+            <TouchableOpacity onPress={() => setSelectedShop(null)} style={shopStyles.backBtn}
+              accessibilityRole="button" accessibilityLabel={t('profile.back', 'Retour')}>
               <Ionicons name="chevron-back" size={24} color={THEME.ink} />
             </TouchableOpacity>
             <View style={{ flex: 1 }}>
@@ -3758,10 +3764,32 @@ const shopStyles = StyleSheet.create({
 function MainNavigator({ onLogout, isAuth }) {
   const { t } = useTranslation();
 
+  // Compteur du panier pour le badge de l'onglet Panier (source : KEY_CART).
+  const [cartCount, setCartCount] = React.useState(0);
+  React.useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(KEY_CART);
+        const arr = raw ? JSON.parse(raw) : [];
+        const n = Array.isArray(arr) ? arr.reduce((s, it) => s + Number(it.qty || 1), 0) : 0;
+        if (mounted) setCartCount(n);
+      } catch (e) { if (mounted) setCartCount(0); }
+    };
+    load();
+    // CART_UPDATED = ajout externe (recharge aussi l'écran Panier) ; CART_COUNT_CHANGED
+    // = mutation interne au Panier (badge seul, ne recharge PAS l'écran pour préserver
+    // la sélection de l'utilisateur). Le badge écoute les deux.
+    const sub = DeviceEventEmitter.addListener('CART_UPDATED', load);
+    const sub2 = DeviceEventEmitter.addListener('CART_COUNT_CHANGED', load);
+    return () => { mounted = false; sub.remove(); sub2.remove(); };
+  }, []);
+
   const ICONS = {
     "profile": { focused: "person", unfocused: "person-outline" },
     "myList": { focused: "reorder-three", unfocused: "reorder-three-outline" },
-    "products": { focused: "cart",           unfocused: "cart-outline" },
+    // Optimiseur = comparaison de prix (icône distincte du Panier)
+    "products": { focused: "pricetags",      unfocused: "pricetags-outline" },
     "shops": { focused: "storefront",      unfocused: "storefront-outline" },
     "favorites":  { focused: "heart",          unfocused: "heart-outline" },
     "cart":   { focused: "bag-handle",     unfocused: "bag-handle-outline" }
@@ -3798,7 +3826,7 @@ function MainNavigator({ onLogout, isAuth }) {
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
       <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="cart" options={{ headerShown: false }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="favorites" component={FavoritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
     </Tab.Navigator>
@@ -3918,6 +3946,7 @@ function AuthScreen({ onLogin, onClose }) {
     await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
     await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
     await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
     setLoading(false);
     onLogin();
   };
@@ -4037,7 +4066,7 @@ function AuthScreen({ onLogin, onClose }) {
               contentContainerStyle={{paddingHorizontal:14, paddingVertical:10}}
               renderItem={({item: lang}) => (
                 <TouchableOpacity
-                  onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANG', lang.code); setLangVisible(false); }}
+                  onPress={async () => { await i18nAuth.changeLanguage(lang.code); await AsyncStorage.setItem('APP_LANGUAGE', lang.code); setLangVisible(false); }}
                   activeOpacity={0.7}
                   style={[authStyles.langRow, i18nAuth.language === lang.code && authStyles.langRowActive]}
                 >
@@ -5265,6 +5294,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
                   await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
                   await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                  DeviceEventEmitter.emit('CART_COUNT_CHANGED');
                 } catch(e) {}
                 if (onLogout) onLogout();
               }}

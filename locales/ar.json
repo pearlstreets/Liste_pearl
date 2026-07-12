@@ -4,7 +4,8 @@
     "products": "المنتجات",
     "favorites": "المفضلة",
     "cart": "السلة",
-    "profile": "الملف الشخصي"
+    "profile": "الملف الشخصي",
+    "shops": "المتاجر"
   },
   "listScreen": {
     "scan": "مسح ضوئي",
@@ -31,16 +32,16 @@
     "addItems": "إضافة عناصر",
     "strategies": {
       "balanced": "متوازن",
-      "totalPrice": "السعر الإجمالي",
-      "time": "الوقت",
+      "totalPrice": "الأرخص",
+      "time": "الأسرع",
       "singleShop": "متجر واحد"
     },
     "proposal": "الاقتراح: ",
     "proposalTypes": {
       "balanced": "متوازن",
-      "economic": "اقتصادي",
-      "fast": "سريع",
-      "singleShop": "محسّن"
+      "economic": "الأرخص",
+      "fast": "الأسرع",
+      "singleShop": "متجر واحد"
     },
     "total": "الإجمالي: ",
     "time": " • الوقت: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "متجر الخضار العضوي",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "المتاجر",
+    "subtitle": "شراء المنتجات · الاستلام من المتجر أو التوصيل",
+    "products": "منتجات",
+    "added": "أُضيف إلى السلة",
+    "error": "تعذّر تحميل المتاجر",
+    "retry": "إعادة المحاولة",
+    "empty": "لا توجد متاجر متاحة",
+    "noProducts": "لا توجد منتجات"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "المنطقة / المحافظة",
     "addrEmpty": "لا توجد عناوين محفوظة",
     "addrDeleteConfirm": "حذف هذا العنوان؟",
-    "addrSaveError": "تعذّر حفظ العنوان."
+    "addrSaveError": "تعذّر حفظ العنوان.",
+    "back": "رجوع",
+    "close": "إغلاق"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -296,7 +307,15 @@
       "dec": "ديسمبر"
     },
     "addedToCartSub": "أضيفت إلى السلة",
-    "added": "تمت الإضافة"
+    "added": "تمت الإضافة",
+    "addressRequired": "العنوان مطلوب",
+    "addressRequiredMsg": "أضِف عنوان توصيل للمتابعة.",
+    "payment": "الدفع",
+    "payAtPickup": "الدفع عند الاستلام",
+    "payAtDelivery": "الدفع عند التوصيل",
+    "orderConfirmedTitle": "تم تأكيد الطلب",
+    "orderConfirmedCollect": "سيتم تجهيز طلبك للاستلام. تابِع حالته في الملف الشخصي > الطلبات.",
+    "orderConfirmedDelivery": "سيتولى أحد عمّال التوصيل طلبك. تابِع حالته في الملف الشخصي > الطلبات."
   },
   "orderStatus": {
     "confirmed": "تم تأكيد الطلب",

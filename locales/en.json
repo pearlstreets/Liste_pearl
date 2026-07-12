@@ -4,7 +4,8 @@
     "products": "Products",
     "favorites": "Favorites",
     "cart": "Cart",
-    "profile": "Profile"
+    "profile": "Profile",
+    "shops": "Shops"
   },
   "listScreen": {
     "scan": "Scan",
@@ -32,16 +33,16 @@
     "addItems": "Add Items",
     "strategies": {
       "balanced": "Balanced",
-      "totalPrice": "Total price",
-      "time": "Time",
+      "totalPrice": "Cheapest",
+      "time": "Fastest",
       "singleShop": "Single shop"
     },
     "proposal": "Proposal: ",
     "proposalTypes": {
       "balanced": "Balanced",
-      "economic": "Economic",
-      "fast": "Fast",
-      "singleShop": "Optimized"
+      "economic": "Cheapest",
+      "fast": "Fastest",
+      "singleShop": "Single shop"
     },
     "total": "Total: ",
     "time": " • Time: ",
@@ -102,7 +103,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Organic Greengrocer",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Shops",
+    "subtitle": "Product shopping · click & collect or delivery",
+    "products": "products",
+    "added": "added to cart",
+    "error": "Unable to load shops",
+    "retry": "Retry",
+    "empty": "No shops available",
+    "noProducts": "No products"
   },
   "common": {
     "euroSymbol": " €",
@@ -225,7 +234,9 @@
     "addrState": "State / Region",
     "addrEmpty": "No saved address yet",
     "addrDeleteConfirm": "Delete this address?",
-    "addrSaveError": "Could not save the address."
+    "addrSaveError": "Could not save the address.",
+    "back": "Back",
+    "close": "Close"
   },
   "auth": {
     "login": "Login",
@@ -394,7 +405,15 @@
       "dec": "Dec"
     },
     "addedToCartSub": "added to cart",
-    "added": "Added"
+    "added": "Added",
+    "addressRequired": "Address required",
+    "addressRequiredMsg": "Add a delivery address to continue.",
+    "payment": "Payment",
+    "payAtPickup": "Pay at pickup",
+    "payAtDelivery": "Pay on delivery",
+    "orderConfirmedTitle": "Order confirmed",
+    "orderConfirmedCollect": "Your order will be prepared for pickup. Track its status in Profile > Orders.",
+    "orderConfirmedDelivery": "A driver will pick up your order. Track its status in Profile > Orders."
   },
   "orderStatus": {
     "confirmed": "Order confirmed",

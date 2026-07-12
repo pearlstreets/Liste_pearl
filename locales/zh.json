@@ -4,7 +4,8 @@
     "products": "产品",
     "favorites": "收藏夹",
     "cart": "购物车",
-    "profile": "个人资料"
+    "profile": "个人资料",
+    "shops": "商店"
   },
   "listScreen": {
     "scan": "扫描",
@@ -30,17 +31,17 @@
     "delivery": "送货",
     "addItems": "添加项目",
     "strategies": {
-      "balanced": "平衡",
-      "totalPrice": "总价格",
-      "time": "时间",
-      "singleShop": "单个店铺"
+      "balanced": "均衡",
+      "totalPrice": "最省钱",
+      "time": "最快",
+      "singleShop": "单一商店"
     },
     "proposal": "建议: ",
     "proposalTypes": {
-      "balanced": "平衡",
-      "economic": "经济",
-      "fast": "快速",
-      "singleShop": "已优化"
+      "balanced": "均衡",
+      "economic": "最省钱",
+      "fast": "最快",
+      "singleShop": "单一商店"
     },
     "total": "总计: ",
     "time": " • 时间: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "有机果菜店",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "商店",
+    "subtitle": "购买商品 · 到店自取或配送",
+    "products": "件商品",
+    "added": "已加入购物车",
+    "error": "无法加载商店",
+    "retry": "重试",
+    "empty": "暂无可用商店",
+    "noProducts": "暂无商品"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "省 / 地区",
     "addrEmpty": "尚未保存地址",
     "addrDeleteConfirm": "删除此地址？",
-    "addrSaveError": "无法保存地址。"
+    "addrSaveError": "无法保存地址。",
+    "back": "返回",
+    "close": "关闭"
   },
   "auth": {
     "login": "登录",
@@ -296,7 +307,15 @@
       "dec": "12月"
     },
     "addedToCartSub": "已添加到购物车",
-    "added": "已添加"
+    "added": "已添加",
+    "addressRequired": "需要收货地址",
+    "addressRequiredMsg": "请添加收货地址以继续。",
+    "payment": "支付",
+    "payAtPickup": "取货时支付",
+    "payAtDelivery": "送达时支付",
+    "orderConfirmedTitle": "订单已确认",
+    "orderConfirmedCollect": "您的订单将备货以供取货。请在“我的 > 订单”中查看订单状态。",
+    "orderConfirmedDelivery": "配送员将为您配送订单。请在“我的 > 订单”中查看订单状态。"
   },
   "orderStatus": {
     "confirmed": "订单已确认",

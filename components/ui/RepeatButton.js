@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-const RepeatButton = ({ onPress, onLongAction, style, children }) => {
+const RepeatButton = ({ onPress, onLongAction, style, children, hitSlop, accessibilityLabel }) => {
   const intervalRef = React.useRef(null);
   const cbRef = React.useRef(onLongAction);
   React.useEffect(() => {
@@ -31,6 +31,9 @@ const RepeatButton = ({ onPress, onLongAction, style, children }) => {
       onPressOut={stopRepeat}
       delayLongPress={200}
       style={style}
+      hitSlop={hitSlop || { top: 10, bottom: 10, left: 8, right: 8 }}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
     >
       {children}
     </TouchableOpacity>

@@ -4,7 +4,8 @@
     "products": "商品",
     "favorites": "お気に入り",
     "cart": "カート",
-    "profile": "プロフィール"
+    "profile": "プロフィール",
+    "shops": "ショップ"
   },
   "listScreen": {
     "scan": "スキャン",
@@ -31,16 +32,16 @@
     "addItems": "アイテムを追加",
     "strategies": {
       "balanced": "バランス",
-      "totalPrice": "合計価格",
-      "time": "時間",
-      "singleShop": "単一店舗"
+      "totalPrice": "最安値",
+      "time": "最速",
+      "singleShop": "1店舗のみ"
     },
     "proposal": "提案: ",
     "proposalTypes": {
       "balanced": "バランス",
-      "economic": "経済的",
-      "fast": "高速",
-      "singleShop": "最適化"
+      "economic": "最安値",
+      "fast": "最速",
+      "singleShop": "1店舗のみ"
     },
     "total": "合計: ",
     "time": " • 時間: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "オーガニック野菜店",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "ショップ",
+    "subtitle": "商品の購入 · click & collect または配達",
+    "products": "商品",
+    "added": "カートに追加しました",
+    "error": "ショップを読み込めませんでした",
+    "retry": "再試行",
+    "empty": "利用可能なショップがありません",
+    "noProducts": "商品がありません"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "都道府県・地域",
     "addrEmpty": "保存された住所はありません",
     "addrDeleteConfirm": "この住所を削除しますか？",
-    "addrSaveError": "住所を保存できませんでした。"
+    "addrSaveError": "住所を保存できませんでした。",
+    "back": "戻る",
+    "close": "閉じる"
   },
   "auth": {
     "login": "ログイン",
@@ -296,7 +307,15 @@
       "dec": "12月"
     },
     "addedToCartSub": "カートに追加されました",
-    "added": "追加済み"
+    "added": "追加済み",
+    "addressRequired": "住所が必要です",
+    "addressRequiredMsg": "続行するには配送先住所を追加してください。",
+    "payment": "支払い",
+    "payAtPickup": "受け取り時にお支払い",
+    "payAtDelivery": "配達時にお支払い",
+    "orderConfirmedTitle": "注文が確定しました",
+    "orderConfirmedCollect": "ご注文は受け取り用に準備されます。ステータスはプロフィール > 注文でご確認いただけます。",
+    "orderConfirmedDelivery": "配達員がご注文をお届けします。ステータスはプロフィール > 注文でご確認いただけます。"
   },
   "orderStatus": {
     "confirmed": "注文確認済み",

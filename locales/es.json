@@ -4,7 +4,8 @@
     "products": "Productos",
     "favorites": "Favoritos",
     "cart": "Carrito",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "shops": "Tiendas"
   },
   "listScreen": {
     "scan": "Escanear",
@@ -31,16 +32,16 @@
     "addItems": "Agregar Artículos",
     "strategies": {
       "balanced": "Equilibrado",
-      "totalPrice": "Precio total",
-      "time": "Tiempo",
+      "totalPrice": "Más barato",
+      "time": "Más rápido",
       "singleShop": "Una sola tienda"
     },
     "proposal": "Propuesta: ",
     "proposalTypes": {
       "balanced": "Equilibrado",
-      "economic": "Económico",
-      "fast": "Rápido",
-      "singleShop": "Optimizado"
+      "economic": "Más barato",
+      "fast": "Más rápido",
+      "singleShop": "Una sola tienda"
     },
     "total": "Total: ",
     "time": " • Tiempo: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Frutería Ecológica",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Tiendas",
+    "subtitle": "Compra de productos · click & collect o entrega a domicilio",
+    "products": "productos",
+    "added": "añadido al carrito",
+    "error": "No se pudieron cargar las tiendas",
+    "retry": "Reintentar",
+    "empty": "No hay tiendas disponibles",
+    "noProducts": "Sin productos"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Provincia / Región",
     "addrEmpty": "No hay direcciones guardadas",
     "addrDeleteConfirm": "¿Eliminar esta dirección?",
-    "addrSaveError": "No se pudo guardar la dirección."
+    "addrSaveError": "No se pudo guardar la dirección.",
+    "back": "Volver",
+    "close": "Cerrar"
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -296,7 +307,15 @@
       "dec": "dic"
     },
     "addedToCartSub": "añadidos al carrito",
-    "added": "Añadido"
+    "added": "Añadido",
+    "addressRequired": "Dirección requerida",
+    "addressRequiredMsg": "Añade una dirección de entrega para continuar.",
+    "payment": "Pago",
+    "payAtPickup": "A pagar en la recogida",
+    "payAtDelivery": "A pagar en la entrega",
+    "orderConfirmedTitle": "Pedido confirmado",
+    "orderConfirmedCollect": "Tu pedido se preparará para la recogida. Sigue su estado en Perfil > Pedidos.",
+    "orderConfirmedDelivery": "Un repartidor se encargará de tu pedido. Sigue su estado en Perfil > Pedidos."
   },
   "orderStatus": {
     "confirmed": "Pedido confirmado",

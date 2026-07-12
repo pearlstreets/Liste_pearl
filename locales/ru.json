@@ -4,7 +4,8 @@
     "products": "Товары",
     "favorites": "Избранное",
     "cart": "Корзина",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "shops": "Магазины"
   },
   "listScreen": {
     "scan": "Сканировать",
@@ -31,16 +32,16 @@
     "addItems": "Добавить товары",
     "strategies": {
       "balanced": "Сбалансированно",
-      "totalPrice": "Общая цена",
-      "time": "Время",
+      "totalPrice": "Дешевле",
+      "time": "Быстрее",
       "singleShop": "Один магазин"
     },
     "proposal": "Предложение: ",
     "proposalTypes": {
       "balanced": "Сбалансированно",
-      "economic": "Экономично",
-      "fast": "Быстро",
-      "singleShop": "Оптимизировано"
+      "economic": "Дешевле",
+      "fast": "Быстрее",
+      "singleShop": "Один магазин"
     },
     "total": "Итого: ",
     "time": " • Время: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Органический овощной магазин",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Магазины",
+    "subtitle": "Покупка товаров · самовывоз или доставка",
+    "products": "товары",
+    "added": "добавлено в корзину",
+    "error": "Не удалось загрузить магазины",
+    "retry": "Повторить",
+    "empty": "Нет доступных магазинов",
+    "noProducts": "Нет товаров"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Регион / Область",
     "addrEmpty": "Нет сохранённых адресов",
     "addrDeleteConfirm": "Удалить этот адрес?",
-    "addrSaveError": "Не удалось сохранить адрес."
+    "addrSaveError": "Не удалось сохранить адрес.",
+    "back": "Назад",
+    "close": "Закрыть"
   },
   "auth": {
     "login": "Вход",
@@ -296,7 +307,15 @@
       "dec": "дек"
     },
     "addedToCartSub": "добавлено в корзину",
-    "added": "Добавлено"
+    "added": "Добавлено",
+    "addressRequired": "Требуется адрес",
+    "addressRequiredMsg": "Добавьте адрес доставки, чтобы продолжить.",
+    "payment": "Оплата",
+    "payAtPickup": "Оплата при самовывозе",
+    "payAtDelivery": "Оплата при доставке",
+    "orderConfirmedTitle": "Заказ подтверждён",
+    "orderConfirmedCollect": "Ваш заказ будет подготовлен к самовывозу. Следите за его статусом в разделе Профиль > Заказы.",
+    "orderConfirmedDelivery": "Курьер займётся вашим заказом. Следите за его статусом в разделе Профиль > Заказы."
   },
   "orderStatus": {
     "confirmed": "Заказ подтверждён",

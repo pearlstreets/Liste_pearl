@@ -4,7 +4,8 @@
     "products": "Produkte",
     "favorites": "Favoriten",
     "cart": "Warenkorb",
-    "profile": "Profil"
+    "profile": "Profil",
+    "shops": "Shops"
   },
   "listScreen": {
     "scan": "Scannen",
@@ -31,16 +32,16 @@
     "addItems": "Artikel hinzufügen",
     "strategies": {
       "balanced": "Ausgewogen",
-      "totalPrice": "Gesamtpreis",
-      "time": "Zeit",
-      "singleShop": "Ein Geschäft"
+      "totalPrice": "Am günstigsten",
+      "time": "Am schnellsten",
+      "singleShop": "Nur ein Geschäft"
     },
     "proposal": "Vorschlag: ",
     "proposalTypes": {
       "balanced": "Ausgewogen",
-      "economic": "Wirtschaftlich",
-      "fast": "Schnell",
-      "singleShop": "Optimiert"
+      "economic": "Am günstigsten",
+      "fast": "Am schnellsten",
+      "singleShop": "Nur ein Geschäft"
     },
     "total": "Gesamt: ",
     "time": " • Zeit: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Bio-Gemüseladen",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Shops",
+    "subtitle": "Produkte kaufen · Click & Collect oder Lieferung",
+    "products": "Produkte",
+    "added": "in den Warenkorb gelegt",
+    "error": "Shops konnten nicht geladen werden",
+    "retry": "Erneut versuchen",
+    "empty": "Keine Shops verfügbar",
+    "noProducts": "Keine Produkte"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Bundesland / Region",
     "addrEmpty": "Noch keine Adresse gespeichert",
     "addrDeleteConfirm": "Diese Adresse löschen?",
-    "addrSaveError": "Adresse konnte nicht gespeichert werden."
+    "addrSaveError": "Adresse konnte nicht gespeichert werden.",
+    "back": "Zurück",
+    "close": "Schließen"
   },
   "auth": {
     "login": "Anmelden",
@@ -296,7 +307,15 @@
       "dec": "Dez"
     },
     "addedToCartSub": "zum Warenkorb hinzugefügt",
-    "added": "Hinzugefügt"
+    "added": "Hinzugefügt",
+    "addressRequired": "Adresse erforderlich",
+    "addressRequiredMsg": "Fügen Sie eine Lieferadresse hinzu, um fortzufahren.",
+    "payment": "Zahlung",
+    "payAtPickup": "Zahlung bei Abholung",
+    "payAtDelivery": "Zahlung bei Lieferung",
+    "orderConfirmedTitle": "Bestellung bestätigt",
+    "orderConfirmedCollect": "Ihre Bestellung wird für die Abholung vorbereitet. Verfolgen Sie den Status unter Profil > Bestellungen.",
+    "orderConfirmedDelivery": "Ein Kurier übernimmt Ihre Bestellung. Verfolgen Sie den Status unter Profil > Bestellungen."
   },
   "orderStatus": {
     "confirmed": "Bestellung bestätigt",

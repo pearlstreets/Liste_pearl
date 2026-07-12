@@ -4,7 +4,8 @@
     "products": "Producten",
     "favorites": "Favorieten",
     "cart": "Winkelwagen",
-    "profile": "Profiel"
+    "profile": "Profiel",
+    "shops": "Winkels"
   },
   "listScreen": {
     "scan": "Scannen",
@@ -31,16 +32,16 @@
     "addItems": "Items Toevoegen",
     "strategies": {
       "balanced": "Gebalanceerd",
-      "totalPrice": "Totaalprijs",
-      "time": "Tijd",
-      "singleShop": "Enkele winkel"
+      "totalPrice": "Goedkoopst",
+      "time": "Snelst",
+      "singleShop": "Eén winkel"
     },
     "proposal": "Voorstel: ",
     "proposalTypes": {
       "balanced": "Gebalanceerd",
-      "economic": "Economisch",
-      "fast": "Snel",
-      "singleShop": "Geoptimaliseerd"
+      "economic": "Goedkoopst",
+      "fast": "Snelst",
+      "singleShop": "Eén winkel"
     },
     "total": "Totaal: ",
     "time": " • Tijd: ",
@@ -97,7 +98,15 @@
     "intermarcheSud": "Intermarché South",
     "primeurBio": "Biologische Groenteboer",
     "leclercMeaux": "Leclerc Meaux",
-    "monoprixCentre": "Monoprix Center"
+    "monoprixCentre": "Monoprix Center",
+    "title": "Winkels",
+    "subtitle": "Producten kopen · click & collect of levering",
+    "products": "producten",
+    "added": "toegevoegd aan winkelmandje",
+    "error": "Kan de winkels niet laden",
+    "retry": "Opnieuw proberen",
+    "empty": "Geen winkels beschikbaar",
+    "noProducts": "Geen producten"
   },
   "common": {
     "euroSymbol": " €",
@@ -183,7 +192,9 @@
     "addrState": "Provincie / Regio",
     "addrEmpty": "Nog geen adres opgeslagen",
     "addrDeleteConfirm": "Dit adres verwijderen?",
-    "addrSaveError": "Kan het adres niet opslaan."
+    "addrSaveError": "Kan het adres niet opslaan.",
+    "back": "Terug",
+    "close": "Sluiten"
   },
   "auth": {
     "login": "Inloggen",
@@ -296,7 +307,15 @@
       "dec": "dec"
     },
     "addedToCartSub": "toegevoegd aan winkelwagen",
-    "added": "Toegevoegd"
+    "added": "Toegevoegd",
+    "addressRequired": "Adres vereist",
+    "addressRequiredMsg": "Voeg een leveringsadres toe om door te gaan.",
+    "payment": "Betaling",
+    "payAtPickup": "Te betalen bij afhalen",
+    "payAtDelivery": "Te betalen bij levering",
+    "orderConfirmedTitle": "Bestelling bevestigd",
+    "orderConfirmedCollect": "Je bestelling wordt klaargemaakt om af te halen. Volg de status in Profiel > Bestellingen.",
+    "orderConfirmedDelivery": "Een bezorger neemt je bestelling in behandeling. Volg de status in Profiel > Bestellingen."
   },
   "orderStatus": {
     "confirmed": "Bestelling bevestigd",
