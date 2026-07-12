@@ -1241,9 +1241,9 @@ const ProductsScreen = () => {
     })()}
         ListHeaderComponent={(
           <View>
-        <View style={{ paddingHorizontal: 20, paddingTop: 8 }}>
+        <View style={{ paddingHorizontal: 20 }}>
         {/* Mode */}
-        <View style={prodStyles.segment}>
+        <View style={[prodStyles.segment, { marginTop: 4 }]}>
           <TouchableOpacity activeOpacity={0.8} onPress={()=>setMode("collect")} style={[prodStyles.segBtn, mode==="collect" && prodStyles.segBtnOn]}>
             <Ionicons name="bag-handle-outline" size={16} color={mode==="collect" ? THEME.brand : THEME.muted} />
             <Text style={[prodStyles.segTxt, mode==="collect" && prodStyles.segTxtOn]}>{t('productsScreen.clickAndCollect')}</Text>
