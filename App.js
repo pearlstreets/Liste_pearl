@@ -1199,18 +1199,7 @@ const ProductsScreen = () => {
         <View style={prodStyles.headerRow}>
           <View style={{flex:1}}>
             <Text style={prodStyles.title}>{t('tabs.products')}</Text>
-            <Text style={prodStyles.subtitle}>{summary.shops} {t('productsScreen.shops')?.replace(/[•·]/g,'').trim() || 'shops'}</Text>
           </View>
-          {groups.length > 0 && (
-            <TouchableOpacity activeOpacity={0.8} onPress={async () => {
-              await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-              setGroups([]); setSummary({price:0,time:0,shops:0});
-              setPopupSelectedItems([]); setCheckedShops({});
-              setShowingDefaults(true);
-            }} style={prodStyles.clearBtn}>
-              <Ionicons name="trash-outline" size={18} color={THEME.danger} />
-            </TouchableOpacity>
-          )}
         </View>
       </View>
 
@@ -1259,6 +1248,16 @@ const ProductsScreen = () => {
           <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
           <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
+          {groups.length > 0 && (
+            <TouchableOpacity activeOpacity={0.8} onPress={async () => {
+              await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+              setGroups([]); setSummary({price:0,time:0,shops:0});
+              setPopupSelectedItems([]); setCheckedShops({});
+              setShowingDefaults(true);
+            }} style={[prodStyles.clearBtn, { marginLeft: 4, marginBottom: 8 }]}>
+              <Ionicons name="trash-outline" size={18} color={THEME.danger} />
+            </TouchableOpacity>
+          )}
         </View>
         </View>
 
