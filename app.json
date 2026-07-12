@@ -12,7 +12,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pearlstreets.list",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "infoPlist": {
         "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste de courses.",
         "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo.",
