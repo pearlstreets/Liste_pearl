@@ -4273,7 +4273,8 @@ export default function App() {
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_AUTH);
-      setIsAuth(!!raw);
+      // Restaure la devise choisie AVANT de lever l'écran de chargement (setIsAuth) :
+      // sinon un utilisateur non-EUR voit une frame de prix en € (taux 1) au cold boot.
       const savedCur = await AsyncStorage.getItem('APP_CURRENCY');
       if (savedCur) {
         const found = CURRENCIES.find(c => c.code === savedCur);
@@ -4282,6 +4283,7 @@ export default function App() {
           setCurrencyState(updated);
         }
       }
+      setIsAuth(!!raw);
     })();
   }, []);
 
