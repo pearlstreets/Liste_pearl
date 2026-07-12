@@ -1187,7 +1187,35 @@ const ProductsScreen = () => {
             </TouchableOpacity>
           )}
         </View>
+      </View>
 
+      {/* Toute la page défile ensemble : le mode, les stratégies, le résumé, les
+          bannières et les boutiques sont dans la même liste défilante. */}
+      <FlatList
+        keyExtractor={(g,i)=>String(g?.name||'shop')+'_'+i}
+        showsVerticalScrollIndicator={false}
+        data={(loading || realShops === null) ? [] : (function(){
+      const src = Array.isArray(groups)?groups:[];
+      const user = __getUserItems();
+      const mapped = src.map(g=>{
+        const assigned = g.items || g.products || g.lines || [];
+        return { ...g, __renderItems: (Array.isArray(assigned)&&assigned.length>0 ? assigned : user) };
+      });
+      mapped.sort((a,b) => {
+        const aF = favShops.includes(a.name) ? 0 : 1;
+        const bF = favShops.includes(b.name) ? 0 : 1;
+        if (aF !== bF) return aF - bF;
+        if (strategy === 'balanced') {
+          const aP = (a.products || a.__renderItems || []).length;
+          const bP = (b.products || b.__renderItems || []).length;
+          return bP - aP;
+        }
+        return 0;
+      });
+      return mapped;
+    })()}
+        ListHeaderComponent={(
+          <View>
         {/* Mode */}
         <View style={prodStyles.segment}>
           <TouchableOpacity activeOpacity={0.8} onPress={()=>setMode("collect")} style={[prodStyles.segBtn, mode==="collect" && prodStyles.segBtnOn]}>
@@ -1207,7 +1235,6 @@ const ProductsScreen = () => {
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
           <Chip label={t('productsScreen.strategies.balanced')}  active={strategy==='balanced'} onPress={()=>setStrategy('balanced')} />
         </View>
-      </View>
 
       {/* Résumé — dérivé des produits réellement proposés (source unique :
           popupSelectedItems), cohérent avec les totaux par boutique plus bas.
@@ -1273,33 +1300,8 @@ const ProductsScreen = () => {
           </Text>
         </View>
       )}
-
-      {(loading || realShops === null) ? (
-        <ActivityIndicator style={{marginTop:24}} color={THEME.brand} />
-      ) : (
-        <FlatList
-          data={(function(){
-      const src = Array.isArray(groups)?groups:[];
-      const user = __getUserItems();
-      const mapped = src.map(g=>{
-        const assigned = g.items || g.products || g.lines || [];
-        return { ...g, __renderItems: (Array.isArray(assigned)&&assigned.length>0 ? assigned : user) };
-      });
-      // Tri : favoris en haut, puis si balanced → plus de produits en premier
-      mapped.sort((a,b) => {
-        const aF = favShops.includes(a.name) ? 0 : 1;
-        const bF = favShops.includes(b.name) ? 0 : 1;
-        if (aF !== bF) return aF - bF;
-        if (strategy === 'balanced') {
-          const aP = (a.products || a.__renderItems || []).length;
-          const bP = (b.products || b.__renderItems || []).length;
-          return bP - aP;
-        }
-        return 0;
-      });
-      return mapped;
-    })()}
-          keyExtractor={(g,i)=>String(g?.name||'shop')+'_'+i}
+          </View>
+        )}
           renderItem={({item,index})=>(
             <TouchableOpacity
               activeOpacity={0.9}
@@ -1525,6 +1527,9 @@ const ProductsScreen = () => {
             </TouchableOpacity>
           )}
           ListEmptyComponent={
+            (loading || realShops === null) ? (
+              <ActivityIndicator style={{marginTop:40}} color={THEME.brand} />
+            ) : (
             <View style={prodStyles.empty}>
               <View style={prodStyles.emptyCircle}>
                 <Ionicons name={unmatchedNames.length > 0 ? "search-outline" : "cart-outline"} size={44} color="#fff" />
@@ -1541,10 +1546,10 @@ const ProductsScreen = () => {
                 </>
               )}
             </View>
+            )
           }
-          contentContainerStyle={{paddingBottom: 220}}
+          contentContainerStyle={{paddingBottom: 240}}
         />
-      )}
 
       {/* Panneau produits sélectionnés en bas */}
       {Object.values(checkedShops).some(v=>v) && (
