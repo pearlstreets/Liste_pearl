@@ -413,6 +413,7 @@ export default function SearchPopup({
   onClose,
   onSelect,
   fmtPrice: fmtPriceProp,
+  realShopMode = false,
 }) {
   const { t } = useTranslation();
   const formatPrice = useMemo(() => fmtPriceProp || ((v) => fmtEuro(v) + ' €'), [fmtPriceProp]);
@@ -442,17 +443,22 @@ export default function SearchPopup({
     }));
   }, [data]);
 
-  // Mode « boutique réelle » : quand une liste de produits réels est fournie
-  // (data), on cherche UNIQUEMENT dedans (jamais le catalogue local search-map).
+  // Mode « boutique réelle » : on cherche UNIQUEMENT dans les vrais produits de
+  // la boutique (jamais le catalogue local search-map). Forcé par realShopMode
+  // (optimiseur) même si la liste est momentanément vide → « Aucun résultat »
+  // honnête plutôt qu'un produit local sans rapport (ex. « papier toilette »).
   const hasData = Array.isArray(data) && data.length > 0;
+  const realMode = realShopMode || hasData;
 
   useEffect(() => {
-    const q = autocorrectName(query || '');
+    // En mode boutique réelle : NE PAS « corriger » la requête. Le correcteur
+    // (dictionnaire épicerie) peut remonter un produit sans rapport. Texte brut.
+    const q = realMode ? (query || '') : autocorrectName(query || '');
     const qn = norm(q);
     if (!qn) {
       // Recherche vide : en mode boutique réelle → tous les produits de la
       // boutique ; sinon (legacy) → tout le catalogue local.
-      if (hasData) {
+      if (realMode) {
         setResults(dataset.map((it) => enrich(it, fmtPriceProp)));
         return;
       }
@@ -490,7 +496,7 @@ export default function SearchPopup({
     }
     // Repli sur le catalogue local UNIQUEMENT hors mode boutique réelle : en mode
     // boutique réelle, si le produit n'est pas dans la boutique → « Aucun résultat ».
-    if (out.length === 0 && !hasData) {
+    if (out.length === 0 && !realMode) {
       const seen = new Set();
       Object.keys(SEARCH_MAP || {}).forEach((k) => {
         const kn = norm(k);
@@ -522,7 +528,7 @@ export default function SearchPopup({
       }
     }
     setResults(out);
-  }, [query, dataset, fmtPriceProp, hasData]);
+  }, [query, dataset, fmtPriceProp, realMode]);
 
   const onQtyChange = useCallback((item, qty) => {
     setSelectedItems((prev) => {

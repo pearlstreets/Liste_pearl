@@ -701,6 +701,7 @@ const ProductsScreen = () => {
   const [__shopFilter, __setShopFilter] = React.useState(null);
   const [__activeShopName, __setActiveShopName] = React.useState('');
   const [__activeShopIndex, __setActiveShopIndex] = React.useState(null);
+  const [__activeShopProducts, __setActiveShopProducts] = React.useState([]); // vrais produits de la boutique active (recherche)
 
   const BRAND="#00C29B";
   const [mode,setMode]=React.useState("collect");
@@ -731,6 +732,22 @@ const ProductsScreen = () => {
     catch(e){ if(a) setRealShops([]); }
   })(); return ()=>{a=false}; },[]);
 
+
+  // Ouvre la recherche « Chercher » verrouillée sur les VRAIS produits de la
+  // boutique (capturés à l'ouverture → pas de course avec realShops, jamais de
+  // repli sur le catalogue local).
+  const openShopSearch = (shopName, shopIndex, query) => {
+    const shop = (realShops || []).find(s => s.name === shopName);
+    __setActiveShopProducts(shop ? (shop.products || []).map(p => ({
+      id: p.id, name: p.name, detail: p.subcategory || p.description || '',
+      price: Number(p.price) || 0, image: p.image || '', available: true,
+    })) : []);
+    __setActiveQuery(query || '');
+    __setInitialQuery(query || '');
+    __setActiveShopName(shopName);
+    __setActiveShopIndex(shopIndex);
+    __setSearchVisible(true);
+  };
 
   const parseMin=(t)=>{if(!t)return 0;const m=String(t).match(/(\d+)/);return m?Number(m[1]):0;};
   // Deterministic hash so prices stay stable across refreshes
@@ -1366,7 +1383,7 @@ const ProductsScreen = () => {
                         <Text style={prodStyles.addedTagTxt}>{t('cart.added') || 'Ajouté'}</Text>
                       </View>
                     ) : (
-                      <TouchableOpacity activeOpacity={0.85} style={prodStyles.searchBtn} onPress={()=>{ __setActiveQuery(String(p?.title||p?.name||''));  __setInitialQuery(String(p?.title||p?.name||"")); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}><Ionicons name="search" size={13} color="#fff" /><Text style={prodStyles.searchBtnTxt}>{t('productsScreen.search')}</Text></TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.85} style={prodStyles.searchBtn} onPress={()=>openShopSearch(String(item?.name||''), index, String(p?.title||p?.name||''))}><Ionicons name="search" size={13} color="#fff" /><Text style={prodStyles.searchBtnTxt}>{t('productsScreen.search')}</Text></TouchableOpacity>
                     )}</>;
                     })()}
                   </View>
@@ -1471,7 +1488,7 @@ const ProductsScreen = () => {
                   {/* Bouton ajouter un produit supplémentaire */}
                   <TouchableOpacity
                     activeOpacity={0.85}
-                    onPress={() => { __setActiveQuery(''); __setInitialQuery(''); __setActiveShopName(String(item?.name||'')); __setActiveShopIndex(index); __setSearchVisible(true); }}
+                    onPress={() => openShopSearch(String(item?.name||''), index, '')}
                     style={prodStyles.addMoreBtn}
                   >
                     <Ionicons name="add-circle-outline" size={18} color={THEME.brandDark} />
@@ -1618,15 +1635,8 @@ const ProductsScreen = () => {
             initialQuery={__initialQuery}
             shopName={__activeShopName}
             fmtPrice={fmtPrice}
-            data={(() => {
-              // Vrais produits de la boutique active → « Chercher » cherche dans
-              // le VRAI catalogue de la boutique (plus dans le catalogue local).
-              const shop = (realShops||[]).find(s => s.name === __activeShopName);
-              return shop ? (shop.products||[]).map(p => ({
-                id: p.id, name: p.name, detail: p.subcategory || p.description || '',
-                price: Number(p.price)||0, image: p.image || '', available: true,
-              })) : [];
-            })()}
+            data={__activeShopProducts}
+            realShopMode={true}
             onClose={()=>__setSearchVisible(false)}
             onSelect={(it)=>{
               try{
