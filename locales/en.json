@@ -453,7 +453,11 @@
     "collected": "Collected",
     "delivered": "Delivered",
     "preparingDone": "Preparing done",
-    "pickedUp": "Picked up"
+    "pickedUp": "Picked up",
+    "refunded": "Refunded",
+    "partiallyRefunded": "Partially refunded",
+    "completed": "Completed",
+    "awaitingPayment": "Awaiting payment"
   },
   "productNames": {
     "Pommes Golden": "Golden apples",

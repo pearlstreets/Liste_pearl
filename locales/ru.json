@@ -355,7 +355,11 @@
     "collected": "Получено",
     "delivered": "Доставлено",
     "preparingDone": "Подготовка завершена",
-    "pickedUp": "Получено"
+    "pickedUp": "Получено",
+    "refunded": "Возвращено",
+    "partiallyRefunded": "Частично возвращено",
+    "completed": "Завершено",
+    "awaitingPayment": "Ожидает оплаты"
   },
   "productNames": {
     "Pommes Golden": "Золотые яблоки",

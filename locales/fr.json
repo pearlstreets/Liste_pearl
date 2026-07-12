@@ -453,7 +453,11 @@
     "collected": "Retirée",
     "delivered": "Livrée",
     "preparingDone": "Préparation terminée",
-    "pickedUp": "Retrait effectué"
+    "pickedUp": "Retrait effectué",
+    "refunded": "Remboursée",
+    "partiallyRefunded": "Partiellement remboursée",
+    "completed": "Terminée",
+    "awaitingPayment": "En attente de paiement"
   },
   "productNames": {
     "Pommes Golden": "Pommes Golden",

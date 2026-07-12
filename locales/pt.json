@@ -355,7 +355,11 @@
     "collected": "Retirado",
     "delivered": "Entregue",
     "preparingDone": "Preparação concluída",
-    "pickedUp": "Retirado"
+    "pickedUp": "Retirado",
+    "refunded": "Reembolsada",
+    "partiallyRefunded": "Parcialmente reembolsada",
+    "completed": "Concluída",
+    "awaitingPayment": "Aguardando pagamento"
   },
   "productNames": {
     "Pommes Golden": "Maçãs douradas",

@@ -355,7 +355,11 @@
     "collected": "Afgehaald",
     "delivered": "Bezorgd",
     "preparingDone": "Bereiding voltooid",
-    "pickedUp": "Afgehaald"
+    "pickedUp": "Afgehaald",
+    "refunded": "Terugbetaald",
+    "partiallyRefunded": "Gedeeltelijk terugbetaald",
+    "completed": "Voltooid",
+    "awaitingPayment": "Wacht op betaling"
   },
   "productNames": {
     "Pommes Golden": "Gouden appels",

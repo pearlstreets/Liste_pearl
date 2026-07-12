@@ -355,7 +355,11 @@
     "collected": "Recogido",
     "delivered": "Entregado",
     "preparingDone": "Preparación completada",
-    "pickedUp": "Recogido"
+    "pickedUp": "Recogido",
+    "refunded": "Reembolsada",
+    "partiallyRefunded": "Parcialmente reembolsada",
+    "completed": "Completada",
+    "awaitingPayment": "Pendiente de pago"
   },
   "productNames": {
     "Pommes Golden": "Manzanas doradas",

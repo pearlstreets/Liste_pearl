@@ -355,7 +355,11 @@
     "collected": "Abgeholt",
     "delivered": "Geliefert",
     "preparingDone": "Vorbereitung abgeschlossen",
-    "pickedUp": "Abgeholt"
+    "pickedUp": "Abgeholt",
+    "refunded": "Erstattet",
+    "partiallyRefunded": "Teilweise erstattet",
+    "completed": "Abgeschlossen",
+    "awaitingPayment": "Zahlung ausstehend"
   },
   "productNames": {
     "Pommes Golden": "Goldene Äpfel",

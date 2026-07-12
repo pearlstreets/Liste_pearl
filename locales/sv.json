@@ -355,7 +355,11 @@
     "collected": "Hämtad",
     "delivered": "Levererad",
     "preparingDone": "Förberedelse klar",
-    "pickedUp": "Hämtad"
+    "pickedUp": "Hämtad",
+    "refunded": "Återbetald",
+    "partiallyRefunded": "Delvis återbetald",
+    "completed": "Slutförd",
+    "awaitingPayment": "Väntar på betalning"
   },
   "productNames": {
     "Pommes Golden": "Gyllene äpplen",

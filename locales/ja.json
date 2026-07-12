@@ -355,7 +355,11 @@
     "collected": "受け取り完了",
     "delivered": "配送完了",
     "preparingDone": "準備完了",
-    "pickedUp": "受け取り完了"
+    "pickedUp": "受け取り完了",
+    "refunded": "返金済み",
+    "partiallyRefunded": "一部返金",
+    "completed": "完了",
+    "awaitingPayment": "支払い待ち"
   },
   "productNames": {
     "Pommes Golden": "ゴールデンアップル",

@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
-import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder } from "./services/orders";
+import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
@@ -2788,7 +2788,7 @@ const CartScreen = ({ isAuth }) => {
   // Conséquences : le suivi devient purement informatif, fermer la croix n'annule
   // plus rien silencieusement, on ne commande QUE les articles sélectionnés, et
   // les articles NON sélectionnés restent dans le panier (aucune perte).
-  const placeOrder = React.useCallback(async () => {
+  const placeOrder = React.useCallback(async (backendOrderIds = []) => {
     const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
     if (selectedItems.length === 0) return null;
     const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
@@ -2811,6 +2811,9 @@ const CartScreen = ({ isAuth }) => {
       address: orderMode === 'delivery' ? deliveryAddress : '',
       addressId: orderMode === 'delivery' ? selectedAddressId : null,
       deliveryStatus: orderMode === 'delivery' ? DELIVERY_STATUS.PENDING : null,
+      // order_id(s) Marketplace créés par le tunnel carte → permet de relire le
+      // VRAI statut backend (dont remboursement) via /users/orders-new/.
+      marketplaceOrderIds: Array.isArray(backendOrderIds) ? backendOrderIds : [],
     };
     try {
       const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
@@ -2921,11 +2924,15 @@ const CartScreen = ({ isAuth }) => {
   // course livreur + tracker), INCHANGÉE. La commande pro est désormais payée.
   const onCardPaySuccess = React.useCallback(async () => {
     setCardModalVisible(false);
+    // Capture les order_id Marketplace AVANT de vider pendingPayment, pour les
+    // attacher à la commande locale (relecture du vrai statut backend ensuite).
+    const backendOrderIds = (pendingPayment && Array.isArray(pendingPayment.orders))
+      ? pendingPayment.orders.map(o => o.orderId).filter(Boolean) : [];
     setPendingPayment(null);
-    const ok = await placeOrder();
+    const ok = await placeOrder(backendOrderIds);
     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
     placingRef.current = false; setPlacing(false);
-  }, [placeOrder]);
+  }, [placeOrder, pendingPayment]);
 
   const onCardPayCancel = React.useCallback(() => {
     setCardModalVisible(false);
@@ -4804,10 +4811,19 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       if (raw) setProfile(JSON.parse(raw));
     } catch(e) {}
   }, []);
+  // Vrai statut backend par order_id Marketplace (dont remboursement). Alimenté
+  // au focus ; utilisé par getOrderStatus pour refléter le cycle de vie réel.
+  const [marketplaceStatuses, setMarketplaceStatuses] = React.useState({});
   const loadOrders = React.useCallback(async () => {
     try {
       const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
       if (raw) setOrders(JSON.parse(raw));
+    } catch(e) {}
+    // Relit le VRAI statut des commandes Marketplace (remboursé/annulé/prête/
+    // terminée) pour l'afficher à la place du statut simulé. Silencieux si KO.
+    try {
+      const map = await getMarketplaceOrderStatuses();
+      if (map && typeof map === 'object') setMarketplaceStatuses(map);
     } catch(e) {}
   }, []);
   const loadAddresses = React.useCallback(async () => {
@@ -5110,6 +5126,34 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
   // Get order status - uses delivery API for delivery orders, simulated for collect
   const getOrderStatus = (order) => {
+    // VRAI statut backend (dont remboursement) si la commande a un order_id
+    // Marketplace (tunnel carte). Prime sur le statut simulé ci-dessous.
+    const mids = Array.isArray(order.marketplaceOrderIds) ? order.marketplaceOrderIds : [];
+    if (mids.length > 0) {
+      const infos = mids.map(id => marketplaceStatuses[String(id)]).filter(Boolean);
+      if (infos.length > 0) {
+        const st = (i) => String(i.status || '').toLowerCase();
+        const has = (pred) => infos.some(pred);
+        const isCollect = order.mode === 'collect';
+        if (has(i => i.is_refunded || st(i) === 'refunded'))
+          return { step: -1, label: t('orderStatus.refunded', 'Remboursée'), color: '#6B7280', icon: 'arrow-undo-circle' };
+        if (has(i => i.is_partially_refunded || st(i) === 'partially_refunded' || st(i) === 'partial_refunded'))
+          return { step: -1, label: t('orderStatus.partiallyRefunded', 'Partiellement remboursée'), color: '#F59E0B', icon: 'arrow-undo' };
+        if (has(i => st(i) === 'cancelled' || st(i) === 'canceled'))
+          return { step: -1, label: t('orderStatus.cancelled'), color: '#EF4444', icon: 'close-circle' };
+        if (has(i => st(i) === 'awaiting_payment'))
+          return { step: 0, label: t('orderStatus.awaitingPayment', 'En attente de paiement'), color: '#F59E0B', icon: 'time-outline' };
+        if (has(i => ['completed','fulfilled','delivered','picked_up','served','finished'].includes(st(i))))
+          return { step: 5, label: t('orderStatus.completed', 'Terminée'), color: '#059669', icon: 'checkmark-done' };
+        if (has(i => ['processing','ready','prete','prêt'].includes(st(i))))
+          return isCollect
+            ? { step: 2, label: t('orderStatus.ready'), color: '#059669', icon: 'bag-handle' }
+            : { step: 3, label: t('orderStatus.onTheWay'), color: '#F97316', icon: 'bicycle' };
+        if (has(i => st(i) === 'accepted'))
+          return { step: 1, label: t('orderStatus.preparing'), color: '#F59E0B', icon: 'storefront' };
+        return { step: 0, label: t('orderStatus.confirmed'), color: '#059669', icon: 'checkmark-circle' };
+      }
+    }
     // For delivery orders, check real delivery status from API
     if (order.mode === 'delivery' && order.deliveryStatus) {
       const apiStatus = deliveryStatuses[order.id];

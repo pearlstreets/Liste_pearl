@@ -355,7 +355,11 @@
     "collected": "已收取",
     "delivered": "已送达",
     "preparingDone": "准备完成",
-    "pickedUp": "已取货"
+    "pickedUp": "已取货",
+    "refunded": "已退款",
+    "partiallyRefunded": "部分退款",
+    "completed": "已完成",
+    "awaitingPayment": "等待付款"
   },
   "productNames": {
     "Pommes Golden": "金苹果",

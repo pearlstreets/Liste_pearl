@@ -95,6 +95,41 @@ export async function getOrders() {
   return raw ? JSON.parse(raw) : [];
 }
 
+// Lit les VRAIES commandes Marketplace de l'user (statut réel, dont remboursement)
+// depuis /users/orders-new/. Retourne une map order_id(STRING) -> {status,
+// is_refunded, is_partially_refunded, status_text, refunded_amount}. Sert à refléter
+// dans pearl-list le vrai cycle de vie pro (remboursé / annulé / prête / terminée),
+// au lieu du statut simulé local. Tolérant : {} si indispo (garde le repli local).
+export async function getMarketplaceOrderStatuses() {
+  try {
+    const data = await apiGet('/users/orders-new/');
+    // Réponse possible : tableau, ou {data:[...]} , ou groupée {data:[{orders:[...]}]}.
+    let list = [];
+    const root = (data && (data.data || data.results)) || data;
+    if (Array.isArray(root)) {
+      root.forEach((entry) => {
+        if (entry && Array.isArray(entry.orders)) list.push(...entry.orders);
+        else if (entry && entry.order_id != null) list.push(entry);
+      });
+    }
+    const map = {};
+    list.forEach((o) => {
+      const oid = o && o.order_id != null ? String(o.order_id) : null;
+      if (!oid) return;
+      map[oid] = {
+        status: String(o.status || o.raw_status || '').toLowerCase(),
+        status_text: o.status_text || '',
+        is_refunded: !!o.is_refunded,
+        is_partially_refunded: !!o.is_partially_refunded,
+        refunded_amount: Number(o.refunded_amount || 0),
+      };
+    });
+    return map;
+  } catch (e) {
+    return {};
+  }
+}
+
 // Get order by ID
 export async function getOrder(orderId) {
   const orders = await getOrders();

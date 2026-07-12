@@ -355,7 +355,11 @@
     "collected": "รับแล้ว",
     "delivered": "จัดส่งแล้ว",
     "preparingDone": "เตรียมเรียบร้อยแล้ว",
-    "pickedUp": "รับสินค้าแล้ว"
+    "pickedUp": "รับสินค้าแล้ว",
+    "refunded": "คืนเงินแล้ว",
+    "partiallyRefunded": "คืนเงินบางส่วน",
+    "completed": "เสร็จสิ้น",
+    "awaitingPayment": "รอการชำระเงิน"
   },
   "productNames": {
     "Pommes Golden": "แอปเปิลทอง",

@@ -355,7 +355,11 @@
     "collected": "Ritirato",
     "delivered": "Consegnato",
     "preparingDone": "Preparazione completata",
-    "pickedUp": "Ritirato"
+    "pickedUp": "Ritirato",
+    "refunded": "Rimborsato",
+    "partiallyRefunded": "Parzialmente rimborsato",
+    "completed": "Completato",
+    "awaitingPayment": "In attesa di pagamento"
   },
   "productNames": {
     "Pommes Golden": "Mele dorate",

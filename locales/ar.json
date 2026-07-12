@@ -355,7 +355,11 @@
     "collected": "تم استلامه",
     "delivered": "تم التسليم",
     "preparingDone": "اكتمل التحضير",
-    "pickedUp": "تم التقاطه"
+    "pickedUp": "تم التقاطه",
+    "refunded": "تم استردادها",
+    "partiallyRefunded": "استرداد جزئي",
+    "completed": "مكتملة",
+    "awaitingPayment": "في انتظار الدفع"
   },
   "productNames": {
     "Pommes Golden": "تفاح ذهبي",
