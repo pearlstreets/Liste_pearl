@@ -333,7 +333,8 @@
     "cardDeclined": "Kaart geweigerd.",
     "paymentFailed": "Betaling mislukt.",
     "paymentError": "Betalingsfout.",
-    "paymentUnavailable": "Kaartbetaling niet beschikbaar in deze versie."
+    "paymentUnavailable": "Kaartbetaling niet beschikbaar in deze versie.",
+    "amountConfirmedByShop": "Indicatief bedrag. Definitieve kosten en totaal bevestigd door de winkel."
   },
   "orderStatus": {
     "confirmed": "Bestelling bevestigd",

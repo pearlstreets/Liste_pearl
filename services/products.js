@@ -10,9 +10,10 @@ function absolutizeUrl(u) {
   return MEDIA_BASE + (u.startsWith('/') ? u : '/' + u);
 }
 
-// Get all categories
-export async function getCategories() {
-  const data = await apiGet('/admin/categories-list/');
+// Get all categories. `query` permet d'ajouter ?page_size=... (l'endpoint est
+// paginé à 10 par défaut, ce qui pourrait masquer une catégorie).
+export async function getCategories(query = '') {
+  const data = await apiGet('/admin/categories-list/' + (query || ''));
   if (Array.isArray(data)) return data;
   if (data.results) return data.results;
   if (data.data) return data.data;
@@ -28,7 +29,8 @@ export async function resolveCategoryId(slug) {
   if (!slug) return null;
   if (!_categoryIdBySlug) {
     try {
-      const cats = await getCategories();
+      // page_size élevé : ne pas rater le slug s'il tombe en page 2 (défaut 10).
+      const cats = await getCategories('?page_size=100');
       const map = {};
       (Array.isArray(cats) ? cats : []).forEach((c) => {
         const s = c?.slug || c?.category_slug || c?.categorySlug || c?.name;

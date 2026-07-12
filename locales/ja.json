@@ -333,7 +333,8 @@
     "cardDeclined": "カードが拒否されました。",
     "paymentFailed": "支払いに失敗しました。",
     "paymentError": "支払いエラー。",
-    "paymentUnavailable": "このバージョンではカード支払いを利用できません。"
+    "paymentUnavailable": "このバージョンではカード支払いを利用できません。",
+    "amountConfirmedByShop": "参考金額です。最終的な料金と合計は店舗が確定します。"
   },
   "orderStatus": {
     "confirmed": "注文確認済み",

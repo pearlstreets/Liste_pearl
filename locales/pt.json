@@ -333,7 +333,8 @@
     "cardDeclined": "Cartão recusado.",
     "paymentFailed": "O pagamento falhou.",
     "paymentError": "Erro de pagamento.",
-    "paymentUnavailable": "Pagamento com cartão indisponível nesta versão."
+    "paymentUnavailable": "Pagamento com cartão indisponível nesta versão.",
+    "amountConfirmedByShop": "Valor indicativo. Taxas e total finais confirmados pela loja."
   },
   "orderStatus": {
     "confirmed": "Pedido confirmado",

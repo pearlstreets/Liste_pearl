@@ -431,7 +431,8 @@
     "cardDeclined": "Carte refusée.",
     "paymentFailed": "Le paiement a échoué.",
     "paymentError": "Erreur de paiement.",
-    "paymentUnavailable": "Paiement carte indisponible dans cette version."
+    "paymentUnavailable": "Paiement carte indisponible dans cette version.",
+    "amountConfirmedByShop": "Montant indicatif. Frais et total définitifs confirmés par la boutique."
   },
   "orderStatus": {
     "confirmed": "Commande confirmée",

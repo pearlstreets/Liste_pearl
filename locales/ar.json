@@ -333,7 +333,8 @@
     "cardDeclined": "تم رفض البطاقة.",
     "paymentFailed": "فشل الدفع.",
     "paymentError": "خطأ في الدفع.",
-    "paymentUnavailable": "الدفع بالبطاقة غير متاح في هذه النسخة."
+    "paymentUnavailable": "الدفع بالبطاقة غير متاح في هذه النسخة.",
+    "amountConfirmedByShop": "مبلغ تقديري. الرسوم والإجمالي النهائي يؤكدهما المتجر."
   },
   "orderStatus": {
     "confirmed": "تم تأكيد الطلب",

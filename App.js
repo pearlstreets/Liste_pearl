@@ -2851,19 +2851,33 @@ const CartScreen = ({ isAuth }) => {
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
   const [pendingPayment, setPendingPayment] = React.useState(null); // { orders:[{orderId,shopName}], totalLabel }
 
-  // Pré-étape carte : crée la/les vraie(s) commande(s) Marketplace (mode defer,
-  // sans card_id) puis ouvre le modal de paiement. Renvoie true si le tunnel carte
-  // démarre ; false → l'appelant CONSERVE le flux LOCAL existant (Expo Go sans SDK,
-  // ou items sans vrais ids Marketplace — ex chemin « Produits » simulé).
+  // Si le panier change, on oublie les commandes en attente : un re-tap recréera
+  // des commandes cohérentes (et évite de payer une sélection périmée).
+  React.useEffect(() => { setPendingPayment(null); }, [cartItems]);
+
+  // Pré-étape carte. Retourne :
+  //  'started' → commande(s) Marketplace créées + modal ouvert (le modal prend le relais) ;
+  //  'error'   → tentative faite mais échec (alerte affichée) → NE PAS créer de commande locale ;
+  //  'local'   → non applicable → l'appelant CONSERVE le flux LOCAL existant (Expo Go sans SDK,
+  //              ou sélection contenant des items sans vrais ids Marketplace).
   const maybeStartCardCheckout = React.useCallback(async () => {
-    if (!StripeAvailable) return false;
+    if (!StripeAvailable) return 'local';
+    // Re-tap après annulation : réutilise les commandes déjà créées au lieu d'en
+    // recréer (évite les commandes awaiting_payment fantômes).
+    if (pendingPayment && Array.isArray(pendingPayment.orders) && pendingPayment.orders.length) {
+      setCardModalVisible(true);
+      return 'started';
+    }
     const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
+    if (selectedItems.length === 0) return 'local';
     // Éligibles = items d'une vraie boutique (productId + companyId RÉELS).
     const eligible = selectedItems.filter(it => it && it.productId != null && it.companyId != null);
-    if (eligible.length === 0) return false;
+    // Tunnel carte uniquement si TOUS les items sélectionnés sont de vraies fiches
+    // boutique : sinon on débiterait une partie et on enregistrerait le reste non payé.
+    if (eligible.length === 0 || eligible.length !== selectedItems.length) return 'local';
     // category_id NUMÉRIQUE requis dans l'URL order/create (résolu depuis le slug).
     const categoryId = await resolveCategoryId(eligible[0].category || 'product_purchase');
-    if (categoryId == null) return false;
+    if (categoryId == null) return 'local';
     // Une commande Marketplace par boutique (invariant serveur mono-vendeur).
     const byCompany = {};
     eligible.forEach(it => { const k = String(it.companyId); (byCompany[k] = byCompany[k] || []).push(it); });
@@ -2890,14 +2904,17 @@ const CartScreen = ({ isAuth }) => {
       }
     } catch (e) {
       Alert.alert(t('cart.confirmOrder'), t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.'));
-      return false;
+      setPendingPayment(null);
+      return 'error';
     }
-    if (orders.length === 0) return false;
-    const grand = eligible.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0) + (orderMode === 'delivery' ? 9.99 : 0);
+    if (orders.length === 0) return 'local';
+    // Total INDICATIF : sous-total des prix catalogue réels (pas de frais inventés).
+    // Le montant final (frais boutique/taxes) est calculé et débité côté serveur.
+    const grand = eligible.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
     setPendingPayment({ orders, totalLabel: fmtPrice(grand) });
     setCardModalVisible(true);
-    return true;
-  }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t]);
+    return 'started';
+  }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t, pendingPayment]);
 
   // Paiement réussi → on rejoue la confirmation LOCALE existante (historique +
   // course livreur + tracker), INCHANGÉE. La commande pro est désormais payée.
@@ -2911,7 +2928,8 @@ const CartScreen = ({ isAuth }) => {
 
   const onCardPayCancel = React.useCallback(() => {
     setCardModalVisible(false);
-    setPendingPayment(null);
+    // On GARDE pendingPayment : un re-tap réutilise les commandes déjà créées
+    // (évite les commandes awaiting_payment fantômes). Nettoyé si le panier change.
     placingRef.current = false; setPlacing(false);
   }, []);
 
@@ -3378,17 +3396,18 @@ const CartScreen = ({ isAuth }) => {
                   if (placingRef.current) return; // idempotence : ignore les taps rapides
                   placingRef.current = true;
                   setPlacing(true);
-                  let cardStarted = false;
+                  let cardRes = 'local';
                   try {
                     // Option A : tente le paiement carte réel (crée la commande
-                    // Marketplace + ouvre le modal). Si indisponible/inéligible →
-                    // on retombe sur le flux LOCAL existant, inchangé.
-                    cardStarted = await maybeStartCardCheckout();
-                    if (cardStarted) { setPlacing(false); return; } // le modal prend le relais
+                    // Marketplace + ouvre le modal). 'local' → flux local inchangé ;
+                    // 'error' → déjà alerté, on ne crée PAS de commande locale conflictuelle.
+                    cardRes = await maybeStartCardCheckout();
+                    if (cardRes === 'started') { setPlacing(false); return; } // le modal prend le relais
+                    if (cardRes === 'error') return;
                     const ok = await placeOrder();
                     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
                     else { Alert.alert(t('cart.emptyCart'), t('cart.addProductsFromTab')); }
-                  } finally { if (!cardStarted) { placingRef.current = false; setPlacing(false); } }
+                  } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
                 style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
               >

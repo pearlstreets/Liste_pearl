@@ -333,7 +333,8 @@
     "cardDeclined": "Kortet nekades.",
     "paymentFailed": "Betalningen misslyckades.",
     "paymentError": "Betalningsfel.",
-    "paymentUnavailable": "Kortbetalning är inte tillgänglig i den här versionen."
+    "paymentUnavailable": "Kortbetalning är inte tillgänglig i den här versionen.",
+    "amountConfirmedByShop": "Ungefärligt belopp. Slutliga avgifter och totalsumma bekräftas av butiken."
   },
   "orderStatus": {
     "confirmed": "Beställning bekräftad",

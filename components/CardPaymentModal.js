@@ -25,6 +25,7 @@ async function finalisePaymentIntent(data, handleNextAction) {
     status === 'requires_action' ||
     status === 'requires_source_action';
   if (requiresAction && clientSecret) {
+    if (typeof handleNextAction !== 'function') return false;
     const { paymentIntent, error } = await handleNextAction(clientSecret);
     if (error) return false;
     return paymentIntent?.status === 'succeeded';
@@ -33,17 +34,15 @@ async function finalisePaymentIntent(data, handleNextAction) {
   return false;
 }
 
-export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuccess, onCancel }) {
+// Contenu interne : DESCENDANT de <StripeProvider>, donc useStripe() est garanti
+// initialisé (best-practice Stripe RN).
+function CardPaymentInner({ orders, totalLabel, t, onSuccess, onCancel }) {
   const tr = (k, fb) => (typeof t === 'function' ? t(k, fb) : fb);
   const stripe = useStripe() || {};
   const [cardDetails, setCardDetails] = React.useState(null);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState('');
   const busyRef = React.useRef(false);
-
-  React.useEffect(() => {
-    if (visible) { setError(''); setBusy(false); busyRef.current = false; setCardDetails(null); }
-  }, [visible]);
 
   const handlePay = async () => {
     if (!StripeAvailable || typeof stripe.createPaymentMethod !== 'function') {
@@ -105,46 +104,55 @@ export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuc
   };
 
   return (
-    <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => { if (!busy) onCancel && onCancel(); }}>
+    <View style={styles.backdrop}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>{tr('cart.payByCard', 'Paiement par carte')}</Text>
+        <Text style={styles.total}>{totalLabel}</Text>
+        <Text style={styles.subtotalNote}>{tr('cart.amountConfirmedByShop', 'Montant indicatif. Frais et total définitifs confirmés par la boutique.')}</Text>
+
+        {CardField ? (
+          <CardField
+            postalCodeEnabled={false}
+            placeholders={{ number: '4242 4242 4242 4242' }}
+            cardStyle={{ backgroundColor: '#FFFFFF', textColor: '#0F1B2B', borderColor: '#E3E8EF', borderWidth: 1, borderRadius: 12 }}
+            style={styles.cardField}
+            onCardChange={(d) => setCardDetails(d)}
+          />
+        ) : (
+          <Text style={styles.err}>{tr('cart.paymentUnavailable', 'Paiement carte indisponible dans cette version (build requis).')}</Text>
+        )}
+
+        {error ? <Text style={styles.err}>{error}</Text> : null}
+
+        <TouchableOpacity activeOpacity={0.9} onPress={handlePay} disabled={busy} style={[styles.payBtn, busy && { opacity: 0.6 }]}>
+          {busy ? <ActivityIndicator color="#fff" /> : (
+            <>
+              <Ionicons name="lock-closed" size={18} color="#fff" />
+              <Text style={styles.payTxt}>{tr('cart.payNow', 'Payer maintenant')}</Text>
+            </>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => { if (!busy) onCancel && onCancel(); }} style={styles.cancelBtn}>
+          <Text style={styles.cancelTxt}>{tr('cart.cancel', 'Annuler')}</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.secure}>
+          <Ionicons name="shield-checkmark" size={12} color="#8A94A6" /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuccess, onCancel }) {
+  return (
+    <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
+      {/* StripeProvider EN RACINE du modal → useStripe() (dans CardPaymentInner)
+          en est descendant et son initialise() est garanti avant createPaymentMethod. */}
       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
-        <View style={styles.backdrop}>
-          <View style={styles.sheet}>
-            <View style={styles.handle} />
-            <Text style={styles.title}>{tr('cart.payByCard', 'Paiement par carte')}</Text>
-            <Text style={styles.total}>{totalLabel}</Text>
-
-            {CardField ? (
-              <CardField
-                postalCodeEnabled={false}
-                placeholders={{ number: '4242 4242 4242 4242' }}
-                cardStyle={{ backgroundColor: '#FFFFFF', textColor: '#0F1B2B', borderColor: '#E3E8EF', borderWidth: 1, borderRadius: 12 }}
-                style={styles.cardField}
-                onCardChange={(d) => setCardDetails(d)}
-              />
-            ) : (
-              <Text style={styles.err}>{tr('cart.paymentUnavailable', 'Paiement carte indisponible dans cette version (build requis).')}</Text>
-            )}
-
-            {error ? <Text style={styles.err}>{error}</Text> : null}
-
-            <TouchableOpacity activeOpacity={0.9} onPress={handlePay} disabled={busy} style={[styles.payBtn, busy && { opacity: 0.6 }]}>
-              {busy ? <ActivityIndicator color="#fff" /> : (
-                <>
-                  <Ionicons name="lock-closed" size={18} color="#fff" />
-                  <Text style={styles.payTxt}>{tr('cart.payNow', 'Payer maintenant')}</Text>
-                </>
-              )}
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => { if (!busy) onCancel && onCancel(); }} style={styles.cancelBtn}>
-              <Text style={styles.cancelTxt}>{tr('cart.cancel', 'Annuler')}</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.secure}>
-              <Ionicons name="shield-checkmark" size={12} color="#8A94A6" /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
-            </Text>
-          </View>
-        </View>
+        <CardPaymentInner orders={orders} totalLabel={totalLabel} t={t} onSuccess={onSuccess} onCancel={onCancel} />
       </StripeProvider>
     </Modal>
   );
@@ -155,7 +163,8 @@ const styles = StyleSheet.create({
   sheet: { backgroundColor: '#FFFFFF', borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 22, paddingTop: 10, paddingBottom: Platform.OS === 'ios' ? 34 : 22 },
   handle: { alignSelf: 'center', width: 40, height: 4, borderRadius: 2, backgroundColor: '#E3E8EF', marginBottom: 14 },
   title: { fontSize: 18, fontWeight: '800', color: '#0F1B2B', textAlign: 'center' },
-  total: { fontSize: 15, fontWeight: '700', color: BRAND, textAlign: 'center', marginTop: 4, marginBottom: 16 },
+  total: { fontSize: 15, fontWeight: '700', color: BRAND, textAlign: 'center', marginTop: 4 },
+  subtotalNote: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 3, marginBottom: 14, paddingHorizontal: 8 },
   cardField: { width: '100%', height: 50, marginBottom: 8 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 8, marginBottom: 4 },
   payBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: BRAND, borderRadius: 16, height: 54, marginTop: 12 },

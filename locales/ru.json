@@ -333,7 +333,8 @@
     "cardDeclined": "Карта отклонена.",
     "paymentFailed": "Платёж не прошёл.",
     "paymentError": "Ошибка платежа.",
-    "paymentUnavailable": "Оплата картой недоступна в этой версии."
+    "paymentUnavailable": "Оплата картой недоступна в этой версии.",
+    "amountConfirmedByShop": "Ориентировочная сумма. Итоговые сборы и сумма подтверждаются магазином."
   },
   "orderStatus": {
     "confirmed": "Заказ подтверждён",
