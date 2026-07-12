@@ -1,4 +1,14 @@
 import { apiGet } from './api';
+import { CONFIG } from './config';
+
+// Base pour résoudre les chemins media relatifs (ex "/media/product_images/x.jpg")
+// en URLs absolues. API_URL = ".../api/v1" → on retire le suffixe pour la racine.
+const MEDIA_BASE = String(CONFIG.API_URL || '').replace(/\/api\/v1\/?$/, '');
+function absolutizeUrl(u) {
+  if (!u || typeof u !== 'string') return '';
+  if (/^https?:\/\//i.test(u) || u.startsWith('data:')) return u; // déjà absolue
+  return MEDIA_BASE + (u.startsWith('/') ? u : '/' + u);
+}
 
 // Get all categories
 export async function getCategories() {
@@ -77,12 +87,13 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
     }
     const rows = Array.isArray(data) ? data : (data && (data.results || data.data)) || [];
     if (!rows.length) break;
-    // Le backend peut renvoyer les images en tableau OU en chaîne : on
-    // normalise vers la 1ʳᵉ URL exploitable.
+    // Le backend peut renvoyer les images en tableau OU en chaîne, et parfois
+    // en chemin relatif (/media/...) : on normalise vers la 1ʳᵉ URL absolue.
     const firstUrl = (v, fallback) => {
-      if (Array.isArray(v)) return v.find((u) => typeof u === 'string' && u) || fallback || '';
-      if (typeof v === 'string' && v) return v;
-      return fallback || '';
+      let u = '';
+      if (Array.isArray(v)) u = v.find((x) => typeof x === 'string' && x) || '';
+      else if (typeof v === 'string') u = v;
+      return absolutizeUrl(u) || fallback || '';
     };
     rows.forEach((p) => {
       const shopId = p.company_id;
