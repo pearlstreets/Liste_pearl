@@ -26,6 +26,25 @@
 - `store-listing.md` — tous les textes (iOS + Android)
 - `SUBMISSION_CHECKLIST.md` — checklist détaillée
 
+## 🎉 RÉSULTAT FINAL (session autonome)
+- ✅✅ **iOS : BINAIRE UPLOADÉ dans App Store Connect** (build **1000**, v1.0.0) — fait automatiquement par moi. En cours de traitement Apple (~5-10 min) → apparaîtra dans TestFlight : https://appstoreconnect.apple.com/apps/6762128624/testflight/ios
+- ✅ **Android : build de production prêt** (AAB sur EAS) — reste à uploader (bloqué sur ta clé Play).
+- ✅ App Store Connect : métadonnées texte remplies (sous-titre, catégorie, description, mots-clés, promo).
+
+### 👉 CE QU'IL TE RESTE POUR PUBLIER (le vrai « dernier km », que je ne peux pas faire)
+**iOS** (dans App Store Connect, une fois le build 1000 traité) :
+1. Attacher le **build 1000** à la version 1.0.
+2. Ajouter les **captures d'écran** (6,5" + 6,9").
+3. Remplir **Confidentialité de l'app** (Localisation, Coordonnées, Achats, Identifiants) + **Classification par âge** (tout « non » → 4+).
+4. **« Ajouter pour vérification »** ← ton clic final (action publique irréversible).
+
+**Android** :
+1. Fournir la **clé de compte de service Google Play** puis `eas submit -p android --latest`, OU uploader l'AAB manuellement dans Play Console (track Production).
+2. Remplir la fiche (textes prêts dans `store-listing.md`) + Data safety + Content rating → **Publier**.
+
+⚠️ **Carte Android** : Maps key en placeholder → carte livraison blanche sur Android (pas de crash). À corriger v1.1.
+💡 Pour éviter le conflit de build number à l'avenir : ajoute `"autoIncrement": true` au profil `production` de `eas.json`.
+
 ## 🚀 ÉTAT LIVE (session en cours)
 - **`eas login` fait** (localidad) — session active sur la machine.
 - **Build ANDROID : ✅ FINISHED** (AAB prêt) — build `23dda8b1-494e-4758-a77c-3045e2088346`.
