@@ -39,3 +39,7 @@ Thumbs.db
 
 # Misc
 *.tsbuildinfo
+
+# Native projects (regénérés par prebuild EAS)
+/ios/
+/android/
