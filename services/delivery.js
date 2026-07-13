@@ -83,7 +83,16 @@ export async function createDeliveryOrder(orderData) {
       delivery_info: orderData.deliveryInfo || '',
       customer_name: orderData.customerName || '',
       customer_phone: orderData.customerPhone || '',
+      // Coords client (dropoff) si l'adresse a été géolocalisée — le serveur
+      // sait aussi les résoudre depuis address_id, ceci n'est qu'un fallback.
+      dropoff_lat: orderData.dropoffLat ?? null,
+      dropoff_lng: orderData.dropoffLng ?? null,
       items: (orderData.items || []).map((item) => ({
+        // product_id/company_id → le serveur valide le vrai prix produit et
+        // résout les coords boutique (itinéraire). Le prix ci-dessous n'est
+        // plus qu'indicatif : le backend impose le prix catalogue réel.
+        product_id: item.productId || item.id || null,
+        company_id: item.companyId || item.shopId || null,
         name: item.name || item.title,
         qty: item.qty || 1,
         price: item.price || 0,
@@ -91,10 +100,29 @@ export async function createDeliveryOrder(orderData) {
       })),
       total: orderData.total || 0,
       delivery_fee: orderData.deliveryFee || 0,
+      // Pourboire livreur choisi au checkout (routé plateforme → livreur).
+      tip: orderData.tip || 0,
       delivery_slot: orderData.slot || '',
       delivery_date: orderData.deliveryDate || '',
       mode: orderData.mode || 'delivery',
     }),
+  });
+}
+
+// Pourboire APRÈS livraison : débite la carte enregistrée et crédite le livreur.
+// idempotencyKey (stable par action) → un retry réseau ne double pas le débit.
+export async function addDeliveryTip(orderId, amount, idempotencyKey) {
+  return deliveryFetch(`/tip/${orderId}/`, {
+    method: 'POST',
+    body: JSON.stringify({ tip: amount, idempotency_key: idempotencyKey }),
+  });
+}
+
+// Signaler un problème de livraison (non reçu, article manquant, etc.).
+export async function reportDeliveryProblem(orderId, category, message = '') {
+  return deliveryFetch(`/complaint/${orderId}/`, {
+    method: 'POST',
+    body: JSON.stringify({ category, message }),
   });
 }
 

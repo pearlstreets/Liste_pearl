@@ -6,6 +6,12 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -31,6 +37,11 @@
     "android": {
       "package": "com.pearlstreets.list",
       "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "REMPLACE_PAR_TA_CLE_GOOGLE_MAPS_ANDROID"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -57,7 +68,13 @@
       "expo-localization",
       "expo-location",
       "expo-font",
-      "@stripe/stripe-react-native"
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.pearlstreets.list",
+          "enableGooglePay": false
+        }
+      ]
     ],
     "updates": {
       "fallbackToCacheTimeout": 0

@@ -14,6 +14,9 @@ import { createStripeCustomerApi, payOrderApi, getSavedCardsApi } from '../servi
 
 const BRAND = '#09d7aa';
 const NEW_CARD = '__new__';
+// URL de retour app (scheme enregistré dans Info.plist) : permet au SDK Stripe de
+// refermer automatiquement la vue 3DS et de revenir dans l'app après validation banque.
+const STRIPE_RETURN_URL = 'pearl-list://stripe-redirect';
 
 // Finalise une charge dont le PaymentIntent a été créé+confirmé côté serveur.
 // Copie de AppUser Payment/index.js:186-233 (reprise 3DS + branches succeeded/échec).
@@ -24,7 +27,7 @@ async function finalisePaymentIntent(data, handleNextAction) {
     data?.requires_action || status === 'requires_action' || status === 'requires_source_action';
   if (requiresAction && clientSecret) {
     if (typeof handleNextAction !== 'function') return false;
-    const { paymentIntent, error } = await handleNextAction(clientSecret);
+    const { paymentIntent, error } = await handleNextAction(clientSecret, STRIPE_RETURN_URL);
     if (error) return false;
     return paymentIntent?.status === 'succeeded';
   }
@@ -207,7 +210,11 @@ function CardPaymentInner({ orders, totalLabel, t, onSuccess, onCancel }) {
 export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuccess, onCancel }) {
   return (
     <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
-      <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+      <StripeProvider
+        publishableKey={STRIPE_PUBLISHABLE_KEY}
+        urlScheme="pearl-list"
+        merchantIdentifier="merchant.com.pearlstreets.list"
+      >
         <CardPaymentInner orders={orders} totalLabel={totalLabel} t={t} onSuccess={onSuccess} onCancel={onCancel} />
       </StripeProvider>
     </Modal>

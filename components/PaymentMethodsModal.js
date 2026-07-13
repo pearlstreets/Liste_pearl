@@ -169,7 +169,11 @@ function PaymentMethodsInner({ t, onClose }) {
 export default function PaymentMethodsModal({ visible, t, onClose }) {
   return (
     <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => onClose && onClose()}>
-      <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+      <StripeProvider
+        publishableKey={STRIPE_PUBLISHABLE_KEY}
+        urlScheme="pearl-list"
+        merchantIdentifier="merchant.com.pearlstreets.list"
+      >
         <PaymentMethodsInner t={t} onClose={onClose} />
       </StripeProvider>
     </Modal>

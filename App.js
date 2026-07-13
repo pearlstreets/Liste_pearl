@@ -9,11 +9,12 @@ import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemo
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
-import { createDeliveryOrder, trackDelivery, getDeliveryStatus, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
+import { createDeliveryOrder, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
+import LiveDeliveryMap from "./components/LiveDeliveryMap";
 import PaymentMethodsModal from "./components/PaymentMethodsModal";
 
 function __getUserItems(){
@@ -205,7 +206,7 @@ const lstyles = StyleSheet.create({
   unitOptTxtOn: { color: '#fff' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
   doneBtnOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
-  empty: { alignItems: 'center', justifyContent: 'center', paddingTop: 70, paddingHorizontal: 50 },
+  empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
   emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(9,215,170,0.95)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
@@ -442,14 +443,11 @@ function ListScreen() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={lstyles.empty}>
-            <View style={lstyles.emptyCircle}>
-              <Ionicons name="cart-outline" size={44} color="#fff" />
-            </View>
             <Text style={lstyles.emptyTitle}>{t('listScreen.noItems')}</Text>
             <Text style={lstyles.emptyHint}>{t('listScreen.inputPlaceholder')}</Text>
           </View>
         }
-        contentContainerStyle={{ paddingBottom: 180 }}
+        contentContainerStyle={visible.length === 0 ? { flexGrow: 1, paddingBottom: 180 } : { paddingBottom: 180 }}
       />
 
       <View style={lstyles.bottomWrap}>
@@ -1551,9 +1549,6 @@ const ProductsScreen = () => {
               <ActivityIndicator style={{marginTop:40}} color={THEME.brand} />
             ) : (
             <View style={prodStyles.empty}>
-              <View style={prodStyles.emptyCircle}>
-                <Ionicons name={unmatchedNames.length > 0 ? "search-outline" : "cart-outline"} size={44} color="#fff" />
-              </View>
               {unmatchedNames.length > 0 ? (
                 <>
                   <Text style={prodStyles.emptyTitle}>{t('productsScreen.noMatchTitle', 'Aucun produit trouvé\npour votre liste')}</Text>
@@ -2136,9 +2131,6 @@ const FavoritesScreen = ({ onClose }) => {
         <>
           {Header}
           <View style={favStyles.empty}>
-            <View style={favStyles.emptyCircle}>
-              <Ionicons name={tab === 'shops' ? "storefront-outline" : "heart-outline"} size={44} color="#fff" />
-            </View>
             <Text style={favStyles.emptyTitle}>
               {tab === 'shops' ? (t('favorites.noFavorites') || 'Aucun shop favori') : (t('favorites.noFavProducts') || 'Aucun produit favori')}
             </Text>
@@ -2589,6 +2581,10 @@ const CartScreen = ({ isAuth }) => {
   const [cartItems, setCartItems] = React.useState([]);
   const [orderVisible, setOrderVisible] = React.useState(false);
   const [confirmVisible, setConfirmVisible] = React.useState(false);
+  // Popup intégrée (design app) affichée AU-DESSUS de la feuille Confirmer.
+  // iOS n'empile pas 2 Modals → on la rend en overlay DANS le Modal confirm
+  // (pas via un 2e Modal). { title, message, tone:'error'|'warning'|'info' }.
+  const [popup, setPopup] = React.useState(null);
   const [placedOrder, setPlacedOrder] = React.useState(null); // snapshot de la commande passée (pour le suivi)
   const [placing, setPlacing] = React.useState(false);
   const placingRef = React.useRef(false); // garde d'idempotence anti double-création
@@ -2788,7 +2784,39 @@ const CartScreen = ({ isAuth }) => {
   // Conséquences : le suivi devient purement informatif, fermer la croix n'annule
   // plus rien silencieusement, on ne commande QUE les articles sélectionnés, et
   // les articles NON sélectionnés restent dans le panier (aucune perte).
-  const placeOrder = React.useCallback(async (backendOrderIds = []) => {
+  // Pourboire livreur choisi au checkout (0 par défaut). Réinitialisé quand le
+  // panier change (évite de reporter un pourboire d'une commande à l'autre).
+  const [deliveryTip, setDeliveryTip] = React.useState(0);
+  React.useEffect(() => { setDeliveryTip(0); }, [cartItems]);
+
+  // Construit le payload createDeliveryOrder (partagé entre la pré-création au
+  // checkout — pour obtenir payable_orders — et la finalisation placeOrder, avec
+  // le MÊME orderId → create-order est idempotent sur client_order_id, donc pas
+  // de doublon).
+  const buildDeliveryOrderArgs = React.useCallback(async (orderId) => {
+    const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
+    const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
+    const subtotal = selectedItems.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
+    const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
+    const selectedDay = deliveryDays[selectedDateIndex];
+    const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
+    let profile = {};
+    try { const p = await AsyncStorage.getItem(KEY_PROFILE); profile = p ? JSON.parse(p) : {}; } catch (e) {}
+    const recipientName = selectedAddress ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim() : '';
+    const recipientPhone = selectedAddress ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim() : '';
+    return {
+      id: orderId, shops, address: deliveryAddress, addressId: selectedAddressId,
+      customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
+      customerPhone: recipientPhone || profile.phone || '',
+      dropoffLat: selectedAddress?.lat ?? null,
+      dropoffLng: selectedAddress?.lang ?? null,
+      items: selectedItems, total: subtotal + deliveryFee, deliveryFee,
+      slot: selectedSlot || '', deliveryDate: deliveryDateLabel, mode: 'delivery',
+      tip: orderMode === 'delivery' ? (deliveryTip || 0) : 0,
+    };
+  }, [cartItems, selectedCart, orderMode, deliveryDays, selectedDateIndex, deliveryAddress, selectedAddressId, selectedAddress, selectedSlot, deliveryTip]);
+
+  const placeOrder = React.useCallback(async (backendOrderIds = [], opts = {}) => {
     const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
     if (selectedItems.length === 0) return null;
     const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
@@ -2796,7 +2824,7 @@ const CartScreen = ({ isAuth }) => {
     const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
     const selectedDay = deliveryDays[selectedDateIndex];
     const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
-    const orderId = Date.now();
+    const orderId = opts.orderId || Date.now();
     const order = {
       id: orderId,
       date: new Date().toISOString(),
@@ -2821,23 +2849,13 @@ const CartScreen = ({ isAuth }) => {
       history.unshift(order);
       await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
     } catch (e) {}
-    // Livraison → créer la course réelle pour l'app Livreur (Pearl Streets)
+    // Livraison → créer la course réelle pour l'app Livreur (Pearl Streets).
+    // Idempotent sur orderId : si la course a déjà été pré-créée au checkout (pour
+    // obtenir payable_orders), ce re-POST ne crée pas de doublon (update_or_create
+    // côté serveur + garde `if created and not neworder_id`).
     if (orderMode === 'delivery') {
       try {
-        const profileRaw = await AsyncStorage.getItem(KEY_PROFILE);
-        const profile = profileRaw ? JSON.parse(profileRaw) : {};
-        const recipientName = selectedAddress ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim() : '';
-        const recipientPhone = selectedAddress ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim() : '';
-        await createDeliveryOrder({
-          id: orderId, shops, address: deliveryAddress, addressId: selectedAddressId,
-          customerName: recipientName || ((profile.prenom || '') + ' ' + (profile.nom || '')).trim(),
-          customerPhone: recipientPhone || profile.phone || '',
-          // coords client si l'adresse a été géolocalisée (lang = longitude côté modèle)
-          dropoffLat: selectedAddress?.lat ?? null,
-          dropoffLng: selectedAddress?.lang ?? null,
-          items: selectedItems, total: subtotal + deliveryFee, deliveryFee,
-          slot: selectedSlot || '', deliveryDate: deliveryDateLabel, mode: 'delivery',
-        });
+        await createDeliveryOrder(await buildDeliveryOrderArgs(orderId));
       } catch (e) {}
     }
     // Retirer du panier UNIQUEMENT les articles commandés (garder le reste)
@@ -2849,7 +2867,7 @@ const CartScreen = ({ isAuth }) => {
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
     setPlacedOrder({ items: selectedItems, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6) });
     return order;
-  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId]);
+  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs]);
 
   // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
@@ -2907,7 +2925,7 @@ const CartScreen = ({ isAuth }) => {
         orders.push({ orderId, shopName: group[0].shop || '' });
       }
     } catch (e) {
-      Alert.alert(t('cart.confirmOrder'), t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.'));
+      setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.') });
       setPendingPayment(null);
       return 'error';
     }
@@ -2916,7 +2934,9 @@ const CartScreen = ({ isAuth }) => {
     // Le montant final (frais boutique/taxes) est calculé et débité côté serveur.
     const grand = eligible.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
     setPendingPayment({ orders, totalLabel: fmtPrice(grand) });
-    setCardModalVisible(true);
+    // NE PAS ouvrir le modal ici : la feuille "Confirmer" est encore présentée et
+    // iOS n'empile pas deux Modals (le modal de paiement resterait invisible/bloqué).
+    // L'appelant ferme la feuille PUIS ouvre le modal après un court délai.
     return 'started';
   }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t, pendingPayment]);
 
@@ -2924,8 +2944,19 @@ const CartScreen = ({ isAuth }) => {
   // course livreur + tracker), INCHANGÉE. La commande pro est désormais payée.
   const onCardPaySuccess = React.useCallback(async () => {
     setCardModalVisible(false);
-    // Capture les order_id Marketplace AVANT de vider pendingPayment, pour les
-    // attacher à la commande locale (relecture du vrai statut backend ensuite).
+    // Livraison : la course a été pré-créée au checkout (même orderId). Le paiement
+    // vient de réussir → le backend a dispatché le livreur (signal). On finalise la
+    // commande LOCALE avec ce MÊME orderId (idempotent, pas de doublon).
+    if (pendingPayment && pendingPayment._delivery) {
+      const did = pendingPayment.orderId;
+      setPendingPayment(null);
+      const ok = await placeOrder([], { orderId: did });
+      if (ok) { setConfirmVisible(false); setOrderVisible(true); }
+      placingRef.current = false; setPlacing(false);
+      return;
+    }
+    // Retrait (tunnel Marketplace) : capture les order_id AVANT de vider
+    // pendingPayment, pour les attacher à la commande locale (relecture statut).
     const backendOrderIds = (pendingPayment && Array.isArray(pendingPayment.orders))
       ? pendingPayment.orders.map(o => o.orderId).filter(Boolean) : [];
     setPendingPayment(null);
@@ -2971,9 +3002,6 @@ const CartScreen = ({ isAuth }) => {
             <Text style={cartStyles.subtitle}>0 {t('productsScreen.quantity')}</Text>
           </View>
           <View style={cartStyles.empty}>
-            <View style={cartStyles.emptyCircle}>
-              <Ionicons name="bag-handle-outline" size={44} color="#fff" />
-            </View>
             <Text style={cartStyles.emptyTitle}>{t('cart.emptyCart')}</Text>
             <Text style={cartStyles.emptyHint}>{t('cart.addProductsFromTab')}</Text>
           </View>
@@ -3095,7 +3123,7 @@ const CartScreen = ({ isAuth }) => {
           <Text style={cartStyles.bottomTotalLabel}>{t('cart.total')}</Text>
           <Text style={cartStyles.bottomTotalVal}>{fmtPrice(totalPrice)}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setConfirmVisible(true); }} style={cartStyles.cta}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setPopup(null); setConfirmVisible(true); }} style={cartStyles.cta}>
           <Ionicons name="bicycle" size={20} color="#fff" />
           <Text style={cartStyles.ctaTxt}>{t('cart.confirmOrder')}</Text>
         </TouchableOpacity>
@@ -3359,9 +3387,32 @@ const CartScreen = ({ isAuth }) => {
                   <Text style={cartStyles.totalLabel}>{orderMode === 'delivery' ? t('cart.delivery') : t('cart.collect')}</Text>
                   <Text style={orderMode === 'collect' ? cartStyles.totalValueFree : cartStyles.totalValue}>{orderMode === 'delivery' ? fmtPrice(9.99) : t('cart.free')}</Text>
                 </View>
+                {orderMode === 'delivery' ? (
+                  <View style={{ marginTop: 6, marginBottom: 2 }}>
+                    <Text style={cartStyles.totalLabel}>{t('cart.tip', 'Pourboire livreur')}</Text>
+                    <View style={{ flexDirection: 'row', gap: 8, marginTop: 6 }}>
+                      {[0, 1, 2, 3].map(v => (
+                        <TouchableOpacity key={v} activeOpacity={0.85} onPress={() => setDeliveryTip(v)}
+                          style={{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5,
+                            borderColor: deliveryTip === v ? THEME.brand : '#ddd',
+                            backgroundColor: deliveryTip === v ? THEME.brand : '#fff' }}>
+                          <Text style={{ fontWeight: '700', fontSize: 13, color: deliveryTip === v ? '#fff' : '#333' }}>
+                            {v === 0 ? t('cart.noTip', 'Aucun') : fmtPrice(v)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                ) : null}
+                {orderMode === 'delivery' && deliveryTip > 0 ? (
+                  <View style={cartStyles.totalRow}>
+                    <Text style={cartStyles.totalLabel}>{t('cart.tip', 'Pourboire livreur')}</Text>
+                    <Text style={cartStyles.totalValue}>{fmtPrice(deliveryTip)}</Text>
+                  </View>
+                ) : null}
                 <View style={cartStyles.grandRow}>
                   <Text style={cartStyles.grandLabel}>{t('cart.total')}</Text>
-                  <Text style={cartStyles.grandValue}>{fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 : 0))}</Text>
+                  <Text style={cartStyles.grandValue}>{fmtPrice(totalPrice + (orderMode === 'delivery' ? 9.99 + (deliveryTip || 0) : 0))}</Text>
                 </View>
                 <View style={[cartStyles.totalRow, { marginTop: 10, marginBottom: 0 }]}>
                   <Text style={cartStyles.totalLabel}>{t('cart.payment', 'Paiement')}</Text>
@@ -3379,10 +3430,10 @@ const CartScreen = ({ isAuth }) => {
             <View style={cartStyles.sheetFooter}>
               {(() => {
                 const missingAddress = orderMode === 'delivery' && !selectedAddress;
-                // Le bouton reste TAPPABLE quand l'adresse manque : il guide alors vers
-                // le sélecteur d'adresse (plus de branche morte). Il n'est vraiment
-                // désactivé que sans créneau ou pendant l'envoi.
-                const disabled = placing || !selectedSlot;
+                // Le bouton reste TOUJOURS tappable (hors envoi) : sans créneau il
+                // PRÉVIENT via la popup intégrée (« choisis un créneau ») au lieu
+                // d'être grisé sans explication ; adresse manquante → sélecteur.
+                const disabled = placing;
                 return (
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -3391,7 +3442,7 @@ const CartScreen = ({ isAuth }) => {
                 accessibilityLabel={missingAddress ? t('cart.addressRequired', 'Adresse requise') : t('cart.confirmOrder')}
                 onPress={async () => {
                   if (!selectedSlot) {
-                    Alert.alert(t('cart.slotRequired'), t('cart.slotRequiredMsg'));
+                    setPopup({ tone: 'warning', icon: 'time-outline', title: t('cart.slotRequired'), message: t('cart.slotRequiredMsg') });
                     return;
                   }
                   // En livraison, une adresse est obligatoire (sinon le livreur
@@ -3406,15 +3457,67 @@ const CartScreen = ({ isAuth }) => {
                   setPlacing(true);
                   let cardRes = 'local';
                   try {
+                    // LIVRAISON : la course est la source unique. On la pré-crée
+                    // (createDeliveryOrder → NewOrders awaiting_payment) puis on
+                    // encaisse ses payable_orders via le CardPaymentModal existant.
+                    // Le paiement réussi dispatche le livreur (signal backend). On
+                    // n'utilise PAS maybeStartCardCheckout ici (créerait un doublon).
+                    if (orderMode === 'delivery' && StripeAvailable) {
+                      // Re-tap après annulation : réutilise la course déjà créée
+                      // (évite une 2e commande awaiting_payment orpheline).
+                      if (pendingPayment && pendingPayment._delivery
+                          && Array.isArray(pendingPayment.orders) && pendingPayment.orders.length) {
+                        cardRes = 'started';
+                        setConfirmVisible(false);
+                        setTimeout(() => setCardModalVisible(true), 450);
+                        setPlacing(false);
+                        return;
+                      }
+                      const did = Date.now();
+                      let dres = null;
+                      try {
+                        dres = await createDeliveryOrder(await buildDeliveryOrderArgs(did));
+                      } catch (e) {
+                        setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
+                        placingRef.current = false; setPlacing(false); return;
+                      }
+                      const payable = (dres && dres.payable_orders) || [];
+                      if (payable.length) {
+                        const sel = cartItems.filter((_, i) => selectedCart[i]);
+                        const grand = sel.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
+                        setPendingPayment({
+                          orders: payable.map(o => ({ orderId: o.order_id, shopName: o.shop || '' })),
+                          totalLabel: fmtPrice(grand), _delivery: true, orderId: did,
+                        });
+                        cardRes = 'started';
+                        setConfirmVisible(false);
+                        setTimeout(() => setCardModalVisible(true), 450);
+                        setPlacing(false);
+                        return; // le modal de paiement prend le relais
+                      }
+                      // Aucune commande pro à payer (items sans vraie fiche boutique)
+                      // → flux LOCAL avec ce même orderId (course déjà créée, idempotent).
+                      const okd = await placeOrder([], { orderId: did });
+                      if (okd) { setConfirmVisible(false); setOrderVisible(true); }
+                      else { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
+                      return;
+                    }
                     // Option A : tente le paiement carte réel (crée la commande
                     // Marketplace + ouvre le modal). 'local' → flux local inchangé ;
                     // 'error' → déjà alerté, on ne crée PAS de commande locale conflictuelle.
                     cardRes = await maybeStartCardCheckout();
-                    if (cardRes === 'started') { setPlacing(false); return; } // le modal prend le relais
+                    if (cardRes === 'started') {
+                      // Ferme la feuille "Confirmer" AVANT d'ouvrir le modal de paiement
+                      // (iOS ne présente pas 2 Modals en même temps → sinon écran bloqué).
+                      setConfirmVisible(false);
+                      setTimeout(() => setCardModalVisible(true), 450);
+                      setPlacing(false);
+                      return; // le modal de paiement prend le relais
+                    }
                     if (cardRes === 'error') return;
                     const ok = await placeOrder();
                     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
-                    else { Alert.alert(t('cart.emptyCart'), t('cart.addProductsFromTab')); }
+                    else { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
                   } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
                 style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
@@ -3575,6 +3678,31 @@ const CartScreen = ({ isAuth }) => {
               </View>
             </View>
           )}
+          {/* Popup intégrée (design app) — overlay DANS le Modal confirm.
+              iOS n'empile pas 2 Modals : on rend un overlay absolu, pas un 2e Modal. */}
+          {popup && (() => {
+            const TONES = {
+              error:   { c: THEME.danger, s: THEME.dangerSoft, i: 'alert-circle' },
+              warning: { c: '#F59E0B',    s: '#FEF3C7',        i: 'time' },
+              info:    { c: THEME.brand,  s: THEME.brandSoft,  i: 'information-circle' },
+            };
+            const tn = TONES[popup.tone] || TONES.info;
+            return (
+              <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(15,23,42,0.55)', alignItems: 'center', justifyContent: 'center', padding: 28, zIndex: 60, elevation: 60 }}>
+                <TouchableOpacity activeOpacity={1} style={StyleSheet.absoluteFill} onPress={() => setPopup(null)} />
+                <TouchableOpacity activeOpacity={1} onPress={() => {}} style={{ width: '100%', maxWidth: 340, backgroundColor: '#FFFFFF', borderRadius: 24, paddingTop: 26, paddingHorizontal: 22, paddingBottom: 16, alignItems: 'center', shadowColor: '#0F172A', shadowOpacity: 0.18, shadowRadius: 24, shadowOffset: { width: 0, height: 10 }, elevation: 8 }}>
+                  <View style={{ width: 64, height: 64, borderRadius: 32, backgroundColor: tn.s, alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                    <Ionicons name={popup.icon || tn.i} size={32} color={tn.c} />
+                  </View>
+                  <Text style={{ fontSize: 18, fontWeight: '800', color: THEME.ink, textAlign: 'center', marginBottom: 6 }}>{popup.title}</Text>
+                  {!!popup.message && <Text style={{ fontSize: 14.5, lineHeight: 21, color: THEME.muted, textAlign: 'center', marginBottom: 20 }}>{popup.message}</Text>}
+                  <TouchableOpacity activeOpacity={0.9} onPress={() => setPopup(null)} style={{ alignSelf: 'stretch', backgroundColor: tn.c, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '800' }}>{t('common.ok', 'OK')}</Text>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
+            );
+          })()}
         </View>
         </KeyboardAvoidingView>
       </Modal>
@@ -5124,6 +5252,85 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     return () => { mounted = false; };
   }, [orders]);
 
+  // Suivi LIVE (type Uber Eats) : quand le modal détail est ouvert sur une
+  // livraison EN COURS, on rafraîchit la position du livreur toutes les 5 s
+  // (carte + ETA fluides). S'arrête à la livraison/annulation ou à la fermeture.
+  React.useEffect(() => {
+    if (!detailOrder || detailOrder.mode !== 'delivery') return;
+    let mounted = true, stopped = false;
+    const tick = async () => {
+      if (stopped) return;
+      try {
+        const status = await getDeliveryStatus(detailOrder.id);
+        if (!mounted || !status || !status.status) return;
+        setDeliveryStatuses(prev => ({ ...prev, [detailOrder.id]: status }));
+        const s2 = String(status.status).toLowerCase();
+        if (s2 === 'delivered' || s2 === 'cancelled') stopped = true;
+      } catch (e) {}
+    };
+    tick();
+    const iv = setInterval(tick, 5000);
+    return () => { mounted = false; clearInterval(iv); };
+  }, [detailOrder]);
+
+  // Pourboire APRÈS livraison (type Uber Eats) : débite la carte enregistrée et
+  // crédite le livreur, puis rafraîchit le suivi (reçu à jour).
+  const [tipLoading, setTipLoading] = React.useState(false);
+  const submitPostTip = React.useCallback(async (orderId, amount) => {
+    setTipLoading(true);
+    try {
+      // Clé d'idempotence stable pour CETTE action (générée une fois) → un retry
+      // réseau réutilise le même corps → pas de double débit côté serveur.
+      const idemKey = `tip-${orderId}-${amount}-${Date.now()}`;
+      const res = await addDeliveryTip(orderId, amount, idemKey);
+      if (res && res.status === 'success') {
+        const s = await getDeliveryStatus(orderId);
+        if (s && s.status) setDeliveryStatuses(prev => ({ ...prev, [orderId]: s }));
+        Alert.alert(t('cart.tipThanks', 'Merci !'), t('cart.tipAdded', 'Pourboire ajouté.'));
+      } else {
+        Alert.alert(t('cart.tip', 'Pourboire'), (res && res.message) || t('cart.tipFailed', 'Échec du pourboire.'));
+      }
+    } catch (e) {
+      Alert.alert(t('cart.tip', 'Pourboire'), t('cart.tipFailed', 'Échec du pourboire.'));
+    } finally { setTipLoading(false); }
+  }, [t]);
+
+  // Notation du livreur (post-livraison) + signalement de problème (type Uber Eats).
+  const submitRating = React.useCallback(async (orderId, stars) => {
+    try {
+      const res = await rateDelivery(orderId, stars);
+      if (res && (res.status === 'success' || res.status === true)) {
+        const s = await getDeliveryStatus(orderId);
+        if (s && s.status) setDeliveryStatuses(prev => ({ ...prev, [orderId]: s }));
+        Alert.alert(t('rating.thanks', 'Merci !'), t('rating.saved', 'Votre note a été enregistrée.'));
+      }
+    } catch (e) {}
+  }, [t]);
+  const submitReport = React.useCallback((orderId) => {
+    const cats = [
+      { key: 'not_received', label: t('report.notReceived', 'Commande non reçue') },
+      { key: 'missing_item', label: t('report.missingItem', 'Article manquant') },
+      { key: 'wrong_order', label: t('report.wrongOrder', 'Mauvaise commande') },
+      { key: 'damaged', label: t('report.damaged', 'Commande endommagée') },
+      { key: 'other', label: t('report.other', 'Autre') },
+    ];
+    Alert.alert(
+      t('report.title', 'Signaler un problème'),
+      t('report.pick', "Que s'est-il passé ?"),
+      [
+        ...cats.map(c => ({ text: c.label, onPress: async () => {
+          try {
+            const res = await reportDeliveryProblem(orderId, c.key);
+            if (res && res.status === 'success') {
+              Alert.alert(t('report.sentTitle', 'Signalement envoyé'), t('report.sent', 'Notre support va traiter votre demande.'));
+            }
+          } catch (e) {}
+        } })),
+        { text: t('common.cancel', 'Annuler'), style: 'cancel' },
+      ],
+    );
+  }, [t]);
+
   // Get order status - uses delivery API for delivery orders, simulated for collect
   const getOrderStatus = (order) => {
     // VRAI statut backend (dont remboursement) si la commande a un order_id
@@ -5460,9 +5667,6 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
           {orders.length === 0 ? (
             <View style={profStyles.empty}>
-              <View style={profStyles.emptyCircle}>
-                <Ionicons name="receipt-outline" size={24} color="#fff" />
-              </View>
               <Text style={profStyles.emptyTitle}>{t('profile.noOrders')}</Text>
             </View>
           ) : (
@@ -6208,6 +6412,16 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     <Text style={profStyles.detailInfoLabel}>{t('profile.storePickup')}</Text>
                   </View>
                 ) : null}
+                {/* Carte de suivi LIVE (type Uber Eats) : le livreur bouge en
+                    direct, ETA recalculé, bandeau de proximité. Affichée dès qu'on
+                    a une position livreur ou l'adresse client. */}
+                {detailOrder.mode === 'delivery' && deliveryStatuses[detailOrder.id]
+                  && (deliveryStatuses[detailOrder.id].driver_lat != null
+                      || deliveryStatuses[detailOrder.id].dropoff_lat != null) ? (
+                  <View style={{ marginTop: 12 }}>
+                    <LiveDeliveryMap status={deliveryStatuses[detailOrder.id]} t={t} />
+                  </View>
+                ) : null}
                 {/* Driver info (from Livraison-app) */}
                 {detailOrder.mode === 'delivery' && (detailOrder.driverName || deliveryStatuses[detailOrder.id]?.driver_name) ? (
                   <View style={profStyles.driverChip}>
@@ -6229,6 +6443,59 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     ) : null}
                   </View>
                 ) : null}
+                {/* Pourboire APRÈS livraison (type Uber Eats) */}
+                {(() => {
+                  const st = deliveryStatuses[detailOrder.id]?.status || detailOrder.deliveryStatus;
+                  const delivered = st === 'delivered' || st === DELIVERY_STATUS.DELIVERED;
+                  if (detailOrder.mode !== 'delivery' || !delivered) return null;
+                  const tipped = Number(deliveryStatuses[detailOrder.id]?.tip_amount
+                    || deliveryStatuses[detailOrder.id]?.data?.tip_amount || 0);
+                  return (
+                    <View style={{ marginTop: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14 }}>
+                      <Text style={{ fontWeight: '800', fontSize: 15, color: '#111', marginBottom: 8 }}>
+                        {tipped > 0
+                          ? t('cart.tipThanks', 'Merci pour votre pourboire !')
+                          : t('cart.tipDriver', 'Remercier votre livreur')}
+                      </Text>
+                      <View style={{ flexDirection: 'row', gap: 8 }}>
+                        {[1, 2, 3, 5].map(v => (
+                          <TouchableOpacity key={v} activeOpacity={0.85} disabled={tipLoading}
+                            onPress={() => submitPostTip(detailOrder.id, v)}
+                            style={{ flex: 1, alignItems: 'center', paddingVertical: 10, borderRadius: 12,
+                              borderWidth: 1.5, borderColor: THEME.brand, opacity: tipLoading ? 0.5 : 1 }}>
+                            <Text style={{ fontWeight: '800', color: THEME.brand }}>{fmtPrice(v)}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    </View>
+                  );
+                })()}
+                {/* Notation du livreur + signalement (post-livraison, type Uber Eats) */}
+                {(() => {
+                  const st = deliveryStatuses[detailOrder.id]?.status || detailOrder.deliveryStatus;
+                  const delivered = st === 'delivered' || st === DELIVERY_STATUS.DELIVERED;
+                  if (detailOrder.mode !== 'delivery' || !delivered) return null;
+                  const rated = Number(deliveryStatuses[detailOrder.id]?.data?.rating || 0);
+                  return (
+                    <View style={{ marginTop: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14 }}>
+                      <Text style={{ fontWeight: '800', fontSize: 15, color: '#111', marginBottom: 8 }}>
+                        {rated > 0 ? t('rating.yourRating', 'Votre note') : t('rating.rateDriver', 'Noter votre livreur')}
+                      </Text>
+                      <View style={{ flexDirection: 'row', gap: 6 }}>
+                        {[1, 2, 3, 4, 5].map(v => (
+                          <TouchableOpacity key={v} activeOpacity={0.8} disabled={rated > 0} onPress={() => submitRating(detailOrder.id, v)}>
+                            <Ionicons name={v <= rated ? 'star' : 'star-outline'} size={28} color={v <= rated ? '#f5a623' : '#ccc'} />
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                      <TouchableOpacity activeOpacity={0.8} onPress={() => submitReport(detailOrder.id)}
+                        style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                        <Ionicons name="alert-circle-outline" size={18} color="#e74c3c" />
+                        <Text style={{ color: '#e74c3c', fontWeight: '700', fontSize: 14 }}>{t('report.title', 'Signaler un problème')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })()}
                 {/* Code livreur : à communiquer au livreur pour valider la remise */}
                 {(() => {
                   const code = deliveryStatuses[detailOrder.id]?.delivery_code || detailOrder.deliveryCode;
