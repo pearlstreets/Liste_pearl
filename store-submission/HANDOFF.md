@@ -34,9 +34,12 @@
   - **Build iOS #2 relancé** : `9b7f5fd0-7fc3-48bb-9c1c-45c73b7846b1` (en cours).
 - Credentials de signature iOS OK (cert + provisioning valides jusqu'à avril 2027).
 
-### 🟡 SOUMISSION — bloquée sur TES clés (confirmé en test)
-- **Android** : `eas submit` a échoué → *« Google Service Account Keys cannot be set up in --non-interactive mode »*. Il faut **ta clé de compte de service Google Play** (JSON). Sans elle, je ne peux pas soumettre.
-- **iOS** : idem probable (clé API App Store Connect requise) — je testerai dès que le build iOS #2 est fini.
+### 🟡 SOUMISSION — état réel (testé)
+- **iOS : clé API App Store Connect DÉJÀ stockée dans EAS** ✅ (`SQ845JY94A`) → **je peux soumettre tout seul**. 1ère tentative a échoué juste sur « build number 6 déjà utilisé » → corrigé (**build 10**), rebuild + auto-submit en cours. L'upload vers App Store Connect se fera automatiquement.
+- **Android : BLOQUÉ** → `eas submit` échoue : *« Google Service Account Keys cannot be set up in --non-interactive mode »*. Il faut **ta clé de compte de service Google Play** (JSON). Options : la configurer puis `eas submit -p android --latest`, OU uploader l'AAB manuellement dans Play Console.
+
+### iOS — après l'upload EAS (ce qu'il te restera dans App Store Connect)
+Métadonnées texte = ✅ déjà remplies par moi. Restent : **captures d'écran**, **Confidentialité de l'app** (questionnaire), **Classification par âge**, attacher le build 10 à la version 1.0, puis **« Ajouter pour vérification »** (ton clic final).
 
 **2 façons de finir la soumission :**
 1. **Tu configures les clés** (une fois) : Play → compte de service JSON ; ASC → clé API `.p8`. Puis lance :
