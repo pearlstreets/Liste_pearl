@@ -8,5 +8,5 @@
     "preview": { "distribution": "internal" },
     "production": {}
   },
-  "submit": { "production": {} }
+  "submit": { "production": { "ios": { "ascAppId": "6762128624" } } }
 }
