@@ -27,15 +27,26 @@
 - `SUBMISSION_CHECKLIST.md` — checklist détaillée
 
 ## 🚀 ÉTAT LIVE (session en cours)
-- **`eas login` fait** (localidad / hello.localidad@gmail.com) — session active sur la machine.
-- Versions bumpées : iOS buildNumber **6**, Android versionCode **2**.
-- **Builds de PRODUCTION lancés sur EAS** (avec tous les correctifs) :
-  - iOS : build `eec1a24f-9c32-4d98-945d-92dd36b1394f`
-  - Android : build `23dda8b1-494e-4758-a77c-3045e2088346`
-  - Suivi : https://expo.dev/accounts/localidad/projects/pearl-list/builds
-- Credentials iOS validés (cert + provisioning OK jusqu'à avril 2027, équipe `5R8LA6469V`).
-- **Prochaine étape auto** : `eas submit -p ios/android --latest` dès la fin des builds (si les clés de soumission sont stockées dans EAS depuis la soumission d'il y a 2 mois).
-- ⚠️ **Carte Android** : build lancé avec la clé Maps en placeholder → carte livraison blanche sur Android (pas de crash). À corriger en v1.1 (ajouter la clé + rebuild).
+- **`eas login` fait** (localidad) — session active sur la machine.
+- **Build ANDROID : ✅ FINISHED** (AAB prêt) — build `23dda8b1-494e-4758-a77c-3045e2088346`.
+- **Build iOS #1 : ❌ ERRORED** — cause = entitlement **Apple Pay** (`merchantIdentifier` du plugin Stripe) non supporté par le provisioning profile.
+  - **CORRIGÉ** : retiré `merchantIdentifier` (on n'utilise pas Apple Pay), supprimé le `ios/PearlList.entitlements` tracké, gitignoré `ios/`+`android/` → prebuild EAS propre.
+  - **Build iOS #2 relancé** : `9b7f5fd0-7fc3-48bb-9c1c-45c73b7846b1` (en cours).
+- Credentials de signature iOS OK (cert + provisioning valides jusqu'à avril 2027).
+
+### 🟡 SOUMISSION — bloquée sur TES clés (confirmé en test)
+- **Android** : `eas submit` a échoué → *« Google Service Account Keys cannot be set up in --non-interactive mode »*. Il faut **ta clé de compte de service Google Play** (JSON). Sans elle, je ne peux pas soumettre.
+- **iOS** : idem probable (clé API App Store Connect requise) — je testerai dès que le build iOS #2 est fini.
+
+**2 façons de finir la soumission :**
+1. **Tu configures les clés** (une fois) : Play → compte de service JSON ; ASC → clé API `.p8`. Puis lance :
+   ```bash
+   eas submit -p android --latest    # te demandera le JSON Play
+   eas submit -p ios --latest        # te demandera la clé API ASC
+   ```
+2. **Upload manuel** : AAB dans Play Console (track Production) ; `.ipa` via l'app **Transporter** (Mac) vers App Store Connect.
+
+- ⚠️ **Carte Android** : Maps key en placeholder → carte livraison blanche sur Android (pas de crash). À corriger v1.1.
 
 ## 🟡 CE QU'IL TE RESTE (les seules choses que je ne peux pas faire)
 
