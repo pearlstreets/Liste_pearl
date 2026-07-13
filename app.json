@@ -71,7 +71,6 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": "merchant.com.pearlstreets.list",
           "enableGooglePay": false
         }
       ]
