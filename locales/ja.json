@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "この住所を削除しますか？",
     "addrSaveError": "住所を保存できませんでした。",
     "back": "戻る",
-    "close": "閉じる"
+    "close": "閉じる",
+    "deleteAccount": "アカウントを削除",
+    "deleteAccountTitle": "アカウントを削除",
+    "deleteAccountConfirm": "注意：あなたのアカウントは Pearl Streets の共通アカウントです。ここで削除すると、Pearl Streets のアプリと Marketplace サイト（注文、お気に入り、ポイント）でも削除されます。データは法律で定められた期間保持された後、消去されます。この操作は元に戻せません。",
+    "deleteAccountAction": "削除",
+    "deleteAccountErrTitle": "削除できません",
+    "deleteAccountErr": "アカウントの削除に失敗しました。接続を確認して、もう一度お試しください。",
+    "deleteAccountDoneTitle": "アカウントを削除しました",
+    "deleteAccountDone": "アカウントが削除されました。"
   },
   "auth": {
     "login": "ログイン",

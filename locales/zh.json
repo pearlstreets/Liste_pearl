@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "删除此地址？",
     "addrSaveError": "无法保存地址。",
     "back": "返回",
-    "close": "关闭"
+    "close": "关闭",
+    "deleteAccount": "删除我的账户",
+    "deleteAccountTitle": "删除我的账户",
+    "deleteAccountConfirm": "注意：您的账户是 Pearl Streets 共享账户。在此删除也会同时删除 Pearl Streets 应用和 Marketplace 网站上的账户（订单、收藏、积分）。您的数据将按法律要求的期限保留，之后予以删除。此操作无法撤销。",
+    "deleteAccountAction": "删除",
+    "deleteAccountErrTitle": "删除失败",
+    "deleteAccountErr": "删除账户失败。请检查网络连接后重试。",
+    "deleteAccountDoneTitle": "账户已删除",
+    "deleteAccountDone": "您的账户已删除。"
   },
   "auth": {
     "login": "登录",

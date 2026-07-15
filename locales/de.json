@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "Diese Adresse löschen?",
     "addrSaveError": "Adresse konnte nicht gespeichert werden.",
     "back": "Zurück",
-    "close": "Schließen"
+    "close": "Schließen",
+    "deleteAccount": "Mein Konto löschen",
+    "deleteAccountTitle": "Mein Konto löschen",
+    "deleteAccountConfirm": "Achtung: Ihr Konto ist ein gemeinsames Pearl Streets Konto. Wenn Sie es hier löschen, wird es auch in der Pearl Streets App und auf der Marketplace-Website gelöscht (Bestellungen, Favoriten, Treuepunkte). Ihre Daten werden für den gesetzlich vorgeschriebenen Zeitraum aufbewahrt und danach gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteAccountAction": "Löschen",
+    "deleteAccountErrTitle": "Löschen fehlgeschlagen",
+    "deleteAccountErr": "Das Löschen des Kontos ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "deleteAccountDoneTitle": "Konto gelöscht",
+    "deleteAccountDone": "Ihr Konto wurde gelöscht."
   },
   "auth": {
     "login": "Anmelden",

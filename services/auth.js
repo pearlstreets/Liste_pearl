@@ -1,4 +1,4 @@
-import { apiPost, saveTokens, clearTokens, getTokens, apiGet } from './api';
+import { apiPost, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_AUTH = 'KEY_AUTH';
@@ -96,6 +96,18 @@ export async function logoutUser() {
   }
   await clearTokens();
   await AsyncStorage.removeItem(KEY_AUTH);
+}
+
+// Delete the account on the Marketplace backend (RGPD soft-delete, data purged after legal retention).
+// Requires a valid session (tokens sent by apiFetch). Endpoint: DELETE /api/v1/users/delete-user/
+export async function deleteAccount() {
+  const data = await apiDelete('/users/delete-user/');
+  if (data && (data.status === true || data.success === true || data.message)) {
+    await clearTokens();
+    await AsyncStorage.removeItem(KEY_AUTH);
+    return { success: true, message: data.message };
+  }
+  return { success: false, message: (data && data.message) || 'Account deletion failed' };
 }
 
 // Forgot password

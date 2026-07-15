@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "Удалить этот адрес?",
     "addrSaveError": "Не удалось сохранить адрес.",
     "back": "Назад",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "deleteAccount": "Удалить мой аккаунт",
+    "deleteAccountTitle": "Удалить мой аккаунт",
+    "deleteAccountConfirm": "Внимание: ваш аккаунт — это общий аккаунт Pearl Streets. Удаляя его здесь, вы также удаляете его в приложении и на сайте Marketplace Pearl Streets (заказы, избранное, бонусы). Ваши данные хранятся в течение установленного законом срока, а затем удаляются. Это действие необратимо.",
+    "deleteAccountAction": "Удалить",
+    "deleteAccountErrTitle": "Не удалось удалить",
+    "deleteAccountErr": "Не удалось удалить аккаунт. Проверьте подключение и повторите попытку.",
+    "deleteAccountDoneTitle": "Аккаунт удалён",
+    "deleteAccountDone": "Ваш аккаунт удалён."
   },
   "auth": {
     "login": "Вход",

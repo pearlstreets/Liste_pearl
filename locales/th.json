@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "ลบที่อยู่นี้?",
     "addrSaveError": "ไม่สามารถบันทึกที่อยู่ได้",
     "back": "กลับ",
-    "close": "ปิด"
+    "close": "ปิด",
+    "deleteAccount": "ลบบัญชีของฉัน",
+    "deleteAccountTitle": "ลบบัญชีของฉัน",
+    "deleteAccountConfirm": "โปรดทราบ: บัญชีของคุณเป็นบัญชี Pearl Streets ที่ใช้ร่วมกัน การลบที่นี่จะลบบัญชีในแอปและเว็บไซต์ Marketplace ของ Pearl Streets ด้วย (คำสั่งซื้อ รายการโปรด คะแนนสะสม) ข้อมูลของคุณจะถูกเก็บไว้ตามระยะเวลาที่กฎหมายกำหนดแล้วจึงลบทิ้ง การดำเนินการนี้ไม่สามารถย้อนกลับได้",
+    "deleteAccountAction": "ลบ",
+    "deleteAccountErrTitle": "ลบไม่สำเร็จ",
+    "deleteAccountErr": "ลบบัญชีไม่สำเร็จ โปรดตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง",
+    "deleteAccountDoneTitle": "ลบบัญชีแล้ว",
+    "deleteAccountDone": "บัญชีของคุณถูกลบแล้ว"
   },
   "auth": {
     "login": "เข้าสู่ระบบ",

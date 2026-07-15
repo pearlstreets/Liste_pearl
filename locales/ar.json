@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "حذف هذا العنوان؟",
     "addrSaveError": "تعذّر حفظ العنوان.",
     "back": "رجوع",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "deleteAccount": "حذف حسابي",
+    "deleteAccountTitle": "حذف حسابي",
+    "deleteAccountConfirm": "تنبيه: حسابك هو حساب Pearl Streets مشترك. حذفه من هنا يحذفه أيضًا في تطبيق وموقع Marketplace التابع لـ Pearl Streets (الطلبات والمفضلة والولاء). يتم الاحتفاظ ببياناتك للمدة التي يقتضيها القانون ثم تُمحى. هذا الإجراء لا يمكن التراجع عنه.",
+    "deleteAccountAction": "حذف",
+    "deleteAccountErrTitle": "فشل الحذف",
+    "deleteAccountErr": "فشل حذف الحساب. تحقق من اتصالك وحاول مرة أخرى.",
+    "deleteAccountDoneTitle": "تم حذف الحساب",
+    "deleteAccountDone": "تم حذف حسابك."
   },
   "auth": {
     "login": "تسجيل الدخول",

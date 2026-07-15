@@ -2,7 +2,7 @@ import { autocorrectName } from "./utils/spellcheck";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, logoutUser, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
+import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
@@ -2658,6 +2658,7 @@ const CartScreen = ({ isAuth }) => {
       days.push({
         date: d,
         label: i === 0 ? t('cart.today') : i === 1 ? t('cart.tomorrow') : joursSemaine[d.getDay()],
+        dayName: joursSemaine[d.getDay()],
         sub: d.getDate() + ' ' + mois[d.getMonth()],
       });
     }
@@ -2799,7 +2800,7 @@ const CartScreen = ({ isAuth }) => {
     const subtotal = selectedItems.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
     const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
     const selectedDay = deliveryDays[selectedDateIndex];
-    const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
+    const deliveryDateLabel = selectedDay ? ((selectedDay.dayName || selectedDay.label) + ' ' + selectedDay.sub) : '';
     let profile = {};
     try { const p = await AsyncStorage.getItem(KEY_PROFILE); profile = p ? JSON.parse(p) : {}; } catch (e) {}
     const recipientName = selectedAddress ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim() : '';
@@ -2823,7 +2824,7 @@ const CartScreen = ({ isAuth }) => {
     const subtotal = selectedItems.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
     const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
     const selectedDay = deliveryDays[selectedDateIndex];
-    const deliveryDateLabel = selectedDay ? (selectedDay.label + ' ' + selectedDay.sub) : '';
+    const deliveryDateLabel = selectedDay ? ((selectedDay.dayName || selectedDay.label) + ' ' + selectedDay.sub) : '';
     const orderId = opts.orderId || Date.now();
     const order = {
       id: orderId,
@@ -4254,9 +4255,9 @@ const authStyles = StyleSheet.create({
   langLabelActive: { fontWeight: '800', color: THEME.brandDark },
 });
 
-function AuthScreen({ onLogin, onClose }) {
+function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   const { t, i18n: i18nAuth } = useTranslation();
-  const [isLogin, setIsLogin] = React.useState(true);
+  const [isLogin, setIsLogin] = React.useState(initialIsLogin);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [pseudo, setPseudo] = React.useState('');
@@ -4455,9 +4456,13 @@ export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
   const [proBlocked, setProBlocked] = React.useState(false);
   const [authVisible, setAuthVisible] = React.useState(false);
+  const [authSignup, setAuthSignup] = React.useState(false);
 
   React.useEffect(() => {
-    const sub = DeviceEventEmitter.addListener('OPEN_AUTH', () => setAuthVisible(true));
+    const sub = DeviceEventEmitter.addListener('OPEN_AUTH', (params) => {
+      setAuthSignup(params && params.signup === true);
+      setAuthVisible(true);
+    });
     return () => sub.remove();
   }, []);
 
@@ -4547,6 +4552,8 @@ export default function App() {
       </NavigationContainer>
       <Modal visible={authVisible} animationType="slide" onRequestClose={() => setAuthVisible(false)}>
         <AuthScreen
+          key={authSignup ? 'signup' : 'login'}
+          initialIsLogin={!authSignup}
           onLogin={() => { setIsAuth(true); setAuthVisible(false); }}
           onClose={() => setAuthVisible(false)}
         />
@@ -4704,6 +4711,8 @@ const profStyles = StyleSheet.create({
   // Logout
   logoutBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.dangerSoft, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   logoutTxt: { fontSize: 15.5, fontWeight: '800', color: THEME.danger, marginLeft: 8 },
+  deleteAccountBtn: { height: 46, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  deleteAccountTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.danger, marginLeft: 6, textDecorationLine: 'underline' },
 
   // Empty state
   empty: { backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 16, paddingHorizontal: 24, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
@@ -4724,6 +4733,8 @@ const profStyles = StyleSheet.create({
   guestHeroHint: { fontSize: 13, color: 'rgba(255,255,255,0.92)', textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },
   guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 14, marginTop: 18 },
   guestHeroBtnTxt: { color: THEME.brand, fontWeight: '800', fontSize: 15, marginLeft: 8 },
+  guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.18)', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.55)', paddingHorizontal: 26, paddingVertical: 12, borderRadius: 14, marginTop: 10 },
+  guestHeroBtnAltTxt: { color: '#fff', fontWeight: '800', fontSize: 15, marginLeft: 8 },
   guestPrefTitle: { fontSize: 12, fontWeight: '800', color: THEME.faint, marginBottom: 10, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.6 },
 
   // Full-page modal header
@@ -4881,6 +4892,17 @@ const EMPTY_ADDR_FORM = {
   house_building: '', road_area_colony: '', pincode: '', city: '',
   state: '', address_type: 'home', countryFlag: 'FR', lat: null, lang: null,
 };
+
+// Nettoie un libelle de retrait stocke ("Aujourd'hui 13 juil", fige a l'achat) : retire le mot relatif perime.
+function cleanPickupDate(label, t) {
+  if (!label) return '';
+  let s = String(label).trim();
+  for (const key of ['cart.today', 'cart.tomorrow']) {
+    const w = t(key);
+    if (w && s.toLowerCase().startsWith((w + ' ').toLowerCase())) { s = s.slice(w.length + 1).trim(); break; }
+  }
+  return s;
+}
 
 function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
@@ -5442,6 +5464,10 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <Ionicons name="log-in-outline" size={20} color={THEME.brand} />
               <Text style={profStyles.guestHeroBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
             </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH', { signup: true })} style={profStyles.guestHeroBtnAlt}>
+              <Ionicons name="person-add-outline" size={19} color="#fff" />
+              <Text style={profStyles.guestHeroBtnAltTxt}>{t('auth.signupBtn') || 'Créer un compte'}</Text>
+            </TouchableOpacity>
           </View>
 
           {/* Favoris — accessibles SANS connexion (stockés localement) */}
@@ -5837,6 +5863,48 @@ function FakeProfileScreen({ onLogout, isAuth }) {
           }} style={profStyles.logoutBtn}>
             <Ionicons name="log-out-outline" size={20} color={THEME.danger} />
             <Text style={profStyles.logoutTxt}>{t('profile.logout')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Supprimer le compte (obligatoire App Store 5.1.1(v)) */}
+        <View style={[profStyles.section, { marginBottom: 24 }]}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => {
+            Alert.alert(
+              t('profile.deleteAccountTitle', 'Supprimer mon compte'),
+              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Cette action est irréversible."),
+              [
+                { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
+                { text: t('profile.deleteAccountAction', 'Supprimer'), style: 'destructive', onPress: async () => {
+                  let res;
+                  try { res = await apiDeleteAccount(); } catch (e) { res = { success: false }; }
+                  if (!res || !res.success) {
+                    Alert.alert(
+                      t('profile.deleteAccountErrTitle', 'Suppression impossible'),
+                      t('profile.deleteAccountErr', 'La suppression du compte a échoué. Vérifiez votre connexion et réessayez.')
+                    );
+                    return;
+                  }
+                  // Nettoyer les données locales (comme à la déconnexion)
+                  try {
+                    await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
+                    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
+                    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                    await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
+                    await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
+                    await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+                  } catch (e) {}
+                  Alert.alert(
+                    t('profile.deleteAccountDoneTitle', 'Compte supprimé'),
+                    t('profile.deleteAccountDone', 'Votre compte a bien été supprimé.')
+                  );
+                  if (onLogout) onLogout();
+                }},
+              ]
+            );
+          }} style={profStyles.deleteAccountBtn}>
+            <Ionicons name="trash-outline" size={18} color={THEME.danger} />
+            <Text style={profStyles.deleteAccountTxt}>{t('profile.deleteAccount', 'Supprimer mon compte')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -6395,7 +6463,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     <Ionicons name="time-outline" size={16} color={THEME.brand} />
                     <Text style={profStyles.detailInfoLabel}>{detailOrder.mode === 'collect' ? t('cart.collect') : t('cart.delivery')}</Text>
                     <Text style={profStyles.detailInfoValue}>
-                      {detailOrder.deliveryDate ? detailOrder.deliveryDate + ', ' : ''}{detailOrder.slot}
+                      {detailOrder.deliveryDate ? cleanPickupDate(detailOrder.deliveryDate, t) + ', ' : ''}{detailOrder.slot}
                     </Text>
                   </View>
                 ) : null}

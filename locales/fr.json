@@ -244,7 +244,15 @@
     "addrDeleteConfirm": "Supprimer cette adresse ?",
     "addrSaveError": "Impossible d'enregistrer l'adresse.",
     "back": "Retour",
-    "close": "Fermer"
+    "close": "Fermer",
+    "deleteAccount": "Supprimer mon compte",
+    "deleteAccountTitle": "Supprimer mon compte",
+    "deleteAccountConfirm": "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Cette action est irréversible.",
+    "deleteAccountAction": "Supprimer",
+    "deleteAccountErrTitle": "Suppression impossible",
+    "deleteAccountErr": "La suppression du compte a échoué. Vérifiez votre connexion et réessayez.",
+    "deleteAccountDoneTitle": "Compte supprimé",
+    "deleteAccountDone": "Votre compte a bien été supprimé."
   },
   "auth": {
     "login": "Connexion",

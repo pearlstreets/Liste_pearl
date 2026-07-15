@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "Dit adres verwijderen?",
     "addrSaveError": "Kan het adres niet opslaan.",
     "back": "Terug",
-    "close": "Sluiten"
+    "close": "Sluiten",
+    "deleteAccount": "Mijn account verwijderen",
+    "deleteAccountTitle": "Mijn account verwijderen",
+    "deleteAccountConfirm": "Let op: je account is een gedeeld Pearl Streets account. Als je het hier verwijdert, wordt het ook verwijderd in de Pearl Streets app en op de Marketplace website (bestellingen, favorieten, loyaliteit). Je gegevens worden bewaard gedurende de wettelijk vereiste periode en daarna gewist. Deze actie kan niet ongedaan worden gemaakt.",
+    "deleteAccountAction": "Verwijderen",
+    "deleteAccountErrTitle": "Verwijderen mislukt",
+    "deleteAccountErr": "Het verwijderen van het account is mislukt. Controleer je verbinding en probeer het opnieuw.",
+    "deleteAccountDoneTitle": "Account verwijderd",
+    "deleteAccountDone": "Je account is verwijderd."
   },
   "auth": {
     "login": "Inloggen",

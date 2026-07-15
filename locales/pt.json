@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "Eliminar este endereço?",
     "addrSaveError": "Não foi possível guardar o endereço.",
     "back": "Voltar",
-    "close": "Fechar"
+    "close": "Fechar",
+    "deleteAccount": "Excluir minha conta",
+    "deleteAccountTitle": "Excluir minha conta",
+    "deleteAccountConfirm": "Atenção: a sua conta é uma conta Pearl Streets partilhada. Ao excluí-la aqui, também é excluída na app e no site Marketplace da Pearl Streets (pedidos, favoritos, fidelidade). Os seus dados são mantidos pelo período exigido por lei e depois apagados. Esta ação é irreversível.",
+    "deleteAccountAction": "Excluir",
+    "deleteAccountErrTitle": "Falha na exclusão",
+    "deleteAccountErr": "Não foi possível excluir a conta. Verifique a sua ligação e tente novamente.",
+    "deleteAccountDoneTitle": "Conta excluída",
+    "deleteAccountDone": "A sua conta foi excluída."
   },
   "auth": {
     "login": "Entrar",

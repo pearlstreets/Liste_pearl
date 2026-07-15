@@ -18,11 +18,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pearlstreets.list",
-      "buildNumber": "1001",
+      "buildNumber": "1005",
       "infoPlist": {
-        "NSCameraUsageDescription": "Cette app utilise la caméra pour scanner votre liste de courses.",
-        "NSPhotoLibraryUsageDescription": "Cette app accède à votre galerie pour importer une photo.",
-        "NSLocationWhenInUseUsageDescription": "Pour trouver les magasins proches et optimiser la livraison.",
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Pearl List utilise l'appareil photo pour photographier votre liste de courses manuscrite ou un produit, par exemple prendre en photo un ticket de caisse pour ajouter les articles à votre liste.",
+        "NSPhotoLibraryUsageDescription": "Pearl List accède à vos photos pour importer une image depuis votre galerie, par exemple une photo de votre liste de courses ou d'un produit à ajouter à votre liste, ou une photo de profil.",
+        "NSLocationWhenInUseUsageDescription": "Pearl List utilise votre position pour afficher les magasins proches et estimer les frais de livraison, par exemple trouver les enseignes qui livrent à votre adresse.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": false,
           "NSExceptionDomains": {
@@ -44,7 +45,7 @@
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#00AD8B"
       },
       "permissions": [
         "CAMERA",

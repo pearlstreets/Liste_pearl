@@ -202,7 +202,15 @@
     "addrDeleteConfirm": "Ta bort den här adressen?",
     "addrSaveError": "Det gick inte att spara adressen.",
     "back": "Tillbaka",
-    "close": "Stäng"
+    "close": "Stäng",
+    "deleteAccount": "Radera mitt konto",
+    "deleteAccountTitle": "Radera mitt konto",
+    "deleteAccountConfirm": "Observera: ditt konto är ett delat Pearl Streets-konto. Om du raderar det här raderas det även i Pearl Streets-appen och på Marketplace-webbplatsen (beställningar, favoriter, lojalitet). Dina uppgifter sparas under den period som lagen kräver och raderas sedan. Denna åtgärd kan inte ångras.",
+    "deleteAccountAction": "Radera",
+    "deleteAccountErrTitle": "Radering misslyckades",
+    "deleteAccountErr": "Det gick inte att radera kontot. Kontrollera din anslutning och försök igen.",
+    "deleteAccountDoneTitle": "Konto raderat",
+    "deleteAccountDone": "Ditt konto har raderats."
   },
   "auth": {
     "login": "Logga in",
