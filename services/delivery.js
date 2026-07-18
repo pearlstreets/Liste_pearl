@@ -34,8 +34,10 @@ async function refreshTokens(tokens) {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    if (!data.access) return null;
-    const next = { access: data.access, refresh: data.refresh || tokens.refresh, savedAt: Date.now() };
+    // Le backend renvoie `access_token` (pas `access`) — lire les deux.
+    const newAccess = data.access_token || data.access;
+    if (!newAccess) return null;
+    const next = { access: newAccess, refresh: data.refresh_token || data.refresh || tokens.refresh, savedAt: Date.now() };
     await AsyncStorage.setItem(TOKENS_KEY, JSON.stringify(next));
     return next;
   } catch {
