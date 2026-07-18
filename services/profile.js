@@ -9,12 +9,6 @@ export async function getProfile() {
     const data = await apiGet('/users/get-users-profile/');
     if (data && (data.id || data.user)) {
       const user = data.user || data;
-      // Le backend expose 2 slots d'adresse : manualAddress (saisie) et
-      // automatic_address (géoloc). On prend le premier renseigné pour ne pas
-      // rater l'adresse d'inscription quand elle est en automatique.
-      const addr = (user.manualAddress && (user.manualAddress.address1 || user.manualAddress.city))
-        ? user.manualAddress
-        : (user.automatic_address || user.manualAddress || {});
       const profile = {
         id: user.id,
         username: user.username,
@@ -25,17 +19,14 @@ export async function getProfile() {
         prenom: user.firstName,
         nom: user.lastName,
         phone: user.phone,
-        countryCode: user.countryCode || '',
         photo: user.profileImage || null,
         gender: user.gender,
         dob: user.dob,
-        address: addr.address1 || '',
-        addressSupplement: addr.address2 || '',
-        city: addr.city || '',
-        postalCode: addr.postalCode || '',
-        country: addr.country || '',
-        lat: addr.lat ?? null,
-        lang: addr.lang ?? null,
+        address: user.manualAddress?.address1 || '',
+        addressSupplement: user.manualAddress?.address2 || '',
+        city: user.manualAddress?.city || '',
+        postalCode: user.manualAddress?.postalCode || '',
+        country: user.manualAddress?.country || '',
         role: user.role_name || user.role || 'user',
       };
       await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(profile));

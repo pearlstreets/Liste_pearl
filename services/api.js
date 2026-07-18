@@ -46,9 +46,11 @@ async function apiFetch(endpoint, options = {}) {
       });
       if (refreshRes.ok) {
         const data = await refreshRes.json();
-        if (data.access) {
-          await saveTokens(data.access, data.refresh || tokens.refresh);
-          headers['Authorization'] = `Bearer ${data.access}`;
+        // Le backend renvoie `access_token` (pas `access`) — lire les deux.
+        const newAccess = data.access_token || data.access;
+        if (newAccess) {
+          await saveTokens(newAccess, data.refresh_token || data.refresh || tokens.refresh);
+          headers['Authorization'] = `Bearer ${newAccess}`;
         }
       }
     } catch {
@@ -71,9 +73,11 @@ async function apiFetch(endpoint, options = {}) {
       });
       if (refreshRes.ok) {
         const data = await refreshRes.json();
-        if (data.access) {
-          await saveTokens(data.access, data.refresh || tokens.refresh);
-          headers['Authorization'] = `Bearer ${data.access}`;
+        // Le backend renvoie `access_token` (pas `access`) — lire les deux.
+        const newAccess = data.access_token || data.access;
+        if (newAccess) {
+          await saveTokens(newAccess, data.refresh_token || data.refresh || tokens.refresh);
+          headers['Authorization'] = `Bearer ${newAccess}`;
           res = await fetchWithTimeout(url, { ...options, headers });
         }
       }
