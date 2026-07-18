@@ -2551,18 +2551,29 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo 
   );
 };
 
-const formatSavedAddress = (a) =>
-  a
-    ? [
-        a.house_building,
-        a.road_area_colony,
-        [a.pincode, a.city].filter(Boolean).join(' ').trim(),
-        a.state,
-      ]
-        .map((s) => (s || '').toString().trim())
-        .filter(Boolean)
-        .join(', ')
-    : '';
+const formatSavedAddress = (a) => {
+  if (!a) return '';
+  const hb = (a.house_building || '').toString().trim();
+  const city = (a.city || '').toString().trim();
+  const pincode = (a.pincode || '').toString().trim();
+  // Adresses créées par géocodage : house_building contient déjà l'adresse
+  // formatée complète (rue, CP, ville, pays). Ré-ajouter road_area_colony /
+  // pincode / city / state la duplique (« Meaux » 2×). Si la ligne principale
+  // contient déjà ville ET code postal, on l'affiche seule.
+  const hbNorm = hb.toLowerCase();
+  if (hb && city && pincode && hbNorm.includes(city.toLowerCase()) && hbNorm.includes(pincode.toLowerCase())) {
+    return hb;
+  }
+  return [
+    hb,
+    a.road_area_colony,
+    [pincode, city].filter(Boolean).join(' ').trim(),
+    a.state,
+  ]
+    .map((s) => (s || '').toString().trim())
+    .filter(Boolean)
+    .join(', ');
+};
 
 const formatAddressContact = (a) =>
   a
@@ -4460,8 +4471,49 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
 
 const useCurrency = () => React.useContext(CurrencyContext);
 
+// Écran de choix de langue au tout premier lancement (aucune langue enregistrée),
+// comme AppUser / AppPro. Affiché avant l'app ; le choix est persisté (APP_LANGUAGE)
+// et l'écran ne réapparaît plus.
+function FirstLaunchLanguage({ onDone }) {
+  const { i18n: i18nFL } = useTranslation();
+  const [selected, setSelected] = React.useState(i18nFL.language || 'fr');
+  const choose = async (code) => {
+    setSelected(code);
+    try { await i18nFL.changeLanguage(code); await AsyncStorage.setItem('APP_LANGUAGE', code); } catch (_) {}
+    onDone();
+  };
+  return (
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ alignItems: 'center', paddingTop: 90, paddingBottom: 18 }}>
+        <View style={{ width: 72, height: 72, borderRadius: 22, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+          <Ionicons name="language" size={34} color="#fff" />
+        </View>
+        <Text style={{ fontSize: 23, fontWeight: '800', color: THEME.ink }}>Choose your language</Text>
+        <Text style={{ fontSize: 14, color: THEME.muted, marginTop: 6 }}>Choisissez votre langue</Text>
+      </View>
+      <FlatList
+        data={LANGUAGES}
+        keyExtractor={(i) => i.code}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 30 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => choose(item.code)}
+            activeOpacity={0.7}
+            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 16, borderRadius: 14, marginTop: 8, backgroundColor: selected === item.code ? 'rgba(0,194,155,0.12)' : '#F5F6F8' }}
+          >
+            <Text style={{ fontSize: 22, marginRight: 12 }}>{item.flag}</Text>
+            <Text style={{ flex: 1, fontSize: 16, fontWeight: '600', color: THEME.ink }}>{item.label}</Text>
+            {selected === item.code && <Ionicons name="checkmark-circle" size={22} color={BRAND} />}
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+}
+
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
+  const [needLangChoice, setNeedLangChoice] = React.useState(null); // null = loading, true = 1er lancement
   const [proBlocked, setProBlocked] = React.useState(false);
   const [authVisible, setAuthVisible] = React.useState(false);
   const [authSignup, setAuthSignup] = React.useState(false);
@@ -4531,6 +4583,9 @@ export default function App() {
   React.useEffect(() => {
     (async () => {
       const raw = await AsyncStorage.getItem(KEY_AUTH);
+      // 1er lancement = aucune langue enregistrée → on présentera le choix de langue.
+      const savedLang = await AsyncStorage.getItem('APP_LANGUAGE');
+      setNeedLangChoice(!savedLang);
       // Restaure la devise choisie AVANT de lever l'écran de chargement (setIsAuth) :
       // sinon un utilisateur non-EUR voit une frame de prix en € (taux 1) au cold boot.
       const savedCur = await AsyncStorage.getItem('APP_CURRENCY');
@@ -4545,12 +4600,16 @@ export default function App() {
     })();
   }, []);
 
-  if (isAuth === null) {
+  if (isAuth === null || needLangChoice === null) {
     return (
       <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
         <ActivityIndicator size="large" color={BRAND} />
       </View>
     );
+  }
+
+  if (needLangChoice) {
+    return <FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} />;
   }
 
   return (
