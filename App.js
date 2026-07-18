@@ -2700,11 +2700,61 @@ const CartScreen = ({ isAuth }) => {
     }
   }, [deliverySlots]);
 
+  // Carnet de livraison vide → amorcer avec l'adresse d'inscription du compte
+  // (profil `manualAddress`), pour qu'elle serve d'adresse par défaut réelle
+  // (id + payload complet requis pour la course livreur). Idempotent : une fois
+  // créée, elle persiste dans le carnet et n'est plus re-semée.
+  const seedAddressFromProfile = React.useCallback(async () => {
+    try {
+      // Source complète : backend en priorité (fallback cache local), pour ne pas
+      // rater l'adresse quand le cache login minimal n'a pas encore les champs.
+      let p = null;
+      try { p = await apiGetProfile(); } catch (_) {}
+      if (!p || !p.address) {
+        const raw = await AsyncStorage.getItem(KEY_PROFILE);
+        p = raw ? { ...(JSON.parse(raw) || {}), ...(p || {}) } : (p || null);
+      }
+      if (!p) return false;
+      const line = (p.address || '').trim();
+      const city = (p.city || '').trim();
+      if (!line || !city) return false; // pas d'adresse d'inscription exploitable
+      const postal = (p.postalCode || '').trim();
+      const country = (p.country || '').trim();
+      // Forward-geocoding de l'adresse texte du compte → lat/lng (course livreur).
+      // Best-effort : si indisponible/échec, l'adresse est amorcée sans coordonnées.
+      let lat = null, lng = null;
+      try {
+        const query = [line, [postal, city].filter(Boolean).join(' '), country || 'France'].filter(Boolean).join(', ');
+        const geo = await Location.geocodeAsync(query);
+        if (geo && geo[0]) { lat = geo[0].latitude; lng = geo[0].longitude; }
+      } catch (_) {}
+      await createAddress({
+        first_name: (p.prenom || p.firstName || '').trim(),
+        last_name: (p.nom || p.lastName || '').trim(),
+        phone_code: '+33',
+        phone_number: (p.phone || '').trim(),
+        house_building: line,
+        road_area_colony: (p.addressSupplement || '').trim(),
+        pincode: postal,
+        city,
+        state: '',
+        address_type: 'home',
+        countryFlag: 'FR',
+        lat, lang: lng,
+      });
+      return true;
+    } catch (e) { return false; }
+  }, []);
+
   const loadAddresses = React.useCallback(async () => {
     setAddressesLoading(true);
     try {
-      const list = await fetchAddresses();
-      const arr = Array.isArray(list) ? list : [];
+      let list = await fetchAddresses();
+      let arr = Array.isArray(list) ? list : [];
+      if (arr.length === 0 && await seedAddressFromProfile()) {
+        const reload = await fetchAddresses();
+        arr = Array.isArray(reload) ? reload : [];
+      }
       setAddresses(arr);
       setSelectedAddressId((prev) => {
         if (prev != null && arr.some((a) => String(a.id) === String(prev))) return prev;
@@ -2715,7 +2765,7 @@ const CartScreen = ({ isAuth }) => {
       setAddresses([]);
     }
     setAddressesLoading(false);
-  }, []);
+  }, [seedAddressFromProfile]);
 
   const selectedAddress = React.useMemo(
     () => addresses.find((a) => String(a.id) === String(selectedAddressId)) || null,
@@ -4410,10 +4460,12 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
-        <Ionicons name="globe-outline" size={18} color={THEME.muted} />
-        <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
-      </TouchableOpacity>
+      {!isLogin && (
+        <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
+          <Ionicons name="globe-outline" size={18} color={THEME.muted} />
+          <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Language Picker Modal */}
       <Modal visible={langVisible} animationType="none" transparent={true}>
