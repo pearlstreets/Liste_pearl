@@ -2708,6 +2708,8 @@ const CartScreen = ({ isAuth }) => {
     try {
       // Source complète : backend en priorité (fallback cache local), pour ne pas
       // rater l'adresse quand le cache login minimal n'a pas encore les champs.
+      // getProfile lit déjà le premier slot renseigné (manualAddress ou
+      // automatic_address) et expose ses coordonnées.
       let p = null;
       try { p = await apiGetProfile(); } catch (_) {}
       if (!p || !p.address) {
@@ -2720,30 +2722,34 @@ const CartScreen = ({ isAuth }) => {
       if (!line || !city) return false; // pas d'adresse d'inscription exploitable
       const postal = (p.postalCode || '').trim();
       const country = (p.country || '').trim();
-      // Forward-geocoding de l'adresse texte du compte → lat/lng (course livreur).
-      // Best-effort : si indisponible/échec, l'adresse est amorcée sans coordonnées.
-      let lat = null, lng = null;
-      try {
-        const query = [line, [postal, city].filter(Boolean).join(' '), country || 'France'].filter(Boolean).join(', ');
-        const geo = await Location.geocodeAsync(query);
-        if (geo && geo[0]) { lat = geo[0].latitude; lng = geo[0].longitude; }
-      } catch (_) {}
+      // Coordonnées : on réutilise celles déjà stockées sur l'adresse du compte
+      // si présentes ; sinon forward-geocoding de l'adresse texte (best-effort).
+      let lat = (p.lat ?? null), lng = (p.lang ?? null);
+      if (lat == null || lng == null) {
+        try {
+          const query = [line, [postal, city].filter(Boolean).join(' '), country || 'France'].filter(Boolean).join(', ');
+          const geo = await Location.geocodeAsync(query);
+          if (geo && geo[0]) { lat = geo[0].latitude; lng = geo[0].longitude; }
+        } catch (_) {}
+      }
+      // Payload aligné sur le backend (_coerce_address_payload) : `country` réel
+      // et `phone_code` du compte → aucune info perdue.
       await createAddress({
         first_name: (p.prenom || p.firstName || '').trim(),
         last_name: (p.nom || p.lastName || '').trim(),
-        phone_code: '+33',
+        phone_code: (p.countryCode || '').trim() || '+33',
         phone_number: (p.phone || '').trim(),
         house_building: line,
         road_area_colony: (p.addressSupplement || '').trim(),
         pincode: postal,
         city,
         state: '',
+        country,
         address_type: 'home',
-        countryFlag: 'FR',
         lat, lang: lng,
       });
       return true;
-    } catch (e) { return false; }
+    } catch (_) { return false; }
   }, []);
 
   const loadAddresses = React.useCallback(async () => {
@@ -2751,6 +2757,8 @@ const CartScreen = ({ isAuth }) => {
     try {
       let list = await fetchAddresses();
       let arr = Array.isArray(list) ? list : [];
+      // Carnet vide (backfill serveur absent/non déployé) → on amorce depuis le
+      // compte. Idempotent : sinon le carnet non vide sert d'adresse par défaut.
       if (arr.length === 0 && await seedAddressFromProfile()) {
         const reload = await fetchAddresses();
         arr = Array.isArray(reload) ? reload : [];
