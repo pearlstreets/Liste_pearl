@@ -2742,6 +2742,12 @@ const CartScreen = ({ isAuth }) => {
 
   useFocusEffect(React.useCallback(() => { loadCart(); loadAddresses(); }, [loadCart, loadAddresses]));
 
+  // À l'ouverture de la feuille « Confirmer », recharge les adresses : après une
+  // connexion, l'écran panier ne reprend pas le focus (le login est un modal
+  // par-dessus), donc le loadAddresses du focus ne rejoue pas → sans ça l'adresse
+  // par défaut n'apparaît qu'après avoir ouvert puis fermé le sélecteur.
+  React.useEffect(() => { if (confirmVisible) loadAddresses(); }, [confirmVisible, loadAddresses]);
+
   // Reload cart when products are added from Products screen
   React.useEffect(() => {
     const sub = DeviceEventEmitter.addListener('CART_UPDATED', loadCart);
