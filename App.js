@@ -5817,7 +5817,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <View style={profStyles.settingBody}>
                 <Text style={profStyles.settingLabel}>{t('profile.deliveryAddress')}</Text>
                 <Text style={profStyles.settingValue} numberOfLines={1}>
-                  {defaultAddress ? [defaultAddress.house_building, defaultAddress.city].filter(Boolean).join(', ') : t('profile.noAddress')}
+                  {defaultAddress ? formatSavedAddress(defaultAddress) : t('profile.noAddress')}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
@@ -6307,7 +6307,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               ) : addresses.map((item) => {
                 const isDef = !!item.is_default;
                 const isWork = item.address_type === 'work';
-                const fullAddr = [item.house_building, item.road_area_colony, [item.pincode, item.city].filter(Boolean).join(' '), item.state].filter(Boolean).join(', ');
+                const fullAddr = formatSavedAddress(item);
                 const who = [item.first_name, item.last_name].filter(Boolean).join(' ');
                 const phone = [item.phone_code, item.phone_number].filter(Boolean).join(' ');
                 return (
