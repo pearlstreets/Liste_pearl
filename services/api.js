@@ -127,8 +127,10 @@ export async function apiPut(endpoint, body) {
   return sanitizeResponse(data);
 }
 
-export async function apiDelete(endpoint) {
-  const res = await apiFetch(endpoint, { method: 'DELETE' });
+export async function apiDelete(endpoint, body) {
+  const opts = { method: 'DELETE' };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  const res = await apiFetch(endpoint, opts);
   const data = await res.json();
   return sanitizeResponse(data);
 }

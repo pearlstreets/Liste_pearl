@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
+import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser } from "./services/sharedLists";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
@@ -245,6 +246,45 @@ function ListScreen() {
 
   const [unitPickerId, setUnitPickerId] = useState(null);
 
+  // --- Partage de listes (compte marketplace unifié) ---
+  const [sharedLists, setSharedLists] = useState([]);          // listes partagées AVEC moi (lecture seule)
+  const [viewingShareId, setViewingShareId] = useState(null);  // null = MA liste
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareInput, setShareInput] = useState("");
+  const [shareBusy, setShareBusy] = useState(false);
+  const activeShared = viewingShareId != null
+    ? sharedLists.find(l => String(l.share_id) === String(viewingShareId))
+    : null;
+  const readOnly = !!activeShared;
+  const sourceItems = readOnly ? (Array.isArray(activeShared.items) ? activeShared.items : []) : items;
+
+  // Charge les listes partagées avec moi (si connecté), au focus de l'écran.
+  useFocusEffect(React.useCallback(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+        if (!tok) { if (alive) { setSharedLists([]); setViewingShareId(null); } return; }
+        const res = await getSharedWithMe();
+        if (alive && res && res.status) setSharedLists(res.data?.lists || []);
+      } catch {}
+    })();
+    return () => { alive = false; };
+  }, []));
+
+  // Synchronise MA liste vers le serveur (debounce) pour que les autres la voient.
+  useEffect(() => {
+    if (!hydrated.current) return;
+    const tm = setTimeout(async () => {
+      try {
+        const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+        if (tok) await syncMyList(items, '');
+      } catch {}
+    }, 1500);
+    return () => clearTimeout(tm);
+  }, [items]);
+
   const hydrated = React.useRef(false);
   useEffect(() => { (async () => {
     try {
@@ -303,7 +343,7 @@ function ListScreen() {
     setItems(items.map(it => ({ ...it, crossed: v, selected: v ? false : it.selected })));
   };
 
-  const visible = useMemo(() => hideCrossed ? items.filter(i => !i.crossed) : items, [items, hideCrossed]);
+  const visible = useMemo(() => hideCrossed ? sourceItems.filter(i => !i.crossed) : sourceItems, [sourceItems, hideCrossed]);
 
   const openEdit = (it) => { setEditId(it.id); setEditText(it.name); setEditVisible(true); };
   const closeEdit = () => { setEditVisible(false); setEditId(null); setEditText(""); };
@@ -315,6 +355,18 @@ function ListScreen() {
 
   const renderItem = ({ item }) => {
     const isCrossed = !!item.crossed;
+    if (readOnly) {
+      // Vue lecture seule d'une liste partagée par quelqu'un d'autre.
+      return (
+        <View style={[lstyles.card, isCrossed && { opacity: 0.55 }]}>
+          <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
+            {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color="#fff" /> : null}
+          </View>
+          <Text numberOfLines={1} style={[lstyles.itemName, { flex: 1, marginLeft: 12 }, isCrossed && lstyles.itemNameCrossed]}>{item.name}</Text>
+          <Text style={lstyles.stepQty}>{(item.qty || 1)}{item.unit && item.unit !== 'u' ? ' ' + item.unit : ''}</Text>
+        </View>
+      );
+    }
     return (
     <View style={[lstyles.card, isCrossed && { opacity: 0.62 }]}>
       {/* Select checkbox */}
@@ -374,15 +426,33 @@ function ListScreen() {
     <View style={lstyles.header}>
       <View style={lstyles.headerRow}>
         <View style={{ flex: 1 }}>
-          <Text style={lstyles.title}>{t('tabs.myList')}</Text>
-          <Text style={lstyles.subtitle}>{items.length} {t('listScreen.deleteItem', { count: items.length })}</Text>
+          <Text style={lstyles.title} numberOfLines={1}>{readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}</Text>
+          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared') || 'Liste partagée · lecture seule') : `${items.length} ${t('listScreen.deleteItem', { count: items.length })}`}</Text>
         </View>
+        {!readOnly && (
+          <TouchableOpacity onPress={() => { setShareInput(''); setShareModalOpen(true); }} activeOpacity={0.8} style={lstyles.scanBtn}>
+            <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
+            <Text style={lstyles.scanTxt}>{t('listScreen.share') || 'Partager'}</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={async () => { await openCamera(); }} activeOpacity={0.8} style={lstyles.scanBtn}>
           <Ionicons name="scan-outline" size={17} color={THEME.brandDark} />
           <Text style={lstyles.scanTxt}>{t('listScreen.scan')}</Text>
         </TouchableOpacity>
       </View>
 
+      {(sharedLists.length > 0 || readOnly) && (
+        <TouchableOpacity onPress={() => setSwitcherOpen(true)} activeOpacity={0.8}
+          style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:'#EAF7F1', borderRadius:20, paddingHorizontal:12, paddingVertical:7, marginTop:10 }}>
+          <Ionicons name="swap-horizontal" size={16} color={THEME.brandDark} />
+          <Text style={{ marginHorizontal:8, fontWeight:'700', color:THEME.ink, maxWidth:210 }} numberOfLines={1}>
+            {readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}
+          </Text>
+          <Ionicons name="chevron-down" size={15} color={THEME.faint} />
+        </TouchableOpacity>
+      )}
+
+      {!readOnly && (<>
       <View style={lstyles.inputWrap}>
         <TextInput
           autoCorrect={true}
@@ -427,6 +497,7 @@ function ListScreen() {
           </TouchableOpacity>
         )}
       </View>
+      </>)}
     </View>
   );
 
@@ -450,6 +521,7 @@ function ListScreen() {
         contentContainerStyle={visible.length === 0 ? { flexGrow: 1, paddingBottom: 180 } : { paddingBottom: 180 }}
       />
 
+      {!readOnly && (
       <View style={lstyles.bottomWrap}>
         <View style={lstyles.hideRow}>
           <Switch value={hideCrossed} onValueChange={setHideCrossed} trackColor={{ true: THEME.brand, false: '#D7DCE3' }} thumbColor="#fff" style={{ transform:[{ scale:0.85 }] }} />
@@ -472,6 +544,69 @@ function ListScreen() {
           <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}{itemsToSend.length > 0 ? ` (${itemsToSend.length})` : ''}</Text>
         </TouchableOpacity>
       </View>
+      )}
+
+      {/* Switcher : Ma liste / listes partagées avec moi */}
+      <Modal visible={switcherOpen} transparent animationType="fade" onRequestClose={() => setSwitcherOpen(false)}>
+        <Pressable style={lstyles.modalBackdrop} onPress={() => setSwitcherOpen(false)}>
+          <Pressable style={lstyles.modalBox} onPress={() => {}}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList') || 'Afficher une liste'}</Text>
+            <TouchableOpacity onPress={() => { setViewingShareId(null); setSwitcherOpen(false); }} activeOpacity={0.8}
+              style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+              <Ionicons name="list" size={20} color={THEME.brandDark} />
+              <Text style={{ marginLeft:12, fontWeight:'700', color:THEME.ink, flex:1 }}>{t('tabs.myList')}</Text>
+              {!readOnly && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
+            </TouchableOpacity>
+            {sharedLists.map((l) => (
+              <TouchableOpacity key={String(l.share_id)} onPress={() => { setViewingShareId(l.share_id); setSwitcherOpen(false); }} activeOpacity={0.8}
+                style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+                <Ionicons name="people-outline" size={20} color={THEME.brandDark} />
+                <Text style={{ marginLeft:12, fontWeight:'600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.owner?.name || '—'}</Text>
+                {String(viewingShareId) === String(l.share_id) && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
+              </TouchableOpacity>
+            ))}
+            {sharedLists.length === 0 && (
+              <Text style={{ color:THEME.faint, paddingVertical:14, textAlign:'center' }}>{t('listScreen.noSharedLists') || 'Aucune liste partagée avec vous pour l\'instant.'}</Text>
+            )}
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      {/* Partager ma liste */}
+      <Modal visible={shareModalOpen} transparent animationType="fade" onRequestClose={() => setShareModalOpen(false)}>
+        <Pressable style={lstyles.modalBackdrop} onPress={() => setShareModalOpen(false)}>
+          <Pressable style={lstyles.modalBox} onPress={() => {}}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.shareTitle') || 'Partager ma liste'}</Text>
+            <Text style={{ color:THEME.faint, marginBottom:12 }}>{t('listScreen.shareHint') || 'Email ou pseudo de la personne. Elle recevra une demande à accepter.'}</Text>
+            <TextInput
+              defaultValue=""
+              onChangeText={setShareInput}
+              placeholder={t('listScreen.sharePlaceholder') || 'email ou pseudo'}
+              placeholderTextColor={THEME.faint}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              style={lstyles.input}
+            />
+            <TouchableOpacity activeOpacity={0.9} disabled={shareBusy}
+              style={[lstyles.cta, { marginTop:14 }, shareBusy && { opacity:0.5 }]}
+              onPress={async () => {
+                const id = (shareInput || '').trim();
+                if (!id) return;
+                setShareBusy(true);
+                try {
+                  const res = await sendShareRequest(id);
+                  showToast((res && res.message) || (res && res.status ? 'Demande envoyée' : 'Échec'));
+                  if (res && res.status) { setShareModalOpen(false); setShareInput(''); }
+                } catch (e) { showToast('Connexion impossible'); }
+                setShareBusy(false);
+              }}>
+              <Ionicons name="paper-plane-outline" size={18} color="#fff" />
+              <Text style={lstyles.ctaTxt}>{t('listScreen.sendRequest') || 'Envoyer la demande'}</Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       {/* Unit picker modal */}
       <Modal visible={unitPickerId !== null} transparent animationType="fade" onRequestClose={() => setUnitPickerId(null)}>
@@ -4981,6 +5116,20 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [pendingCurrency, setPendingCurrency] = React.useState(null);
   const [paymentMethodsVisible, setPaymentMethodsVisible] = React.useState(false); // section Moyens de paiement (cartes)
   const [favVisible, setFavVisible] = React.useState(false); // Favoris déplacé dans Profil (dispo sans connexion)
+  // Partage de listes : demandes reçues + utilisateurs bloqués
+  const [shareRequests, setShareRequests] = React.useState([]);
+  const [blockedUsers, setBlockedUsers] = React.useState([]);
+  const [shareRequestsVisible, setShareRequestsVisible] = React.useState(false);
+  const loadShareData = React.useCallback(async () => {
+    try {
+      const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+      if (!tok) { setShareRequests([]); setBlockedUsers([]); return; }
+      const [inc, blk] = await Promise.all([getIncomingRequests(), getBlocks()]);
+      if (inc && inc.status) setShareRequests(inc.data?.requests || []);
+      if (blk && blk.status) setBlockedUsers(blk.data?.blocked || []);
+    } catch {}
+  }, []);
+  React.useEffect(() => { loadShareData(); }, [loadShareData]);
   const [addressListVisible, setAddressListVisible] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(false);
@@ -5569,6 +5718,48 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         </ScrollView>
 
         {/* Sélecteur de langue (dispo sans connexion) */}
+        {/* Partage de listes : demandes reçues + utilisateurs bloqués */}
+        <Modal visible={shareRequestsVisible} animationType="slide" onRequestClose={() => setShareRequestsVisible(false)}>
+          <SafeAreaView style={{ flex:1, backgroundColor:'#fff' }}>
+            <View style={{ flexDirection:'row', alignItems:'center', padding:16, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+              <TouchableOpacity onPress={() => setShareRequestsVisible(false)} hitSlop={{top:10,bottom:10,left:10,right:10}}>
+                <Ionicons name="arrow-back" size={24} color={THEME.ink} />
+              </TouchableOpacity>
+              <Text style={{ marginLeft:12, fontSize:18, fontWeight:'800', color:THEME.ink }}>{t('profile.listShares') || 'Partage de listes'}</Text>
+            </View>
+            <ScrollView contentContainerStyle={{ padding:16 }}>
+              <Text style={profStyles.sectionTitle}>{t('profile.pendingRequestsTitle') || 'Demandes reçues'}</Text>
+              {shareRequests.length === 0 && <Text style={{ color:THEME.faint, marginBottom:16 }}>{t('profile.noRequests') || 'Aucune demande pour le moment.'}</Text>}
+              {shareRequests.map((r) => (
+                <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
+                  <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
+                  <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
+                  <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'accept'); } catch {} loadShareData(); }} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                    <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept') || 'Accepter'}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'reject'); } catch {} loadShareData(); }} style={{ padding:6, marginRight:2 }}>
+                    <Ionicons name="close" size={20} color={THEME.faint} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={async () => { try { await blockUserById(r.from?.id); } catch {} loadShareData(); }} style={{ padding:6 }}>
+                    <Ionicons name="ban-outline" size={20} color={THEME.danger} />
+                  </TouchableOpacity>
+                </View>
+              ))}
+              <Text style={[profStyles.sectionTitle, { marginTop:24 }]}>{t('profile.blockedUsers') || 'Utilisateurs bloqués'}</Text>
+              {blockedUsers.length === 0 && <Text style={{ color:THEME.faint }}>{t('profile.noBlocked') || 'Aucun utilisateur bloqué.'}</Text>}
+              {blockedUsers.map((u) => (
+                <View key={String(u.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
+                  <Ionicons name="ban" size={22} color={THEME.danger} />
+                  <Text style={{ flex:1, marginHorizontal:10, color:THEME.ink }} numberOfLines={1}>{u.name || u.username}</Text>
+                  <TouchableOpacity onPress={async () => { try { await unblockUser(u.username); } catch {} loadShareData(); }} style={{ borderWidth:1, borderColor:THEME.faint, borderRadius:16, paddingHorizontal:12, paddingVertical:7 }}>
+                    <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.unblock') || 'Débloquer'}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+
         <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
           <SafeAreaView style={profStyles.modalScreen} edges={[]}>
             <View style={profStyles.modalHeader}>
@@ -5814,6 +6005,23 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
                 <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
               </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+
+            {/* Demandes de partage de liste */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => { loadShareData(); setShareRequestsVisible(true); }} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="git-network-outline" size={19} color="#fff" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('profile.listShares') || 'Partage de listes'}</Text>
+                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? `${shareRequests.length} ${t('profile.pendingRequests') || 'demande(s) en attente'}` : (t('profile.manageShares') || 'Demandes reçues · utilisateurs bloqués')}</Text>
+              </View>
+              {shareRequests.length > 0 && (
+                <View style={{ backgroundColor: THEME.danger, borderRadius:11, minWidth:22, height:22, alignItems:'center', justifyContent:'center', paddingHorizontal:6, marginRight:6 }}>
+                  <Text style={{ color:'#fff', fontWeight:'800', fontSize:12 }}>{shareRequests.length}</Text>
+                </View>
+              )}
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>
 
