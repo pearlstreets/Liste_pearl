@@ -4359,9 +4359,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
       </View>
       <ScrollView contentContainerStyle={authStyles.scrollBody} keyboardShouldPersistTaps="handled">
         <View style={authStyles.brandHeader}>
-          <View style={authStyles.brandLogo}>
-            <Ionicons name="cart" size={34} color="#fff" />
-          </View>
+          <Image source={require('./assets/icon.png')} style={authStyles.brandLogo} resizeMode="cover" />
           <Text style={authStyles.brandTitle}>Pearl List</Text>
           <Text style={authStyles.brandSubtitle}>
             {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets ou Marketplace') : (t('auth.pearlSignupHint') || 'Créez un compte — utilisable sur l\'app et le site Marketplace')}
