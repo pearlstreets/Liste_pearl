@@ -427,12 +427,12 @@ function ListScreen() {
       <View style={lstyles.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={lstyles.title} numberOfLines={1}>{readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}</Text>
-          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared') || 'Liste partagée · lecture seule') : `${items.length} ${t('listScreen.deleteItem', { count: items.length })}`}</Text>
+          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : `${items.length} ${t('listScreen.deleteItem', { count: items.length })}`}</Text>
         </View>
         {!readOnly && (
           <TouchableOpacity onPress={() => { setShareInput(''); setShareModalOpen(true); }} activeOpacity={0.8} style={lstyles.scanBtn}>
             <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
-            <Text style={lstyles.scanTxt}>{t('listScreen.share') || 'Partager'}</Text>
+            <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={async () => { await openCamera(); }} activeOpacity={0.8} style={lstyles.scanBtn}>
@@ -550,7 +550,7 @@ function ListScreen() {
       <Modal visible={switcherOpen} transparent animationType="fade" onRequestClose={() => setSwitcherOpen(false)}>
         <Pressable style={lstyles.modalBackdrop} onPress={() => setSwitcherOpen(false)}>
           <Pressable style={lstyles.modalBox} onPress={() => {}}>
-            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList') || 'Afficher une liste'}</Text>
+            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList', 'Afficher une liste')}</Text>
             <TouchableOpacity onPress={() => { setViewingShareId(null); setSwitcherOpen(false); }} activeOpacity={0.8}
               style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
               <Ionicons name="list" size={20} color={THEME.brandDark} />
@@ -566,7 +566,7 @@ function ListScreen() {
               </TouchableOpacity>
             ))}
             {sharedLists.length === 0 && (
-              <Text style={{ color:THEME.faint, paddingVertical:14, textAlign:'center' }}>{t('listScreen.noSharedLists') || 'Aucune liste partagée avec vous pour l\'instant.'}</Text>
+              <Text style={{ color:THEME.faint, paddingVertical:14, textAlign:'center' }}>{t('listScreen.noSharedLists', 'Aucune liste partagée avec vous pour l\'instant.')}</Text>
             )}
           </Pressable>
         </Pressable>
@@ -576,12 +576,12 @@ function ListScreen() {
       <Modal visible={shareModalOpen} transparent animationType="fade" onRequestClose={() => setShareModalOpen(false)}>
         <Pressable style={lstyles.modalBackdrop} onPress={() => setShareModalOpen(false)}>
           <Pressable style={lstyles.modalBox} onPress={() => {}}>
-            <Text style={lstyles.modalTitle}>{t('listScreen.shareTitle') || 'Partager ma liste'}</Text>
-            <Text style={{ color:THEME.faint, marginBottom:12 }}>{t('listScreen.shareHint') || 'Email ou pseudo de la personne. Elle recevra une demande à accepter.'}</Text>
+            <Text style={lstyles.modalTitle}>{t('listScreen.shareTitle', 'Partager ma liste')}</Text>
+            <Text style={{ color:THEME.faint, marginBottom:12 }}>{t('listScreen.shareHint', 'Email ou pseudo de la personne. Elle recevra une demande à accepter.')}</Text>
             <TextInput
               defaultValue=""
               onChangeText={setShareInput}
-              placeholder={t('listScreen.sharePlaceholder') || 'email ou pseudo'}
+              placeholder={t('listScreen.sharePlaceholder', 'email ou pseudo')}
               placeholderTextColor={THEME.faint}
               autoCapitalize="none"
               autoCorrect={false}
@@ -602,7 +602,7 @@ function ListScreen() {
                 setShareBusy(false);
               }}>
               <Ionicons name="paper-plane-outline" size={18} color="#fff" />
-              <Text style={lstyles.ctaTxt}>{t('listScreen.sendRequest') || 'Envoyer la demande'}</Text>
+              <Text style={lstyles.ctaTxt}>{t('listScreen.sendRequest', 'Envoyer la demande')}</Text>
             </TouchableOpacity>
           </Pressable>
         </Pressable>
@@ -1448,7 +1448,7 @@ const ProductsScreen = () => {
             <View style={prodStyles.statDivider} />
             <View style={prodStyles.statBox}>
               <Text style={prodStyles.statValue}>{qty}</Text>
-              <Text style={prodStyles.statLabel}>{(t('productsScreen.quantity')||'Articles').replace(/[:•]/g,'').trim()}</Text>
+              <Text style={prodStyles.statLabel}>{(t('productsScreen.quantity', 'Articles')).replace(/[:•]/g,'').trim()}</Text>
             </View>
             <View style={prodStyles.statDivider} />
             <View style={prodStyles.statBox}>
@@ -1464,7 +1464,7 @@ const ProductsScreen = () => {
       {showingDefaults && !loading && realShops !== null && (
         <View style={prodStyles.infoBanner}>
           <Ionicons name="information-circle" size={18} color={THEME.brand} />
-          <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts') || 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.'}</Text>
+          <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts', 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.')}</Text>
         </View>
       )}
 
@@ -1510,7 +1510,7 @@ const ProductsScreen = () => {
                           géoloc/ETA côté app ; le vrai frais est calculé à la commande). */}
                       <View style={prodStyles.metaChip}>
                         <Ionicons name="pricetags-outline" size={12} color={THEME.muted} />
-                        <Text style={prodStyles.metaTxt}>{(item?.products || item?.__renderItems || []).length} {t('productsScreen.quantity') || 'articles'}</Text>
+                        <Text style={prodStyles.metaTxt}>{(item?.products || item?.__renderItems || []).length} {t('productsScreen.quantity', 'articles')}</Text>
                       </View>
                     </View>
                   </View>
@@ -1647,7 +1647,7 @@ const ProductsScreen = () => {
                     style={prodStyles.addMoreBtn}
                   >
                     <Ionicons name="add-circle-outline" size={18} color={THEME.brandDark} />
-                    <Text style={prodStyles.addMoreTxt}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+                    <Text style={prodStyles.addMoreTxt}>{t('productsScreen.addProduct', 'Ajouter un produit')}</Text>
                   </TouchableOpacity>
 
                   {shopSelected.length === 0 ? (
@@ -1661,7 +1661,7 @@ const ProductsScreen = () => {
                     <View style={prodStyles.totalsBox}>
                       <View style={prodStyles.totalRow}>
                         <Text style={prodStyles.totalLabel}>{t('productsScreen.productsTotal')}</Text>
-                        <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity') || 'quantité'})</Text>
+                        <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity', 'quantité')})</Text>
                       </View>
                       <View style={[prodStyles.totalRow, {marginTop:6}]}>
                         <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
@@ -1691,8 +1691,8 @@ const ProductsScreen = () => {
                 </>
               ) : (
                 <>
-                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList') || 'Ajoutez des produits dans Ma Liste'}</Text>
-                  <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub') || 'Puis appuyez sur "Trouver produits exacts"'}</Text>
+                  <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList', 'Ajoutez des produits dans Ma Liste')}</Text>
+                  <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub', 'Puis appuyez sur "Trouver produits exacts"')}</Text>
                 </>
               )}
             </View>
@@ -1730,7 +1730,7 @@ const ProductsScreen = () => {
           {/* Nombre de produits sélectionnés + total */}
           <View style={prodStyles.bottomSummary}>
             <Text style={prodStyles.bottomCount}>
-              {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)} {t('productsScreen.quantity') || 'produits'}
+              {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)} {t('productsScreen.quantity', 'produits')}
             </Text>
             <Text style={prodStyles.bottomTotal}>
               {fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}
@@ -1946,7 +1946,7 @@ const ProductsScreen = () => {
                   const shopCount = new Set(active.map(si => si.shop)).size;
                   const totalQty = active.reduce((s, si) => s + (si.qty || 1), 0);
                   return <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
-                    {shopCount} {shopCount > 1 ? 'shops' : 'shop'} • {totalQty} {t('productsScreen.quantity') || 'quantité'}
+                    {shopCount} {shopCount > 1 ? 'shops' : 'shop'} • {totalQty} {t('productsScreen.quantity', 'quantité')}
                   </Text>;
                 })()}
               </View>
@@ -2103,7 +2103,7 @@ const ProductsScreen = () => {
               <Ionicons name="checkmark-circle" size={40} color={BRAND} />
             </View>
             <Text style={{fontSize:20, fontWeight:'800', color:'#111', textAlign:'center'}}>{t('cart.addedToCart')}</Text>
-            <Text style={{fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center'}}>{cartSuccessCount} {t('productsScreen.quantity') || 'produits'} {t('cart.addedToCartSub') || 'ajoutés au panier'}</Text>
+            <Text style={{fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center'}}>{cartSuccessCount} {t('productsScreen.quantity', 'produits')} {t('cart.addedToCartSub', 'ajoutés au panier')}</Text>
             <TouchableOpacity
               onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart'); }}
               style={{marginTop:20, width:'100%', height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
@@ -2114,7 +2114,7 @@ const ProductsScreen = () => {
               onPress={() => setCartSuccessVisible(false)}
               style={{marginTop:10, width:'100%', height:44, borderRadius:14, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center'}}
             >
-              <Text style={{color:'#666', fontWeight:'600'}}>{t('productsScreen.continueShopping') || 'Continuer les courses'}</Text>
+              <Text style={{color:'#666', fontWeight:'600'}}>{t('productsScreen.continueShopping', 'Continuer les courses')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -2225,8 +2225,8 @@ const FavoritesScreen = ({ onClose }) => {
           <Text style={favStyles.title}>{t('tabs.favorites')}</Text>
           <Text style={favStyles.subtitle}>
             {tab === 'shops'
-              ? `${shopDetails.length} ${t('favorites.shops') || 'Boutiques'}`
-              : `${favProducts.length} ${t('favorites.products') || 'Produits'}`}
+              ? `${shopDetails.length} ${t('favorites.shops', 'Boutiques')}`
+              : `${favProducts.length} ${t('favorites.products', 'Produits')}`}
           </Text>
         </View>
       </View>
@@ -2235,11 +2235,11 @@ const FavoritesScreen = ({ onClose }) => {
       <View style={favStyles.segment}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => { setTab('shops'); setSearchQuery(''); }} style={[favStyles.segBtn, tab === 'shops' && favStyles.segBtnOn]}>
           <Ionicons name={tab === 'shops' ? 'storefront' : 'storefront-outline'} size={16} color={tab === 'shops' ? THEME.brand : THEME.muted} />
-          <Text style={[favStyles.segTxt, tab === 'shops' && favStyles.segTxtOn]}>{t('favorites.shops') || 'Shops'}</Text>
+          <Text style={[favStyles.segTxt, tab === 'shops' && favStyles.segTxtOn]}>{t('favorites.shops', 'Shops')}</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.8} onPress={() => { setTab('products'); setSearchQuery(''); }} style={[favStyles.segBtn, tab === 'products' && favStyles.segBtnOn]}>
           <Ionicons name={tab === 'products' ? 'heart' : 'heart-outline'} size={16} color={tab === 'products' ? THEME.brand : THEME.muted} />
-          <Text style={[favStyles.segTxt, tab === 'products' && favStyles.segTxtOn]}>{t('favorites.products') || 'Produits'}</Text>
+          <Text style={[favStyles.segTxt, tab === 'products' && favStyles.segTxtOn]}>{t('favorites.products', 'Produits')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -2247,7 +2247,7 @@ const FavoritesScreen = ({ onClose }) => {
       <View style={favStyles.searchWrap}>
         <Ionicons name="search-outline" size={18} color={THEME.faint} />
         <TextInput value={searchQuery} onChangeText={setSearchQuery}
-          placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder') || 'Rechercher un shop') : (t('favorites.searchProductPlaceholder') || 'Rechercher un produit')}
+          placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder', 'Rechercher un shop')) : (t('favorites.searchProductPlaceholder', 'Rechercher un produit'))}
           placeholderTextColor={THEME.faint} style={favStyles.searchInput} />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
@@ -2267,10 +2267,10 @@ const FavoritesScreen = ({ onClose }) => {
           {Header}
           <View style={favStyles.empty}>
             <Text style={favStyles.emptyTitle}>
-              {tab === 'shops' ? (t('favorites.noFavorites') || 'Aucun shop favori') : (t('favorites.noFavProducts') || 'Aucun produit favori')}
+              {tab === 'shops' ? (t('favorites.noFavorites', 'Aucun shop favori')) : (t('favorites.noFavProducts', 'Aucun produit favori'))}
             </Text>
             <Text style={favStyles.emptyHint}>
-              {tab === 'shops' ? (t('favorites.addFromProducts') || 'Ajoutez depuis l\'onglet Produits') : (t('favorites.addProductHint') || 'Appuyez sur le coeur d\'un produit pour l\'ajouter')}
+              {tab === 'shops' ? (t('favorites.addFromProducts', 'Ajoutez depuis l\'onglet Produits')) : (t('favorites.addProductHint', 'Appuyez sur le coeur d\'un produit pour l\'ajouter'))}
             </Text>
           </View>
         </>
@@ -3254,7 +3254,7 @@ const CartScreen = ({ isAuth }) => {
               style={cartStyles.addMoreBtn}
             >
               <Ionicons name="add-circle-outline" size={18} color={THEME.brandDark} />
-              <Text style={cartStyles.addMoreTxt}>{t('productsScreen.addProduct') || 'Ajouter un produit'}</Text>
+              <Text style={cartStyles.addMoreTxt}>{t('productsScreen.addProduct', 'Ajouter un produit')}</Text>
             </TouchableOpacity>
 
             {/* Shop subtotal */}
@@ -3891,7 +3891,7 @@ const CartScreen = ({ isAuth }) => {
             <View style={cartStyles.sheetHeader}>
               <View style={{flex:1}}>
                 <Text style={[cartStyles.sheetTitle, { fontSize: 18 }]} numberOfLines={1}>{shopProductsName}</Text>
-                <Text style={cartStyles.subtitle}>{shopProductsList.length} {t('productsScreen.quantity') || 'produits'}</Text>
+                <Text style={cartStyles.subtitle}>{shopProductsList.length} {t('productsScreen.quantity', 'produits')}</Text>
               </View>
               <TouchableOpacity onPress={() => setShopProductsVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
                 <Ionicons name="close" size={20} color={THEME.muted} />
@@ -3905,7 +3905,7 @@ const CartScreen = ({ isAuth }) => {
                 <TextInput
                   value={shopProductsSearch}
                   onChangeText={setShopProductsSearch}
-                  placeholder={t('favorites.searchProductPlaceholder') || 'Rechercher un produit...'}
+                  placeholder={t('favorites.searchProductPlaceholder', 'Rechercher un produit...')}
                   placeholderTextColor={THEME.faint}
                   style={cartStyles.searchInput}
                 />
@@ -3940,7 +3940,7 @@ const CartScreen = ({ isAuth }) => {
                   {product.inCart ? (
                     <View style={cartStyles.pickerInCart}>
                       <Ionicons name="checkmark-circle" size={14} color={THEME.muted} />
-                      <Text style={cartStyles.pickerInCartTxt}>{t('cart.inCart') || 'Dans le panier'}</Text>
+                      <Text style={cartStyles.pickerInCartTxt}>{t('cart.inCart', 'Dans le panier')}</Text>
                     </View>
                   ) : (
                     <TouchableOpacity
@@ -3964,7 +3964,7 @@ const CartScreen = ({ isAuth }) => {
                       style={cartStyles.pickerAddPill}
                     >
                       <Ionicons name="add" size={16} color="#fff" />
-                      <Text style={cartStyles.pickerAddPillTxt}>{t('cart.add') || 'Ajouter'}</Text>
+                      <Text style={cartStyles.pickerAddPillTxt}>{t('cart.add', 'Ajouter')}</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -4436,13 +4436,13 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
 
   const handleLogin = async () => {
     setError('');
-    if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty') || 'Veuillez saisir votre email et mot de passe'); return; }
-    if (!email.trim()) { setError(t('auth.errorNoEmail') || 'Veuillez saisir votre email'); return; }
-    if (!password.trim()) { setError(t('auth.errorNoPassword') || 'Veuillez saisir votre mot de passe'); return; }
+    if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty', 'Veuillez saisir votre email et mot de passe')); return; }
+    if (!email.trim()) { setError(t('auth.errorNoEmail', 'Veuillez saisir votre email')); return; }
+    if (!password.trim()) { setError(t('auth.errorNoPassword', 'Veuillez saisir votre mot de passe')); return; }
     // Rate limiting: max 5 attempts per minute
     const { checkRateLimit } = require('./services/security');
     const rateCheck = checkRateLimit('login', 5, 60000);
-    if (!rateCheck.allowed) { setError((t('auth.errorRateLimit') || 'Trop de tentatives. Réessayez dans') + ' ' + rateCheck.waitSeconds + 's'); return; }
+    if (!rateCheck.allowed) { setError((t('auth.errorRateLimit', 'Trop de tentatives. Réessayez dans')) + ' ' + rateCheck.waitSeconds + 's'); return; }
     setLoading(true);
     // Compte marketplace UNIQUEMENT — mêmes identifiants que l'app mobile
     // AppUser / le site. Plus de fallback vers des comptes locaux divergents.
@@ -4451,17 +4451,17 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15000));
       const result = await Promise.race([apiPromise, timeoutPromise]);
       if (result && result.success) { setLoading(false); onLogin(); return; }
-      setError((result && result.message) || t('auth.errorWrongPassword') || 'Email ou mot de passe incorrect');
+      setError((result && result.message) || t('auth.errorWrongPassword', 'Email ou mot de passe incorrect'));
     } catch (e) {
-      setError(t('auth.errorNetwork') || 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.');
+      setError(t('auth.errorNetwork', 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.'));
     }
     setLoading(false);
   };
 
   const handleSignup = async () => {
     setError('');
-    if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty') || 'Remplissez tous les champs'); return; }
-    if (password.length < 6) { setError(t('auth.errorPasswordLength') || 'Minimum 6 caractères'); return; }
+    if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Remplissez tous les champs')); return; }
+    if (password.length < 6) { setError(t('auth.errorPasswordLength', 'Minimum 6 caractères')); return; }
     setLoading(true);
     // Inscription marketplace UNIQUEMENT — crée le compte partagé avec l'app
     // mobile AppUser (même base). Plus de compte local divergent.
@@ -4472,7 +4472,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
       if (result && result.success) { setLoading(false); onLogin(); return; }
       setError((result && result.message) || t('auth.errorEmailExists') || "Impossible de créer le compte (email déjà utilisé ?).");
     } catch (e) {
-      setError(t('auth.errorNetwork') || 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.');
+      setError(t('auth.errorNetwork', 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.'));
     }
     setLoading(false);
   };
@@ -4497,7 +4497,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           <Image source={require('./assets/icon.png')} style={authStyles.brandLogo} resizeMode="cover" />
           <Text style={authStyles.brandTitle}>Pearl List</Text>
           <Text style={authStyles.brandSubtitle}>
-            {isLogin ? (t('auth.pearlLoginHint') || 'Connectez-vous avec votre compte Pearl Streets ou Marketplace') : (t('auth.pearlSignupHint') || 'Créez un compte — utilisable sur l\'app et le site Marketplace')}
+            {isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte — utilisable sur l\'app et le site Marketplace'))}
           </Text>
         </View>
         {error ? (
@@ -4540,7 +4540,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={authStyles.toggleLink} activeOpacity={0.7}>
           <Text style={authStyles.toggleTxt}>
-            {isLogin ? (t('auth.noAccountPearl') || 'Pas de compte ? ') : (t('auth.hasAccountPearl') || 'Déjà un compte ? ')}
+            {isLogin ? (t('auth.noAccountPearl', 'Pas de compte ? ')) : (t('auth.hasAccountPearl', 'Déjà un compte ? '))}
             <Text style={authStyles.toggleTxtBrand}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
@@ -4558,7 +4558,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           <View style={authStyles.langSheet}>
             <View style={authStyles.langHandle} />
             <View style={authStyles.langHeadRow}>
-              <Text style={authStyles.langHeadTitle}>{t('profile.language') || 'Langue'}</Text>
+              <Text style={authStyles.langHeadTitle}>{t('profile.language', 'Langue')}</Text>
               <TouchableOpacity onPress={() => setLangVisible(false)} style={authStyles.langClose} activeOpacity={0.7}>
                 <Ionicons name="close" size={20} color={THEME.muted} />
               </TouchableOpacity>
@@ -5657,15 +5657,15 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             <View style={profStyles.guestHeroIcon}>
               <Ionicons name="person-circle-outline" size={54} color="#fff" />
             </View>
-            <Text style={profStyles.guestHeroTitle}>{t('profile.guestTitle') || 'Vous n\'êtes pas connecté'}</Text>
-            <Text style={profStyles.guestHeroHint}>{t('profile.guestHint') || 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.'}</Text>
+            <Text style={profStyles.guestHeroTitle}>{t('profile.guestTitle', 'Vous n\'êtes pas connecté')}</Text>
+            <Text style={profStyles.guestHeroHint}>{t('profile.guestHint', 'Connectez-vous pour gérer votre profil, vos commandes et la livraison.')}</Text>
             <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH')} style={profStyles.guestHeroBtn}>
               <Ionicons name="log-in-outline" size={20} color={THEME.brand} />
-              <Text style={profStyles.guestHeroBtnTxt}>{t('auth.loginBtn') || 'Se connecter'}</Text>
+              <Text style={profStyles.guestHeroBtnTxt}>{t('auth.loginBtn', 'Se connecter')}</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.85} onPress={() => DeviceEventEmitter.emit('OPEN_AUTH', { signup: true })} style={profStyles.guestHeroBtnAlt}>
               <Ionicons name="person-add-outline" size={19} color="#fff" />
-              <Text style={profStyles.guestHeroBtnAltTxt}>{t('auth.signupBtn') || 'Créer un compte'}</Text>
+              <Text style={profStyles.guestHeroBtnAltTxt}>{t('auth.signupBtn', 'Créer un compte')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -5725,17 +5725,17 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <TouchableOpacity onPress={() => setShareRequestsVisible(false)} hitSlop={{top:10,bottom:10,left:10,right:10}}>
                 <Ionicons name="arrow-back" size={24} color={THEME.ink} />
               </TouchableOpacity>
-              <Text style={{ marginLeft:12, fontSize:18, fontWeight:'800', color:THEME.ink }}>{t('profile.listShares') || 'Partage de listes'}</Text>
+              <Text style={{ marginLeft:12, fontSize:18, fontWeight:'800', color:THEME.ink }}>{t('profile.listShares', 'Partage de listes')}</Text>
             </View>
             <ScrollView contentContainerStyle={{ padding:16 }}>
-              <Text style={profStyles.sectionTitle}>{t('profile.pendingRequestsTitle') || 'Demandes reçues'}</Text>
-              {shareRequests.length === 0 && <Text style={{ color:THEME.faint, marginBottom:16 }}>{t('profile.noRequests') || 'Aucune demande pour le moment.'}</Text>}
+              <Text style={profStyles.sectionTitle}>{t('profile.pendingRequestsTitle', 'Demandes reçues')}</Text>
+              {shareRequests.length === 0 && <Text style={{ color:THEME.faint, marginBottom:16 }}>{t('profile.noRequests', 'Aucune demande pour le moment.')}</Text>}
               {shareRequests.map((r) => (
                 <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
                   <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
                   <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'accept'); } catch {} loadShareData(); }} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
-                    <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept') || 'Accepter'}</Text>
+                    <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'reject'); } catch {} loadShareData(); }} style={{ padding:6, marginRight:2 }}>
                     <Ionicons name="close" size={20} color={THEME.faint} />
@@ -5745,14 +5745,14 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   </TouchableOpacity>
                 </View>
               ))}
-              <Text style={[profStyles.sectionTitle, { marginTop:24 }]}>{t('profile.blockedUsers') || 'Utilisateurs bloqués'}</Text>
-              {blockedUsers.length === 0 && <Text style={{ color:THEME.faint }}>{t('profile.noBlocked') || 'Aucun utilisateur bloqué.'}</Text>}
+              <Text style={[profStyles.sectionTitle, { marginTop:24 }]}>{t('profile.blockedUsers', 'Utilisateurs bloqués')}</Text>
+              {blockedUsers.length === 0 && <Text style={{ color:THEME.faint }}>{t('profile.noBlocked', 'Aucun utilisateur bloqué.')}</Text>}
               {blockedUsers.map((u) => (
                 <View key={String(u.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="ban" size={22} color={THEME.danger} />
                   <Text style={{ flex:1, marginHorizontal:10, color:THEME.ink }} numberOfLines={1}>{u.name || u.username}</Text>
                   <TouchableOpacity onPress={async () => { try { await unblockUser(u.username); } catch {} loadShareData(); }} style={{ borderWidth:1, borderColor:THEME.faint, borderRadius:16, paddingHorizontal:12, paddingVertical:7 }}>
-                    <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.unblock') || 'Débloquer'}</Text>
+                    <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.unblock', 'Débloquer')}</Text>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -5880,18 +5880,18 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         {profile.role === 'professionaluser' && (
           <View style={profStyles.section}>
             <View style={profStyles.sectionHeadRow}>
-              <Text style={profStyles.sectionTitle}>{t('profile.verificationStatus') || 'Statut de vérification'}</Text>
+              <Text style={profStyles.sectionTitle}>{t('profile.verificationStatus', 'Statut de vérification')}</Text>
             </View>
             {!profile.isVerified && (
               <View style={[profStyles.banner, profStyles.bannerWarn]}>
                 <Ionicons name="time-outline" size={20} color="#B45309" />
-                <Text style={[profStyles.bannerTxt, { color:'#92400E' }]}>{t('profile.verificationPending') || 'Votre compte est en cours de vérification par notre équipe.'}</Text>
+                <Text style={[profStyles.bannerTxt, { color:'#92400E' }]}>{t('profile.verificationPending', 'Votre compte est en cours de vérification par notre équipe.')}</Text>
               </View>
             )}
             {profile.isVerified && (
               <View style={[profStyles.banner, profStyles.bannerOk]}>
                 <Ionicons name="checkmark-circle" size={20} color={THEME.brandDark} />
-                <Text style={[profStyles.bannerTxt, { color:THEME.brandDark }]}>{t('profile.verificationApproved') || 'Compte vérifié'}</Text>
+                <Text style={[profStyles.bannerTxt, { color:THEME.brandDark }]}>{t('profile.verificationApproved', 'Compte vérifié')}</Text>
               </View>
             )}
             {docStatuses && (
@@ -5899,15 +5899,15 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 {[
                   { key: 'kbiss_status', label: 'KBISS' },
                   { key: 'iban_status', label: 'IBAN / RIB' },
-                  { key: 'identityCardFront_status', label: t('auth.docIdFront') || 'Carte d\'identité (recto)' },
-                  { key: 'identityCardBack_status', label: t('auth.docIdBack') || 'Carte d\'identité (verso)' },
-                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress') || 'Justificatif de domicile' },
+                  { key: 'identityCardFront_status', label: t('auth.docIdFront', 'Carte d\'identité (recto)') },
+                  { key: 'identityCardBack_status', label: t('auth.docIdBack', 'Carte d\'identité (verso)') },
+                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress', 'Justificatif de domicile') },
                 ].map((doc, i) => {
                   const status = docStatuses[doc.key] || 'pending';
                   const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
                   const color = status === 'approved' ? THEME.brand : status === 'rejected' ? THEME.danger : '#F59E0B';
                   const tint = status === 'approved' ? THEME.brandSoft : status === 'rejected' ? THEME.dangerSoft : '#FEF3C7';
-                  const label = status === 'approved' ? (t('profile.docApproved') || 'Approuvé') : status === 'rejected' ? (t('profile.docRejected') || 'Rejeté') : (t('profile.docPending') || 'En attente');
+                  const label = status === 'approved' ? (t('profile.docApproved', 'Approuvé')) : status === 'rejected' ? (t('profile.docRejected', 'Rejeté')) : (t('profile.docPending', 'En attente'));
                   return (
                     <View key={i} style={[profStyles.docRow, i < 4 && profStyles.docDivider]}>
                       <View style={[profStyles.docIcon, { backgroundColor: tint }]}>
@@ -6014,8 +6014,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <Ionicons name="git-network-outline" size={19} color="#fff" />
               </View>
               <View style={profStyles.settingBody}>
-                <Text style={profStyles.settingLabel}>{t('profile.listShares') || 'Partage de listes'}</Text>
-                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? `${shareRequests.length} ${t('profile.pendingRequests') || 'demande(s) en attente'}` : (t('profile.manageShares') || 'Demandes reçues · utilisateurs bloqués')}</Text>
+                <Text style={profStyles.settingLabel}>{t('profile.listShares', 'Partage de listes')}</Text>
+                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? `${shareRequests.length} ${t('profile.pendingRequests', 'demande(s) en attente')}` : (t('profile.manageShares', 'Demandes reçues · utilisateurs bloqués'))}</Text>
               </View>
               {shareRequests.length > 0 && (
                 <View style={{ backgroundColor: THEME.danger, borderRadius:11, minWidth:22, height:22, alignItems:'center', justifyContent:'center', paddingHorizontal:6, marginRight:6 }}>
@@ -6072,8 +6072,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <Ionicons name="bicycle" size={22} color="#fff" />
             </View>
             <View style={profStyles.driverBody}>
-              <Text style={profStyles.driverTitle}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
-              <Text style={profStyles.driverSub}>{t('profile.driverSubtitle') || 'Livrez et gagnez un complément de revenu'}</Text>
+              <Text style={profStyles.driverTitle}>{t('profile.becomeDriver', 'Devenir livreur')}</Text>
+              <Text style={profStyles.driverSub}>{t('profile.driverSubtitle', 'Livrez et gagnez un complément de revenu')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
           </TouchableOpacity>
@@ -6175,7 +6175,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             <TouchableOpacity onPress={() => setDriverInfoVisible(false)} style={profStyles.modalBack}>
               <Ionicons name="arrow-back" size={20} color={THEME.ink} />
             </TouchableOpacity>
-            <Text style={profStyles.modalTitle}>{t('profile.becomeDriver') || 'Devenir livreur'}</Text>
+            <Text style={profStyles.modalTitle}>{t('profile.becomeDriver', 'Devenir livreur')}</Text>
           </View>
           <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:40 }} showsVerticalScrollIndicator={false}>
             {/* Hero */}
@@ -6185,13 +6185,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               </View>
               <Text style={profStyles.driverHeroTitle}>Pearl Delivery</Text>
               <Text style={profStyles.driverHeroSub}>
-                {t('profile.driverInfoDesc') || 'Gagnez un complément de revenu en livrant des commandes dans votre ville.'}
+                {t('profile.driverInfoDesc', 'Gagnez un complément de revenu en livrant des commandes dans votre ville.')}
               </Text>
             </View>
 
             {/* Two types */}
             <View style={profStyles.sectionHeadRow}>
-              <Text style={profStyles.sectionTitle}>{t('profile.driverTypes') || 'Deux façons de livrer'}</Text>
+              <Text style={profStyles.sectionTitle}>{t('profile.driverTypes', 'Deux façons de livrer')}</Text>
             </View>
 
             <View style={profStyles.driverTypeCard}>
@@ -6199,10 +6199,10 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <View style={profStyles.driverTypeIcon}>
                   <Ionicons name="bicycle" size={19} color={THEME.brand} />
                 </View>
-                <Text style={profStyles.driverTypeTitle}>{t('profile.driverParticulier') || 'Livreur Particulier'}</Text>
+                <Text style={profStyles.driverTypeTitle}>{t('profile.driverParticulier', 'Livreur Particulier')}</Text>
               </View>
               <Text style={profStyles.driverTypeTxt}>
-                {t('profile.driverParticulierInfo') || 'Aucun statut professionnel requis. Livrez quand vous voulez en complément de revenu, dans la limite du plafond annuel de votre pays.'}
+                {t('profile.driverParticulierInfo', 'Aucun statut professionnel requis. Livrez quand vous voulez en complément de revenu, dans la limite du plafond annuel de votre pays.')}
               </Text>
             </View>
 
@@ -6211,16 +6211,16 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <View style={profStyles.driverTypeIcon}>
                   <Ionicons name="storefront" size={19} color={THEME.brand} />
                 </View>
-                <Text style={profStyles.driverTypeTitle}>{t('profile.driverPro') || 'Livreur Pro'}</Text>
+                <Text style={profStyles.driverTypeTitle}>{t('profile.driverPro', 'Livreur Pro')}</Text>
               </View>
               <Text style={profStyles.driverTypeTxt}>
-                {t('profile.driverProInfo') || 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, KBISS.'}
+                {t('profile.driverProInfo', 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, KBISS.')}
               </Text>
             </View>
 
             {/* Country limits */}
             <View style={profStyles.sectionHeadRow}>
-              <Text style={profStyles.sectionTitle}>{t('profile.driverLimits') || 'Plafonds par pays (particuliers)'}</Text>
+              <Text style={profStyles.sectionTitle}>{t('profile.driverLimits', 'Plafonds par pays (particuliers)')}</Text>
             </View>
 
             {[
@@ -6268,7 +6268,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     'Pearl Delivery',
                     t('profile.downloadDeliveryApp') || "L'app Pearl Delivery n'est pas installée. Téléchargez-la pour devenir livreur.",
                     [
-                      { text: t('profile.cancel') || 'Annuler', style: 'cancel' },
+                      { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
                       { text: 'App Store', onPress: () => Linking.openURL('https://apps.apple.com/app/pearl-delivery/id000000000') },
                       Platform.OS === 'android' ? { text: 'Google Play', onPress: () => Linking.openURL('https://play.google.com/store/apps/details?id=com.pearlstreets.delivery') } : null,
                     ].filter(Boolean)
@@ -6935,7 +6935,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 style={profStyles.primaryBtn}
               >
                 <Ionicons name="cart-outline" size={20} color="#fff" />
-                <Text style={profStyles.primaryBtnTxt}>{t('profile.reorder') || 'Recommander'}</Text>
+                <Text style={profStyles.primaryBtnTxt}>{t('profile.reorder', 'Recommander')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -6949,7 +6949,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
           <View style={profStyles.sheet}>
             <View style={profStyles.sheetGrabber} />
             <View style={profStyles.sheetHeader}>
-              <Text style={profStyles.sheetTitle}>{t('profile.reorder') || 'Recommander'}</Text>
+              <Text style={profStyles.sheetTitle}>{t('profile.reorder', 'Recommander')}</Text>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <TouchableOpacity onPress={() => {
                   const allSelected = reorderItems.every(it => it.selected);
@@ -7014,7 +7014,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 style={[profStyles.primaryBtn, !reorderItems.some(it => it.selected) && profStyles.primaryBtnDisabled]}
               >
                 <Ionicons name="cart-outline" size={20} color="#fff" />
-                <Text style={profStyles.primaryBtnTxt}>{t('cart.addToCart') || 'Ajouter au panier'} ({reorderItems.filter(it => it.selected).reduce((s, it) => s + (it.qty||1), 0)})</Text>
+                <Text style={profStyles.primaryBtnTxt}>{t('cart.addToCart', 'Ajouter au panier')} ({reorderItems.filter(it => it.selected).reduce((s, it) => s + (it.qty||1), 0)})</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setReorderVisible(false)} style={[profStyles.cancelBtn, { marginTop: 10 }]}>
                 <Text style={profStyles.cancelBtnTxt}>{t('profile.cancel')}</Text>
