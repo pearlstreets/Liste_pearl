@@ -4309,29 +4309,18 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     const rateCheck = checkRateLimit('login', 5, 60000);
     if (!rateCheck.allowed) { setError((t('auth.errorRateLimit') || 'Trop de tentatives. Réessayez dans') + ' ' + rateCheck.waitSeconds + 's'); return; }
     setLoading(true);
-    // Try Marketplace API with timeout — if unavailable, fallback to local
+    // Compte marketplace UNIQUEMENT — mêmes identifiants que l'app mobile
+    // AppUser / le site. Plus de fallback vers des comptes locaux divergents.
     try {
       const apiPromise = loginUser(email.trim(), password);
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000));
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15000));
       const result = await Promise.race([apiPromise, timeoutPromise]);
       if (result && result.success) { setLoading(false); onLogin(); return; }
-    } catch(e) { /* API unavailable — fallback to local */ }
-    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-    const accounts = raw ? JSON.parse(raw) : [];
-    const input = email.trim().toLowerCase();
-    const accountExists = accounts.find(a => (a.email.toLowerCase() === input || (a.pseudo && a.pseudo.toLowerCase() === input)));
-    if (!accountExists) { setError(t('auth.errorAccountNotFound') || 'Aucun compte trouvé'); setLoading(false); return; }
-    if (accountExists.password !== password) { setError(t('auth.errorWrongPassword') || 'Mot de passe incorrect'); setLoading(false); return; }
-    const found = accountExists;
-    const userKey = 'USER_' + found.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...found, userKey}));
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: found.pseudo, prenom: found.prenom, nom: found.nom, email: found.email, photo: null }));
-    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-    await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+      setError((result && result.message) || t('auth.errorWrongPassword') || 'Email ou mot de passe incorrect');
+    } catch (e) {
+      setError(t('auth.errorNetwork') || 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.');
+    }
     setLoading(false);
-    onLogin();
   };
 
   const handleSignup = async () => {
@@ -4339,22 +4328,18 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty') || 'Remplissez tous les champs'); return; }
     if (password.length < 6) { setError(t('auth.errorPasswordLength') || 'Minimum 6 caractères'); return; }
     setLoading(true);
+    // Inscription marketplace UNIQUEMENT — crée le compte partagé avec l'app
+    // mobile AppUser (même base). Plus de compte local divergent.
     try {
       const apiPromise = registerUser({ username: pseudo.trim(), email: email.trim(), password, firstName: prenom.trim(), lastName: nom.trim() });
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000));
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 20000));
       const result = await Promise.race([apiPromise, timeoutPromise]);
       if (result && result.success) { setLoading(false); onLogin(); return; }
-    } catch(e) { /* API unavailable — fallback to local */ }
-    const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-    const accounts = raw ? JSON.parse(raw) : [];
-    if (accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase())) { setError(t('auth.errorEmailExists') || 'Email déjà utilisé'); setLoading(false); return; }
-    const newAccount = { pseudo: pseudo.trim(), prenom: prenom.trim(), nom: nom.trim(), email: email.trim(), password, role: 'user' };
-    accounts.push(newAccount);
-    await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify({...newAccount, userKey: 'USER_' + newAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_')}));
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify({ pseudo: newAccount.pseudo, prenom: newAccount.prenom, nom: newAccount.nom, email: newAccount.email, photo: null }));
+      setError((result && result.message) || t('auth.errorEmailExists') || "Impossible de créer le compte (email déjà utilisé ?).");
+    } catch (e) {
+      setError(t('auth.errorNetwork') || 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.');
+    }
     setLoading(false);
-    onLogin();
   };
 
   return (

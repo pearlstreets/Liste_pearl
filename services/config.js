@@ -19,8 +19,10 @@ const ENV = {
     PRO_URL: 'https://pro.digiexports.in',
   },
   production: {
-    API_URL: 'https://api.pearlstreets.com/api/v1',
-    DELIVERY_API_URL: 'https://api.pearlstreets.com/api/v1/delivery',
+    // Backend app-prod (/app-api) — MÊME base que l'app mobile AppUser, pour un
+    // compte utilisateur unique (inscription/connexion/suppression partagées).
+    API_URL: 'https://api.pearlstreets.com/app-api/api/v1',
+    DELIVERY_API_URL: 'https://api.pearlstreets.com/app-api/api/v1/delivery',
     WEB_URL: 'https://marche.pearlstreets.com',
     ADMIN_URL: 'https://admin.pearlstreets.com',
     PRO_URL: 'https://pro.pearlstreets.com',

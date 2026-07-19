@@ -1,4 +1,4 @@
-import { apiPost, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
+import { apiPost, apiUpload, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_AUTH = 'KEY_AUTH';
@@ -14,21 +14,40 @@ export async function registerUser({
   phone,
   address,
 }) {
-  const body = {
-    username,
-    email,
-    password,
-    firstName,
-    lastName,
-    phone: phone || '',
-    termCondition: true,
-    marketingReference: true,
-    manualAddress: JSON.stringify(
-      address || { address1: '', city: '', postalCode: '', country: 'France' }
-    ),
-  };
+  // Le backend marketplace (app-prod) exige un compte complet en form-data :
+  // confirmPassword, login_type, termCondition, et les DEUX adresses
+  // (manualAddress + automatic_address) en JSON string. Pearl List n'a pas de
+  // champ adresse à l'inscription → placeholder, complété plus tard dans le
+  // profil / à la livraison. Contrat vérifié sur app-prod (201 Created).
+  const addr =
+    address || {
+      address1: '',
+      address2: '',
+      postalCode: '',
+      city: '',
+      country: 'France',
+      lat: '',
+      lang: '',
+    };
+  const addrStr = JSON.stringify(addr);
+  const fd = new FormData();
+  fd.append('username', username);
+  fd.append('email', email);
+  fd.append('password', password);
+  fd.append('confirmPassword', password);
+  fd.append('firstName', firstName || '');
+  fd.append('lastName', lastName || '');
+  fd.append('login_type', 'email');
+  fd.append('phone', phone || '');
+  fd.append('countryCode', '');
+  fd.append('dob', '');
+  fd.append('gender', '');
+  fd.append('termCondition', 'true');
+  fd.append('marketingReference', 'false');
+  fd.append('manualAddress', addrStr);
+  fd.append('automatic_address', addrStr);
 
-  const data = await apiPost('/users/register/', body);
+  const data = await apiUpload('/users/register/', fd);
 
   if (data.status && data.access_token) {
     await saveTokens(data.access_token, data.refresh_token);
