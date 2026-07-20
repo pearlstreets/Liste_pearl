@@ -669,26 +669,29 @@ function ListScreen() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={() => setSwitcherOpen(true)} activeOpacity={0.8}
-        style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:'#EAF7F1', borderRadius:20, paddingHorizontal:12, paddingVertical:7, marginTop:10 }}>
-        <Ionicons name="swap-horizontal" size={16} color={THEME.brandDark} />
-        <Text style={{ marginHorizontal:8, fontWeight:'700', color:THEME.ink, maxWidth:210 }} numberOfLines={1}>
-          {readOnly ? (activeShared.owner?.name || t('tabs.myList')) : activeListName}
-        </Text>
-        <Ionicons name="chevron-down" size={15} color={THEME.faint} />
-      </TouchableOpacity>
-
-      {/* Ma liste est partagée : icône + nombre. Un appui montre qui y a accès. */}
-      {!readOnly && (granted.accepted.length > 0 || granted.pending.length > 0) && (
-        <TouchableOpacity onPress={() => setGrantedOpen(true)} activeOpacity={0.8}
-          style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:THEME.brandSoft, borderRadius:12, paddingHorizontal:10, paddingVertical:6, marginTop:8 }}>
-          <Ionicons name="people" size={15} color={THEME.brandDark} />
-          <Text style={{ marginLeft:6, fontWeight:'800', color:THEME.brandDark, fontSize:12.5 }}>
-            {granted.accepted.length}
-            {granted.pending.length > 0 ? ` (+${granted.pending.length})` : ''}
+      {/* Nom de liste à gauche, badge de partage aligné à DROITE sur la même ligne. */}
+      <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:10 }}>
+        <TouchableOpacity onPress={() => setSwitcherOpen(true)} activeOpacity={0.8}
+          style={{ flexDirection:'row', alignItems:'center', backgroundColor:'#EAF7F1', borderRadius:20, paddingHorizontal:12, paddingVertical:7, flexShrink:1 }}>
+          <Ionicons name="swap-horizontal" size={16} color={THEME.brandDark} />
+          <Text style={{ marginHorizontal:8, fontWeight:'700', color:THEME.ink, maxWidth:190 }} numberOfLines={1}>
+            {readOnly ? (activeShared.owner?.name || t('tabs.myList')) : activeListName}
           </Text>
+          <Ionicons name="chevron-down" size={15} color={THEME.faint} />
         </TouchableOpacity>
-      )}
+
+        {/* Ma liste est partagée : icône + nombre. Un appui montre qui y a accès. */}
+        {!readOnly && (granted.accepted.length > 0 || granted.pending.length > 0) && (
+          <TouchableOpacity onPress={() => setGrantedOpen(true)} activeOpacity={0.8}
+            style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, borderRadius:12, paddingHorizontal:10, paddingVertical:6, marginLeft:10 }}>
+            <Ionicons name="people" size={15} color={THEME.brandDark} />
+            <Text style={{ marginLeft:6, fontWeight:'800', color:THEME.brandDark, fontSize:12.5 }}>
+              {granted.accepted.length}
+              {granted.pending.length > 0 ? ` (+${granted.pending.length})` : ''}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       {!readOnly && (<>
       <View style={lstyles.inputWrap}>
