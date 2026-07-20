@@ -28,6 +28,14 @@ export const revokeShare = (identifier) =>
 // Les listes que d'autres m'autorisent à consulter (lecture seule).
 export const getSharedWithMe = () => apiGet('/users/list-share/shared-with-me/');
 
+// Recherche d'utilisateurs pour l'autocomplétion du partage.
+// `users-list/` liste TOUS les comptes de la marketplace (hors bannis/suspendus
+// et soi-même), sans exclure les profils incomplets, et ne requiert pas d'être
+// connecté. Recherche par @pseudo / display_name uniquement (jamais nom réel).
+// Réponse : { statusCode, data: [ { id, username, firstName, profileImage } ] }
+export const searchUsers = (query) =>
+  apiGet(`/users/users-list/?search=${encodeURIComponent(query || '')}&page_size=8`);
+
 // --- Blocage ---
 export const getBlocks = () => apiGet('/users/block/');
 export const blockUser = (identifier) => apiPost('/users/block/', { identifier });

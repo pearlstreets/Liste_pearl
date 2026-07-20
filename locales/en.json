@@ -25,7 +25,28 @@
     "deleteConfirm": "Delete",
     "deleteItem": "selected item",
     "added": "added",
-    "itemsAdded": "items added"
+    "itemsAdded": "items added",
+    "newListTitle": "New list",
+    "newListPrompt": "List name",
+    "create": "Create",
+    "deleteListTitle": "Delete list",
+    "deleteListConfirm": "This list and its contents will be deleted.",
+    "readOnlyShared": "Shared list · read-only",
+    "share": "Share",
+    "chooseList": "Choose a list",
+    "myLists": "My lists",
+    "createList": "Create a list",
+    "sharedWithMe": "Shared with me",
+    "shareTitle": "Share my list",
+    "shareHint": "The person's email or username. They'll receive a request to accept.",
+    "sharePlaceholder": "email or username",
+    "sendRequest": "Send request",
+    "renameListTitle": "Rename list",
+    "shareSentTitle": "Request sent",
+    "shareFailedTitle": "Failed",
+    "shareSentMsg": "The person will receive your share request to accept.",
+    "shareFailedMsg": "Could not send the request.",
+    "shareActionFailed": "The action could not be completed."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -124,7 +145,9 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "store",
-    "shops": "stores"
+    "shops": "stores",
+    "ok": "OK",
+    "cancel": "Cancel"
   },
   "favorites": {
     "noFavorites": "No favorite shops",
@@ -252,7 +275,18 @@
     "deleteAccountErrTitle": "Deletion failed",
     "deleteAccountErr": "Account deletion failed. Check your connection and try again.",
     "deleteAccountDoneTitle": "Account deleted",
-    "deleteAccountDone": "Your account has been deleted."
+    "deleteAccountDone": "Your account has been deleted.",
+    "gender": "Gender",
+    "preferences": "Preferences",
+    "listShares": "List sharing",
+    "pendingRequestsTitle": "Received requests",
+    "noRequests": "No requests for now.",
+    "accept": "Accept",
+    "blockedUsers": "Blocked users",
+    "noBlocked": "No blocked users.",
+    "unblock": "Unblock",
+    "pendingRequests": "pending request(s)",
+    "manageShares": "Received requests · blocked users"
   },
   "auth": {
     "login": "Login",
@@ -265,7 +299,7 @@
     "noAccountPearl": "No account? ",
     "hasAccountPearl": "Already have an account? ",
     "pearlLoginHint": "Sign in with your Pearl Streets or Marketplace account",
-    "pearlSignupHint": "Create an account — works on the app and Marketplace website",
+    "pearlSignupHint": "Create an account, works on the app and Marketplace website",
     "hasAccount": "Already have an account?",
     "forgotPassword": "Forgot password?",
     "loginSubtitle": "Log in to your account",
@@ -339,7 +373,32 @@
     "errorWrongPassword": "Incorrect password",
     "errorBothEmpty": "Please enter your email and password",
     "errorNoEmail": "Please enter your email or username",
-    "errorNoPassword": "Please enter your password"
+    "errorNoPassword": "Please enter your password",
+    "errorRateLimit": "Too many attempts. Try again in",
+    "errorNetwork": "Cannot connect to the server. Check your connection and try again.",
+    "errorInvalidEmail": "Invalid email address",
+    "errorPwdMismatch": "Passwords do not match",
+    "errorDob": "Enter your date of birth",
+    "errorAddress": "Enter your address (street and city)",
+    "stepAuth": "Authentication",
+    "stepDetails": "Personal details",
+    "continue": "Continue",
+    "genderMale": "Male",
+    "genderFemale": "Female",
+    "genderOther": "Other",
+    "dob": "Date of birth",
+    "dobPlaceholder": "YYYY-MM-DD",
+    "phone": "Phone",
+    "phonePlaceholder": "Phone number",
+    "address": "Address",
+    "addressLine": "Street and number",
+    "postalCode": "Postal code",
+    "city": "City",
+    "backToStep1": "← Back to previous step",
+    "selectDialCode": "Dialing code",
+    "confirm": "Confirm",
+    "errorDobFormat": "Invalid date of birth (e.g. 1990-05-12)",
+    "addressAutoPlaceholder": "Start typing your address…"
   },
   "cart": {
     "today": "Today",
@@ -449,7 +508,15 @@
     "deleteCard": "Delete card",
     "delete": "Delete",
     "saveCard": "Save card",
-    "newCard": "New card"
+    "newCard": "New card",
+    "tip": "Driver tip",
+    "noTip": "None",
+    "inCart": "In cart",
+    "add": "Add",
+    "tipThanks": "Thanks for your tip!",
+    "tipAdded": "Tip added.",
+    "tipFailed": "Tip failed.",
+    "tipDriver": "Thank your driver"
   },
   "orderStatus": {
     "confirmed": "Order confirmed",
@@ -465,7 +532,8 @@
     "refunded": "Refunded",
     "partiallyRefunded": "Partially refunded",
     "completed": "Completed",
-    "awaitingPayment": "Awaiting payment"
+    "awaitingPayment": "Awaiting payment",
+    "deliveryCode": "Code to give the driver"
   },
   "productNames": {
     "Pommes Golden": "Golden apples",
@@ -590,5 +658,22 @@
     "Pack 12 rouleaux": "Pack 12 rolls",
     "Pack 6 rouleaux": "Pack 6 rolls",
     "Bidon – 2L – 40 lavages": "Jug – 2L – 40 washes"
+  },
+  "rating": {
+    "thanks": "Thank you!",
+    "saved": "Your rating has been saved.",
+    "yourRating": "Your rating",
+    "rateDriver": "Rate your driver"
+  },
+  "report": {
+    "notReceived": "Order not received",
+    "missingItem": "Missing item",
+    "wrongOrder": "Wrong order",
+    "damaged": "Damaged order",
+    "other": "Other",
+    "title": "Report a problem",
+    "pick": "What happened?",
+    "sentTitle": "Report sent",
+    "sent": "Our support team will handle your request."
   }
 }

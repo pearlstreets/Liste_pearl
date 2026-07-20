@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
-import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser } from "./services/sharedLists";
+import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers } from "./services/sharedLists";
+import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
@@ -48,7 +49,6 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
-import Toast from "./components/ui/Toast";
 import RepeatButton from "./components/ui/RepeatButton";
 import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
 import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
@@ -97,8 +97,31 @@ const ProductImage = ({ uri, name, size = 44 }) => {
   return <ProductThumb name={name} size={size} />;
 };
 
-const KEY_ITEMS = "SG_ITEMS";
+const KEY_ITEMS = "SG_ITEMS";                 // liste ACTIVE (miroir — utilisé par l'ajout au panier)
+const KEY_LISTS = "SG_LISTS";                 // registre de MES listes : [{ id, name }]
+const KEY_ACTIVE_LIST = "SG_ACTIVE_LIST";     // id de la liste active
+const DEFAULT_LIST_ID = "default";
+// Clé de stockage canonique des articles d'une liste donnée.
+// 'default' garde KEY_ITEMS (compat historique + points d'ajout au panier).
+const listItemsKey = (id) => (id && id !== DEFAULT_LIST_ID ? `SG_ITEMS__${id}` : KEY_ITEMS);
 const KEY_SELECTED = "SG_SELECTED_FOR_PRODUCTS";
+
+// Normalise une date de naissance vers l'ISO 'YYYY-MM-DD' exigé par le backend
+// (DRF DateField iso-8601 uniquement). Accepte 'AAAA-MM-JJ' ET les habitudes FR
+// 'JJ/MM/AAAA', 'JJ-MM-AAAA', 'JJ.MM.AAAA'. Retourne null si non parsable.
+function normalizeDob(input) {
+  const s = String(input || '').trim();
+  if (!s) return null;
+  let y, m, d;
+  const iso = s.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/);
+  const dmy = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+  if (iso) { y = +iso[1]; m = +iso[2]; d = +iso[3]; }
+  else if (dmy) { d = +dmy[1]; m = +dmy[2]; y = +dmy[3]; }
+  else return null;
+  if (m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > 2100) return null;
+  const pad = (n) => (n < 10 ? '0' + n : '' + n);
+  return `${y}-${pad(m)}-${pad(d)}`;
+}
 const KEY_CART = "KEY_CART";
 const KEY_ORDER_HISTORY = "KEY_ORDER_HISTORY";
 const KEY_PROFILE = "KEY_PROFILE";
@@ -175,7 +198,7 @@ const lstyles = StyleSheet.create({
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 14, height: 38, borderRadius: 19 },
+  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 14, height: 38, borderRadius: 12, marginLeft: 10 },
   scanTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
   inputWrap: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   input: { flex: 1, height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
@@ -218,6 +241,10 @@ const lstyles = StyleSheet.create({
   ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'center', paddingHorizontal: 28 },
   modalBox: { backgroundColor: THEME.card, borderRadius: 22, padding: 22 },
+  // Dropdown de suggestions de pseudo (partage)
+  suggestBox: { marginTop: 8, backgroundColor: THEME.card, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
+  suggestRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 },
+  suggestAvatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: THEME.subtle },
   modalTitle: { fontSize: 18, fontWeight: '800', color: THEME.ink, marginBottom: 14 },
   modalInput: { height: 50, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink },
   modalRow: { flexDirection: 'row', marginTop: 16 },
@@ -235,10 +262,6 @@ function ListScreen() {
   const [selectAll, setSelectAll] = useState(false);
   const [strikeAll, setStrikeAll] = useState(false);
   const [hideCrossed, setHideCrossed] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-  const [toastKey, setToastKey] = useState(0);
-
-  const showToast = (msg) => { setToastMsg(msg); setToastKey(k => k + 1); };
 
   const [editVisible, setEditVisible] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -253,6 +276,27 @@ function ListScreen() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareInput, setShareInput] = useState("");
   const [shareBusy, setShareBusy] = useState(false);
+  const [shareSuggestions, setShareSuggestions] = useState([]);
+  const [shareInputKey, setShareInputKey] = useState(0); // remonte l'input non contrôlé après un choix
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const shareDebounce = React.useRef(null);
+  const shareCache = React.useRef(new Map()); // requête -> résultats (affichage instantané)
+  const shareReqId = React.useRef(0);         // ignore les réponses réseau périmées
+
+  // --- Multi-listes (MES listes) ---
+  const [myLists, setMyLists] = useState([{ id: DEFAULT_LIST_ID, name: '' }]);
+  const [activeListId, setActiveListId] = useState(DEFAULT_LIST_ID);
+  const [createListOpen, setCreateListOpen] = useState(false);
+  const [newListName, setNewListName] = useState('');
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [renameId, setRenameId] = useState(null);
+  const [renameName, setRenameName] = useState('');
+  // Refs pour focus fiable des inputs en modale (New Arch : autoFocus peu fiable).
+  const createInputRef = React.useRef(null);
+  const renameInputRef = React.useRef(null);
+  const shareInputRef = React.useRef(null);
+  const editInputRef = React.useRef(null);
+  const activeListName = (myLists.find(l => l.id === activeListId)?.name) || t('tabs.myList');
   const activeShared = viewingShareId != null
     ? sharedLists.find(l => String(l.share_id) === String(viewingShareId))
     : null;
@@ -265,6 +309,7 @@ function ListScreen() {
     (async () => {
       try {
         const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+        if (alive) setIsLoggedIn(!!tok);
         if (!tok) { if (alive) { setSharedLists([]); setViewingShareId(null); } return; }
         const res = await getSharedWithMe();
         if (alive && res && res.status) setSharedLists(res.data?.lists || []);
@@ -273,9 +318,14 @@ function ListScreen() {
     return () => { alive = false; };
   }, []));
 
-  // Synchronise MA liste vers le serveur (debounce) pour que les autres la voient.
+  // Synchronise « Ma liste » (la liste par défaut) vers le serveur pour le partage.
+  // IMPORTANT : seule la liste par défaut est partagée. Les listes nommées
+  // supplémentaires restent privées/locales — on ne pousse JAMAIS leur contenu
+  // vers le slot serveur unique, sinon basculer/créer une liste écraserait ou
+  // viderait ce que voient les personnes avec qui « Ma liste » est partagée.
   useEffect(() => {
     if (!hydrated.current) return;
+    if (activeListId !== DEFAULT_LIST_ID) return;
     const tm = setTimeout(async () => {
       try {
         const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
@@ -283,13 +333,27 @@ function ListScreen() {
       } catch {}
     }, 1500);
     return () => clearTimeout(tm);
-  }, [items]);
+  }, [items, activeListId]);
 
   const hydrated = React.useRef(false);
   useEffect(() => { (async () => {
     try {
-      const s = await AsyncStorage.getItem("SG_ITEMS");
-      if (s) setItems(JSON.parse(s));
+      // Registre de MES listes (migration : crée 'default' si absent)
+      let lists = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || 'null');
+      if (!Array.isArray(lists) || lists.length === 0) {
+        lists = [{ id: DEFAULT_LIST_ID, name: '' }];
+        await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(lists));
+      }
+      setMyLists(lists);
+      let active = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
+      if (!lists.some(l => l.id === active)) active = DEFAULT_LIST_ID;
+      setActiveListId(active);
+      // Articles de la liste active — KEY_ITEMS reste le miroir de l'active (compat panier)
+      const key = listItemsKey(active);
+      const s = await AsyncStorage.getItem(key);
+      const parsed = s ? JSON.parse(s) : [];
+      setItems(parsed);
+      if (key !== KEY_ITEMS) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
     } catch {}
     hydrated.current = true;
   })(); }, []);
@@ -297,8 +361,11 @@ function ListScreen() {
   // overwrites the saved list on every cold start.
   useEffect(() => {
     if (!hydrated.current) return;
-    AsyncStorage.setItem("SG_ITEMS", JSON.stringify(items)).catch(() => {});
-  }, [items]);
+    const payload = JSON.stringify(items);
+    AsyncStorage.setItem(KEY_ITEMS, payload).catch(() => {});               // miroir actif (compat panier)
+    const key = listItemsKey(activeListId);
+    if (key !== KEY_ITEMS) AsyncStorage.setItem(key, payload).catch(() => {}); // canonique de l'active
+  }, [items, activeListId]);
 
   // Reload items when returning to this tab (e.g. after adding to cart crosses them off)
   useFocusEffect(React.useCallback(() => {
@@ -324,7 +391,6 @@ function ListScreen() {
     });
     setText("");
     Keyboard.dismiss();
-    const count = parsed.length;
   };
 
   const onMinus = id => setItems(items.map(it => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it));
@@ -351,6 +417,149 @@ function ListScreen() {
     if (!editText.trim()) { closeEdit(); return; }
     setItems(prev => prev.map(it => it.id === editId ? { ...it, name: editText.trim() } : it));
     closeEdit();
+  };
+
+  // --- Multi-listes : bascule / création / suppression ---
+  const switchOwnList = async (id) => {
+    if (id === activeListId && viewingShareId == null) { setSwitcherOpen(false); return; }
+    try {
+      // La liste SORTANTE est déjà persistée par l'effet de persistance (il flush
+      // avant ce handler d'événement). On ne ré-écrit donc PAS la liste courante
+      // ici : cela éviterait de ressusciter une clé qu'on vient de supprimer
+      // (deleteList) et supprime des écritures AsyncStorage redondantes.
+      const s = await AsyncStorage.getItem(listItemsKey(id));
+      const parsed = s ? JSON.parse(s) : [];
+      setActiveListId(id);
+      setItems(parsed);
+      setViewingShareId(null);
+      setSelectAll(false); setStrikeAll(false);
+      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed)); // miroir immédiat (panier)
+      await AsyncStorage.setItem(KEY_ACTIVE_LIST, id);
+    } catch {}
+    setSwitcherOpen(false);
+  };
+
+  // Création via modale custom (cross-platform iOS + Android — Alert.prompt est iOS-only).
+  const createList = () => {
+    setSwitcherOpen(false);
+    setNewListName('');
+    setCreateListOpen(true);
+  };
+  const confirmCreateList = async () => {
+    const nm = (newListName || '').trim();
+    if (!nm) { setCreateListOpen(false); return; }
+    const id = 'l_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    const next = [...myLists, { id, name: nm }];
+    setMyLists(next);
+    try {
+      await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(next));
+      await AsyncStorage.setItem(listItemsKey(id), JSON.stringify([]));
+    } catch {}
+    setCreateListOpen(false);
+    await switchOwnList(id);
+  };
+
+  const deleteList = (id) => {
+    if (id === DEFAULT_LIST_ID) return;
+    Alert.alert(
+      t('listScreen.deleteListTitle', 'Supprimer la liste'),
+      t('listScreen.deleteListConfirm', 'Cette liste et son contenu seront supprimés.'),
+      [
+        { text: t('listScreen.cancel'), style: 'cancel' },
+        { text: t('listScreen.delete'), style: 'destructive', onPress: async () => {
+          const next = myLists.filter(l => l.id !== id);
+          setMyLists(next);
+          await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(next));
+          await AsyncStorage.removeItem(listItemsKey(id));
+          if (activeListId === id) await switchOwnList(DEFAULT_LIST_ID);
+        }},
+      ]
+    );
+  };
+
+  // Renommage d'une liste (modale custom cross-platform).
+  const renameList = (l) => {
+    setSwitcherOpen(false);
+    setRenameId(l.id);
+    setRenameName(l.name || (l.id === DEFAULT_LIST_ID ? t('tabs.myList') : ''));
+    setRenameOpen(true);
+  };
+  const confirmRenameList = async () => {
+    const nm = (renameName || '').trim();
+    if (!nm || !renameId) { setRenameOpen(false); return; }
+    const next = myLists.map(l => l.id === renameId ? { ...l, name: nm } : l);
+    setMyLists(next);
+    try { await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(next)); } catch {}
+    setRenameOpen(false);
+    setRenameId(null);
+  };
+
+  // Suggestions de pseudo pendant la saisie (recherche par @pseudo / display_name).
+  // Un email n'est pas cherché : le backend le résout directement à l'envoi.
+  // Récupère + met en cache une requête (vide = liste de tous les utilisateurs).
+  const fetchShareUsers = async (q) => {
+    const reqId = ++shareReqId.current;
+    try {
+      const res = await searchUsers(q);
+      if (reqId !== shareReqId.current) return; // réponse périmée : on ignore
+      const users = (res && Array.isArray(res.data) ? res.data : []).slice(0, 6);
+      shareCache.current.set(q, users);
+      setShareSuggestions(users);
+    } catch { /* on garde l'affichage local déjà présent */ }
+  };
+
+  // Affichage INSTANTANÉ (façon Instagram) : on montre immédiatement le cache
+  // exact ou un filtrage local d'un préfixe déjà chargé, puis on rafraîchit
+  // via le réseau avec un debounce très court.
+  const onShareInputChange = (text) => {
+    setShareInput(text);
+    if (shareDebounce.current) clearTimeout(shareDebounce.current);
+    const raw = (text || '').trim();
+    const q = (raw.startsWith('@') ? raw.slice(1) : raw).toLowerCase();
+    if (q.includes('@')) { setShareSuggestions([]); return; } // email : pas de suggestion
+
+    const cached = shareCache.current.get(q);
+    if (cached) {
+      setShareSuggestions(cached);
+    } else {
+      // Filtre localement le résultat d'un préfixe déjà connu -> zéro latence.
+      for (let i = q.length - 1; i >= 0; i--) {
+        const prev = shareCache.current.get(q.slice(0, i));
+        if (prev) {
+          setShareSuggestions(prev.filter(u =>
+            (u.username || '').toLowerCase().includes(q) ||
+            (u.display_name || u.firstName || '').toLowerCase().includes(q)
+          ));
+          break;
+        }
+      }
+    }
+    shareDebounce.current = setTimeout(() => fetchShareUsers(q), 120);
+  };
+  const pickShareUser = (u) => {
+    if (shareDebounce.current) clearTimeout(shareDebounce.current);
+    setShareInput(u.username || '');
+    setShareInputKey((k) => k + 1); // remonte l'input non contrôlé pour afficher le pseudo choisi
+    setShareSuggestions([]);
+  };
+
+  // Envoi d'une demande de partage — réutilisé par le bouton ET la touche Entrée du clavier.
+  const submitShareRequest = async () => {
+    const id = (shareInput || '').trim();
+    if (!id || shareBusy) return;
+    setShareBusy(true);
+    try {
+      const res = await sendShareRequest(id);
+      const ok = !!(res && res.status);
+      if (ok) { setShareModalOpen(false); setShareInput(''); }
+      Alert.alert(
+        ok ? t('listScreen.shareSentTitle', 'Demande envoyée') : t('listScreen.shareFailedTitle', 'Échec'),
+        (res && res.message) || (ok ? t('listScreen.shareSentMsg', 'La personne recevra votre demande de partage à accepter.') : t('listScreen.shareFailedMsg', "Impossible d'envoyer la demande."))
+      );
+    } catch (e) {
+      Alert.alert(t('listScreen.shareFailedTitle', 'Échec'), t('auth.errorNetwork', 'Connexion au serveur impossible.'));
+    }
+    setShareBusy(false);
   };
 
   const renderItem = ({ item }) => {
@@ -430,7 +639,12 @@ function ListScreen() {
           <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : `${items.length} ${t('listScreen.deleteItem', { count: items.length })}`}</Text>
         </View>
         {!readOnly && (
-          <TouchableOpacity onPress={() => { setShareInput(''); setShareModalOpen(true); }} activeOpacity={0.8} style={lstyles.scanBtn}>
+          <TouchableOpacity onPress={() => {
+              setShareInput(''); setShareInputKey((k) => k + 1); setShareModalOpen(true);
+              // Liste de TOUS les utilisateurs affichée d'emblée (cache -> instantané).
+              setShareSuggestions(shareCache.current.get('') || []);
+              fetchShareUsers('');
+            }} activeOpacity={0.8} style={lstyles.scanBtn}>
             <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
             <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
           </TouchableOpacity>
@@ -441,16 +655,14 @@ function ListScreen() {
         </TouchableOpacity>
       </View>
 
-      {(sharedLists.length > 0 || readOnly) && (
-        <TouchableOpacity onPress={() => setSwitcherOpen(true)} activeOpacity={0.8}
-          style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:'#EAF7F1', borderRadius:20, paddingHorizontal:12, paddingVertical:7, marginTop:10 }}>
-          <Ionicons name="swap-horizontal" size={16} color={THEME.brandDark} />
-          <Text style={{ marginHorizontal:8, fontWeight:'700', color:THEME.ink, maxWidth:210 }} numberOfLines={1}>
-            {readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}
-          </Text>
-          <Ionicons name="chevron-down" size={15} color={THEME.faint} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity onPress={() => setSwitcherOpen(true)} activeOpacity={0.8}
+        style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:'#EAF7F1', borderRadius:20, paddingHorizontal:12, paddingVertical:7, marginTop:10 }}>
+        <Ionicons name="swap-horizontal" size={16} color={THEME.brandDark} />
+        <Text style={{ marginHorizontal:8, fontWeight:'700', color:THEME.ink, maxWidth:210 }} numberOfLines={1}>
+          {readOnly ? (activeShared.owner?.name || t('tabs.myList')) : activeListName}
+        </Text>
+        <Ionicons name="chevron-down" size={15} color={THEME.faint} />
+      </TouchableOpacity>
 
       {!readOnly && (<>
       <View style={lstyles.inputWrap}>
@@ -546,66 +758,182 @@ function ListScreen() {
       </View>
       )}
 
-      {/* Switcher : Ma liste / listes partagées avec moi */}
+      {/* Switcher : Mes listes (+ créer) / listes partagées avec moi */}
       <Modal visible={switcherOpen} transparent animationType="fade" onRequestClose={() => setSwitcherOpen(false)}>
         <Pressable style={lstyles.modalBackdrop} onPress={() => setSwitcherOpen(false)}>
           <Pressable style={lstyles.modalBox} onPress={() => {}}>
-            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList', 'Afficher une liste')}</Text>
-            <TouchableOpacity onPress={() => { setViewingShareId(null); setSwitcherOpen(false); }} activeOpacity={0.8}
-              style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
-              <Ionicons name="list" size={20} color={THEME.brandDark} />
-              <Text style={{ marginLeft:12, fontWeight:'700', color:THEME.ink, flex:1 }}>{t('tabs.myList')}</Text>
-              {!readOnly && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
-            </TouchableOpacity>
-            {sharedLists.map((l) => (
-              <TouchableOpacity key={String(l.share_id)} onPress={() => { setViewingShareId(l.share_id); setSwitcherOpen(false); }} activeOpacity={0.8}
-                style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
-                <Ionicons name="people-outline" size={20} color={THEME.brandDark} />
-                <Text style={{ marginLeft:12, fontWeight:'600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.owner?.name || '—'}</Text>
-                {String(viewingShareId) === String(l.share_id) && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
+            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList', 'Choisir une liste')}</Text>
+            <ScrollView style={{ maxHeight: 380 }} keyboardShouldPersistTaps="handled">
+              {/* --- Mes listes --- */}
+              <Text style={{ fontSize:12, fontWeight:'800', color:THEME.faint, textTransform:'uppercase', letterSpacing:0.4, marginTop:4, marginBottom:2 }}>{t('listScreen.myLists', 'Mes listes')}</Text>
+              {myLists.map((l) => {
+                const isActive = !readOnly && activeListId === l.id;
+                return (
+                  <View key={l.id} style={{ flexDirection:'row', alignItems:'center', borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+                    <TouchableOpacity onPress={() => switchOwnList(l.id)} activeOpacity={0.8}
+                      style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, flex:1 }}>
+                      <Ionicons name="list" size={20} color={THEME.brandDark} />
+                      <Text style={{ marginLeft:12, fontWeight: isActive ? '800' : '600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.name || t('tabs.myList')}</Text>
+                      {isActive && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => renameList(l)} activeOpacity={0.7} style={{ paddingHorizontal:8, paddingVertical:14 }}>
+                      <Ionicons name="create-outline" size={18} color={THEME.muted} />
+                    </TouchableOpacity>
+                    {l.id !== DEFAULT_LIST_ID && (
+                      <TouchableOpacity onPress={() => deleteList(l.id)} activeOpacity={0.7} style={{ paddingHorizontal:8, paddingVertical:14 }}>
+                        <Ionicons name="trash-outline" size={18} color={THEME.danger} />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                );
+              })}
+              <TouchableOpacity onPress={createList} activeOpacity={0.8}
+                style={{ flexDirection:'row', alignItems:'center', paddingVertical:14 }}>
+                <Ionicons name="add-circle-outline" size={20} color={THEME.brand} />
+                <Text style={{ marginLeft:12, fontWeight:'700', color:THEME.brand, flex:1 }}>{t('listScreen.createList', 'Créer une liste')}</Text>
               </TouchableOpacity>
-            ))}
-            {sharedLists.length === 0 && (
-              <Text style={{ color:THEME.faint, paddingVertical:14, textAlign:'center' }}>{t('listScreen.noSharedLists', 'Aucune liste partagée avec vous pour l\'instant.')}</Text>
-            )}
+
+              {/* --- Partagées avec moi --- */}
+              {sharedLists.length > 0 && (
+                <>
+                  <Text style={{ fontSize:12, fontWeight:'800', color:THEME.faint, textTransform:'uppercase', letterSpacing:0.4, marginTop:14, marginBottom:2 }}>{t('listScreen.sharedWithMe', 'Partagées avec moi')}</Text>
+                  {sharedLists.map((l) => (
+                    <TouchableOpacity key={String(l.share_id)} onPress={() => { setViewingShareId(l.share_id); setSwitcherOpen(false); }} activeOpacity={0.8}
+                      style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+                      <Ionicons name="people-outline" size={20} color={THEME.brandDark} />
+                      <Text style={{ marginLeft:12, fontWeight:'600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.owner?.name || '—'}</Text>
+                      {String(viewingShareId) === String(l.share_id) && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
+                    </TouchableOpacity>
+                  ))}
+                </>
+              )}
+            </ScrollView>
           </Pressable>
         </Pressable>
       </Modal>
 
+      {/* Créer une liste (modale custom cross-platform) */}
+      <Modal visible={createListOpen} transparent animationType="fade" onRequestClose={() => setCreateListOpen(false)}
+        onShow={() => setTimeout(() => createInputRef.current?.focus(), 80)}>
+        <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setCreateListOpen(false)} />
+          <View style={lstyles.modalBox}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.newListTitle', 'Nouvelle liste')}</Text>
+            <TextInput
+              ref={createInputRef}
+              key={createListOpen ? 'cl-open' : 'cl-closed'}
+              defaultValue=""
+              onChangeText={setNewListName}
+              placeholder={t('listScreen.newListPrompt', 'Nom de la liste')}
+              placeholderTextColor={THEME.faint}
+              returnKeyType="done"
+              onSubmitEditing={confirmCreateList}
+              style={[lstyles.input, { flex: 0 }]}
+            />
+            <View style={{ flexDirection:'row', justifyContent:'flex-end', marginTop:16, gap:10 }}>
+              <TouchableOpacity onPress={() => setCreateListOpen(false)} activeOpacity={0.8} style={{ paddingHorizontal:16, paddingVertical:10 }}>
+                <Text style={{ fontWeight:'700', color:THEME.muted }}>{t('listScreen.cancel')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={confirmCreateList} activeOpacity={0.85} disabled={!newListName.trim()}
+                style={{ backgroundColor:THEME.brand, borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: newListName.trim() ? 1 : 0.5 }}>
+                <Text style={{ fontWeight:'800', color:'#fff' }}>{t('listScreen.create', 'Créer')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Renommer une liste */}
+      <Modal visible={renameOpen} transparent animationType="fade" onRequestClose={() => setRenameOpen(false)}
+        onShow={() => setTimeout(() => renameInputRef.current?.focus(), 80)}>
+        <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setRenameOpen(false)} />
+          <View style={lstyles.modalBox}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.renameListTitle', 'Renommer la liste')}</Text>
+            {renameOpen ? (
+              <TextInput
+                ref={renameInputRef}
+                defaultValue={renameName}
+                onChangeText={setRenameName}
+                placeholder={t('listScreen.newListPrompt', 'Nom de la liste')}
+                placeholderTextColor={THEME.faint}
+                returnKeyType="done"
+                onSubmitEditing={confirmRenameList}
+                style={[lstyles.input, { flex: 0 }]}
+              />
+            ) : null}
+            <View style={{ flexDirection:'row', justifyContent:'flex-end', marginTop:16, gap:10 }}>
+              <TouchableOpacity onPress={() => setRenameOpen(false)} activeOpacity={0.8} style={{ paddingHorizontal:16, paddingVertical:10 }}>
+                <Text style={{ fontWeight:'700', color:THEME.muted }}>{t('listScreen.cancel')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={confirmRenameList} activeOpacity={0.85} disabled={!renameName.trim()}
+                style={{ backgroundColor:THEME.brand, borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: renameName.trim() ? 1 : 0.5 }}>
+                <Text style={{ fontWeight:'800', color:'#fff' }}>{t('listScreen.save', 'Enregistrer')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       {/* Partager ma liste */}
-      <Modal visible={shareModalOpen} transparent animationType="fade" onRequestClose={() => setShareModalOpen(false)}>
-        <Pressable style={lstyles.modalBackdrop} onPress={() => setShareModalOpen(false)}>
-          <Pressable style={lstyles.modalBox} onPress={() => {}}>
+      <Modal visible={shareModalOpen} transparent animationType="fade" onRequestClose={() => setShareModalOpen(false)}
+        onShow={() => setTimeout(() => shareInputRef.current?.focus(), 80)}>
+        <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setShareModalOpen(false)} />
+          <View style={lstyles.modalBox}>
             <Text style={lstyles.modalTitle}>{t('listScreen.shareTitle', 'Partager ma liste')}</Text>
             <Text style={{ color:THEME.faint, marginBottom:12 }}>{t('listScreen.shareHint', 'Email ou pseudo de la personne. Elle recevra une demande à accepter.')}</Text>
+            {!isLoggedIn && (
+              <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, borderRadius:12, padding:10, marginBottom:10 }}>
+                <Ionicons name="information-circle-outline" size={18} color={THEME.brandDark} style={{ marginRight:8 }} />
+                <Text style={{ flex:1, fontSize:12.5, color:THEME.brandDark, fontWeight:'600' }}>
+                  {t('listScreen.shareNeedsLogin', 'Connectez-vous pour pouvoir envoyer une demande de partage.')}
+                </Text>
+              </View>
+            )}
+            {shareModalOpen ? (
             <TextInput
-              defaultValue=""
-              onChangeText={setShareInput}
+              ref={shareInputRef}
+              key={`share-${shareInputKey}`}
+              defaultValue={shareInput}
+              onChangeText={onShareInputChange}
               placeholder={t('listScreen.sharePlaceholder', 'email ou pseudo')}
               placeholderTextColor={THEME.faint}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
-              style={lstyles.input}
+              returnKeyType="send"
+              onSubmitEditing={submitShareRequest}
+              style={[lstyles.input, { flex: 0 }]}
             />
+            ) : null}
+            {shareSuggestions.length > 0 && (
+              <View style={lstyles.suggestBox}>
+                {shareSuggestions.map((u, i) => (
+                  <TouchableOpacity key={String(u.id ?? i)} onPress={() => pickShareUser(u)} activeOpacity={0.7}
+                    style={[lstyles.suggestRow, i < shareSuggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: THEME.border }]}>
+                    {u.profileImage
+                      ? <Image source={{ uri: u.profileImage }} style={lstyles.suggestAvatar} />
+                      : <View style={[lstyles.suggestAvatar, { alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brandSoft }]}>
+                          <Ionicons name="person" size={16} color={THEME.brandDark} />
+                        </View>}
+                    <View style={{ flex: 1, marginLeft: 10 }}>
+                      <Text style={{ fontSize: 14, fontWeight: '700', color: THEME.ink }} numberOfLines={1}>{u.display_name || u.firstName || u.username}</Text>
+                      <Text style={{ fontSize: 12.5, color: THEME.faint }} numberOfLines={1}>@{u.username}</Text>
+                    </View>
+                    <Ionicons name="add-circle-outline" size={20} color={THEME.brand} />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
             <TouchableOpacity activeOpacity={0.9} disabled={shareBusy}
               style={[lstyles.cta, { marginTop:14 }, shareBusy && { opacity:0.5 }]}
-              onPress={async () => {
-                const id = (shareInput || '').trim();
-                if (!id) return;
-                setShareBusy(true);
-                try {
-                  const res = await sendShareRequest(id);
-                  showToast((res && res.message) || (res && res.status ? 'Demande envoyée' : 'Échec'));
-                  if (res && res.status) { setShareModalOpen(false); setShareInput(''); }
-                } catch (e) { showToast('Connexion impossible'); }
-                setShareBusy(false);
-              }}>
+              onPress={submitShareRequest}>
               <Ionicons name="paper-plane-outline" size={18} color="#fff" />
               <Text style={lstyles.ctaTxt}>{t('listScreen.sendRequest', 'Envoyer la demande')}</Text>
             </TouchableOpacity>
-          </Pressable>
-        </Pressable>
+          </View>
+        </View>
       </Modal>
 
       {/* Unit picker modal */}
@@ -637,21 +965,27 @@ function ListScreen() {
         </Pressable>
       </Modal>
 
-      <Modal visible={editVisible} transparent animationType="fade">
+      <Modal visible={editVisible} transparent animationType="fade" onRequestClose={closeEdit}
+        onShow={() => setTimeout(() => editInputRef.current?.focus(), 80)}>
         <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeEdit} />
           <View style={lstyles.modalBox}>
             <Text style={lstyles.modalTitle}>{t('listScreen.editItem')}</Text>
+            {editVisible ? (
             <TextInput
-              value={editText}
+              ref={editInputRef}
+              defaultValue={editText}
               onChangeText={setEditText}
               style={lstyles.modalInput}
-              autoFocus
               autoCorrect={true}
               spellCheck={true}
               autoCapitalize="sentences"
               keyboardType="default"
               textContentType="none"
+              returnKeyType="done"
+              onSubmitEditing={saveEdit}
             />
+            ) : null}
             <View style={lstyles.modalRow}>
               <Pressable onPress={closeEdit} style={lstyles.modalCancel}>
                 <Text style={lstyles.modalCancelTxt}>{t('listScreen.cancel')}</Text>
@@ -1907,6 +2241,9 @@ const ProductsScreen = () => {
                       return it;
                     });
                     await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated2));
+                    // Miroir -> clé canonique de la liste active (sinon les barrages
+                    // sont perdus au cold-start quand la liste active n'est pas 'default').
+                    try { const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID; const ck = listItemsKey(act); if (ck !== KEY_ITEMS) await AsyncStorage.setItem(ck, JSON.stringify(updated2)); } catch {}
                   }
                   await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                   setGroups([]); setSummary({price:0,time:0,shops:0});
@@ -2064,6 +2401,8 @@ const ProductsScreen = () => {
                         return it;
                       });
                       await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated));
+                      // Miroir -> clé canonique de la liste active (évite la perte des barrages au cold-start).
+                      try { const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID; const ck = listItemsKey(act); if (ck !== KEY_ITEMS) await AsyncStorage.setItem(ck, JSON.stringify(updated)); } catch {}
                     }
 
                     // Clear products screen - no more suggestions
@@ -4389,6 +4728,38 @@ const authStyles = StyleSheet.create({
   toggleTxt: { color: THEME.muted, fontSize: 14.5, fontWeight: '600' },
   toggleTxtBrand: { color: THEME.brand, fontWeight: '800', fontSize: 14.5 },
 
+  // Progress steps (inscription 2 étapes)
+  stepRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', marginHorizontal: 24, marginBottom: 22, marginTop: 4 },
+  stepItem: { alignItems: 'center', width: 120 },
+  stepDot: { width: 30, height: 30, borderRadius: 15, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: THEME.border },
+  stepDotActive: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  stepDotTxt: { fontSize: 14, fontWeight: '800', color: THEME.muted },
+  stepDotTxtActive: { color: '#fff' },
+  stepLabel: { fontSize: 12, fontWeight: '700', color: THEME.faint, marginTop: 6, textAlign: 'center' },
+  stepLabelActive: { color: THEME.ink },
+  stepLine: { flex: 0, width: 40, height: 1.5, backgroundColor: THEME.border, marginTop: 15 },
+
+  // Genre (segmented)
+  genderRow: { flexDirection: 'row', gap: 8 },
+  genderChip: { flex: 1, height: 48, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
+  genderChipActive: { backgroundColor: 'rgba(0,194,155,0.12)', borderColor: THEME.brand },
+  genderChipTxt: { fontSize: 14.5, fontWeight: '700', color: THEME.muted },
+  genderChipTxtActive: { color: THEME.brand },
+
+  // Téléphone + indicatif
+  phoneRow: { flexDirection: 'row', alignItems: 'center' },
+  dialBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 12, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, gap: 6 },
+  dialFlag: { fontSize: 18 },
+  dialTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
+
+  // Pays (adresse)
+  countryBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 14, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, gap: 8 },
+  countryBtnTxt: { flex: 1, fontSize: 15, fontWeight: '600', color: THEME.ink },
+
+  // Dropdown de suggestions d'adresse (autocomplétion Photon)
+  suggestBox: { marginTop: 6, backgroundColor: THEME.card, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
+  suggestRow: { flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 12, paddingVertical: 11 },
+
   // Language picker button
   langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginTop: 16, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
   langBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
@@ -4407,6 +4778,126 @@ const authStyles = StyleSheet.create({
   langLabelActive: { fontWeight: '800', color: THEME.brandDark },
 });
 
+// ---- Roulette de date (JS pur, sans module natif) ----
+const WHEEL_ITEM_H = 42;
+const WHEEL_VISIBLE = 5; // impair -> ligne centrale = sélection
+
+function WheelColumn({ data, initialIndex, onSettle, width, formatItem }) {
+  const ref = React.useRef(null);
+  const pad = (WHEEL_VISIBLE - 1) / 2;
+  const [sel, setSel] = React.useState(initialIndex);
+  React.useEffect(() => {
+    const tm = setTimeout(() => ref.current?.scrollTo({ y: initialIndex * WHEEL_ITEM_H, animated: false }), 30);
+    return () => clearTimeout(tm);
+  }, []);
+  const settle = (y) => {
+    let idx = Math.round(y / WHEEL_ITEM_H);
+    idx = Math.max(0, Math.min(data.length - 1, idx));
+    setSel(idx);
+    onSettle(idx);
+    ref.current?.scrollTo({ y: idx * WHEEL_ITEM_H, animated: true });
+  };
+  return (
+    <ScrollView
+      ref={ref}
+      style={{ width, height: WHEEL_ITEM_H * WHEEL_VISIBLE }}
+      showsVerticalScrollIndicator={false}
+      snapToInterval={WHEEL_ITEM_H}
+      decelerationRate="fast"
+      nestedScrollEnabled
+      onMomentumScrollEnd={(e) => settle(e.nativeEvent.contentOffset.y)}
+      contentContainerStyle={{ paddingVertical: WHEEL_ITEM_H * pad }}
+    >
+      {data.map((d, i) => (
+        <View key={i} style={{ height: WHEEL_ITEM_H, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 19, fontWeight: i === sel ? '800' : '500', color: i === sel ? THEME.ink : THEME.faint }}>
+            {formatItem ? formatItem(d) : d}
+          </Text>
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
+
+function WheelDatePicker({ visible, value, onCancel, onConfirm, t }) {
+  if (!visible) return null;
+  const now = new Date();
+  const maxYear = now.getFullYear() - 13;      // 13+ (comme un compte user)
+  const minYear = now.getFullYear() - 100;
+  const years = []; for (let y = maxYear; y >= minYear; y--) years.push(y);
+  const months = [1,2,3,4,5,6,7,8,9,10,11,12];
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const pad2 = (n) => (n < 10 ? '0' + n : '' + n);
+  const m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(value || '');
+  const init = m ? { y: +m[1], mo: +m[2], d: +m[3] } : { y: maxYear - 12, mo: 1, d: 1 };
+  const sel = React.useRef({
+    y: Math.max(0, years.indexOf(init.y)),
+    mo: Math.max(0, Math.min(11, init.mo - 1)),
+    d: Math.max(0, Math.min(30, init.d - 1)),
+  });
+  const confirm = () => {
+    const y = years[sel.current.y];
+    const mo = months[sel.current.mo];
+    const maxD = new Date(y, mo, 0).getDate();          // jours du mois
+    const d = Math.min(days[sel.current.d], maxD);
+    onConfirm(`${y}-${pad2(mo)}-${pad2(d)}`);
+  };
+  return (
+    <Modal visible transparent animationType="fade" onRequestClose={onCancel}>
+      <Pressable style={lstyles.modalBackdrop} onPress={onCancel}>
+        <Pressable style={[lstyles.modalBox, { paddingHorizontal: 10 }]} onPress={() => {}}>
+          <Text style={[lstyles.modalTitle, { textAlign: 'center' }]}>{t('auth.dob', 'Date de naissance')}</Text>
+          <View style={{ height: WHEEL_ITEM_H * WHEEL_VISIBLE, justifyContent: 'center' }}>
+            {/* bande de sélection centrale */}
+            <View pointerEvents="none" style={{ position: 'absolute', left: 8, right: 8, top: WHEEL_ITEM_H * 2, height: WHEEL_ITEM_H, borderTopWidth: 1, borderBottomWidth: 1, borderColor: THEME.border, backgroundColor: THEME.brandSoft, borderRadius: 10 }} />
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <WheelColumn data={days} initialIndex={sel.current.d} onSettle={(i) => { sel.current.d = i; }} width={70} formatItem={pad2} />
+              <WheelColumn data={months} initialIndex={sel.current.mo} onSettle={(i) => { sel.current.mo = i; }} width={70} formatItem={pad2} />
+              <WheelColumn data={years} initialIndex={sel.current.y} onSettle={(i) => { sel.current.y = i; }} width={90} />
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8, gap: 10 }}>
+            <TouchableOpacity onPress={onCancel} activeOpacity={0.8} style={{ paddingHorizontal: 16, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: '700', color: THEME.muted }}>{t('listScreen.cancel', 'Annuler')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={confirm} activeOpacity={0.85} style={{ backgroundColor: THEME.brand, borderRadius: 14, paddingHorizontal: 22, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: '800', color: '#fff' }}>{t('auth.confirm', 'Confirmer')}</Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+// ---- Autocomplétion d'adresse Photon (komoot, OSM) — JS pur, sans clé API ----
+const PHOTON_LANGS = ['fr', 'de', 'en'];
+async function fetchPhotonSuggestions(query, countryCode, lang) {
+  const isoLang = (lang || 'en').toLowerCase();
+  const photonLang = PHOTON_LANGS.includes(isoLang) ? isoLang : 'en';
+  try {
+    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=15&lang=${photonLang}`);
+    const json = await res.json();
+    const feats = (json && json.features) || [];
+    const seen = new Set();
+    return feats
+      .filter((f) => !countryCode || ((f?.properties?.countrycode || '').toUpperCase() === countryCode))
+      .map((f) => {
+        const p = f?.properties || {};
+        const c = f?.geometry?.coordinates || [];
+        const street = [p.housenumber, p.street].filter(Boolean).join(' ');
+        const city = p.city || p.district || p.county || p.name || '';
+        const label = [street || p.name, p.postcode, city].filter(Boolean).join(', ');
+        return label ? { label, address: street || p.name || city || '', postcode: p.postcode || '', city, country: p.country || '', lat: c[1], lng: c[0] } : null;
+      })
+      .filter(Boolean)
+      .filter((s) => !seen.has(s.label) && seen.add(s.label))
+      .slice(0, 4);
+  } catch (_e) {
+    return [];
+  }
+}
+
 function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   const { t, i18n: i18nAuth } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(initialIsLogin);
@@ -4419,6 +4910,47 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   const [showPwd, setShowPwd] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [langVisible, setLangVisible] = React.useState(false);
+  // Inscription en 2 étapes (comme AppUser)
+  const [step, setStep] = React.useState(1);            // 1 = Authentification, 2 = Détails personnels
+  const [confirmPwd, setConfirmPwd] = React.useState('');
+  const [gender, setGender] = React.useState('');       // 'male' | 'female' | 'other'
+  const [dob, setDob] = React.useState('');             // AAAA-MM-JJ
+  const [dialCode, setDialCode] = React.useState('+33');
+  const [dialCountryCode, setDialCountryCode] = React.useState('FR'); // ISO du pays choisi (désambigüe +1 US/CA)
+  const [phone, setPhone] = React.useState('');
+  const [addrCountry, setAddrCountry] = React.useState('France');
+  const [addrLine, setAddrLine] = React.useState('');
+  const [addrCity, setAddrCity] = React.useState('');
+  const [addrPostal, setAddrPostal] = React.useState('');
+  const [addrLat, setAddrLat] = React.useState(null);
+  const [addrLng, setAddrLng] = React.useState(null);
+  const [countryPickerFor, setCountryPickerFor] = React.useState(null); // 'phone' | 'address' | null
+  const [dobPickerOpen, setDobPickerOpen] = React.useState(false);
+  const [addrSuggestions, setAddrSuggestions] = React.useState([]);
+  const addrDebounce = React.useRef(null);
+  const validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((e || '').trim());
+
+  // Autocomplétion d'adresse (Photon) — comme AppUser, filtrée sur le pays choisi.
+  const onAddrLineChange = (text) => {
+    setAddrLine(text);
+    if (addrDebounce.current) clearTimeout(addrDebounce.current);
+    const q = (text || '').trim();
+    if (q.length < 2) { setAddrSuggestions([]); return; }
+    const cc = (COUNTRIES.find(c => c.name === addrCountry)?.code || '').toUpperCase();
+    addrDebounce.current = setTimeout(async () => {
+      const s = await fetchPhotonSuggestions(q, cc, i18nAuth.language);
+      setAddrSuggestions(s);
+    }, 300);
+  };
+  const pickAddrSuggestion = (s) => {
+    if (addrDebounce.current) clearTimeout(addrDebounce.current);
+    setAddrLine(s.address || s.label);
+    if (s.postcode) setAddrPostal(s.postcode);
+    if (s.city) setAddrCity(s.city);
+    if (s.lat != null) setAddrLat(s.lat);
+    if (s.lng != null) setAddrLng(s.lng);
+    setAddrSuggestions([]);
+  };
 
   // Sync all Marketplace accounts to local storage
   React.useEffect(() => {
@@ -4458,19 +4990,50 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     setLoading(false);
   };
 
+  // Étape 1 (Authentification) -> étape 2 (Détails personnels)
+  const goToStep2 = () => {
+    setError('');
+    if (!validEmail(email)) { setError(t('auth.errorInvalidEmail', 'Adresse e-mail invalide')); return; }
+    if (password.length < 6) { setError(t('auth.errorPasswordLength', 'Mot de passe : minimum 6 caractères')); return; }
+    if (password !== confirmPwd) { setError(t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas')); return; }
+    setStep(2);
+  };
+
   const handleSignup = async () => {
     setError('');
-    if (!email.trim() || !password.trim() || !pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Remplissez tous les champs')); return; }
-    if (password.length < 6) { setError(t('auth.errorPasswordLength', 'Minimum 6 caractères')); return; }
+    if (!pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Remplissez pseudo, prénom et nom')); return; }
+    if (!dob.trim()) { setError(t('auth.errorDob', 'Renseignez votre date de naissance')); return; }
+    const dobIso = normalizeDob(dob);
+    if (!dobIso) { setError(t('auth.errorDobFormat', 'Date de naissance invalide (ex : 1990-05-12)')); return; }
+    if (!addrLine.trim() || !addrCity.trim()) { setError(t('auth.errorAddress', 'Renseignez votre adresse (rue et ville)')); return; }
     setLoading(true);
-    // Inscription marketplace UNIQUEMENT — crée le compte partagé avec l'app
-    // mobile AppUser (même base). Plus de compte local divergent.
+    // Inscription marketplace UNIQUEMENT — compte partagé avec l'app AppUser.
+    const address = { address1: addrLine.trim(), address2: '', postalCode: addrPostal.trim(), city: addrCity.trim(), country: addrCountry, lat: addrLat ?? '', lang: addrLng ?? '' };
     try {
-      const apiPromise = registerUser({ username: pseudo.trim(), email: email.trim(), password, firstName: prenom.trim(), lastName: nom.trim() });
+      const apiPromise = registerUser({
+        username: pseudo.trim(), email: email.trim(), password,
+        firstName: prenom.trim(), lastName: nom.trim(),
+        phone: phone.trim(), countryCode: dialCode, dob: dobIso, gender, address,
+      });
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 20000));
       const result = await Promise.race([apiPromise, timeoutPromise]);
-      if (result && result.success) { setLoading(false); onLogin(); return; }
-      setError((result && result.message) || t('auth.errorEmailExists') || "Impossible de créer le compte (email déjà utilisé ?).");
+      if (result && result.success) {
+        // Enregistre l'adresse saisie dans le carnet -> devient l'adresse de
+        // livraison affichée directement dans le profil (best-effort, non bloquant).
+        try {
+          await createAddress({
+            first_name: prenom.trim(), last_name: nom.trim(),
+            phone_code: dialCode, phone_number: phone.trim(),
+            house_building: addrLine.trim(), road_area_colony: '',
+            pincode: addrPostal.trim(), city: addrCity.trim(), state: '',
+            address_type: 'home',
+            countryFlag: (COUNTRIES.find(c => c.name === addrCountry)?.code || 'FR'),
+            lat: addrLat ?? null, lang: addrLng ?? null,
+          });
+        } catch (_) {}
+        setLoading(false); onLogin(); return;
+      }
+      setError((result && result.message) || t('auth.errorEmailExists', "Impossible de créer le compte (email déjà utilisé ?)."));
     } catch (e) {
       setError(t('auth.errorNetwork', 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.'));
     }
@@ -4478,11 +5041,12 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   };
 
   return (
+    <View style={{ flex: 1, backgroundColor: THEME.bg }}>
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={authStyles.screen} edges={[]}>
       <View style={authStyles.topBar}>
         {!isLogin ? (
-          <TouchableOpacity onPress={() => { setIsLogin(true); setError(''); }} style={authStyles.topBtn} activeOpacity={0.7}>
+          <TouchableOpacity onPress={() => { if (step === 2) { setStep(1); } else { setIsLogin(true); } setError(''); }} style={authStyles.topBtn} activeOpacity={0.7}>
             <Ionicons name="arrow-back" size={22} color={THEME.ink} />
           </TouchableOpacity>
         ) : <View style={{ width: 38, height: 38 }} />}
@@ -4497,7 +5061,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           <Image source={require('./assets/icon.png')} style={authStyles.brandLogo} resizeMode="cover" />
           <Text style={authStyles.brandTitle}>Pearl List</Text>
           <Text style={authStyles.brandSubtitle}>
-            {isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte — utilisable sur l\'app et le site Marketplace'))}
+            {isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte, utilisable sur l\'app et le site Marketplace'))}
           </Text>
         </View>
         {error ? (
@@ -4506,51 +5070,226 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
             <Text style={authStyles.errorTxt}>{error}</Text>
           </View>
         ) : null}
-        {!isLogin && (
+        {isLogin ? (
           <>
+            {/* ---------- Connexion ---------- */}
             <View style={authStyles.fieldGroup}>
-              <Text style={authStyles.fieldLabel}>{t('profile.pseudo')}</Text>
-              <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+              <Text style={authStyles.fieldLabel}>{t('auth.emailOrPseudo')}</Text>
+              <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailOrPseudoPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
             </View>
             <View style={authStyles.fieldGroup}>
-              <Text style={authStyles.fieldLabel}>{t('profile.firstName')}</Text>
-              <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+              <Text style={authStyles.fieldLabel}>{t('auth.password')}</Text>
+              <View style={authStyles.pwdRow}>
+                <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
+                  <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={authStyles.fieldGroup}>
-              <Text style={authStyles.fieldLabel}>{t('profile.lastName')}</Text>
-              <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+            <TouchableOpacity onPress={handleLogin} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.loginBtn')}</Text>}
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            {/* ---------- Inscription en 2 étapes (comme AppUser) ---------- */}
+            <View style={authStyles.stepRow}>
+              <View style={authStyles.stepItem}>
+                <View style={[authStyles.stepDot, step >= 1 && authStyles.stepDotActive]}>
+                  {step > 1 ? <Ionicons name="checkmark" size={14} color="#fff" /> : <Text style={[authStyles.stepDotTxt, step >= 1 && authStyles.stepDotTxtActive]}>1</Text>}
+                </View>
+                <Text style={[authStyles.stepLabel, step === 1 && authStyles.stepLabelActive]}>{t('auth.stepAuth', 'Authentification')}</Text>
+              </View>
+              <View style={authStyles.stepLine} />
+              <View style={authStyles.stepItem}>
+                <View style={[authStyles.stepDot, step >= 2 && authStyles.stepDotActive]}>
+                  <Text style={[authStyles.stepDotTxt, step >= 2 && authStyles.stepDotTxtActive]}>2</Text>
+                </View>
+                <Text style={[authStyles.stepLabel, step === 2 && authStyles.stepLabelActive]}>{t('auth.stepDetails', 'Détails personnels')}</Text>
+              </View>
             </View>
+
+            {step === 1 ? (
+              <>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('profile.email', 'Adresse e-mail')}</Text>
+                  <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('auth.password', 'Mot de passe')}</Text>
+                  <View style={authStyles.pwdRow}>
+                    <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                    <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
+                      <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('auth.confirmPassword', 'Confirmer le mot de passe')}</Text>
+                  <View style={authStyles.pwdRow}>
+                    <TextInput value={confirmPwd} onChangeText={setConfirmPwd} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                  </View>
+                </View>
+                <TouchableOpacity onPress={goToStep2} activeOpacity={0.85} style={authStyles.primaryBtn}>
+                  <Text style={authStyles.primaryBtnTxt}>{t('auth.continue', 'Continuer')}</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('profile.gender', 'Genre')}</Text>
+                  <View style={authStyles.genderRow}>
+                    {[
+                      { key: 'male', label: t('auth.genderMale', 'Homme') },
+                      { key: 'female', label: t('auth.genderFemale', 'Femme') },
+                      { key: 'other', label: t('auth.genderOther', 'Autre') },
+                    ].map(g => (
+                      <TouchableOpacity key={g.key} onPress={() => setGender(g.key)} activeOpacity={0.8} style={[authStyles.genderChip, gender === g.key && authStyles.genderChipActive]}>
+                        <Text style={[authStyles.genderChipTxt, gender === g.key && authStyles.genderChipTxtActive]}>{g.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('profile.pseudo', 'Pseudo utilisateur')}</Text>
+                  <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} autoCapitalize="none" style={authStyles.field} />
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('profile.firstName', 'Prénom')}</Text>
+                  <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('profile.lastName', 'Nom')}</Text>
+                  <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('auth.dob', 'Date de naissance')}</Text>
+                  <TouchableOpacity onPress={() => setDobPickerOpen(true)} activeOpacity={0.8} style={[authStyles.field, { justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }]}>
+                    <Text style={{ flex: 1, fontSize: 15, color: dob ? THEME.ink : THEME.faint }}>
+                      {dob ? dob.split('-').reverse().join('/') : t('auth.dobPlaceholder', 'JJ/MM/AAAA')}
+                    </Text>
+                    <Ionicons name="calendar-outline" size={18} color={THEME.muted} />
+                  </TouchableOpacity>
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('auth.phone', 'Téléphone')}</Text>
+                  <View style={authStyles.phoneRow}>
+                    <TouchableOpacity onPress={() => setCountryPickerFor('phone')} activeOpacity={0.8} style={authStyles.dialBtn}>
+                      <Text style={authStyles.dialFlag}>{findCountry(dialCountryCode).flag}</Text>
+                      <Text style={authStyles.dialTxt}>{dialCode}</Text>
+                      <Ionicons name="chevron-down" size={14} color={THEME.muted} />
+                    </TouchableOpacity>
+                    <TextInput value={phone} onChangeText={setPhone} placeholder={t('auth.phonePlaceholder', 'Numéro de téléphone')} placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[authStyles.field, { flex: 1, marginLeft: 8 }]} />
+                  </View>
+                </View>
+                <View style={authStyles.fieldGroup}>
+                  <Text style={authStyles.fieldLabel}>{t('auth.address', 'Adresse')}</Text>
+                  <TouchableOpacity onPress={() => setCountryPickerFor('address')} activeOpacity={0.8} style={authStyles.countryBtn}>
+                    <Text style={authStyles.dialFlag}>{(COUNTRIES.find(c => c.name === addrCountry) || COUNTRIES[0]).flag}</Text>
+                    <Text style={authStyles.countryBtnTxt}>{addrCountry}</Text>
+                    <Ionicons name="chevron-down" size={14} color={THEME.muted} />
+                  </TouchableOpacity>
+                  <TextInput value={addrLine} onChangeText={onAddrLineChange} placeholder={t('auth.addressAutoPlaceholder', 'Commencez à taper votre adresse…')} placeholderTextColor={THEME.faint} autoCorrect={false} style={[authStyles.field, { marginTop: 8 }]} />
+                  {addrSuggestions.length > 0 && (
+                    <View style={authStyles.suggestBox}>
+                      {addrSuggestions.map((s, i) => (
+                        <TouchableOpacity key={i} onPress={() => pickAddrSuggestion(s)} activeOpacity={0.7}
+                          style={[authStyles.suggestRow, i < addrSuggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: THEME.border }]}>
+                          <Ionicons name="location-outline" size={16} color={THEME.brandDark} style={{ marginRight: 8, marginTop: 2 }} />
+                          <Text style={{ flex: 1, fontSize: 13.5, color: THEME.ink }} numberOfLines={2}>{s.label}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+                  <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                    <TextInput value={addrPostal} onChangeText={setAddrPostal} placeholder={t('auth.postalCode', 'Code postal')} placeholderTextColor={THEME.faint} style={[authStyles.field, { width: 120, marginRight: 8 }]} />
+                    <TextInput value={addrCity} onChangeText={setAddrCity} placeholder={t('auth.city', 'Ville')} placeholderTextColor={THEME.faint} style={[authStyles.field, { flex: 1 }]} />
+                  </View>
+                </View>
+                <TouchableOpacity onPress={handleSignup} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
+                  {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.signupBtn')}</Text>}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { setStep(1); setError(''); }} style={authStyles.toggleLink} activeOpacity={0.7}>
+                  <Text style={authStyles.toggleTxt}>{t('auth.backToStep1', '← Retour à l\'étape précédente')}</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </>
         )}
-        <View style={authStyles.fieldGroup}>
-          <Text style={authStyles.fieldLabel}>{isLogin ? t('auth.emailOrPseudo') : t('profile.email')}</Text>
-          <TextInput value={email} onChangeText={setEmail} placeholder={isLogin ? t('auth.emailOrPseudoPlaceholder') : t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
-        </View>
-        <View style={authStyles.fieldGroup}>
-          <Text style={authStyles.fieldLabel}>{t('auth.password')}</Text>
-          <View style={authStyles.pwdRow}>
-            <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
-            <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
-              <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity onPress={isLogin ? handleLogin : handleSignup} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{isLogin ? t('auth.loginBtn') : t('auth.signupBtn')}</Text>}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setIsLogin(!isLogin); setError(''); }} style={authStyles.toggleLink} activeOpacity={0.7}>
+        <TouchableOpacity onPress={() => {
+            setIsLogin(!isLogin); setError(''); setStep(1);
+            // Repart d'un formulaire propre (pas d'état d'inscription périmé).
+            setConfirmPwd(''); setGender(''); setDob(''); setPhone('');
+            setDialCode('+33'); setDialCountryCode('FR');
+            setAddrCountry('France'); setAddrLine(''); setAddrCity(''); setAddrPostal('');
+          }} style={authStyles.toggleLink} activeOpacity={0.7}>
           <Text style={authStyles.toggleTxt}>
             {isLogin ? (t('auth.noAccountPearl', 'Pas de compte ? ')) : (t('auth.hasAccountPearl', 'Déjà un compte ? '))}
             <Text style={authStyles.toggleTxtBrand}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
+    </SafeAreaView>
+    </KeyboardAvoidingView>
+
+      {/* Langue : FIXE en bas de page — hors du KeyboardAvoidingView pour qu'elle
+          ne remonte PAS au-dessus du clavier et ne suive pas le scroll. */}
       {!isLogin && (
-        <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
-          <Ionicons name="globe-outline" size={18} color={THEME.muted} />
-          <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
-        </TouchableOpacity>
+        <SafeAreaView edges={['bottom']} style={{ backgroundColor: THEME.bg }}>
+          <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
+            <Ionicons name="globe-outline" size={18} color={THEME.muted} />
+            <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
       )}
+
+      {/* Roulette de date de naissance */}
+      <WheelDatePicker
+        visible={dobPickerOpen}
+        value={dob}
+        onCancel={() => setDobPickerOpen(false)}
+        onConfirm={(iso) => { setDob(iso); setDobPickerOpen(false); }}
+        t={t}
+      />
+
+      {/* Country / dial-code Picker Modal (inscription étape 2) */}
+      <Modal visible={countryPickerFor !== null} animationType="none" transparent={true}>
+        <View style={authStyles.langBackdrop}>
+          <View style={authStyles.langSheet}>
+            <View style={authStyles.langHandle} />
+            <View style={authStyles.langHeadRow}>
+              <Text style={authStyles.langHeadTitle}>{countryPickerFor === 'phone' ? t('auth.selectDialCode', 'Indicatif téléphonique') : t('auth.selectCountry', 'Pays')}</Text>
+              <TouchableOpacity onPress={() => setCountryPickerFor(null)} style={authStyles.langClose} activeOpacity={0.7}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={COUNTRIES}
+              keyExtractor={(item) => item.code}
+              contentContainerStyle={{paddingHorizontal:14, paddingVertical:10}}
+              renderItem={({item: c}) => {
+                const selected = countryPickerFor === 'phone' ? c.code === dialCountryCode : c.name === addrCountry;
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (countryPickerFor === 'phone') { setDialCode(c.dial); setDialCountryCode(c.code); }
+                      else setAddrCountry(c.name);
+                      setCountryPickerFor(null);
+                    }}
+                    activeOpacity={0.7}
+                    style={[authStyles.langRow, selected && authStyles.langRowActive]}
+                  >
+                    <Text style={authStyles.langFlag}>{c.flag}</Text>
+                    <Text style={[authStyles.langLabel, selected && authStyles.langLabelActive]}>{c.name}</Text>
+                    {countryPickerFor === 'phone' && <Text style={authStyles.dialTxt}>{c.dial}</Text>}
+                    {selected && <Ionicons name="checkmark-circle" size={20} color={THEME.brand} style={{ marginLeft: 8 }} />}
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
 
       {/* Language Picker Modal */}
       <Modal visible={langVisible} animationType="none" transparent={true}>
@@ -4582,8 +5321,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           </View>
         </View>
       </Modal>
-    </SafeAreaView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -5130,12 +5868,27 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     } catch {}
   }, []);
   React.useEffect(() => { loadShareData(); }, [loadShareData]);
+  // Exécute une action de partage avec retour d'erreur (les appels API ne throwent
+  // pas sur non-2xx : on vérifie res.status et on prévient l'utilisateur si échec).
+  const runShareAction = async (fn) => {
+    try {
+      const res = await fn();
+      if (res && res.status === false) {
+        Alert.alert(t('listScreen.shareFailedTitle', 'Échec'), (res && res.message) || t('listScreen.shareActionFailed', "L'action n'a pas pu être effectuée."));
+      }
+    } catch {
+      Alert.alert(t('listScreen.shareFailedTitle', 'Échec'), t('auth.errorNetwork', 'Connexion au serveur impossible.'));
+    }
+    loadShareData();
+  };
   const [addressListVisible, setAddressListVisible] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(false);
   const [addressFormVisible, setAddressFormVisible] = React.useState(false);
   const [editingAddressId, setEditingAddressId] = React.useState(null);
   const [addrForm, setAddrForm] = React.useState(EMPTY_ADDR_FORM);
+  const [addrPhotonSuggestions, setAddrPhotonSuggestions] = React.useState([]);
+  const addrPhotonDebounce = React.useRef(null);
   const [addrSaving, setAddrSaving] = React.useState(false);
   const [geoLoading, setGeoLoading] = React.useState(false);
   const [driverInfoVisible, setDriverInfoVisible] = React.useState(false);
@@ -5263,6 +6016,31 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
   const setAF = (k, v) => setAddrForm(f => ({ ...f, [k]: v }));
 
+  // Autocomplétion d'adresse (Photon) dans le formulaire du profil — même
+  // comportement que l'inscription : on tape la rue, on choisit, tout se remplit.
+  const onAddrStreetChange = (v) => {
+    setAF('house_building', v);
+    if (addrPhotonDebounce.current) clearTimeout(addrPhotonDebounce.current);
+    const q = (v || '').trim();
+    if (q.length < 3) { setAddrPhotonSuggestions([]); return; }
+    const cc = (addrForm.countryFlag || 'FR').toUpperCase();
+    addrPhotonDebounce.current = setTimeout(async () => {
+      setAddrPhotonSuggestions(await fetchPhotonSuggestions(q, cc, i18nInstance.language));
+    }, 300);
+  };
+  const pickProfileAddress = (s) => {
+    if (addrPhotonDebounce.current) clearTimeout(addrPhotonDebounce.current);
+    setAddrForm(f => ({
+      ...f,
+      house_building: s.address || s.label,
+      pincode: s.postcode || f.pincode,
+      city: s.city || f.city,
+      lat: s.lat ?? f.lat,
+      lang: s.lng ?? f.lang,
+    }));
+    setAddrPhotonSuggestions([]);
+  };
+
   const openAddressList = () => { setAddressListVisible(true); loadAddresses(); };
 
   const openAddAddress = () => {
@@ -5369,6 +6147,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   };
 
   const defaultAddress = addresses.find(a => a.is_default) || addresses[0] || null;
+  // Repli : si le carnet d'adresses est vide, on affiche l'adresse donnée à
+  // l'inscription (stockée sur le profil) plutôt que « Non définie ».
+  const registrationAddress = React.useMemo(() => {
+    const a = (profile && (profile.manualAddress || profile.automatic_address)) || null;
+    if (!a) return '';
+    return [a.address1, a.address2, a.postalCode, a.city].filter(Boolean).join(', ');
+  }, [profile]);
 
   const handleChangePassword = async () => {
     setPwdError(''); setPwdSuccess('');
@@ -5734,13 +6519,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
                   <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
-                  <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'accept'); } catch {} loadShareData(); }} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                     <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={async () => { try { await respondRequest(r.request_id, 'reject'); } catch {} loadShareData(); }} style={{ padding:6, marginRight:2 }}>
+                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
                     <Ionicons name="close" size={20} color={THEME.faint} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={async () => { try { await blockUserById(r.from?.id); } catch {} loadShareData(); }} style={{ padding:6 }}>
+                  <TouchableOpacity onPress={() => { if (r.from?.id) runShareAction(() => blockUserById(r.from.id)); }} style={{ padding:6 }}>
                     <Ionicons name="ban-outline" size={20} color={THEME.danger} />
                   </TouchableOpacity>
                 </View>
@@ -5751,7 +6536,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <View key={String(u.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="ban" size={22} color={THEME.danger} />
                   <Text style={{ flex:1, marginHorizontal:10, color:THEME.ink }} numberOfLines={1}>{u.name || u.username}</Text>
-                  <TouchableOpacity onPress={async () => { try { await unblockUser(u.username); } catch {} loadShareData(); }} style={{ borderWidth:1, borderColor:THEME.faint, borderRadius:16, paddingHorizontal:12, paddingVertical:7 }}>
+                  <TouchableOpacity onPress={() => runShareAction(() => unblockUser(u.username))} style={{ borderWidth:1, borderColor:THEME.faint, borderRadius:16, paddingHorizontal:12, paddingVertical:7 }}>
                     <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.unblock', 'Débloquer')}</Text>
                   </TouchableOpacity>
                 </View>
@@ -5991,7 +6776,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <View style={profStyles.settingBody}>
                 <Text style={profStyles.settingLabel}>{t('profile.deliveryAddress')}</Text>
                 <Text style={profStyles.settingValue} numberOfLines={1}>
-                  {defaultAddress ? formatSavedAddress(defaultAddress) : t('profile.noAddress')}
+                  {defaultAddress ? formatSavedAddress(defaultAddress) : (registrationAddress || t('profile.noAddress'))}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
@@ -6391,6 +7176,48 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         </SafeAreaView>
       </Modal>
 
+      {/* Partage de listes : demandes reçues + utilisateurs bloqués (profil connecté) */}
+      <Modal visible={shareRequestsVisible} animationType="slide" onRequestClose={() => setShareRequestsVisible(false)}>
+        <SafeAreaView style={{ flex:1, backgroundColor:'#fff' }}>
+          <View style={{ flexDirection:'row', alignItems:'center', padding:16, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
+            <TouchableOpacity onPress={() => setShareRequestsVisible(false)} hitSlop={{top:10,bottom:10,left:10,right:10}}>
+              <Ionicons name="arrow-back" size={24} color={THEME.ink} />
+            </TouchableOpacity>
+            <Text style={{ marginLeft:12, fontSize:18, fontWeight:'800', color:THEME.ink }}>{t('profile.listShares', 'Partage de listes')}</Text>
+          </View>
+          <ScrollView contentContainerStyle={{ padding:16 }}>
+            <Text style={profStyles.sectionTitle}>{t('profile.pendingRequestsTitle', 'Demandes reçues')}</Text>
+            {shareRequests.length === 0 && <Text style={{ color:THEME.faint, marginBottom:16 }}>{t('profile.noRequests', 'Aucune demande pour le moment.')}</Text>}
+            {shareRequests.map((r) => (
+              <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
+                <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
+                <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
+                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                  <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
+                  <Ionicons name="close" size={20} color={THEME.faint} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { if (r.from?.id) runShareAction(() => blockUserById(r.from.id)); }} style={{ padding:6 }}>
+                  <Ionicons name="ban-outline" size={20} color={THEME.danger} />
+                </TouchableOpacity>
+              </View>
+            ))}
+            <Text style={[profStyles.sectionTitle, { marginTop:24 }]}>{t('profile.blockedUsers', 'Utilisateurs bloqués')}</Text>
+            {blockedUsers.length === 0 && <Text style={{ color:THEME.faint }}>{t('profile.noBlocked', 'Aucun utilisateur bloqué.')}</Text>}
+            {blockedUsers.map((u) => (
+              <View key={String(u.id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
+                <Ionicons name="ban" size={22} color={THEME.danger} />
+                <Text style={{ flex:1, marginHorizontal:10, color:THEME.ink }} numberOfLines={1}>{u.name || u.username}</Text>
+                <TouchableOpacity onPress={() => runShareAction(() => unblockUser(u.username))} style={{ borderWidth:1, borderColor:THEME.faint, borderRadius:16, paddingHorizontal:12, paddingVertical:7 }}>
+                  <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.unblock', 'Débloquer')}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
+
       {/* Language Selector Full Page Modal */}
       <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
@@ -6605,7 +7432,18 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
               <View style={profStyles.fieldGroup}>
                 <Text style={profStyles.fieldLabel}>{t('profile.street')}</Text>
-                <TextInput value={addrForm.house_building} onChangeText={(v) => setAF('house_building', v)} placeholder={t('profile.streetPlaceholder')} placeholderTextColor={THEME.faint} style={profStyles.field} />
+                <TextInput value={addrForm.house_building} onChangeText={onAddrStreetChange} placeholder={t('auth.addressAutoPlaceholder', 'Commencez à taper votre adresse…')} placeholderTextColor={THEME.faint} autoCorrect={false} style={profStyles.field} />
+                {addrPhotonSuggestions.length > 0 && (
+                  <View style={lstyles.suggestBox}>
+                    {addrPhotonSuggestions.map((s, i) => (
+                      <TouchableOpacity key={i} onPress={() => pickProfileAddress(s)} activeOpacity={0.7}
+                        style={[lstyles.suggestRow, i < addrPhotonSuggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: THEME.border }]}>
+                        <Ionicons name="location-outline" size={16} color={THEME.brandDark} style={{ marginRight: 8 }} />
+                        <Text style={{ flex: 1, fontSize: 13.5, color: THEME.ink }} numberOfLines={2}>{s.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               </View>
 
               <View style={profStyles.fieldGroup}>

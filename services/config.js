@@ -19,10 +19,14 @@ const ENV = {
     PRO_URL: 'https://pro.digiexports.in',
   },
   production: {
-    // Backend app-prod (/app-api) — MÊME base que l'app mobile AppUser, pour un
-    // compte utilisateur unique (inscription/connexion/suppression partagées).
-    API_URL: 'https://api.pearlstreets.com/app-api/api/v1',
-    DELIVERY_API_URL: 'https://api.pearlstreets.com/app-api/api/v1/delivery',
+    // MÊME backend que l'app mobile AppUser (env.js -> PROD_API) et que le site
+    // WebsiteUser : api.pearlstreets.com SANS le préfixe /app-api.
+    // Compte utilisateur unique (inscription / connexion / suppression partagées)
+    // et annuaire d'utilisateurs peuplé.
+    // ⚠️ NE PAS remettre /app-api : c'est un second backend (port 8095) sur une
+    // base quasi vide — AppUser ne l'utilise pas (cf. AppUser/APPSTORE_SUBMISSION.md).
+    API_URL: 'https://api.pearlstreets.com/api/v1',
+    DELIVERY_API_URL: 'https://api.pearlstreets.com/api/v1/delivery',
     WEB_URL: 'https://marche.pearlstreets.com',
     ADMIN_URL: 'https://admin.pearlstreets.com',
     PRO_URL: 'https://pro.pearlstreets.com',

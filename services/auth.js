@@ -12,6 +12,9 @@ export async function registerUser({
   firstName,
   lastName,
   phone,
+  countryCode,
+  dob,
+  gender,
   address,
 }) {
   // Le backend marketplace (app-prod) exige un compte complet en form-data :
@@ -39,9 +42,9 @@ export async function registerUser({
   fd.append('lastName', lastName || '');
   fd.append('login_type', 'email');
   fd.append('phone', phone || '');
-  fd.append('countryCode', '');
-  fd.append('dob', '');
-  fd.append('gender', '');
+  fd.append('countryCode', countryCode || '');
+  fd.append('dob', dob || '');
+  fd.append('gender', gender || '');
   fd.append('termCondition', 'true');
   fd.append('marketingReference', 'false');
   fd.append('manualAddress', addrStr);

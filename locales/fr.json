@@ -25,7 +25,28 @@
     "deleteConfirm": "Supprimer",
     "deleteItem": "produit sélectionné",
     "added": "ajouté",
-    "itemsAdded": "articles ajoutés"
+    "itemsAdded": "articles ajoutés",
+    "newListTitle": "Nouvelle liste",
+    "newListPrompt": "Nom de la liste",
+    "create": "Créer",
+    "deleteListTitle": "Supprimer la liste",
+    "deleteListConfirm": "Cette liste et son contenu seront supprimés.",
+    "readOnlyShared": "Liste partagée · lecture seule",
+    "share": "Partager",
+    "chooseList": "Choisir une liste",
+    "myLists": "Mes listes",
+    "createList": "Créer une liste",
+    "sharedWithMe": "Partagées avec moi",
+    "shareTitle": "Partager ma liste",
+    "shareHint": "Email ou pseudo de la personne. Elle recevra une demande à accepter.",
+    "sharePlaceholder": "email ou pseudo",
+    "sendRequest": "Envoyer la demande",
+    "renameListTitle": "Renommer la liste",
+    "shareSentTitle": "Demande envoyée",
+    "shareFailedTitle": "Échec",
+    "shareSentMsg": "La personne recevra votre demande de partage à accepter.",
+    "shareFailedMsg": "Impossible d'envoyer la demande.",
+    "shareActionFailed": "L'action n'a pas pu être effectuée."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -124,7 +145,9 @@
     "euroSymbol": " €",
     "perKg": "€/KG",
     "shop": "magasin",
-    "shops": "magasins"
+    "shops": "magasins",
+    "ok": "OK",
+    "cancel": "Annuler"
   },
   "favorites": {
     "noFavorites": "Aucun shop favori",
@@ -252,7 +275,18 @@
     "deleteAccountErrTitle": "Suppression impossible",
     "deleteAccountErr": "La suppression du compte a échoué. Vérifiez votre connexion et réessayez.",
     "deleteAccountDoneTitle": "Compte supprimé",
-    "deleteAccountDone": "Votre compte a bien été supprimé."
+    "deleteAccountDone": "Votre compte a bien été supprimé.",
+    "gender": "Genre",
+    "preferences": "Préférences",
+    "listShares": "Partage de listes",
+    "pendingRequestsTitle": "Demandes reçues",
+    "noRequests": "Aucune demande pour le moment.",
+    "accept": "Accepter",
+    "blockedUsers": "Utilisateurs bloqués",
+    "noBlocked": "Aucun utilisateur bloqué.",
+    "unblock": "Débloquer",
+    "pendingRequests": "demande(s) en attente",
+    "manageShares": "Demandes reçues · utilisateurs bloqués"
   },
   "auth": {
     "login": "Connexion",
@@ -265,7 +299,7 @@
     "noAccountPearl": "Pas de compte ? ",
     "hasAccountPearl": "Déjà un compte ? ",
     "pearlLoginHint": "Connectez-vous avec votre compte Pearl Streets ou Marketplace",
-    "pearlSignupHint": "Créez un compte — utilisable sur l'app et le site Marketplace",
+    "pearlSignupHint": "Créez un compte, utilisable sur l'app et le site Marketplace",
     "hasAccount": "Déjà un compte ?",
     "forgotPassword": "Mot de passe oublié ?",
     "loginSubtitle": "Connectez-vous à votre compte",
@@ -339,7 +373,32 @@
     "errorWrongPassword": "Mot de passe incorrect",
     "errorBothEmpty": "Veuillez saisir votre email et mot de passe",
     "errorNoEmail": "Veuillez saisir votre email ou pseudo",
-    "errorNoPassword": "Veuillez saisir votre mot de passe"
+    "errorNoPassword": "Veuillez saisir votre mot de passe",
+    "errorRateLimit": "Trop de tentatives. Réessayez dans",
+    "errorNetwork": "Connexion au serveur impossible. Vérifiez votre connexion et réessayez.",
+    "errorInvalidEmail": "Adresse e-mail invalide",
+    "errorPwdMismatch": "Les mots de passe ne correspondent pas",
+    "errorDob": "Renseignez votre date de naissance",
+    "errorAddress": "Renseignez votre adresse (rue et ville)",
+    "stepAuth": "Authentification",
+    "stepDetails": "Détails personnels",
+    "continue": "Continuer",
+    "genderMale": "Homme",
+    "genderFemale": "Femme",
+    "genderOther": "Autre",
+    "dob": "Date de naissance",
+    "dobPlaceholder": "AAAA-MM-JJ",
+    "phone": "Téléphone",
+    "phonePlaceholder": "Numéro de téléphone",
+    "address": "Adresse",
+    "addressLine": "Numéro et rue",
+    "postalCode": "Code postal",
+    "city": "Ville",
+    "backToStep1": "← Retour à l'étape précédente",
+    "selectDialCode": "Indicatif téléphonique",
+    "confirm": "Confirmer",
+    "errorDobFormat": "Date de naissance invalide (ex : 1990-05-12)",
+    "addressAutoPlaceholder": "Commencez à taper votre adresse…"
   },
   "cart": {
     "today": "Aujourd'hui",
@@ -449,7 +508,15 @@
     "deleteCard": "Supprimer la carte",
     "delete": "Supprimer",
     "saveCard": "Enregistrer la carte",
-    "newCard": "Nouvelle carte"
+    "newCard": "Nouvelle carte",
+    "tip": "Pourboire livreur",
+    "noTip": "Aucun",
+    "inCart": "Dans le panier",
+    "add": "Ajouter",
+    "tipThanks": "Merci pour votre pourboire !",
+    "tipAdded": "Pourboire ajouté.",
+    "tipFailed": "Échec du pourboire.",
+    "tipDriver": "Remercier votre livreur"
   },
   "orderStatus": {
     "confirmed": "Commande confirmée",
@@ -465,7 +532,8 @@
     "refunded": "Remboursée",
     "partiallyRefunded": "Partiellement remboursée",
     "completed": "Terminée",
-    "awaitingPayment": "En attente de paiement"
+    "awaitingPayment": "En attente de paiement",
+    "deliveryCode": "Code à donner au livreur"
   },
   "productNames": {
     "Pommes Golden": "Pommes Golden",
@@ -590,5 +658,22 @@
     "Pack 12 rouleaux": "Pack 12 rouleaux",
     "Pack 6 rouleaux": "Pack 6 rouleaux",
     "Bidon – 2L – 40 lavages": "Bidon – 2L – 40 lavages"
+  },
+  "rating": {
+    "thanks": "Merci !",
+    "saved": "Votre note a été enregistrée.",
+    "yourRating": "Votre note",
+    "rateDriver": "Noter votre livreur"
+  },
+  "report": {
+    "notReceived": "Commande non reçue",
+    "missingItem": "Article manquant",
+    "wrongOrder": "Mauvaise commande",
+    "damaged": "Commande endommagée",
+    "other": "Autre",
+    "title": "Signaler un problème",
+    "pick": "Que s'est-il passé ?",
+    "sentTitle": "Signalement envoyé",
+    "sent": "Notre support va traiter votre demande."
   }
 }
