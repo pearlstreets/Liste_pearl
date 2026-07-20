@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable } from "./services/auth";
-import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers } from "./services/sharedLists";
+import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
 import { getAllShops, getShopDetails } from "./services/shops";
@@ -287,6 +287,8 @@ function ListScreen() {
   const [shareSuggestions, setShareSuggestions] = useState([]);
   const [shareInputKey, setShareInputKey] = useState(0); // remonte l'input non contrôlé après un choix
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [granted, setGranted] = useState({ accepted: [], pending: [], count: 0 }); // qui a accès à MA liste
+  const [grantedOpen, setGrantedOpen] = useState(false);
   const shareDebounce = React.useRef(null);
   const shareCache = React.useRef(new Map()); // requête -> résultats (affichage instantané)
   const shareReqId = React.useRef(0);         // ignore les réponses réseau périmées
@@ -321,6 +323,10 @@ function ListScreen() {
         if (!tok) { if (alive) { setSharedLists([]); setViewingShareId(null); } return; }
         const res = await getSharedWithMe();
         if (alive && res && res.status) setSharedLists(res.data?.lists || []);
+        const g = await getGrantedShares();
+        if (alive && g && g.status && g.data) {
+          setGranted({ accepted: g.data.accepted || [], pending: g.data.pending || [], count: g.data.count || 0 });
+        }
       } catch {}
     })();
     return () => { alive = false; };
@@ -672,6 +678,18 @@ function ListScreen() {
         <Ionicons name="chevron-down" size={15} color={THEME.faint} />
       </TouchableOpacity>
 
+      {/* Ma liste est partagée : icône + nombre. Un appui montre qui y a accès. */}
+      {!readOnly && (granted.accepted.length > 0 || granted.pending.length > 0) && (
+        <TouchableOpacity onPress={() => setGrantedOpen(true)} activeOpacity={0.8}
+          style={{ flexDirection:'row', alignItems:'center', alignSelf:'flex-start', backgroundColor:THEME.brandSoft, borderRadius:12, paddingHorizontal:10, paddingVertical:6, marginTop:8 }}>
+          <Ionicons name="people" size={15} color={THEME.brandDark} />
+          <Text style={{ marginLeft:6, fontWeight:'800', color:THEME.brandDark, fontSize:12.5 }}>
+            {granted.accepted.length}
+            {granted.pending.length > 0 ? ` (+${granted.pending.length})` : ''}
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {!readOnly && (<>
       <View style={lstyles.inputWrap}>
         <TextInput
@@ -818,6 +836,56 @@ function ListScreen() {
             </ScrollView>
           </Pressable>
         </Pressable>
+      </Modal>
+
+      {/* Qui a accès à MA liste */}
+      <Modal visible={grantedOpen} transparent animationType="fade" onRequestClose={() => setGrantedOpen(false)}>
+        <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setGrantedOpen(false)} />
+          <View style={lstyles.modalBox}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.grantedTitle', 'Qui a accès à ma liste')}</Text>
+            <ScrollView style={{ maxHeight: 340 }}>
+              {granted.accepted.length === 0 && granted.pending.length === 0 && (
+                <Text style={{ color:THEME.faint, paddingVertical:12 }}>{t('listScreen.grantedNobody', 'Personne pour le moment.')}</Text>
+              )}
+              {granted.accepted.map((g) => (
+                <View key={`a-${g.share_id}`} style={{ flexDirection:'row', alignItems:'center', paddingVertical:11, borderBottomWidth:1, borderBottomColor:THEME.border }}>
+                  {g.user?.profileImage
+                    ? <Image source={{ uri: g.user.profileImage }} style={lstyles.suggestAvatar} />
+                    : <View style={[lstyles.suggestAvatar, { alignItems:'center', justifyContent:'center', backgroundColor:THEME.brandSoft }]}>
+                        <Ionicons name="person" size={16} color={THEME.brandDark} />
+                      </View>}
+                  <View style={{ flex:1, marginLeft:10 }}>
+                    <Text style={{ fontSize:14, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{g.user?.name || g.user?.username}</Text>
+                    <Text style={{ fontSize:12.5, color:THEME.faint }} numberOfLines={1}>@{g.user?.username}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      try { await revokeShare(g.user?.username); } catch {}
+                      try {
+                        const r = await getGrantedShares();
+                        if (r && r.status && r.data) setGranted({ accepted: r.data.accepted || [], pending: r.data.pending || [], count: r.data.count || 0 });
+                      } catch {}
+                    }}
+                    activeOpacity={0.7} style={{ paddingHorizontal:8, paddingVertical:6 }}>
+                    <Text style={{ color:THEME.danger, fontWeight:'700', fontSize:12.5 }}>{t('listScreen.revoke', 'Retirer')}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+              {granted.pending.length > 0 && (
+                <Text style={{ fontSize:12, fontWeight:'800', color:THEME.faint, textTransform:'uppercase', letterSpacing:0.4, marginTop:14, marginBottom:2 }}>
+                  {t('listScreen.grantedPending', 'En attente de réponse')}
+                </Text>
+              )}
+              {granted.pending.map((g) => (
+                <View key={`p-${g.share_id}`} style={{ flexDirection:'row', alignItems:'center', paddingVertical:11 }}>
+                  <Ionicons name="time-outline" size={18} color={THEME.faint} />
+                  <Text style={{ flex:1, marginLeft:10, fontSize:14, color:THEME.muted }} numberOfLines={1}>@{g.user?.username}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
       </Modal>
 
       {/* Créer une liste (modale custom cross-platform) */}

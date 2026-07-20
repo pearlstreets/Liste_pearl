@@ -28,6 +28,10 @@ export const revokeShare = (identifier) =>
 // Les listes que d'autres m'autorisent à consulter (lecture seule).
 export const getSharedWithMe = () => apiGet('/users/list-share/shared-with-me/');
 
+// Les personnes à qui J'AI donné accès à ma liste (+ demandes en attente).
+// Réponse : { data: { accepted: [{share_id, user}], pending: [...], count } }
+export const getGrantedShares = () => apiGet('/users/list-share/granted/');
+
 // Recherche d'utilisateurs pour l'autocomplétion du partage.
 // `users-list/` liste TOUS les comptes de la marketplace (hors bannis/suspendus
 // et soi-même), sans exclure les profils incomplets, et ne requiert pas d'être
