@@ -43,3 +43,6 @@ Thumbs.db
 # Native projects (regénérés par prebuild EAS)
 /ios/
 /android/
+
+# Sauvegardes d'icônes (historique local, hors dépôt)
+assets/_icon_backup_*/
