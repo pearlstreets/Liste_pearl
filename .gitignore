@@ -49,3 +49,6 @@ assets/_icon_backup_*/
 
 # Artefacts de build (volumineux, récupérables depuis EAS)
 store-submission/builds/
+
+# Cle de service Google Play (secret, ne jamais versionner)
+google-play-service-account.json
