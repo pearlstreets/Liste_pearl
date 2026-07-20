@@ -75,6 +75,26 @@ export async function registerUser({
   return { success: false, message: data.message || 'Registration failed' };
 }
 
+// Disponibilité email / pseudo — mêmes endpoints que l'inscription AppUser,
+// pour que Pearl List rejette exactement les mêmes cas.
+export async function checkEmailAvailable(email) {
+  try {
+    const d = await apiPost('/users/check-email/', { email });
+    return !(d && d.email_exists); // true = disponible
+  } catch {
+    return true; // en cas de panne réseau, on laisse le backend trancher au submit
+  }
+}
+
+export async function checkUsernameAvailable(username) {
+  try {
+    const d = await apiPost('/users/check-username/', { username });
+    return !!(d && d.status); // status=false => déjà pris
+  } catch {
+    return true;
+  }
+}
+
 // Login with username/email and password
 export async function loginUser(identifier, password) {
   const data = await apiPost('/users/login/', {

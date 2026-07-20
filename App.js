@@ -2,7 +2,7 @@ import { autocorrectName } from "./utils/spellcheck";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus } from "./services/auth";
+import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable } from "./services/auth";
 import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
@@ -105,6 +105,14 @@ const DEFAULT_LIST_ID = "default";
 // 'default' garde KEY_ITEMS (compat historique + points d'ajout au panier).
 const listItemsKey = (id) => (id && id !== DEFAULT_LIST_ID ? `SG_ITEMS__${id}` : KEY_ITEMS);
 const KEY_SELECTED = "SG_SELECTED_FOR_PRODUCTS";
+
+// Règles de validation d'inscription — STRICTEMENT identiques à l'inscription
+// marketplace (AppUser SignupOne/SignupTwo). Toute divergence ferait accepter
+// ici un compte que le backend ou l'app mobile refuserait.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const PHONE_RE = /^\d{5,16}$/;
+const USERNAME_MIN = 4;
 
 // Normalise une date de naissance vers l'ISO 'YYYY-MM-DD' exigé par le backend
 // (DRF DateField iso-8601 uniquement). Accepte 'AAAA-MM-JJ' ET les habitudes FR
@@ -4928,7 +4936,6 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   const [dobPickerOpen, setDobPickerOpen] = React.useState(false);
   const [addrSuggestions, setAddrSuggestions] = React.useState([]);
   const addrDebounce = React.useRef(null);
-  const validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((e || '').trim());
 
   // Autocomplétion d'adresse (Photon) — comme AppUser, filtrée sur le pays choisi.
   const onAddrLineChange = (text) => {
@@ -4991,22 +4998,37 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   };
 
   // Étape 1 (Authentification) -> étape 2 (Détails personnels)
-  const goToStep2 = () => {
+  const goToStep2 = async () => {
     setError('');
-    if (!validEmail(email)) { setError(t('auth.errorInvalidEmail', 'Adresse e-mail invalide')); return; }
-    if (password.length < 6) { setError(t('auth.errorPasswordLength', 'Mot de passe : minimum 6 caractères')); return; }
+    if (!EMAIL_RE.test((email || '').trim())) { setError(t('auth.errorInvalidEmail', 'Adresse e-mail invalide')); return; }
+    if (!PASSWORD_RE.test((password || '').trim())) {
+      setError(t('auth.errorPasswordRule', 'Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).'));
+      return;
+    }
     if (password !== confirmPwd) { setError(t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas')); return; }
+    // Disponibilité de l'email, comme l'inscription marketplace.
+    setLoading(true);
+    const free = await checkEmailAvailable(email.trim());
+    setLoading(false);
+    if (!free) { setError(t('auth.errorEmailTaken', 'Cette adresse e-mail est déjà utilisée.')); return; }
     setStep(2);
   };
 
   const handleSignup = async () => {
     setError('');
-    if (!pseudo.trim() || !prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Remplissez pseudo, prénom et nom')); return; }
+    // Mêmes règles que l'inscription marketplace (AppUser SignupTwo).
+    if (!gender) { setError(t('auth.errorGender', 'Sélectionnez votre genre')); return; }
+    if (pseudo.trim().length < USERNAME_MIN) { setError(t('auth.errorUsernameMin', 'Le pseudo doit contenir au moins 4 caractères')); return; }
+    if (!prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Renseignez votre prénom et votre nom')); return; }
     if (!dob.trim()) { setError(t('auth.errorDob', 'Renseignez votre date de naissance')); return; }
     const dobIso = normalizeDob(dob);
     if (!dobIso) { setError(t('auth.errorDobFormat', 'Date de naissance invalide (ex : 1990-05-12)')); return; }
+    if (!PHONE_RE.test((phone || '').trim())) { setError(t('auth.errorPhone', 'Numéro de téléphone invalide (5 à 16 chiffres)')); return; }
     if (!addrLine.trim() || !addrCity.trim()) { setError(t('auth.errorAddress', 'Renseignez votre adresse (rue et ville)')); return; }
     setLoading(true);
+    // Disponibilité du pseudo, comme l'inscription marketplace.
+    const nameFree = await checkUsernameAvailable(pseudo.trim());
+    if (!nameFree) { setLoading(false); setError(t('auth.errorUsernameTaken', 'Ce pseudo est déjà pris.')); return; }
     // Inscription marketplace UNIQUEMENT — compte partagé avec l'app AppUser.
     const address = { address1: addrLine.trim(), address2: '', postalCode: addrPostal.trim(), city: addrCity.trim(), country: addrCountry, lat: addrLat ?? '', lang: addrLng ?? '' };
     try {
@@ -5130,8 +5152,11 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                     <TextInput value={confirmPwd} onChangeText={setConfirmPwd} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
                   </View>
                 </View>
-                <TouchableOpacity onPress={goToStep2} activeOpacity={0.85} style={authStyles.primaryBtn}>
-                  <Text style={authStyles.primaryBtnTxt}>{t('auth.continue', 'Continuer')}</Text>
+                <Text style={{ fontSize: 12, color: THEME.faint, marginTop: -4, marginBottom: 10, lineHeight: 17 }}>
+                  {t('auth.passwordRuleHint', '8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).')}
+                </Text>
+                <TouchableOpacity onPress={goToStep2} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
+                  {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.continue', 'Continuer')}</Text>}
                 </TouchableOpacity>
               </>
             ) : (
