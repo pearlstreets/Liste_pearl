@@ -4722,6 +4722,9 @@ const authStyles = StyleSheet.create({
   fieldGroup: { marginBottom: 14 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: THEME.muted, marginBottom: 6 },
   field: { height: 52, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
+  // Erreur affichée SOUS le champ concerné + bordure rouge sur le champ.
+  fieldError: { color: THEME.danger, fontSize: 12.5, fontWeight: '600', marginTop: 6, lineHeight: 17 },
+  fieldInvalid: { borderWidth: 1, borderColor: THEME.danger },
   pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.subtle, borderRadius: 14 },
   pwdInput: { flex: 1, height: 52, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
   pwdEye: { paddingHorizontal: 14, height: 52, alignItems: 'center', justifyContent: 'center' },
@@ -4916,6 +4919,11 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   const [nom, setNom] = React.useState('');
   const [error, setError] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
+  const [showConfirmPwd, setShowConfirmPwd] = React.useState(false);
+  // Erreurs PAR CHAMP, affichées sous le champ concerné (comme l'inscription
+  // AppUser) plutôt qu'en un seul bandeau en haut, loin du champ fautif.
+  const [fieldErr, setFieldErr] = React.useState({});
+  const clearFE = (k) => setFieldErr((p) => (p[k] ? { ...p, [k]: '' } : p));
   const [loading, setLoading] = React.useState(false);
   const [langVisible, setLangVisible] = React.useState(false);
   // Inscription en 2 étapes (comme AppUser)
@@ -4940,6 +4948,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   // Autocomplétion d'adresse (Photon) — comme AppUser, filtrée sur le pays choisi.
   const onAddrLineChange = (text) => {
     setAddrLine(text);
+    clearFE('address');
     if (addrDebounce.current) clearTimeout(addrDebounce.current);
     const q = (text || '').trim();
     if (q.length < 2) { setAddrSuggestions([]); return; }
@@ -5000,35 +5009,47 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
   // Étape 1 (Authentification) -> étape 2 (Détails personnels)
   const goToStep2 = async () => {
     setError('');
-    if (!EMAIL_RE.test((email || '').trim())) { setError(t('auth.errorInvalidEmail', 'Adresse e-mail invalide')); return; }
+    // On valide TOUS les champs d'un coup pour signaler chaque erreur sous son
+    // champ, au lieu de s'arrêter à la première.
+    const fe = {};
+    if (!EMAIL_RE.test((email || '').trim())) fe.email = t('auth.errorInvalidEmail', 'Adresse e-mail invalide');
     if (!PASSWORD_RE.test((password || '').trim())) {
-      setError(t('auth.errorPasswordRule', 'Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).'));
-      return;
+      fe.password = t('auth.errorPasswordRule', 'Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).');
     }
-    if (password !== confirmPwd) { setError(t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas')); return; }
+    if (!confirmPwd) fe.confirmPwd = t('auth.errorConfirmRequired', 'Confirmez votre mot de passe');
+    else if (password !== confirmPwd) fe.confirmPwd = t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas');
+    setFieldErr(fe);
+    if (Object.keys(fe).length) return;
+
     // Disponibilité de l'email, comme l'inscription marketplace.
     setLoading(true);
     const free = await checkEmailAvailable(email.trim());
     setLoading(false);
-    if (!free) { setError(t('auth.errorEmailTaken', 'Cette adresse e-mail est déjà utilisée.')); return; }
+    if (!free) { setFieldErr({ email: t('auth.errorEmailTaken', 'Cette adresse e-mail est déjà utilisée.') }); return; }
     setStep(2);
   };
 
   const handleSignup = async () => {
     setError('');
-    // Mêmes règles que l'inscription marketplace (AppUser SignupTwo).
-    if (!gender) { setError(t('auth.errorGender', 'Sélectionnez votre genre')); return; }
-    if (pseudo.trim().length < USERNAME_MIN) { setError(t('auth.errorUsernameMin', 'Le pseudo doit contenir au moins 4 caractères')); return; }
-    if (!prenom.trim() || !nom.trim()) { setError(t('auth.errorEmpty', 'Renseignez votre prénom et votre nom')); return; }
-    if (!dob.trim()) { setError(t('auth.errorDob', 'Renseignez votre date de naissance')); return; }
+    // Mêmes règles que l'inscription marketplace (AppUser SignupTwo), chaque
+    // erreur affichée sous son champ.
+    const fe = {};
+    if (!gender) fe.gender = t('auth.errorGender', 'Sélectionnez votre genre');
+    if (pseudo.trim().length < USERNAME_MIN) fe.pseudo = t('auth.errorUsernameMin', 'Le pseudo doit contenir au moins 4 caractères');
+    if (!prenom.trim()) fe.prenom = t('auth.errorFirstName', 'Renseignez votre prénom');
+    if (!nom.trim()) fe.nom = t('auth.errorLastName', 'Renseignez votre nom');
     const dobIso = normalizeDob(dob);
-    if (!dobIso) { setError(t('auth.errorDobFormat', 'Date de naissance invalide (ex : 1990-05-12)')); return; }
-    if (!PHONE_RE.test((phone || '').trim())) { setError(t('auth.errorPhone', 'Numéro de téléphone invalide (5 à 16 chiffres)')); return; }
-    if (!addrLine.trim() || !addrCity.trim()) { setError(t('auth.errorAddress', 'Renseignez votre adresse (rue et ville)')); return; }
+    if (!dob.trim()) fe.dob = t('auth.errorDob', 'Renseignez votre date de naissance');
+    else if (!dobIso) fe.dob = t('auth.errorDobFormat', 'Date de naissance invalide (ex : 1990-05-12)');
+    if (!PHONE_RE.test((phone || '').trim())) fe.phone = t('auth.errorPhone', 'Numéro de téléphone invalide (5 à 16 chiffres)');
+    if (!addrLine.trim() || !addrCity.trim()) fe.address = t('auth.errorAddress', 'Renseignez votre adresse (rue et ville)');
+    setFieldErr(fe);
+    if (Object.keys(fe).length) return;
+
     setLoading(true);
     // Disponibilité du pseudo, comme l'inscription marketplace.
     const nameFree = await checkUsernameAvailable(pseudo.trim());
-    if (!nameFree) { setLoading(false); setError(t('auth.errorUsernameTaken', 'Ce pseudo est déjà pris.')); return; }
+    if (!nameFree) { setLoading(false); setFieldErr({ pseudo: t('auth.errorUsernameTaken', 'Ce pseudo est déjà pris.') }); return; }
     // Inscription marketplace UNIQUEMENT — compte partagé avec l'app AppUser.
     const address = { address1: addrLine.trim(), address2: '', postalCode: addrPostal.trim(), city: addrCity.trim(), country: addrCountry, lat: addrLat ?? '', lang: addrLng ?? '' };
     try {
@@ -5135,22 +5156,28 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
               <>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.email', 'Adresse e-mail')}</Text>
-                  <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
+                  <TextInput value={email} onChangeText={(v) => { setEmail(v); clearFE('email'); }} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={[authStyles.field, fieldErr.email && authStyles.fieldInvalid]} />
+                  {fieldErr.email ? <Text style={authStyles.fieldError}>{fieldErr.email}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.password', 'Mot de passe')}</Text>
-                  <View style={authStyles.pwdRow}>
-                    <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                  <View style={[authStyles.pwdRow, fieldErr.password && authStyles.fieldInvalid]}>
+                    <TextInput value={password} onChangeText={(v) => { setPassword(v); clearFE('password'); }} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
                     <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
                       <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                     </TouchableOpacity>
                   </View>
+                  {fieldErr.password ? <Text style={authStyles.fieldError}>{fieldErr.password}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.confirmPassword', 'Confirmer le mot de passe')}</Text>
-                  <View style={authStyles.pwdRow}>
-                    <TextInput value={confirmPwd} onChangeText={setConfirmPwd} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                  <View style={[authStyles.pwdRow, fieldErr.confirmPwd && authStyles.fieldInvalid]}>
+                    <TextInput value={confirmPwd} onChangeText={(v) => { setConfirmPwd(v); clearFE('confirmPwd'); }} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showConfirmPwd} style={authStyles.pwdInput} />
+                    <TouchableOpacity onPress={() => setShowConfirmPwd(!showConfirmPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
+                      <Ionicons name={showConfirmPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
+                    </TouchableOpacity>
                   </View>
+                  {fieldErr.confirmPwd ? <Text style={authStyles.fieldError}>{fieldErr.confirmPwd}</Text> : null}
                 </View>
                 <Text style={{ fontSize: 12, color: THEME.faint, marginTop: -4, marginBottom: 10, lineHeight: 17 }}>
                   {t('auth.passwordRuleHint', '8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).')}
@@ -5169,32 +5196,37 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                       { key: 'female', label: t('auth.genderFemale', 'Femme') },
                       { key: 'other', label: t('auth.genderOther', 'Autre') },
                     ].map(g => (
-                      <TouchableOpacity key={g.key} onPress={() => setGender(g.key)} activeOpacity={0.8} style={[authStyles.genderChip, gender === g.key && authStyles.genderChipActive]}>
+                      <TouchableOpacity key={g.key} onPress={() => { setGender(g.key); clearFE('gender'); }} activeOpacity={0.8} style={[authStyles.genderChip, gender === g.key && authStyles.genderChipActive]}>
                         <Text style={[authStyles.genderChipTxt, gender === g.key && authStyles.genderChipTxtActive]}>{g.label}</Text>
                       </TouchableOpacity>
                     ))}
                   </View>
+                  {fieldErr.gender ? <Text style={authStyles.fieldError}>{fieldErr.gender}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.pseudo', 'Pseudo utilisateur')}</Text>
-                  <TextInput value={pseudo} onChangeText={setPseudo} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} autoCapitalize="none" style={authStyles.field} />
+                  <TextInput value={pseudo} onChangeText={(v) => { setPseudo(v); clearFE('pseudo'); }} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} autoCapitalize="none" style={[authStyles.field, fieldErr.pseudo && authStyles.fieldInvalid]} />
+                  {fieldErr.pseudo ? <Text style={authStyles.fieldError}>{fieldErr.pseudo}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.firstName', 'Prénom')}</Text>
-                  <TextInput value={prenom} onChangeText={setPrenom} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+                  <TextInput value={prenom} onChangeText={(v) => { setPrenom(v); clearFE('prenom'); }} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={[authStyles.field, fieldErr.prenom && authStyles.fieldInvalid]} />
+                  {fieldErr.prenom ? <Text style={authStyles.fieldError}>{fieldErr.prenom}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.lastName', 'Nom')}</Text>
-                  <TextInput value={nom} onChangeText={setNom} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={authStyles.field} />
+                  <TextInput value={nom} onChangeText={(v) => { setNom(v); clearFE('nom'); }} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={[authStyles.field, fieldErr.nom && authStyles.fieldInvalid]} />
+                  {fieldErr.nom ? <Text style={authStyles.fieldError}>{fieldErr.nom}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.dob', 'Date de naissance')}</Text>
-                  <TouchableOpacity onPress={() => setDobPickerOpen(true)} activeOpacity={0.8} style={[authStyles.field, { justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }]}>
+                  <TouchableOpacity onPress={() => setDobPickerOpen(true)} activeOpacity={0.8} style={[authStyles.field, { justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }, fieldErr.dob && authStyles.fieldInvalid]}>
                     <Text style={{ flex: 1, fontSize: 15, color: dob ? THEME.ink : THEME.faint }}>
                       {dob ? dob.split('-').reverse().join('/') : t('auth.dobPlaceholder', 'JJ/MM/AAAA')}
                     </Text>
                     <Ionicons name="calendar-outline" size={18} color={THEME.muted} />
                   </TouchableOpacity>
+                  {fieldErr.dob ? <Text style={authStyles.fieldError}>{fieldErr.dob}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.phone', 'Téléphone')}</Text>
@@ -5204,8 +5236,9 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                       <Text style={authStyles.dialTxt}>{dialCode}</Text>
                       <Ionicons name="chevron-down" size={14} color={THEME.muted} />
                     </TouchableOpacity>
-                    <TextInput value={phone} onChangeText={setPhone} placeholder={t('auth.phonePlaceholder', 'Numéro de téléphone')} placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[authStyles.field, { flex: 1, marginLeft: 8 }]} />
+                    <TextInput value={phone} onChangeText={(v) => { setPhone(v); clearFE('phone'); }} placeholder={t('auth.phonePlaceholder', 'Numéro de téléphone')} placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[authStyles.field, { flex: 1, marginLeft: 8 }, fieldErr.phone && authStyles.fieldInvalid]} />
                   </View>
+                  {fieldErr.phone ? <Text style={authStyles.fieldError}>{fieldErr.phone}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.address', 'Adresse')}</Text>
@@ -5228,13 +5261,14 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                   )}
                   <View style={{ flexDirection: 'row', marginTop: 8 }}>
                     <TextInput value={addrPostal} onChangeText={setAddrPostal} placeholder={t('auth.postalCode', 'Code postal')} placeholderTextColor={THEME.faint} style={[authStyles.field, { width: 120, marginRight: 8 }]} />
-                    <TextInput value={addrCity} onChangeText={setAddrCity} placeholder={t('auth.city', 'Ville')} placeholderTextColor={THEME.faint} style={[authStyles.field, { flex: 1 }]} />
+                    <TextInput value={addrCity} onChangeText={(v) => { setAddrCity(v); clearFE('address'); }} placeholder={t('auth.city', 'Ville')} placeholderTextColor={THEME.faint} style={[authStyles.field, { flex: 1 }, fieldErr.address && authStyles.fieldInvalid]} />
                   </View>
+                  {fieldErr.address ? <Text style={authStyles.fieldError}>{fieldErr.address}</Text> : null}
                 </View>
                 <TouchableOpacity onPress={handleSignup} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
                   {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.signupBtn')}</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setStep(1); setError(''); }} style={authStyles.toggleLink} activeOpacity={0.7}>
+                <TouchableOpacity onPress={() => { setStep(1); setError(''); setFieldErr({}); }} style={authStyles.toggleLink} activeOpacity={0.7}>
                   <Text style={authStyles.toggleTxt}>{t('auth.backToStep1', '← Retour à l\'étape précédente')}</Text>
                 </TouchableOpacity>
               </>
@@ -5242,7 +5276,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           </>
         )}
         <TouchableOpacity onPress={() => {
-            setIsLogin(!isLogin); setError(''); setStep(1);
+            setIsLogin(!isLogin); setError(''); setStep(1); setFieldErr({});
             // Repart d'un formulaire propre (pas d'état d'inscription périmé).
             setConfirmPwd(''); setGender(''); setDob(''); setPhone('');
             setDialCode('+33'); setDialCountryCode('FR');
