@@ -788,7 +788,14 @@ function ListScreen() {
       <Modal visible={switcherOpen} transparent animationType="fade" onRequestClose={() => setSwitcherOpen(false)}>
         <Pressable style={lstyles.modalBackdrop} onPress={() => setSwitcherOpen(false)}>
           <Pressable style={lstyles.modalBox} onPress={() => {}}>
-            <Text style={lstyles.modalTitle}>{t('listScreen.chooseList', 'Choisir une liste')}</Text>
+            <View style={{ flexDirection:'row', alignItems:'center', marginBottom:14 }}>
+              <Text style={[lstyles.modalTitle, { flex:1, marginBottom:0 }]}>{t('listScreen.chooseList', 'Choisir une liste')}</Text>
+              <TouchableOpacity onPress={() => setSwitcherOpen(false)} activeOpacity={0.7}
+                hitSlop={{ top:10, bottom:10, left:10, right:10 }}
+                style={{ width:32, height:32, borderRadius:16, backgroundColor:THEME.subtle, alignItems:'center', justifyContent:'center', marginLeft:10 }}>
+                <Ionicons name="close" size={18} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
             <ScrollView style={{ maxHeight: 380 }} keyboardShouldPersistTaps="handled">
               {/* --- Mes listes --- */}
               <Text style={{ fontSize:12, fontWeight:'800', color:THEME.faint, textTransform:'uppercase', letterSpacing:0.4, marginTop:4, marginBottom:2 }}>{t('listScreen.myLists', 'Mes listes')}</Text>
@@ -843,7 +850,14 @@ function ListScreen() {
         <View style={lstyles.modalBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} onPress={() => setGrantedOpen(false)} />
           <View style={lstyles.modalBox}>
-            <Text style={lstyles.modalTitle}>{t('listScreen.grantedTitle', 'Qui a accès à ma liste')}</Text>
+            <View style={{ flexDirection:'row', alignItems:'center', marginBottom:14 }}>
+              <Text style={[lstyles.modalTitle, { flex:1, marginBottom:0 }]}>{t('listScreen.grantedTitle', 'Qui a accès à ma liste')}</Text>
+              <TouchableOpacity onPress={() => setGrantedOpen(false)} activeOpacity={0.7}
+                hitSlop={{ top:10, bottom:10, left:10, right:10 }}
+                style={{ width:32, height:32, borderRadius:16, backgroundColor:THEME.subtle, alignItems:'center', justifyContent:'center', marginLeft:10 }}>
+                <Ionicons name="close" size={18} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
             <ScrollView style={{ maxHeight: 340 }}>
               {granted.accepted.length === 0 && granted.pending.length === 0 && (
                 <Text style={{ color:THEME.faint, paddingVertical:12 }}>{t('listScreen.grantedNobody', 'Personne pour le moment.')}</Text>
