@@ -4706,7 +4706,12 @@ const authStyles = StyleSheet.create({
   topBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
 
   // Scroll body
-  scrollBody: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 24 },
+  // Pas de justifyContent:'center' : dès que le formulaire dépasse la hauteur
+  // visible (messages d'erreur affichés), le centrage rognait le contenu en haut
+  // ET en bas, donnant l'impression que le bouton était coupé. Le contenu part
+  // du haut et défile normalement. paddingBottom : le sélecteur de langue est
+  // FIXE en bas de l'écran, hors du ScrollView.
+  scrollBody: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 24, paddingBottom: 40 },
 
   // Brand header
   brandHeader: { alignItems: 'center', marginBottom: 28 },
@@ -5014,7 +5019,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     const fe = {};
     if (!EMAIL_RE.test((email || '').trim())) fe.email = t('auth.errorInvalidEmail', 'Adresse e-mail invalide');
     if (!PASSWORD_RE.test((password || '').trim())) {
-      fe.password = t('auth.errorPasswordRule', 'Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).');
+      fe.password = t('auth.errorPasswordRule', '8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).');
     }
     if (!confirmPwd) fe.confirmPwd = t('auth.errorConfirmRequired', 'Confirmez votre mot de passe');
     else if (password !== confirmPwd) fe.confirmPwd = t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas');
@@ -5157,7 +5162,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.email', 'Adresse e-mail')}</Text>
                   <TextInput value={email} onChangeText={(v) => { setEmail(v); clearFE('email'); }} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={[authStyles.field, fieldErr.email && authStyles.fieldInvalid]} />
-                  {fieldErr.email ? <Text style={authStyles.fieldError}>{fieldErr.email}</Text> : null}
+                  {fieldErr.email ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.email}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.password', 'Mot de passe')}</Text>
@@ -5167,7 +5172,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                       <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                     </TouchableOpacity>
                   </View>
-                  {fieldErr.password ? <Text style={authStyles.fieldError}>{fieldErr.password}</Text> : null}
+                  {fieldErr.password ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.password}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.confirmPassword', 'Confirmer le mot de passe')}</Text>
@@ -5177,11 +5182,14 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                       <Ionicons name={showConfirmPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                     </TouchableOpacity>
                   </View>
-                  {fieldErr.confirmPwd ? <Text style={authStyles.fieldError}>{fieldErr.confirmPwd}</Text> : null}
+                  {fieldErr.confirmPwd ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.confirmPwd}</Text> : null}
                 </View>
-                <Text style={{ fontSize: 12, color: THEME.faint, marginTop: -4, marginBottom: 10, lineHeight: 17 }}>
-                  {t('auth.passwordRuleHint', '8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).')}
-                </Text>
+                {/* Rappel de la règle : masqué si l'erreur rouge dit déjà la même chose. */}
+                {!fieldErr.password ? (
+                  <Text numberOfLines={2} style={{ fontSize: 12, color: THEME.faint, marginTop: -4, marginBottom: 10, lineHeight: 17 }}>
+                    {t('auth.passwordRuleHint', '8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).')}
+                  </Text>
+                ) : null}
                 <TouchableOpacity onPress={goToStep2} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
                   {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.continue', 'Continuer')}</Text>}
                 </TouchableOpacity>
@@ -5201,22 +5209,22 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                       </TouchableOpacity>
                     ))}
                   </View>
-                  {fieldErr.gender ? <Text style={authStyles.fieldError}>{fieldErr.gender}</Text> : null}
+                  {fieldErr.gender ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.gender}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.pseudo', 'Pseudo utilisateur')}</Text>
                   <TextInput value={pseudo} onChangeText={(v) => { setPseudo(v); clearFE('pseudo'); }} placeholder={t('profile.pseudoPlaceholder')} placeholderTextColor={THEME.faint} autoCapitalize="none" style={[authStyles.field, fieldErr.pseudo && authStyles.fieldInvalid]} />
-                  {fieldErr.pseudo ? <Text style={authStyles.fieldError}>{fieldErr.pseudo}</Text> : null}
+                  {fieldErr.pseudo ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.pseudo}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.firstName', 'Prénom')}</Text>
                   <TextInput value={prenom} onChangeText={(v) => { setPrenom(v); clearFE('prenom'); }} placeholder={t('profile.firstNamePlaceholder')} placeholderTextColor={THEME.faint} style={[authStyles.field, fieldErr.prenom && authStyles.fieldInvalid]} />
-                  {fieldErr.prenom ? <Text style={authStyles.fieldError}>{fieldErr.prenom}</Text> : null}
+                  {fieldErr.prenom ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.prenom}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.lastName', 'Nom')}</Text>
                   <TextInput value={nom} onChangeText={(v) => { setNom(v); clearFE('nom'); }} placeholder={t('profile.lastNamePlaceholder')} placeholderTextColor={THEME.faint} style={[authStyles.field, fieldErr.nom && authStyles.fieldInvalid]} />
-                  {fieldErr.nom ? <Text style={authStyles.fieldError}>{fieldErr.nom}</Text> : null}
+                  {fieldErr.nom ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.nom}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.dob', 'Date de naissance')}</Text>
@@ -5226,7 +5234,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                     </Text>
                     <Ionicons name="calendar-outline" size={18} color={THEME.muted} />
                   </TouchableOpacity>
-                  {fieldErr.dob ? <Text style={authStyles.fieldError}>{fieldErr.dob}</Text> : null}
+                  {fieldErr.dob ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.dob}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.phone', 'Téléphone')}</Text>
@@ -5238,7 +5246,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                     </TouchableOpacity>
                     <TextInput value={phone} onChangeText={(v) => { setPhone(v); clearFE('phone'); }} placeholder={t('auth.phonePlaceholder', 'Numéro de téléphone')} placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[authStyles.field, { flex: 1, marginLeft: 8 }, fieldErr.phone && authStyles.fieldInvalid]} />
                   </View>
-                  {fieldErr.phone ? <Text style={authStyles.fieldError}>{fieldErr.phone}</Text> : null}
+                  {fieldErr.phone ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.phone}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.address', 'Adresse')}</Text>
@@ -5263,7 +5271,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                     <TextInput value={addrPostal} onChangeText={setAddrPostal} placeholder={t('auth.postalCode', 'Code postal')} placeholderTextColor={THEME.faint} style={[authStyles.field, { width: 120, marginRight: 8 }]} />
                     <TextInput value={addrCity} onChangeText={(v) => { setAddrCity(v); clearFE('address'); }} placeholder={t('auth.city', 'Ville')} placeholderTextColor={THEME.faint} style={[authStyles.field, { flex: 1 }, fieldErr.address && authStyles.fieldInvalid]} />
                   </View>
-                  {fieldErr.address ? <Text style={authStyles.fieldError}>{fieldErr.address}</Text> : null}
+                  {fieldErr.address ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.address}</Text> : null}
                 </View>
                 <TouchableOpacity onPress={handleSignup} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
                   {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.signupBtn')}</Text>}
