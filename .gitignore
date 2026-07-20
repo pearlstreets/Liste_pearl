@@ -46,3 +46,6 @@ Thumbs.db
 
 # Sauvegardes d'icônes (historique local, hors dépôt)
 assets/_icon_backup_*/
+
+# Artefacts de build (volumineux, récupérables depuis EAS)
+store-submission/builds/
