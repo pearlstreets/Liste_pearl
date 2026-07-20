@@ -46,7 +46,11 @@
     "shareFailedTitle": "Failed",
     "shareSentMsg": "The person will receive your share request to accept.",
     "shareFailedMsg": "Could not send the request.",
-    "shareActionFailed": "The action could not be completed."
+    "shareActionFailed": "The action could not be completed.",
+    "grantedTitle": "Who has access to my list",
+    "grantedNobody": "Nobody yet.",
+    "grantedPending": "Awaiting response",
+    "revoke": "Remove"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

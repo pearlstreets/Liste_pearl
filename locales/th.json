@@ -45,7 +45,11 @@
     "shareFailedTitle": "ล้มเหลว",
     "shareSentMsg": "อีกฝ่ายจะได้รับคำขอแชร์ของคุณเพื่อยอมรับ",
     "shareFailedMsg": "ไม่สามารถส่งคำขอได้",
-    "shareActionFailed": "ไม่สามารถดำเนินการได้"
+    "shareActionFailed": "ไม่สามารถดำเนินการได้",
+    "grantedTitle": "ใครเข้าถึงรายการของฉันได้บ้าง",
+    "grantedNobody": "ยังไม่มีใคร",
+    "grantedPending": "รอการตอบกลับ",
+    "revoke": "นำออก"
   },
   "productsScreen": {
     "clickAndCollect": "คลิกและรับสินค้า",

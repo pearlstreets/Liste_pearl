@@ -45,7 +45,11 @@
     "shareFailedTitle": "失败",
     "shareSentMsg": "对方将收到您的分享请求以供接受。",
     "shareFailedMsg": "无法发送请求。",
-    "shareActionFailed": "无法完成操作。"
+    "shareActionFailed": "无法完成操作。",
+    "grantedTitle": "谁可以访问我的清单",
+    "grantedNobody": "暂时没有人。",
+    "grantedPending": "等待回复",
+    "revoke": "移除"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",

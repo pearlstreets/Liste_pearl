@@ -45,7 +45,11 @@
     "shareFailedTitle": "Operazione non riuscita",
     "shareSentMsg": "La persona riceverà la tua richiesta di condivisione da accettare.",
     "shareFailedMsg": "Impossibile inviare la richiesta.",
-    "shareActionFailed": "Impossibile eseguire l'azione."
+    "shareActionFailed": "Impossibile eseguire l'azione.",
+    "grantedTitle": "Chi ha accesso alla mia lista",
+    "grantedNobody": "Nessuno per ora.",
+    "grantedPending": "In attesa di risposta",
+    "revoke": "Rimuovi"
   },
   "productsScreen": {
     "clickAndCollect": "Ordina e Ritira",

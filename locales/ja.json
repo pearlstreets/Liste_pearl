@@ -45,7 +45,11 @@
     "shareFailedTitle": "失敗",
     "shareSentMsg": "相手に承認用の共有リクエストが届きます。",
     "shareFailedMsg": "リクエストを送信できませんでした。",
-    "shareActionFailed": "操作を完了できませんでした。"
+    "shareActionFailed": "操作を完了できませんでした。",
+    "grantedTitle": "リストにアクセスできる人",
+    "grantedNobody": "まだ誰もいません。",
+    "grantedPending": "返答待ち",
+    "revoke": "解除"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",

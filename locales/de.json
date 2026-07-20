@@ -45,7 +45,11 @@
     "shareFailedTitle": "Fehlgeschlagen",
     "shareSentMsg": "Die Person erhält deine Freigabeanfrage zum Annehmen.",
     "shareFailedMsg": "Die Anfrage konnte nicht gesendet werden.",
-    "shareActionFailed": "Die Aktion konnte nicht ausgeführt werden."
+    "shareActionFailed": "Die Aktion konnte nicht ausgeführt werden.",
+    "grantedTitle": "Wer Zugriff auf meine Liste hat",
+    "grantedNobody": "Noch niemand.",
+    "grantedPending": "Warten auf Antwort",
+    "revoke": "Entfernen"
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",

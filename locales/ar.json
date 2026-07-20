@@ -45,7 +45,11 @@
     "shareFailedTitle": "فشل",
     "shareSentMsg": "سيتلقى الشخص طلب المشاركة الخاص بك لقبوله.",
     "shareFailedMsg": "تعذّر إرسال الطلب.",
-    "shareActionFailed": "تعذّر تنفيذ الإجراء."
+    "shareActionFailed": "تعذّر تنفيذ الإجراء.",
+    "grantedTitle": "من يمكنه الوصول إلى قائمتي",
+    "grantedNobody": "لا أحد حتى الآن.",
+    "grantedPending": "في انتظار الرد",
+    "revoke": "إزالة"
   },
   "productsScreen": {
     "clickAndCollect": "انقر والتقط",

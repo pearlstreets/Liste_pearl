@@ -45,7 +45,11 @@
     "shareFailedTitle": "Falha",
     "shareSentMsg": "A pessoa receberá sua solicitação de compartilhamento para aceitar.",
     "shareFailedMsg": "Não foi possível enviar a solicitação.",
-    "shareActionFailed": "Não foi possível concluir a ação."
+    "shareActionFailed": "Não foi possível concluir a ação.",
+    "grantedTitle": "Quem tem acesso à minha lista",
+    "grantedNobody": "Ninguém por enquanto.",
+    "grantedPending": "Aguardando resposta",
+    "revoke": "Remover"
   },
   "productsScreen": {
     "clickAndCollect": "Compre e Retire",

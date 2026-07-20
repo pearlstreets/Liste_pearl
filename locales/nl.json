@@ -45,7 +45,11 @@
     "shareFailedTitle": "Mislukt",
     "shareSentMsg": "De persoon ontvangt je deelverzoek om te accepteren.",
     "shareFailedMsg": "Kan het verzoek niet verzenden.",
-    "shareActionFailed": "De actie kon niet worden uitgevoerd."
+    "shareActionFailed": "De actie kon niet worden uitgevoerd.",
+    "grantedTitle": "Wie toegang heeft tot mijn lijst",
+    "grantedNobody": "Nog niemand.",
+    "grantedPending": "Wacht op antwoord",
+    "revoke": "Intrekken"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",

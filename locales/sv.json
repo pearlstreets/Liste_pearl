@@ -45,7 +45,11 @@
     "shareFailedTitle": "Misslyckades",
     "shareSentMsg": "Personen får din delningsförfrågan att acceptera.",
     "shareFailedMsg": "Det gick inte att skicka förfrågan.",
-    "shareActionFailed": "Åtgärden kunde inte utföras."
+    "shareActionFailed": "Åtgärden kunde inte utföras.",
+    "grantedTitle": "Vem har tillgång till min lista",
+    "grantedNobody": "Ingen än.",
+    "grantedPending": "Väntar på svar",
+    "revoke": "Ta bort"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",

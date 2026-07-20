@@ -45,7 +45,11 @@
     "shareFailedTitle": "Ошибка",
     "shareSentMsg": "Человек получит ваш запрос на подтверждение.",
     "shareFailedMsg": "Не удалось отправить запрос.",
-    "shareActionFailed": "Не удалось выполнить действие."
+    "shareActionFailed": "Не удалось выполнить действие.",
+    "grantedTitle": "У кого есть доступ к моему списку",
+    "grantedNobody": "Пока никого.",
+    "grantedPending": "Ожидает ответа",
+    "revoke": "Убрать"
   },
   "productsScreen": {
     "clickAndCollect": "Заказать и забрать",
