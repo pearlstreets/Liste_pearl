@@ -17,11 +17,14 @@
   "submit": {
     "production": {
       "ios": {
-        "ascAppId": "6762128624"
+        "ascAppId": "6762128624",
+        "ascApiKeyPath": "/Users/remsko/.app-store-connect/AuthKey_G523XRGV2Q.p8",
+        "ascApiKeyId": "G523XRGV2Q",
+        "ascApiKeyIssuerId": "59cc99d5-0558-4fcc-91a3-8211efe2200b"
       },
       "android": {
         "serviceAccountKeyPath": "./google-play-service-account.json",
-        "track": "internal"
+        "track": "production"
       }
     }
   }
