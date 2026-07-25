@@ -142,7 +142,13 @@
     "error": "تعذّر تحميل المتاجر",
     "retry": "إعادة المحاولة",
     "empty": "لا توجد متاجر متاحة",
-    "noProducts": "لا توجد منتجات"
+    "noProducts": "لا توجد منتجات",
+    "searchShopPlaceholder": "البحث عن متجر...",
+    "searchProductPlaceholder": "البحث عن منتج...",
+    "noShopMatch": "لم يتم العثور على متجر",
+    "noProductMatch": "لم يتم العثور على منتج",
+    "instructions": "تعليمات خاصة",
+    "addComment": "إضافة تعليق"
   },
   "common": {
     "euroSymbol": " €",

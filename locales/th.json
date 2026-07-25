@@ -142,7 +142,13 @@
     "error": "ไม่สามารถโหลดร้านค้าได้",
     "retry": "ลองอีกครั้ง",
     "empty": "ไม่มีร้านค้าที่พร้อมให้บริการ",
-    "noProducts": "ไม่มีสินค้า"
+    "noProducts": "ไม่มีสินค้า",
+    "searchShopPlaceholder": "ค้นหาร้านค้า...",
+    "searchProductPlaceholder": "ค้นหาสินค้า...",
+    "noShopMatch": "ไม่พบร้านค้า",
+    "noProductMatch": "ไม่พบสินค้า",
+    "instructions": "คำแนะนำพิเศษ",
+    "addComment": "เพิ่มความคิดเห็น"
   },
   "common": {
     "euroSymbol": " €",

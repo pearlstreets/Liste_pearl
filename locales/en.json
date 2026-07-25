@@ -143,7 +143,13 @@
     "error": "Unable to load shops",
     "retry": "Retry",
     "empty": "No shops available",
-    "noProducts": "No products"
+    "noProducts": "No products",
+    "searchShopPlaceholder": "Search for a shop...",
+    "searchProductPlaceholder": "Search for a product...",
+    "noShopMatch": "No shop found",
+    "noProductMatch": "No product found",
+    "instructions": "Special instructions",
+    "addComment": "Add a comment"
   },
   "common": {
     "euroSymbol": " €",

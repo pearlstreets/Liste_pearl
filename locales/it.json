@@ -142,7 +142,13 @@
     "error": "Impossibile caricare i negozi",
     "retry": "Riprova",
     "empty": "Nessun negozio disponibile",
-    "noProducts": "Nessun prodotto"
+    "noProducts": "Nessun prodotto",
+    "searchShopPlaceholder": "Cerca un negozio...",
+    "searchProductPlaceholder": "Cerca un prodotto...",
+    "noShopMatch": "Nessun negozio trovato",
+    "noProductMatch": "Nessun prodotto trovato",
+    "instructions": "Istruzioni speciali",
+    "addComment": "Aggiungi un commento"
   },
   "common": {
     "euroSymbol": " €",

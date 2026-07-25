@@ -142,7 +142,13 @@
     "error": "No se pudieron cargar las tiendas",
     "retry": "Reintentar",
     "empty": "No hay tiendas disponibles",
-    "noProducts": "Sin productos"
+    "noProducts": "Sin productos",
+    "searchShopPlaceholder": "Buscar una tienda...",
+    "searchProductPlaceholder": "Buscar un producto...",
+    "noShopMatch": "No se encontró ninguna tienda",
+    "noProductMatch": "No se encontró ningún producto",
+    "instructions": "Instrucciones especiales",
+    "addComment": "Añadir un comentario"
   },
   "common": {
     "euroSymbol": " €",

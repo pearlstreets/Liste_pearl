@@ -142,7 +142,13 @@
     "error": "Det gick inte att ladda butikerna",
     "retry": "Försök igen",
     "empty": "Inga butiker tillgängliga",
-    "noProducts": "Inga produkter"
+    "noProducts": "Inga produkter",
+    "searchShopPlaceholder": "Sök en butik...",
+    "searchProductPlaceholder": "Sök en produkt...",
+    "noShopMatch": "Ingen butik hittades",
+    "noProductMatch": "Ingen produkt hittades",
+    "instructions": "Särskilda instruktioner",
+    "addComment": "Lägg till en kommentar"
   },
   "common": {
     "euroSymbol": " €",

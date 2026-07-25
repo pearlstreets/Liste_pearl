@@ -142,7 +142,13 @@
     "error": "ショップを読み込めませんでした",
     "retry": "再試行",
     "empty": "利用可能なショップがありません",
-    "noProducts": "商品がありません"
+    "noProducts": "商品がありません",
+    "searchShopPlaceholder": "ショップを検索...",
+    "searchProductPlaceholder": "商品を検索...",
+    "noShopMatch": "ショップが見つかりません",
+    "noProductMatch": "商品が見つかりません",
+    "instructions": "特別な指示",
+    "addComment": "コメントを追加"
   },
   "common": {
     "euroSymbol": " €",

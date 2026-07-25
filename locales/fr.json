@@ -143,7 +143,13 @@
     "error": "Impossible de charger les boutiques",
     "retry": "Réessayer",
     "empty": "Aucune boutique disponible",
-    "noProducts": "Aucun produit"
+    "noProducts": "Aucun produit",
+    "searchShopPlaceholder": "Rechercher une boutique...",
+    "searchProductPlaceholder": "Rechercher un produit...",
+    "noShopMatch": "Aucune boutique trouvée",
+    "noProductMatch": "Aucun produit trouvé",
+    "instructions": "Instructions spéciales",
+    "addComment": "Ajouter un commentaire"
   },
   "common": {
     "euroSymbol": " €",

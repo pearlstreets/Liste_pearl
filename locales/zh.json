@@ -142,7 +142,13 @@
     "error": "无法加载商店",
     "retry": "重试",
     "empty": "暂无可用商店",
-    "noProducts": "暂无商品"
+    "noProducts": "暂无商品",
+    "searchShopPlaceholder": "搜索商店...",
+    "searchProductPlaceholder": "搜索商品...",
+    "noShopMatch": "未找到商店",
+    "noProductMatch": "未找到商品",
+    "instructions": "特殊说明",
+    "addComment": "添加备注"
   },
   "common": {
     "euroSymbol": " €",

@@ -228,12 +228,12 @@ const lstyles = StyleSheet.create({
   stepBtn: { width: 24, height: 24, borderRadius: 7, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   stepQty: { minWidth: 26, textAlign: 'center', fontSize: 13, fontWeight: '800', color: THEME.ink, marginHorizontal: 2 },
   unitChip: { marginLeft: 6, minWidth: 30, height: 30, paddingHorizontal: 7, borderRadius: 9, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
-  unitChipOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
+  unitChipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitChipTxt: { fontSize: 12, fontWeight: '700', color: THEME.faint },
   unitChipTxtOn: { color: '#fff' },
   unitGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 14, marginHorizontal: -4 },
   unitOpt: { minWidth: 64, height: 44, paddingHorizontal: 14, margin: 4, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
-  unitOptOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
+  unitOptOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   unitOptTxtOn: { color: '#fff' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
@@ -4520,6 +4520,13 @@ const ShopsScreen = () => {
   const [error, setError] = React.useState(false);
   const [selectedShop, setSelectedShop] = React.useState(null);
   const [toast, setToast] = React.useState('');
+  // Détail produit (ouvert au tap d'une carte produit) + barres de recherche
+  // boutiques / produits. Demande user.
+  const [selectedProduct, setSelectedProduct] = React.useState(null);
+  const [shopSearch, setShopSearch] = React.useState('');
+  const [productSearch, setProductSearch] = React.useState('');
+  const [pdQty, setPdQty] = React.useState(1);
+  const [pdNote, setPdNote] = React.useState('');
 
   const load = React.useCallback(async () => {
     setError(false);
@@ -4538,7 +4545,7 @@ const ShopsScreen = () => {
 
   const onRefresh = () => { setRefreshing(true); load(); };
 
-  const addToCart = async (shop, product) => {
+  const addToCart = async (shop, product, qty = 1) => {
     try {
       const raw = await AsyncStorage.getItem(KEY_CART);
       const existing = raw ? (JSON.parse(raw) || []) : [];
@@ -4547,14 +4554,14 @@ const ShopsScreen = () => {
         String(e.shop || '').toLowerCase().trim() === String(shop.name || '').toLowerCase().trim()
       );
       if (idx >= 0) {
-        existing[idx].qty = (existing[idx].qty || 1) + 1;
+        existing[idx].qty = (existing[idx].qty || 1) + qty;
         existing[idx].price = product.price || existing[idx].price;
       } else {
         existing.push({
           name: product.name,
           detail: product.subcategory || product.description || '',
           unitPrice: '',
-          qty: 1,
+          qty: qty,
           price: product.price || 0,
           shop: shop.name,
           shopId: shop.id,
@@ -4574,7 +4581,7 @@ const ShopsScreen = () => {
   };
 
   const renderShopCard = ({ item }) => (
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => setSelectedShop(item)}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
@@ -4597,19 +4604,25 @@ const ShopsScreen = () => {
 
   const renderProduct = ({ item }) => (
     <View style={shopStyles.prodRow}>
-      {item.image ? (
-        <Image source={{ uri: item.image }} style={shopStyles.prodImg} resizeMode="cover" />
-      ) : (
-        <View style={[shopStyles.prodImg, shopStyles.coverPlaceholder]}><Ionicons name="cube-outline" size={22} color={THEME.faint} /></View>
-      )}
-      <View style={{ flex: 1 }}>
-        <Text style={shopStyles.prodName} numberOfLines={2}>{item.name}</Text>
-        {item.subcategory ? <Text style={shopStyles.prodSub} numberOfLines={1}>{item.subcategory}</Text> : null}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={shopStyles.prodPrice}>{fmtPrice(item.price)}</Text>
-          {item.promo ? <Text style={shopStyles.prodBase}>{fmtPrice(item.basePrice)}</Text> : null}
+      {/* Zone détail (image + texte) et bouton « + » = FRÈRES, jamais imbriqués
+          (touchable dans touchable = onPress externe avalé sur iOS). */}
+      <TouchableOpacity activeOpacity={0.7} style={shopStyles.prodMain}
+        onPress={() => { setPdQty(1); setPdNote(''); setSelectedProduct(item); }}
+        accessibilityRole="button" accessibilityLabel={item.name}>
+        {item.image ? (
+          <Image source={{ uri: item.image }} style={shopStyles.prodImg} resizeMode="cover" />
+        ) : (
+          <View style={[shopStyles.prodImg, shopStyles.coverPlaceholder]}><Ionicons name="cube-outline" size={22} color={THEME.faint} /></View>
+        )}
+        <View style={{ flex: 1 }}>
+          <Text style={shopStyles.prodName} numberOfLines={2}>{item.name}</Text>
+          {item.subcategory ? <Text style={shopStyles.prodSub} numberOfLines={1}>{item.subcategory}</Text> : null}
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={shopStyles.prodPrice}>{fmtPrice(item.price)}</Text>
+            {item.promo ? <Text style={shopStyles.prodBase}>{fmtPrice(item.basePrice)}</Text> : null}
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity style={shopStyles.addBtn} onPress={() => addToCart(selectedShop, item)}
         accessibilityRole="button" accessibilityLabel={`${t('cart.add', 'Ajouter')} ${item.name}`} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
         <Ionicons name="add" size={22} color="#fff" />
@@ -4617,12 +4630,41 @@ const ShopsScreen = () => {
     </View>
   );
 
+  // Filtres de recherche (boutiques + produits d'une boutique). Insensible à la casse.
+  const _q = (s) => String(s || '').toLowerCase().trim();
+  const filteredShops = shopSearch.trim()
+    ? shops.filter((s) => _q(s.name).includes(_q(shopSearch)) || _q(s.address).includes(_q(shopSearch)))
+    : shops;
+  const _shopProducts = selectedShop?.products || [];
+  const filteredProducts = productSearch.trim()
+    ? _shopProducts.filter((p) => _q(p.name).includes(_q(productSearch)) || _q(p.subcategory).includes(_q(productSearch)))
+    : _shopProducts;
+
   return (
     <SafeAreaView style={shopStyles.screen} edges={['top']}>
       <View style={shopStyles.header}>
         <Text style={shopStyles.title}>{t('shops.title', 'Boutiques')}</Text>
         <Text style={shopStyles.subtitle}>{t('shops.subtitle', 'Achat de produits — click & collect ou livraison')}</Text>
       </View>
+
+      {!loading && !error && shops.length > 0 ? (
+        <View style={shopStyles.searchWrap}>
+          <Ionicons name="search-outline" size={18} color={THEME.faint} />
+          <TextInput
+            value={shopSearch}
+            onChangeText={setShopSearch}
+            placeholder={t('shops.searchShopPlaceholder', 'Rechercher une boutique...')}
+            placeholderTextColor={THEME.faint}
+            style={shopStyles.searchInput}
+            returnKeyType="search"
+          />
+          {shopSearch.length > 0 ? (
+            <TouchableOpacity onPress={() => setShopSearch('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Ionicons name="close-circle" size={18} color={THEME.faint} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      ) : null}
 
       {loading ? (
         <View style={shopStyles.center}><ActivityIndicator size="large" color={BRAND} /></View>
@@ -4641,11 +4683,13 @@ const ShopsScreen = () => {
         </View>
       ) : (
         <FlatList
-          data={shops}
+          data={filteredShops}
           keyExtractor={(s) => String(s.id)}
           renderItem={renderShopCard}
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={BRAND} />}
+          keyboardShouldPersistTaps="handled"
+          ListEmptyComponent={shopSearch.trim() ? <Text style={[shopStyles.emptyTxt, { marginTop: 24 }]}>{t('shops.noShopMatch', 'Aucune boutique trouvée')}</Text> : null}
         />
       )}
 
@@ -4662,15 +4706,92 @@ const ShopsScreen = () => {
               {selectedShop?.address ? <Text style={shopStyles.shopAddr} numberOfLines={1}>{selectedShop.address}</Text> : null}
             </View>
           </View>
+          <View style={[shopStyles.searchWrap, { marginTop: 12 }]}>
+            <Ionicons name="search-outline" size={18} color={THEME.faint} />
+            <TextInput
+              value={productSearch}
+              onChangeText={setProductSearch}
+              placeholder={t('shops.searchProductPlaceholder', 'Rechercher un produit...')}
+              placeholderTextColor={THEME.faint}
+              style={shopStyles.searchInput}
+              returnKeyType="search"
+            />
+            {productSearch.length > 0 ? (
+              <TouchableOpacity onPress={() => setProductSearch('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                <Ionicons name="close-circle" size={18} color={THEME.faint} />
+              </TouchableOpacity>
+            ) : null}
+          </View>
           <FlatList
-            data={selectedShop?.products || []}
+            data={filteredProducts}
             keyExtractor={(p) => String(p.id)}
             renderItem={renderProduct}
             contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-            ListEmptyComponent={<Text style={shopStyles.emptyTxt}>{t('shops.noProducts', 'Aucun produit')}</Text>}
+            keyboardShouldPersistTaps="handled"
+            ListEmptyComponent={<Text style={[shopStyles.emptyTxt, { marginTop: 24 }]}>{productSearch.trim() ? t('shops.noProductMatch', 'Aucun produit trouvé') : t('shops.noProducts', 'Aucun produit')}</Text>}
           />
           {toast ? (
             <View style={shopStyles.toast}><Ionicons name="checkmark-circle" size={18} color="#fff" /><Text style={shopStyles.toastTxt}>{toast}</Text></View>
+          ) : null}
+
+          {/* Détail produit — page plein écran façon AppUser (overlay absolu
+              DANS le modal boutique : évite le conflit de modals iOS). */}
+          {selectedProduct ? (
+            <View style={shopStyles.pdFull}>
+              <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }} keyboardShouldPersistTaps="handled">
+                <View style={shopStyles.pdHeroWrap}>
+                  {selectedProduct?.image ? (
+                    <Image source={{ uri: selectedProduct.image }} style={shopStyles.pdHero} resizeMode="cover" />
+                  ) : (
+                    <View style={[shopStyles.pdHero, shopStyles.coverPlaceholder]}><Ionicons name="cube-outline" size={54} color={THEME.faint} /></View>
+                  )}
+                  <TouchableOpacity onPress={() => setSelectedProduct(null)} style={shopStyles.pdCloseFloat}
+                    accessibilityRole="button" accessibilityLabel={t('profile.close', 'Fermer')}>
+                    <Ionicons name="close" size={22} color={THEME.ink} />
+                  </TouchableOpacity>
+                </View>
+                <View style={shopStyles.pdBody}>
+                  <Text style={shopStyles.pdName}>{selectedProduct?.name}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                    <Text style={shopStyles.pdPrice}>{selectedProduct ? fmtPrice(selectedProduct.price) : ''}</Text>
+                    {selectedProduct?.promo ? <Text style={shopStyles.pdBase}>{fmtPrice(selectedProduct.basePrice)}</Text> : null}
+                  </View>
+                  {selectedShop?.name ? <Text style={shopStyles.pdStore}>{selectedShop.name}</Text> : null}
+                  {selectedShop?.address ? (
+                    <View style={shopStyles.pdLocRow}>
+                      <Ionicons name="location-outline" size={16} color={THEME.muted} />
+                      <Text style={shopStyles.pdLocTxt} numberOfLines={2}>{selectedShop.address}</Text>
+                    </View>
+                  ) : null}
+                  {selectedProduct?.subcategory ? <Text style={shopStyles.pdSub}>{selectedProduct.subcategory}</Text> : null}
+                  {selectedProduct?.description ? <Text style={shopStyles.pdDesc}>{selectedProduct.description}</Text> : null}
+                  <Text style={shopStyles.pdSectionTitle}>{t('shops.instructions', 'Instructions spéciales')}</Text>
+                  <TextInput
+                    value={pdNote}
+                    onChangeText={setPdNote}
+                    placeholder={t('shops.addComment', 'Ajouter un commentaire')}
+                    placeholderTextColor={THEME.faint}
+                    style={shopStyles.pdNoteInput}
+                    multiline
+                  />
+                </View>
+              </ScrollView>
+              <View style={shopStyles.pdFooter}>
+                <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => Math.max(1, q - 1))}
+                  accessibilityRole="button" accessibilityLabel="moins">
+                  <Ionicons name="remove" size={20} color={THEME.ink} />
+                </TouchableOpacity>
+                <TouchableOpacity style={shopStyles.pdAddBig} activeOpacity={0.9}
+                  onPress={() => { if (selectedProduct) { addToCart(selectedShop, selectedProduct, pdQty); } setSelectedProduct(null); }}
+                  accessibilityRole="button" accessibilityLabel={t('cart.add', 'Ajouter')}>
+                  <Text style={shopStyles.pdAddBigTxt}>{t('cart.add', 'Ajouter')} {pdQty} · {selectedProduct ? fmtPrice((Number(selectedProduct.price) || 0) * pdQty) : ''}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => q + 1)}
+                  accessibilityRole="button" accessibilityLabel="plus">
+                  <Ionicons name="add" size={20} color={THEME.ink} />
+                </TouchableOpacity>
+              </View>
+            </View>
           ) : null}
         </View>
       </Modal>
@@ -4704,6 +4825,7 @@ const shopStyles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
   detailTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink },
   prodRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: THEME.border },
+  prodMain: { flexDirection: 'row', alignItems: 'center', flex: 1 },
   prodImg: { width: 56, height: 56, borderRadius: 12, backgroundColor: THEME.subtle, marginRight: 12 },
   prodName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   prodSub: { fontSize: 11, color: THEME.faint, marginTop: 1, fontWeight: '600' },
@@ -4712,6 +4834,39 @@ const shopStyles = StyleSheet.create({
   addBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
   toast: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: THEME.ink, borderRadius: 14, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
   toastTxt: { color: '#fff', fontWeight: '700', marginLeft: 8, flex: 1 },
+  // Barre de recherche (boutiques + produits)
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, paddingVertical: 0 },
+  // Pop-up détail produit
+  pdOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
+  pdSheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28, maxHeight: '86%' },
+  pdClose: { alignSelf: 'flex-end', width: 34, height: 34, borderRadius: 17, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  pdImg: { width: '100%', height: 230, borderRadius: 18, backgroundColor: THEME.subtle, marginBottom: 16 },
+  pdName: { fontSize: 22, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  pdSub: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
+  pdPrice: { fontSize: 24, fontWeight: '900', color: THEME.brandDark, marginTop: 10 },
+  pdBase: { fontSize: 15, color: THEME.faint, marginLeft: 10, marginBottom: 3, textDecorationLine: 'line-through' },
+  pdDesc: { fontSize: 14, color: THEME.muted, marginTop: 14, lineHeight: 21, fontWeight: '500' },
+  pdShopRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
+  pdShopTxt: { fontSize: 13, color: THEME.muted, fontWeight: '700', marginLeft: 6, flex: 1 },
+  pdAddBtn: { marginTop: 18, backgroundColor: BRAND, borderRadius: 14, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  pdAddTxt: { color: '#fff', fontSize: 16, fontWeight: '800', marginLeft: 8 },
+  // Page détail produit plein écran (façon AppUser)
+  pdFull: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: THEME.bg },
+  pdHeroWrap: { width: '100%', height: 300, backgroundColor: THEME.subtle },
+  pdHero: { width: '100%', height: '100%' },
+  // top: 56 → sous la barre d'état (encoche/Dynamic Island), jamais dessous.
+  pdCloseFloat: { position: 'absolute', top: 56, left: 16, width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', ...THEME.shadowSm },
+  pdBody: { paddingHorizontal: 20, paddingTop: 18 },
+  pdStore: { fontSize: 16, fontWeight: '800', color: THEME.ink, marginTop: 12 },
+  pdLocRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  pdLocTxt: { fontSize: 13, color: THEME.muted, fontWeight: '600', flex: 1, marginLeft: 6 },
+  pdSectionTitle: { fontSize: 16, fontWeight: '800', color: THEME.ink, marginTop: 22, marginBottom: 8 },
+  pdNoteInput: { minHeight: 96, borderWidth: 1, borderColor: THEME.border, borderRadius: 14, padding: 12, fontSize: 14, color: THEME.ink, textAlignVertical: 'top', backgroundColor: THEME.card },
+  pdFooter: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 12, paddingBottom: 28, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
+  pdQtyBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  pdAddBig: { flex: 1, marginHorizontal: 10, backgroundColor: THEME.ink, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
+  pdAddBigTxt: { color: '#fff', fontSize: 16, fontWeight: '800' },
 });
 
 function MainNavigator({ onLogout, isAuth }) {

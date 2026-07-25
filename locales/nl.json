@@ -142,7 +142,13 @@
     "error": "Kan de winkels niet laden",
     "retry": "Opnieuw proberen",
     "empty": "Geen winkels beschikbaar",
-    "noProducts": "Geen producten"
+    "noProducts": "Geen producten",
+    "searchShopPlaceholder": "Zoek een winkel...",
+    "searchProductPlaceholder": "Zoek een product...",
+    "noShopMatch": "Geen winkel gevonden",
+    "noProductMatch": "Geen product gevonden",
+    "instructions": "Speciale instructies",
+    "addComment": "Voeg een opmerking toe"
   },
   "common": {
     "euroSymbol": " €",

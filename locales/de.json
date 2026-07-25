@@ -142,7 +142,13 @@
     "error": "Shops konnten nicht geladen werden",
     "retry": "Erneut versuchen",
     "empty": "Keine Shops verfügbar",
-    "noProducts": "Keine Produkte"
+    "noProducts": "Keine Produkte",
+    "searchShopPlaceholder": "Shop suchen...",
+    "searchProductPlaceholder": "Produkt suchen...",
+    "noShopMatch": "Kein Shop gefunden",
+    "noProductMatch": "Kein Produkt gefunden",
+    "instructions": "Besondere Hinweise",
+    "addComment": "Kommentar hinzufügen"
   },
   "common": {
     "euroSymbol": " €",

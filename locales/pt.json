@@ -142,7 +142,13 @@
     "error": "Não foi possível carregar as lojas",
     "retry": "Tentar novamente",
     "empty": "Nenhuma loja disponível",
-    "noProducts": "Nenhum produto"
+    "noProducts": "Nenhum produto",
+    "searchShopPlaceholder": "Pesquisar uma loja...",
+    "searchProductPlaceholder": "Pesquisar um produto...",
+    "noShopMatch": "Nenhuma loja encontrada",
+    "noProductMatch": "Nenhum produto encontrado",
+    "instructions": "Instruções especiais",
+    "addComment": "Adicionar um comentário"
   },
   "common": {
     "euroSymbol": " €",

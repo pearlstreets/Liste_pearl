@@ -142,7 +142,13 @@
     "error": "Не удалось загрузить магазины",
     "retry": "Повторить",
     "empty": "Нет доступных магазинов",
-    "noProducts": "Нет товаров"
+    "noProducts": "Нет товаров",
+    "searchShopPlaceholder": "Поиск магазина...",
+    "searchProductPlaceholder": "Поиск товара...",
+    "noShopMatch": "Магазины не найдены",
+    "noProductMatch": "Товары не найдены",
+    "instructions": "Особые пожелания",
+    "addComment": "Добавить комментарий"
   },
   "common": {
     "euroSymbol": " €",
