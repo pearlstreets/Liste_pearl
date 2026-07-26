@@ -252,7 +252,9 @@ const lstyles = StyleSheet.create({
   emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(9,215,170,0.95)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
-  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  // zIndex/elevation : garantit que cette barre reste au-dessus de la liste
+  // réordonnable, qui crée son propre plan (gesture-handler).
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10, elevation: 10, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
   hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
   hideTxt: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
   cta: { height: 54, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
@@ -697,7 +699,9 @@ function ListScreen() {
   // visible dans le libellé du bouton (fini le fallback caché « tout envoyer »).
   const selectableItems = items.filter(it => it && !it.crossed);
   const selectedForSend = selectableItems.filter(it => it.selected || it.checked);
-  const itemsToSend = selectedForSend.length ? selectedForSend : selectableItems;
+  // Plus de repli silencieux vers « tout envoyer » : on n'envoie QUE ce qui est
+  // coché, et le bouton n'apparaît que dans ce cas (demande user).
+  const itemsToSend = selectedForSend;
 
   const Header = (
     <View style={lstyles.header}>
@@ -830,11 +834,28 @@ function ListScreen() {
 
       {!readOnly && (
       <View style={lstyles.bottomWrap}>
-        <View style={lstyles.hideRow}>
-          <Switch value={hideCrossed} onValueChange={setHideCrossed} trackColor={{ true: THEME.brand, false: '#D7DCE3' }} thumbColor="#fff" style={{ transform:[{ scale:0.85 }] }} />
+        {/* Toute la ligne bascule l'option : le Switch seul offrait une cible
+            minuscule et restait insensible au toucher. */}
+        <Pressable
+          onPress={() => setHideCrossed(v => !v)}
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
+          style={lstyles.hideRow}
+          accessibilityRole="switch"
+          accessibilityState={{ checked: hideCrossed }}
+          accessibilityLabel={t('listScreen.hideStriked')}
+        >
+          <Switch
+            value={hideCrossed}
+            onValueChange={setHideCrossed}
+            pointerEvents="none"
+            trackColor={{ true: THEME.brand, false: '#D7DCE3' }}
+            thumbColor="#fff"
+            style={{ transform:[{ scale:0.85 }] }}
+          />
           <Text style={lstyles.hideTxt}>{t('listScreen.hideStriked')}</Text>
-        </View>
-        <TouchableOpacity activeOpacity={0.9} style={[lstyles.cta, itemsToSend.length === 0 && { opacity: 0.5 }]} disabled={itemsToSend.length === 0}
+        </Pressable>
+        {itemsToSend.length > 0 && (
+        <TouchableOpacity activeOpacity={0.9} style={lstyles.cta}
         accessibilityRole="button" accessibilityLabel={t('listScreen.findExactProducts')} onPress={async ()=>{
         try{
           // Un seul critère : les articles à envoyer (non barrés), jamais les barrés.
@@ -848,8 +869,9 @@ function ListScreen() {
         navigation.navigate("products");
       }}>
           <Ionicons name="bag-check-outline" size={20} color="#fff" />
-          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')}{itemsToSend.length > 0 ? ` (${itemsToSend.length})` : ''}</Text>
+          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')} ({itemsToSend.length})</Text>
         </TouchableOpacity>
+        )}
       </View>
       )}
 
