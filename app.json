@@ -37,7 +37,7 @@
     },
     "android": {
       "package": "com.pearlstreets.list",
-      "versionCode": 7,
+      "versionCode": 8,
       "config": {
         "googleMaps": {
           "apiKey": "REMPLACE_PAR_TA_CLE_GOOGLE_MAPS_ANDROID"
