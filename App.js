@@ -436,14 +436,16 @@ function ListScreen() {
   // Les articles barrés descendent TOUJOURS en bas de liste, sans perdre leur
   // ordre relatif (tri stable) ni celui des articles restants. L'ordre manuel
   // (flèches) porte donc sur les articles actifs, ce qui est ce qu'on veut.
-  const visible = useMemo(() => {
-    const base = hideCrossed ? sourceItems.filter(i => !i.crossed) : sourceItems;
-    const actifs = [], barres = [];
-    for (const it of base) (it && it.crossed ? barres : actifs).push(it);
-    return barres.length ? [...actifs, ...barres] : base;
-  }, [sourceItems, hideCrossed]);
-  // Nombre d'articles actifs : sert à griser les flèches aux extrémités.
-  const activeCount = useMemo(() => visible.filter(i => i && !i.crossed).length, [visible]);
+  // Deux listes séparées : la liste DÉPLAÇABLE ne contient que les articles
+  // actifs, les barrés sont rendus dans un pied de liste fixe. Ils sont donc
+  // toujours en bas par construction, et aucun glisser-déposer ne peut les
+  // atteindre — c'est ce qui garantit que l'affichage ne peut pas se
+  // désynchroniser des données.
+  const activeItems = useMemo(() => sourceItems.filter(i => i && !i.crossed), [sourceItems]);
+  const crossedItems = useMemo(
+    () => (hideCrossed ? [] : sourceItems.filter(i => i && i.crossed)),
+    [sourceItems, hideCrossed],
+  );
 
   const openEdit = (it) => { setEditId(it.id); setEditText(it.name); setEditVisible(true); };
   const closeEdit = () => { setEditVisible(false); setEditId(null); setEditText(""); };
@@ -596,7 +598,9 @@ function ListScreen() {
     setShareBusy(false);
   };
 
-  const renderItem = ({ item, index }) => {
+  // Rendu d'une ligne. `drag` n'est fourni que pour les articles actifs de la
+  // liste déplaçable ; les barrés sont rendus sans lui (pied de liste fixe).
+  const renderRow = (item, drag) => {
     const isCrossed = !!item.crossed;
     if (readOnly) {
       // Vue lecture seule d'une liste partagée par quelqu'un d'autre.
@@ -611,8 +615,6 @@ function ListScreen() {
       );
     }
     return (
-    <DragWrap enabled={!isCrossed && activeCount > 1}>
-    {(drag) => (
     <Pressable
       onLongPress={drag}
       delayLongPress={220}
@@ -662,19 +664,25 @@ function ListScreen() {
         </View>
       </TouchableOpacity>
     </Pressable>
-    )}
-    </DragWrap>
     );
   };
 
-  // Glisser-déposer : on ne réordonne QUE les articles actifs (les barrés sont
-  // groupés en bas automatiquement). On réécrit les positions actives du
-  // tableau source, sans jamais déplacer un barré.
+  // Ligne de la liste DÉPLAÇABLE : uniquement des articles actifs, donc tout
+  // couple (from, to) y est valide — plus aucun cas où l'on refuserait le
+  // déplacement, ce qui désynchronisait l'affichage des données.
+  const renderItem = ({ item }) => (
+    <DragWrap enabled={activeItems.length > 1}>
+      {(drag) => renderRow(item, drag)}
+    </DragWrap>
+  );
+
+  // Réordonnancement parmi les actifs : on réécrit uniquement les positions
+  // actives du tableau source, les barrés ne bougent jamais de leurs cases.
   const onReorder = ({ from, to }) => {
-    if (from === to || from >= activeCount || to >= activeCount) return;
+    if (from === to) return;
     setItems(prev => {
       const slots = prev.map((it, i) => (it && !it.crossed ? i : -1)).filter(i => i >= 0);
-      if (from >= slots.length || to >= slots.length) return prev;
+      if (from < 0 || to < 0 || from >= slots.length || to >= slots.length) return prev;
       const seq = slots.map(i => prev[i]);
       const [moved] = seq.splice(from, 1);
       seq.splice(to, 0, moved);
@@ -793,7 +801,7 @@ function ListScreen() {
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={lstyles.screen} edges={['top']}>
       <ReorderableList
-        data={visible}
+        data={activeItems}
         onReorder={onReorder}
         keyExtractor={(it) => it.id}
         renderItem={renderItem}
@@ -801,12 +809,23 @@ function ListScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={lstyles.empty}>
-            <Text style={lstyles.emptyTitle}>{t('listScreen.noItems')}</Text>
-            <Text style={lstyles.emptyHint}>{t('listScreen.inputPlaceholder')}</Text>
-          </View>
+          crossedItems.length === 0 ? (
+            <View style={lstyles.empty}>
+              <Text style={lstyles.emptyTitle}>{t('listScreen.noItems')}</Text>
+              <Text style={lstyles.emptyHint}>{t('listScreen.inputPlaceholder')}</Text>
+            </View>
+          ) : null
         }
-        contentContainerStyle={visible.length === 0 ? { flexGrow: 1, paddingBottom: 180 } : { paddingBottom: 180 }}
+        // Les articles barrés vivent hors de la zone déplaçable : toujours en
+        // bas, jamais déplaçables, donc jamais de conflit avec le drag.
+        ListFooterComponent={
+          crossedItems.length ? (
+            <View>{crossedItems.map(it => (
+              <View key={it.id}>{renderRow(it, undefined)}</View>
+            ))}</View>
+          ) : null
+        }
+        contentContainerStyle={(activeItems.length === 0 && crossedItems.length === 0) ? { flexGrow: 1, paddingBottom: 180 } : { paddingBottom: 180 }}
       />
 
       {!readOnly && (
