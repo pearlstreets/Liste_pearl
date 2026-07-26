@@ -49,7 +49,9 @@
     "grantedTitle": "Wie toegang heeft tot mijn lijst",
     "grantedNobody": "Nog niemand.",
     "grantedPending": "Wacht op antwoord",
-    "revoke": "Intrekken"
+    "revoke": "Intrekken",
+    "moveUp": "Omhoog",
+    "moveDown": "Omlaag"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",

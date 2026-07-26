@@ -49,7 +49,9 @@
     "grantedTitle": "ใครเข้าถึงรายการของฉันได้บ้าง",
     "grantedNobody": "ยังไม่มีใคร",
     "grantedPending": "รอการตอบกลับ",
-    "revoke": "นำออก"
+    "revoke": "นำออก",
+    "moveUp": "เลื่อนขึ้น",
+    "moveDown": "เลื่อนลง"
   },
   "productsScreen": {
     "clickAndCollect": "คลิกและรับสินค้า",

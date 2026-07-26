@@ -50,7 +50,9 @@
     "grantedTitle": "Qui a accès à ma liste",
     "grantedNobody": "Personne pour le moment.",
     "grantedPending": "En attente de réponse",
-    "revoke": "Retirer"
+    "revoke": "Retirer",
+    "moveUp": "Monter",
+    "moveDown": "Descendre"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

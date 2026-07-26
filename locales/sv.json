@@ -49,7 +49,9 @@
     "grantedTitle": "Vem har tillgång till min lista",
     "grantedNobody": "Ingen än.",
     "grantedPending": "Väntar på svar",
-    "revoke": "Ta bort"
+    "revoke": "Ta bort",
+    "moveUp": "Flytta upp",
+    "moveDown": "Flytta ner"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",

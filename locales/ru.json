@@ -49,7 +49,9 @@
     "grantedTitle": "У кого есть доступ к моему списку",
     "grantedNobody": "Пока никого.",
     "grantedPending": "Ожидает ответа",
-    "revoke": "Убрать"
+    "revoke": "Убрать",
+    "moveUp": "Вверх",
+    "moveDown": "Вниз"
   },
   "productsScreen": {
     "clickAndCollect": "Заказать и забрать",

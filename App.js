@@ -236,6 +236,9 @@ const lstyles = StyleSheet.create({
   unitOptOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   unitOptTxtOn: { color: '#fff' },
+  // Colonne de réordonnancement : étroite (18 px) pour ne pas serrer la ligne.
+  moveCol: { width: 18, marginRight: 2, alignItems: 'center', justifyContent: 'center' },
+  moveBtn: { height: 17, alignItems: 'center', justifyContent: 'center' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
   doneBtnOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
@@ -423,7 +426,31 @@ function ListScreen() {
     setItems(items.map(it => ({ ...it, crossed: v, selected: v ? false : it.selected })));
   };
 
-  const visible = useMemo(() => hideCrossed ? sourceItems.filter(i => !i.crossed) : sourceItems, [sourceItems, hideCrossed]);
+  // Les articles barrés descendent TOUJOURS en bas de liste, sans perdre leur
+  // ordre relatif (tri stable) ni celui des articles restants. L'ordre manuel
+  // (flèches) porte donc sur les articles actifs, ce qui est ce qu'on veut.
+  const visible = useMemo(() => {
+    const base = hideCrossed ? sourceItems.filter(i => !i.crossed) : sourceItems;
+    const actifs = [], barres = [];
+    for (const it of base) (it && it.crossed ? barres : actifs).push(it);
+    return barres.length ? [...actifs, ...barres] : base;
+  }, [sourceItems, hideCrossed]);
+  // Nombre d'articles actifs : sert à griser les flèches aux extrémités.
+  const activeCount = useMemo(() => visible.filter(i => i && !i.crossed).length, [visible]);
+
+  // Déplace un article d'un cran parmi les ACTIFS uniquement : on échange sa
+  // place avec l'actif voisin dans le tableau source, sans toucher aux barrés
+  // (qui restent groupés en bas). L'ordre est donc persisté comme le reste.
+  const moveItem = (id, dir) => setItems(prev => {
+    const pos = prev.map((it, i) => (it && !it.crossed ? i : -1)).filter(i => i >= 0);
+    const k = pos.findIndex(i => prev[i].id === id);
+    const dest = k + dir;
+    if (k < 0 || dest < 0 || dest >= pos.length) return prev;
+    const next = prev.slice();
+    const a = pos[k], b = pos[dest];
+    next[a] = prev[b]; next[b] = prev[a];
+    return next;
+  });
 
   const openEdit = (it) => { setEditId(it.id); setEditText(it.name); setEditVisible(true); };
   const closeEdit = () => { setEditVisible(false); setEditId(null); setEditText(""); };
@@ -576,8 +603,10 @@ function ListScreen() {
     setShareBusy(false);
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const isCrossed = !!item.crossed;
+    const isFirst = index === 0;
+    const isLast = index === activeCount - 1;
     if (readOnly) {
       // Vue lecture seule d'une liste partagée par quelqu'un d'autre.
       return (
@@ -592,6 +621,33 @@ function ListScreen() {
     }
     return (
     <View style={[lstyles.card, isCrossed && { opacity: 0.62 }]}>
+      {/* Réordonnancement : flèches empilées, seulement sur les articles actifs
+          (les barrés sont regroupés en bas automatiquement). */}
+      {!isCrossed && activeCount > 1 ? (
+        <View style={lstyles.moveCol}>
+          <TouchableOpacity
+            onPress={() => moveItem(item.id, -1)}
+            disabled={isFirst}
+            hitSlop={{top:4,bottom:2,left:8,right:4}}
+            style={lstyles.moveBtn}
+            accessibilityRole="button"
+            accessibilityLabel={t('listScreen.moveUp', 'Monter')}
+          >
+            <Ionicons name="chevron-up" size={14} color={isFirst ? '#D7DCE3' : THEME.faint} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => moveItem(item.id, 1)}
+            disabled={isLast}
+            hitSlop={{top:2,bottom:4,left:8,right:4}}
+            style={lstyles.moveBtn}
+            accessibilityRole="button"
+            accessibilityLabel={t('listScreen.moveDown', 'Descendre')}
+          >
+            <Ionicons name="chevron-down" size={14} color={isLast ? '#D7DCE3' : THEME.faint} />
+          </TouchableOpacity>
+        </View>
+      ) : null}
+
       {/* Select checkbox */}
       <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
         <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>

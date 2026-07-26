@@ -49,7 +49,9 @@
     "grantedTitle": "من يمكنه الوصول إلى قائمتي",
     "grantedNobody": "لا أحد حتى الآن.",
     "grantedPending": "في انتظار الرد",
-    "revoke": "إزالة"
+    "revoke": "إزالة",
+    "moveUp": "تحريك لأعلى",
+    "moveDown": "تحريك لأسفل"
   },
   "productsScreen": {
     "clickAndCollect": "انقر والتقط",

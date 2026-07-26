@@ -49,7 +49,9 @@
     "grantedTitle": "リストにアクセスできる人",
     "grantedNobody": "まだ誰もいません。",
     "grantedPending": "返答待ち",
-    "revoke": "解除"
+    "revoke": "解除",
+    "moveUp": "上へ移動",
+    "moveDown": "下へ移動"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",

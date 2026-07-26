@@ -49,7 +49,9 @@
     "grantedTitle": "谁可以访问我的清单",
     "grantedNobody": "暂时没有人。",
     "grantedPending": "等待回复",
-    "revoke": "移除"
+    "revoke": "移除",
+    "moveUp": "上移",
+    "moveDown": "下移"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",
