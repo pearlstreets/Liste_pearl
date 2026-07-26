@@ -50,8 +50,7 @@
     "grantedNobody": "Пока никого.",
     "grantedPending": "Ожидает ответа",
     "revoke": "Убрать",
-    "moveUp": "Вверх",
-    "moveDown": "Вниз"
+    "dragHint": "Удерживайте, чтобы переместить"
   },
   "productsScreen": {
     "clickAndCollect": "Заказать и забрать",

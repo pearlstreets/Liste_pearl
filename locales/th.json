@@ -50,8 +50,7 @@
     "grantedNobody": "ยังไม่มีใคร",
     "grantedPending": "รอการตอบกลับ",
     "revoke": "นำออก",
-    "moveUp": "เลื่อนขึ้น",
-    "moveDown": "เลื่อนลง"
+    "dragHint": "กดค้างเพื่อย้าย"
   },
   "productsScreen": {
     "clickAndCollect": "คลิกและรับสินค้า",

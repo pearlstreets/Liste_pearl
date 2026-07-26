@@ -42,6 +42,16 @@ import SearchPopup from './components/SearchPopup';
 import * as Location from 'expo-location';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ReorderableList, { useReorderableDrag } from "react-native-reorderable-list";
+
+// Enveloppe qui expose le déclencheur de glisser-déposer aux lignes de liste.
+// Le hook doit être appelé dans un enfant du ReorderableList : on le fait ici,
+// puis on passe `drag` à la ligne via une render-prop (aucune closure perdue).
+const DragWrap = ({ enabled, children }) => {
+  const drag = useReorderableDrag();
+  return children(enabled ? drag : undefined);
+};
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -236,9 +246,6 @@ const lstyles = StyleSheet.create({
   unitOptOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   unitOptTxtOn: { color: '#fff' },
-  // Colonne de réordonnancement : étroite (18 px) pour ne pas serrer la ligne.
-  moveCol: { width: 18, marginRight: 2, alignItems: 'center', justifyContent: 'center' },
-  moveBtn: { height: 17, alignItems: 'center', justifyContent: 'center' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
   doneBtnOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
@@ -438,20 +445,6 @@ function ListScreen() {
   // Nombre d'articles actifs : sert à griser les flèches aux extrémités.
   const activeCount = useMemo(() => visible.filter(i => i && !i.crossed).length, [visible]);
 
-  // Déplace un article d'un cran parmi les ACTIFS uniquement : on échange sa
-  // place avec l'actif voisin dans le tableau source, sans toucher aux barrés
-  // (qui restent groupés en bas). L'ordre est donc persisté comme le reste.
-  const moveItem = (id, dir) => setItems(prev => {
-    const pos = prev.map((it, i) => (it && !it.crossed ? i : -1)).filter(i => i >= 0);
-    const k = pos.findIndex(i => prev[i].id === id);
-    const dest = k + dir;
-    if (k < 0 || dest < 0 || dest >= pos.length) return prev;
-    const next = prev.slice();
-    const a = pos[k], b = pos[dest];
-    next[a] = prev[b]; next[b] = prev[a];
-    return next;
-  });
-
   const openEdit = (it) => { setEditId(it.id); setEditText(it.name); setEditVisible(true); };
   const closeEdit = () => { setEditVisible(false); setEditId(null); setEditText(""); };
   const saveEdit = () => {
@@ -605,8 +598,6 @@ function ListScreen() {
 
   const renderItem = ({ item, index }) => {
     const isCrossed = !!item.crossed;
-    const isFirst = index === 0;
-    const isLast = index === activeCount - 1;
     if (readOnly) {
       // Vue lecture seule d'une liste partagée par quelqu'un d'autre.
       return (
@@ -620,34 +611,14 @@ function ListScreen() {
       );
     }
     return (
-    <View style={[lstyles.card, isCrossed && { opacity: 0.62 }]}>
-      {/* Réordonnancement : flèches empilées, seulement sur les articles actifs
-          (les barrés sont regroupés en bas automatiquement). */}
-      {!isCrossed && activeCount > 1 ? (
-        <View style={lstyles.moveCol}>
-          <TouchableOpacity
-            onPress={() => moveItem(item.id, -1)}
-            disabled={isFirst}
-            hitSlop={{top:4,bottom:2,left:8,right:4}}
-            style={lstyles.moveBtn}
-            accessibilityRole="button"
-            accessibilityLabel={t('listScreen.moveUp', 'Monter')}
-          >
-            <Ionicons name="chevron-up" size={14} color={isFirst ? '#D7DCE3' : THEME.faint} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => moveItem(item.id, 1)}
-            disabled={isLast}
-            hitSlop={{top:2,bottom:4,left:8,right:4}}
-            style={lstyles.moveBtn}
-            accessibilityRole="button"
-            accessibilityLabel={t('listScreen.moveDown', 'Descendre')}
-          >
-            <Ionicons name="chevron-down" size={14} color={isLast ? '#D7DCE3' : THEME.faint} />
-          </TouchableOpacity>
-        </View>
-      ) : null}
-
+    <DragWrap enabled={!isCrossed && activeCount > 1}>
+    {(drag) => (
+    <Pressable
+      onLongPress={drag}
+      delayLongPress={220}
+      style={({ pressed }) => [lstyles.card, isCrossed && { opacity: 0.62 }, pressed && drag && { opacity: 0.9 }]}
+      accessibilityHint={drag ? t('listScreen.dragHint', 'Appui long pour déplacer') : undefined}
+    >
       {/* Select checkbox */}
       <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
         <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
@@ -655,8 +626,8 @@ function ListScreen() {
         </View>
       </TouchableOpacity>
 
-      {/* Name — tap to edit */}
-      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
+      {/* Name — tap to edit, appui long pour déplacer la ligne */}
+      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} onLongPress={drag} delayLongPress={220} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
         <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{item.name}</Text>
       </TouchableOpacity>
 
@@ -690,8 +661,27 @@ function ListScreen() {
           <Ionicons name="checkmark" size={15} color={isCrossed ? '#fff' : THEME.faint} />
         </View>
       </TouchableOpacity>
-    </View>
+    </Pressable>
+    )}
+    </DragWrap>
     );
+  };
+
+  // Glisser-déposer : on ne réordonne QUE les articles actifs (les barrés sont
+  // groupés en bas automatiquement). On réécrit les positions actives du
+  // tableau source, sans jamais déplacer un barré.
+  const onReorder = ({ from, to }) => {
+    if (from === to || from >= activeCount || to >= activeCount) return;
+    setItems(prev => {
+      const slots = prev.map((it, i) => (it && !it.crossed ? i : -1)).filter(i => i >= 0);
+      if (from >= slots.length || to >= slots.length) return prev;
+      const seq = slots.map(i => prev[i]);
+      const [moved] = seq.splice(from, 1);
+      seq.splice(to, 0, moved);
+      const next = prev.slice();
+      slots.forEach((pos, k) => { next[pos] = seq[k]; });
+      return next;
+    });
   };
 
   // Articles envoyés vers l'optimiseur : JAMAIS les articles barrés.
@@ -802,8 +792,9 @@ function ListScreen() {
     <View style={lstyles.screen}>
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={lstyles.screen} edges={['top']}>
-      <FlatList
+      <ReorderableList
         data={visible}
+        onReorder={onReorder}
         keyExtractor={(it) => it.id}
         renderItem={renderItem}
         ListHeaderComponent={Header}
@@ -5832,6 +5823,7 @@ export default function App() {
   }
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <NavigationContainer theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
@@ -5845,6 +5837,7 @@ export default function App() {
         />
       </Modal>
     </CurrencyContext.Provider>
+    </GestureHandlerRootView>
   );
 }
 

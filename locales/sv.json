@@ -50,8 +50,7 @@
     "grantedNobody": "Ingen än.",
     "grantedPending": "Väntar på svar",
     "revoke": "Ta bort",
-    "moveUp": "Flytta upp",
-    "moveDown": "Flytta ner"
+    "dragHint": "Håll in för att flytta"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",

@@ -50,8 +50,7 @@
     "grantedNobody": "لا أحد حتى الآن.",
     "grantedPending": "في انتظار الرد",
     "revoke": "إزالة",
-    "moveUp": "تحريك لأعلى",
-    "moveDown": "تحريك لأسفل"
+    "dragHint": "اضغط مطولاً للتحريك"
   },
   "productsScreen": {
     "clickAndCollect": "انقر والتقط",

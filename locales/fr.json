@@ -51,8 +51,7 @@
     "grantedNobody": "Personne pour le moment.",
     "grantedPending": "En attente de réponse",
     "revoke": "Retirer",
-    "moveUp": "Monter",
-    "moveDown": "Descendre"
+    "dragHint": "Appui long pour déplacer"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

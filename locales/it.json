@@ -50,8 +50,7 @@
     "grantedNobody": "Nessuno per ora.",
     "grantedPending": "In attesa di risposta",
     "revoke": "Rimuovi",
-    "moveUp": "Sposta su",
-    "moveDown": "Sposta giù"
+    "dragHint": "Tieni premuto per spostare"
   },
   "productsScreen": {
     "clickAndCollect": "Ordina e Ritira",

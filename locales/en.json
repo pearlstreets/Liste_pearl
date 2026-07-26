@@ -51,8 +51,7 @@
     "grantedNobody": "Nobody yet.",
     "grantedPending": "Awaiting response",
     "revoke": "Remove",
-    "moveUp": "Move up",
-    "moveDown": "Move down"
+    "dragHint": "Long press to move"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

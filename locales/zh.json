@@ -50,8 +50,7 @@
     "grantedNobody": "暂时没有人。",
     "grantedPending": "等待回复",
     "revoke": "移除",
-    "moveUp": "上移",
-    "moveDown": "下移"
+    "dragHint": "长按以移动"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",

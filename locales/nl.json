@@ -50,8 +50,7 @@
     "grantedNobody": "Nog niemand.",
     "grantedPending": "Wacht op antwoord",
     "revoke": "Intrekken",
-    "moveUp": "Omhoog",
-    "moveDown": "Omlaag"
+    "dragHint": "Lang indrukken om te verplaatsen"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",
