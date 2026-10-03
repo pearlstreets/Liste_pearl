@@ -6,7 +6,7 @@ import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount,
 import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
-import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus } from "./lib/variantes";
+import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus, champsVariantePanier } from "./lib/variantes";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
@@ -3642,7 +3642,9 @@ const CartScreen = ({ isAuth }) => {
         const group = byCompany[k];
         const companyId = group[0].companyId;
         for (const it of group) {
-          const r = await addToCartApi({ product_id: it.productId, company_id: companyId, quantity: it.qty || 1, order_type_key: otKeyInt });
+          // Option choisie (fiche à plusieurs options) : `selected_variant`, sinon
+          // le serveur refuse la ligne (variant_required).
+          const r = await addToCartApi({ product_id: it.productId, company_id: companyId, quantity: it.qty || 1, order_type_key: otKeyInt, ...champsVariantePanier(it.variant) });
           if (!r || r.status === false) throw new Error((r && r.message) || 'cart/add');
         }
         if (orderMode === 'delivery' && selectedAddressId) {

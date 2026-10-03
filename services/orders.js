@@ -1,4 +1,4 @@
-import { apiPost } from './api';
+import { apiGet, apiPost } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_CART = 'KEY_CART';

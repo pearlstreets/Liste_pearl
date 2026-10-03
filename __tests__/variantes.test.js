@@ -12,6 +12,7 @@ import {
   plafonner,
   varianteDeLOption,
   champsVariante,
+  champsVariantePanier,
   cleVariante,
   ecartsDeStock,
   appliquerEcarts,
@@ -346,5 +347,33 @@ describe('getProductOptions', () => {
     apiGet.mockImplementation(() => Promise.reject(new Error('hors ligne')));
     expect(await getProductOptions(9, 77)).toBeNull();
     expect(await getProductOptions(null, 77)).toBeNull();
+  });
+});
+
+describe('retrait : option envoyée à /users/cart/add/', () => {
+  test('selected_variant { id, title } ; sans option : rien', () => {
+    expect(champsVariantePanier({ id: '12', title: 'M' })).toEqual({
+      selected_variant: { id: '12', title: 'M' },
+    });
+    expect(champsVariantePanier({ id: null, title: 'Bleu' })).toEqual({
+      selected_variant: { id: null, title: 'Bleu' },
+    });
+    expect(champsVariantePanier(undefined)).toEqual({});
+  });
+});
+
+describe('getMarketplaceOrderStatuses', () => {
+  const { apiGet } = require('../services/api');
+  const { getMarketplaceOrderStatuses } = require('../services/orders');
+
+  beforeEach(() => apiGet.mockReset());
+
+  test('lit les vraies commandes (apiGet importé)', async () => {
+    apiGet.mockResolvedValue({
+      data: [{ orders: [{ order_id: 'A1', status: 'Refunded', is_refunded: true }] }],
+    });
+    const map = await getMarketplaceOrderStatuses();
+    expect(apiGet).toHaveBeenCalledWith('/users/orders-new/');
+    expect(map.A1).toEqual(expect.objectContaining({ status: 'refunded', is_refunded: true }));
   });
 });
