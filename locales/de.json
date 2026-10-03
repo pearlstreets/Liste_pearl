@@ -627,5 +627,14 @@
     "pick": "Was ist passiert?",
     "sentTitle": "Meldung gesendet",
     "sent": "Unser Support-Team kümmert sich um dein Anliegen."
+  },
+  "stock": {
+    "option": "Option",
+    "chooseOption": "Wähle eine Option",
+    "soldOut": "Ausverkauft",
+    "adjusted": "Menge an den Bestand angepasst: {{qty}} statt {{requested}}",
+    "removed": "Ausverkauft, aus der Bestellung entfernt",
+    "justSold": "Dieser Artikel wurde gerade verkauft.",
+    "cartUpdated": "Warenkorb aktualisiert."
   }
 }

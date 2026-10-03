@@ -627,5 +627,14 @@
     "pick": "Wat is er gebeurd?",
     "sentTitle": "Melding verzonden",
     "sent": "Ons supportteam behandelt je verzoek."
+  },
+  "stock": {
+    "option": "Optie",
+    "chooseOption": "Kies een optie",
+    "soldOut": "Uitverkocht",
+    "adjusted": "Aantal aangepast aan de voorraad: {{qty}} in plaats van {{requested}}",
+    "removed": "Uitverkocht, uit de bestelling verwijderd",
+    "justSold": "Dit artikel is net verkocht.",
+    "cartUpdated": "Winkelwagen bijgewerkt."
   }
 }

@@ -627,5 +627,14 @@
     "pick": "¿Qué ha pasado?",
     "sentTitle": "Reporte enviado",
     "sent": "Nuestro equipo de soporte atenderá tu solicitud."
+  },
+  "stock": {
+    "option": "Opción",
+    "chooseOption": "Elige una opción",
+    "soldOut": "Agotado",
+    "adjusted": "Cantidad ajustada al stock: {{qty}} en lugar de {{requested}}",
+    "removed": "Agotado, retirado del pedido",
+    "justSold": "Este artículo se acaba de vender.",
+    "cartUpdated": "Carrito actualizado."
   }
 }

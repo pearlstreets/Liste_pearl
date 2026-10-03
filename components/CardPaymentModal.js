@@ -36,7 +36,7 @@ async function finalisePaymentIntent(data, handleNextAction) {
 }
 
 // DESCENDANT de <StripeProvider> → useStripe() garanti initialisé.
-function CardPaymentInner({ orders, totalLabel, t, onSuccess, onCancel }) {
+function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel }) {
   const tr = (k, fb) => (typeof t === 'function' ? t(k, fb) : fb);
   const stripe = useStripe() || {};
   const [savedCards, setSavedCards] = React.useState([]);
@@ -151,6 +151,16 @@ function CardPaymentInner({ orders, totalLabel, t, onSuccess, onCancel }) {
         <Text style={styles.title}>{tr('cart.payByCard', 'Paiement par carte')}</Text>
         <Text style={styles.total}>{totalLabel}</Text>
         <Text style={styles.subtotalNote}>{tr('cart.amountConfirmedByShop', 'Montant indicatif. Frais et total définitifs confirmés par la boutique.')}</Text>
+        {/* Écarts de stock à la création de la course (lignes neutres). */}
+        {Array.isArray(notices) && notices.length ? (
+          <View style={styles.notices}>
+            {notices.map((n, i) => (
+              <Text key={i} style={styles.notice}>
+                {String(n)}
+              </Text>
+            ))}
+          </View>
+        ) : null}
 
         <ScrollView style={{ maxHeight: 260 }} contentContainerStyle={{ paddingVertical: 2 }} showsVerticalScrollIndicator={false}>
           {cardsLoading ? (
@@ -207,7 +217,15 @@ function CardPaymentInner({ orders, totalLabel, t, onSuccess, onCancel }) {
   );
 }
 
-export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuccess, onCancel }) {
+export default function CardPaymentModal({
+  visible,
+  orders,
+  totalLabel,
+  notices,
+  t,
+  onSuccess,
+  onCancel,
+}) {
   return (
     <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
       <StripeProvider
@@ -215,7 +233,7 @@ export default function CardPaymentModal({ visible, orders, totalLabel, t, onSuc
         urlScheme="pearl-list"
         merchantIdentifier="merchant.com.pearlstreets.list"
       >
-        <CardPaymentInner orders={orders} totalLabel={totalLabel} t={t} onSuccess={onSuccess} onCancel={onCancel} />
+        <CardPaymentInner orders={orders} totalLabel={totalLabel} notices={notices} t={t} onSuccess={onSuccess} onCancel={onCancel} />
       </StripeProvider>
     </Modal>
   );
@@ -228,6 +246,14 @@ const styles = StyleSheet.create({
   title: { fontSize: 18, fontWeight: '800', color: '#0F1B2B', textAlign: 'center' },
   total: { fontSize: 15, fontWeight: '700', color: BRAND, textAlign: 'center', marginTop: 4 },
   subtotalNote: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 3, marginBottom: 10, paddingHorizontal: 8 },
+  notices: {
+    backgroundColor: '#F7F9FB',
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+  },
+  notice: { fontSize: 12.5, lineHeight: 17, color: '#4B5563', fontWeight: '600' },
   optRow: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#F7F9FB', borderRadius: 14, paddingVertical: 13, paddingHorizontal: 14, marginBottom: 8, borderWidth: 1, borderColor: '#EEF1F5' },
   optRowOn: { borderColor: BRAND, backgroundColor: 'rgba(9,215,170,0.06)' },
   optLabel: { fontSize: 15, fontWeight: '700', color: '#0F1B2B' },

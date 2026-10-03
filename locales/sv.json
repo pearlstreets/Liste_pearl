@@ -627,5 +627,14 @@
     "pick": "Vad hände?",
     "sentTitle": "Rapport skickad",
     "sent": "Vårt supportteam tar hand om din förfrågan."
+  },
+  "stock": {
+    "option": "Alternativ",
+    "chooseOption": "Välj ett alternativ",
+    "soldOut": "Slutsåld",
+    "adjusted": "Antal justerat efter lager: {{qty}} i stället för {{requested}}",
+    "removed": "Slutsåld, borttagen från beställningen",
+    "justSold": "Den här varan har precis sålts.",
+    "cartUpdated": "Kundvagnen har uppdaterats."
   }
 }

@@ -627,5 +627,14 @@
     "pick": "发生了什么问题？",
     "sentTitle": "已发送报告",
     "sent": "我们的客服团队将处理您的请求。"
+  },
+  "stock": {
+    "option": "选项",
+    "chooseOption": "请选择一个选项",
+    "soldOut": "已售罄",
+    "adjusted": "数量已按库存调整：{{qty}}（原为 {{requested}}）",
+    "removed": "已售罄，已从订单中移除",
+    "justSold": "该商品刚刚售出。",
+    "cartUpdated": "购物车已更新。"
   }
 }

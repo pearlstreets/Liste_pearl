@@ -686,5 +686,14 @@
     "pick": "Que s'est-il passé ?",
     "sentTitle": "Signalement envoyé",
     "sent": "Notre support va traiter votre demande."
+  },
+  "stock": {
+    "option": "Option",
+    "chooseOption": "Choisissez une option",
+    "soldOut": "Épuisé",
+    "adjusted": "Quantité ajustée au stock : {{qty}} au lieu de {{requested}}",
+    "removed": "Épuisé, retiré de la commande",
+    "justSold": "Cet article vient d'être vendu.",
+    "cartUpdated": "Panier mis à jour."
   }
 }

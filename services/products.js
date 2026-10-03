@@ -1,5 +1,6 @@
 import { apiGet } from './api';
 import { CONFIG } from './config';
+import { optionsDeLaFiche } from '../lib/variantes';
 
 // Base pour résoudre les chemins media relatifs (ex "/media/product_images/x.jpg")
 // en URLs absolues. API_URL = ".../api/v1" → on retire le suffixe pour la racine.
@@ -149,10 +150,76 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         image: firstUrl(p.image, firstUrl(p.gallery)),
         description: p.description || '',
         subcategory: p.subcategory_name || p.subcategory_slug || '',
+        // Options de la fiche si la liste les porte (sinon undefined : relues
+        // par getProductOptions à l'ajout).
+        options: optionsDeLaFiche(p),
       });
     });
     const total = (data && Number(data.count)) || 0;
     if (page * pageSize >= total) break;
   }
   return Array.from(byShop.values());
+}
+
+// ── Options (déclinaisons) d'une fiche ──────────────────────────────────────
+// La liste products-by-category ne porte pas customizationOptions : on les lit
+// dans les produits de la boutique (1 appel par boutique, gardé 60 s), sinon
+// dans la fiche du produit. Retourne { libelle, options: [{ id, title, stock }] }
+// ou null si rien n'a pu être lu (l'article part alors sans option, comme avant).
+const OPTIONS_TTL_MS = 60 * 1000;
+const _optionsParBoutique = new Map(); // companyId -> { at, promise }
+
+function _produitsDeLaBoutique(data) {
+  const out = [];
+  if (!data || typeof data !== 'object') return out;
+  const ajouter = (arr) => {
+    if (Array.isArray(arr)) arr.forEach((p) => p && typeof p === 'object' && out.push(p));
+  };
+  ajouter(data.products);
+  ajouter(data.orphan_products);
+  (Array.isArray(data.folders) ? data.folders : []).forEach((f) => ajouter(f && f.products));
+  return out;
+}
+
+function _optionsDeLaBoutique(companyId) {
+  const cle = String(companyId);
+  const deja = _optionsParBoutique.get(cle);
+  if (deja && Date.now() - deja.at < OPTIONS_TTL_MS) return deja.promise;
+  const promise = (async () => {
+    const data = await apiGet(`/users/company/${encodeURIComponent(cle)}/products-services/`);
+    const parProduit = new Map();
+    _produitsDeLaBoutique(data).forEach((p) => {
+      const o = optionsDeLaFiche(p);
+      if (p.id !== undefined && p.id !== null && o !== undefined) parProduit.set(String(p.id), o);
+    });
+    return parProduit;
+  })();
+  _optionsParBoutique.set(cle, { at: Date.now(), promise });
+  promise.catch(() => _optionsParBoutique.delete(cle));
+  return promise;
+}
+
+// Préchargement à l'ouverture d'une boutique : l'ajout est ensuite immédiat.
+export function prefetchShopOptions(companyId) {
+  if (companyId === undefined || companyId === null) return;
+  _optionsDeLaBoutique(companyId).catch(() => {});
+}
+
+export async function getProductOptions(productId, companyId) {
+  if (productId === undefined || productId === null) return null;
+  if (companyId !== undefined && companyId !== null) {
+    try {
+      const o = (await _optionsDeLaBoutique(companyId)).get(String(productId));
+      if (o) return o;
+    } catch (_) {
+      /* repli sur la fiche du produit */
+    }
+  }
+  try {
+    const res = await apiGet(`/users/product-purchase/${encodeURIComponent(productId)}/?key=1`);
+    const o = optionsDeLaFiche(res && res.data);
+    return o === undefined ? null : o;
+  } catch (_) {
+    return null;
+  }
 }

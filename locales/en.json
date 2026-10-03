@@ -686,5 +686,14 @@
     "pick": "What happened?",
     "sentTitle": "Report sent",
     "sent": "Our support team will handle your request."
+  },
+  "stock": {
+    "option": "Option",
+    "chooseOption": "Choose an option",
+    "soldOut": "Sold out",
+    "adjusted": "Quantity adjusted to stock: {{qty}} instead of {{requested}}",
+    "removed": "Sold out, removed from the order",
+    "justSold": "This item has just been sold.",
+    "cartUpdated": "Cart updated."
   }
 }

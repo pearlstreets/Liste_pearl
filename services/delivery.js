@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from './config';
+import { champsVariante } from '../lib/variantes';
 
 // Delivery API - connects to the same backend as Livraison-app
 // This allows Liste_Pearl orders to be picked up by delivery drivers
@@ -58,7 +59,16 @@ async function deliveryFetch(endpoint, options = {}) {
     }
   }
   if (!res.ok) {
-    throw new Error(`Delivery API ${res.status} on ${endpoint}`);
+    // Statut + corps joints à l'erreur : un 409 de stock (« Épuisé », « Cet
+    // article vient d'être vendu. ») est lu par l'appelant (lib/variantes.js).
+    const err = new Error(`Delivery API ${res.status} on ${endpoint}`);
+    err.status = res.status;
+    try {
+      err.body = await res.json();
+    } catch {
+      err.body = null;
+    }
+    throw err;
   }
   try {
     return await res.json();
@@ -99,6 +109,9 @@ export async function createDeliveryOrder(orderData) {
         qty: item.qty || 1,
         price: item.price || 0,
         shop: item.shop || '',
+        // Option choisie (fiche à plusieurs options) : désigne le stock à
+        // décompter. Absente pour un produit simple.
+        ...champsVariante(item.variant),
       })),
       total: orderData.total || 0,
       delivery_fee: orderData.deliveryFee || 0,

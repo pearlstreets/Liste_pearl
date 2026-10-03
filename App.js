@@ -5,7 +5,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable } from "./services/auth";
 import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
-import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId } from "./services/products";
+import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
+import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus } from "./lib/variantes";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
@@ -2868,6 +2869,7 @@ const FavoritesScreen = ({ onClose }) => {
 };
 // Simulated order tracking modal
 const cartStyles = StyleSheet.create({
+  stockNotice: { fontSize: 13, lineHeight: 18, color: THEME.muted, fontWeight: '600', marginBottom: 4 },
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
@@ -3089,7 +3091,7 @@ const cartStyles = StyleSheet.create({
   trackerFooter: { paddingHorizontal: 20, paddingTop: 18, paddingBottom: Platform.OS === 'ios' ? 34 : 16 },
 });
 
-const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo }) => {
+const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo, notices }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const isCollect = mode === 'collect';
@@ -3161,6 +3163,12 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo 
         <ScrollView style={cartStyles.trackerSummaryScroll} showsVerticalScrollIndicator={false}>
           <View style={cartStyles.trackerSummaryCard}>
             <Text style={cartStyles.trackerSummaryTitle}>{t('cart.summary')}</Text>
+            {/* Écarts de stock à la création de la course : lignes neutres. */}
+            {Array.isArray(notices) && notices.length ? (
+              <View style={{ marginBottom: 10 }}>
+                {notices.map((n, i) => <Text key={i} style={cartStyles.stockNotice}>{String(n)}</Text>)}
+              </View>
+            ) : null}
             {(() => {
               const grouped = {};
               (items || []).forEach(it => {
@@ -3176,7 +3184,7 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo 
                   </View>
                   {shopItems.map((it, i) => (
                     <View key={i} style={cartStyles.trackerLineRow}>
-                      <Text style={cartStyles.trackerLineName}>{it.qty || 1}x {t('productNames.' + (it.name || it.title), { defaultValue: it.name || it.title })}</Text>
+                      <Text style={cartStyles.trackerLineName}>{it.qty || 1}x {t('productNames.' + (it.name || it.title), { defaultValue: it.name || it.title })}{it.variant && it.variant.title ? ` (${it.variant.title})` : ''}</Text>
                       <Text style={cartStyles.trackerLinePrice}>{fmtPrice(Number(it.price || 0) * Number(it.qty || 1))}</Text>
                     </View>
                   ))}
@@ -3430,7 +3438,8 @@ const CartScreen = ({ isAuth }) => {
   const updateQty = async (index, delta) => {
     const updated = cartItems.map((it, i) => {
       if (i !== index) return it;
-      return { ...it, qty: Math.max(1, (it.qty || 1) + delta) };
+      // Plafond = stock de l'option gardé à l'ajout (maxQty), sans message.
+      return { ...it, qty: plafonner(Math.max(1, (it.qty || 1) + delta), it.maxQty) };
     });
     setCartItems(updated);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
@@ -3460,7 +3469,43 @@ const CartScreen = ({ isAuth }) => {
   // Pourboire livreur choisi au checkout (0 par défaut). Réinitialisé quand le
   // panier change (évite de reporter un pourboire d'une commande à l'autre).
   const [deliveryTip, setDeliveryTip] = React.useState(0);
-  React.useEffect(() => { setDeliveryTip(0); }, [cartItems]);
+  // keepTipRef : liste relue après un refus de stock = même commande, le
+  // pourboire choisi est gardé.
+  const keepTipRef = React.useRef(false);
+  React.useEffect(() => {
+    if (keepTipRef.current) { keepTipRef.current = false; return; }
+    setDeliveryTip(0);
+  }, [cartItems]);
+
+  // Lignes neutres des écarts de stock (« Quantité ajustée au stock : 2 au lieu
+  // de 3 », « Épuisé, retiré de la commande »).
+  const lignesStock = React.useCallback((lignes) => (Array.isArray(lignes) ? lignes : []).map((l) => {
+    const base = l && l.name ? t('productNames.' + l.name, { defaultValue: l.name }) : '';
+    const nom = base + (l && l.variant ? ` (${l.variant})` : '');
+    const txt = l && l.type === 'adjusted'
+      ? t('stock.adjusted', { qty: l.qty, requested: l.requested, defaultValue: 'Quantité ajustée au stock : {{qty}} au lieu de {{requested}}' })
+      : t('stock.removed', 'Épuisé, retiré de la commande');
+    return nom ? `${nom} · ${txt}` : txt;
+  }), [t]);
+
+  // Refus 409 de stock (« Épuisé » / « Cet article vient d'être vendu. ») :
+  // message neutre et liste relue avec ce que dit le serveur (articles épuisés
+  // décochés mais gardés, quantités ramenées à ce qui reste).
+  const signalerRefusDeStock = React.useCallback(async (refus) => {
+    const { items, selected, noms } = appliquerRefus(cartItems, selectedCart, refus);
+    if (items.some((it, i) => it !== cartItems[i])) {
+      keepTipRef.current = true;
+      setCartItems(items);
+      try { await AsyncStorage.setItem(KEY_CART, JSON.stringify(items)); } catch (_) {}
+      DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+    }
+    setSelectedCart(selected);
+    setPopup({
+      tone: 'info',
+      title: refus && refus.epuise ? t('stock.soldOut', 'Épuisé') : t('stock.justSold', "Cet article vient d'être vendu."),
+      message: [noms.join(', '), t('stock.cartUpdated', 'Panier mis à jour.')].filter(Boolean).join('\n'),
+    });
+  }, [cartItems, selectedCart, t]);
 
   // Construit le payload createDeliveryOrder (partagé entre la pré-création au
   // checkout — pour obtenir payable_orders — et la finalisation placeOrder, avec
@@ -3493,15 +3538,35 @@ const CartScreen = ({ isAuth }) => {
     const selectedItems = cartItems.filter((_, i) => selectedCart[i]);
     if (selectedItems.length === 0) return null;
     const deliveryFee = orderMode === 'delivery' ? 9.99 : 0;
-    const subtotal = selectedItems.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
-    const shops = [...new Set(selectedItems.map(i => i.shop).filter(Boolean))];
     const selectedDay = deliveryDays[selectedDateIndex];
     const deliveryDateLabel = selectedDay ? ((selectedDay.dayName || selectedDay.label) + ' ' + selectedDay.sub) : '';
     const orderId = opts.orderId || Date.now();
+    // Livraison → créer la course réelle pour l'app Livreur (Pearl Streets).
+    // Idempotent sur orderId : si la course a déjà été pré-créée au checkout (pour
+    // obtenir payable_orders), ce re-POST ne crée pas de doublon (update_or_create
+    // côté serveur + garde `if created and not neworder_id`). Sa réponse dit ce
+    // que la commande contient (quantités ramenées au stock, articles épuisés).
+    let ecarts = opts.ecarts || null;
+    if (orderMode === 'delivery') {
+      try {
+        ecarts = ecartsDeStock(await createDeliveryOrder(await buildDeliveryOrderArgs(orderId))) || ecarts;
+      } catch (e) {
+        const refus = refusDeStock(e);
+        // Rien n'a été créé : message neutre, liste relue, aucune commande locale.
+        if (refus && !opts.orderId) { await signalerRefusDeStock(refus); return false; }
+      }
+    }
+    const { commandes, exclus, lignes } = appliquerEcarts(selectedItems, ecarts);
+    if (commandes.length === 0) {
+      await signalerRefusDeStock({ epuise: true, exclus: (ecarts && ecarts.exclus) || [], manques: [] });
+      return false;
+    }
+    const subtotal = commandes.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
+    const shops = [...new Set(commandes.map(i => i.shop).filter(Boolean))];
     const order = {
       id: orderId,
       date: new Date().toISOString(),
-      items: selectedItems,
+      items: commandes,
       total: subtotal + deliveryFee,
       subtotal,
       deliveryFee,
@@ -3522,25 +3587,18 @@ const CartScreen = ({ isAuth }) => {
       history.unshift(order);
       await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(history));
     } catch (e) {}
-    // Livraison → créer la course réelle pour l'app Livreur (Pearl Streets).
-    // Idempotent sur orderId : si la course a déjà été pré-créée au checkout (pour
-    // obtenir payable_orders), ce re-POST ne crée pas de doublon (update_or_create
-    // côté serveur + garde `if created and not neworder_id`).
-    if (orderMode === 'delivery') {
-      try {
-        await createDeliveryOrder(await buildDeliveryOrderArgs(orderId));
-      } catch (e) {}
-    }
-    // Retirer du panier UNIQUEMENT les articles commandés (garder le reste)
-    const remaining = cartItems.filter((_, i) => !selectedCart[i]);
+    // Retirer du panier UNIQUEMENT les articles commandés (garder le reste) ;
+    // un article épuisé, retiré de la commande, reste dans la liste, décoché.
+    const horsCommande = new Set(exclus);
+    const remaining = cartItems.filter((it, i) => !selectedCart[i] || horsCommande.has(it));
     setCartItems(remaining);
-    const sel = {}; remaining.forEach((_, i) => { sel[i] = true; });
+    const sel = {}; remaining.forEach((it, i) => { sel[i] = !horsCommande.has(it); });
     setSelectedCart(sel);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(remaining));
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-    setPlacedOrder({ items: selectedItems, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6) });
+    setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6), notices: lignesStock(lignes) });
     return order;
-  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs]);
+  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock]);
 
   // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
@@ -3622,8 +3680,9 @@ const CartScreen = ({ isAuth }) => {
     // commande LOCALE avec ce MÊME orderId (idempotent, pas de doublon).
     if (pendingPayment && pendingPayment._delivery) {
       const did = pendingPayment.orderId;
+      const ecartsCourse = pendingPayment.ecarts || null;
       setPendingPayment(null);
-      const ok = await placeOrder([], { orderId: did });
+      const ok = await placeOrder([], { orderId: did, ecarts: ecartsCourse });
       if (ok) { setConfirmVisible(false); setOrderVisible(true); }
       placingRef.current = false; setPlacing(false);
       return;
@@ -3743,6 +3802,7 @@ const CartScreen = ({ isAuth }) => {
                 </View>
                 <View style={cartStyles.productBody}>
                   <Text style={cartStyles.productName}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
+                  {item.variant && item.variant.title ? <Text style={cartStyles.productDetail} numberOfLines={1}>{String(item.variant.title)}</Text> : null}
                   {item.detail ? <Text style={cartStyles.productDetail} numberOfLines={1}>{t('productDetails.' + item.detail, { defaultValue: item.detail })}</Text> : null}
                   <View style={cartStyles.stepper}>
                     <RepeatButton onPress={() => updateQty(idx, -1)} onLongAction={() => updateQty(idx, -1)} style={cartStyles.stepBtn}>
@@ -4151,16 +4211,25 @@ const CartScreen = ({ isAuth }) => {
                       try {
                         dres = await createDeliveryOrder(await buildDeliveryOrderArgs(did));
                       } catch (e) {
-                        setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
+                        // 409 de stock (« Épuisé » / « Cet article vient d'être
+                        // vendu. ») : message neutre, liste relue, rien n'est créé.
+                        const refus = refusDeStock(e);
+                        if (refus) await signalerRefusDeStock(refus);
+                        else setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
                         placingRef.current = false; setPlacing(false); return;
                       }
+                      // Quantités ramenées au stock / articles épuisés (clés
+                      // absentes des anciennes réponses : rien ne change).
+                      const ecartsCourse = ecartsDeStock(dres);
                       const payable = (dres && dres.payable_orders) || [];
                       if (payable.length) {
                         const sel = cartItems.filter((_, i) => selectedCart[i]);
-                        const grand = sel.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
+                        const { commandes: selCommandee, lignes: lignesCourse } = appliquerEcarts(sel, ecartsCourse);
+                        const grand = selCommandee.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
                         setPendingPayment({
                           orders: payable.map(o => ({ orderId: o.order_id, shopName: o.shop || '' })),
                           totalLabel: fmtPrice(grand), _delivery: true, orderId: did,
+                          ecarts: ecartsCourse, notices: lignesStock(lignesCourse),
                         });
                         cardRes = 'started';
                         setConfirmVisible(false);
@@ -4170,9 +4239,9 @@ const CartScreen = ({ isAuth }) => {
                       }
                       // Aucune commande pro à payer (items sans vraie fiche boutique)
                       // → flux LOCAL avec ce même orderId (course déjà créée, idempotent).
-                      const okd = await placeOrder([], { orderId: did });
+                      const okd = await placeOrder([], { orderId: did, ecarts: ecartsCourse });
                       if (okd) { setConfirmVisible(false); setOrderVisible(true); }
-                      else { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
+                      else if (okd !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
                       return;
                     }
                     // Option A : tente le paiement carte réel (crée la commande
@@ -4190,7 +4259,7 @@ const CartScreen = ({ isAuth }) => {
                     if (cardRes === 'error') return;
                     const ok = await placeOrder();
                     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
-                    else { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
+                    else if (ok !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
                   } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
                 style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
@@ -4387,6 +4456,7 @@ const CartScreen = ({ isAuth }) => {
         total={placedOrder?.total || 0}
         mode={placedOrder?.mode || orderMode}
         orderNo={placedOrder?.orderNo}
+        notices={placedOrder?.notices}
         onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
         onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
       />
@@ -4397,6 +4467,7 @@ const CartScreen = ({ isAuth }) => {
           visible={cardModalVisible}
           orders={pendingPayment.orders}
           totalLabel={pendingPayment.totalLabel}
+          notices={pendingPayment.notices}
           t={t}
           onSuccess={onCardPaySuccess}
           onCancel={onCardPayCancel}
@@ -4615,6 +4686,12 @@ const ShopsScreen = () => {
   const [productSearch, setProductSearch] = React.useState('');
   const [pdQty, setPdQty] = React.useState(1);
   const [pdNote, setPdNote] = React.useState('');
+  // Options de la fiche ouverte : undefined = lecture en cours, null = inconnues
+  // (l'article part sans option, comme avant), sinon { libelle, options }.
+  const [pdOptions, setPdOptions] = React.useState(null);
+  const [pdOption, setPdOption] = React.useState(null);
+  const [busyAdd, setBusyAdd] = React.useState(null); // id du produit dont on lit les options
+  const pdReqRef = React.useRef(0);
 
   const load = React.useCallback(async () => {
     setError(false);
@@ -4633,17 +4710,25 @@ const ShopsScreen = () => {
 
   const onRefresh = () => { setRefreshing(true); load(); };
 
-  const addToCart = async (shop, product, qty = 1) => {
+  // `option` = option choisie (fiche à plusieurs options) ou prise d'office :
+  // gardée dans l'article (`variant`) et envoyée à la création de la course.
+  // Quantité plafonnée au stock de l'option (`maxQty`), sans message.
+  const addToCart = async (shop, product, qty = 1, option = null) => {
     try {
       const raw = await AsyncStorage.getItem(KEY_CART);
       const existing = raw ? (JSON.parse(raw) || []) : [];
-      const idx = existing.findIndex(e =>
-        String(e.name || '').toLowerCase().trim() === String(product.name || '').toLowerCase().trim() &&
-        String(e.shop || '').toLowerCase().trim() === String(shop.name || '').toLowerCase().trim()
+      const variant = varianteDeLOption(option);
+      const cap = option && option.stock !== null && option.stock !== undefined ? option.stock : null;
+      const cle = cleVariante(variant);
+      const idx = existing.findIndex(e => (product.id != null && e && e.productId != null)
+        ? String(e.productId) === String(product.id) && cleVariante(e.variant) === cle
+        : String(e.name || '').toLowerCase().trim() === String(product.name || '').toLowerCase().trim() &&
+          String(e.shop || '').toLowerCase().trim() === String(shop.name || '').toLowerCase().trim()
       );
       if (idx >= 0) {
-        existing[idx].qty = (existing[idx].qty || 1) + qty;
+        existing[idx].qty = plafonner((existing[idx].qty || 1) + qty, cap);
         existing[idx].price = product.price || existing[idx].price;
+        if (cap !== null) existing[idx].maxQty = cap;
       } else {
         existing.push({
           name: product.name,
@@ -4659,6 +4744,8 @@ const ShopsScreen = () => {
           companyId: shop.id,
           image: product.image || '',
           category: 'product_purchase',
+          ...(variant ? { variant } : {}),
+          ...(cap !== null ? { maxQty: cap } : {}),
         });
       }
       await AsyncStorage.setItem(KEY_CART, JSON.stringify(existing));
@@ -4668,8 +4755,42 @@ const ShopsScreen = () => {
     } catch (e) {}
   };
 
+  // Fiche ouverte : options lues (liste, sinon boutique/fiche). Une seule
+  // option non épuisée est prise d'office.
+  const ouvrirFiche = (item, connues) => {
+    setPdQty(1); setPdNote(''); setPdOption(null); setSelectedProduct(item);
+    const req = ++pdReqRef.current;
+    const appliquer = (o) => {
+      if (req !== pdReqRef.current) return;
+      setPdOptions(o || null);
+      setPdOption(optionDOffice(o && o.options));
+    };
+    const deja = connues !== undefined ? connues : item.options;
+    if (deja !== undefined) { appliquer(deja); return; }
+    setPdOptions(undefined);
+    getProductOptions(item.id, selectedShop?.id).then(appliquer, () => appliquer(null));
+  };
+
+  // Bouton « + » : produit simple ou option unique = ajout direct ; plusieurs
+  // options (ou toutes épuisées) = la fiche s'ouvre pour choisir.
+  const ajoutRapide = async (item) => {
+    if (busyAdd != null) return;
+    const shop = selectedShop;
+    let o = item.options;
+    if (o === undefined) {
+      setBusyAdd(item.id);
+      try { o = await getProductOptions(item.id, shop?.id); } catch (_) { o = null; }
+      setBusyAdd(null);
+    }
+    const opts = o && Array.isArray(o.options) ? o.options : [];
+    if (opts.length === 0) { addToCart(shop, item, 1); return; }
+    const office = optionDOffice(opts);
+    if (office) { addToCart(shop, item, 1, office); return; }
+    ouvrirFiche(item, o);
+  };
+
   const renderShopCard = ({ item }) => (
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); }}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); prefetchShopOptions(item.id); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
@@ -4695,7 +4816,7 @@ const ShopsScreen = () => {
       {/* Zone détail (image + texte) et bouton « + » = FRÈRES, jamais imbriqués
           (touchable dans touchable = onPress externe avalé sur iOS). */}
       <TouchableOpacity activeOpacity={0.7} style={shopStyles.prodMain}
-        onPress={() => { setPdQty(1); setPdNote(''); setSelectedProduct(item); }}
+        onPress={() => ouvrirFiche(item)}
         accessibilityRole="button" accessibilityLabel={item.name}>
         {item.image ? (
           <Image source={{ uri: item.image }} style={shopStyles.prodImg} resizeMode="cover" />
@@ -4711,9 +4832,9 @@ const ShopsScreen = () => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={shopStyles.addBtn} onPress={() => addToCart(selectedShop, item)}
+      <TouchableOpacity style={shopStyles.addBtn} onPress={() => ajoutRapide(item)} disabled={busyAdd != null}
         accessibilityRole="button" accessibilityLabel={`${t('cart.add', 'Ajouter')} ${item.name}`} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-        <Ionicons name="add" size={22} color="#fff" />
+        {busyAdd === item.id ? <ActivityIndicator color="#fff" size="small" /> : <Ionicons name="add" size={22} color="#fff" />}
       </TouchableOpacity>
     </View>
   );
@@ -4853,6 +4974,29 @@ const ShopsScreen = () => {
                   ) : null}
                   {selectedProduct?.subcategory ? <Text style={shopStyles.pdSub}>{selectedProduct.subcategory}</Text> : null}
                   {selectedProduct?.description ? <Text style={shopStyles.pdDesc}>{selectedProduct.description}</Text> : null}
+                  {/* Options de la fiche : pastilles simples, option épuisée grisée
+                      et non sélectionnable. */}
+                  {pdOptions && Array.isArray(pdOptions.options) && pdOptions.options.length > 0 ? (
+                    <>
+                      <Text style={shopStyles.pdSectionTitle}>{pdOptions.libelle || t('stock.option', 'Option')}</Text>
+                      <View style={shopStyles.optWrap}>
+                        {pdOptions.options.map((o, i) => {
+                          const epuisee = optionEpuisee(o);
+                          const on = !!pdOption && pdOption.title === o.title;
+                          return (
+                            <TouchableOpacity key={String(o.id ?? o.title) + ':' + i} activeOpacity={0.8} disabled={epuisee}
+                              onPress={() => { setPdOption(o); setPdQty((q) => plafonner(q, o.stock)); }}
+                              style={[shopStyles.optChip, on && shopStyles.optChipOn, epuisee && shopStyles.optChipOff]}
+                              accessibilityRole="button"
+                              accessibilityState={{ selected: on, disabled: epuisee }}
+                              accessibilityLabel={epuisee ? `${o.title}, ${t('stock.soldOut', 'Épuisé')}` : o.title}>
+                              <Text style={[shopStyles.optChipTxt, on && shopStyles.optChipTxtOn, epuisee && shopStyles.optChipTxtOff]} numberOfLines={1}>{o.title}</Text>
+                            </TouchableOpacity>
+                          );
+                        })}
+                      </View>
+                    </>
+                  ) : null}
                   <Text style={shopStyles.pdSectionTitle}>{t('shops.instructions', 'Instructions spéciales')}</Text>
                   <TextInput
                     value={pdNote}
@@ -4864,21 +5008,37 @@ const ShopsScreen = () => {
                   />
                 </View>
               </ScrollView>
+              {(() => {
+                // Plafond = stock de l'option choisie (null = non suivi).
+                const opts = pdOptions && Array.isArray(pdOptions.options) ? pdOptions.options : [];
+                const cap = pdOption && pdOption.stock !== null && pdOption.stock !== undefined ? pdOption.stock : null;
+                const enLecture = pdOptions === undefined;
+                const epuise = ficheEpuisee(opts);
+                const aChoisir = opts.length > 1 && !pdOption;
+                const bloque = enLecture || epuise || aChoisir;
+                const auPlafond = cap !== null && pdQty >= cap;
+                return (
               <View style={shopStyles.pdFooter}>
                 <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => Math.max(1, q - 1))}
                   accessibilityRole="button" accessibilityLabel="moins">
                   <Ionicons name="remove" size={20} color={THEME.ink} />
                 </TouchableOpacity>
-                <TouchableOpacity style={shopStyles.pdAddBig} activeOpacity={0.9}
-                  onPress={() => { if (selectedProduct) { addToCart(selectedShop, selectedProduct, pdQty); } setSelectedProduct(null); }}
-                  accessibilityRole="button" accessibilityLabel={t('cart.add', 'Ajouter')}>
-                  <Text style={shopStyles.pdAddBigTxt}>{t('cart.add', 'Ajouter')} {pdQty} · {selectedProduct ? fmtPrice((Number(selectedProduct.price) || 0) * pdQty) : ''}</Text>
+                <TouchableOpacity style={[shopStyles.pdAddBig, bloque && shopStyles.pdAddBigOff]} activeOpacity={0.9} disabled={bloque}
+                  onPress={() => { if (selectedProduct) { addToCart(selectedShop, selectedProduct, plafonner(pdQty, cap), pdOption); } setSelectedProduct(null); }}
+                  accessibilityRole="button" accessibilityState={{ disabled: bloque }} accessibilityLabel={t('cart.add', 'Ajouter')}>
+                  {enLecture ? <ActivityIndicator color="#fff" /> : (
+                    <Text style={shopStyles.pdAddBigTxt} numberOfLines={1}>
+                      {epuise ? t('stock.soldOut', 'Épuisé') : aChoisir ? t('stock.chooseOption', 'Choisissez une option') : `${t('cart.add', 'Ajouter')} ${pdQty} · ${selectedProduct ? fmtPrice((Number(selectedProduct.price) || 0) * pdQty) : ''}`}
+                    </Text>
+                  )}
                 </TouchableOpacity>
-                <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => q + 1)}
+                <TouchableOpacity style={[shopStyles.pdQtyBtn, auPlafond && { opacity: 0.4 }]} onPress={() => setPdQty((q) => plafonner(q + 1, cap))}
                   accessibilityRole="button" accessibilityLabel="plus">
                   <Ionicons name="add" size={20} color={THEME.ink} />
                 </TouchableOpacity>
               </View>
+                );
+              })()}
             </View>
           ) : null}
         </View>
@@ -4955,6 +5115,15 @@ const shopStyles = StyleSheet.create({
   pdQtyBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   pdAddBig: { flex: 1, marginHorizontal: 10, backgroundColor: THEME.ink, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
   pdAddBigTxt: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  pdAddBigOff: { opacity: 0.45 },
+  // Pastilles d'options (fiche à plusieurs options)
+  optWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  optChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, maxWidth: '100%' },
+  optChipOn: { borderColor: THEME.ink, backgroundColor: THEME.ink },
+  optChipOff: { backgroundColor: THEME.subtle, borderColor: THEME.border, opacity: 0.5 },
+  optChipTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink },
+  optChipTxtOn: { color: '#fff' },
+  optChipTxtOff: { color: THEME.faint },
 });
 
 function MainNavigator({ onLogout, isAuth }) {
