@@ -377,3 +377,39 @@ describe('getMarketplaceOrderStatuses', () => {
     expect(map.A1).toEqual(expect.objectContaining({ status: 'refunded', is_refunded: true }));
   });
 });
+
+describe('getShopsByCategory : options servies par la liste', () => {
+  const { apiGet } = require('../services/api');
+  const { getShopsByCategory } = require('../services/products');
+
+  beforeEach(() => apiGet.mockReset());
+
+  test('customizationOptions présent : options lues ; absent : undefined (relues à l’ajout)', async () => {
+    apiGet.mockResolvedValueOnce({
+      count: 3,
+      results: [
+        {
+          id: 1,
+          name: 'T-shirt',
+          price: 10,
+          company_id: 4,
+          ...multi([
+            { id: 's', title: 'S', quantity: '' },
+            { id: 'm', title: 'M', quantity: '0' },
+          ]),
+        },
+        { id: 2, name: 'Bol', price: 5, company_id: 4, customizationOptions: {} },
+        { id: 3, name: 'Mug', price: 6, company_id: 4 },
+      ],
+    });
+    const [shop] = await getShopsByCategory('product_purchase', { pages: 1, pageSize: 100 });
+    const parId = Object.fromEntries(shop.products.map((p) => [p.id, p.options]));
+    expect(parId[1].options).toEqual([
+      { id: 's', title: 'S', stock: null },
+      { id: 'm', title: 'M', stock: 0 },
+    ]);
+    expect(parId[2].options).toEqual([]);
+    expect(parId[3]).toBeUndefined();
+    expect(apiGet).toHaveBeenCalledTimes(1);
+  });
+});

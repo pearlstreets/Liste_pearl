@@ -150,8 +150,8 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         image: firstUrl(p.image, firstUrl(p.gallery)),
         description: p.description || '',
         subcategory: p.subcategory_name || p.subcategory_slug || '',
-        // Options de la fiche si la liste les porte (sinon undefined : relues
-        // par getProductOptions à l'ajout).
+        // Options de la fiche : servies par la liste (customizationOptions,
+        // backend récent) ; absentes = undefined, relues par getProductOptions.
         options: optionsDeLaFiche(p),
       });
     });

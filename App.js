@@ -4792,7 +4792,7 @@ const ShopsScreen = () => {
   };
 
   const renderShopCard = ({ item }) => (
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); prefetchShopOptions(item.id); }}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
