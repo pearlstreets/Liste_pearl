@@ -485,7 +485,8 @@
     "partiallyRefunded": "Parcialmente reembolsada",
     "completed": "Completada",
     "awaitingPayment": "Pendiente de pago",
-    "deliveryCode": "Código para dar al repartidor"
+    "deliveryCode": "Código para dar al repartidor",
+    "cancelled": "Cancelado"
   },
   "productNames": {
     "Pommes Golden": "Manzanas doradas",
@@ -636,5 +637,14 @@
     "removed": "Agotado, retirado del pedido",
     "justSold": "Este artículo se acaba de vender.",
     "cartUpdated": "Carrito actualizado."
+  },
+  "cancel": {
+    "button": "Cancelar el pedido",
+    "confirmTitle": "¿Cancelar el pedido?",
+    "confirmMsg": "Se te reembolsará el importe íntegro.",
+    "keep": "Mantener",
+    "done": "Pedido cancelado, reembolso en curso.",
+    "tooLate": "Tu pedido ya está en preparación, ya no se puede cancelar.",
+    "failed": "La cancelación no se ha completado. Inténtalo de nuevo en un momento."
   }
 }

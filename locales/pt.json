@@ -485,7 +485,8 @@
     "partiallyRefunded": "Parcialmente reembolsada",
     "completed": "Concluída",
     "awaitingPayment": "Aguardando pagamento",
-    "deliveryCode": "Código para dar ao entregador"
+    "deliveryCode": "Código para dar ao entregador",
+    "cancelled": "Cancelado"
   },
   "productNames": {
     "Pommes Golden": "Maçãs douradas",
@@ -636,5 +637,14 @@
     "removed": "Esgotado, retirado do pedido",
     "justSold": "Este item acabou de ser vendido.",
     "cartUpdated": "Carrinho atualizado."
+  },
+  "cancel": {
+    "button": "Cancelar pedido",
+    "confirmTitle": "Cancelar o pedido?",
+    "confirmMsg": "Você será reembolsado integralmente.",
+    "keep": "Manter",
+    "done": "Pedido cancelado, reembolso em andamento.",
+    "tooLate": "Seu pedido já está em preparação e não pode mais ser cancelado.",
+    "failed": "O cancelamento não foi concluído. Tente novamente em instantes."
   }
 }

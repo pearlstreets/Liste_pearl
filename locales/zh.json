@@ -485,7 +485,8 @@
     "partiallyRefunded": "部分退款",
     "completed": "已完成",
     "awaitingPayment": "等待付款",
-    "deliveryCode": "交给配送员的验证码"
+    "deliveryCode": "交给配送员的验证码",
+    "cancelled": "已取消"
   },
   "productNames": {
     "Pommes Golden": "金苹果",
@@ -636,5 +637,14 @@
     "removed": "已售罄，已从订单中移除",
     "justSold": "该商品刚刚售出。",
     "cartUpdated": "购物车已更新。"
+  },
+  "cancel": {
+    "button": "取消订单",
+    "confirmTitle": "要取消订单吗？",
+    "confirmMsg": "您将获得全额退款。",
+    "keep": "保留订单",
+    "done": "订单已取消，正在退款。",
+    "tooLate": "您的订单已在准备中，无法再取消。",
+    "failed": "取消未完成，请稍后再试。"
   }
 }

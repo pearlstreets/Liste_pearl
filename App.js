@@ -6,13 +6,14 @@ import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount,
 import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
+import { annulationPossible, refusAnnulation } from "./lib/annulation";
 import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus, champsVariantePanier } from "./lib/variantes";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
-import { createDeliveryOrder, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
+import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
 import { StripeAvailable } from "./services/stripeNative";
@@ -6316,6 +6317,11 @@ const profStyles = StyleSheet.create({
   grandLabel: { fontSize: 16, fontWeight: '900', color: THEME.ink },
   grandValue: { fontSize: 16, fontWeight: '900', color: THEME.brand },
   statusCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 14, marginBottom: 12 },
+  // Annulation par le client (sous le suivi de commande)
+  cancelWrap: { marginTop: -4, marginBottom: 12 },
+  cancelMsg: { fontSize: 13.5, lineHeight: 19, color: THEME.muted, fontWeight: '600', marginBottom: 8 },
+  cancelBtn: { height: 46, borderRadius: 14, borderWidth: 1.5, borderColor: THEME.danger, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  cancelBtnTxt: { color: THEME.danger, fontSize: 15, fontWeight: '800' },
   statusCardIcon: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   statusCardLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
   statusCardValue: { fontSize: 16, fontWeight: '800', marginTop: 1 },
@@ -6904,6 +6910,50 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       ],
     );
   }, [t]);
+
+  // Annulation par le client (course livraison). Le serveur décide : refus 409
+  // (`already_in_preparation` / `already_picked_up`) dès qu'une boutique a
+  // commencé la préparation ou qu'un livreur a récupéré la course. Après un
+  // refus, le bouton ne revient plus (cancelRefused gardé dans l'historique).
+  const [annulation, setAnnulation] = React.useState({}); // orderId -> 'busy' | 'done' | 'tooLate' | 'failed'
+  const majCommandeLocale = React.useCallback(async (orderId, patch) => {
+    setOrders(prev => (Array.isArray(prev) ? prev.map(o => (o && o.id === orderId ? { ...o, ...patch } : o)) : prev));
+    setDetailOrder(d => (d && d.id === orderId ? { ...d, ...patch } : d));
+    try {
+      const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
+      const hist = raw ? JSON.parse(raw) : [];
+      const idx = Array.isArray(hist) ? hist.findIndex(o => o && o.id === orderId) : -1;
+      if (idx >= 0) {
+        hist[idx] = { ...hist[idx], ...patch };
+        await AsyncStorage.setItem(KEY_ORDER_HISTORY, JSON.stringify(hist));
+      }
+    } catch (_) {}
+  }, []);
+  const annulerCommande = React.useCallback((orderId) => {
+    Alert.alert(
+      t('cancel.confirmTitle', 'Annuler la commande ?'),
+      t('cancel.confirmMsg', 'Vous serez remboursé intégralement.'),
+      [
+        { text: t('cancel.keep', 'Garder'), style: 'cancel' },
+        { text: t('cancel.button', 'Annuler la commande'), style: 'destructive', onPress: async () => {
+          setAnnulation(p => ({ ...p, [orderId]: 'busy' }));
+          try {
+            await cancelDelivery(orderId);
+            setDeliveryStatuses(prev => ({ ...prev, [orderId]: { ...(prev[orderId] || {}), status: DELIVERY_STATUS.CANCELLED } }));
+            await majCommandeLocale(orderId, { deliveryStatus: DELIVERY_STATUS.CANCELLED });
+            setAnnulation(p => ({ ...p, [orderId]: 'done' }));
+          } catch (e) {
+            if (refusAnnulation(e)) {
+              await majCommandeLocale(orderId, { cancelRefused: true });
+              setAnnulation(p => ({ ...p, [orderId]: 'tooLate' }));
+            } else {
+              setAnnulation(p => ({ ...p, [orderId]: 'failed' }));
+            }
+          }
+        } },
+      ],
+    );
+  }, [t, majCommandeLocale]);
 
   // Get order status - uses delivery API for delivery orders, simulated for collect
   const getOrderStatus = (order) => {
@@ -8277,6 +8327,33 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                       <Text style={profStyles.statusCardLabel}>{t('profile.orderTracking')}</Text>
                       <Text style={[profStyles.statusCardValue, { color: status.color }]}>{status.label}</Text>
                     </View>
+                  </View>
+                );
+              })()}
+
+              {/* Annuler la commande : livraison encore en attente seulement ;
+                  le serveur a le dernier mot (messages neutres). */}
+              {(() => {
+                const etat = annulation[detailOrder.id];
+                const bouton = etat !== 'done' && etat !== 'tooLate'
+                  && annulationPossible(detailOrder, deliveryStatuses[detailOrder.id]);
+                const msg = etat === 'done' ? t('cancel.done', 'Commande annulée, remboursement en cours.')
+                  : etat === 'tooLate' ? t('cancel.tooLate', 'Votre commande est déjà en préparation, elle ne peut plus être annulée.')
+                  : etat === 'failed' ? t('cancel.failed', "L'annulation n'a pas abouti. Réessayez dans un instant.")
+                  : '';
+                if (!bouton && !msg) return null;
+                return (
+                  <View style={profStyles.cancelWrap}>
+                    {msg ? <Text style={profStyles.cancelMsg}>{msg}</Text> : null}
+                    {bouton ? (
+                      <TouchableOpacity activeOpacity={0.85} disabled={etat === 'busy'}
+                        onPress={() => annulerCommande(detailOrder.id)} style={profStyles.cancelBtn}
+                        accessibilityRole="button" accessibilityLabel={t('cancel.button', 'Annuler la commande')}>
+                        {etat === 'busy' ? <ActivityIndicator color={THEME.danger} /> : (
+                          <Text style={profStyles.cancelBtnTxt}>{t('cancel.button', 'Annuler la commande')}</Text>
+                        )}
+                      </TouchableOpacity>
+                    ) : null}
                   </View>
                 );
               })()}

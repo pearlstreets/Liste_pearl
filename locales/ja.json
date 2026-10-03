@@ -485,7 +485,8 @@
     "partiallyRefunded": "一部返金",
     "completed": "完了",
     "awaitingPayment": "支払い待ち",
-    "deliveryCode": "配達員に伝えるコード"
+    "deliveryCode": "配達員に伝えるコード",
+    "cancelled": "キャンセル済み"
   },
   "productNames": {
     "Pommes Golden": "ゴールデンアップル",
@@ -636,5 +637,14 @@
     "removed": "売り切れのため注文から外しました",
     "justSold": "この商品はたった今売れました。",
     "cartUpdated": "カートを更新しました。"
+  },
+  "cancel": {
+    "button": "注文をキャンセル",
+    "confirmTitle": "注文をキャンセルしますか？",
+    "confirmMsg": "全額返金されます。",
+    "keep": "キャンセルしない",
+    "done": "注文をキャンセルしました。返金手続き中です。",
+    "tooLate": "ご注文はすでに準備中のため、キャンセルできません。",
+    "failed": "キャンセルが完了しませんでした。しばらくしてからもう一度お試しください。"
   }
 }

@@ -485,7 +485,8 @@
     "partiallyRefunded": "Gedeeltelijk terugbetaald",
     "completed": "Voltooid",
     "awaitingPayment": "Wacht op betaling",
-    "deliveryCode": "Code voor de bezorger"
+    "deliveryCode": "Code voor de bezorger",
+    "cancelled": "Geannuleerd"
   },
   "productNames": {
     "Pommes Golden": "Gouden appels",
@@ -636,5 +637,14 @@
     "removed": "Uitverkocht, uit de bestelling verwijderd",
     "justSold": "Dit artikel is net verkocht.",
     "cartUpdated": "Winkelwagen bijgewerkt."
+  },
+  "cancel": {
+    "button": "Bestelling annuleren",
+    "confirmTitle": "Bestelling annuleren?",
+    "confirmMsg": "Je krijgt het volledige bedrag terug.",
+    "keep": "Behouden",
+    "done": "Bestelling geannuleerd, terugbetaling loopt.",
+    "tooLate": "Je bestelling wordt al voorbereid en kan niet meer worden geannuleerd.",
+    "failed": "De annulering is niet gelukt. Probeer het zo opnieuw."
   }
 }

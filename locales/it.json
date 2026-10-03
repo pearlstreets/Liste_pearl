@@ -485,7 +485,8 @@
     "partiallyRefunded": "Parzialmente rimborsato",
     "completed": "Completato",
     "awaitingPayment": "In attesa di pagamento",
-    "deliveryCode": "Codice da dare al corriere"
+    "deliveryCode": "Codice da dare al corriere",
+    "cancelled": "Annullato"
   },
   "productNames": {
     "Pommes Golden": "Mele dorate",
@@ -636,5 +637,14 @@
     "removed": "Esaurito, rimosso dall'ordine",
     "justSold": "Questo articolo è appena stato venduto.",
     "cartUpdated": "Carrello aggiornato."
+  },
+  "cancel": {
+    "button": "Annulla l'ordine",
+    "confirmTitle": "Annullare l'ordine?",
+    "confirmMsg": "Sarai rimborsato per intero.",
+    "keep": "Mantieni",
+    "done": "Ordine annullato, rimborso in corso.",
+    "tooLate": "Il tuo ordine è già in preparazione, non può più essere annullato.",
+    "failed": "L'annullamento non è andato a buon fine. Riprova tra un momento."
   }
 }

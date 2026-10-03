@@ -485,7 +485,8 @@
     "partiallyRefunded": "Delvis återbetald",
     "completed": "Slutförd",
     "awaitingPayment": "Väntar på betalning",
-    "deliveryCode": "Kod att ge till budet"
+    "deliveryCode": "Kod att ge till budet",
+    "cancelled": "Avbruten"
   },
   "productNames": {
     "Pommes Golden": "Gyllene äpplen",
@@ -636,5 +637,14 @@
     "removed": "Slutsåld, borttagen från beställningen",
     "justSold": "Den här varan har precis sålts.",
     "cartUpdated": "Kundvagnen har uppdaterats."
+  },
+  "cancel": {
+    "button": "Avbryt beställningen",
+    "confirmTitle": "Avbryta beställningen?",
+    "confirmMsg": "Du får hela beloppet återbetalt.",
+    "keep": "Behåll",
+    "done": "Beställningen är avbruten, återbetalning pågår.",
+    "tooLate": "Din beställning förbereds redan och kan inte längre avbrytas.",
+    "failed": "Avbrytningen gick inte igenom. Försök igen om en stund."
   }
 }

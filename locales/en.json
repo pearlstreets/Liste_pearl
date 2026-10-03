@@ -544,7 +544,8 @@
     "partiallyRefunded": "Partially refunded",
     "completed": "Completed",
     "awaitingPayment": "Awaiting payment",
-    "deliveryCode": "Code to give the driver"
+    "deliveryCode": "Code to give the driver",
+    "cancelled": "Cancelled"
   },
   "productNames": {
     "Pommes Golden": "Golden apples",
@@ -695,5 +696,14 @@
     "removed": "Sold out, removed from the order",
     "justSold": "This item has just been sold.",
     "cartUpdated": "Cart updated."
+  },
+  "cancel": {
+    "button": "Cancel order",
+    "confirmTitle": "Cancel the order?",
+    "confirmMsg": "You will be fully refunded.",
+    "keep": "Keep",
+    "done": "Order cancelled, refund in progress.",
+    "tooLate": "Your order is already being prepared and can no longer be cancelled.",
+    "failed": "The cancellation did not go through. Please try again in a moment."
   }
 }

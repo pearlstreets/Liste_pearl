@@ -485,7 +485,8 @@
     "partiallyRefunded": "Teilweise erstattet",
     "completed": "Abgeschlossen",
     "awaitingPayment": "Zahlung ausstehend",
-    "deliveryCode": "Code für den Fahrer"
+    "deliveryCode": "Code für den Fahrer",
+    "cancelled": "Storniert"
   },
   "productNames": {
     "Pommes Golden": "Goldene Äpfel",
@@ -636,5 +637,14 @@
     "removed": "Ausverkauft, aus der Bestellung entfernt",
     "justSold": "Dieser Artikel wurde gerade verkauft.",
     "cartUpdated": "Warenkorb aktualisiert."
+  },
+  "cancel": {
+    "button": "Bestellung stornieren",
+    "confirmTitle": "Bestellung stornieren?",
+    "confirmMsg": "Du erhältst eine vollständige Erstattung.",
+    "keep": "Behalten",
+    "done": "Bestellung storniert, Erstattung läuft.",
+    "tooLate": "Deine Bestellung wird bereits vorbereitet und kann nicht mehr storniert werden.",
+    "failed": "Die Stornierung hat nicht geklappt. Versuche es gleich noch einmal."
   }
 }

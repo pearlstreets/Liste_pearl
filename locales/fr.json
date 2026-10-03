@@ -544,7 +544,8 @@
     "partiallyRefunded": "Partiellement remboursée",
     "completed": "Terminée",
     "awaitingPayment": "En attente de paiement",
-    "deliveryCode": "Code à donner au livreur"
+    "deliveryCode": "Code à donner au livreur",
+    "cancelled": "Annulée"
   },
   "productNames": {
     "Pommes Golden": "Pommes Golden",
@@ -695,5 +696,14 @@
     "removed": "Épuisé, retiré de la commande",
     "justSold": "Cet article vient d'être vendu.",
     "cartUpdated": "Panier mis à jour."
+  },
+  "cancel": {
+    "button": "Annuler la commande",
+    "confirmTitle": "Annuler la commande ?",
+    "confirmMsg": "Vous serez remboursé intégralement.",
+    "keep": "Garder",
+    "done": "Commande annulée, remboursement en cours.",
+    "tooLate": "Votre commande est déjà en préparation, elle ne peut plus être annulée.",
+    "failed": "L'annulation n'a pas abouti. Réessayez dans un instant."
   }
 }
