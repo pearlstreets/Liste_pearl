@@ -3,7 +3,7 @@
     "name": "Pearl List",
     "slug": "pearl-list",
     "scheme": "pearl-list",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
