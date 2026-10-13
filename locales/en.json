@@ -501,6 +501,7 @@
     "orderConfirmedCollect": "Your order will be prepared for pickup. Track its status in Profile > Orders.",
     "orderConfirmedDelivery": "A driver will pick up your order. Track its status in Profile > Orders.",
     "orderCreateFailed": "Couldn't create the order on the Marketplace. Please try again.",
+    "onsiteOnly": "This restaurant only sells on site: this item cannot be bought online.",
     "payByCard": "Card payment",
     "payNow": "Pay now",
     "cancel": "Cancel",

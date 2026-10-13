@@ -442,6 +442,7 @@
     "orderConfirmedCollect": "Ihre Bestellung wird für die Abholung vorbereitet. Verfolgen Sie den Status unter Profil > Bestellungen.",
     "orderConfirmedDelivery": "Ein Kurier übernimmt Ihre Bestellung. Verfolgen Sie den Status unter Profil > Bestellungen.",
     "orderCreateFailed": "Bestellung konnte im Marketplace nicht erstellt werden. Bitte erneut versuchen.",
+    "onsiteOnly": "Dieses Restaurant verkauft nur vor Ort: Dieser Artikel kann nicht online gekauft werden.",
     "payByCard": "Kartenzahlung",
     "payNow": "Jetzt bezahlen",
     "cancel": "Abbrechen",

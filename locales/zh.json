@@ -442,6 +442,7 @@
     "orderConfirmedCollect": "您的订单将备货以供取货。请在“我的 > 订单”中查看订单状态。",
     "orderConfirmedDelivery": "配送员将为您配送订单。请在“我的 > 订单”中查看订单状态。",
     "orderCreateFailed": "无法在商城创建订单，请重试。",
+    "onsiteOnly": "这家餐厅仅限店内消费：此商品无法在线购买。",
     "payByCard": "银行卡支付",
     "payNow": "立即支付",
     "cancel": "取消",

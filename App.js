@@ -16,6 +16,7 @@ import { getTokens } from "./services/api";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
+import { estRefusSurPlaceSeul } from "./lib/surPlaceSeul";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
 import LiveDeliveryMap from "./components/LiveDeliveryMap";
@@ -3555,6 +3556,11 @@ const CartScreen = ({ isAuth }) => {
         const refus = refusDeStock(e);
         // Rien n'a été créé : message neutre, liste relue, aucune commande locale.
         if (refus && !opts.orderId) { await signalerRefusDeStock(refus); return false; }
+        // Restaurant au seul sur place : aucune course créée, aucune commande locale.
+        if (estRefusSurPlaceSeul(e)) {
+          setPopup({ tone: 'info', title: t('cart.confirmOrder'), message: t('cart.onsiteOnly') });
+          return false;
+        }
       }
     }
     const { commandes, exclus, lignes } = appliquerEcarts(selectedItems, ecarts);
@@ -3599,7 +3605,7 @@ const CartScreen = ({ isAuth }) => {
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
     setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6), notices: lignesStock(lignes) });
     return order;
-  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock]);
+  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock, t]);
 
   // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
@@ -3646,7 +3652,7 @@ const CartScreen = ({ isAuth }) => {
           // Option choisie (fiche à plusieurs options) : `selected_variant`, sinon
           // le serveur refuse la ligne (variant_required).
           const r = await addToCartApi({ product_id: it.productId, company_id: companyId, quantity: it.qty || 1, order_type_key: otKeyInt, ...champsVariantePanier(it.variant) });
-          if (!r || r.status === false) throw new Error((r && r.message) || 'cart/add');
+          if (!r || r.status === false) throw Object.assign(new Error((r && r.message) || 'cart/add'), { refus: r });
         }
         if (orderMode === 'delivery' && selectedAddressId) {
           try { await updateCartMetaApi(companyId, otKeyStr, { new_order_type: 'Delivery', address_id: selectedAddressId }); } catch (_) {}
@@ -3655,11 +3661,12 @@ const CartScreen = ({ isAuth }) => {
         if (orderMode === 'delivery' && selectedAddressId) body.address_id = selectedAddressId;
         const oc = await createOrderApi(companyId, categoryId, body);
         const orderId = (oc && (oc.order_id || (oc.data && oc.data.order_id))) || null;
-        if (!oc || oc.status === false || !orderId) throw new Error((oc && oc.message) || 'order/create');
+        if (!oc || oc.status === false || !orderId) throw Object.assign(new Error((oc && oc.message) || 'order/create'), { refus: oc });
         orders.push({ orderId, shopName: group[0].shop || '' });
       }
     } catch (e) {
-      setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.') });
+      if (estRefusSurPlaceSeul(e)) setPopup({ tone: 'info', title: t('cart.confirmOrder'), message: t('cart.onsiteOnly') });
+      else setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande côté Marketplace. Réessayez.') });
       setPendingPayment(null);
       return 'error';
     }
@@ -4218,6 +4225,7 @@ const CartScreen = ({ isAuth }) => {
                         // vendu. ») : message neutre, liste relue, rien n'est créé.
                         const refus = refusDeStock(e);
                         if (refus) await signalerRefusDeStock(refus);
+                        else if (estRefusSurPlaceSeul(e)) setPopup({ tone: 'info', title: t('cart.confirmOrder'), message: t('cart.onsiteOnly') });
                         else setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
                         placingRef.current = false; setPlacing(false); return;
                       }

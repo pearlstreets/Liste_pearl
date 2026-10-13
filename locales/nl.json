@@ -442,6 +442,7 @@
     "orderConfirmedCollect": "Je bestelling wordt klaargemaakt om af te halen. Volg de status in Profiel > Bestellingen.",
     "orderConfirmedDelivery": "Een bezorger neemt je bestelling in behandeling. Volg de status in Profiel > Bestellingen.",
     "orderCreateFailed": "Kon de bestelling niet aanmaken in de Marketplace. Probeer opnieuw.",
+    "onsiteOnly": "Dit restaurant verkoopt alleen ter plaatse: dit artikel kan niet online worden gekocht.",
     "payByCard": "Betalen met kaart",
     "payNow": "Nu betalen",
     "cancel": "Annuleren",

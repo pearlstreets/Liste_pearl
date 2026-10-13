@@ -442,6 +442,7 @@
     "orderConfirmedCollect": "O seu pedido será preparado para levantamento. Acompanhe o estado em Perfil > Pedidos.",
     "orderConfirmedDelivery": "Um estafeta vai tratar do seu pedido. Acompanhe o estado em Perfil > Pedidos.",
     "orderCreateFailed": "Não foi possível criar o pedido no Marketplace. Tente novamente.",
+    "onsiteOnly": "Este restaurante só vende no local: este artigo não pode ser comprado online.",
     "payByCard": "Pagamento com cartão",
     "payNow": "Pagar agora",
     "cancel": "Cancelar",
