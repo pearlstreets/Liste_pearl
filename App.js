@@ -16,7 +16,7 @@ import { getTokens } from "./services/api";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
-import { estRefusSurPlaceSeul, sansPlatsSurPlaceSeul } from "./lib/surPlaceSeul";
+import { estRefusSurPlaceSeul } from "./lib/surPlaceSeul";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
 import LiveDeliveryMap from "./components/LiveDeliveryMap";
@@ -1384,7 +1384,7 @@ const ProductsScreen = () => {
   // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
   const [realShops,setRealShops]=React.useState(null);
   React.useEffect(()=>{ let a=true; (async()=>{
-    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(sansPlatsSurPlaceSeul(d)); }
+    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(d); }
     catch(e){ if(a) setRealShops([]); }
   })(); return ()=>{a=false}; },[]);
 
