@@ -153,6 +153,9 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         // Options de la fiche : servies par la liste (customizationOptions,
         // backend récent) ; absentes = undefined, relues par getProductOptions.
         options: optionsDeLaFiche(p),
+        // Plat d'un restaurant au seul sur place : pas d'achat en ligne
+        // (champ absent des anciens serveurs = achetable, comme avant).
+        surPlaceSeul: p.sur_place_seul === true,
       });
     });
     const total = (data && Number(data.count)) || 0;

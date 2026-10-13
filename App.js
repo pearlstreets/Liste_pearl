@@ -16,7 +16,7 @@ import { getTokens } from "./services/api";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
-import { estRefusSurPlaceSeul } from "./lib/surPlaceSeul";
+import { estRefusSurPlaceSeul, sansPlatsSurPlaceSeul } from "./lib/surPlaceSeul";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
 import LiveDeliveryMap from "./components/LiveDeliveryMap";
@@ -1384,7 +1384,7 @@ const ProductsScreen = () => {
   // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
   const [realShops,setRealShops]=React.useState(null);
   React.useEffect(()=>{ let a=true; (async()=>{
-    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(Array.isArray(d)?d:[]); }
+    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(sansPlatsSurPlaceSeul(d)); }
     catch(e){ if(a) setRealShops([]); }
   })(); return ()=>{a=false}; },[]);
 
@@ -4843,10 +4843,13 @@ const ShopsScreen = () => {
           </View>
         </View>
       </TouchableOpacity>
+      {/* Restaurant au seul sur place : pas d'ajout au panier. */}
+      {item.surPlaceSeul ? null : (
       <TouchableOpacity style={shopStyles.addBtn} onPress={() => ajoutRapide(item)} disabled={busyAdd != null}
         accessibilityRole="button" accessibilityLabel={`${t('cart.add', 'Ajouter')} ${item.name}`} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
         {busyAdd === item.id ? <ActivityIndicator color="#fff" size="small" /> : <Ionicons name="add" size={22} color="#fff" />}
       </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -5019,7 +5022,7 @@ const ShopsScreen = () => {
                   />
                 </View>
               </ScrollView>
-              {(() => {
+              {selectedProduct && selectedProduct.surPlaceSeul ? null : (() => {
                 // Plafond = stock de l'option choisie (null = non suivi).
                 const opts = pdOptions && Array.isArray(pdOptions.options) ? pdOptions.options : [];
                 const cap = pdOption && pdOption.stock !== null && pdOption.stock !== undefined ? pdOption.stock : null;
