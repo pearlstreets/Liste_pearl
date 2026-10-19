@@ -69,7 +69,8 @@
         {
           "enableGooglePay": false
         }
-      ]
+      ],
+      "./plugins/withSecuriteReseau"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0

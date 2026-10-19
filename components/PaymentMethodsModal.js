@@ -7,6 +7,7 @@ import React from 'react';
 import { View, Text, Modal, TouchableOpacity, ActivityIndicator, ScrollView, Alert, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
+import useSecureScreen from '../lib/useSecureScreen';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { getSavedCardsApi, saveCardApi, deleteSavedCardApi, createStripeCustomerApi } from '../services/payment';
 
@@ -167,8 +168,11 @@ function PaymentMethodsInner({ t, onClose }) {
 }
 
 export default function PaymentMethodsModal({ visible, t, onClose }) {
+  // Saisie ou liste de cartes : capture bloquée (Android). La modale ne
+  // s'ouvre qu'une fois la protection posée (voir lib/useSecureScreen.js).
+  const pret = useSecureScreen('moyens-de-paiement', !!visible);
   return (
-    <Modal visible={!!visible} transparent animationType="slide" onRequestClose={() => onClose && onClose()}>
+    <Modal visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onClose && onClose()}>
       <StripeProvider
         publishableKey={STRIPE_PUBLISHABLE_KEY}
         urlScheme="pearl-list"
