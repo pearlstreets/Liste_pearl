@@ -248,7 +248,7 @@
     "close": "閉じる",
     "deleteAccount": "アカウントを削除",
     "deleteAccountTitle": "アカウントを削除",
-    "deleteAccountConfirm": "注意：あなたのアカウントは Pearl Streets の共通アカウントです。ここで削除すると、Pearl Streets のアプリと Marketplace サイト（注文、お気に入り、ポイント）でも削除されます。データは法律で定められた期間保持された後、消去されます。この操作は元に戻せません。",
+    "deleteAccountConfirm": "注意：あなたのアカウントは Pearl Streets の共通アカウントです。ここで削除すると、Pearl Streets のアプリと Marketplace サイト（注文、お気に入り、ポイント）でも削除されます。データは法律で定められた期間保持された後、消去されます。30 日以内であればアカウントを復元できます。それ以降は削除が確定します。",
     "deleteAccountAction": "削除",
     "deleteAccountErrTitle": "削除できません",
     "deleteAccountErr": "アカウントの削除に失敗しました。接続を確認して、もう一度お試しください。",

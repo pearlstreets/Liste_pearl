@@ -7499,7 +7499,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             if (deletingAccountRef.current) return;
             Alert.alert(
               t('profile.deleteAccountTitle', 'Supprimer mon compte'),
-              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Cette action est irréversible."),
+              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Vous pouvez restaurer votre compte pendant 30 jours ; ensuite, la suppression est définitive."),
               [
                 { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
                 { text: t('profile.deleteAccountAction', 'Supprimer'), style: 'destructive', onPress: async () => {

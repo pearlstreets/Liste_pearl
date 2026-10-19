@@ -281,7 +281,7 @@
     "close": "Close",
     "deleteAccount": "Delete my account",
     "deleteAccountTitle": "Delete my account",
-    "deleteAccountConfirm": "Warning: your account is a shared Pearl Streets account. Deleting it here also deletes it on the Pearl Streets app and Marketplace website (orders, favorites, loyalty). Your data is kept for the period required by law, then erased. This action cannot be undone.",
+    "deleteAccountConfirm": "Warning: your account is a shared Pearl Streets account. Deleting it here also deletes it on the Pearl Streets app and Marketplace website (orders, favorites, loyalty). Your data is kept for the period required by law, then erased. Your account can be restored within 30 days; after that, the deletion is permanent.",
     "deleteAccountAction": "Delete",
     "deleteAccountErrTitle": "Deletion failed",
     "deleteAccountErr": "Account deletion failed. Check your connection and try again.",
