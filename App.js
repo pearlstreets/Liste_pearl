@@ -13,6 +13,7 @@ import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemo
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
+import { getSecureItem, setSecureItem } from "./services/secureStorage";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
@@ -330,7 +331,7 @@ function ListScreen() {
     let alive = true;
     (async () => {
       try {
-        const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+        const tok = await getTokens();
         if (alive) setIsLoggedIn(!!tok);
         if (!tok) { if (alive) { setSharedLists([]); setViewingShareId(null); } return; }
         const res = await getSharedWithMe();
@@ -354,7 +355,7 @@ function ListScreen() {
     if (activeListId !== DEFAULT_LIST_ID) return;
     const tm = setTimeout(async () => {
       try {
-        const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+        const tok = await getTokens();
         if (tok) await syncMyList(items, '');
       } catch {}
     }, 1500);
@@ -3533,7 +3534,7 @@ const CartScreen = ({ isAuth }) => {
     const selectedDay = deliveryDays[selectedDateIndex];
     const deliveryDateLabel = selectedDay ? ((selectedDay.dayName || selectedDay.label) + ' ' + selectedDay.sub) : '';
     let profile = {};
-    try { const p = await AsyncStorage.getItem(KEY_PROFILE); profile = p ? JSON.parse(p) : {}; } catch (e) {}
+    try { const p = await getSecureItem(KEY_PROFILE); profile = p ? JSON.parse(p) : {}; } catch (e) {}
     const recipientName = selectedAddress ? [selectedAddress.first_name, selectedAddress.last_name].filter(Boolean).join(' ').trim() : '';
     const recipientPhone = selectedAddress ? [selectedAddress.phone_code, selectedAddress.phone_number].filter(Boolean).join(' ').trim() : '';
     return {
@@ -5961,7 +5962,7 @@ export default function App() {
   // Check if pro user needs verification
   React.useEffect(() => {
     (async () => {
-      const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+      const authRaw = await getSecureItem(KEY_AUTH);
       if (authRaw) {
         const auth = JSON.parse(authRaw);
         if (auth.role === 'professionaluser' && !auth.isVerified) {
@@ -6015,7 +6016,7 @@ export default function App() {
   React.useEffect(() => {
     (async () => {
       await purgeLegacyLocalAccounts();
-      const raw = await AsyncStorage.getItem(KEY_AUTH);
+      const raw = await getSecureItem(KEY_AUTH);
       // 1er lancement = aucune langue enregistrée → on présentera le choix de langue.
       const savedLang = await AsyncStorage.getItem('APP_LANGUAGE');
       setNeedLangChoice(!savedLang);
@@ -6447,7 +6448,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [shareRequestsVisible, setShareRequestsVisible] = React.useState(false);
   const loadShareData = React.useCallback(async () => {
     try {
-      const tok = await AsyncStorage.getItem('MARKETPLACE_TOKENS');
+      const tok = await getTokens();
       if (!tok) { setShareRequests([]); setBlockedUsers([]); return; }
       const [inc, blk] = await Promise.all([getIncomingRequests(), getBlocks()]);
       if (inc && inc.status) setShareRequests(inc.data?.requests || []);
@@ -6496,7 +6497,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     } catch(e) {}
     // Fallback to local storage
     try {
-      const raw = await AsyncStorage.getItem(KEY_PROFILE);
+      const raw = await getSecureItem(KEY_PROFILE);
       if (raw) setProfile(JSON.parse(raw));
     } catch(e) {}
   }, []);
@@ -6544,7 +6545,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     // Load document verification status for pro users
     (async () => {
       try {
-        const authRaw = await AsyncStorage.getItem(KEY_AUTH);
+        const authRaw = await getSecureItem(KEY_AUTH);
         const auth = authRaw ? JSON.parse(authRaw) : {};
         if (auth.role === 'professionaluser') {
           const data = await getDocumentStatus();
@@ -6552,11 +6553,11 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             setDocStatuses(data.document_status);
             // Update isVerified in profile
             if (data.document_status.is_verified) {
-              const profRaw = await AsyncStorage.getItem(KEY_PROFILE);
+              const profRaw = await getSecureItem(KEY_PROFILE);
               const prof = profRaw ? JSON.parse(profRaw) : {};
               if (!prof.isVerified) {
                 prof.isVerified = true;
-                await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(prof));
+                await setSecureItem(KEY_PROFILE, JSON.stringify(prof));
                 setProfile(prof);
               }
             }
@@ -6582,7 +6583,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       });
     } catch(e) {}
     setProfile(updated);
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
+    await setSecureItem(KEY_PROFILE, JSON.stringify(updated));
     setEditVisible(false);
   };
 
@@ -6763,7 +6764,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       const uri = result.assets[0].uri;
       const updated = { ...profile, photo: uri };
       setProfile(updated);
-      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
+      await setSecureItem(KEY_PROFILE, JSON.stringify(updated));
       // Sync photo with Marketplace backend
       try { await uploadProfilePhoto(uri); } catch(e) {}
     }

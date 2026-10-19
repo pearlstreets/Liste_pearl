@@ -44,9 +44,11 @@
       },
       "permissions": [
         "CAMERA",
-        "ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -54,7 +56,6 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "pearlBaseUrl": "https://pythonapi.digiexports.in/api/v1",
       "stripePublishableKey": "pk_live_51R8hqCArfIzMjUBjIDVUlchS37nktlFM2cdugW3ocvqBwdi8GxPuKkaKTlnGdX2Qb0yVbAK9JivZlUOAvgygP8Pe00JEBclh24",
       "eas": {
         "projectId": "c2ae23d8-1884-47ae-b45c-feea16814db6"

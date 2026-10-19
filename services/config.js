@@ -11,13 +11,6 @@ const ENV = {
     ADMIN_URL: 'http://localhost:7001',
     PRO_URL: 'http://localhost:7003',
   },
-  staging: {
-    API_URL: 'https://pythonapi.digiexports.in/api/v1',
-    DELIVERY_API_URL: 'https://pythonapi.digiexports.in/api/v1/delivery',
-    WEB_URL: 'https://marketplace.digiexports.in',
-    ADMIN_URL: 'https://admin.digiexports.in',
-    PRO_URL: 'https://pro.digiexports.in',
-  },
   production: {
     // MÊME backend que l'app mobile AppUser (env.js -> PROD_API) et que le site
     // WebsiteUser : api.pearlstreets.com SANS le préfixe /app-api.
@@ -34,7 +27,6 @@ const ENV = {
 };
 
 // Active environment - selected automatically by build mode
-// "staging" = pythonapi.digiexports.in (needs deployed backend)
 // "local" = localhost:8000 (needs local Django server)
 // "production" = api.pearlstreets.com (release builds)
 // The app always falls back to local accounts if API is unavailable

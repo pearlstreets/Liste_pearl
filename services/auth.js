@@ -1,5 +1,6 @@
 import { apiPost, apiPut, apiUpload, apiDeleteWithStatus, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setSecureItem, removeSecureItem, removeSecureItems, SECURE_KEYS } from './secureStorage';
 
 const KEY_AUTH = 'KEY_AUTH';
 const KEY_PROFILE = 'KEY_PROFILE';
@@ -67,8 +68,8 @@ export async function registerUser({
       photo: user.profileImage || null,
       role: user.role || 'user',
     };
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(authData));
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(authData));
+    await setSecureItem(KEY_AUTH, JSON.stringify(authData));
+    await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
     return { success: true, user: authData };
   }
 
@@ -118,8 +119,8 @@ export async function loginUser(identifier, password) {
       photo: user.profileImage || null,
       role: user.role_name || user.role || 'user',
     };
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(authData));
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(authData));
+    await setSecureItem(KEY_AUTH, JSON.stringify(authData));
+    await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
     return { success: true, user: authData };
   }
 
@@ -134,12 +135,19 @@ export async function logoutUser() {
       // Le serveur lit `refresh_token` ; `refresh` reste envoyé pour les
       // versions du serveur qui lisaient cette clé.
       await apiPost('/users/logout/', { refresh: tokens.refresh, refresh_token: tokens.refresh });
+      // Jeton d'accès expiré : l'appel ci-dessus a d'abord fait tourner la
+      // paire (l'ancien refresh est déjà en liste noire). Le refresh NEUF
+      // resterait valable côté serveur : on le révoque aussi.
+      const after = await getTokens();
+      if (after?.refresh && after.refresh !== tokens.refresh) {
+        await apiPost('/users/logout/', { refresh: after.refresh, refresh_token: after.refresh });
+      }
     }
   } catch {
     // Ignore logout API errors
   }
   await clearTokens();
-  await AsyncStorage.removeItem(KEY_AUTH);
+  await removeSecureItem(KEY_AUTH);
 }
 
 // Données de l'utilisateur gardées sur l'appareil, effacées à la déconnexion
@@ -173,6 +181,8 @@ const isUserScopedKey = (k) =>
     k.startsWith('__SECURE__'));
 
 export async function clearLocalUserData() {
+  // Jetons, compte et profil : stockage chiffré ET ancienne copie AsyncStorage.
+  await removeSecureItems(SECURE_KEYS);
   try {
     await AsyncStorage.multiRemove(USER_KEYS_TO_REMOVE);
   } catch {}
@@ -334,8 +344,8 @@ export async function registerProfessional({
       isVerified: false,
       companyName: companyName,
     };
-    await AsyncStorage.setItem(KEY_AUTH, JSON.stringify(authData));
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(authData));
+    await setSecureItem(KEY_AUTH, JSON.stringify(authData));
+    await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
     return { success: true, user: authData };
   }
 

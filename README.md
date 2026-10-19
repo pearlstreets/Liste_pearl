@@ -76,7 +76,7 @@ npx eas build --platform android
 
 ## Environment
 
-The app reads the API base URL from `app.json` → `expo.extra.pearlBaseUrl`. To override per-environment, use EAS profiles (`eas.json`) with `"extra": { "pearlBaseUrl": "…" }` overrides.
+The API base URL is set in `services/config.js` (`ACTIVE_ENV`, production: `https://api.pearlstreets.com/api/v1`).
 
 ## Testing
 

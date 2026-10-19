@@ -1,18 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from './config';
 import { champsVariante } from '../lib/variantes';
-import { refreshTokens as refreshSharedTokens } from './api';
+import { refreshTokens as refreshSharedTokens, getTokens } from './api';
 
 // Delivery API - connects to the same backend as Livraison-app
 // This allows Liste_Pearl orders to be picked up by delivery drivers
 const DELIVERY_BASE =
   CONFIG.DELIVERY_API_URL || CONFIG.API_URL.replace('/api/v1', '') + '/api/v1/delivery';
 
-const TOKENS_KEY = 'MARKETPLACE_TOKENS';
-
+// Jetons lus par la fonction commune (stockage chiffré, migration, repli).
 async function getStoredTokens() {
-  const raw = await AsyncStorage.getItem(TOKENS_KEY);
-  return raw ? JSON.parse(raw) : null;
+  return getTokens();
 }
 
 function authHeaders(tokens, extra = {}) {

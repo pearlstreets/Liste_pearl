@@ -33,7 +33,12 @@ jest.mock('../services/config', () => ({
   },
 }));
 
-jest.mock('../services/api', () => ({ apiGet: jest.fn() }));
+jest.mock('../services/api', () => ({
+  apiGet: jest.fn(),
+  // services/delivery.js lit les jetons par la fonction commune (stockage chiffré).
+  getTokens: jest.fn(() => Promise.resolve({ access: 'tok', refresh: 'r' })),
+  refreshTokens: jest.fn(() => Promise.resolve(null)),
+}));
 
 const multi = (rows, categories = ['Taille']) => ({
   customizationOptions: { variant: 'multi', variants: { categories, rows } },

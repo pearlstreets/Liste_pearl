@@ -84,6 +84,18 @@ describe('déconnexion', () => {
     expect(JSON.parse(opts.body)).toEqual({ refresh: 'R1', refresh_token: 'R1' });
     expect(await api.getTokens()).toBeNull();
   });
+
+  test('jeton d accès expiré : le refresh tourné est révoqué aussi', async () => {
+    await api.saveTokens(jwt(-10), 'R1');
+    global.fetch
+      .mockResolvedValueOnce(jsonRes(200, { access: jwt(3600), refresh: 'R2' }))
+      .mockResolvedValueOnce(jsonRes(200, { status: true }))
+      .mockResolvedValueOnce(jsonRes(200, { status: true }));
+    await auth.logoutUser();
+    const logouts = global.fetch.mock.calls.filter(([u]) => u.endsWith('/users/logout/'));
+    expect(logouts.map(([, o]) => JSON.parse(o.body).refresh_token)).toEqual(['R1', 'R2']);
+    expect(await api.getTokens()).toBeNull();
+  });
 });
 
 describe('changement de mot de passe', () => {

@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from './config';
 import { sanitizeResponse, isTokenExpired, requestFingerprint } from './security';
+import { getSecureItem, setSecureItem, removeSecureItem } from './secureStorage';
 
 // Base URL from config
 const BASE_URL = CONFIG.API_URL;
@@ -8,14 +8,17 @@ const TOKEN_KEY = 'MARKETPLACE_TOKENS';
 const API_TIMEOUT = 8000; // 8s timeout
 
 // ========== TOKEN MANAGEMENT ==========
+// Jetons dans le stockage chiffré de l'appareil (Keychain / Keystore), avec
+// migration depuis l'ancienne clé AsyncStorage et repli AsyncStorage en cas
+// d'échec : voir services/secureStorage.js.
 
 export async function saveTokens(access, refresh) {
-  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify({ access, refresh, savedAt: Date.now() }));
+  await setSecureItem(TOKEN_KEY, JSON.stringify({ access, refresh, savedAt: Date.now() }));
 }
 
 export async function getTokens() {
   try {
-    const raw = await AsyncStorage.getItem(TOKEN_KEY);
+    const raw = await getSecureItem(TOKEN_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -23,7 +26,7 @@ export async function getTokens() {
 }
 
 export async function clearTokens() {
-  await AsyncStorage.removeItem(TOKEN_KEY);
+  await removeSecureItem(TOKEN_KEY);
 }
 
 // ========== TOKEN REFRESH ==========
@@ -75,10 +78,11 @@ export function refreshTokens(staleRefresh) {
 
 // ========== SECURE FETCH ==========
 
-async function apiFetch(endpoint, options = {}) {
+async function apiFetch(endpoint, { multipart, ...options } = {}) {
   const tokens = await getTokens();
   const headers = {
-    'Content-Type': 'application/json',
+    // Envoi de fichiers (FormData) : le Content-Type multipart est posé par fetch.
+    ...(multipart ? {} : { 'Content-Type': 'application/json' }),
     'X-Request-ID': requestFingerprint(), // Track requests
     ...(options.headers || {}),
   };
@@ -173,17 +177,9 @@ export async function apiDeleteWithStatus(endpoint, body) {
 
 // `method` : POST par défaut ; PUT pour les vues qui n'acceptent que PUT
 // (ex. /users/update-profile/).
+// Même rafraîchissement du jeton que les autres appels (jeton expiré, 401).
 export async function apiUpload(endpoint, formData, method = 'POST') {
-  const tokens = await getTokens();
-  const headers = { 'X-Request-ID': requestFingerprint() };
-  if (tokens?.access) {
-    headers['Authorization'] = `Bearer ${tokens.access}`;
-  }
-  const res = await fetchWithTimeout(`${BASE_URL}${endpoint}`, {
-    method,
-    headers,
-    body: formData,
-  });
+  const res = await apiFetch(endpoint, { method, body: formData, multipart: true });
   const data = await res.json();
   return sanitizeResponse(data);
 }

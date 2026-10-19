@@ -88,7 +88,9 @@ export async function secureRemove(key) {
 export function isTokenExpired(token) {
   if (!token) return true;
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    // Les JWT sont en base64url : remettre l'alphabet base64 standard et le remplissage avant atob
+    const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)));
     return payload.exp * 1000 < Date.now();
   } catch {
     return true;

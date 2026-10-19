@@ -1,5 +1,6 @@
 import { apiGet, apiPost, apiPut, apiUpload } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getSecureItem, setSecureItem } from './secureStorage';
 
 const KEY_PROFILE = 'KEY_PROFILE';
 
@@ -29,7 +30,7 @@ export async function getProfile() {
         country: user.manualAddress?.country || '',
         role: user.role_name || user.role || 'user',
       };
-      await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
+      await setSecureItem(KEY_PROFILE, JSON.stringify(profile));
       return profile;
     }
   } catch {
@@ -37,7 +38,7 @@ export async function getProfile() {
   }
 
   // Fallback to local profile
-  const raw = await AsyncStorage.getItem(KEY_PROFILE);
+  const raw = await getSecureItem(KEY_PROFILE);
   return raw ? JSON.parse(raw) : null;
 }
 
@@ -45,7 +46,7 @@ export async function getProfile() {
 // La vue /users/update-profile/ n'accepte que PUT et exige `?id=<id>`.
 async function currentUserId() {
   try {
-    const raw = await AsyncStorage.getItem('KEY_AUTH');
+    const raw = await getSecureItem('KEY_AUTH');
     const auth = raw ? JSON.parse(raw) : null;
     return auth && auth.id ? auth.id : null;
   } catch {
@@ -69,7 +70,7 @@ export async function updateProfile(profileData) {
     // Update local cache
     const current = await getProfile();
     const updated = { ...current, ...profileData };
-    await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
+    await setSecureItem(KEY_PROFILE, JSON.stringify(updated));
     return { success: true, profile: updated };
   }
 
@@ -123,7 +124,7 @@ export async function updateAddress(addressData) {
 
 // Save user data locally (for offline support)
 export async function saveUserDataLocally(key, data) {
-  const authRaw = await AsyncStorage.getItem('KEY_AUTH');
+  const authRaw = await getSecureItem('KEY_AUTH');
   if (!authRaw) return;
   const auth = JSON.parse(authRaw);
   const userKey = 'USER_' + (auth.email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
