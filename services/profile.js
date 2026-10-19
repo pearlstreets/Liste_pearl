@@ -41,9 +41,23 @@ export async function getProfile() {
   return raw ? JSON.parse(raw) : null;
 }
 
+// Identifiant du compte connecté (posé à la connexion dans KEY_AUTH).
+// La vue /users/update-profile/ n'accepte que PUT et exige `?id=<id>`.
+async function currentUserId() {
+  try {
+    const raw = await AsyncStorage.getItem('KEY_AUTH');
+    const auth = raw ? JSON.parse(raw) : null;
+    return auth && auth.id ? auth.id : null;
+  } catch {
+    return null;
+  }
+}
+
 // Update profile on backend
 export async function updateProfile(profileData) {
-  const data = await apiPost('/users/update-profile/', {
+  const userId = await currentUserId();
+  if (!userId) return { success: false, message: 'Update failed' };
+  const data = await apiPut(`/users/update-profile/?id=${encodeURIComponent(userId)}`, {
     firstName: profileData.prenom || profileData.firstName,
     lastName: profileData.nom || profileData.lastName,
     username: profileData.pseudo || profileData.username,
@@ -91,7 +105,13 @@ export async function uploadProfilePhoto(uri) {
     name: 'profile.jpg',
   });
 
-  const data = await apiUpload('/users/update-profile/', formData);
+  const userId = await currentUserId();
+  if (!userId) return { status: false };
+  const data = await apiUpload(
+    `/users/update-profile/?id=${encodeURIComponent(userId)}`,
+    formData,
+    'PUT'
+  );
   return data;
 }
 

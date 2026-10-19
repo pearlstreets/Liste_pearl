@@ -25,19 +25,14 @@
         "NSPhotoLibraryUsageDescription": "Pearl List accède à vos photos pour importer une image depuis votre galerie, par exemple une photo de votre liste de courses ou d'un produit à ajouter à votre liste, ou une photo de profil.",
         "NSLocationWhenInUseUsageDescription": "Pearl List utilise votre position pour afficher les magasins proches et estimer les frais de livraison, par exemple trouver les enseignes qui livrent à votre adresse.",
         "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": false,
-          "NSExceptionDomains": {
-            "pythonapi.digiexports.in": {
-              "NSExceptionAllowsInsecureHTTPLoads": false,
-              "NSIncludesSubdomains": true
-            }
-          }
+          "NSAllowsArbitraryLoads": false
         }
       }
     },
     "android": {
       "package": "com.pearlstreets.list",
       "versionCode": 12,
+      "allowBackup": false,
       "config": {
         "googleMaps": {
           "apiKey": "REMPLACE_PAR_TA_CLE_GOOGLE_MAPS_ANDROID"

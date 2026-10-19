@@ -1,4 +1,4 @@
-import { apiPost, apiUpload, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
+import { apiPost, apiPut, apiUpload, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_AUTH = 'KEY_AUTH';
@@ -131,7 +131,9 @@ export async function logoutUser() {
   try {
     const tokens = await getTokens();
     if (tokens?.refresh) {
-      await apiPost('/users/logout/', { refresh: tokens.refresh });
+      // Le serveur lit `refresh_token` ; `refresh` reste envoyé pour les
+      // versions du serveur qui lisaient cette clé.
+      await apiPost('/users/logout/', { refresh: tokens.refresh, refresh_token: tokens.refresh });
     }
   } catch {
     // Ignore logout API errors
@@ -140,13 +142,66 @@ export async function logoutUser() {
   await AsyncStorage.removeItem(KEY_AUTH);
 }
 
+// Données de l'utilisateur gardées sur l'appareil, effacées à la déconnexion
+// et à la suppression du compte. Les préférences de l'appareil (langue,
+// devise) sont conservées.
+const USER_KEYS_TO_REMOVE = [
+  KEY_AUTH,
+  KEY_PROFILE,
+  'KEY_ORDER_HISTORY',
+  'MARKETPLACE_TOKENS',
+  'KEY_ACCOUNTS', // ancien registre local de comptes (mots de passe en clair)
+  'SG_LISTS',
+  'SG_ACTIVE_LIST',
+  'PEARL_DRIVER_MODE',
+  'PEARL_DRIVER_EARNINGS',
+  'PEARL_DRIVER_COUNTRY',
+];
+// Remises à vide (et non supprimées) : les écrans relisent ces clés au focus.
+const USER_KEYS_TO_EMPTY = [
+  'SG_ITEMS',
+  'SG_SELECTED_FOR_PRODUCTS',
+  'KEY_CART',
+  'KEY_FAV_SHOPS',
+  'KEY_FAVS',
+  'KEY_FAV_PRODUCTS',
+];
+const isUserScopedKey = (k) =>
+  typeof k === 'string' &&
+  (k.startsWith('SG_ITEMS__') || // listes nommées
+    (k.startsWith('USER_') && k.endsWith('_DATA')) || // anciennes copies par compte
+    k.startsWith('__SECURE__'));
+
+export async function clearLocalUserData() {
+  try {
+    await AsyncStorage.multiRemove(USER_KEYS_TO_REMOVE);
+  } catch {}
+  try {
+    await AsyncStorage.multiSet(USER_KEYS_TO_EMPTY.map((k) => [k, '[]']));
+  } catch {}
+  try {
+    const all = await AsyncStorage.getAllKeys();
+    const scoped = (all || []).filter(isUserScopedKey);
+    if (scoped.length) await AsyncStorage.multiRemove(scoped);
+  } catch {}
+}
+
+// Ancien registre local `KEY_ACCOUNTS` : il pouvait contenir des mots de passe
+// en clair (comptes de démonstration, repli local du changement de mot de
+// passe). Plus rien ne le lit : effacé au démarrage.
+export async function purgeLegacyLocalAccounts() {
+  try {
+    await AsyncStorage.removeItem('KEY_ACCOUNTS');
+  } catch {}
+}
+
 // Delete the account on the Marketplace backend (RGPD soft-delete, data purged after legal retention).
 // Requires a valid session (tokens sent by apiFetch). Endpoint: DELETE /api/v1/users/delete-user/
 export async function deleteAccount() {
   const data = await apiDelete('/users/delete-user/');
   if (data && (data.status === true || data.success === true || data.message)) {
     await clearTokens();
-    await AsyncStorage.removeItem(KEY_AUTH);
+    await clearLocalUserData();
     return { success: true, message: data.message };
   }
   return { success: false, message: (data && data.message) || 'Account deletion failed' };
@@ -168,12 +223,19 @@ export async function resetPassword(email, otp, newPassword) {
   return data;
 }
 
-// Update password (authenticated)
+// Update password (authenticated). Uniquement par le serveur : la vue
+// n'accepte que PUT et exige `confirm_password`. En cas de succès elle invalide
+// les jetons antérieurs et renvoie une nouvelle paire, à enregistrer pour
+// rester connecté.
 export async function updatePassword(oldPassword, newPassword) {
-  const data = await apiPost('/users/update-password/', {
+  const data = await apiPut('/users/update-password/', {
     old_password: oldPassword,
     new_password: newPassword,
+    confirm_password: newPassword,
   });
+  if (data && data.status && data.access_token) {
+    await saveTokens(data.access_token, data.refresh_token);
+  }
   return data;
 }
 

@@ -26,6 +26,53 @@ export async function clearTokens() {
   await AsyncStorage.removeItem(TOKEN_KEY);
 }
 
+// ========== TOKEN REFRESH ==========
+
+// Rafraîchissement des jetons CLIENT par la route commune `/token/refresh/`
+// (même route que l'app AppUser). Corps `{ refresh }`, réponse
+// `{ access, refresh }` : le serveur fait TOURNER le jeton de rafraîchissement
+// (l'ancien est mis en liste noire), il faut donc enregistrer le nouveau.
+// L'ancienne route `/admin/refresh-token/` (réservée à l'espace admin) n'est
+// plus appelée.
+const REFRESH_PATH = '/token/refresh/';
+
+// Un seul rafraîchissement à la fois : avec la rotation, deux appels parallèles
+// présentant le même jeton feraient refuser le second. Les appels concurrents
+// attendent la même promesse.
+let refreshInFlight = null;
+
+export function refreshTokens(staleRefresh) {
+  if (!staleRefresh) return Promise.resolve(null);
+  if (refreshInFlight) return refreshInFlight;
+  refreshInFlight = (async () => {
+    try {
+      // Déjà tourné par un autre appel entre-temps : on reprend la paire neuve.
+      const current = await getTokens();
+      if (current?.refresh && current.refresh !== staleRefresh && current.access && !isTokenExpired(current.access)) {
+        return current;
+      }
+      const res = await fetchWithTimeout(`${BASE_URL}${REFRESH_PATH}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh: staleRefresh }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      // Lire les deux formes (`access` sur /token/refresh/, `access_token` ailleurs).
+      const newAccess = data.access || data.access_token;
+      if (!newAccess) return null;
+      const newRefresh = data.refresh || data.refresh_token || staleRefresh;
+      await saveTokens(newAccess, newRefresh);
+      return { access: newAccess, refresh: newRefresh };
+    } catch {
+      return null;
+    } finally {
+      refreshInFlight = null;
+    }
+  })();
+  return refreshInFlight;
+}
+
 // ========== SECURE FETCH ==========
 
 async function apiFetch(endpoint, options = {}) {
@@ -37,25 +84,10 @@ async function apiFetch(endpoint, options = {}) {
   };
 
   // Auto-refresh if token expired
+  let refreshed = null;
   if (tokens?.access && isTokenExpired(tokens.access) && tokens?.refresh) {
-    try {
-      const refreshRes = await fetchWithTimeout(`${BASE_URL}/admin/refresh-token/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh: tokens.refresh }),
-      });
-      if (refreshRes.ok) {
-        const data = await refreshRes.json();
-        // Le backend renvoie `access_token` (pas `access`) — lire les deux.
-        const newAccess = data.access_token || data.access;
-        if (newAccess) {
-          await saveTokens(newAccess, data.refresh_token || data.refresh || tokens.refresh);
-          headers['Authorization'] = `Bearer ${newAccess}`;
-        }
-      }
-    } catch {
-      /* refresh failed */
-    }
+    refreshed = await refreshTokens(tokens.refresh);
+    if (refreshed?.access) headers['Authorization'] = `Bearer ${refreshed.access}`;
   } else if (tokens?.access) {
     headers['Authorization'] = `Bearer ${tokens.access}`;
   }
@@ -64,25 +96,12 @@ async function apiFetch(endpoint, options = {}) {
   let res = await fetchWithTimeout(url, { ...options, headers });
 
   // If 401, try refresh once more
-  if (res.status === 401 && tokens?.refresh) {
-    try {
-      const refreshRes = await fetchWithTimeout(`${BASE_URL}/admin/refresh-token/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh: tokens.refresh }),
-      });
-      if (refreshRes.ok) {
-        const data = await refreshRes.json();
-        // Le backend renvoie `access_token` (pas `access`) — lire les deux.
-        const newAccess = data.access_token || data.access;
-        if (newAccess) {
-          await saveTokens(newAccess, data.refresh_token || data.refresh || tokens.refresh);
-          headers['Authorization'] = `Bearer ${newAccess}`;
-          res = await fetchWithTimeout(url, { ...options, headers });
-        }
-      }
-    } catch {
-      /* refresh failed */
+  const refreshToUse = refreshed?.refresh || tokens?.refresh;
+  if (res.status === 401 && refreshToUse) {
+    const again = await refreshTokens(refreshToUse);
+    if (again?.access) {
+      headers['Authorization'] = `Bearer ${again.access}`;
+      res = await fetchWithTimeout(url, { ...options, headers });
     }
   }
 
@@ -135,14 +154,16 @@ export async function apiDelete(endpoint, body) {
   return sanitizeResponse(data);
 }
 
-export async function apiUpload(endpoint, formData) {
+// `method` : POST par défaut ; PUT pour les vues qui n'acceptent que PUT
+// (ex. /users/update-profile/).
+export async function apiUpload(endpoint, formData, method = 'POST') {
   const tokens = await getTokens();
   const headers = { 'X-Request-ID': requestFingerprint() };
   if (tokens?.access) {
     headers['Authorization'] = `Bearer ${tokens.access}`;
   }
   const res = await fetchWithTimeout(`${BASE_URL}${endpoint}`, {
-    method: 'POST',
+    method,
     headers,
     body: formData,
   });

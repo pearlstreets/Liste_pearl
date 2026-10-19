@@ -2,7 +2,7 @@ import { autocorrectName } from "./utils/spellcheck";
 import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
-import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable } from "./services/auth";
+import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable, clearLocalUserData, purgeLegacyLocalAccounts } from "./services/auth";
 import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
@@ -63,7 +63,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
 import RepeatButton from "./components/ui/RepeatButton";
-import { SEED_ACCOUNTS as MARKETPLACE_ACCOUNTS } from "./lib/seedAccounts";
 import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
@@ -150,10 +149,8 @@ const KEY_FAV_SHOPS="KEY_FAV_SHOPS";
 const KEY_FAVS = "KEY_FAVS";
 const KEY_FAV_PRODUCTS = "KEY_FAV_PRODUCTS";
 const KEY_AUTH = "KEY_AUTH";
-const KEY_ACCOUNTS = "KEY_ACCOUNTS";
-// Marketplace user accounts — loaded from ./lib/seedAccounts (imported at top).
-// In production, accounts come from the backend. For local dev, drop a
-// `data/seed-accounts.json` file (gitignored) matching the .example schema.
+// Comptes : uniquement ceux du backend Marketplace. Aucun compte ni mot de
+// passe n'est gardé en local (ancien registre KEY_ACCOUNTS effacé au démarrage).
 const GUTTER = 24;
 const CTRL = 20;
 const GAP = 10;
@@ -386,6 +383,21 @@ function ListScreen() {
     } catch {}
     hydrated.current = true;
   })(); }, []);
+  // Déconnexion ou suppression du compte : les listes ont été effacées de
+  // l'appareil, on vide aussi celles affichées en mémoire.
+  useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('USER_DATA_CLEARED', () => {
+      setMyLists([{ id: DEFAULT_LIST_ID, name: '' }]);
+      setActiveListId(DEFAULT_LIST_ID);
+      setItems([]);
+      setSharedLists([]);
+      setViewingShareId(null);
+      setGranted({ accepted: [], pending: [], count: 0 });
+      setIsLoggedIn(false);
+      shareCache.current.clear();
+    });
+    return () => sub.remove();
+  }, []);
   // Persist only after the initial load — otherwise the empty initial state
   // overwrites the saved list on every cold start.
   useEffect(() => {
@@ -5484,20 +5496,6 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     setAddrSuggestions([]);
   };
 
-  // Sync all Marketplace accounts to local storage
-  React.useEffect(() => {
-    (async () => {
-      const raw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      let accounts = raw ? JSON.parse(raw) : [];
-      let changed = false;
-      for (const mktAccount of MARKETPLACE_ACCOUNTS) {
-        const exists = accounts.some(a => a.email && a.email.toLowerCase() === mktAccount.email.toLowerCase());
-        if (!exists) { accounts.push(mktAccount); changed = true; }
-      }
-      if (changed) await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-    })();
-  }, []);
-
   const handleLogin = async () => {
     setError('');
     if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty', 'Veuillez saisir votre email et mot de passe')); return; }
@@ -6016,6 +6014,7 @@ export default function App() {
 
   React.useEffect(() => {
     (async () => {
+      await purgeLegacyLocalAccounts();
       const raw = await AsyncStorage.getItem(KEY_AUTH);
       // 1er lancement = aucune langue enregistrée → on présentera le choix de langue.
       const savedLang = await AsyncStorage.getItem('APP_LANGUAGE');
@@ -6579,21 +6578,6 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         email: editEmail.trim(),
       });
     } catch(e) {}
-    // Also update local accounts as fallback
-    try {
-      const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
-        if (idx >= 0) {
-          accounts[idx].pseudo = editPseudo.trim();
-          accounts[idx].nom = editNom.trim();
-          accounts[idx].prenom = editPrenom.trim();
-          accounts[idx].email = editEmail.trim();
-          await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-        }
-      }
-    } catch(e) {}
     setProfile(updated);
     await AsyncStorage.setItem(KEY_PROFILE, JSON.stringify(updated));
     setEditVisible(false);
@@ -6746,28 +6730,17 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     if (newPassword !== confirmPassword) { setPwdError(t('profile.pwdErrorMismatch')); return; }
     if (newPassword.length < 6) { setPwdError(t('profile.pwdErrorLength')); return; }
     try {
-      // Try Marketplace API first
+      // Uniquement par le serveur Marketplace : aucun mot de passe n'est
+      // gardé ni comparé en local.
       const apiResult = await apiUpdatePassword(oldPassword, newPassword);
-      if (apiResult.status) {
+      if (apiResult && apiResult.status) {
         setPwdSuccess(t('profile.pwdSuccess'));
         setOldPassword(''); setNewPassword(''); setConfirmPassword('');
         setTimeout(() => { setShowPwdChange(false); setPwdSuccess(''); }, 1500);
         return;
       }
-      // Fallback to local accounts
-      const accRaw = await AsyncStorage.getItem(KEY_ACCOUNTS);
-      if (accRaw) {
-        const accounts = JSON.parse(accRaw);
-        const idx = accounts.findIndex(a => a.email.toLowerCase() === profile.email.toLowerCase());
-        if (idx >= 0) {
-          if (accounts[idx].password !== oldPassword) { setPwdError(apiResult.message || t('profile.pwdErrorOld')); return; }
-          accounts[idx].password = newPassword;
-          await AsyncStorage.setItem(KEY_ACCOUNTS, JSON.stringify(accounts));
-          setPwdSuccess(t('profile.pwdSuccess'));
-          setOldPassword(''); setNewPassword(''); setConfirmPassword('');
-          setTimeout(() => { setShowPwdChange(false); setPwdSuccess(''); }, 1500);
-        }
-      }
+      const oldWrong = !!(apiResult && apiResult.errors && apiResult.errors.old_password);
+      setPwdError(oldWrong ? t('profile.pwdErrorOld') : t('profile.pwdErrorGeneral'));
     } catch(e) { setPwdError(t('profile.pwdErrorGeneral')); }
   };
 
@@ -7499,34 +7472,13 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
               { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
-                // Sauvegarder les données du compte avant déconnexion
-                try {
-                  const authRaw = await AsyncStorage.getItem(KEY_AUTH);
-                  if (authRaw) {
-                    const auth = JSON.parse(authRaw);
-                    const userKey = auth.userKey || 'USER_' + auth.email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                    const data = {
-                      profile: JSON.parse(await AsyncStorage.getItem(KEY_PROFILE) || 'null'),
-                      items: JSON.parse(await AsyncStorage.getItem(KEY_ITEMS) || '[]'),
-                      selected: JSON.parse(await AsyncStorage.getItem(KEY_SELECTED) || '[]'),
-                      cart: JSON.parse(await AsyncStorage.getItem(KEY_CART) || '[]'),
-                      orders: JSON.parse(await AsyncStorage.getItem(KEY_ORDER_HISTORY) || '[]'),
-                      favShops: JSON.parse(await AsyncStorage.getItem(KEY_FAV_SHOPS) || '[]'),
-                      favs: JSON.parse(await AsyncStorage.getItem(KEY_FAVS) || '[]'),
-                    };
-                    await AsyncStorage.setItem(userKey + '_DATA', JSON.stringify(data));
-                  }
-                } catch(e) {}
                 // Logout from Marketplace API first (needs tokens)
                 try { await logoutUser(); } catch(e) {}
-                // Nettoyer les données courantes
+                // Effacer TOUTES les données du compte gardées sur l'appareil
+                // (jetons, profil, listes, panier, favoris, commandes).
                 try {
-                  await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
-                  await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-                  await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-                  await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-                  await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-                  await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                  await clearLocalUserData();
+                  DeviceEventEmitter.emit('USER_DATA_CLEARED');
                   DeviceEventEmitter.emit('CART_COUNT_CHANGED');
                 } catch(e) {}
                 if (onLogout) onLogout();
@@ -7556,14 +7508,10 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     );
                     return;
                   }
-                  // Nettoyer les données locales (comme à la déconnexion)
+                  // Effacer toutes les données locales (comme à la déconnexion)
                   try {
-                    await AsyncStorage.multiRemove([KEY_AUTH, KEY_PROFILE, KEY_ORDER_HISTORY, 'MARKETPLACE_TOKENS']);
-                    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify([]));
-                    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-                    await AsyncStorage.setItem(KEY_CART, JSON.stringify([]));
-                    await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify([]));
-                    await AsyncStorage.setItem(KEY_FAVS, JSON.stringify([]));
+                    await clearLocalUserData();
+                    DeviceEventEmitter.emit('USER_DATA_CLEARED');
                     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
                   } catch (e) {}
                   Alert.alert(

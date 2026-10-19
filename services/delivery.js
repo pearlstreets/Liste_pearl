@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from './config';
 import { champsVariante } from '../lib/variantes';
+import { refreshTokens as refreshSharedTokens } from './api';
 
 // Delivery API - connects to the same backend as Livraison-app
 // This allows Liste_Pearl orders to be picked up by delivery drivers
@@ -8,8 +9,6 @@ const DELIVERY_BASE =
   CONFIG.DELIVERY_API_URL || CONFIG.API_URL.replace('/api/v1', '') + '/api/v1/delivery';
 
 const TOKENS_KEY = 'MARKETPLACE_TOKENS';
-// Endpoint de refresh partagé avec services/api.js (même chaîne de tokens).
-const REFRESH_URL = `${CONFIG.API_URL.replace(/\/$/, '')}/admin/refresh-token/`;
 
 async function getStoredTokens() {
   const raw = await AsyncStorage.getItem(TOKENS_KEY);
@@ -24,26 +23,11 @@ function authHeaders(tokens, extra = {}) {
   };
 }
 
-// Rafraîchit MARKETPLACE_TOKENS via /admin/refresh-token/ (comme api.js).
+// Rafraîchit MARKETPLACE_TOKENS par la fonction commune de services/api.js
+// (route /token/refresh/, rotation du jeton, un seul rafraîchissement à la fois).
 async function refreshTokens(tokens) {
   if (!tokens?.refresh) return null;
-  try {
-    const res = await fetch(REFRESH_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh: tokens.refresh }),
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    // Le backend renvoie `access_token` (pas `access`) — lire les deux.
-    const newAccess = data.access_token || data.access;
-    if (!newAccess) return null;
-    const next = { access: newAccess, refresh: data.refresh_token || data.refresh || tokens.refresh, savedAt: Date.now() };
-    await AsyncStorage.setItem(TOKENS_KEY, JSON.stringify(next));
-    return next;
-  } catch {
-    return null;
-  }
+  return refreshSharedTokens(tokens.refresh);
 }
 
 async function deliveryFetch(endpoint, options = {}) {
