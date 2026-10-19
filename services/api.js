@@ -154,6 +154,23 @@ export async function apiDelete(endpoint, body) {
   return sanitizeResponse(data);
 }
 
+// Variante qui garde le statut HTTP, pour les appels où un `message` dans le
+// corps ne suffit pas à distinguer succès et échec (suppression de compte).
+// Ne lève pas si le corps n'est pas du JSON (page d'erreur HTML d'un 502) ;
+// lève seulement si le réseau est coupé ou le délai dépassé, comme les autres.
+export async function apiDeleteWithStatus(endpoint, body) {
+  const opts = { method: 'DELETE' };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  const res = await apiFetch(endpoint, opts);
+  let data = null;
+  try {
+    data = sanitizeResponse(await res.json());
+  } catch {
+    data = null;
+  }
+  return { ok: !!res.ok, status: res.status, data };
+}
+
 // `method` : POST par défaut ; PUT pour les vues qui n'acceptent que PUT
 // (ex. /users/update-profile/).
 export async function apiUpload(endpoint, formData, method = 'POST') {

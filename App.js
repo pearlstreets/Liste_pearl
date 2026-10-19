@@ -6422,6 +6422,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   const [editPseudo, setEditPseudo] = React.useState('');
   const [editEmail, setEditEmail] = React.useState('');
   const [showPwdChange, setShowPwdChange] = React.useState(false);
+  // Suppression du compte en cours : bloque un second envoi pendant l'appel.
+  const [deletingAccount, setDeletingAccount] = React.useState(false);
+  const deletingAccountRef = React.useRef(false);
   const [oldPassword, setOldPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -7492,15 +7495,21 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
         {/* Supprimer le compte (obligatoire App Store 5.1.1(v)) */}
         <View style={[profStyles.section, { marginBottom: 24 }]}>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => {
+          <TouchableOpacity activeOpacity={0.85} disabled={deletingAccount} onPress={() => {
+            if (deletingAccountRef.current) return;
             Alert.alert(
               t('profile.deleteAccountTitle', 'Supprimer mon compte'),
-              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Cette action est irréversible."),
+              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Vous pouvez restaurer votre compte pendant 30 jours ; ensuite, la suppression est définitive."),
               [
                 { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
                 { text: t('profile.deleteAccountAction', 'Supprimer'), style: 'destructive', onPress: async () => {
+                  if (deletingAccountRef.current) return;
+                  deletingAccountRef.current = true;
+                  setDeletingAccount(true);
                   let res;
                   try { res = await apiDeleteAccount(); } catch (e) { res = { success: false }; }
+                  deletingAccountRef.current = false;
+                  setDeletingAccount(false);
                   if (!res || !res.success) {
                     Alert.alert(
                       t('profile.deleteAccountErrTitle', 'Suppression impossible'),
@@ -7523,7 +7532,9 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               ]
             );
           }} style={profStyles.deleteAccountBtn}>
-            <Ionicons name="trash-outline" size={18} color={THEME.danger} />
+            {deletingAccount
+              ? <ActivityIndicator size="small" color={THEME.danger} />
+              : <Ionicons name="trash-outline" size={18} color={THEME.danger} />}
             <Text style={profStyles.deleteAccountTxt}>{t('profile.deleteAccount', 'Supprimer mon compte')}</Text>
           </TouchableOpacity>
         </View>

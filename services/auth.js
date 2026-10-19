@@ -1,4 +1,4 @@
-import { apiPost, apiPut, apiUpload, apiDelete, saveTokens, clearTokens, getTokens, apiGet } from './api';
+import { apiPost, apiPut, apiUpload, apiDeleteWithStatus, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_AUTH = 'KEY_AUTH';
@@ -197,9 +197,23 @@ export async function purgeLegacyLocalAccounts() {
 
 // Delete the account on the Marketplace backend (RGPD soft-delete, data purged after legal retention).
 // Requires a valid session (tokens sent by apiFetch). Endpoint: DELETE /api/v1/users/delete-user/
+// Suppression du compte (DELETE /users/delete-user/, vue UserSoftDeleteView).
+// Succès SEULEMENT si la réponse HTTP est OK ET `status === true` : le serveur
+// renvoie aussi un `message` en cas d'échec (403 « Only customer accounts can
+// delete their account. », et l'erreur interne arrive en HTTP 200 avec
+// `status: false`). Avant, la seule présence d'un `message` suffisait : la
+// session était effacée et « Compte supprimé » affiché alors que le compte
+// existait toujours. Session et données locales ne sont effacées qu'en cas de
+// vrai succès ; réseau coupé = échec, rien n'est effacé.
 export async function deleteAccount() {
-  const data = await apiDelete('/users/delete-user/');
-  if (data && (data.status === true || data.success === true || data.message)) {
+  let res;
+  try {
+    res = await apiDeleteWithStatus('/users/delete-user/');
+  } catch {
+    return { success: false, message: 'Account deletion failed' };
+  }
+  const data = res && res.data;
+  if (res && res.ok && data && data.status === true) {
     await clearTokens();
     await clearLocalUserData();
     return { success: true, message: data.message };

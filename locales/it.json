@@ -248,7 +248,7 @@
     "close": "Chiudi",
     "deleteAccount": "Elimina il mio account",
     "deleteAccountTitle": "Elimina il mio account",
-    "deleteAccountConfirm": "Attenzione: il tuo account è un account Pearl Streets condiviso. Eliminandolo qui, viene eliminato anche sull'app e sul sito Marketplace di Pearl Streets (ordini, preferiti, fedeltà). I tuoi dati vengono conservati per il periodo richiesto dalla legge e poi cancellati. Questa azione è irreversibile.",
+    "deleteAccountConfirm": "Attenzione: il suo account è un account Pearl Streets condiviso. Eliminandolo qui, viene eliminato anche sull'app e sul sito Marketplace di Pearl Streets (ordini, preferiti, fedeltà). I suoi dati vengono conservati per il periodo richiesto dalla legge e poi cancellati. Può ripristinare il suo account entro 30 giorni; dopo, l'eliminazione è definitiva.",
     "deleteAccountAction": "Elimina",
     "deleteAccountErrTitle": "Eliminazione non riuscita",
     "deleteAccountErr": "Eliminazione dell'account non riuscita. Controlla la connessione e riprova.",
