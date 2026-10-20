@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "com.pearlstreets.list",
-      "versionCode": 14,
+      "versionCode": 15,
       "allowBackup": false,
       "config": {
         "googleMaps": {
