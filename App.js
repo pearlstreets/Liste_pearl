@@ -6749,10 +6749,14 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   };
 
   const pickPhoto = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert(t('profile.photoPermissionTitle'), t('profile.photoPermissionMsg'));
-      return;
+    // Android : sélecteur de photos du système, aucune permission (règle Google Play
+    // sur READ_MEDIA_IMAGES, bloquée dans app.json). iOS : autorisation demandée.
+    if (Platform.OS !== 'android') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(t('profile.photoPermissionTitle'), t('profile.photoPermissionMsg'));
+        return;
+      }
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],

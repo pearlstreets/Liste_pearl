@@ -242,6 +242,10 @@ describe('plugin réseau withSecuriteReseau', () => {
     // Mises à jour à distance (1.0.9) : serveur Expo du projet, runtime lié à la version.
     expect(app.updates.url).toBe(`https://u.expo.dev/${app.extra.eas.projectId}`);
     expect(app.runtimeVersion).toEqual({ policy: 'appVersion' });
+    // Règle Google Play photos et vidéos : sélecteur système, aucune permission média.
+    expect(app.android.blockedPermissions).toEqual(
+      expect.arrayContaining(['android.permission.READ_MEDIA_IMAGES', 'android.permission.READ_MEDIA_VIDEO'])
+    );
   });
 });
 
