@@ -2480,7 +2480,7 @@ const ProductsScreen = () => {
                   const shopCount = new Set(active.map(si => si.shop)).size;
                   const totalQty = active.reduce((s, si) => s + (si.qty || 1), 0);
                   return <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
-                    {shopCount} {shopCount > 1 ? 'shops' : 'shop'} • {totalQty} {t('productsScreen.quantity', 'quantité')}
+                    {shopCount} {shopCount > 1 ? t('productsScreen.shopUnitPlural', 'shops') : t('productsScreen.shopUnit', 'shop')} • {totalQty} {t('productsScreen.quantity', 'quantité')}
                   </Text>;
                 })()}
               </View>
@@ -4325,7 +4325,7 @@ const CartScreen = ({ isAuth }) => {
                     <TextInput
                       value={addProductSearch}
                       onChangeText={setAddProductSearch}
-                      placeholder="Rechercher un produit..."
+                      placeholder={t('shops.searchProductPlaceholder', 'Rechercher un produit...')}
                       placeholderTextColor={THEME.faint}
                       style={cartStyles.searchInput}
                     />
@@ -5047,7 +5047,7 @@ const ShopsScreen = () => {
                 return (
               <View style={shopStyles.pdFooter}>
                 <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => Math.max(1, q - 1))}
-                  accessibilityRole="button" accessibilityLabel="moins">
+                  accessibilityRole="button" accessibilityLabel={t('cart.qtyMinus', 'moins')}>
                   <Ionicons name="remove" size={20} color={THEME.ink} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[shopStyles.pdAddBig, bloque && shopStyles.pdAddBigOff]} activeOpacity={0.9} disabled={bloque}
@@ -5060,7 +5060,7 @@ const ShopsScreen = () => {
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity style={[shopStyles.pdQtyBtn, auPlafond && { opacity: 0.4 }]} onPress={() => setPdQty((q) => plafonner(q + 1, cap))}
-                  accessibilityRole="button" accessibilityLabel="plus">
+                  accessibilityRole="button" accessibilityLabel={t('cart.qtyPlus', 'plus')}>
                   <Ionicons name="add" size={20} color={THEME.ink} />
                 </TouchableOpacity>
               </View>
@@ -5762,7 +5762,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                   <Text style={authStyles.fieldLabel}>{t('auth.address', 'Adresse')}</Text>
                   <TouchableOpacity onPress={() => setCountryPickerFor('address')} activeOpacity={0.8} style={authStyles.countryBtn}>
                     <Text style={authStyles.dialFlag}>{(COUNTRIES.find(c => c.name === addrCountry) || COUNTRIES[0]).flag}</Text>
-                    <Text style={authStyles.countryBtnTxt}>{addrCountry}</Text>
+                    <Text style={authStyles.countryBtnTxt}>{t('countries.' + (COUNTRIES.find(c => c.name === addrCountry)?.code || ''), { defaultValue: addrCountry })}</Text>
                     <Ionicons name="chevron-down" size={14} color={THEME.muted} />
                   </TouchableOpacity>
                   <TextInput value={addrLine} onChangeText={onAddrLineChange} placeholder={t('auth.addressAutoPlaceholder', 'Commencez à taper votre adresse…')} placeholderTextColor={THEME.faint} autoCorrect={false} style={[authStyles.field, { marginTop: 8 }]} />
@@ -5857,7 +5857,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                     style={[authStyles.langRow, selected && authStyles.langRowActive]}
                   >
                     <Text style={authStyles.langFlag}>{c.flag}</Text>
-                    <Text style={[authStyles.langLabel, selected && authStyles.langLabelActive]}>{c.name}</Text>
+                    <Text style={[authStyles.langLabel, selected && authStyles.langLabelActive]}>{t('countries.' + c.code, { defaultValue: c.name })}</Text>
                     {countryPickerFor === 'phone' && <Text style={authStyles.dialTxt}>{c.dial}</Text>}
                     {selected && <Ionicons name="checkmark-circle" size={20} color={THEME.brand} style={{ marginLeft: 8 }} />}
                   </TouchableOpacity>
@@ -7292,8 +7292,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             {docStatuses && (
               <View style={profStyles.docCard}>
                 {[
-                  { key: 'kbiss_status', label: 'KBISS' },
-                  { key: 'iban_status', label: 'IBAN / RIB' },
+                  { key: 'kbiss_status', label: t('auth.docKbiss', 'KBISS') },
+                  { key: 'iban_status', label: t('auth.docIban', 'IBAN / RIB') },
                   { key: 'identityCardFront_status', label: t('auth.docIdFront', 'Carte d\'identité (recto)') },
                   { key: 'identityCardBack_status', label: t('auth.docIdBack', 'Carte d\'identité (verso)') },
                   { key: 'proofOfAddress_status', label: t('auth.docProofAddress', 'Justificatif de domicile') },
@@ -7602,15 +7602,15 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             </View>
 
             {[
-              { flag: '🇫🇷', name: 'France', limit: '3 000 €/an', status: 'ok', info: 'Micro-BIC — Abattement 50%' },
-              { flag: '🇧🇪', name: 'Belgique', limit: '7 700 €/an', status: 'ok', info: 'Taux fixe 10,7%' },
-              { flag: '🇬🇧', name: 'Royaume-Uni', limit: '1 000 £/an', status: 'ok', info: 'Trading Allowance' },
-              { flag: '🇩🇪', name: 'Allemagne', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
-              { flag: '🇮🇹', name: 'Italie', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
-              { flag: '🇪🇸', name: 'Espagne', limit: '—', status: 'blocked', info: 'Statut salarié obligatoire' },
-              { flag: '🇨🇭', name: 'Suisse', limit: '—', status: 'blocked', info: 'Statut salarié depuis 2023' },
-              { flag: '🇳🇱', name: 'Pays-Bas', limit: '—', status: 'strict', info: 'Risque de requalification' },
-              { flag: '🇵🇹', name: 'Portugal', limit: '—', status: 'gray', info: 'Pas de cadre spécifique' },
+              { flag: '🇫🇷', name: t('countries.FR', 'France'), limit: t('profile.perYear', { amount: '3 000 €', defaultValue: '3 000 €/an' }), status: 'ok', info: t('profile.limitMicroBic', 'Micro-BIC, abattement 50%') },
+              { flag: '🇧🇪', name: t('countries.BE', 'Belgique'), limit: t('profile.perYear', { amount: '7 700 €', defaultValue: '7 700 €/an' }), status: 'ok', info: t('profile.limitFixedRate', 'Taux fixe 10,7%') },
+              { flag: '🇬🇧', name: t('countries.GB', 'Royaume-Uni'), limit: t('profile.perYear', { amount: '1 000 £', defaultValue: '1 000 £/an' }), status: 'ok', info: t('profile.limitTradingAllowance', 'Trading Allowance') },
+              { flag: '🇩🇪', name: t('countries.DE', 'Allemagne'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
+              { flag: '🇮🇹', name: t('countries.IT', 'Italie'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
+              { flag: '🇪🇸', name: t('countries.ES', 'Espagne'), limit: '—', status: 'blocked', info: t('profile.limitEmployeeRequired', 'Statut salarié obligatoire') },
+              { flag: '🇨🇭', name: t('countries.CH', 'Suisse'), limit: '—', status: 'blocked', info: t('profile.limitEmployeeSince2023', 'Statut salarié depuis 2023') },
+              { flag: '🇳🇱', name: t('countries.NL', 'Pays-Bas'), limit: '—', status: 'strict', info: t('profile.limitRequalification', 'Risque de requalification') },
+              { flag: '🇵🇹', name: t('countries.PT', 'Portugal'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
             ].map((c, i) => {
               const limitColor = c.status === 'ok' ? THEME.brand : c.status === 'blocked' ? THEME.danger : '#F59E0B';
               return (

@@ -51,7 +51,8 @@
     "grantedNobody": "Personne pour le moment.",
     "grantedPending": "En attente de réponse",
     "revoke": "Retirer",
-    "dragHint": "Appui long pour déplacer"
+    "dragHint": "Appui long pour déplacer",
+    "shareNeedsLogin": "Connectez-vous pour pouvoir envoyer une demande de partage."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -97,6 +98,7 @@
   },
   "searchPopup": {
     "header": "De quoi avez-vous besoin ?",
+    "title": "De quoi avez-vous besoin ?",
     "placeholder": "pain, pop corn, huître…",
     "filter": "Filtrer",
     "sort": "Trier",
@@ -297,7 +299,15 @@
     "noBlocked": "Aucun utilisateur bloqué.",
     "unblock": "Débloquer",
     "pendingRequests": "demande(s) en attente",
-    "manageShares": "Demandes reçues · utilisateurs bloqués"
+    "manageShares": "Demandes reçues · utilisateurs bloqués",
+    "limitMicroBic": "Micro-BIC, abattement 50%",
+    "limitFixedRate": "Taux fixe 10,7%",
+    "limitTradingAllowance": "Trading Allowance",
+    "limitNoFramework": "Pas de cadre spécifique",
+    "limitEmployeeRequired": "Statut salarié obligatoire",
+    "limitEmployeeSince2023": "Statut salarié depuis 2023",
+    "limitRequalification": "Risque de requalification",
+    "perYear": "{{amount}}/an"
   },
   "auth": {
     "login": "Connexion",
@@ -409,7 +419,17 @@
     "selectDialCode": "Indicatif téléphonique",
     "confirm": "Confirmer",
     "errorDobFormat": "Date de naissance invalide (ex : 1990-05-12)",
-    "addressAutoPlaceholder": "Commencez à taper votre adresse…"
+    "addressAutoPlaceholder": "Commencez à taper votre adresse…",
+    "errorPasswordRule": "8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).",
+    "errorConfirmRequired": "Confirmez votre mot de passe",
+    "errorEmailTaken": "Cette adresse e-mail est déjà utilisée.",
+    "errorGender": "Sélectionnez votre genre",
+    "errorUsernameMin": "Le pseudo doit contenir au moins 4 caractères",
+    "errorFirstName": "Renseignez votre prénom",
+    "errorLastName": "Renseignez votre nom",
+    "errorPhone": "Numéro de téléphone invalide (5 à 16 chiffres)",
+    "errorUsernameTaken": "Ce pseudo est déjà pris.",
+    "passwordRuleHint": "8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)."
   },
   "cart": {
     "today": "Aujourd'hui",
@@ -528,7 +548,10 @@
     "tipThanks": "Merci pour votre pourboire !",
     "tipAdded": "Pourboire ajouté.",
     "tipFailed": "Échec du pourboire.",
-    "tipDriver": "Remercier votre livreur"
+    "tipDriver": "Remercier votre livreur",
+    "totalPrice": "prix",
+    "qtyMinus": "moins",
+    "qtyPlus": "plus"
   },
   "orderStatus": {
     "confirmed": "Commande confirmée",
@@ -546,7 +569,8 @@
     "completed": "Terminée",
     "awaitingPayment": "En attente de paiement",
     "deliveryCode": "Code à donner au livreur",
-    "cancelled": "Annulée"
+    "cancelled": "Annulée",
+    "driverAssigned": "Livreur assigné"
   },
   "productNames": {
     "Pommes Golden": "Pommes Golden",
@@ -706,5 +730,56 @@
     "done": "Commande annulée, remboursement en cours.",
     "tooLate": "Votre commande est déjà en préparation, elle ne peut plus être annulée.",
     "failed": "L'annulation n'a pas abouti. Réessayez dans un instant."
+  },
+  "tracking": {
+    "pickup": "Boutique",
+    "you": "Vous",
+    "driver": "Livreur",
+    "arriving": "Votre livreur est arrivé",
+    "eta": "Arrivée estimée",
+    "onTheWay": "En route vers vous"
+  },
+  "countries": {
+    "FR": "France",
+    "BE": "Belgique",
+    "CH": "Suisse",
+    "LU": "Luxembourg",
+    "MC": "Monaco",
+    "CA": "Canada",
+    "US": "États-Unis",
+    "GB": "Royaume-Uni",
+    "IE": "Irlande",
+    "ES": "Espagne",
+    "PT": "Portugal",
+    "IT": "Italie",
+    "DE": "Allemagne",
+    "AT": "Autriche",
+    "NL": "Pays-Bas",
+    "DK": "Danemark",
+    "SE": "Suède",
+    "NO": "Norvège",
+    "FI": "Finlande",
+    "PL": "Pologne",
+    "CZ": "Tchéquie",
+    "GR": "Grèce",
+    "RO": "Roumanie",
+    "HU": "Hongrie",
+    "MA": "Maroc",
+    "DZ": "Algérie",
+    "TN": "Tunisie",
+    "SN": "Sénégal",
+    "CM": "Cameroun",
+    "CD": "RD Congo",
+    "AE": "Émirats arabes unis",
+    "SA": "Arabie saoudite",
+    "TR": "Turquie",
+    "CN": "Chine",
+    "JP": "Japon",
+    "IN": "Inde",
+    "TH": "Thaïlande",
+    "BR": "Brésil",
+    "MX": "Mexique",
+    "AU": "Australie",
+    "RU": "Russie"
   }
 }

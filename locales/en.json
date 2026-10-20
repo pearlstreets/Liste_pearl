@@ -51,7 +51,8 @@
     "grantedNobody": "Nobody yet.",
     "grantedPending": "Awaiting response",
     "revoke": "Remove",
-    "dragHint": "Long press to move"
+    "dragHint": "Long press to move",
+    "shareNeedsLogin": "Log in to send a share request."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -97,6 +98,7 @@
   },
   "searchPopup": {
     "header": "What do you need?",
+    "title": "What do you need?",
     "placeholder": "bread, popcorn, oyster...",
     "filter": "Filter",
     "sort": "Sort",
@@ -297,7 +299,15 @@
     "noBlocked": "No blocked users.",
     "unblock": "Unblock",
     "pendingRequests": "pending request(s)",
-    "manageShares": "Received requests · blocked users"
+    "manageShares": "Received requests · blocked users",
+    "limitMicroBic": "Micro-BIC, 50% allowance",
+    "limitFixedRate": "Flat rate 10.7%",
+    "limitTradingAllowance": "Trading Allowance",
+    "limitNoFramework": "No specific framework",
+    "limitEmployeeRequired": "Employee status required",
+    "limitEmployeeSince2023": "Employee status since 2023",
+    "limitRequalification": "Risk of reclassification",
+    "perYear": "{{amount}}/year"
   },
   "auth": {
     "login": "Login",
@@ -409,7 +419,17 @@
     "selectDialCode": "Dialing code",
     "confirm": "Confirm",
     "errorDobFormat": "Invalid date of birth (e.g. 1990-05-12)",
-    "addressAutoPlaceholder": "Start typing your address…"
+    "addressAutoPlaceholder": "Start typing your address…",
+    "errorPasswordRule": "At least 8 characters, with a lowercase letter, an uppercase letter, a number and a special character (@$!%*?&).",
+    "errorConfirmRequired": "Please confirm your password",
+    "errorEmailTaken": "This email address is already in use.",
+    "errorGender": "Please select your gender",
+    "errorUsernameMin": "Username must be at least 4 characters long",
+    "errorFirstName": "Please enter your first name",
+    "errorLastName": "Please enter your last name",
+    "errorPhone": "Invalid phone number (5 to 16 digits)",
+    "errorUsernameTaken": "This username is already taken.",
+    "passwordRuleHint": "At least 8 characters, with a lowercase letter, an uppercase letter, a number and a special character (@$!%*?&)."
   },
   "cart": {
     "today": "Today",
@@ -528,7 +548,10 @@
     "tipThanks": "Thanks for your tip!",
     "tipAdded": "Tip added.",
     "tipFailed": "Tip failed.",
-    "tipDriver": "Thank your driver"
+    "tipDriver": "Thank your driver",
+    "totalPrice": "price",
+    "qtyMinus": "minus",
+    "qtyPlus": "plus"
   },
   "orderStatus": {
     "confirmed": "Order confirmed",
@@ -546,7 +569,8 @@
     "completed": "Completed",
     "awaitingPayment": "Awaiting payment",
     "deliveryCode": "Code to give the driver",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "driverAssigned": "Driver assigned"
   },
   "productNames": {
     "Pommes Golden": "Golden apples",
@@ -706,5 +730,56 @@
     "done": "Order cancelled, refund in progress.",
     "tooLate": "Your order is already being prepared and can no longer be cancelled.",
     "failed": "The cancellation did not go through. Please try again in a moment."
+  },
+  "tracking": {
+    "pickup": "Shop",
+    "you": "You",
+    "driver": "Driver",
+    "arriving": "Your driver has arrived",
+    "eta": "Estimated arrival",
+    "onTheWay": "On the way to you"
+  },
+  "countries": {
+    "FR": "France",
+    "BE": "Belgium",
+    "CH": "Switzerland",
+    "LU": "Luxembourg",
+    "MC": "Monaco",
+    "CA": "Canada",
+    "US": "United States",
+    "GB": "United Kingdom",
+    "IE": "Ireland",
+    "ES": "Spain",
+    "PT": "Portugal",
+    "IT": "Italy",
+    "DE": "Germany",
+    "AT": "Austria",
+    "NL": "Netherlands",
+    "DK": "Denmark",
+    "SE": "Sweden",
+    "NO": "Norway",
+    "FI": "Finland",
+    "PL": "Poland",
+    "CZ": "Czechia",
+    "GR": "Greece",
+    "RO": "Romania",
+    "HU": "Hungary",
+    "MA": "Morocco",
+    "DZ": "Algeria",
+    "TN": "Tunisia",
+    "SN": "Senegal",
+    "CM": "Cameroon",
+    "CD": "DR Congo",
+    "AE": "United Arab Emirates",
+    "SA": "Saudi Arabia",
+    "TR": "Turkey",
+    "CN": "China",
+    "JP": "Japan",
+    "IN": "India",
+    "TH": "Thailand",
+    "BR": "Brazil",
+    "MX": "Mexico",
+    "AU": "Australia",
+    "RU": "Russia"
   }
 }
