@@ -390,7 +390,7 @@
     "addressLine": "บ้านเลขที่และถนน",
     "postalCode": "รหัสไปรษณีย์",
     "city": "เมือง",
-    "backToStep1": "← กลับไปขั้นตอนก่อนหน้า",
+    "backToStep1": "กลับไปขั้นตอนก่อนหน้า",
     "noAccountPearl": "ยังไม่มีบัญชี? ",
     "hasAccountPearl": "มีบัญชีอยู่แล้ว? ",
     "selectDialCode": "รหัสโทรศัพท์",

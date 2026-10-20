@@ -390,7 +390,7 @@
     "addressLine": "门牌号和街道",
     "postalCode": "邮政编码",
     "city": "城市",
-    "backToStep1": "← 返回上一步",
+    "backToStep1": "返回上一步",
     "noAccountPearl": "还没有账号？ ",
     "hasAccountPearl": "已有账号？ ",
     "selectDialCode": "电话区号",

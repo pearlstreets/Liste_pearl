@@ -390,7 +390,7 @@
     "addressLine": "Número e rua",
     "postalCode": "CEP",
     "city": "Cidade",
-    "backToStep1": "← Voltar à etapa anterior",
+    "backToStep1": "Voltar à etapa anterior",
     "noAccountPearl": "Não tem conta? ",
     "hasAccountPearl": "Já tem conta? ",
     "selectDialCode": "Código de discagem",

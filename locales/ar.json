@@ -390,7 +390,7 @@
     "addressLine": "رقم المنزل والشارع",
     "postalCode": "الرمز البريدي",
     "city": "المدينة",
-    "backToStep1": "← العودة إلى الخطوة السابقة",
+    "backToStep1": "العودة إلى الخطوة السابقة",
     "noAccountPearl": "ليس لديك حساب؟ ",
     "hasAccountPearl": "لديك حساب بالفعل؟ ",
     "selectDialCode": "رمز الاتصال",

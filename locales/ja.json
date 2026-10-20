@@ -390,7 +390,7 @@
     "addressLine": "番地と通り名",
     "postalCode": "郵便番号",
     "city": "市区町村",
-    "backToStep1": "← 前のステップに戻る",
+    "backToStep1": "前のステップに戻る",
     "noAccountPearl": "アカウントをお持ちでないですか？ ",
     "hasAccountPearl": "すでにアカウントをお持ちですか？ ",
     "selectDialCode": "国番号",

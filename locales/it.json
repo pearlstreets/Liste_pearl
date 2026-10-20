@@ -390,7 +390,7 @@
     "addressLine": "Numero e via",
     "postalCode": "Codice postale",
     "city": "Città",
-    "backToStep1": "← Torna al passaggio precedente",
+    "backToStep1": "Torna al passaggio precedente",
     "noAccountPearl": "Non hai un account? ",
     "hasAccountPearl": "Hai già un account? ",
     "selectDialCode": "Prefisso telefonico",

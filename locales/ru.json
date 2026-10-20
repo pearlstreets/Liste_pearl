@@ -390,7 +390,7 @@
     "addressLine": "Дом и улица",
     "postalCode": "Почтовый индекс",
     "city": "Город",
-    "backToStep1": "← Назад к предыдущему шагу",
+    "backToStep1": "Назад к предыдущему шагу",
     "noAccountPearl": "Нет аккаунта? ",
     "hasAccountPearl": "Уже есть аккаунт? ",
     "selectDialCode": "Телефонный код",
