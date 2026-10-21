@@ -942,7 +942,7 @@ function ListScreen() {
                     <TouchableOpacity key={String(l.share_id)} onPress={() => { setViewingShareId(l.share_id); setSwitcherOpen(false); }} activeOpacity={0.8}
                       style={{ flexDirection:'row', alignItems:'center', paddingVertical:14, borderBottomWidth:1, borderBottomColor:'#EEF1F4' }}>
                       <Ionicons name="people-outline" size={20} color={THEME.brandDark} />
-                      <Text style={{ marginLeft:12, fontWeight:'600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.owner?.name || '—'}</Text>
+                      <Text style={{ marginLeft:12, fontWeight:'600', color:THEME.ink, flex:1 }} numberOfLines={1}>{l.owner?.name || '-'}</Text>
                       {String(viewingShareId) === String(l.share_id) && <Ionicons name="checkmark" size={18} color={THEME.brand} />}
                     </TouchableOpacity>
                   ))}
@@ -3141,7 +3141,7 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo,
               <Ionicons name="close" size={20} color={THEME.muted} />
             </TouchableOpacity>
           </View>
-          <Text style={cartStyles.trackerOrderNo}>N° {orderNo || '—'}</Text>
+          <Text style={cartStyles.trackerOrderNo}>N° {orderNo || '-'}</Text>
         </View>
 
         {/* Confirmation (état honnête, sans ETA simulée) */}
@@ -4775,7 +4775,7 @@ const ShopsScreen = () => {
       }
       await AsyncStorage.setItem(KEY_CART, JSON.stringify(existing));
       DeviceEventEmitter.emit('CART_UPDATED');
-      setToast(`${product.name} — ${t('shops.added', 'ajouté au panier')}`);
+      setToast(`${product.name} : ${t('shops.added', 'ajouté au panier')}`);
       setTimeout(() => setToast(''), 1600);
     } catch (e) {}
   };
@@ -4881,7 +4881,7 @@ const ShopsScreen = () => {
     <SafeAreaView style={shopStyles.screen} edges={['top']}>
       <View style={shopStyles.header}>
         <Text style={shopStyles.title}>{t('shops.title', 'Boutiques')}</Text>
-        <Text style={shopStyles.subtitle}>{t('shops.subtitle', 'Achat de produits — click & collect ou livraison')}</Text>
+        <Text style={shopStyles.subtitle}>{t('shops.subtitle', 'Achat de produits, click & collect ou livraison')}</Text>
       </View>
 
       {!loading && !error && shops.length > 0 ? (
@@ -7129,7 +7129,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               {shareRequests.map((r) => (
                 <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
-                  <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
+                  <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '-'}</Text>
                   <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                     <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                   </TouchableOpacity>
@@ -7606,12 +7606,12 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               { flag: '🇫🇷', name: t('countries.FR', 'France'), limit: t('profile.perYear', { amount: '3 000 €', defaultValue: '3 000 €/an' }), status: 'ok', info: t('profile.limitMicroBic', 'Micro-BIC, abattement 50%') },
               { flag: '🇧🇪', name: t('countries.BE', 'Belgique'), limit: t('profile.perYear', { amount: '7 700 €', defaultValue: '7 700 €/an' }), status: 'ok', info: t('profile.limitFixedRate', 'Taux fixe 10,7%') },
               { flag: '🇬🇧', name: t('countries.GB', 'Royaume-Uni'), limit: t('profile.perYear', { amount: '1 000 £', defaultValue: '1 000 £/an' }), status: 'ok', info: t('profile.limitTradingAllowance', 'Trading Allowance') },
-              { flag: '🇩🇪', name: t('countries.DE', 'Allemagne'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
-              { flag: '🇮🇹', name: t('countries.IT', 'Italie'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
-              { flag: '🇪🇸', name: t('countries.ES', 'Espagne'), limit: '—', status: 'blocked', info: t('profile.limitEmployeeRequired', 'Statut salarié obligatoire') },
-              { flag: '🇨🇭', name: t('countries.CH', 'Suisse'), limit: '—', status: 'blocked', info: t('profile.limitEmployeeSince2023', 'Statut salarié depuis 2023') },
-              { flag: '🇳🇱', name: t('countries.NL', 'Pays-Bas'), limit: '—', status: 'strict', info: t('profile.limitRequalification', 'Risque de requalification') },
-              { flag: '🇵🇹', name: t('countries.PT', 'Portugal'), limit: '—', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
+              { flag: '🇩🇪', name: t('countries.DE', 'Allemagne'), limit: '-', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
+              { flag: '🇮🇹', name: t('countries.IT', 'Italie'), limit: '-', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
+              { flag: '🇪🇸', name: t('countries.ES', 'Espagne'), limit: '-', status: 'blocked', info: t('profile.limitEmployeeRequired', 'Statut salarié obligatoire') },
+              { flag: '🇨🇭', name: t('countries.CH', 'Suisse'), limit: '-', status: 'blocked', info: t('profile.limitEmployeeSince2023', 'Statut salarié depuis 2023') },
+              { flag: '🇳🇱', name: t('countries.NL', 'Pays-Bas'), limit: '-', status: 'strict', info: t('profile.limitRequalification', 'Risque de requalification') },
+              { flag: '🇵🇹', name: t('countries.PT', 'Portugal'), limit: '-', status: 'gray', info: t('profile.limitNoFramework', 'Pas de cadre spécifique') },
             ].map((c, i) => {
               const limitColor = c.status === 'ok' ? THEME.brand : c.status === 'blocked' ? THEME.danger : '#F59E0B';
               return (
@@ -7785,7 +7785,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             {shareRequests.map((r) => (
               <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                 <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
-                <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '—'}</Text>
+                <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '-'}</Text>
                 <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ backgroundColor:THEME.brand, borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                   <Text style={{ color:'#fff', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                 </TouchableOpacity>

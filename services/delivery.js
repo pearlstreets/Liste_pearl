@@ -174,16 +174,16 @@ export const COUNTRY_LIMITS = {
     label: 'France',
     flag: '🇫🇷',
     status: 'ok',
-    taxInfo: 'Régime micro-BIC — Abattement 50% sur revenus imposables',
-    beyondMsg: 'Au-delà de 3 000 € → compte bloqué, statut auto-entrepreneur requis',
+    taxInfo: 'Régime micro-BIC : abattement 50% sur revenus imposables',
+    beyondMsg: 'Au-delà de 3 000 € : compte bloqué, statut auto-entrepreneur requis',
   },
   BE: {
     limit: 7700,
     label: 'Belgique',
     flag: '🇧🇪',
     status: 'ok',
-    taxInfo: 'Économie collaborative — Taux fixe 10,7% prélevé par la plateforme',
-    beyondMsg: "Au-delà de 7 700 € → statut d'indépendant requis",
+    taxInfo: 'Économie collaborative : taux fixe 10,7% prélevé par la plateforme',
+    beyondMsg: "Au-delà de 7 700 € : statut d'indépendant requis",
   },
   DE: {
     limit: 0,
@@ -191,7 +191,7 @@ export const COUNTRY_LIMITS = {
     flag: '🇩🇪',
     status: 'gray',
     taxInfo: 'Pas de cadre spécifique. Revenus à déclarer en "revenus divers".',
-    beyondMsg: 'Service non disponible — cadre légal non défini',
+    beyondMsg: 'Service non disponible : cadre légal non défini',
   },
   IT: {
     limit: 0,
@@ -199,7 +199,7 @@ export const COUNTRY_LIMITS = {
     flag: '🇮🇹',
     status: 'gray',
     taxInfo: 'Pas de cadre spécifique. Revenus à déclarer.',
-    beyondMsg: 'Service non disponible — cadre légal non défini',
+    beyondMsg: 'Service non disponible : cadre légal non défini',
   },
   PT: {
     limit: 0,
@@ -207,7 +207,7 @@ export const COUNTRY_LIMITS = {
     flag: '🇵🇹',
     status: 'gray',
     taxInfo: 'Pas de cadre spécifique. Revenus à déclarer.',
-    beyondMsg: 'Service non disponible — cadre légal non défini',
+    beyondMsg: 'Service non disponible : cadre légal non défini',
   },
   NL: {
     limit: 0,
@@ -215,7 +215,7 @@ export const COUNTRY_LIMITS = {
     flag: '🇳🇱',
     status: 'strict',
     taxInfo: 'Tendance forte à requalifier en salarié. Risque juridique élevé.',
-    beyondMsg: 'Service non disponible — risque de requalification en salarié',
+    beyondMsg: 'Service non disponible : risque de requalification en salarié',
   },
   ES: {
     limit: 0,
@@ -223,7 +223,7 @@ export const COUNTRY_LIMITS = {
     flag: '🇪🇸',
     status: 'blocked',
     taxInfo: 'Loi 2021 : statut salarié obligatoire pour la livraison.',
-    beyondMsg: 'Service interdit — statut salarié obligatoire (Loi Rider 2021)',
+    beyondMsg: 'Service interdit : statut salarié obligatoire (Loi Rider 2021)',
   },
   GB: {
     limit: 1000,
@@ -233,7 +233,7 @@ export const COUNTRY_LIMITS = {
     currency: '£',
     taxInfo:
       'Trading Allowance : sous 1 000 £/an, rien à déclarer. Au-delà, enregistrement self-employed obligatoire auprès de HMRC.',
-    beyondMsg: 'Au-delà de 1 000 £ → enregistrement self-employed + déclaration HMRC obligatoire',
+    beyondMsg: 'Au-delà de 1 000 £ : enregistrement self-employed + déclaration HMRC obligatoire',
   },
   CH: {
     limit: 0,
@@ -242,7 +242,7 @@ export const COUNTRY_LIMITS = {
     status: 'blocked',
     taxInfo:
       'Depuis mars 2023, les livreurs sont considérés comme salariés en Suisse (gig economy).',
-    beyondMsg: 'Service non disponible — statut salarié obligatoire en Suisse',
+    beyondMsg: 'Service non disponible : statut salarié obligatoire en Suisse',
   },
 };
 
