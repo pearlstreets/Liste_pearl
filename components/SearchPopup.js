@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { addProduct } from '../lib/SelectedProducts';
 import { autocorrectName } from '../utils/spellcheck';
 import SEARCH_MAP from '../data/search-map.json';
+import { libelleDetail } from '../lib/libelleDetail';
 import { Ionicons } from '@expo/vector-icons';
 
 const BRAND = '#00C29B';
@@ -244,9 +245,7 @@ const SearchItem = React.memo(
   ({ item, selectedItems, onQtyChange, onQtyDelta, t, formatPrice, getEmoji }) => {
     const emoji = getEmoji(item.name);
     const translatedName = t('productNames.' + item.name, { defaultValue: item.name });
-    const translatedDetail = item.detail
-      ? t('productDetails.' + item.detail, { defaultValue: item.detail })
-      : '';
+    const translatedDetail = libelleDetail(item.detail, t);
     const itemId = String(item.id);
     const selEntry = selectedItems[itemId];
     const qty = selEntry ? selEntry.qty : 0;

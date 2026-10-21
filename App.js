@@ -18,6 +18,7 @@ import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, 
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
 import { estRefusSurPlaceSeul } from "./lib/surPlaceSeul";
+import { libelleDetail } from "./lib/libelleDetail";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
 import LiveDeliveryMap from "./components/LiveDeliveryMap";
@@ -2123,7 +2124,7 @@ const ProductsScreen = () => {
                           <ProductImage uri={selectedItem.image} name={selectedItem.name} size={44} />
                           <View style={prodStyles.pickedBody}>
                             <Text style={prodStyles.pickedName}>{selectedItem.name}</Text>
-                            {selectedItem.detail ? <Text style={prodStyles.pickedDetail}>{selectedItem.detail}</Text> : null}
+                            {selectedItem.detail ? <Text style={prodStyles.pickedDetail}>{libelleDetail(selectedItem.detail)}</Text> : null}
                             <View style={prodStyles.pickedPriceRow}>
                               <Text style={prodStyles.pickedPrice}>{fmtPrice(selectedItem.price)}</Text>
                               {selectedItem.unitPrice && <Text style={prodStyles.pickedUnit}>{selectedItem.unitPrice}</Text>}
@@ -2514,7 +2515,7 @@ const ProductsScreen = () => {
                       <ProductImage uri={si.image} name={si.name} size={36} />
                       <View style={{flex:1, marginLeft:10}}>
                         <Text style={{fontSize:14, fontWeight:'600', color:'#111'}}>{si.name}</Text>
-                        <Text style={{fontSize:11, color:'#6B7280'}}>{si.detail}</Text>
+                        <Text style={{fontSize:11, color:'#6B7280'}}>{libelleDetail(si.detail)}</Text>
                       </View>
                       <View style={{alignItems:'flex-end'}}>
                         <View style={{flexDirection:'row', alignItems:'center', marginBottom:3}}>
@@ -2863,7 +2864,7 @@ const FavoritesScreen = ({ onClose }) => {
                 <ProductThumb name={item.name} size={44} />
                 <View style={favStyles.cardBody}>
                   <Text style={favStyles.cardTitle}>{item.name}</Text>
-                  {item.detail ? <Text style={favStyles.cardSub}>{item.detail}</Text> : null}
+                  {item.detail ? <Text style={favStyles.cardSub}>{libelleDetail(item.detail)}</Text> : null}
                   <View style={favStyles.priceRow}>
                     <Text style={favStyles.price}>{fmtPrice(item.price || 0)}</Text>
                     {item.unitPrice ? <Text style={favStyles.unitPrice}>{item.unitPrice}</Text> : null}
@@ -3826,7 +3827,7 @@ const CartScreen = ({ isAuth }) => {
                 <View style={cartStyles.productBody}>
                   <Text style={cartStyles.productName}>{t('productNames.' + (item.name || item.title), { defaultValue: item.name || item.title })}</Text>
                   {item.variant && item.variant.title ? <Text style={cartStyles.productDetail} numberOfLines={1}>{String(item.variant.title)}</Text> : null}
-                  {item.detail ? <Text style={cartStyles.productDetail} numberOfLines={1}>{t('productDetails.' + item.detail, { defaultValue: item.detail })}</Text> : null}
+                  {item.detail ? <Text style={cartStyles.productDetail} numberOfLines={1}>{libelleDetail(item.detail, t)}</Text> : null}
                   <View style={cartStyles.stepper}>
                     <RepeatButton onPress={() => updateQty(idx, -1)} onLongAction={() => updateQty(idx, -1)} style={cartStyles.stepBtn}>
                       <Ionicons name="remove" size={16} color={THEME.ink} />
@@ -4546,7 +4547,7 @@ const CartScreen = ({ isAuth }) => {
                   <ProductThumb name={product.name} size={40} />
                   <View style={cartStyles.pickerBody}>
                     <Text style={cartStyles.pickerName}>{product.name}</Text>
-                    {product.detail ? <Text style={cartStyles.pickerDetail}>{product.detail}</Text> : null}
+                    {product.detail ? <Text style={cartStyles.pickerDetail}>{libelleDetail(product.detail)}</Text> : null}
                     <View style={cartStyles.pickerPriceRow}>
                       <Text style={cartStyles.pickerPrice}>{fmtPrice(product.price||0)}</Text>
                       {product.unitPrice ? <Text style={cartStyles.pickerUnit}>{product.unitPrice}</Text> : null}
