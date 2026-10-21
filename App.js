@@ -5787,7 +5787,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
                   {loading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.signupBtn')}</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setStep(1); setError(''); setFieldErr({}); }} style={authStyles.toggleLink} activeOpacity={0.7}>
-                  <Text style={authStyles.toggleTxt}>{t('auth.backToStep1', '← Retour à l\'étape précédente')}</Text>
+                  <Text style={authStyles.toggleTxt}>{t('auth.backToStep1', 'Retour à l\'étape précédente')}</Text>
                 </TouchableOpacity>
               </>
             )}
