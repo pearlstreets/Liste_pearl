@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pearlstreets.list",
-      "buildNumber": "1024",
+      "buildNumber": "1025",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "Pearl List utilise l'appareil photo pour photographier votre liste de courses manuscrite ou un produit, par exemple prendre en photo un ticket de caisse pour ajouter les articles à votre liste.",
@@ -73,7 +73,8 @@
           "enableGooglePay": false
         }
       ],
-      "./plugins/withSecuriteReseau"
+      "./plugins/withSecuriteReseau",
+      "./plugins/withUIScene"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0,
