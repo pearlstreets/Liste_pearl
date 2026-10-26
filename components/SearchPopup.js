@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
-  Modal,
   View,
   Text,
   TextInput,
@@ -13,6 +12,8 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
+// Ecran deplie d'un pliable : rendue sur la moitie qui l'ouvre.
+import Modal from './DeuxEcrans';
 import { useTranslation } from 'react-i18next';
 import { addProduct } from '../lib/SelectedProducts';
 import { autocorrectName } from '../utils/spellcheck';

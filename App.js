@@ -44,8 +44,11 @@ import './i18n';
 import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import SearchPopup from './components/SearchPopup';
+// Modal de react-native, sauf sur l'ecran deplie d'un pliable Android :
+// liste a gauche, page ouverte a droite (voir le fichier).
+import Modal, { DeuxEcrans, AuMilieu } from './components/DeuxEcrans';
 import * as Location from 'expo-location';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Modal, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ReorderableList, { useReorderableDrag } from "react-native-reorderable-list";
@@ -4500,7 +4503,7 @@ const CartScreen = ({ isAuth }) => {
       ) : null}
 
       {/* Modal liste produits du shop */}
-      <Modal visible={shopProductsVisible} animationType="none" transparent={true}>
+      <Modal visible={shopProductsVisible} animationType="none" transparent={true} page>
         <View style={cartStyles.sheetBackdrop}>
           <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 36 }]}>
             <View style={cartStyles.sheetGrabber} />
@@ -6044,12 +6047,13 @@ export default function App() {
   }
 
   if (needLangChoice) {
-    return <FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} />;
+    return <AuMilieu><FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} /></AuMilieu>;
   }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
+      <DeuxEcrans>
       <NavigationContainer theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
@@ -6061,6 +6065,7 @@ export default function App() {
           onClose={() => setAuthVisible(false)}
         />
       </Modal>
+      </DeuxEcrans>
     </CurrencyContext.Provider>
     </GestureHandlerRootView>
   );
