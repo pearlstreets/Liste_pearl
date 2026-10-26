@@ -40,7 +40,7 @@ function itemsToRenderForShop(allUserItems, assignedForThisShop, optimized){
   return opt ? B : A;
 }
 
-import './i18n';
+import i18nApi from './i18n';
 import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import SearchPopup from './components/SearchPopup';
@@ -49,7 +49,8 @@ import SearchPopup from './components/SearchPopup';
 import Modal, { DeuxEcrans, AuMilieu } from './components/DeuxEcrans';
 import * as Location from 'expo-location';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, initialWindowMetrics } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ReorderableList, { useReorderableDrag } from "react-native-reorderable-list";
 
@@ -75,6 +76,17 @@ import { parseMulti } from "./lib/parseMulti";
 const BRAND = "#09d7aa";
 
 // Design system tokens — "modern delivery marketplace" look.
+// Barre de gestes / navigation Android : marge sous la derniere carte des pages.
+const INSET_BAS = (initialWindowMetrics && initialWindowMetrics.insets && initialWindowMetrics.insets.bottom) || 0;
+
+// Sous-categorie d'un produit dans la langue de l'app (le serveur la donne en
+// anglais, ex. « Art galleries ») ; traduction par son slug, sinon le nom recu.
+const sousCategorie = (p) => {
+  if (!p) return '';
+  const nom = p.subcategory || '';
+  return p.subcategorySlug ? i18nApi.t(`subcategories.${p.subcategorySlug}`, { defaultValue: nom }) : nom;
+};
+
 const THEME = {
   brand: '#09d7aa', brandDark: '#07b896', brandSoft: '#E0FAF3',
   bg: '#FFFFFF', card: '#FFFFFF', subtle: '#F1F3F5',
@@ -271,7 +283,7 @@ const lstyles = StyleSheet.create({
   suggestRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 },
   suggestAvatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: THEME.subtle },
   modalTitle: { fontSize: 18, fontWeight: '800', color: THEME.ink, marginBottom: 14 },
-  modalInput: { height: 50, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink },
+  modalInput: { height: 50, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   modalRow: { flexDirection: 'row', marginTop: 16 },
   modalCancel: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle, marginRight: 8 },
   modalSave: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand, marginLeft: 8 },
@@ -1168,7 +1180,7 @@ function ListScreen() {
 
       <Modal visible={editVisible} transparent animationType="fade" onRequestClose={closeEdit}
         onShow={() => setTimeout(() => editInputRef.current?.focus(), 80)}>
-        <View style={lstyles.modalBackdrop}>
+        <KeyboardAvoidingView behavior="padding" style={lstyles.modalBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} onPress={closeEdit} />
           <View style={lstyles.modalBox}>
             <Text style={lstyles.modalTitle}>{t('listScreen.editItem')}</Text>
@@ -1196,7 +1208,7 @@ function ListScreen() {
               </Pressable>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </SafeAreaView>
     </KeyboardAvoidingView>
@@ -1412,7 +1424,7 @@ const ProductsScreen = () => {
   const openShopSearch = (shopName, shopIndex, query) => {
     const shop = (realShops || []).find(s => s.name === shopName);
     __setActiveShopProducts(shop ? (shop.products || []).map(p => ({
-      id: p.id, name: p.name, detail: p.subcategory || p.description || '',
+      id: p.id, name: p.name, detail: sousCategorie(p) || p.description || '',
       price: Number(p.price) || 0, image: p.image || '', available: true,
     })) : []);
     __setActiveQuery(query || '');
@@ -1817,7 +1829,7 @@ const ProductsScreen = () => {
           const real = shop ? findReal(shop.products, p.title) : null;
           if (!real) return;
           if (picked.some(x => x.shopIndex === shopIndex && x.name === real.name)) return;
-          picked.push({ id: __idc++, name: real.name, detail: real.subcategory || '', price: Number(real.price) || 0, image: real.image || '', qty: p.qty || 1, shop: g.name, shopIndex, checked: true });
+          picked.push({ id: __idc++, name: real.name, detail: sousCategorie(real) || '', price: Number(real.price) || 0, image: real.image || '', qty: p.qty || 1, shop: g.name, shopIndex, checked: true });
           csAuto[shopIndex] = true;
         });
       });
@@ -2352,7 +2364,7 @@ const ProductsScreen = () => {
 
 
       {/* Modal doublons panier */}
-      <Modal visible={dupModalVisible} animationType="slide" transparent={true}>
+      <Modal onRequestClose={() => setDupModalVisible(false)} visible={dupModalVisible} animationType="slide" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'80%', paddingBottom:40}}>
             {/* Header */}
@@ -2473,7 +2485,7 @@ const ProductsScreen = () => {
       </Modal>
 
       {/* Modal confirmation ajout panier */}
-      <Modal visible={confirmCartVisible} animationType="slide" transparent={true}>
+      <Modal onRequestClose={() => setConfirmCartVisible(false)} visible={confirmCartVisible} animationType="slide" transparent={true}>
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'flex-end'}}>
           <View style={{backgroundColor:'#fff', borderTopLeftRadius:24, borderTopRightRadius:24, maxHeight:'70%', paddingBottom:40}}>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
@@ -2636,7 +2648,7 @@ const ProductsScreen = () => {
       </Modal>
 
       {/* Modal succès ajout panier */}
-      <Modal visible={cartSuccessVisible} transparent animationType="fade">
+      <Modal onRequestClose={() => setCartSuccessVisible(false)} visible={cartSuccessVisible} transparent animationType="fade">
         <View style={{flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'center', alignItems:'center'}}>
           <View style={{backgroundColor:'#fff', borderRadius:24, padding:30, marginHorizontal:30, alignItems:'center', width:'85%'}}>
             <View style={{width:64, height:64, borderRadius:32, backgroundColor:'#ECFDF5', alignItems:'center', justifyContent:'center', marginBottom:16}}>
@@ -2675,7 +2687,7 @@ const favStyles = StyleSheet.create({
   segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
   segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
   segTxtOn: { color: THEME.ink },
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, height: 48, marginTop: 12 },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, height: 48, marginTop: 12, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, padding: 0 },
   card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   cardRow: { flexDirection: 'row', alignItems: 'center' },
@@ -2807,7 +2819,7 @@ const FavoritesScreen = ({ onClose }) => {
           {Header}
           <View style={favStyles.empty}>
             <Text style={favStyles.emptyTitle}>
-              {tab === 'shops' ? (t('favorites.noFavorites', 'Aucun shop favori')) : (t('favorites.noFavProducts', 'Aucun produit favori'))}
+              {tab === 'shops' ? (t('favorites.noFavorites', 'Aucune boutique favorite')) : (t('favorites.noFavProducts', 'Aucun produit favori'))}
             </Text>
             <Text style={favStyles.emptyHint}>
               {tab === 'shops' ? (t('favorites.addFromProducts', 'Ajoutez depuis l\'onglet Produits')) : (t('favorites.addProductHint', 'Appuyez sur le coeur d\'un produit pour l\'ajouter'))}
@@ -2821,7 +2833,7 @@ const FavoritesScreen = ({ onClose }) => {
           keyboardShouldPersistTaps="handled"
           ListHeaderComponent={Header}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 24}}
+          contentContainerStyle={{paddingBottom: 24 + INSET_BAS}}
           renderItem={({item}) => (
             <View style={favStyles.card}>
               <View style={favStyles.cardRow}>
@@ -2860,7 +2872,7 @@ const FavoritesScreen = ({ onClose }) => {
           keyboardShouldPersistTaps="handled"
           ListHeaderComponent={Header}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 24}}
+          contentContainerStyle={{paddingBottom: 24 + INSET_BAS}}
           renderItem={({item}) => (
             <View style={favStyles.card}>
               <View style={favStyles.cardRow}>
@@ -3049,7 +3061,7 @@ const cartStyles = StyleSheet.create({
   ghostBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
 
   // Search field inside modals
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, height: 46 },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, height: 46, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: THEME.ink, padding: 0 },
 
   // Picker product row (shop products / add products lists)
@@ -3891,7 +3903,7 @@ const CartScreen = ({ isAuth }) => {
       )}
 
       {/* Modal de confirmation de commande */}
-      <Modal visible={confirmVisible} animationType="slide" transparent={true}>
+      <Modal onRequestClose={() => setConfirmVisible(false)} visible={confirmVisible} animationType="slide" transparent={true}>
         <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={cartStyles.sheetBackdrop}>
           <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 36 }]}>
@@ -4503,7 +4515,7 @@ const CartScreen = ({ isAuth }) => {
       ) : null}
 
       {/* Modal liste produits du shop */}
-      <Modal visible={shopProductsVisible} animationType="none" transparent={true} page>
+      <Modal onRequestClose={() => setShopProductsVisible(false)} visible={shopProductsVisible} animationType="none" transparent={true} page>
         <View style={cartStyles.sheetBackdrop}>
           <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 36 }]}>
             <View style={cartStyles.sheetGrabber} />
@@ -4760,7 +4772,7 @@ const ShopsScreen = () => {
       } else {
         existing.push({
           name: product.name,
-          detail: product.subcategory || product.description || '',
+          detail: sousCategorie(product) || product.description || '',
           unitPrice: '',
           qty: qty,
           price: product.price || 0,
@@ -4853,7 +4865,7 @@ const ShopsScreen = () => {
         )}
         <View style={{ flex: 1 }}>
           <Text style={shopStyles.prodName} numberOfLines={2}>{item.name}</Text>
-          {item.subcategory ? <Text style={shopStyles.prodSub} numberOfLines={1}>{item.subcategory}</Text> : null}
+          {item.subcategory ? <Text style={shopStyles.prodSub} numberOfLines={1}>{sousCategorie(item)}</Text> : null}
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={shopStyles.prodPrice}>{fmtPrice(item.price)}</Text>
             {item.promo ? <Text style={shopStyles.prodBase}>{fmtPrice(item.basePrice)}</Text> : null}
@@ -4877,7 +4889,7 @@ const ShopsScreen = () => {
     : shops;
   const _shopProducts = selectedShop?.products || [];
   const filteredProducts = productSearch.trim()
-    ? _shopProducts.filter((p) => _q(p.name).includes(_q(productSearch)) || _q(p.subcategory).includes(_q(productSearch)))
+    ? _shopProducts.filter((p) => _q(p.name).includes(_q(productSearch)) || _q(sousCategorie(p)).includes(_q(productSearch)))
     : _shopProducts;
 
   return (
@@ -4966,7 +4978,7 @@ const ShopsScreen = () => {
             data={filteredProducts}
             keyExtractor={(p) => String(p.id)}
             renderItem={renderProduct}
-            contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+            contentContainerStyle={{ padding: 16, paddingBottom: 40 + INSET_BAS }}
             keyboardShouldPersistTaps="handled"
             ListEmptyComponent={<Text style={[shopStyles.emptyTxt, { marginTop: 24 }]}>{productSearch.trim() ? t('shops.noProductMatch', 'Aucun produit trouvé') : t('shops.noProducts', 'Aucun produit')}</Text>}
           />
@@ -5003,7 +5015,7 @@ const ShopsScreen = () => {
                       <Text style={shopStyles.pdLocTxt} numberOfLines={2}>{selectedShop.address}</Text>
                     </View>
                   ) : null}
-                  {selectedProduct?.subcategory ? <Text style={shopStyles.pdSub}>{selectedProduct.subcategory}</Text> : null}
+                  {selectedProduct?.subcategory ? <Text style={shopStyles.pdSub}>{sousCategorie(selectedProduct)}</Text> : null}
                   {selectedProduct?.description ? <Text style={shopStyles.pdDesc}>{selectedProduct.description}</Text> : null}
                   {/* Options de la fiche : pastilles simples, option épuisée grisée
                       et non sélectionnable. */}
@@ -5114,7 +5126,7 @@ const shopStyles = StyleSheet.create({
   toast: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: THEME.ink, borderRadius: 14, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
   toastTxt: { color: '#fff', fontWeight: '700', marginLeft: 8, flex: 1 },
   // Barre de recherche (boutiques + produits)
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 12, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, paddingVertical: 0 },
   // Pop-up détail produit
   pdOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
@@ -5144,7 +5156,7 @@ const shopStyles = StyleSheet.create({
   pdNoteInput: { minHeight: 96, borderWidth: 1, borderColor: THEME.border, borderRadius: 14, padding: 12, fontSize: 14, color: THEME.ink, textAlignVertical: 'top', backgroundColor: THEME.card },
   pdFooter: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 12, paddingBottom: 28, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
   pdQtyBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
-  pdAddBig: { flex: 1, marginHorizontal: 10, backgroundColor: THEME.ink, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
+  pdAddBig: { flex: 1, marginHorizontal: 10, backgroundColor: THEME.brand, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
   pdAddBigTxt: { color: '#fff', fontSize: 16, fontWeight: '800' },
   pdAddBigOff: { opacity: 0.45 },
   // Pastilles d'options (fiche à plusieurs options)
@@ -5243,6 +5255,10 @@ const authStyles = StyleSheet.create({
 
   // Brand header
   brandHeader: { alignItems: 'center', marginBottom: 28 },
+  // Inscription : en-tete plus compact pour que « Continuer » tienne a l'ecran.
+  scrollBodySignup: { paddingTop: 8 },
+  brandHeaderSignup: { marginBottom: 16 },
+  brandLogoSignup: { width: 52, height: 52, borderRadius: 18, marginBottom: 10 },
   brandLogo: { width: 72, height: 72, borderRadius: 24, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginBottom: 16, ...THEME.shadow },
   brandTitle: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
   brandSubtitle: { fontSize: 13, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 19, fontWeight: '600' },
@@ -5254,11 +5270,11 @@ const authStyles = StyleSheet.create({
   // Form fields
   fieldGroup: { marginBottom: 14 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: THEME.muted, marginBottom: 6 },
-  field: { height: 52, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
+  field: { height: 52, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   // Erreur affichée SOUS le champ concerné + bordure rouge sur le champ.
   fieldError: { color: THEME.danger, fontSize: 12.5, fontWeight: '600', marginTop: 6, lineHeight: 17 },
   fieldInvalid: { borderWidth: 1, borderColor: THEME.danger },
-  pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.subtle, borderRadius: 14 },
+  pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.card, borderRadius: 14, borderWidth: 1, borderColor: THEME.border },
   pwdInput: { flex: 1, height: 52, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
   pwdEye: { paddingHorizontal: 14, height: 52, alignItems: 'center', justifyContent: 'center' },
 
@@ -5292,7 +5308,7 @@ const authStyles = StyleSheet.create({
 
   // Téléphone + indicatif
   phoneRow: { flexDirection: 'row', alignItems: 'center' },
-  dialBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 12, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, gap: 6 },
+  dialBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 12, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, gap: 6 },
   dialFlag: { fontSize: 18 },
   dialTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
 
@@ -5618,9 +5634,9 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           </TouchableOpacity>
         ) : null}
       </View>
-      <ScrollView contentContainerStyle={authStyles.scrollBody} keyboardShouldPersistTaps="handled">
-        <View style={authStyles.brandHeader}>
-          <Image source={require('./assets/icon.png')} style={authStyles.brandLogo} resizeMode="cover" />
+      <ScrollView contentContainerStyle={[authStyles.scrollBody, !isLogin && authStyles.scrollBodySignup]} keyboardShouldPersistTaps="handled">
+        <View style={[authStyles.brandHeader, !isLogin && authStyles.brandHeaderSignup]}>
+          <Image source={require('./assets/icon.png')} style={[authStyles.brandLogo, !isLogin && authStyles.brandLogoSignup]} resizeMode="cover" />
           <Text style={authStyles.brandTitle}>Pearl List</Text>
           <Text style={authStyles.brandSubtitle}>
             {isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte, utilisable sur l\'app et le site Marketplace'))}
@@ -5834,7 +5850,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
       />
 
       {/* Country / dial-code Picker Modal (inscription étape 2) */}
-      <Modal visible={countryPickerFor !== null} animationType="none" transparent={true}>
+      <Modal onRequestClose={() => setCountryPickerFor(null)} visible={countryPickerFor !== null} animationType="none" transparent={true}>
         <View style={authStyles.langBackdrop}>
           <View style={authStyles.langSheet}>
             <View style={authStyles.langHandle} />
@@ -5873,7 +5889,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
       </Modal>
 
       {/* Language Picker Modal */}
-      <Modal visible={langVisible} animationType="none" transparent={true}>
+      <Modal onRequestClose={() => setLangVisible(false)} visible={langVisible} animationType="none" transparent={true}>
         <View style={authStyles.langBackdrop}>
           <View style={authStyles.langSheet}>
             <View style={authStyles.langHandle} />
@@ -5912,7 +5928,7 @@ const useCurrency = () => React.useContext(CurrencyContext);
 // comme AppUser / AppPro. Affiché avant l'app ; le choix est persisté (APP_LANGUAGE)
 // et l'écran ne réapparaît plus.
 function FirstLaunchLanguage({ onDone }) {
-  const { i18n: i18nFL } = useTranslation();
+  const { t: tFL, i18n: i18nFL } = useTranslation();
   const [selected, setSelected] = React.useState(i18nFL.language || 'fr');
   const choose = async (code) => {
     setSelected(code);
@@ -5925,8 +5941,11 @@ function FirstLaunchLanguage({ onDone }) {
         <View style={{ width: 72, height: 72, borderRadius: 22, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
           <Ionicons name="language" size={34} color="#fff" />
         </View>
-        <Text style={{ fontSize: 23, fontWeight: '800', color: THEME.ink }}>Choose your language</Text>
-        <Text style={{ fontSize: 14, color: THEME.muted, marginTop: 6 }}>Choisissez votre langue</Text>
+        <Text style={{ fontSize: 23, fontWeight: '800', color: THEME.ink }}>{tFL('auth.chooseYourLanguage', 'Choose your language')}</Text>
+        {/* Rappel en anglais tant que la langue de l'appareil n'est pas l'anglais. */}
+        {!(i18nFL.language || '').startsWith('en') ? (
+          <Text style={{ fontSize: 14, color: THEME.muted, marginTop: 6 }}>{tFL('auth.chooseYourLanguage', { lng: 'en', defaultValue: 'Choose your language' })}</Text>
+        ) : null}
       </View>
       <FlatList
         data={LANGUAGES}
@@ -5949,6 +5968,7 @@ function FirstLaunchLanguage({ onDone }) {
 }
 
 export default function App() {
+  const { i18n: i18nApp } = useTranslation();
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
   const [needLangChoice, setNeedLangChoice] = React.useState(null); // null = loading, true = 1er lancement
   const [proBlocked, setProBlocked] = React.useState(false);
@@ -6006,9 +6026,11 @@ export default function App() {
   const fmtPrice = React.useCallback((eurAmount) => {
     const n = Number(eurAmount || 0) * currency.rate;
     const dec = currency.decimals !== undefined ? currency.decimals : 2;
-    const formatted = n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    let formatted = n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    // Francais : virgule decimale (12,50 EUR).
+    if ((i18nApp.language || '').startsWith('fr')) formatted = formatted.replace('.', ',');
     return `${formatted} ${currency.symbol}`;
-  }, [currency]);
+  }, [currency, i18nApp.language]);
 
   const setCurrency = React.useCallback(async (cur) => {
     // Apply live rate if available
@@ -6041,17 +6063,19 @@ export default function App() {
   if (isAuth === null || needLangChoice === null) {
     return (
       <View style={{flex:1, backgroundColor:'#fff', alignItems:'center', justifyContent:'center'}}>
+        <StatusBar style="dark" />
         <ActivityIndicator size="large" color={BRAND} />
       </View>
     );
   }
 
   if (needLangChoice) {
-    return <AuMilieu><FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} /></AuMilieu>;
+    return <AuMilieu><StatusBar style="dark" /><FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} /></AuMilieu>;
   }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+    <StatusBar style="dark" />
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <DeuxEcrans>
       <NavigationContainer theme={navTheme}>
@@ -6256,7 +6280,7 @@ const profStyles = StyleSheet.create({
 
   // Form fields
   fieldLabel: { fontSize: 12.5, fontWeight: '700', color: THEME.muted, marginBottom: 6 },
-  field: { height: 52, backgroundColor: THEME.subtle, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink },
+  field: { height: 52, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   fieldGroup: { marginBottom: 16 },
   fieldRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
 
@@ -7161,7 +7185,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
           </SafeAreaView>
         </Modal>
 
-        <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
+        <Modal onRequestClose={() => { setPendingLang(null); setLangVisible(false); }} visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
           <SafeAreaView style={profStyles.modalScreen} edges={[]}>
             <View style={profStyles.modalHeader}>
               <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={profStyles.modalBack}>
@@ -7200,7 +7224,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         </Modal>
 
         {/* Sélecteur de devise (dispo sans connexion) */}
-        <Modal visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
+        <Modal onRequestClose={() => { setPendingCurrency(null); setCurrencyVisible(false); }} visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
           <SafeAreaView style={profStyles.modalScreen} edges={[]}>
             <View style={profStyles.modalHeader}>
               <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={profStyles.modalBack}>
@@ -7215,7 +7239,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                   <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
                     <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
                     <View style={{ flex:1 }}>
-                      <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{curr.name}</Text>
+                      <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{t(`currencies.${curr.code}`, curr.name)}</Text>
                       <Text style={profStyles.pickerSub}>{curr.code}</Text>
                     </View>
                     {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
@@ -7553,7 +7577,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </ScrollView>
 
       {/* Driver Info Full Page Modal */}
-      <Modal visible={driverInfoVisible} animationType="slide">
+      <Modal onRequestClose={() => setDriverInfoVisible(false)} visible={driverInfoVisible} animationType="slide">
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <View style={profStyles.modalHeader}>
             <TouchableOpacity onPress={() => setDriverInfoVisible(false)} style={profStyles.modalBack}>
@@ -7671,7 +7695,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Edit Profile Full Page Modal */}
-      <Modal visible={editVisible} animationType="slide">
+      <Modal onRequestClose={() => setEditVisible(false)} visible={editVisible} animationType="slide">
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <KeyboardAvoidingView style={{ flex:1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View style={profStyles.modalHeader}>
@@ -7818,7 +7842,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Language Selector Full Page Modal */}
-      <Modal visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
+      <Modal onRequestClose={() => { setPendingLang(null); setLangVisible(false); }} visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <View style={profStyles.modalHeader}>
             <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={profStyles.modalBack}>
@@ -7858,7 +7882,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Currency Selector Full Page Modal */}
-      <Modal visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
+      <Modal onRequestClose={() => { setPendingCurrency(null); setCurrencyVisible(false); }} visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <View style={profStyles.modalHeader}>
             <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={profStyles.modalBack}>
@@ -7873,7 +7897,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
                   <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
                   <View style={{ flex:1 }}>
-                    <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{curr.name}</Text>
+                    <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{t(`currencies.${curr.code}`, curr.name)}</Text>
                     <Text style={profStyles.pickerSub}>{curr.code}</Text>
                   </View>
                   {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
@@ -8080,7 +8104,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* All Orders Full Page Modal */}
-      <Modal visible={allOrdersVisible} animationType="none">
+      <Modal onRequestClose={() => setAllOrdersVisible(false)} visible={allOrdersVisible} animationType="none">
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <View style={profStyles.modalHeader}>
             <TouchableOpacity onPress={() => setAllOrdersVisible(false)} style={profStyles.modalBack}>
@@ -8088,7 +8112,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             </TouchableOpacity>
             <Text style={profStyles.modalTitle}>{t('profile.allOrders')}</Text>
           </View>
-          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 }} showsVerticalScrollIndicator={false}>
+          <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS }} showsVerticalScrollIndicator={false}>
             {orders.map((order) => {
               const status = getOrderStatus(order);
               return (
@@ -8127,7 +8151,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Order Detail Full Page Modal */}
-      <Modal visible={!!detailOrder} animationType="none">
+      <Modal onRequestClose={() => setDetailOrder(null)} visible={!!detailOrder} animationType="none">
         <SafeAreaView style={profStyles.modalScreen} edges={[]}>
           <View style={profStyles.modalHeader}>
             <TouchableOpacity onPress={() => setDetailOrder(null)} style={profStyles.modalBack}>
@@ -8145,7 +8169,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             )}
           </View>
           {detailOrder && (
-            <ScrollView style={{flex:1}} contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 }} showsVerticalScrollIndicator={false}>
+            <ScrollView style={{flex:1}} contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:20 + INSET_BAS }} showsVerticalScrollIndicator={false}>
               {/* Infos commande */}
               <View style={[profStyles.modalCard, { marginBottom: 12 }]}>
                 <View style={profStyles.detailInfoRow}>
@@ -8408,7 +8432,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       </Modal>
 
       {/* Modal sélection recommander — AU MÊME NIVEAU */}
-      <Modal visible={reorderVisible} animationType="slide" transparent={true}>
+      <Modal onRequestClose={() => setReorderVisible(false)} visible={reorderVisible} animationType="slide" transparent={true}>
         <View style={profStyles.sheetBackdrop}>
           <View style={profStyles.sheet}>
             <View style={profStyles.sheetGrabber} />
