@@ -213,7 +213,7 @@ export function AuMilieu({ children }) {
   if (!estDeplie(Platform.OS, width, height)) return children;
   return (
     <View style={styles.milieu}>
-      <View style={{ width: Math.floor(width / 2), flex: 1 }}>{children}</View>
+      <View style={{ width: Math.floor(width / 2) }}>{children}</View>
     </View>
   );
 }
