@@ -5162,7 +5162,7 @@ const shopStyles = StyleSheet.create({
   // Pastilles d'options (fiche à plusieurs options)
   optWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   optChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, maxWidth: '100%' },
-  optChipOn: { borderColor: THEME.ink, backgroundColor: THEME.ink },
+  optChipOn: { borderColor: THEME.brand, backgroundColor: THEME.brand },
   optChipOff: { backgroundColor: THEME.subtle, borderColor: THEME.border, opacity: 0.5 },
   optChipTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   optChipTxtOn: { color: '#fff' },
