@@ -1,6 +1,7 @@
 import { apiGet } from './api';
 import { CONFIG } from './config';
 import { optionsDeLaFiche } from '../lib/variantes';
+import { sansMotRepete } from '../lib/adresse';
 
 // Base pour résoudre les chemins media relatifs (ex "/media/product_images/x.jpg")
 // en URLs absolues. API_URL = ".../api/v1" → on retire le suffixe pour la racine.
@@ -131,7 +132,7 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
           id: shopId,
           name: p.company_name || 'Boutique',
           cover: firstUrl(p.company_cover_photo),
-          address: p.company_address || '',
+          address: sansMotRepete(p.company_address || ''),
           phone: p.company_phone || '',
           refCode: p.company_ref_code || '',
           openingHours: p.opening_hours || null,
@@ -150,6 +151,7 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         image: firstUrl(p.image, firstUrl(p.gallery)),
         description: p.description || '',
         subcategory: p.subcategory_name || p.subcategory_slug || '',
+        subcategorySlug: p.subcategory_slug || '',
         // Options de la fiche : servies par la liste (customizationOptions,
         // backend récent) ; absentes = undefined, relues par getProductOptions.
         options: optionsDeLaFiche(p),

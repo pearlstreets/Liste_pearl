@@ -1,4 +1,5 @@
 import { apiGet } from './api';
+import { sansMotRepete } from '../lib/adresse';
 
 // Get company/shop details
 export async function getShopDetails(companyId) {
@@ -18,7 +19,7 @@ export async function getAllShops() {
       return {
         id: company.id || u.id,
         name: company.companyName || company.name || u.userName || 'Shop',
-        address: company.address || '',
+        address: sansMotRepete(company.address || ''),
         city: company.city || '',
         phone: u.phone || '',
         email: u.email || '',
