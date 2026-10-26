@@ -74,7 +74,8 @@
         }
       ],
       "./plugins/withSecuriteReseau",
-      "./plugins/withUIScene"
+      "./plugins/withUIScene",
+      "./plugins/withConfigChanges"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0,
