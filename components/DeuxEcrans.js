@@ -16,6 +16,9 @@
 //    choix). La moitie d'en face reste utilisable.
 // La derniere page ouverte est visible, les autres restent montees et cachees
 // (comme une pile). Le bouton retour d'Android ferme la derniere ouverte.
+// `figer` (paiement) : la fenetre garde, tant qu'elle reste ouverte, le mode
+// de son ouverture. Pliage ou depliage en cours de route : elle n'est jamais
+// remontee (saisie de carte gardee, aucun paiement relance).
 //
 // Chaque moitie garde le design du telephone : App.js ne lit aucune taille
 // d'ecran (tout est en flex et en tailles fixes), une moitie de ~420 dp se
@@ -85,8 +88,10 @@ export function DeuxEcrans({ children }) {
   // Retour Android : ferme le dernier contenu ouvert, comme une Modal.
   const derniers = useRef(ouverts);
   derniers.current = ouverts;
+  // Plie, seule une fenetre figee (ouverte deplie) peut rester dans la liste.
+  const ecoute = deplie || ouverts.length > 0;
   useEffect(() => {
-    if (!deplie) return undefined;
+    if (!ecoute) return undefined;
     const abonnement = BackHandler.addEventListener('hardwareBackPress', () => {
       const liste = derniers.current;
       if (!liste.length) return false;
@@ -95,7 +100,7 @@ export function DeuxEcrans({ children }) {
       return true;
     });
     return () => abonnement.remove();
-  }, [deplie]);
+  }, [ecoute]);
 
   const moitie = Math.floor(width / 2);
   const pages = deplie ? ouverts.filter((e) => e.page) : [];
@@ -116,7 +121,7 @@ export function DeuxEcrans({ children }) {
       <View style={styles.racine}>
         <View style={deplie ? [styles.cote, { width: moitie }] : styles.plein}>
           {children}
-          {deplie ? fenetres(null) : null}
+          {fenetres(null)}
         </View>
         {deplie ? (
           <View style={[styles.cote, styles.droite]}>
@@ -151,8 +156,9 @@ export function DeuxEcrans({ children }) {
 }
 
 // Remplace la Modal de react-native (memes proprietes). `page` : contenu
-// transparent a montrer quand meme comme une page, a droite.
-export default function Modal({ page, ...props }) {
+// transparent a montrer quand meme comme une page, a droite. `figer` : voir
+// en tete du fichier.
+export default function Modal({ page, figer, ...props }) {
   const hote = useContext(HoteContext);
   const parent = useContext(PageContext);
   const navigation = useContext(NavigationContext);
@@ -162,8 +168,12 @@ export default function Modal({ page, ...props }) {
     compteur += 1;
     id.current = `modale-${compteur}`;
   }
-  const enMoitie = !!(hote && hote.deplie);
   const visible = props.visible !== false;
+  const enMoitieMaintenant = !!(hote && hote.deplie);
+  const modeFige = useRef(null);
+  if (!figer || !hote || !visible) modeFige.current = null;
+  else if (modeFige.current === null) modeFige.current = enMoitieMaintenant;
+  const enMoitie = modeFige.current === null ? enMoitieMaintenant : modeFige.current;
   const estPage = !!page || !props.transparent;
 
   // A chaque rendu : le contenu suit l'etat de l'ecran qui l'a ouvert.

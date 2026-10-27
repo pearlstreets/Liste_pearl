@@ -4,10 +4,12 @@
 // natif) → n'est actif qu'en build natif ; en Expo Go on l'indique proprement.
 // Tout Stripe passe par services/stripeNative.js (guarded require) → aucun crash.
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator, ScrollView, Alert, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
 import useSecureScreen from '../lib/useSecureScreen';
+// Deplie : feuille posee dans la moitie de l'ecran, comme les autres fenetres.
+import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { getSavedCardsApi, saveCardApi, deleteSavedCardApi, createStripeCustomerApi } from '../services/payment';
 
@@ -172,7 +174,7 @@ export default function PaymentMethodsModal({ visible, t, onClose }) {
   // s'ouvre qu'une fois la protection posée (voir lib/useSecureScreen.js).
   const pret = useSecureScreen('moyens-de-paiement', !!visible);
   return (
-    <Modal visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onClose && onClose()}>
+    <Modal figer visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onClose && onClose()}>
       <StripeProvider
         publishableKey={STRIPE_PUBLISHABLE_KEY}
         urlScheme="pearl-list"
