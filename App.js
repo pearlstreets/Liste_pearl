@@ -1028,7 +1028,7 @@ function ListScreen() {
       {/* Créer une liste (modale custom cross-platform) */}
       <Modal visible={createListOpen} transparent animationType="fade" onRequestClose={() => setCreateListOpen(false)}
         onShow={() => setTimeout(() => createInputRef.current?.focus(), 80)}>
-        <View style={lstyles.modalBackdrop}>
+        <KeyboardAvoidingView behavior="padding" style={lstyles.modalBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} onPress={() => setCreateListOpen(false)} />
           <View style={lstyles.modalBox}>
             <Text style={lstyles.modalTitle}>{t('listScreen.newListTitle', 'Nouvelle liste')}</Text>
@@ -1053,7 +1053,7 @@ function ListScreen() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
 
       {/* Renommer une liste */}
@@ -4830,7 +4830,7 @@ const ShopsScreen = () => {
   };
 
   const renderShopCard = ({ item }) => (
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedProduct(null); setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
@@ -4946,7 +4946,7 @@ const ShopsScreen = () => {
       )}
 
       {/* Détail d'une boutique : ses vrais produits */}
-      <Modal visible={!!selectedShop} animationType="slide" onRequestClose={() => setSelectedShop(null)}>
+      <Modal visible={!!selectedShop} animationType="slide" onRequestClose={() => { if (selectedProduct) setSelectedProduct(null); else setSelectedShop(null); }}>
         <View style={shopStyles.screen}>
           <View style={shopStyles.detailHeader}>
             <TouchableOpacity onPress={() => setSelectedShop(null)} style={shopStyles.backBtn}
@@ -5323,6 +5323,9 @@ const authStyles = StyleSheet.create({
   // Language picker button
   langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginTop: 16, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
   langBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
+  // Android (pliable plie) : marges reduites pour que « Continuer » ne soit pas coupe
+  // au-dessus de la barre de langue ; la SafeAreaView du bas ajoute deja la barre de navigation.
+  langBtnAndroid: { marginTop: 8, marginBottom: 8 },
 
   // Language picker modal
   langBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
@@ -5458,9 +5461,16 @@ async function fetchPhotonSuggestions(query, countryCode, lang) {
   }
 }
 
-function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
+// Pliable : au pliage, la page de connexion est rendue ailleurs dans l'arbre
+// (moitie droite ou Modal plein ecran) et donc remontee. Le choix connexion /
+// inscription est garde ici, en memoire, jusqu'a la fermeture de la page.
+let modeAuthGarde = null;
+const oublierModeAuth = () => { modeAuthGarde = null; };
+
+function AuthScreen({ onLogin, onClose, initialIsLogin = true, retourRef }) {
   const { t, i18n: i18nAuth } = useTranslation();
-  const [isLogin, setIsLogin] = React.useState(initialIsLogin);
+  const [isLogin, setIsLogin] = React.useState(() => (modeAuthGarde !== null ? modeAuthGarde : initialIsLogin));
+  React.useEffect(() => { modeAuthGarde = isLogin; }, [isLogin]);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [pseudo, setPseudo] = React.useState('');
@@ -5617,6 +5627,17 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
     }
     setLoading(false);
   };
+
+  // Touche retour d'Android : meme effet que la fleche en haut (etape 1, puis
+  // connexion) ; en connexion, la page se ferme.
+  if (retourRef) {
+    retourRef.current = () => {
+      if (isLogin) return false;
+      if (step === 2) { setStep(1); } else { setIsLogin(true); }
+      setError('');
+      return true;
+    };
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: THEME.bg }}>
@@ -5833,7 +5854,7 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true }) {
           ne remonte PAS au-dessus du clavier et ne suive pas le scroll. */}
       {!isLogin && (
         <SafeAreaView edges={['bottom']} style={{ backgroundColor: THEME.bg }}>
-          <TouchableOpacity onPress={() => setLangVisible(true)} style={authStyles.langBtn} activeOpacity={0.7}>
+          <TouchableOpacity onPress={() => setLangVisible(true)} style={[authStyles.langBtn, Platform.OS === 'android' && authStyles.langBtnAndroid]} activeOpacity={0.7}>
             <Ionicons name="globe-outline" size={18} color={THEME.muted} />
             <Text style={authStyles.langBtnTxt}>{LANGUAGES.find(l => l.code === i18nAuth.language)?.flag || '🌐'} {LANGUAGES.find(l => l.code === i18nAuth.language)?.label || 'Language'}</Text>
           </TouchableOpacity>
@@ -5974,9 +5995,11 @@ export default function App() {
   const [proBlocked, setProBlocked] = React.useState(false);
   const [authVisible, setAuthVisible] = React.useState(false);
   const [authSignup, setAuthSignup] = React.useState(false);
+  const authRetour = React.useRef(null);
 
   React.useEffect(() => {
     const sub = DeviceEventEmitter.addListener('OPEN_AUTH', (params) => {
+      oublierModeAuth();
       setAuthSignup(params && params.signup === true);
       setAuthVisible(true);
     });
@@ -6081,12 +6104,16 @@ export default function App() {
       <NavigationContainer theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
-      <Modal visible={authVisible} animationType="slide" onRequestClose={() => setAuthVisible(false)}>
+      <Modal visible={authVisible} animationType="slide" onRequestClose={() => {
+        if (authRetour.current && authRetour.current()) return;
+        oublierModeAuth(); setAuthVisible(false);
+      }}>
         <AuthScreen
           key={authSignup ? 'signup' : 'login'}
           initialIsLogin={!authSignup}
-          onLogin={() => { setIsAuth(true); setAuthVisible(false); }}
-          onClose={() => setAuthVisible(false)}
+          retourRef={authRetour}
+          onLogin={() => { oublierModeAuth(); setIsAuth(true); setAuthVisible(false); }}
+          onClose={() => { oublierModeAuth(); setAuthVisible(false); }}
         />
       </Modal>
       </DeuxEcrans>
