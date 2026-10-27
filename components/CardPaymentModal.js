@@ -6,10 +6,12 @@
 // Puis reprise 3DS via handleNextAction, réconciliation is_paid côté serveur/webhook.
 // Tout Stripe passe par services/stripeNative.js (guarded require) → aucun crash Expo Go.
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator, ScrollView, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
 import useSecureScreen from '../lib/useSecureScreen';
+// Deplie : feuille posee dans la moitie de l'ecran, comme les autres fenetres.
+import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { createStripeCustomerApi, payOrderApi, getSavedCardsApi } from '../services/payment';
 
@@ -231,7 +233,7 @@ export default function CardPaymentModal({
   // s'ouvre qu'une fois la protection posée (voir lib/useSecureScreen.js).
   const pret = useSecureScreen('paiement-carte', !!visible);
   return (
-    <Modal visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
+    <Modal figer visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
       <StripeProvider
         publishableKey={STRIPE_PUBLISHABLE_KEY}
         urlScheme="pearl-list"
