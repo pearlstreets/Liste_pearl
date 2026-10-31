@@ -6,6 +6,9 @@ import { searchRecipes, recipesByPantry } from '../lib/menus/search';
 import { buildShoppingList } from '../lib/menus/shopping';
 import { getRecipes, getIngredients, getTexts, resetMenusCache } from '../lib/menus/recipes';
 
+// CI : machine lente et code instrumente par --coverage, seuils elargis.
+const MARGE = process.env.CI ? 5 : 1;
+
 const mesure = (fn, n) => {
   const t = [];
   for (let i = 0; i < n; i++) {
@@ -40,8 +43,8 @@ describe('performance avec le vrai catalogue', () => {
       30
     );
     console.log(`plan ${nom} : ${f(m)}`);
-    expect(m.moy).toBeLessThan(150);
-    expect(m.p95).toBeLessThan(300);
+    expect(m.moy).toBeLessThan(150 * MARGE);
+    expect(m.p95).toBeLessThan(300 * MARGE);
   });
 
   test('échange, liste de courses et admissibilité', () => {
@@ -52,9 +55,9 @@ describe('performance avec le vrai catalogue', () => {
     const c = mesure(() => buildShoppingList({ plan, ingredients, recipes }), 20);
     const e = mesure(() => eligibleRecipes(args), 20);
     console.log(`échange : ${f(s)}\ncourses : ${f(c)}\nadmissibles : ${f(e)}`);
-    expect(s.p95).toBeLessThan(300);
-    expect(c.max).toBeLessThan(100);
-    expect(e.max).toBeLessThan(50);
+    expect(s.p95).toBeLessThan(300 * MARGE);
+    expect(c.max).toBeLessThan(100 * MARGE);
+    expect(e.max).toBeLessThan(50 * MARGE);
   });
 
   test('recherche fluide à chaque frappe', () => {
@@ -68,8 +71,8 @@ describe('performance avec le vrai catalogue', () => {
     const m = mesure((i) => searchRecipes(recipes, opts(mots[i % mots.length])), 80);
     const fr = mesure(() => recipesByPantry(recipes, ['oeuf', 'tomate', 'riz', 'oignon'], { ingredients }), 20);
     console.log(`recherche : ${f(m)}\nfrigo : ${f(fr)}`);
-    expect(m.max).toBeLessThan(50);
-    expect(fr.max).toBeLessThan(50);
+    expect(m.max).toBeLessThan(50 * MARGE);
+    expect(fr.max).toBeLessThan(50 * MARGE);
   });
 
   test('chargement : catalogue et langue en moins de 100 ms', () => {
@@ -86,7 +89,7 @@ describe('performance avec le vrai catalogue', () => {
     texts.recipeTitle('crepes-faciles');
     const premier = performance.now() - a;
     console.log(`analyse JSON ${(octets / 1024).toFixed(0)} Ko : ${f(m)}\npremier accès : ${premier.toFixed(1)} ms`);
-    expect(m.max).toBeLessThan(100);
-    expect(premier).toBeLessThan(100);
+    expect(m.max).toBeLessThan(100 * MARGE);
+    expect(premier).toBeLessThan(100 * MARGE);
   });
 });
