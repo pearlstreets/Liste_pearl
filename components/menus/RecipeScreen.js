@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Share,
+  useWindowDimensions,
   DeviceEventEmitter,
   Alert,
 } from 'react-native';
@@ -39,6 +40,9 @@ const Dots = ({ n }) => (
 
 export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, navigation }) {
   const t = useT();
+  // Petit écran : photo et boutons fixes réduits, sinon la recette ne se voit plus.
+  const compact = useWindowDimensions().height < 700;
+  const barBtn = compact ? { minHeight: 44 } : null;
   const m = useMenus();
   const { recipeById, texts, ingredients, lang, profile, plan, favorites, notes, cooked } = m;
   const recipe = recipeById.get(id);
@@ -194,7 +198,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
         showsVerticalScrollIndicator={false}
       >
         <View>
-          <RecipeVisual recipe={recipe} ingredients={ingredients} height={250} />
+          <RecipeVisual recipe={recipe} ingredients={ingredients} height={compact ? 170 : 250} />
           <View style={s.topBtns}>
             <RoundIcon
               name="chevron-back"
@@ -372,7 +376,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                 <Text style={s.nutriLab}>kcal</Text>
               </View>
               <View style={s.nutriBox}>
-                <Text style={s.nutriVal}>{nut.protein} g</Text>
+                <Text style={s.nutriVal}>{nut.protein}</Text>
                 <Text style={s.nutriLab}>{t('recipe.protein')}</Text>
               </View>
             </View>
@@ -414,7 +418,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
             icon="calendar-outline"
             label={t('myRecipes.addToPlan')}
             onPress={() => setPlanPick(true)}
-            style={{ marginBottom: 10 }}
+            style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
           />
         ) : null}
         <PrimaryButton
@@ -423,9 +427,14 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           label={t('recipe.addToList')}
           loading={adding}
           onPress={addToMyList}
-          style={{ marginBottom: 10 }}
+          style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
         />
-        <PrimaryButton icon="play" label={t('recipe.cook')} onPress={() => onCook(id, persons)} />
+        <PrimaryButton
+          icon="play"
+          label={t('recipe.cook')}
+          onPress={() => onCook(id, persons)}
+          style={barBtn}
+        />
       </View>
       {planPick ? (
         <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />

@@ -18,7 +18,7 @@ const DERNIERE_MINUTE = 23 * 60 + 30;
 const p2 = (n) => String(n).padStart(2, '0');
 const heure = (m) => `${p2(Math.floor(m / 60))}:${p2(m % 60)}`;
 
-function Ligne({ label, hint, on, onChange }) {
+export function Ligne({ label, hint, on, onChange }) {
   return (
     <View style={s.ligne}>
       <View style={s.ligneTxt}>

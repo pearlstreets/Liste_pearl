@@ -1184,7 +1184,12 @@
       "syncLast": "Last backup: {{date}}",
       "syncPending": "First backup pending",
       "syncGuest": "Sign in to back up your menus to your account.",
-      "resetTextAccount": "Your week, favourites, notes and history will be erased from this device and from your account."
+      "resetTextAccount": "Your week, favourites, notes and history will be erased from this device and from your account.",
+      "privacy": "Sharing and privacy",
+      "familyShareLabel": "Share my week with my loved ones",
+      "familyShareHint": "People who have access to your list can see your meals for the week, never your profile, notes or budget.",
+      "usageLabel": "Anonymous usage statistics",
+      "usageHint": "We only count, per day and per language, the menus generated, the shopping lists sent and the returns from one week to the next. These counts contain no account, device identifier or IP address."
     },
     "swap": {
       "title": "Change this dish",
@@ -1256,7 +1261,8 @@
       "composeNext": "Plan next week",
       "nextBanner": "The weekend is coming. Get ahead: {{date}}.",
       "unavailable": "This recipe is no longer available",
-      "prepared": "Batch prepared"
+      "prepared": "Batch prepared",
+      "sharedLink": "See my loved ones' week"
     },
     "recipe": {
       "minutes": "{{n}} min",
@@ -1291,7 +1297,7 @@
     },
     "share": {
       "for": "For {{count}} people",
-      "signature": "Composed with Pearl Liste"
+      "signature": "Composed with Pearl List"
     },
     "units": {
       "g": "g",
@@ -1526,6 +1532,18 @@
         "cut": "Cut",
         "prepare": "Prepare"
       }
+    },
+    "shared": {
+      "title": "My loved ones' week",
+      "weekOf": "{{name}}'s week",
+      "emptyTitle": "Nothing to show for now",
+      "emptyText": "None of your loved ones is sharing their week at the moment.",
+      "personal": "Personal recipe",
+      "unknown": "Recipe not available",
+      "addShop": "Add to my shopping",
+      "addWeek": "Add to my week",
+      "addedShop": "Added to your shopping",
+      "addedWeek": "Added to your week"
     }
   }
 }

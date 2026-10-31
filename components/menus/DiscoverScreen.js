@@ -46,7 +46,7 @@ const RecipeRow = memo(function RecipeRow({
         <Text style={s.rowTitle} numberOfLines={2}>
           {title}
         </Text>
-        <Text style={s.rowMeta} numberOfLines={1}>
+        <Text style={s.rowMeta} numberOfLines={2}>
           {meta}
         </Text>
         {extra ? (

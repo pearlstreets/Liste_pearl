@@ -1184,7 +1184,12 @@
       "syncLast": "Laatste back-up: {{date}}",
       "syncPending": "Eerste back-up in afwachting",
       "syncGuest": "Meld u aan om uw menu's in uw account op te slaan.",
-      "resetTextAccount": "Uw week, favorieten, notities en geschiedenis worden van dit apparaat en uit uw account gewist."
+      "resetTextAccount": "Uw week, favorieten, notities en geschiedenis worden van dit apparaat en uit uw account gewist.",
+      "privacy": "Delen en privacy",
+      "familyShareLabel": "Mijn week delen met mijn naasten",
+      "familyShareHint": "Mensen met toegang tot uw lijst zien uw maaltijden van de week, nooit uw profiel, notities of budget.",
+      "usageLabel": "Anonieme gebruiksmeting",
+      "usageHint": "We tellen alleen, per dag en per taal, de gemaakte menu's, de verstuurde boodschappen en de terugkeer van de ene week naar de andere. Deze tellers bevatten geen account, apparaat-ID of IP-adres."
     },
     "swap": {
       "title": "Dit gerecht wijzigen",
@@ -1256,7 +1261,8 @@
       "composeNext": "Volgende week plannen",
       "nextBanner": "Het weekend komt eraan. Bereid alvast voor: {{date}}.",
       "unavailable": "Dit recept is niet meer beschikbaar",
-      "prepared": "Vooraf bereid"
+      "prepared": "Vooraf bereid",
+      "sharedLink": "Week van mijn naasten bekijken"
     },
     "recipe": {
       "minutes": "{{n}} min",
@@ -1291,7 +1297,7 @@
     },
     "share": {
       "for": "Voor {{count}} personen",
-      "signature": "Samengesteld met Pearl Liste"
+      "signature": "Samengesteld met Pearl List"
     },
     "units": {
       "g": "g",
@@ -1526,6 +1532,18 @@
         "cut": "Snijden",
         "prepare": "Voorbereiden"
       }
+    },
+    "shared": {
+      "title": "Week van mijn naasten",
+      "weekOf": "Week van {{name}}",
+      "emptyTitle": "Voorlopig niets te tonen",
+      "emptyText": "Geen van uw naasten deelt op dit moment zijn week.",
+      "personal": "Persoonlijk recept",
+      "unknown": "Recept niet beschikbaar",
+      "addShop": "Toevoegen aan mijn boodschappen",
+      "addWeek": "Toevoegen aan mijn week",
+      "addedShop": "Toegevoegd aan uw boodschappen",
+      "addedWeek": "Toegevoegd aan uw week"
     }
   }
 }

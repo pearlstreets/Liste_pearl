@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   DeviceEventEmitter,
+  useWindowDimensions,
 } from 'react-native';
 import { prefillProducts, readMyLists } from '../../lib/menus/listBridge';
 import { Ionicons } from '@expo/vector-icons';
@@ -60,8 +61,16 @@ const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress
   );
 });
 
-export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpenBatch }) {
+export default function WeekScreen({
+  navigation,
+  onOpenRecipe,
+  onOpenShop,
+  onOpenBatch,
+  onOpenShared,
+}) {
   const t = useT();
+  // Petit écran : en-tête et pied resserrés, le premier repas reste visible sans défiler.
+  const compact = useWindowDimensions().height < 700;
   const m = useMenus();
   const { plan, busy, genError, dirty, texts, recipeById, ingredients, lang } = m;
   const todayIdx = plan ? dayIndexIn(plan.weekStart) : -1;
@@ -140,6 +149,11 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
             />
           }
         />
+        {onOpenShared ? (
+          <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
+            <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
+          </TouchableOpacity>
+        ) : null}
         {genError ? (
           <View style={{ paddingHorizontal: 20 }}>
             <ErrorBox
@@ -190,7 +204,7 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         <View style={s.titleRow}>
           <View style={{ flex: 1 }}>
-            <Text style={s.big}>{t('week.title')}</Text>
+            <Text style={[s.big, compact && s.bigCompact]}>{t('week.title')}</Text>
             <Text style={s.sub}>{weekLabel(plan.weekStart, lang, t)}</Text>
           </View>
           <RoundIcon
@@ -200,15 +214,33 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
             bg={T.brandSoft}
             color={T.brandDark}
           />
+          {compact ? (
+            <View style={{ marginLeft: 8 }}>
+              <RoundIcon
+                name="layers"
+                label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
+                onPress={onOpenBatch}
+                bg={T.brandSoft}
+                color={T.brandDark}
+              />
+            </View>
+          ) : null}
         </View>
 
-        <PrimaryButton
-          soft
-          icon="layers"
-          label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
-          onPress={onOpenBatch}
-          style={{ alignSelf: 'stretch', marginTop: 12, minHeight: 46 }}
-        />
+        {!compact ? (
+          <PrimaryButton
+            soft
+            icon="layers"
+            label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
+            onPress={onOpenBatch}
+            style={{ alignSelf: 'stretch', marginTop: 12, minHeight: 46 }}
+          />
+        ) : null}
+        {onOpenShared ? (
+          <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
+            <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
+          </TouchableOpacity>
+        ) : null}
 
         {target0.proposeNext && plan.weekStart !== target0.next ? (
           <View style={s.nextBox}>
@@ -225,11 +257,11 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
           </View>
         ) : null}
 
-        <View style={s.gauge}>
+        <View style={[s.gauge, compact && s.gaugeCompact]}>
           <View style={s.gaugeTop}>
             <View>
               <Text style={s.gaugeLabel}>{t('week.estimated')}</Text>
-              <Text style={s.gaugeVal}>{formatEur(b.estimated || 0, lang)}</Text>
+              <Text style={[s.gaugeVal, compact && s.gaugeValCompact]}>{formatEur(b.estimated || 0, lang)}</Text>
             </View>
             {target ? (
               <View style={{ alignItems: 'flex-end' }}>
@@ -264,9 +296,11 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
               </Text>
             </>
           ) : null}
-          <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text>
-          {m.shopping && m.shopping.unpricedCount > 0 ? (
-            <Text style={s.gaugeFoot}>{t('shop.unpriced', { count: m.shopping.unpricedCount })}</Text>
+          {!compact ? <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text> : null}
+          {!compact && m.shopping && m.shopping.unpricedCount > 0 ? (
+            <Text style={s.gaugeFoot}>
+              {t('shop.unpriced', { count: m.shopping.unpricedCount })}
+            </Text>
           ) : null}
         </View>
 
@@ -293,7 +327,7 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
           />
         ) : null}
 
-        <View style={s.pills}>
+        <View style={[s.pills, compact && { marginTop: 12 }]}>
           {days.map((dd) => {
             const count = [dd.midi, dd.soir].filter((x) => x && (x.recipeId || x.free)).length;
             return (
@@ -310,7 +344,7 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
             );
           })}
         </View>
-        <Text style={s.dayTitle}>{t(`days.long.${day}`)}</Text>
+        <Text style={[s.dayTitle, compact && s.dayTitleCompact]}>{t(`days.long.${day}`)}</Text>
 
         {busy ? <Text style={s.composing}>{t('week.composing')}</Text> : null}
         {renderMeal(cur.midi)}
@@ -325,8 +359,13 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
           disabled={!hasMeals || !m.shopping || m.activeLines.length === 0}
           loading={sending}
           onPress={onValidate}
+          style={compact ? { minHeight: 44 } : null}
         />
-        <TouchableOpacity onPress={onOpenShop} style={s.barLink} accessibilityRole="button">
+        <TouchableOpacity
+          onPress={onOpenShop}
+          style={[s.barLink, compact && { paddingTop: 6 }]}
+          accessibilityRole="button"
+        >
           <Text style={s.barLinkTxt}>{t('week.reviewShopping')}</Text>
         </TouchableOpacity>
       </View>
@@ -357,6 +396,7 @@ const s = StyleSheet.create({
   scroll: { paddingHorizontal: 18, paddingBottom: 24 },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
   big: { fontSize: 34, fontWeight: '900', color: T.ink, letterSpacing: -0.5 },
+  bigCompact: { fontSize: 28 },
   sub: { fontSize: 14, color: T.muted, fontWeight: '600', marginTop: 2 },
   gauge: {
     backgroundColor: '#fff',
@@ -367,6 +407,7 @@ const s = StyleSheet.create({
     borderColor: T.border,
     ...T.shadow,
   },
+  gaugeCompact: { padding: 12, marginTop: 10, borderRadius: 18 },
   gaugeTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
   gaugeLabel: {
     fontSize: 12,
@@ -376,6 +417,7 @@ const s = StyleSheet.create({
     letterSpacing: 0.5,
   },
   gaugeVal: { fontSize: 32, fontWeight: '900', color: T.ink, marginTop: 2 },
+  gaugeValCompact: { fontSize: 24 },
   gaugeTarget: { fontSize: 20, fontWeight: '800', color: T.ink, marginTop: 2 },
   gaugeNoBudget: {
     backgroundColor: T.subtle,
@@ -433,6 +475,7 @@ const s = StyleSheet.create({
     backgroundColor: T.brand,
   },
   dayTitle: { fontSize: 22, fontWeight: '900', color: T.ink, marginTop: 20, marginBottom: 12 },
+  dayTitleCompact: { fontSize: 18, marginTop: 10, marginBottom: 8 },
   composing: { fontSize: 13, color: T.muted, marginBottom: 8, fontWeight: '600' },
   none: { fontSize: 15, color: T.muted, textAlign: 'center', paddingVertical: 24 },
   bar: {
