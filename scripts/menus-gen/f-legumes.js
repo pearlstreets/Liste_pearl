@@ -29,17 +29,17 @@ const LEG_SOUPE = [
 ];
 
 const EXTRAS_SOUPE = [
-  { nom: 'au curry', ings: [['curry', 2, 'cc']], etape: S('Ajoutez le curry en même temps que les légumes pour bien les parfumer.') },
-  { nom: 'au cumin', ings: [['cumin', 1, 'cc']], etape: S('Ajoutez le cumin en même temps que les légumes.') },
-  { nom: 'au lait de coco', ings: [['lait de coco', 20, 'cL']], sansCreme: 1, etape: S('Au moment de mixer, versez le lait de coco à la place de la crème.') },
-  { nom: 'au gingembre', ings: [['gingembre', 20, 'g']], etape: S('Râpez le gingembre et faites-le revenir avec l\'oignon.') },
-  { nom: 'au chèvre frais', ings: [['chèvre frais', 120, 'g']], sansCreme: 1, etape: S('Mixez la soupe avec la moitié du chèvre frais, émiettez le reste dans les bols.') },
+  { nom: 'au curry', ings: [['curry', 2, 'cc']], place: 'oignon', etape: S('Ajoutez le curry à l\'oignon et mélangez pour bien l\'enrober.') },
+  { nom: 'au cumin', ings: [['cumin', 1, 'cc']], place: 'oignon', etape: S('Ajoutez le cumin à l\'oignon et mélangez pour bien l\'enrober.') },
+  { nom: 'au lait de coco', ings: [['lait de coco', 20, 'cL']], sansCreme: 1, place: 'mix', etape: S('Ajoutez le lait de coco juste avant de mixer.') },
+  { nom: 'au gingembre', ings: [['gingembre', 20, 'g']], place: 'oignon', etape: S('Râpez le gingembre et faites-le revenir avec l\'oignon.') },
+  { nom: 'au chèvre frais', ings: [['chèvre frais', 120, 'g']], sansCreme: 1, etape: S('Servez avec le chèvre frais émietté dans les bols.') },
   { nom: 'au parmesan', ings: [['parmesan', 50, 'g']], etape: S('Servez avec des copeaux de parmesan.') },
   { nom: 'aux noisettes', ings: [['noisettes', 40, 'g']], etape: S('Torréfiez les noisettes 3 min à sec dans une poêle, concassez-les et parsemez-en les bols.') },
   { nom: 'aux lardons', ings: [['lardons', 150, 'g']], etape: S('Faites griller les lardons à sec dans une poêle et ajoutez-les dans les bols au moment de servir.') },
-  { nom: 'à la muscade', ings: [['muscade', 1, 'pincee']], etape: S('Râpez une pincée de muscade dans la soupe avant de mixer.') },
+  { nom: 'à la muscade', ings: [['muscade', 1, 'pincee']], place: 'mix', etape: S('Râpez une pincée de muscade dans la soupe juste avant de mixer.') },
   { nom: 'à la coriandre', ings: [['coriandre', 1, 'botte']], etape: S('Ciselez la coriandre et parsemez-en les bols.') },
-  { nom: 'au paprika fumé', ings: [['paprika', 1, 'cc']], etape: S('Ajoutez le paprika avec les légumes et saupoudrez-en un peu sur chaque bol.') },
+  { nom: 'au paprika fumé', ings: [['paprika', 1, 'cc']], place: 'oignon', etape: S('Ajoutez le paprika à l\'oignon et mélangez bien.') },
   { nom: 'aux croûtons', ings: [['pain de mie', 4, 'tranche']], etape: S('Coupez le pain de mie en dés et faites-les dorer 5 min dans une poêle avec un filet d\'huile d\'olive. Servez avec la soupe.') },
 ];
 
@@ -58,6 +58,9 @@ function soupe(nom, legs, extra) {
     ...SEL_POIVRE,
   ].map(([n, q, u]) => [n, u === 'g' ? Math.round(q / 10) * 10 : q, u]);
   const mots = enumere(legs.map((l) => I(l.n).le));
+  // les petits pois ne se coupent pas
+  const coupables = legs.filter((l) => l.n !== 'petits pois');
+  const motsCoupes = enumere(coupables.map((l) => I(l.n).le)) + (pdt ? (coupables.length ? ' et les pommes de terre' : 'les pommes de terre') : '');
   recette({
     nom,
     cat: 'soupes',
@@ -65,13 +68,14 @@ function soupe(nom, legs, extra) {
     diff: 1,
     ings,
     etapes: [
-      S('Lavez, épluchez si besoin, puis coupez {0} en morceaux. Émincez l\'oignon.', mots + (pdt ? ' et les pommes de terre' : '')),
+      coupables.length || pdt ? S('Lavez, épluchez si besoin, puis coupez {0} en morceaux. Émincez l\'oignon.', motsCoupes) : S('Émincez l\'oignon.'),
       S('Dans une grande casserole, faites revenir l\'oignon 3 min dans l\'huile d\'olive, à feu moyen.'),
+      extra && extra.place === 'oignon' ? extra.etape : null,
       S('Ajoutez les légumes, couvrez d\'eau à hauteur (environ 1 L) et émiettez le cube de bouillon.'),
-      extra && /avec l'oignon|avec les légumes|en même temps/.test(extra.etape[0]) ? extra.etape : null,
       S('Laissez cuire {0} min à petits frémissements, jusqu\'à ce que les légumes soient bien tendres.', cuisson),
+      extra && extra.place === 'mix' ? extra.etape : null,
       S(creme ? 'Mixez finement en ajoutant la crème, puis rectifiez la consistance avec un peu d\'eau si besoin.' : 'Mixez finement, puis rectifiez la consistance avec un peu d\'eau si besoin.'),
-      extra && !/avec l'oignon|avec les légumes|en même temps/.test(extra.etape[0]) ? extra.etape : null,
+      extra && !extra.place ? extra.etape : null,
       ETAPE_ASSAISONNER,
     ],
   });
@@ -139,8 +143,9 @@ for (const l of LEG_GRATIN) {
         etapes: [
           S('Préchauffez le four à 190 °C. Frottez un plat à gratin avec la gousse d\'ail coupée en deux, puis beurrez-le.'),
           S(l.prep),
+          S('Disposez les légumes dans le plat.'),
           v ? S(v.etape) : null,
-          S('Disposez les légumes dans le plat. Mélangez la crème, le lait et la muscade, salez, poivrez et versez sur les légumes.'),
+          S('Mélangez la crème, le lait et la muscade, salez, poivrez et versez sur les légumes.'),
           S('Répartissez {0} sur le dessus.', I(f).le),
           S('Enfournez 25 à 30 min, jusqu\'à ce que le dessus soit bien doré. Servez chaud.'),
         ],

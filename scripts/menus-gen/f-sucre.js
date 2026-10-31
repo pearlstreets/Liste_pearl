@@ -106,7 +106,7 @@ for (const [fruits, ings] of [
 ]) {
   for (const t of TOPPINGS) {
     recette({
-      nom: `Crumble ${deFruits(...fruits)}${t.nom}`.replace('Crumble de ', 'Crumble ').replace('Crumble d\'', 'Crumble '),
+      nom: `Crumble ${auFruits(...fruits)}${t.nom ? `, pâte${t.nom}` : ''}`,
       cat: 'desserts',
       temps: 50,
       diff: 1,
@@ -185,6 +185,7 @@ const LIQUIDES = [
 ];
 const petit = (n) => {
   const [q, u] = FRUITS[n].q;
+  if (u === 'u' && q === 1) return [n, 0.5, u]; // fruit entier unique : la moitie pour 2 verres
   return [n, u === 'u' ? Math.max(1, Math.ceil(q / 3)) : Math.round(q / 3 / 50) * 50, u];
 };
 for (const [a, b] of ACCORDS.filter(([a, b]) => CRUS.includes(a) && CRUS.includes(b))) {
@@ -216,8 +217,8 @@ for (const n of CRUS) {
       temps: 5,
       diff: 1,
       pers: 2,
-      ings: [demi(n), l.ing, ['miel', 1, 'cc'], ['glaçons', 4, 'u']],
-      etapes: [S(FRUITS[n].prep), S('Mixez les fruits avec le liquide, le miel et les glaçons pendant 1 min. Servez bien frais.')],
+      ings: [FRUITS[n].q[1] === 'u' && FRUITS[n].q[0] === 1 ? [n, 0.5, 'u'] : demi(n), l.ing, ['miel', 1, 'cc'], ['glaçons', 4, 'u']],
+      etapes: [S(FRUITS[n].prep), S('Mixez les fruits avec le liquide, le miel et les glaçons pendant 1 min.')],
     });
   }
 }
@@ -272,7 +273,7 @@ for (const p of ['vanille', 'chocolat', 'fraises', 'bananes', 'caramel', 'café'
     ings: [['lait', 25, 'cL'], ['glace vanille', 4, 'u'], ingP],
     etapes: [
       S('Mettez le lait bien froid, les boules de glace et le parfum dans un blender.'),
-      S('Mixez 30 s, jusqu\'à obtenir une boisson mousseuse. Servez aussitôt avec une paille.'),
+      S('Mixez 30 s, jusqu\'à obtenir une boisson mousseuse.'),
     ],
   });
 }
@@ -321,7 +322,7 @@ const PATES_GATEAU = [
 for (const p of PATES_GATEAU) {
   for (const g of PARFUMS_GATEAU) {
     if (p.nom === 'Gâteau au yaourt' && g.mot === 'marbré au chocolat') continue;
-    const nom = g.mot === 'marbré au chocolat' ? `${p.nom} marbré au chocolat` : `${p.nom} ${g.mot}`;
+    const nom = g.mot === 'marbré au chocolat' ? `${p.nom} ${p.nom === 'Muffins' ? 'marbrés' : 'marbré'} au chocolat` : `${p.nom} ${g.mot}`;
     recette({
       nom,
       cat: 'gateaux',
@@ -381,7 +382,7 @@ for (const n of COULIS) {
     etapes: [S(FRUITS[n].prep), S('Émiettez les biscuits.'), S('Mélangez le fromage blanc avec le miel.'), S('Alternez fromage blanc, fruits et biscuits émiettés dans des verrines. Servez frais.')],
   });
   recette({
-    nom: `Mousse ${de(n)}`.replace('Mousse de ', 'Mousse aux ').replace('Mousse d\'', 'Mousse aux '),
+    nom: `Mousse ${I(n).au}`,
     cat: 'desserts',
     temps: 25,
     diff: 2,
@@ -427,18 +428,18 @@ for (const trio of TRIOS) {
 
 // ---------------------------------------------------------------- Petits-déjeuners
 const GARN_PANCAKE = [
-  { mot: 'au sirop d\'érable', ings: [['sirop d\'érable', 6, 'cs']] },
-  { mot: 'aux myrtilles', ings: [['myrtilles', 150, 'g']] },
-  { mot: 'à la banane et au chocolat', ings: [['bananes', 2, 'u'], ['pâte à tartiner', 4, 'cs']] },
-  { mot: 'aux fraises et à la chantilly', ings: [['fraises', 250, 'g'], ['chantilly', 1, 'u']] },
-  { mot: 'au citron et au sucre', ings: [['citrons', 2, 'u'], ['sucre', 4, 'cs']] },
-  { mot: 'aux pommes caramélisées', ings: [['pommes', 3, 'u'], ['beurre', 20, 'g'], ['sucre roux', 3, 'cs']] },
-  { mot: 'à la confiture', ings: [['confiture', 6, 'cs']] },
-  { mot: 'au caramel au beurre salé', ings: [['caramel', 6, 'cs']] },
-  { mot: 'aux fruits rouges et au fromage blanc', ings: [['framboises', 125, 'g'], ['myrtilles', 125, 'g'], ['fromage blanc', 200, 'g']] },
-  { mot: 'au miel et aux noix', ings: [['miel', 4, 'cs'], ['noix', 60, 'g']] },
-  { mot: 'au bacon et au sirop d\'érable', ings: [['bacon', 8, 'tranche'], ['sirop d\'érable', 4, 'cs']] },
-  { mot: 'à la mangue et à la coco', ings: [['mangues', 1, 'u'], ['noix de coco râpée', 3, 'cs']] },
+  { mot: 'au sirop d\'érable', prep: null, serv: 'Servez chaud, nappé de sirop d\'érable.', ings: [['sirop d\'érable', 6, 'cs']] },
+  { mot: 'aux myrtilles', prep: 'Rincez rapidement les myrtilles.', serv: 'Servez chaud avec les myrtilles.', ings: [['myrtilles', 150, 'g']] },
+  { mot: 'à la banane et au chocolat', prep: 'Coupez les bananes en rondelles.', serv: 'Servez chaud avec les bananes et la pâte à tartiner.', ings: [['bananes', 2, 'u'], ['pâte à tartiner', 4, 'cs']] },
+  { mot: 'aux fraises et à la chantilly', prep: 'Lavez et coupez les fraises en deux.', serv: 'Servez chaud avec les fraises et la chantilly.', ings: [['fraises', 250, 'g'], ['chantilly', 1, 'u']] },
+  { mot: 'au citron et au sucre', prep: 'Pressez les citrons.', serv: 'Servez chaud, arrosé de jus de citron et saupoudré de sucre.', ings: [['citrons', 2, 'u'], ['sucre', 4, 'cs']] },
+  { mot: 'aux pommes caramélisées', prep: 'Coupez les pommes en lamelles et faites-les caraméliser 8 min à la poêle avec le beurre et le sucre roux.', serv: 'Servez chaud avec les pommes caramélisées.', ings: [['pommes', 3, 'u'], ['beurre', 20, 'g'], ['sucre roux', 3, 'cs']] },
+  { mot: 'à la confiture', prep: null, serv: 'Servez chaud avec la confiture.', ings: [['confiture', 6, 'cs']] },
+  { mot: 'au caramel au beurre salé', prep: null, serv: 'Servez chaud, nappé de caramel au beurre salé.', ings: [['caramel', 6, 'cs']] },
+  { mot: 'aux fruits rouges et au fromage blanc', prep: 'Triez les fruits rouges sans les laver.', serv: 'Servez chaud avec les fruits rouges et le fromage blanc.', ings: [['framboises', 125, 'g'], ['myrtilles', 125, 'g'], ['fromage blanc', 200, 'g']] },
+  { mot: 'au miel et aux noix', prep: 'Concassez les noix.', serv: 'Servez chaud avec le miel et les noix.', ings: [['miel', 4, 'cs'], ['noix', 60, 'g']] },
+  { mot: 'au bacon et au sirop d\'érable', prep: 'Faites griller le bacon 5 min à la poêle.', serv: 'Servez chaud avec le bacon et le sirop d\'érable.', ings: [['bacon', 8, 'tranche'], ['sirop d\'érable', 4, 'cs']] },
+  { mot: 'à la mangue et à la coco', prep: 'Épluchez la mangue et coupez la chair en dés.', serv: 'Servez chaud avec la mangue et la noix de coco râpée.', ings: [['mangues', 1, 'u'], ['noix de coco râpée', 3, 'cs']] },
 ];
 const PATES_PDJ = [
   { nom: 'Pancakes', ings: [['farine', 250, 'g'], ['lait', 30, 'cL'], ['oeufs', 2, 'u'], ['sucre', 30, 'g'], ['levure chimique', 1, 'sachet'], ['beurre', 30, 'g']], cuit: 'Faites cuire des petites louches de pâte dans une poêle beurrée à feu moyen, 2 min par face, jusqu\'à ce que des bulles se forment.', base: 'Mélangez la farine, le sucre et la levure, puis ajoutez les oeufs, le lait et le beurre fondu. Laissez reposer 10 min.' },
@@ -454,7 +455,7 @@ for (const p of PATES_PDJ) {
       temps: p.nom === 'Crêpes' ? 30 : 25,
       diff: 1,
       ings: [...p.ings, ...g.ings],
-      etapes: [S(p.base), S(p.cuit), S('Préparez la garniture : lavez et coupez les fruits, faites chauffer ce qui doit l\'être.'), S('Servez chaud avec la garniture.')],
+      etapes: [g.prep ? S(g.prep) : null, S(p.base), S(p.cuit), S(g.serv)],
     });
   }
 }
@@ -475,7 +476,7 @@ for (const n of FRUITS_PDJ) {
       etapes: [
         S('Faites chauffer les flocons d\'avoine dans le lait 5 min à feu doux, en remuant, jusqu\'à ce que le mélange épaississe.'),
         S(FRUITS[n].prep),
-        S('Versez dans des bols, ajoutez les fruits, le croquant et un filet de miel.'),
+        S('Versez dans des bols, ajoutez les fruits, {0} et un filet de miel.', I(c.ing[0]).le),
       ],
     });
     recette({
@@ -489,7 +490,7 @@ for (const n of FRUITS_PDJ) {
         S('Dans deux bocaux, mélangez les flocons d\'avoine, le lait d\'amande, le yaourt et le miel.'),
         S('Fermez et laissez reposer toute la nuit au réfrigérateur.'),
         S(FRUITS[n].prep),
-        S('Le matin, ajoutez les fruits et le croquant.'),
+        S('Le matin, ajoutez les fruits et {0}.', I(c.ing[0]).le),
       ],
     });
     recette({
@@ -499,7 +500,7 @@ for (const n of FRUITS_PDJ) {
       diff: 1,
       pers: 2,
       ings: [['yaourt grec', 2, 'u'], petit(n), c.ing, ['miel', 1, 'cs']],
-      etapes: [S(FRUITS[n].prep), S('Répartissez le yaourt dans deux bols, ajoutez les fruits, le croquant et un filet de miel.')],
+      etapes: [S(FRUITS[n].prep), S('Répartissez le yaourt dans deux bols, ajoutez les fruits, {0} et un filet de miel.', I(c.ing[0]).le)],
     });
   }
 }
@@ -517,10 +518,10 @@ for (const n of GRANOLAS) {
         etapes: [
           S('Préchauffez le four à 160 °C.'),
           S('Mélangez les flocons d\'avoine, les fruits secs concassés et la cannelle.'),
-          S('Ajoutez l\'huile et le sucrant, mélangez bien pour enrober.'),
+          S('Ajoutez l\'huile et {0}, mélangez bien pour enrober.', I(s.ing[0]).le),
           S('Étalez sur une plaque et enfournez 20 à 25 min en remuant à mi-cuisson.'),
           x && x.mot !== 'et à la coco' ? S('Laissez refroidir avant d\'ajouter {0}.', I(x.ing[0]).le) : null,
-          S('Conservez dans un bocal fermé jusqu\'à 3 semaines.'),
+          S('Conservez dans un bocal fermé jusqu\'à 2 semaines.'),
         ],
       });
     }
@@ -528,13 +529,13 @@ for (const n of GRANOLAS) {
 }
 // Oeufs du matin
 const OEUFS_PDJ = [
-  { nom: 'Oeufs brouillés à la ciboulette', ings: [['ciboulette', 1, 'botte']] },
-  { nom: 'Oeufs brouillés au saumon fumé', ings: [['saumon fumé', 2, 'tranche']] },
-  { nom: 'Oeufs brouillés aux champignons', ings: [['champignons', 150, 'g']] },
-  { nom: 'Oeufs brouillés au fromage', ings: [['emmental', 60, 'g']] },
-  { nom: 'Oeufs brouillés aux tomates', ings: [['tomates', 2, 'u']] },
-  { nom: 'Oeufs brouillés au bacon', ings: [['bacon', 4, 'tranche']] },
-  { nom: 'Oeufs brouillés à la feta et aux épinards', ings: [['feta', 60, 'g'], ['pousses d\'épinards', 60, 'g']] },
+  { nom: 'Oeufs brouillés à la ciboulette', prep: 'Ciselez la ciboulette.', mot: 'la ciboulette', ings: [['ciboulette', 1, 'botte']] },
+  { nom: 'Oeufs brouillés au saumon fumé', prep: 'Coupez le saumon fumé en lanières.', mot: 'le saumon fumé', ings: [['saumon fumé', 2, 'tranche']] },
+  { nom: 'Oeufs brouillés aux champignons', prep: 'Émincez les champignons et faites-les sauter 5 min à la poêle avec un peu de beurre.', mot: 'les champignons', ings: [['champignons', 150, 'g']] },
+  { nom: 'Oeufs brouillés au fromage', prep: 'Râpez l\'emmental.', mot: 'l\'emmental', ings: [['emmental', 60, 'g']] },
+  { nom: 'Oeufs brouillés aux tomates', prep: 'Coupez les tomates en petits dés.', mot: 'les tomates', ings: [['tomates', 2, 'u']] },
+  { nom: 'Oeufs brouillés au bacon', prep: 'Faites griller le bacon 4 min à la poêle.', mot: 'le bacon', ings: [['bacon', 4, 'tranche']] },
+  { nom: 'Oeufs brouillés à la feta et aux épinards', prep: 'Émiettez la feta et lavez les épinards.', mot: 'la feta et les épinards', ings: [['feta', 60, 'g'], ['pousses d\'épinards', 60, 'g']] },
 ];
 for (const o of OEUFS_PDJ) {
   recette({
@@ -545,10 +546,10 @@ for (const o of OEUFS_PDJ) {
     pers: 2,
     ings: [['oeufs', 4, 'u'], ['beurre', 15, 'g'], ['pain', 2, 'tranche'], ...o.ings, ['sel', 0, 'qs'], ['poivre', 0, 'qs']],
     etapes: [
-      S('Préparez la garniture : coupez, émincez ou faites revenir ce qui doit l\'être.'),
+      S(o.prep),
       S('Battez les oeufs, salez et poivrez.'),
       S('Faites fondre le beurre à feu doux, versez les oeufs et remuez sans cesse avec une spatule jusqu\'à ce qu\'ils soient crémeux.'),
-      S('Ajoutez la garniture hors du feu et servez sur des tartines grillées.'),
+      S('Ajoutez {0} hors du feu et servez sur des tartines grillées.', o.mot),
     ],
   });
 }

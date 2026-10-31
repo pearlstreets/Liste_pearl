@@ -31,14 +31,14 @@ const PROT_SALADE = [
   { au: 'au tofu fumé', ings: [['tofu fumé', 200, 'g']], prep: 'Coupez le tofu fumé en dés et faites-le dorer 5 min à la poêle.' },
 ];
 const EXTRAS_SALADE = [
-  { mots: 'tomates cerises et concombre', ings: [['tomates cerises', 250, 'g'], ['concombre', 1, 'u']] },
-  { mots: 'avocat et maïs', ings: [['avocats', 2, 'u'], ['maïs', 150, 'g']] },
-  { mots: 'poivrons et olives', ings: [['poivrons rouges', 1, 'u'], ['olives noires', 60, 'g']] },
-  { mots: 'radis et ciboulette', ings: [['radis', 1, 'botte'], ['ciboulette', 1, 'botte']] },
-  { mots: 'betterave et noix', ings: [['betteraves', 2, 'u'], ['noix', 50, 'g']] },
-  { mots: 'tomates séchées et roquette', ings: [['tomates séchées', 80, 'g'], ['roquette', 50, 'g']] },
-  { mots: 'pomme et céleri', ings: [['pommes', 1, 'u'], ['céleri branche', 2, 'u']] },
-  { mots: 'carottes râpées et raisins secs', ings: [['carottes', 2, 'u'], ['raisins secs', 40, 'g']] },
+  { mots: 'tomates cerises et concombre', prep: 'Coupez les tomates cerises en deux et le concombre en dés.', ings: [['tomates cerises', 250, 'g'], ['concombre', 1, 'u']] },
+  { mots: 'avocat et maïs', prep: 'Coupez les avocats en dés et égouttez le maïs.', ings: [['avocats', 2, 'u'], ['maïs', 150, 'g']] },
+  { mots: 'poivrons et olives', prep: 'Coupez le poivron en lanières et égouttez les olives.', ings: [['poivrons rouges', 1, 'u'], ['olives noires', 60, 'g']] },
+  { mots: 'radis et ciboulette', prep: 'Émincez les radis et ciselez la ciboulette.', ings: [['radis', 1, 'botte'], ['ciboulette', 1, 'botte']] },
+  { mots: 'betterave et noix', prep: 'Coupez les betteraves cuites en dés et concassez les noix.', ings: [['betteraves', 2, 'u'], ['noix', 50, 'g']] },
+  { mots: 'tomates séchées et roquette', prep: 'Égouttez les tomates séchées et lavez la roquette.', ings: [['tomates séchées', 80, 'g'], ['roquette', 50, 'g']] },
+  { mots: 'pomme et céleri', prep: 'Coupez la pomme et le céleri en petits dés.', ings: [['pommes', 1, 'u'], ['céleri branche', 2, 'u']] },
+  { mots: 'carottes râpées et raisins secs', prep: 'Râpez les carottes et ajoutez les raisins secs.', ings: [['carottes', 2, 'u'], ['raisins secs', 40, 'g']] },
 ];
 const VINAIGRETTE = [['huile d\'olive', 5, 'cs'], ['vinaigre de vin', 2, 'cs'], ['moutarde', 1, 'cc']];
 for (const b of BASES_SALADE) {
@@ -54,7 +54,7 @@ for (const b of BASES_SALADE) {
         etapes: [
           S(b.cuit),
           S(p.prep),
-          S('Lavez et coupez en petits morceaux : {0}.', e.mots),
+          S(e.prep),
           S('Préparez la vinaigrette en fouettant la moutarde, le vinaigre et l\'huile d\'olive. Salez et poivrez.'),
           S('Mélangez tous les ingrédients avec la vinaigrette juste avant de servir.'),
         ],
@@ -80,14 +80,14 @@ const PROT_BOWL = [
   { mot: 'thon mi-cuit', ings: [['steaks de thon', 2, 'u'], ['graines de sésame', 2, 'cs']], prep: 'Enrobez le thon de sésame et saisissez-le 1 min par face, puis tranchez-le.' },
 ];
 const LEG_BOWL = [
-  { mots: 'avocat, concombre et radis', ings: [['avocats', 2, 'u'], ['concombre', 1, 'u'], ['radis', 1, 'botte']] },
-  { mots: 'patate douce rôtie et chou rouge', ings: [['patates douces', 2, 'u'], ['chou rouge', 200, 'g']] },
-  { mots: 'carottes, edamame et mangue', ings: [['carottes', 2, 'u'], ['fèves', 150, 'g'], ['mangues', 1, 'u']] },
-  { mots: 'brocoli, épinards et avocat', ings: [['brocoli', 300, 'g'], ['pousses d\'épinards', 100, 'g'], ['avocats', 1, 'u']] },
-  { mots: 'tomates cerises, concombre et feta', ings: [['tomates cerises', 250, 'g'], ['concombre', 1, 'u'], ['feta', 150, 'g']] },
-  { mots: 'maïs, haricots rouges et avocat', ings: [['maïs', 150, 'g'], ['haricots rouges', 1, 'boite'], ['avocats', 1, 'u']] },
-  { mots: 'butternut rôtie et roquette', ings: [['butternut', 600, 'g'], ['roquette', 80, 'g']] },
-  { mots: 'chou chinois, carottes et coriandre', ings: [['chou chinois', 300, 'g'], ['carottes', 2, 'u'], ['coriandre', 1, 'botte']] },
+  { mots: 'avocat, concombre et radis', prep: 'Coupez les avocats en lamelles, le concombre en demi-rondelles et les radis en fines tranches.', ings: [['avocats', 2, 'u'], ['concombre', 1, 'u'], ['radis', 1, 'botte']] },
+  { mots: 'patate douce rôtie et chou rouge', prep: 'Émincez finement le chou rouge.', rot: 'la patate douce', ings: [['patates douces', 2, 'u'], ['chou rouge', 200, 'g']] },
+  { mots: 'carottes, edamame et mangue', prep: 'Râpez les carottes, égouttez les fèves et coupez la mangue en dés.', ings: [['carottes', 2, 'u'], ['fèves', 150, 'g'], ['mangues', 1, 'u']] },
+  { mots: 'brocoli, épinards et avocat', prep: 'Détaillez le brocoli en bouquets et faites-le cuire 4 min à la vapeur, lavez les épinards et coupez l\'avocat en lamelles.', ings: [['brocoli', 300, 'g'], ['pousses d\'épinards', 100, 'g'], ['avocats', 1, 'u']] },
+  { mots: 'tomates cerises, concombre et feta', prep: 'Coupez les tomates cerises en deux, le concombre en dés et émiettez la feta.', ings: [['tomates cerises', 250, 'g'], ['concombre', 1, 'u'], ['feta', 150, 'g']] },
+  { mots: 'maïs, haricots rouges et avocat', prep: 'Égouttez et rincez le maïs et les haricots rouges, puis coupez l\'avocat en dés.', ings: [['maïs', 150, 'g'], ['haricots rouges', 1, 'boite'], ['avocats', 1, 'u']] },
+  { mots: 'butternut rôtie et roquette', prep: 'Lavez la roquette.', rot: 'la butternut', ings: [['butternut', 600, 'g'], ['roquette', 80, 'g']] },
+  { mots: 'chou chinois, carottes et coriandre', prep: 'Émincez le chou chinois, râpez les carottes et ciselez la coriandre.', ings: [['chou chinois', 300, 'g'], ['carottes', 2, 'u'], ['coriandre', 1, 'botte']] },
 ];
 const SAUCES_BOWL = [
   { mot: 'tahini', ings: [['tahini', 3, 'cs'], ['citrons', 1, 'u']], mix: 'Mélangez le tahini, le jus du citron et 4 c. à soupe d\'eau jusqu\'à obtenir une sauce lisse.' },
@@ -109,9 +109,9 @@ for (const b of BASES_BOWL) {
           ings: [...b.ings, ...p.ings, ...l.ings, ...s.ings, ['huile d\'olive', 2, 'cs'], ...SEL_POIVRE],
           etapes: [
             S(b.cuit),
-            rotie ? S('Coupez la courge ou la patate douce en cubes et faites-la rôtir 25 min à 200 °C avec l\'huile d\'olive.') : null,
+            rotie ? S('Coupez {0} en cubes et faites-la rôtir 25 min à 200 °C avec l\'huile d\'olive.', l.rot) : null,
             S(p.prep),
-            S('Préparez les légumes ({0}) : lavez-les, égouttez ceux en conserve et coupez le reste en tranches fines.', l.mots),
+            S(l.prep),
             S(s.mix),
             S('Répartissez la base dans 4 bols, disposez joliment les légumes et la garniture par-dessus, et arrosez de sauce.'),
           ],
@@ -124,7 +124,7 @@ for (const b of BASES_BOWL) {
 // ---------------------------------------------------------------- Wraps et burgers
 const GARN_WRAP = [
   { mot: 'au poulet', ings: [['blancs de poulet', 2, 'u']], prep: 'Faites dorer le poulet en lamelles 6 min à la poêle.' },
-  { mot: 'au saumon fumé', ings: [['saumon fumé', 4, 'tranche'], ['cream cheese', 100, 'g']], prep: 'Tartinez les tortillas de cream cheese et ajoutez le saumon.' },
+  { mot: 'au saumon fumé', ings: [['saumon fumé', 4, 'tranche'], ['cream cheese', 100, 'g']], prep: 'Coupez le saumon fumé en lanières et mélangez le cream cheese avec du poivre.' },
   { mot: 'au thon', ings: [['thon en boîte', 2, 'boite'], ['mayonnaise', 2, 'cs']], prep: 'Mélangez le thon émietté avec la mayonnaise.' },
   { mot: 'au boeuf haché épicé', ings: [['boeuf haché', 400, 'g'], ['cumin', 1, 'cc'], ['paprika', 1, 'cc']], prep: 'Faites dorer le boeuf avec le cumin et le paprika 8 min.' },
   { mot: 'au falafel de pois chiches', ings: [['pois chiches', 2, 'boite'], ['farine', 2, 'cs'], ['cumin', 1, 'cc'], ['persil', 1, 'botte']], prep: 'Mixez les pois chiches égouttés avec la farine, le cumin et le persil, formez des galettes et faites-les dorer 3 min par face.' },
@@ -133,12 +133,12 @@ const GARN_WRAP = [
   { mot: 'aux crevettes', ings: [['crevettes', 300, 'g']], prep: 'Faites sauter les crevettes décortiquées 3 min.' },
 ];
 const LEG_WRAP = [
-  { mots: 'crudités et sauce yaourt', ings: [['laitue', 1, 'u'], ['tomates', 2, 'u'], ['concombre', 1, 'u'], ['yaourt grec', 1, 'u']] },
-  { mots: 'avocat et salsa', ings: [['avocats', 2, 'u'], ['tomates', 2, 'u'], ['oignons rouges', 1, 'u'], ['citrons verts', 1, 'u']] },
-  { mots: 'carottes, chou rouge et sauce cacahuète', ings: [['carottes', 2, 'u'], ['chou rouge', 150, 'g'], ['beurre de cacahuète', 2, 'cs']] },
-  { mots: 'poivrons grillés et fromage', ings: [['poivrons rouges', 2, 'u'], ['cheddar', 100, 'g']] },
-  { mots: 'roquette, tomates séchées et pesto', ings: [['roquette', 60, 'g'], ['tomates séchées', 60, 'g'], ['pesto', 3, 'cs']] },
-  { mots: 'concombre et tzatziki', ings: [['concombre', 1, 'u'], ['yaourt grec', 1, 'u'], ['ail', 1, 'gousse'], ['menthe', 1, 'botte']] },
+  { mots: 'crudités et sauce yaourt', prep: 'Émincez la laitue, coupez les tomates et le concombre en rondelles, puis assaisonnez le yaourt.', ings: [['laitue', 1, 'u'], ['tomates', 2, 'u'], ['concombre', 1, 'u'], ['yaourt grec', 1, 'u']] },
+  { mots: 'avocat et salsa', prep: 'Écrasez les avocats, coupez les tomates et l\'oignon rouge en petits dés, puis mélangez-les avec le jus du citron vert pour la salsa.', ings: [['avocats', 2, 'u'], ['tomates', 2, 'u'], ['oignons rouges', 1, 'u'], ['citrons verts', 1, 'u']] },
+  { mots: 'carottes, chou rouge et sauce cacahuète', prep: 'Râpez les carottes, émincez le chou rouge et délayez le beurre de cacahuète avec un peu d\'eau chaude.', ings: [['carottes', 2, 'u'], ['chou rouge', 150, 'g'], ['beurre de cacahuète', 2, 'cs']] },
+  { mots: 'poivrons grillés et fromage', prep: 'Faites griller les poivrons en lanières 8 min à la poêle et râpez le cheddar.', ings: [['poivrons rouges', 2, 'u'], ['cheddar', 100, 'g']] },
+  { mots: 'roquette, tomates séchées et pesto', prep: 'Lavez la roquette, égouttez les tomates séchées et mélangez-les avec le pesto.', ings: [['roquette', 60, 'g'], ['tomates séchées', 60, 'g'], ['pesto', 3, 'cs']] },
+  { mots: 'concombre et tzatziki', prep: 'Râpez le concombre, égouttez-le et mélangez-le avec le yaourt, l\'ail écrasé et la menthe ciselée.', ings: [['concombre', 1, 'u'], ['yaourt grec', 1, 'u'], ['ail', 1, 'gousse'], ['menthe', 1, 'botte']] },
 ];
 for (const g of GARN_WRAP) {
   for (const l of LEG_WRAP) {
@@ -150,7 +150,7 @@ for (const g of GARN_WRAP) {
       ings: [['tortillas', 4, 'u'], ...g.ings, ...l.ings, ...SEL_POIVRE],
       etapes: [
         S(g.prep),
-        S('Préparez {0} : lavez et émincez les légumes, mélangez la sauce.', l.mots),
+        S(l.prep),
         S('Réchauffez les tortillas 30 s à la poêle.'),
         S('Garnissez chaque tortilla, roulez-la bien serrée en repliant les bords et coupez-la en deux.'),
       ],
@@ -188,7 +188,7 @@ for (const b of BURGERS) {
             : S('Préparez {0} en 4 parts.', I(steak).le),
       S('Faites cuire les steaks ou galettes 3 à 5 min par face dans une poêle chaude avec l\'huile.'),
       S('Pendant ce temps, préparez la garniture : lavez la salade, tranchez les légumes et faites cuire ce qui doit l\'être.'),
-      S('Toastez les pains coupés en deux, puis montez les burgers : sauce, salade, steak, fromage et garniture.'),
+      S(b.ings.some(([n]) => ['cheddar', 'chèvre', 'reblochon', 'roquefort', 'halloumi'].includes(n)) ? 'Toastez les pains coupés en deux, puis montez les burgers : sauce, salade, steak, fromage et garniture.' : 'Toastez les pains coupés en deux, puis montez les burgers : sauce, salade, steak et garniture.'),
     ],
   });
 }
@@ -207,6 +207,13 @@ const MAUVAIS_PIZZA = [
   ['miel', 'olives noires'], ['miel', 'merguez'], ['miel', 'chorizo'], ['miel', 'champignons'], ['miel', 'poivrons rouges'], ['miel', 'aubergines'], ['miel', 'courgettes'], ['miel', 'artichauts'], ['miel', 'tomates cerises'], ['miel', 'pommes de terre'], ['miel', 'oignons rouges'],
   ['gorgonzola', 'merguez'], ['chèvre', 'gorgonzola'],
 ];
+const pourLaSortie = (noms) => {
+  const fin = noms.filter((x) => x === 'roquette' || x === 'jambon cru');
+  if (fin.length === 2) return ' (gardez la roquette et le jambon cru pour la sortie du four)';
+  if (fin[0] === 'roquette') return ' (gardez la roquette pour la sortie du four)';
+  if (fin[0] === 'jambon cru') return ' (gardez le jambon cru pour la sortie du four)';
+  return '';
+};
 const mauvais = (a, b) => MAUVAIS_PIZZA.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
 for (const base of ['tomate', 'crème']) {
   for (let a = 0; a < GARN_PIZZA.length; a++) {
@@ -233,7 +240,7 @@ for (const base of ['tomate', 'crème']) {
           S('Étalez la pâte sur une plaque recouverte de papier cuisson.'),
           S(base === 'tomate' ? 'Étalez le coulis de tomates en laissant 1 cm de bord, salez et ajoutez les herbes.' : 'Étalez la crème fraîche en laissant 1 cm de bord, salez, poivrez.'),
           S('Préparez la garniture : {0} et {1}, coupés en morceaux ou en tranches fines.', nomA, nomB),
-          S('Répartissez la mozzarella en morceaux puis la garniture{0}. Arrosez d\'un filet d\'huile d\'olive.', [A[0], B[0]].some((x) => ['roquette', 'jambon cru'].includes(x)) ? ' (gardez la roquette et le jambon cru pour la sortie du four)' : ''),
+          S('Répartissez la mozzarella en morceaux puis la garniture{0}. Arrosez d\'un filet d\'huile d\'olive.', pourLaSortie([A[0], B[0]])),
           S('Enfournez 12 à 15 min, jusqu\'à ce que la pâte soit dorée et le fromage fondu.'),
         ],
       });
@@ -273,7 +280,7 @@ for (const p of PAINS) {
       ings: [...p.ings, ...t.ings, ['ail', 1, 'gousse'], ['huile d\'olive', 3, 'cs'], ...SEL_POIVRE],
       etapes: [
         S(p.prep),
-        S('Préparez la garniture : {0}, lavés et coupés en petits morceaux ou écrasés à la fourchette selon le cas.', t.mots),
+        S('Préparez la garniture ({0}) : coupez en petits morceaux ou écrasez à la fourchette ce qui doit l\'être.', t.mots),
         S('Garnissez le pain juste avant de servir, salez, poivrez et ajoutez un filet d\'huile d\'olive.'),
       ],
     });
@@ -345,6 +352,28 @@ const DIPS = [
   { nom: 'Baba ganoush', ings: [['aubergines', 2, 'u'], ['tahini', 3, 'cs'], ['citrons', 1, 'u'], ['ail', 1, 'gousse'], ['persil', 1, 'botte']] },
   { nom: 'Tartinade de petits pois à la menthe', ings: [['petits pois', 300, 'g'], ['menthe', 1, 'botte'], ['ricotta', 100, 'g'], ['citrons', 1, 'u']] },
 ];
+const aDip = (d, n) => d.ings.some(([x]) => x === n);
+function etapesCuissonDip(d) {
+  const roti = ['aubergines', 'poivrons rouges', 'betteraves', 'patates douces'].filter((n) => aDip(d, n));
+  const noms = { aubergines: 'les aubergines', 'poivrons rouges': 'les poivrons', betteraves: 'les betteraves', 'patates douces': 'la patate douce' };
+  const out = [];
+  if (roti.length) {
+    const liste = roti.map((n) => noms[n]);
+    const texte = liste.length > 1 ? liste.slice(0, -1).join(', ') + ' et ' + liste[liste.length - 1] : liste[0];
+    const peau = aDip(d, 'aubergines') || aDip(d, 'poivrons rouges') ? ' et retirez la peau' : '';
+    out.push(S('Faites rôtir {0} {1} min au four à 200 °C, puis laissez tiédir{2}.', texte, aDip(d, 'patates douces') ? 40 : 30, peau));
+  }
+  if (aDip(d, 'petits pois')) out.push(S('Faites cuire les petits pois 10 min à l\'eau bouillante salée, puis égouttez-les.'));
+  if (aDip(d, 'pavés de saumon')) out.push(S('Faites cuire le pavé de saumon 8 min à la vapeur, puis émiettez-le.'));
+  return out;
+}
+function etapesEgoutDip(d) {
+  const conserves = ['pois chiches', 'thon en boîte', 'sardines en boîte', 'haricots blancs', 'olives noires', 'olives vertes', 'câpres'].filter((n) => aDip(d, n));
+  if (!conserves.length) return [];
+  const liste = conserves.map((n) => I(n).le);
+  const texte = liste.length > 1 ? liste.slice(0, -1).join(', ') + ' et ' + liste[liste.length - 1] : liste[0];
+  return [S('Égouttez {0}.', texte)];
+}
 for (const d of DIPS) {
   const cuire = d.ings.some(([n]) => ['aubergines', 'poivrons rouges', 'betteraves', 'patates douces', 'petits pois'].includes(n));
   recette({
@@ -355,8 +384,8 @@ for (const d of DIPS) {
     pers: 6,
     ings: [...d.ings, ...SEL_POIVRE],
     etapes: [
-      cuire ? S('Faites cuire ou rôtir les légumes jusqu\'à ce qu\'ils soient bien tendres (environ 30 min au four à 200 °C pour les aubergines et les poivrons, 10 min à l\'eau pour les petits pois), puis laissez tiédir et retirez la peau si besoin.') : null,
-      S('Égouttez, épluchez et coupez grossièrement les ingrédients qui le demandent.'),
+      ...etapesCuissonDip(d),
+      ...etapesEgoutDip(d),
       S('Mixez le tout jusqu\'à obtenir la texture souhaitée, lisse ou un peu rustique.'),
       S('Salez, poivrez, goûtez et rectifiez avec un peu de citron ou d\'huile. Servez frais avec du pain ou des légumes à croquer.'),
     ],

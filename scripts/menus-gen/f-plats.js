@@ -169,6 +169,20 @@ const SAUCES_PATES = [
     'Mélangez aux pâtes, ajoutez les Saint-Jacques et la ciboulette.',
   ] },
 ];
+// Ordre des etapes : la sauce se prepare avant la cuisson des pates (sauf si des legumes cuisent avec elles),
+// les pates sont egouttees juste avant d'etre melangees a la sauce.
+function etapesPates(f, s) {
+  const cuire = S('Portez une grande casserole d\'eau salée à ébullition et faites cuire {0} selon le temps indiqué sur le paquet, al dente.', I(f).le);
+  const egoutter = S('Égouttez {0} en gardant une louche d\'eau de cuisson pour lier la sauce si besoin.', I(f).le);
+  const avecPates = s.etapes.some((e) => /avec les pâtes/.test(e));
+  let idx = s.etapes.findIndex((e) => /^Mélangez avec/.test(e) || (/pâtes/.test(e) && !/avec les pâtes/.test(e)));
+  if (idx < 0) idx = s.etapes.length;
+  const avant = s.etapes.slice(0, idx).map((e) => S(e));
+  const apres = s.etapes.slice(idx).map((e) => S(e));
+  return avecPates
+    ? [cuire, ...avant, egoutter, ...apres, S('Servez aussitôt.')]
+    : [...avant, cuire, egoutter, ...apres, S('Servez aussitôt.')];
+}
 for (const f of FORMES) {
   for (const s of SAUCES_PATES) {
     recette({
@@ -178,9 +192,7 @@ for (const f of FORMES) {
       diff: s.temps > 40 ? 2 : 1,
       ings: [[f, 400, 'g'], ...s.ings, ...SEL_POIVRE],
       etapes: [
-        S('Portez une grande casserole d\'eau salée à ébullition et faites cuire {0} selon le temps indiqué sur le paquet, al dente.', I(f).le),
-        ...s.etapes.map((e) => S(e)),
-        S('Égouttez en gardant une louche d\'eau de cuisson pour lier la sauce si besoin. Servez aussitôt.'),
+        ...etapesPates(f, s),
       ],
     });
   }
@@ -203,31 +215,32 @@ for (const s of SAUCES_PATES.filter((x) => !x.etapes.some((e) => /avec les pâte
 }
 
 // ---------------------------------------------------------------- Risottos
+// Chaque risotto : av = ajout a l'oignon, tot = etape avant le bouillon, mid = a ajouter pendant le bouillon, fin = a ajouter hors du feu.
 const RISOTTOS = [
-  { nom: 'aux champignons', ings: [['champignons', 400, 'g']], prep: 'Faites sauter les champignons émincés 6 min dans une poêle, réservez.' },
-  { nom: 'aux asperges', ings: [['asperges vertes', 400, 'g']], prep: 'Coupez les asperges en tronçons et faites-les cuire 4 min à l\'eau bouillante, réservez.' },
-  { nom: 'au potiron', ings: [['potiron', 500, 'g']], prep: 'Ajoutez le potiron coupé en petits dés en même temps que le riz.' },
-  { nom: 'aux petits pois et à la menthe', ings: [['petits pois', 300, 'g'], ['menthe', 1, 'botte']], prep: 'Ajoutez les petits pois 8 min avant la fin et la menthe ciselée au moment de servir.' },
-  { nom: 'au citron', ings: [['citrons', 2, 'u']], prep: 'Ajoutez le zeste et le jus des citrons en fin de cuisson.' },
-  { nom: 'au safran', ings: [['curcuma', 1, 'pincee']], prep: 'Délayez une pincée de safran ou de curcuma dans une louche de bouillon et ajoutez-la à mi-cuisson.' },
-  { nom: 'aux crevettes', ings: [['crevettes', 400, 'g']], prep: 'Faites sauter les crevettes décortiquées 3 min, ajoutez-les en fin de cuisson.' },
-  { nom: 'aux noix de Saint-Jacques', ings: [['noix de Saint-Jacques', 12, 'u']], prep: 'Saisissez les Saint-Jacques 1 min par face et déposez-les sur le risotto.' },
-  { nom: 'au poulet et aux champignons', ings: [['blancs de poulet', 2, 'u'], ['champignons', 250, 'g']], prep: 'Faites dorer le poulet en dés et les champignons 8 min, ajoutez-les en fin de cuisson.' },
-  { nom: 'aux poireaux', ings: [['poireaux', 400, 'g']], prep: 'Faites fondre les poireaux émincés avec l\'oignon, avant le riz.' },
-  { nom: 'à la tomate et au basilic', ings: [['tomates concassées', 1, 'boite'], ['basilic', 1, 'botte']], prep: 'Ajoutez les tomates concassées après le vin, et le basilic au moment de servir.' },
-  { nom: 'au chorizo', ings: [['chorizo', 120, 'g']], prep: 'Faites dorer le chorizo en dés avec l\'oignon.' },
-  { nom: 'aux épinards et au chèvre', ings: [['pousses d\'épinards', 200, 'g'], ['chèvre frais', 100, 'g']], prep: 'Ajoutez les épinards 2 min avant la fin et le chèvre au moment de servir.' },
-  { nom: 'à la courgette et au citron', ings: [['courgettes', 400, 'g'], ['citrons', 1, 'u']], prep: 'Ajoutez les courgettes en petits dés à mi-cuisson, puis le zeste de citron à la fin.' },
-  { nom: 'aux lardons et aux petits pois', ings: [['lardons', 150, 'g'], ['petits pois', 250, 'g']], prep: 'Faites dorer les lardons avec l\'oignon et ajoutez les petits pois à mi-cuisson.' },
-  { nom: 'à la betterave', ings: [['betteraves', 300, 'g']], prep: 'Mixez la moitié des betteraves cuites et ajoutez la purée et le reste en dés à mi-cuisson.' },
-  { nom: 'au gorgonzola et aux noix', ings: [['gorgonzola', 100, 'g'], ['noix', 40, 'g']], prep: 'Remplacez le parmesan par le gorgonzola et parsemez de noix.' },
-  { nom: 'aux fèves et au jambon cru', ings: [['fèves', 300, 'g'], ['jambon cru', 4, 'tranche']], prep: 'Ajoutez les fèves à mi-cuisson et le jambon cru en lanières au moment de servir.' },
-  { nom: 'au saumon et à l\'aneth', ings: [['saumon fumé', 4, 'tranche'], ['aneth', 1, 'botte']], prep: 'Ajoutez le saumon fumé en lanières et l\'aneth hors du feu.' },
-  { nom: 'aux légumes de printemps', ings: [['asperges vertes', 200, 'g'], ['petits pois', 200, 'g'], ['fèves', 200, 'g']], prep: 'Ajoutez les légumes en morceaux à mi-cuisson.' },
-  { nom: 'au butternut et à la sauge', ings: [['butternut', 500, 'g'], ['sauge', 6, 'feuille']], prep: 'Ajoutez la butternut en petits dés avec le riz et la sauge ciselée à la fin.' },
-  { nom: 'aux cèpes et au persil', ings: [['champignons', 400, 'g'], ['persil', 1, 'botte']], prep: 'Faites sauter les champignons avec un peu d\'ail, ajoutez-les en fin de cuisson avec le persil.' },
-  { nom: 'au fenouil et à l\'orange', ings: [['fenouil', 1, 'u'], ['oranges', 1, 'u']], prep: 'Faites fondre le fenouil émincé avec l\'oignon, ajoutez le zeste d\'orange à la fin.' },
-  { nom: 'aux tomates séchées et à la mozzarella', ings: [['tomates séchées', 80, 'g'], ['mozzarella', 1, 'u']], prep: 'Ajoutez les tomates séchées à mi-cuisson et la mozzarella en dés au moment de servir.' },
+  { nom: 'aux champignons', ings: [['champignons', 400, 'g']], tot: 'Faites sauter les champignons émincés 6 min dans une poêle, réservez.', mid: 'Ajoutez les champignons sautés en fin de cuisson.' },
+  { nom: 'aux asperges', ings: [['asperges vertes', 400, 'g']], tot: 'Coupez les asperges en tronçons et faites-les cuire 4 min à l\'eau bouillante, réservez.', mid: 'Ajoutez les asperges en fin de cuisson.' },
+  { nom: 'au potiron', ings: [['potiron', 500, 'g']], tot: 'Ajoutez le potiron coupé en petits dés et mélangez-le avec le riz.' },
+  { nom: 'aux petits pois et à la menthe', ings: [['petits pois', 300, 'g'], ['menthe', 1, 'botte']], mid: 'Ajoutez les petits pois 8 min avant la fin.', fin: 'Parsemez de menthe ciselée.' },
+  { nom: 'au citron', ings: [['citrons', 2, 'u']], mid: 'Ajoutez le zeste et le jus des citrons en fin de cuisson.' },
+  { nom: 'au safran', ings: [['curcuma', 1, 'pincee']], mid: 'Délayez une pincée de safran ou de curcuma dans une louche de bouillon et ajoutez-la à mi-cuisson.' },
+  { nom: 'aux crevettes', ings: [['crevettes', 400, 'g']], tot: 'Faites sauter les crevettes décortiquées 3 min, réservez.', mid: 'Ajoutez les crevettes en fin de cuisson.' },
+  { nom: 'aux noix de Saint-Jacques', ings: [['noix de Saint-Jacques', 12, 'u']], tot: 'Saisissez les Saint-Jacques 1 min par face, réservez.', fin: 'Déposez les Saint-Jacques sur le risotto.' },
+  { nom: 'au poulet et aux champignons', ings: [['blancs de poulet', 2, 'u'], ['champignons', 250, 'g']], tot: 'Faites dorer le poulet en dés et les champignons 8 min, réservez.', mid: 'Ajoutez le poulet et les champignons en fin de cuisson.' },
+  { nom: 'aux poireaux', ings: [['poireaux', 400, 'g']], av: ' avec les poireaux émincés' },
+  { nom: 'à la tomate et au basilic', ings: [['tomates concassées', 1, 'boite'], ['basilic', 1, 'botte']], tot: 'Ajoutez les tomates concassées et mélangez.', fin: 'Parsemez de basilic ciselé.' },
+  { nom: 'au chorizo', ings: [['chorizo', 120, 'g']], av: ' avec le chorizo en dés' },
+  { nom: 'aux épinards et au chèvre', ings: [['pousses d\'épinards', 200, 'g'], ['chèvre frais', 100, 'g']], mid: 'Ajoutez les épinards 2 min avant la fin.', fin: 'Ajoutez le chèvre frais en morceaux.' },
+  { nom: 'à la courgette et au citron', ings: [['courgettes', 400, 'g'], ['citrons', 1, 'u']], mid: 'Ajoutez les courgettes en petits dés à mi-cuisson.', fin: 'Ajoutez le zeste de citron.' },
+  { nom: 'aux lardons et aux petits pois', ings: [['lardons', 150, 'g'], ['petits pois', 250, 'g']], av: ' avec les lardons', mid: 'Ajoutez les petits pois à mi-cuisson.' },
+  { nom: 'à la betterave', ings: [['betteraves', 300, 'g']], tot: 'Mixez la moitié des betteraves cuites pour obtenir une purée.', mid: 'Ajoutez la purée de betterave et le reste en dés à mi-cuisson.' },
+  { nom: 'au gorgonzola et aux noix', ings: [['gorgonzola', 100, 'g'], ['noix', 40, 'g']], fin: 'Ajoutez le gorgonzola et parsemez de noix.' },
+  { nom: 'aux fèves et au jambon cru', ings: [['fèves', 300, 'g'], ['jambon cru', 4, 'tranche']], mid: 'Ajoutez les fèves à mi-cuisson.', fin: 'Ajoutez le jambon cru en lanières.' },
+  { nom: 'au saumon et à l\'aneth', ings: [['saumon fumé', 4, 'tranche'], ['aneth', 1, 'botte']], fin: 'Ajoutez le saumon fumé en lanières et l\'aneth.' },
+  { nom: 'aux légumes de printemps', ings: [['asperges vertes', 200, 'g'], ['petits pois', 200, 'g'], ['fèves', 200, 'g']], mid: 'Ajoutez les légumes en morceaux à mi-cuisson.' },
+  { nom: 'au butternut et à la sauge', ings: [['butternut', 500, 'g'], ['sauge', 6, 'feuille']], tot: 'Ajoutez la butternut en petits dés et mélangez-la avec le riz.', fin: 'Parsemez de sauge ciselée.' },
+  { nom: 'aux cèpes et au persil', ings: [['champignons', 400, 'g'], ['persil', 1, 'botte']], tot: 'Faites sauter les champignons avec un peu d\'ail, réservez.', mid: 'Ajoutez les champignons en fin de cuisson.', fin: 'Parsemez de persil.' },
+  { nom: 'au fenouil et à l\'orange', ings: [['fenouil', 1, 'u'], ['oranges', 1, 'u']], av: ' avec le fenouil émincé', fin: 'Ajoutez le zeste d\'orange.' },
+  { nom: 'aux tomates séchées et à la mozzarella', ings: [['tomates séchées', 80, 'g'], ['mozzarella', 1, 'u']], mid: 'Ajoutez les tomates séchées à mi-cuisson.', fin: 'Ajoutez la mozzarella en dés.' },
 ];
 for (const r of RISOTTOS) {
   recette({
@@ -238,11 +251,11 @@ for (const r of RISOTTOS) {
     ings: [['riz arborio', 320, 'g'], ['oignons', 1, 'u'], ['vin blanc', 10, 'cL'], ['bouillon de volaille', 2, 'cube'], ['beurre', 40, 'g'], ['parmesan', 60, 'g'], ['huile d\'olive', 2, 'cs'], ...r.ings, ...SEL_POIVRE],
     etapes: [
       S('Faites chauffer 1,2 L d\'eau avec les cubes de bouillon et gardez-le frémissant.'),
-      S('Faites revenir l\'oignon émincé 3 min dans l\'huile d\'olive, ajoutez le riz et remuez 2 min jusqu\'à ce qu\'il devienne nacré.'),
+      S('Faites revenir l\'oignon émincé{0} 3 min dans l\'huile d\'olive, ajoutez le riz et remuez 2 min jusqu\'à ce qu\'il devienne nacré.', r.av || ''),
       S('Versez le vin blanc et laissez-le s\'évaporer.'),
-      S(r.prep),
-      S('Ajoutez le bouillon louche par louche en remuant, en attendant qu\'il soit absorbé avant d\'en remettre, pendant 18 min environ.'),
-      S('Hors du feu, ajoutez le beurre et le parmesan, couvrez 2 min puis mélangez. Servez aussitôt.'),
+      r.tot ? S(r.tot) : null,
+      S('Ajoutez le bouillon louche par louche en remuant, en attendant qu\'il soit absorbé avant d\'en remettre, pendant 18 min environ.{0}', r.mid ? ' ' + r.mid : ''),
+      S('Hors du feu, ajoutez le beurre et le parmesan, couvrez 2 min puis mélangez.{0} Servez aussitôt.', r.fin ? ' ' + r.fin : ''),
     ],
   });
 }
@@ -327,7 +340,7 @@ for (const p of PROT_CURRY) {
         etapes.push(S('Ajoutez les légumes et laissez mijoter 20 min, jusqu\'à ce que les lentilles soient fondantes.'));
       } else {
         etapes.push(S('Versez {0}, ajoutez les légumes et laissez mijoter 15 min.', sauce));
-        etapes.push(S('Ajoutez {0} et laissez mijoter encore 8 min.', p.nom === 'tofu' ? 'le tofu coupé en cubes et doré à la poêle' : 'les pois chiches égouttés'));
+        etapes.push(S('Ajoutez {0} et laissez mijoter encore 8 min.', p.nom === 'tofu' ? 'le tofu coupé en cubes' : 'les pois chiches égouttés'));
       }
       etapes.push(S('Pendant ce temps, faites cuire le riz basmati selon le paquet.'));
       if (st.coco && st.pate) etapes.push(S('Assaisonnez avec la sauce nuoc-mâm et le jus du citron vert.'));
@@ -452,7 +465,7 @@ for (const p of POISSONS) {
       if (p.grill && ['beurre blanc', 'crème d\'épinards', 'croûte d\'herbes', 'curry et coco'].includes(s.nom)) continue;
       for (const a of ACCOMP_POISSON) {
         recette({
-          nom: `${p.n} ${c.nom}, ${s.nom}, ${a.nom}`,
+          nom: `${p.n} ${c.nom === 'grillé' ? (p.n === 'sardines fraîches' ? 'grillées' : /^(filets|steaks|pavés)/.test(p.n) ? 'grillés' : 'grillé') : c.nom}, ${s.nom}, ${a.nom}`,
           cat: 'poissons',
           temps: c.t + (a.nom === 'riz' ? 0 : 5),
           diff: s.nom === 'beurre blanc' ? 2 : 1,
@@ -506,7 +519,7 @@ const SAUCES_VIANDE = [
   { nom: 'au roquefort', pour: ['boeuf', 'porc', 'volaille'], ings: [['roquefort', 80, 'g'], ['crème liquide', 20, 'cL']], etape: 'Faites fondre le roquefort dans la crème à feu doux et nappez la viande.' },
   { nom: 'aux échalotes', pour: ['boeuf', 'veau'], ings: [['échalotes', 4, 'u'], ['vin rouge', 15, 'cL'], ['beurre', 30, 'g']], etape: 'Faites fondre les échalotes émincées dans le beurre, déglacez au vin rouge et laissez réduire de moitié.' },
   { nom: 'au sirop d\'érable', pour: ['porc', 'canard', 'volaille'], ings: [['sirop d\'érable', 3, 'cs'], ['sauce soja', 2, 'cs']], etape: 'Déglacez avec le sirop d\'érable et la sauce soja, laissez caraméliser 2 min et nappez la viande.' },
-  { nom: 'aux figues', pour: ['canard', 'porc', 'agneau'], ings: [['figues', 6, 'u'], ['miel', 1, 'cs'], ['vinaigre balsamique', 2, 'cs']], etape: 'Faites rôtir les figues coupées en deux 5 min avec le miel et le vinaigre balsamique.' },
+  { nom: 'aux figues', pour: ['canard', 'porc', 'agneau'], ings: [['figues', 6, 'u'], ['miel', 1, 'cs'], ['vinaigre balsamique', 2, 'cs']], etape: 'Faites caraméliser les figues coupées en deux 5 min à la poêle avec le miel et le vinaigre balsamique.' },
   { nom: 'à la menthe', pour: ['agneau'], ings: [['menthe', 1, 'botte'], ['yaourt grec', 1, 'u'], ['citrons', 1, 'u']], etape: 'Mélangez le yaourt grec, la menthe ciselée et le jus de citron, et servez avec la viande.' },
 ];
 const ACCOMP_VIANDE = [
@@ -533,10 +546,10 @@ for (const v of VIANDES) {
         diff: v.t === 'canard' ? 2 : 1,
         ings: [[v.n, ...v.q], ...s.ings, ...a.ings, ['huile', 2, 'cs'], ...SEL_POIVRE],
         etapes: [
+          S('Sortez la viande du réfrigérateur, salez et poivrez.'),
           a.long ? S(a.etape) : null,
-          S('Sortez la viande du réfrigérateur 15 min avant la cuisson. Salez et poivrez.'),
           S(v.cuit),
-          a.long ? null : S('Pendant ce temps : {0}', a.etape.charAt(0).toLowerCase() + a.etape.slice(1)),
+          a.long ? null : S('Pendant la cuisson de la viande : {0}', a.etape.charAt(0).toLowerCase() + a.etape.slice(1)),
           S(s.etape),
           S('Servez la viande nappée de sauce avec {0}.', a.nom.startsWith('pommes') || a.nom.startsWith('frites') || a.nom.startsWith('haricots') || a.nom.startsWith('légumes') || a.nom.startsWith('tagliatelles') ? `les ${a.nom}` : a.nom === 'riz' ? 'le riz' : a.nom === 'semoule' ? 'la semoule' : `la ${a.nom}`),
         ],
