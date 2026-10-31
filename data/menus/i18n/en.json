@@ -3119,6 +3119,1212 @@
         "Drop spoonfuls of dough into the oil and fry for 5 minutes, turning, until golden.",
         "Drain on paper towels and serve warm."
       ]
+    },
+    "salade-lyonnaise-complete": {
+      "title": "Complete Lyonnaise salad",
+      "steps": [
+        "Boil the potatoes whole in salted water, then peel them and slice into thick rounds.",
+        "Brown the bacon bits dry in a frying pan, add the slices of country bread and toast them on both sides.",
+        "Poach the eggs in simmering water with added vinegar for 3 minutes, then drain them.",
+        "Make the vinaigrette with the chopped shallot, mustard, vinegar, olive oil, salt and pepper. Arrange the salad with the potatoes, bacon bits, croutons and eggs, then spoon over the vinaigrette."
+      ]
+    },
+    "oeufs-en-meurette": {
+      "title": "Eggs in red wine sauce",
+      "steps": [
+        "Sauté the bacon bits, the sliced onion and the chopped shallot in the butter for 5 minutes.",
+        "Pour in the red wine, add the crushed garlic, the bay leaf, the dried thyme and the button mushrooms cut into quarters, then simmer for 20 minutes.",
+        "Poach the eggs in simmering water with vinegar for 3 minutes and drain them.",
+        "Toast the slices of country bread, place them on plates, set the eggs on top, spoon over the sauce, season with salt and pepper and serve."
+      ]
+    },
+    "poireaux-vinaigrette-jambon": {
+      "title": "Leeks with vinaigrette and ham",
+      "steps": [
+        "Clean the leeks, halve them lengthwise and cook them in salted water for 20 minutes.",
+        "Cook the hard eggs in a saucepan of simmering water for 9 minutes, then shell them.",
+        "Make the vinaigrette with mustard, vinegar, olive oil, salt, pepper and the chopped parsley.",
+        "Drain the leeks, arrange them on a dish, spoon over the vinaigrette, add the slices of cooked ham and the eggs cut into quarters."
+      ]
+    },
+    "aligot-saucisse-comte": {
+      "title": "Aligot with comté and sausages",
+      "steps": [
+        "Peel the potatoes, cut them into pieces and cook them in salted water with the whole garlic cloves for 25 minutes.",
+        "Cook the sausages in a frying pan over medium heat for 15 minutes, turning them regularly.",
+        "Mash the potatoes and the cooked garlic, then incorporate the butter and the single cream to obtain a smooth purée.",
+        "Add the grated comté little by little into the hot purée and stir over low heat until it forms strands. Season with salt and pepper and serve with the sausages."
+      ]
+    },
+    "pommes-sarladaises-cuisse-canard": {
+      "title": "Duck legs with pommes sarladaises",
+      "steps": [
+        "Cook the duck legs skin-side down in a frying pan over medium heat for 25 minutes to render the fat, then set them aside.",
+        "Peel the potatoes, cut them into thick slices and brown them in the duck fat with the chopped garlic, the thyme and the salt for 20 minutes.",
+        "Return the legs on top of the potatoes, cover and continue cooking over low heat for 15 minutes.",
+        "Sprinkle with chopped parsley, grind over some pepper and serve piping hot."
+      ]
+    },
+    "saltimbocca-dinde-jambon": {
+      "title": "Turkey saltimbocca with ham and white wine",
+      "steps": [
+        "Flatten the turkey escalopes between two sheets of baking paper, then season them with salt and pepper.",
+        "Place a slice of cooked ham on each escalope and sprinkle with provençal herbs.",
+        "Heat the olive oil and 15 g of butter, then sear the escalopes on the ham side for 3 minutes, turn and cook for another 2 minutes.",
+        "Remove the escalopes, deglaze the pan with the dry white wine and reduce by half for 4 minutes.",
+        "Return the escalopes to the sauce, add the remaining butter, adjust the seasoning and serve immediately."
+      ]
+    },
+    "osso-buco-veau-gremolata": {
+      "title": "Veal osso buco with gremolata",
+      "steps": [
+        "Coat the veal pieces in flour, then season them with salt and pepper.",
+        "Brown the pieces in hot oil for 8 minutes, then set them aside.",
+        "Sauté the onion, carrot and one sliced garlic clove for 5 minutes in the same pot.",
+        "Deglaze with dry white wine, add the chopped tomatoes and the crumbled stock cube, return the veal, cover and simmer gently for 1 h 30.",
+        "Chop the parsley with the lemon zest and the second garlic clove, then sprinkle over the dish before serving."
+      ]
+    },
+    "arancini-jambon-mozzarella": {
+      "title": "Arancini with ham and mozzarella",
+      "steps": [
+        "Sauté the sliced onion in butter, add the rice and toast for 2 minutes.",
+        "Add the hot stock little by little and cook the rice for 18 minutes, stirring, until tender.",
+        "Let the rice cool, then stir in the parmesan, one beaten egg and the salt.",
+        "Shape balls of rice around a cube of mozzarella and ham, then coat them in flour, the remaining beaten egg and breadcrumbs.",
+        "Fry the arancini in hot oil for 4 minutes until well golden, then drain on kitchen paper."
+      ]
+    },
+    "cannelloni-poulet-poivrons": {
+      "title": "Chicken and bell pepper cannelloni",
+      "steps": [
+        "Cook the lasagna sheets for 8 minutes in a large pot of boiling salted water, then drain them.",
+        "Sauté the onion and garlic in oil for 4 minutes, add the chicken and diced bell peppers, then cook for another 10 minutes.",
+        "Off the heat, mix the filling with the ricotta, half the parmesan, salt and pepper. Fill each sheet with the mixture and roll. Spread the chopped tomatoes in the bottom of a dish and arrange the cannelloni in it.",
+        "Sprinkle with mozzarella and the remaining parmesan, then bake at 190 °C for 25 minutes."
+      ]
+    },
+    "pollo-al-ajillo": {
+      "title": "Spanish garlic chicken (pollo al ajillo)",
+      "steps": [
+        "Season the chicken legs with salt and pepper, then brown them in olive oil for 8 min.",
+        "Add the garlic slices and the chili, sauté for 1 min without letting the garlic burn.",
+        "Deglaze with dry white wine, cover and simmer gently for 25 min.",
+        "Sprinkle with paprika and chopped parsley, then serve hot."
+      ]
+    },
+    "gambas-al-ajillo": {
+      "title": "Garlic and chili prawns (gambas al ajillo)",
+      "steps": [
+        "Heat the olive oil with the sliced garlic and the chili over low heat for 2 min.",
+        "Add the shrimp and sear over high heat for 3 min until pink.",
+        "Season with salt, sprinkle with chopped parsley and serve immediately with the baguette sliced."
+      ]
+    },
+    "fabada-asturienne-simplifiee": {
+      "title": "Simplified Asturian fabada",
+      "steps": [
+        "Sauté the sliced onion and garlic in olive oil for 5 min.",
+        "Add the salted pork, chorizo and smoked pork sausage cut into pieces, then brown for 4 min.",
+        "Pour in 1 litre of stock prepared with the cubes, add the bay leaf and the paprika, then simmer gently for 30 min.",
+        "Add the drained white beans, continue cooking at a low simmer for 15 min, then serve."
+      ]
+    },
+    "croquetas-de-jambon": {
+      "title": "Spanish ham croquetas",
+      "steps": [
+        "Melt the butter, add the flour and cook for 2 min, stirring.",
+        "Pour in the milk little by little while whisking, add the chopped cooked ham and ground nutmeg, then cook for 5 min until you have a thick cream.",
+        "Spread the mixture on an oiled dish and chill for at least 2 h in the refrigerator.",
+        "Shape small oblong balls, dip them in the beaten egg then in the breadcrumbs.",
+        "Fry the croquetas in very hot sunflower oil for 3 min until golden, then drain."
+      ]
+    },
+    "cocido-madrileno": {
+      "title": "Simplified cocido madrileño",
+      "steps": [
+        "Place the beef for braising, the onion, the garlic and the bay leaf in 2 litres of stock prepared with the stock cubes, then simmer for 90 min.",
+        "Add the carrots, the leek and the potatoes cut up, then cook for 30 min.",
+        "Add the whole chorizo, the drained chickpeas and the savoy cabbage in pieces, then cook for 20 min.",
+        "Serve the stock, the meats and the vegetables cut on a large platter, accompanied by mustard if desired."
+      ]
+    },
+    "pisto-manchego-aux-oeufs": {
+      "title": "Pisto manchego with eggs",
+      "steps": [
+        "Sauté the sliced onion and the garlic in olive oil for 5 min.",
+        "Add the diced bell pepper, eggplant and zucchini, then cook for 15 min over medium heat.",
+        "Add the diced tomatoes and the salt, cover and simmer for 20 min.",
+        "Make 4 wells in the pisto, break an egg into each, cover and cook for 6 min until the whites are set."
+      ]
+    },
+    "migas-extremenas": {
+      "title": "Migas extremeñas with chorizo",
+      "steps": [
+        "Crumble the country bread, drizzle with stock diluted with the cube and let rest for 15 min.",
+        "Brown the bacon bits and the chorizo cut into cubes in the olive oil for 4 min.",
+        "Add the crushed garlic, the diced bell pepper and the paprika, then cook for 3 min.",
+        "Add the drained crumbs and stir for 10 min until they become crispy and golden."
+      ]
+    },
+    "empanada-galicienne-au-thon": {
+      "title": "Galician empanada with tuna",
+      "steps": [
+        "Sauté the sliced onion and bell pepper in olive oil for 10 min over low heat.",
+        "Add the crushed garlic, the diced tomato and the paprika, then cook for 10 min until reduced.",
+        "Off the heat, fold in the drained canned tuna and let the filling cool.",
+        "Roll out one pastry on a baking tray, fill, cover with the second pastry, seal the edges, brush with the beaten egg then bake for 30 min."
+      ]
+    },
+    "agneau-asado-espagnol": {
+      "title": "Spanish roasted lamb shoulder (cordero asado)",
+      "steps": [
+        "Rub the lamb shoulder with the crushed garlic, the paprika, the herbs, the salt and the olive oil, then let marinate for 30 min.",
+        "Place the lamb shoulder in a dish with the potatoes in wedges, the sliced onion and the dry white wine, then cover.",
+        "Roast at 160 °C and cook for 2 h 30, basting from time to time.",
+        "Carve the lamb shoulder and serve with the potatoes and the cooking juices."
+      ]
+    },
+    "porc-adobado-pommes-de-terre-roties": {
+      "title": "Marinated pork and roasted potatoes",
+      "steps": [
+        "Mix paprika, crushed garlic, vinegar, olive oil, oregano and salt, coat the pork tenderloin with the mixture and let rest for 1 h.",
+        "Sear the pork on all sides in a hot pan for 8 min.",
+        "Cut the potatoes into wedges, arrange them around the pork in a baking dish, then bake at 200 °C for 25 min."
+      ]
+    },
+    "bacalao-al-pil-pil": {
+      "title": "Cod pil-pil with potatoes",
+      "steps": [
+        "Steam the peeled potatoes for 20 min, then keep them warm.",
+        "Gently confit the sliced garlic and chili in olive oil over very low heat for 5 min.",
+        "Place the salted cod loin in the oil, skin side up, and cook 4 min on each side over low heat.",
+        "Remove the fish, emulsify the cooking oil by shaking it off the heat, add chopped parsley, then spoon the sauce over the fish and serve with the potatoes."
+      ]
+    },
+    "arroz-al-horno-chorizo-pois-chiches": {
+      "title": "Oven-baked rice with chorizo and chickpeas",
+      "steps": [
+        "Sauté the sliced onion, crushed garlic and diced chorizo in olive oil for 6 min.",
+        "Add the rice, tomato paste and paprika, then mix for 1 min.",
+        "Pour in the hot stock prepared with the 2 cubes (about 600 ml), add the drained chickpeas and the frozen peas, transfer to a dish and bake at 200 °C for 25 min.",
+        "Let rest for 5 min out of the oven before serving."
+      ]
+    },
+    "kibbeh-au-four-boulgour-viande": {
+      "title": "Baked kibbeh with bulgur and meat",
+      "steps": [
+        "Soak the bulgur in cold water for 20 minutes, then squeeze it out thoroughly.",
+        "Sauté the sliced onion in half of the olive oil, add the ground beef, cinnamon, ground nutmeg, salt and pepper, then cook until well done.",
+        "Spread half the bulgur over the bottom of an oiled dish, cover with the meat, then top with the remaining bulgur, smoothing and scoring it with a knife.",
+        "Sprinkle with flaked almonds, drizzle with the remaining oil and bake at 190 °C for 30 minutes until the top is golden."
+      ]
+    },
+    "makloubeh-au-poulet-riz-renverse": {
+      "title": "Makloubeh with chicken and inverted rice",
+      "steps": [
+        "Brown the chicken legs with the sliced onions, then add the chopped tomatoes, turmeric, cumin, cinnamon, salt and pepper, and simmer.",
+        "Separately fry the eggplant slices, potato rounds and cauliflower florets in oil until colored.",
+        "Rinse the rice, spread it in the pot over the chicken, pour in hot stock to cover, then cook over low heat with the lid on.",
+        "Arrange the fried vegetables over the rice, invert the pot onto a warm platter and let rest before carving."
+      ]
+    },
+    "sayadieh-au-cabillaud-riz-aux-oignons": {
+      "title": "Sayadieh with cod and onion rice",
+      "steps": [
+        "Caramelize the sliced onions in olive oil over medium heat for 20 minutes, then set aside half of them.",
+        "Toast the flaked almonds dry in a pan for 3 minutes until golden.",
+        "Cook the cod loins in the hot stock with cumin, turmeric, salt and pepper for 10 minutes, then keep them warm.",
+        "Cook the rice in the flavored cooking stock, covered, until fully absorbed, then plate the rice, the fish, the remaining onions and the almonds, with the lemon cut into quarters."
+      ]
+    },
+    "briouates-a-la-viande-et-aux-amandes": {
+      "title": "Meat and almond briouats",
+      "steps": [
+        "Sauté the chopped onion in olive oil, add the ground beef, cinnamon, ras el hanout, salt and pepper, then cook until the mixture is dry.",
+        "Mix the filling with the flaked almonds, chopped parsley and fresh coriander, then let cool.",
+        "Cut the brick pastry sheet in half, fill each half, fold into a triangle sealing the edge with beaten egg, then brush with melted butter.",
+        "Bake the briouats at 190 °C for 20 minutes until well golden and crispy."
+      ]
+    },
+    "shawarma-de-dinde-en-assiette-sauce-tahini": {
+      "title": "Turkey shawarma plate with tahini sauce",
+      "steps": [
+        "Cut the turkey escalope into thin strips and marinate for 30 minutes with olive oil, paprika, cumin, turmeric, one crushed garlic clove, the juice of the lemon, salt and pepper.",
+        "Sear the turkey in a very hot pan for 8 minutes, browning it on all sides.",
+        "Mix the plain yogurt, sesame paste, the juice of half a lemon and the other crushed garlic clove to obtain a smooth sauce.",
+        "Warm the pita bread, then arrange the turkey with the tomato, the cucumber and the green salad, and drizzle with tahini sauce."
+      ]
+    },
+    "poulet-tandoori-riz-cumin": {
+      "title": "Tandoori chicken with cumin rice",
+      "steps": [
+        "Mix the plain yogurt, the juice of the lemon, the crushed garlic, grated fresh ginger, paprika, garam masala, cumin, salt and the oil in a bowl.",
+        "Score the chicken leg, coat with the marinade and let marinate in the fridge.",
+        "Place the legs on a tray lined with baking paper and cook in the oven until well browned and cooked through.",
+        "Rinse the rice, cook it in salted water with the cumin for 12 minutes, then drain.",
+        "Sprinkle with fresh coriander and serve the legs with the rice."
+      ]
+    },
+    "butter-chicken-maison": {
+      "title": "Homemade butter chicken with cream and spices",
+      "steps": [
+        "Mix the plain yogurt, half the garam masala, paprika, salt and the crushed garlic, then coat the chicken cut into cubes.",
+        "Sauté the chicken in 20 g of butter for 6 minutes, then set aside.",
+        "Melt the remaining butter, sauté the sliced onion and grated fresh ginger, then add the chopped tomatoes, the rest of the garam masala and simmer for 15 minutes.",
+        "Pour in the single cream, return the chicken and simmer for 10 minutes over low heat.",
+        "Cook the rice in salted water for 12 minutes and serve it with the chicken."
+      ]
+    },
+    "boeuf-basilic-thai-oeuf": {
+      "title": "Thai basil beef stir-fry with fried egg",
+      "steps": [
+        "Cook the rice in a large pot of salted water for 15 minutes, then keep warm.",
+        "Finely chop the garlic and the chili, slice the onion, cut the bell pepper into strips and the green beans into pieces.",
+        "Heat the sunflower oil and sear the ground beef with the onion, garlic and chili for 5 minutes over high heat.",
+        "Add the bell pepper and the green beans, then the nuoc mam, soy sauce and sugar. Cook for 4 minutes, then remove from heat and stir in the basil.",
+        "Fry the eggs in an oiled pan until the whites are set and the yolks runny, then serve on the stir-fry with the rice."
+      ]
+    },
+    "oyakodon-poulet-oeuf": {
+      "title": "Oyakodon with chicken and eggs",
+      "steps": [
+        "Cook the rice in a covered pot, then keep warm.",
+        "Cut the chicken into pieces, slice the onion and sauté together over medium heat until the chicken is no longer pink.",
+        "Dissolve the stock cube in 150 ml of water, add the soy sauce and the sugar, pour over the chicken and simmer for 5 minutes.",
+        "Beat the eggs, pour them in two stages over the mixture and cover for 1 minute so they remain slightly runny. Serve immediately over the rice."
+      ]
+    },
+    "bulgogi-boeuf-poire": {
+      "title": "Beef bulgogi with pear, onions, rice and cucumber",
+      "steps": [
+        "Blend the pear, the onion, the garlic and the fresh ginger, then mix with the soy sauce, the sugar and the sesame oil.",
+        "Cut the beef into thin slices, mix them with the marinade and let rest in the refrigerator.",
+        "Sear the meat for 3 minutes over high heat in a very hot pan, in batches if necessary.",
+        "Cook the rice, thinly slice the spring onions and the cucumber, then serve the meat over the rice and sprinkle with sesame seeds."
+      ]
+    },
+    "tonkatsu-porc-chou": {
+      "title": "Crispy pork tonkatsu with shredded cabbage",
+      "steps": [
+        "Flatten the pork tenderloin between two sheets of paper, then season with salt and pepper.",
+        "Coat each cutlet in the flour, then in the beaten egg, and finally in the breadcrumbs, pressing lightly.",
+        "Fry the cutlets in hot sunflower oil for 8 minutes in total, turning them, until the meat is no longer pink.",
+        "Drain on paper towels. Finely shred the white cabbage, mix the soy sauce, the vinegar and the sugar, then serve the cutlets sliced over the cabbage with this sauce."
+      ]
+    },
+    "sundubu-jjigae-tofu": {
+      "title": "Spicy Korean tofu soup with egg",
+      "steps": [
+        "Sauté the chopped onion, the garlic and the fresh ginger in the sesame oil for 3 minutes.",
+        "Add the chili and the sliced button mushrooms, then pour in 1.2 liters of water with the stock cube dissolved and the soy sauce. Simmer for 10 minutes.",
+        "Add the firm tofu cut into cubes and simmer for 3 minutes.",
+        "Crack the eggs into the simmering soup, cover for 2 minutes, then garnish with the sliced spring onions and serve."
+      ]
+    },
+    "sopa-tortilla-poulet-avocat": {
+      "title": "Tortilla soup with chicken and avocado",
+      "steps": [
+        "Cut the tortilla wrap into strips, then brown them in the hot oil for 3 minutes. Set aside.",
+        "In the same oil, sauté the sliced onion and the garlic, then add the chicken fillet diced, the cumin and the paprika. Cook for 5 minutes.",
+        "Pour in the chopped tomatoes, the crumbled stock cube and 1 liter of water. Simmer for 15 minutes over medium heat.",
+        "Season with salt, then serve in bowls with the tortilla strips, the avocado diced, the grated cheese, the chopped fresh coriander and a squeeze of lime."
+      ]
+    },
+    "mole-poblano-simplifie-poulet": {
+      "title": "Simplified mole poblano with chicken and rice",
+      "steps": [
+        "Season the chicken leg with salt and pepper, then brown in the hot oil for 8 minutes. Set aside.",
+        "In the same casserole, sauté the sliced onion and the garlic, then add the sesame seeds, the ground almonds, the cinnamon, the chili, the cocoa powder, the tomato paste and the chopped tomatoes. Cook for 5 minutes.",
+        "Blend the sauce, return it to the casserole with the stock cube dissolved in 500 ml of water and the chopped dark chocolate. Add the chicken and simmer covered for 35 minutes.",
+        "Meanwhile, cook the rice in salted water for 15 minutes.",
+        "Serve the chicken topped with mole alongside the rice."
+      ]
+    },
+    "cochinita-pibil-simplifiee": {
+      "title": "Simplified cochinita pibil with tortillas and radish",
+      "steps": [
+        "Blend the garlic, the paprika, the cumin, the oregano, the pepper, the salt, the olive oil, the orange juice and the lime juice.",
+        "Rub the pork shoulder with the marinade, cover and let rest for 1 hour in the refrigerator.",
+        "Place the pork shoulder, the sliced onion and the orange slices in a dish, cover with aluminum foil and cook in the oven at 150 °C.",
+        "Shred the meat with a fork and mix it with the cooking juices.",
+        "Reheat the tortilla wrap in a dry pan for 2 minutes.",
+        "Fill the tortillas with the pork, the sliced radish and the chopped fresh coriander, then serve."
+      ]
+    },
+    "pozole-rouge-porc-mais": {
+      "title": "Red pozole with pork, corn and radish",
+      "steps": [
+        "Sauté the onion and garlic in oil for 4 minutes.",
+        "Add the pork pieces, paprika, cumin, chili and tomato paste. Brown for 5 minutes.",
+        "Pour in 1.5 litres of water, the stock, the drained corn and the oregano. Cook covered for 1 hour 30 at low heat.",
+        "Season with salt. Serve hot with finely shredded white cabbage, sliced radishes, fresh coriander, a little oregano and lime wedges."
+      ]
+    },
+    "picadillo-boeuf-olives-raisins": {
+      "title": "Ground beef picadillo with olives and raisins, rice",
+      "steps": [
+        "Sauté the onion, garlic and diced bell pepper in oil for 5 minutes.",
+        "Add the ground beef, cumin, cinnamon and paprika, then brown for 5 minutes.",
+        "Add the potatoes cut into small dice, the chopped tomatoes, 150 ml of water and the salt. Cook covered for 25 minutes.",
+        "Stir in the sliced olives and the raisins, then cook for 5 minutes uncovered.",
+        "Cook the rice in twice its volume of salted water for 15 minutes, then serve with the picadillo."
+      ]
+    },
+    "galettes-quinoa-courgette-feta": {
+      "title": "Quinoa patties with zucchini and feta",
+      "steps": [
+        "Cook the quinoa in twice its volume of salted water for 15 minutes, then let it cool.",
+        "Grate the zucchini, salt them, let them drain then squeeze them dry in a cloth. Finely slice the onion, and chop the garlic and parsley.",
+        "Mix the quinoa, zucchini, onion, garlic, parsley, eggs, flour and the crumbled feta. Season with salt and pepper.",
+        "Form patties by hand, arrange them on a tray lined with baking paper and brush them with olive oil.",
+        "Bake at 200 °C for 25 minutes, turning the patties halfway through, until they are well golden."
+      ]
+    },
+    "chou-fleur-roti-tahini-pois-chiches": {
+      "title": "Roasted cauliflower with tahini and chickpeas",
+      "steps": [
+        "Preheat the oven to 220 °C. Break the cauliflower into large florets, drizzle with a little olive oil, and sprinkle with cumin, salt and pepper.",
+        "Arrange the cauliflower on a baking sheet and roast for 25 minutes, until golden at the edges.",
+        "Drain and rinse the chickpeas, then sauté them in a pan with the remaining olive oil and the crushed garlic for 5 minutes.",
+        "Mix the sesame paste with the lemon juice, a little cold water and a pinch of salt until smooth.",
+        "Plate the cauliflower and the chickpeas, drizzle with the tahini sauce and scatter chopped parsley over the top."
+      ]
+    },
+    "aubergines-roties-yaourt-pois-chiches": {
+      "title": "Roasted eggplant with yogurt, chickpeas and zaatar",
+      "steps": [
+        "Preheat the oven to 220 °C. Halve the eggplants lengthwise, score the flesh in a crosshatch, and brush with olive oil, salt and cumin.",
+        "Roast the eggplants flesh-side up for 30 minutes, until very tender.",
+        "Mix the plain yogurt with the finely grated garlic, the lemon juice, salt and pepper. Chop the parsley.",
+        "Drain the chickpeas and brown them in a pan with a drizzle of olive oil for 8 minutes.",
+        "Top the eggplants with the yogurt sauce, garnish with the browned chickpeas, parsley and zaatar."
+      ]
+    },
+    "gnocchi-gratines-poireaux-comte": {
+      "title": "Baked gnocchi with leeks and comté",
+      "steps": [
+        "Preheat the oven to 200 °C. Slice the leeks into rounds, wash them and sweat them in the butter over low heat for 10 minutes.",
+        "Add the cream, ground nutmeg, salt and pepper, then let the sauce thicken for 5 minutes over low heat.",
+        "Cook the gnocchi in a large pot of salted water until they float to the surface, then drain them.",
+        "Arrange the gnocchi in a gratin dish, cover them with the leek sauce and sprinkle with grated comté.",
+        "Bake for 15 minutes, until the cheese is golden and melted."
+      ]
+    },
+    "pates-ricotta-courgettes-citron": {
+      "title": "Pasta with ricotta and lemony zucchini",
+      "steps": [
+        "Cook the pasta in a large pot of boiling salted water according to the time indicated on the package.",
+        "Slice the zucchini into thin rounds and brown them in a frying pan in the olive oil with the crushed garlic for 6 minutes.",
+        "Mix the ricotta with the lemon zest and juice, the grated parmesan, the salt and the pepper.",
+        "Drain the pasta, reserving some cooking water, then toss it with the zucchini, the ricotta mixture and the chopped basil, adding a little cooking water to bind."
+      ]
+    },
+    "bricks-epinards-feta": {
+      "title": "Spinach and feta brick pastries",
+      "steps": [
+        "Thinly slice the onion and chop the garlic. Sauté them in the olive oil in a frying pan for 3 minutes, then add the fresh spinach until it wilts.",
+        "Squeeze the spinach to drain, mix it with the crumbled feta, the chopped parsley, one beaten egg, the salt and the pepper.",
+        "Cut each brick pastry sheet in half, place a spoonful of filling in the center of each half-sheet, fold and seal with the second beaten egg.",
+        "Arrange the bricks on a baking tray lined with baking paper, brush them with olive oil and bake at 200 °C for 15 minutes, until well golden."
+      ]
+    },
+    "boulettes-haricots-blancs-sauce-tomate": {
+      "title": "White bean herb balls in tomato sauce",
+      "steps": [
+        "Drain the white beans and roughly mash them with a fork in a bowl.",
+        "Chop the onion and the garlic, then sauté them in half of the olive oil for 5 minutes. Add to the beans with the chopped parsley, the herbs, the grated parmesan, the breadcrumbs, the egg, the salt and the pepper.",
+        "Form 16 balls with wet hands, roll them in a little breadcrumbs and brown them in the remaining oil for 8 minutes.",
+        "Pour the chopped tomatoes and the tomato paste into the pan, season with salt and pepper, add the torn basil and simmer for 10 minutes with the balls."
+      ]
+    },
+    "chou-vert-braise-pommes-de-terre-paprika": {
+      "title": "Braised green cabbage with potatoes and paprika",
+      "steps": [
+        "Remove the thick rib from the green cabbage and slice it into strips. Peel the potatoes and cut them into cubes. Finely slice the onion and the garlic.",
+        "Sauté the onion and the garlic in the olive oil for 5 minutes, then add the paprika and the sliced cabbage.",
+        "Add the potatoes, the bay leaf and the stock cube dissolved in 500 ml of hot water, then cover.",
+        "Braise covered over low heat for 30 minutes. Remove the bay leaf, stir in the crème fraîche, season with salt and pepper."
+      ]
+    },
+    "pitas-galettes-haricots-rouges-tahini": {
+      "title": "Pitas with red bean patties and tahini sauce",
+      "steps": [
+        "Mix the chia seeds with 120 ml of soy drink and let swell.",
+        "Blend the drained red beans, the onion, the garlic, the oat flakes, the swollen chia, the cumin, the paprika, the salt and the pepper, then form 8 patties.",
+        "Brown the patties in hot olive oil for 4 minutes on each side.",
+        "Mix the sesame paste with the lemon juice, the chopped parsley and the remaining soy drink until smooth.",
+        "Fill the warm pita bread with patties, sliced tomato, shredded green salad and the tahini sauce."
+      ]
+    },
+    "socca-poivrons-oignons": {
+      "title": "Socca with bell peppers and onions",
+      "steps": [
+        "Mix the chickpea flour, the soy drink, half of the oil, the salt, the pepper and the cumin, then let the batter rest.",
+        "Sauté the sliced onion, bell pepper and garlic in the remaining oil until soft.",
+        "Pour the batter into an oiled dish, spread the vegetables on top, then bake until the surface is golden.",
+        "Sprinkle with chopped parsley and paprika, then cut into portions with a drizzle of lemon."
+      ]
+    },
+    "ramen-tofu-champignons": {
+      "title": "Ramen with tofu and mushrooms",
+      "steps": [
+        "Cut the firm tofu into cubes then brown it in the sesame oil for 8 minutes.",
+        "Sauté the garlic, grated fresh ginger and sliced mushrooms for 5 minutes, then add the soy sauce.",
+        "Bring water to a boil with the stock cube, then cook the noodles for 4 minutes.",
+        "Divide the noodles and fresh spinach among bowls, pour over the stock, then top with the tofu, mushrooms, sliced spring onion and sesame seeds."
+      ]
+    },
+    "bibimbap-legumes-tofu-croustillant": {
+      "title": "Bibimbap with vegetables and crispy tofu",
+      "steps": [
+        "Rinse the rice then cook it covered for 15 minutes.",
+        "Cut the carrot and the zucchini into julienne strips, then sauté them separately in a drizzle of sesame oil for 3 minutes each.",
+        "Blanch the mung bean sprouts and the fresh spinach for 1 minute, then season with half the soy sauce, the crushed garlic and the sesame seeds.",
+        "Brown the diced tofu and the sliced button mushrooms with the chili and the remaining soy sauce for 6 minutes.",
+        "Arrange the rice in bowls with the vegetables, the tofu and the sliced spring onion."
+      ]
+    },
+    "spaghettis-lentilles-corail-basilic": {
+      "title": "Spaghetti with red lentils and basil",
+      "steps": [
+        "Sauté the finely chopped onion and the carrot in the olive oil for 5 minutes.",
+        "Add the minced garlic, the tomato paste and the rinsed red lentils, then stir for 1 minute.",
+        "Pour in the chopped tomatoes, add the herbs, salt and pepper, then simmer covered for 20 minutes.",
+        "Cook the pasta in a large pot of salted water for 10 minutes, drain them then mix them with the sauce and the chopped basil."
+      ]
+    },
+    "brochettes-crevettes-harissa": {
+      "title": "Shrimp skewers with harissa, zucchini and bell peppers",
+      "steps": [
+        "Mix the harissa, the olive oil, the crushed garlic, the lemon juice and the salt in a bowl.",
+        "Add the shrimp, the zucchini and the bell peppers cut into pieces, then marinate for 10 minutes.",
+        "Skewer the ingredients alternately and arrange them on a baking tray.",
+        "Bake for 8 minutes, turning the skewers halfway through, until the shrimp are pink."
+      ]
+    },
+    "escabeche-maquereau-carottes-laurier": {
+      "title": "Mackerel escabeche with carrots and bay leaf",
+      "steps": [
+        "Peel the carrots and slice them into thin rounds, then thinly slice the onion.",
+        "Sauté the onion, the crushed garlic and the carrots in the olive oil for 8 minutes.",
+        "Add the vinegar, the dry white wine, the bay leaf, salt and pepper, then let simmer for 10 minutes.",
+        "Place the mackerel fillets in the marinade and cook for 5 minutes at a simmer, without boiling.",
+        "Let cool off the heat in the marinade, then chill for at least 1 hour before serving."
+      ]
+    },
+    "pates-anchois-chapelure-persil": {
+      "title": "Pasta with anchovy fillets, crispy breadcrumbs and parsley",
+      "steps": [
+        "Cook the pasta in a large pot of salted water until al dente, then drain, reserving some cooking water.",
+        "Heat half the olive oil and brown the breadcrumbs with half the crushed garlic for 3 minutes, then set aside.",
+        "Melt the anchovy fillets in the remaining oil with the chili and the remaining garlic, crushing with a spatula for 2 minutes.",
+        "Add the drained pasta, a little cooking water, the chopped parsley and the grated parmesan, then mix.",
+        "Serve topped with the browned breadcrumbs."
+      ]
+    },
+    "cabillaud-croute-moutarde-herbes": {
+      "title": "Cod loin with a mustard and herb crust",
+      "steps": [
+        "Preheat the oven and place the cod loin on a baking tray lined with parchment paper, seasoned with salt and pepper.",
+        "Melt the butter, then mix it with the mustard, breadcrumbs and provençal herbs. Spread this mixture over the fillets.",
+        "Bake for 12 minutes until the flesh flakes easily with a fork.",
+        "Cook the green beans in boiling salted water for 6 minutes, then serve them with the lemon cut into wedges."
+      ]
+    },
+    "cabillaud-wok-gingembre-germes-soja": {
+      "title": "Cod wok with ginger and mung bean sprouts",
+      "steps": [
+        "Cook the rice in twice its volume of salted water until fully absorbed, then cover and set aside.",
+        "Cut the cod into large pieces, slice the spring onion and the fresh ginger, and crush the garlic.",
+        "Sear the fish in the sesame oil for 6 minutes, turning it, then set aside.",
+        "Sauté the garlic, fresh ginger and spring onion for 2 minutes, then add the mung bean sprouts and the soy sauce and cook for 3 minutes.",
+        "Return the fish to the wok, sprinkle with sesame seeds and serve over the rice."
+      ]
+    },
+    "burgers-saumon-concombre-yaourt": {
+      "title": "Salmon burgers with cucumber and yogurt sauce",
+      "steps": [
+        "Finely chop the salmon with a knife, then mix it with the beaten egg, the breadcrumbs, the chopped chives, salt and pepper.",
+        "Form four patties and chill them for 15 minutes.",
+        "Cook the patties in the hot sunflower oil for 8 minutes, turning them, until they are golden and cooked through.",
+        "Grate the cucumber, mix it with the plain yogurt and the lemon juice and season the sauce.",
+        "Toast the burger buns, fill them with green salad, tomato slices, a patty and the sauce, then close them."
+      ]
+    },
+    "tortillas-saumon-fume-fromage-blanc": {
+      "title": "Tortilla wraps with smoked salmon and fresh cheese",
+      "steps": [
+        "Mix the fresh cheese with the lemon juice, the chopped chives and the pepper.",
+        "Spread the sauce over each tortilla, then arrange slices of smoked salmon and slices of avocado.",
+        "Add a few leaves of green salad and roll the tortillas tightly.",
+        "Cut each roll in half on the diagonal and serve immediately."
+      ]
+    },
+    "rillettes-thon-ciboulette-toasts": {
+      "title": "Tuna rillettes with chives and sandwich bread toasts",
+      "steps": [
+        "Drain the canned tuna and mash it with the softened butter using a fork.",
+        "Add the crème fraîche, the lemon juice, the chopped chives and the pepper, then mix until smooth.",
+        "Cut the sliced sandwich bread into triangles.",
+        "Cut the radish and the cucumber into thin rounds, then arrange them with the rillettes and the toasts."
+      ]
+    },
+    "pates-saumon-fume-petits-pois": {
+      "title": "Creamy pasta with smoked salmon and peas",
+      "steps": [
+        "Cook the pasta in a large pot of salted water for 10 minutes, then drain, reserving a little of the cooking water.",
+        "Melt the butter and sauté the sliced shallot for 3 minutes.",
+        "Pour in the single cream, add the frozen peas and simmer for 5 minutes.",
+        "Off the heat, add the smoked salmon cut into strips, the lemon juice, the chopped parsley, the grated parmesan and the pepper, then stir in the pasta."
+      ]
+    },
+    "crevettes-chorizo-tomates-persil": {
+      "title": "Sautéed shrimp with chorizo, cherry tomatoes and parsley",
+      "steps": [
+        "Slice the chorizo and fry it in the olive oil for 3 minutes to release its flavour.",
+        "Add the crushed garlic, chili and halved cherry tomatoes, then cook for 4 minutes.",
+        "Add the shrimp, season with salt and pepper, then cook for 3 minutes until they turn pink.",
+        "Sprinkle with chopped parsley and serve with the baguette sliced for sopping up the juices."
+      ]
+    },
+    "pitas-cabillaud-croustillant-citron": {
+      "title": "Crispy cod pitas with salad and lemon sauce",
+      "steps": [
+        "Cut the cod into sticks, then coat them in flour, beaten egg and breadcrumbs mixed with paprika.",
+        "Heat the sunflower oil in a frying pan and brown the sticks for 3 minutes on each side.",
+        "Mix the plain yogurt, lemon juice, crushed garlic, salt and pepper to make the sauce.",
+        "Warm the pita breads for 2 minutes in the oven, open them, then fill with torn green salad, the crispy sticks and the sauce."
+      ]
+    },
+    "curry-japonais-poulet-carottes": {
+      "title": "Japanese curry with chicken, carrots and potatoes",
+      "steps": [
+        "Cut the chicken into pieces, slice the onions and chop the carrots and potatoes into large cubes.",
+        "Heat the oil with the butter, brown the chicken for 5 minutes, then add the onions and vegetables and sauté for 5 minutes.",
+        "Sprinkle with curry and flour, stir, then pour in 1 l of hot water with the stock cubes, soy sauce and honey. Simmer covered for 20 minutes.",
+        "Cook the rice in salted water for 12 minutes.",
+        "Adjust the seasoning with salt and pepper, then serve the curry with the rice."
+      ]
+    },
+    "goulasch-hongrois-boeuf-paprika": {
+      "title": "Hungarian goulash with beef and paprika",
+      "steps": [
+        "Cut the beef into large cubes, slice the onions and cut the bell pepper into strips.",
+        "Brown the meat in the oil for 5 minutes, then add the onions and garlic and cook for 5 minutes.",
+        "Add the paprika, deglaze with the red wine, then add the tomato paste, the stock cubes dissolved in 1 l of water, the bay leaf, salt and pepper. Simmer covered for 75 minutes.",
+        "Add the potatoes cut into cubes and the bell peppers, then continue cooking covered for 25 minutes.",
+        "Off the heat, stir in the crème fraîche and serve piping hot."
+      ]
+    },
+    "salade-boulgour-saumon-fume-concombre": {
+      "title": "Bulgur salad with smoked salmon, cucumber and chives",
+      "steps": [
+        "Pour boiling salted water over the bulgur, cover and let it swell until fully absorbed.",
+        "Dice the cucumber and the cherry tomatoes, then finely snip the chives.",
+        "Cut the smoked salmon into thin strips.",
+        "Mix the lemon juice, olive oil, salt and pepper, then dress the cooled bulgur.",
+        "Add the vegetables, the salmon and the chives to the bulgur, gently toss and serve chilled."
+      ]
+    },
+    "salade-thai-vermicelles-poulet-cacahuetes": {
+      "title": "Thai rice vermicelli salad with chicken and peanuts",
+      "steps": [
+        "Soak the rice vermicelli in a large pot of boiling water off the heat for 5 minutes, then drain and rinse under cold water.",
+        "Cut the chicken into thin strips and brown in the sunflower oil over high heat for 6 minutes.",
+        "Peel and grate the carrot, slice the cucumber into thin ribbons and snip the fresh coriander.",
+        "Mix the lime juice, nuoc-mam, sugar and chili to prepare the dressing.",
+        "Assemble the vermicelli, the warm chicken and the vegetables, drizzle with the dressing, then sprinkle with crushed peanuts and coriander."
+      ]
+    },
+    "salade-tiede-pommes-de-terre-chorizo-poivrons": {
+      "title": "Warm potato salad with chorizo and bell peppers",
+      "steps": [
+        "Cook the potatoes whole in salted boiling water for 20 minutes, then drain them, let them cool slightly and slice them into rounds.",
+        "Cut the chorizo into slices and fry it in a dry pan for 4 minutes.",
+        "Slice the bell pepper and the onion, add them to the chorizo and brown everything over medium heat for 8 minutes.",
+        "Make the dressing with the vinegar, the mustard, the olive oil, the salt and the pepper.",
+        "Toss the potatoes, the chorizo, the bell peppers, the onion and the chopped parsley with the dressing, then serve immediately."
+      ]
+    },
+    "salade-pates-poulet-curry-pomme-raisins": {
+      "title": "Pasta salad with chicken, curry, apple and raisins",
+      "steps": [
+        "Cook the pasta in a large pot of salted boiling water according to the time indicated on the package, then rinse under cold water.",
+        "Cut the chicken into cubes and sear it in the olive oil with the curry for 8 minutes over medium heat.",
+        "Soak the raisins in a bowl of warm water for 10 minutes, then drain them.",
+        "Peel the apple, cut it into small dice and drizzle with lemon juice to prevent browning.",
+        "Mix the plain yogurt, the crème fraîche, the salt and the pepper, then combine the pasta, the chicken, the apple, the raisins and the chopped chives."
+      ]
+    },
+    "salade-endives-poire-noix-comte-lardons": {
+      "title": "Endive salad with pear, nuts, comté and bacon bits",
+      "steps": [
+        "Fry the bacon bits in a dry pan for 5 minutes, until golden and crispy.",
+        "Roughly crush the nuts and cut the comté into thin slices.",
+        "Cut the endives into sections and slice the pear thinly.",
+        "Make the dressing with the mustard, the vinegar, the honey, the olive oil, the salt and the pepper.",
+        "Assemble the endives, the pear, the comté, the nuts and the warm bacon bits, then drizzle with the dressing."
+      ]
+    },
+    "salade-rumsteck-saisi-radis-tomates-cerises": {
+      "title": "Seared rump steak salad with radishes and cherry tomatoes",
+      "steps": [
+        "Season the beef rump steak with salt and pepper, then sear it in very hot olive oil for 3 minutes on each side.",
+        "Let the meat rest off the heat, covered with foil, for 5 minutes.",
+        "Wash and quarter the radishes, halve the cherry tomatoes and thinly slice the spring onion.",
+        "Make the dressing with the mustard, the vinegar, the remaining olive oil and the chopped parsley.",
+        "Pick the green salad leaves, arrange them on plates with the vegetables, slice the meat thinly, then drizzle with the dressing."
+      ]
+    },
+    "soupe-crevettes-lait-coco-nouilles-riz": {
+      "title": "Shrimp soup with coconut milk and rice vermicelli",
+      "steps": [
+        "Peel the carrot and slice it into thin rounds, slice the onion, chop the garlic and grate the fresh ginger.",
+        "Sauté the onion, the garlic, the ginger and the carrot in the oil for 5 minutes over medium heat.",
+        "Pour in the coconut milk, 1 litre of water, the stock cube, the soy sauce and the chili, then simmer for 10 minutes.",
+        "Add the peeled shrimp, the rice vermicelli and the mung bean sprouts, cook for 3 minutes then drizzle with the lime juice.",
+        "Serve piping hot, sprinkled with the chopped fresh coriander and lime wedges."
+      ]
+    },
+    "soupe-chorizo-pois-chiches-epinards": {
+      "title": "Spanish soup with chorizo, chickpeas and fresh spinach",
+      "steps": [
+        "Cut the chorizo into slices, slice the onion, dice the bell pepper and the potatoes, and chop the garlic.",
+        "Fry the chorizo in the olive oil for 2 minutes, then add the onion, the garlic and the bell pepper and sweat for 5 minutes.",
+        "Add the paprika, the potatoes, the chopped tomatoes, the stock cube dissolved in 1.5 litres of water, then simmer for 20 minutes covered.",
+        "Add the drained chickpeas and the fresh spinach, cook for 5 minutes, then season with salt and pepper.",
+        "Serve with the chopped parsley."
+      ]
+    },
+    "soupe-boulettes-dinde-boulgour": {
+      "title": "Turkey meatball soup with bulgur and vegetables",
+      "steps": [
+        "Finely chop the turkey escalope, slice the onion, dice the carrot and the zucchini and soak the bulgur in a bowl of hot water.",
+        "Mix the chopped turkey, drained bulgur, egg, breadcrumbs, half the chopped parsley, salt and pepper, then form small meatballs.",
+        "Bring 1.5 litres of water to a simmer with the stock cube, the tomato paste, the carrot and the onion, then add the meatballs and cook for 10 minutes.",
+        "Add the zucchini and the provençal herbs and simmer for 5 minutes.",
+        "Serve sprinkled with the remaining chopped parsley."
+      ]
+    },
+    "soupe-tortilla-poulet-mais-avocat": {
+      "title": "Tortilla soup with chicken, corn and avocado",
+      "steps": [
+        "Cut the chicken fillet into thin strips, slice the onion, chop the garlic and cut the tortilla wraps into strips.",
+        "Brown the chicken strips in the oil with the onion and the garlic for 5 minutes, then add the cumin and the paprika.",
+        "Pour in the chopped tomatoes, the drained canned corn and the dissolved stock cube in 1.5 litres of water, season with salt and simmer for 15 minutes.",
+        "Arrange the tortilla strips on a tray and brown them in the oven for 8 minutes.",
+        "Dice the avocado and drizzle with lime juice. Serve the soup with the tortilla strips, the avocado, the chopped fresh coriander and the grated cheese."
+      ]
+    },
+    "soupe-nouilles-oeuf-champignons": {
+      "title": "Noodle soup with soft-boiled eggs and mushrooms",
+      "steps": [
+        "Plunge the eggs into boiling water for 6 minutes, then cool them in cold water and peel.",
+        "Sauté the chopped garlic, the grated ginger and the sliced mushrooms in the sesame oil for 5 minutes.",
+        "Pour in 1.5 litres of water, add the stock cubes and the soy sauce, bring to a boil, add the sliced spring onion and the fresh spinach and cook for 3 minutes.",
+        "Add the noodles and cook for about 4 minutes according to the time indicated on the packet.",
+        "Cut the eggs in half, distribute them among the bowls with the soup and sprinkle with sesame seeds."
+      ]
+    },
+    "soupe-gnocchi-pesto-haricots-verts": {
+      "title": "Gnocchi soup with pesto, green beans and cherry tomatoes",
+      "steps": [
+        "Slice the onion, dice the zucchini, cut the green beans into segments and halve the cherry tomatoes.",
+        "Sauté the onion and the chopped garlic in the olive oil for 4 minutes.",
+        "Pour in 1.5 litres of water with the stock cubes, bring to a boil, add the green beans and the zucchini and cook for 8 minutes.",
+        "Add the gnocchi and the cherry tomatoes and cook for 3 minutes, until the gnocchi float to the surface.",
+        "Off the heat, stir in the pesto, season with salt and pepper and serve with the grated parmesan."
+      ]
+    },
+    "velout-petits-pois-menthe": {
+      "title": "Creamy peas with mint",
+      "steps": [
+        "Sauté the sliced onion in the olive oil until translucent.",
+        "Add the potato cut into cubes, the crumbled stock cube and one litre of hot water, then simmer covered.",
+        "Add the frozen peas and continue cooking for 5 minutes.",
+        "Blend until smooth with the mint leaves, season with salt and pepper and serve piping hot."
+      ]
+    },
+    "tartines-radis-beurre-ciboulette": {
+      "title": "Radish, butter and chives toasts",
+      "steps": [
+        "Wash the radishes, trim the ends and slice them into thin rounds.",
+        "Generously spread each slice of bread with softened butter.",
+        "Arrange the radish rounds on the butter, then sprinkle with salt and pepper.",
+        "Chop the chives, scatter them over the toasts and serve immediately."
+      ]
+    },
+    "poivrons-grilles-ail-persil": {
+      "title": "Roasted bell peppers with garlic and parsley",
+      "steps": [
+        "Preheat the oven to 220°C, cut the bell peppers into large strips and arrange them on a baking tray with the garlic cloves unpeeled.",
+        "Roast until the skins are slightly charred.",
+        "Let cool slightly, remove the skins and seeds, peel the garlic, then cut the flesh into pieces.",
+        "Mix with the oil, the vinegar, the chopped parsley, the salt and the pepper, then let marinate for 30 minutes before serving."
+      ]
+    },
+    "courgettes-dorees-feta-menthe": {
+      "title": "Golden zucchini with feta and mint",
+      "steps": [
+        "Cut the zucchini into 5 mm slices and brown them in the olive oil in a frying pan, 3 minutes per side.",
+        "Arrange the zucchini in a dish, drizzle with the lemon juice, season with salt and pepper.",
+        "Crumble the feta on top and sprinkle with chopped mint.",
+        "Let rest for 10 minutes at room temperature before serving."
+      ]
+    },
+    "bouchees-feuilletees-tomates-cerises": {
+      "title": "Puff pastry bites with cherry tomatoes and mozzarella",
+      "steps": [
+        "Preheat the oven to 200°C and unroll the puff pastry onto a baking tray lined with parchment paper.",
+        "Spread the mustard over the pastry, arrange the tomatoes halved and the crumbled mozzarella on top, then season with salt, pepper and provençal herbs. Cut the pastry into 8 squares.",
+        "Bake until the edges are well golden.",
+        "Let cool for 5 minutes, sprinkle with chopped basil and serve."
+      ]
+    },
+    "carpaccio-betterave-poire-chevre": {
+      "title": "Beetroot, pear and goat cheese carpaccio",
+      "steps": [
+        "Slice the beetroot and the pear very thinly using a sharp knife or a mandoline.",
+        "Prepare the dressing by whisking the vinegar, the mustard, the olive oil, the salt and the pepper.",
+        "Arrange the beetroot and pear slices in a rosette on plates, crumble the goat cheese and sprinkle the nuts on top.",
+        "Drizzle with the dressing and serve at room temperature."
+      ]
+    },
+    "champignons-sautes-ail-persil": {
+      "title": "Sautéed button mushrooms with garlic and parsley",
+      "steps": [
+        "Heat the butter and oil in a large frying pan, then sauté the sliced button mushrooms over high heat for 8 minutes.",
+        "Add the chopped garlic and the chopped parsley, then cook for another 1 minute while stirring.",
+        "Season with salt and pepper.",
+        "Toast the slices of country bread and top them with the mushrooms before serving hot."
+      ]
+    },
+    "choux-bruxelles-roties-miel-noix": {
+      "title": "Roasted brussels sprouts with honey and nuts",
+      "steps": [
+        "Preheat the oven to 200°C, cut the brussels sprouts in half and arrange them on a baking tray with the oil, the salt and the pepper.",
+        "Roast until well browned and tender.",
+        "Toast the chopped nuts dry in a pan for 3 minutes.",
+        "Drizzle the sprouts with honey, sprinkle with the nuts and serve hot."
+      ]
+    },
+    "endives-braisees-orange": {
+      "title": "Braised endives with orange",
+      "steps": [
+        "Melt the butter in a sauté pan, sprinkle with sugar, then sauté the endives halved for 5 minutes.",
+        "Add the orange juice, the peeled orange segments, salt and pepper, then cover and braise over low heat.",
+        "Remove the lid and let the juices caramelize for 5 minutes.",
+        "Serve hot, spooned with its juices."
+      ]
+    },
+    "poireaux-vinaigrette-oeufs-durs": {
+      "title": "Leeks with vinaigrette and hard-boiled eggs",
+      "steps": [
+        "Cook the whole leeks in boiling salted water for 20 minutes.",
+        "Cook the eggs for 9 minutes in a separate saucepan, then peel them.",
+        "Drain the leeks and let them cool for 10 minutes.",
+        "Whisk the vinegar, mustard, olive oil, salt and pepper, then drizzle over the leeks.",
+        "Serve cold, accompanied by the eggs cut into quarters."
+      ]
+    },
+    "tartinade-feves-menthe-pitas": {
+      "title": "Fava bean and mint spread with grilled pitas",
+      "steps": [
+        "Drain and rinse the fava beans, then blend them with the garlic clove, the lemon juice, olive oil, cumin and salt.",
+        "Add the chopped mint leaves and blend until smooth.",
+        "Cut the pita bread into triangles and dry-grill them in a hot pan.",
+        "Serve the spread with the grilled pita triangles."
+      ]
+    },
+    "tartelettes-epinards-ciboulette": {
+      "title": "Spring tartlets with spinach and chives",
+      "steps": [
+        "Wilt the spinach in a hot pan for 3 minutes, then drain and chop it.",
+        "Preheat the oven to 180°C and line four small molds with the shortcrust pastry.",
+        "Beat the eggs with the cream, ground nutmeg, salt, pepper and the chopped chives, then add the spinach and the grated cheese.",
+        "Divide the mixture among the molds, bake for 30 minutes, then let stand for 10 minutes before unmolding."
+      ]
+    },
+    "tartinade-betterave-chevre-noix": {
+      "title": "Beetroot, goat cheese and walnut spread",
+      "steps": [
+        "Blend the cooked beetroot cut into cubes with the goat cheese, the peeled garlic, olive oil and vinegar.",
+        "Season with salt and pepper, then blend until smooth.",
+        "Roughly chop the nuts with a knife.",
+        "Serve the spread in a bowl and sprinkle with the chopped nuts."
+      ]
+    },
+    "tartinade-haricots-blancs-citron-persil": {
+      "title": "White bean spread with lemon and parsley",
+      "steps": [
+        "Drain and rinse the white beans, then blend them with the peeled garlic, the lemon juice, olive oil and cumin.",
+        "Salt, pepper and blend again until creamy.",
+        "Add the chopped parsley, mix and serve well chilled."
+      ]
+    },
+    "rillettes-sardines-citron-ciboulette": {
+      "title": "Rillettes of sardines with lemon and chives",
+      "steps": [
+        "Mash the drained sardines with the softened butter and the lemon juice using a fork.",
+        "Add the chopped chives, season lightly with salt and pepper and mix.",
+        "Chill to allow the flavors to develop.",
+        "Serve on thin slices or in a bowl with a wedge of lemon."
+      ]
+    },
+    "bouchees-feuilletees-jambon-moutarde-comte": {
+      "title": "Puff pastry bites with cooked ham, mustard and comté",
+      "steps": [
+        "Preheat the oven to 200 °C and cut the puff pastry into squares about 8 cm each.",
+        "Spread mustard on each square, top with shredded cooked ham and grated comté, then fold to form bites.",
+        "Beat the egg with a pinch of salt, brush the bites and bake for 15 minutes until deeply golden.",
+        "Let rest for a few minutes before serving."
+      ]
+    },
+    "tartinade-saumon-fume-fromage-blanc": {
+      "title": "Smoked salmon spread with fromage blanc",
+      "steps": [
+        "Finely chop the smoked salmon with a knife.",
+        "Mix the salmon with the fromage blanc, the lemon juice, the chopped chives and the pepper.",
+        "Serve immediately or keep chilled until serving."
+      ]
+    },
+    "batons-polenta-parmesan-herbes": {
+      "title": "Crispy polenta sticks with parmesan",
+      "steps": [
+        "Bring 1 litre of water to a boil with the stock cube, then whisk in the polenta in a steady stream.",
+        "Cook for 5 minutes over medium heat, stirring constantly, then stir in the grated parmesan, the provençal herbs, salt and pepper.",
+        "Spread the polenta in an oiled dish to a thickness of 2 cm and chill until set.",
+        "Cut into sticks and brown them in hot olive oil, 3 minutes per side."
+      ]
+    },
+    "galettes-courgette-feta-menthe": {
+      "title": "Zucchini, feta and mint patties",
+      "steps": [
+        "Grate the zucchinis, salt them and let drain for 10 minutes in a colander.",
+        "Squeeze the zucchinis in a cloth, then mix with the eggs, the flour, the baking powder, the chopped mint and the crumbled feta. Add pepper.",
+        "Fry spoonfuls of batter in hot sunflower oil, 3 minutes per side.",
+        "Drain on paper towels and serve warm."
+      ]
+    },
+    "tartines-olives-anchois-toasts": {
+      "title": "Olive and anchovy spread on toasts",
+      "steps": [
+        "Preheat the oven to 200 °C and slice the baguette on the diagonal.",
+        "Blend the pitted olives, the drained anchovy fillets, the peeled garlic and the olive oil until coarsely combined.",
+        "Add the oregano and a pinch of pepper, then mix.",
+        "Arrange the baguette slices on a tray and grill for 5 minutes in the oven.",
+        "Spread the mixture on the toasts while still warm and serve immediately."
+      ]
+    },
+    "bouchees-quinoa-chevre-carotte": {
+      "title": "Quinoa, carrot and goat cheese bites baked in the oven",
+      "steps": [
+        "Cook the quinoa in 300 ml of salted water for 15 minutes, then drain it.",
+        "Grate the carrots and mix them into the warm quinoa with the beaten eggs, the crumbled goat cheese, the breadcrumbs, the cumin and the pepper.",
+        "Form 16 balls, brush them with olive oil and arrange them on a baking sheet lined with parchment paper.",
+        "Bake at 200 °C for 20 minutes, turning the bites halfway through cooking."
+      ]
+    },
+    "tartinade-patate-douce-tahini": {
+      "title": "Roasted sweet potato spread with sesame paste",
+      "steps": [
+        "Preheat the oven to 200 °C, cut the sweet potatoes in half, brush them with 1 tbsp of olive oil then place them cut side down.",
+        "Roast for 40 minutes until the flesh is tender, then scoop it out with a spoon.",
+        "Blend the flesh with the sesame paste, the juice of the lemon, the peeled garlic, the paprika, the salt, the pepper and the second tablespoon of olive oil.",
+        "Serve warm or cold."
+      ]
+    },
+    "beignets-crevettes-coco-citron-vert": {
+      "title": "Peeled shrimp fritters with grated coconut and lime",
+      "steps": [
+        "Roughly chop the peeled shrimp and cut them into small pieces.",
+        "Mix the flour, the egg, the milk, the zest and juice of the lime, the grated coconut, the grated fresh ginger, the chili, the salt and the shrimp.",
+        "Spoon small patties and fry them in hot sunflower oil, 2 minutes per side.",
+        "Drain on paper towels and serve immediately."
+      ]
+    },
+    "tartinade-feves-menthe-citron": {
+      "title": "Fava bean spread with mint and lemon",
+      "steps": [
+        "Rinse the drained fava beans and blend them with the peeled garlic, the juice of the lemon, half of the mint leaves and the olive oil.",
+        "Add the cumin, salt, pepper and blend until smooth.",
+        "Toast the slices of country bread in a dry pan, 2 minutes per side.",
+        "Spread the mixture on the slices and top with the remaining chopped mint."
+      ]
+    },
+    "clafoutis-poires-amandes": {
+      "title": "Pear and almond clafoutis",
+      "steps": [
+        "Preheat the oven to 180 °C. Peel the pears, cut them into thin wedges and arrange them in a buttered dish.",
+        "Mix the flour, the sugar and the vanilla sugar, then add the beaten eggs and the milk to obtain a smooth batter.",
+        "Pour the batter over the pears, sprinkle with the flaked almonds and bake.",
+        "Let cool for 10 minutes before serving."
+      ]
+    },
+    "far-breton-pruneaux": {
+      "title": "Far Breton with pitted prunes",
+      "steps": [
+        "Preheat the oven to 180 °C and butter a tart dish.",
+        "Whisk the eggs with the sugar, add the flour and the vanilla sugar, then pour in the milk little by little while stirring.",
+        "Spread the pitted prunes in the dish, pour the batter over them and bake.",
+        "Let cool slightly before unmolding or serving warm."
+      ]
+    },
+    "creme-citron-legere": {
+      "title": "Light lemon cream",
+      "steps": [
+        "Squeeze the lemons and reserve the zest.",
+        "In a saucepan, whisk the eggs with the sugar, the juice and the zest, then add the butter cut into pieces.",
+        "Cook over low heat, stirring constantly until thickened, about 8 minutes, without letting it boil.",
+        "Let cool, fold in the whipped cream and chill."
+      ]
+    },
+    "pommes-four-speculoos": {
+      "title": "Baked apples filled with speculoos",
+      "steps": [
+        "Preheat the oven to 180 °C. Core the apples, keeping the base intact.",
+        "Crush the speculoos with the melted butter, the honey and the cinnamon.",
+        "Fill the apples with this mixture, arrange them in a dish and bake.",
+        "Serve warm straight from the oven."
+      ]
+    },
+    "brownies-aux-noix": {
+      "title": "Walnut brownies",
+      "steps": [
+        "Preheat the oven to 170 °C and line a square baking tin.",
+        "Melt the dark chocolate and the butter in a bain-marie, then let cool slightly.",
+        "Add the sugar and the eggs one at a time, then the flour, the cocoa powder and the chopped nuts.",
+        "Pour the batter into the tin and bake for 25 minutes, until the center is still slightly gooey. Cool before cutting into squares."
+      ]
+    },
+    "semoule-lait-fleur-oranger": {
+      "title": "Semolina pudding with orange blossom",
+      "steps": [
+        "Heat the milk with the butter and the sugar over medium heat.",
+        "Pour the semolina in a thin stream while stirring, add the raisins and let thicken.",
+        "Off the heat, flavor with the orange blossom water.",
+        "Divide into bowls and chill."
+      ]
+    },
+    "iles-flottantes-vanille": {
+      "title": "Vanilla floating islands",
+      "steps": [
+        "Separate the egg whites from the yolks.",
+        "Whip the egg whites with 90 g of sugar until stiff, then form meringue quenelles using a spoon.",
+        "Bring the milk to a simmer in a large saucepan and poach the meringue quenelles for 1 minute on each side. Remove and set aside.",
+        "Beat the yolks with the remaining sugar and the vanilla sugar, pour in the warm cooking milk, then cook over low heat, stirring, until the custard coats the back of a spoon.",
+        "Pour the custard into serving dishes, top with the islands and chill."
+      ]
+    },
+    "truffes-coco-chocolat": {
+      "title": "Coconut chocolate truffles",
+      "steps": [
+        "Heat the heavy cream, pour it over the chopped chocolate and stir until you obtain a smooth ganache.",
+        "Add the butter cut into pieces and the vanilla sugar, then mix well.",
+        "Refrigerate the ganache for 2 hours until firm.",
+        "Shape into balls, then roll them in the grated coconut mixed with the cocoa powder."
+      ]
+    },
+    "beignets-pommes-cannelle": {
+      "title": "Apple fritters with cinnamon",
+      "steps": [
+        "Mix the flour, baking powder, 40 g of sugar and the cinnamon.",
+        "Add the eggs and the milk to obtain a smooth batter, then let it rest.",
+        "Peel the apples, cut them into thin rings and dip them in the batter.",
+        "Fry the rings in oil heated to about 170 °C, 3 minutes per side.",
+        "Drain on absorbent paper and roll the fritters in the remaining sugar."
+      ]
+    },
+    "tarte-chocolat-framboises": {
+      "title": "Chocolate and raspberry tart",
+      "steps": [
+        "Preheat the oven to 180 °C and line a tin with the shortcrust pastry.",
+        "Spread the frozen raspberries over the pastry base.",
+        "Heat the cream, pour it over the chopped dark chocolate, then fold in the beaten eggs and the sugar.",
+        "Pour the filling over the raspberries and bake until the custard is set. Let cool slightly before serving."
+      ]
+    },
+    "glace-yaourt-fruits-rouges": {
+      "title": "Quick yogurt and mixed berry ice cream",
+      "steps": [
+        "Blend the frozen berries with the sugar and the lemon juice until you obtain a purée.",
+        "Whisk the cold cream until it holds, then fold in the plain yogurts.",
+        "Mix the fruit purée into the cream, pour into a mould and freeze for at least 4 hours.",
+        "Remove the ice cream from the freezer 10 minutes before serving."
+      ]
+    },
+    "bananes-poelees-beurre-cannelle": {
+      "title": "Pan-fried bananas with butter and cinnamon, whipped cream",
+      "steps": [
+        "Whip the cold cream with 20 g of sugar until you obtain stiff peaks, then keep chilled.",
+        "Peel the bananas and cut them into thick slices.",
+        "Melt the butter in a frying pan over medium heat, add the bananas and the remaining sugar, and let brown.",
+        "Sprinkle with cinnamon, caramelize for 2 minutes, then plate the bananas with the whipped cream."
+      ]
+    },
+    "truffes-chocolat-cacao": {
+      "title": "Dark chocolate truffles with cocoa",
+      "steps": [
+        "Heat the cream in a saucepan over low heat until it begins to simmer, then pour it over the chopped dark chocolate.",
+        "Stir in the butter in pieces and mix until you obtain a smooth ganache.",
+        "Let cool then refrigerate the ganache for 1 hour.",
+        "Scoop out spoonfuls, roll them into balls and coat them in cocoa powder; keep chilled."
+      ]
+    },
+    "energy-balls-beurre-cacahuete": {
+      "title": "Peanut butter and chocolate energy balls",
+      "steps": [
+        "Mix the oat flakes, the peanut butter and the honey in a bowl.",
+        "Chop the dark chocolate and fold it into the mixture.",
+        "Form walnut-sized balls with your hands.",
+        "Roll the balls in the grated coconut.",
+        "Refrigerate the balls for 30 minutes so they hold together."
+      ]
+    },
+    "creme-ricotta-pistaches-miel": {
+      "title": "Ricotta cream with pistachios and honey",
+      "steps": [
+        "Squeeze the lemon to obtain about 2 tablespoons of juice.",
+        "Whisk the ricotta with the honey, sugar and lemon juice until smooth and creamy.",
+        "Roughly chop the shelled pistachios.",
+        "Divide the cream among four small bowls, sprinkle with pistachios and refrigerate for 30 minutes before serving."
+      ]
+    },
+    "carpaccio-ananas-citron-vert-menthe": {
+      "title": "Pineapple carpaccio with lime and mint",
+      "steps": [
+        "Peel the pineapple, remove the core and slice the flesh very thinly.",
+        "Squeeze the limes to obtain their juice.",
+        "Arrange the pineapple slices in a circle on a large platter, sprinkle with sugar and drizzle with lime juice.",
+        "Chop the mint, scatter it over the carpaccio and let macerate in the fridge for 30 minutes."
+      ]
+    },
+    "fraises-vin-blanc-menthe": {
+      "title": "Strawberries marinated in white wine and mint",
+      "steps": [
+        "Wash the strawberries, remove the stems and halve the larger ones.",
+        "Heat the white wine with the sugar over medium heat until the sugar is completely dissolved.",
+        "Let the syrup cool for 30 minutes.",
+        "Pour the syrup over the strawberries, add the chopped mint and let macerate in the fridge for 1 hour."
+      ]
+    },
+    "semifreddo-framboise": {
+      "title": "Raspberry semifreddo with mascarpone",
+      "steps": [
+        "Blend the thawed raspberries with 30 g of sugar then pass the purée through a sieve to remove the seeds.",
+        "Whip the single cream cold with the mascarpone, the remaining sugar and the vanilla sugar until it holds.",
+        "Gently fold the raspberry purée into the cream to create marbling.",
+        "Pour the mixture into a loaf pan lined with plastic wrap and freeze for at least 6 hours before unmolding."
+      ]
+    },
+    "sorbet-mangue-citron-vert": {
+      "title": "Mango and lime sorbet without an ice cream maker",
+      "steps": [
+        "Peel the mangoes, remove the flesh from the stone and cut into pieces.",
+        "Squeeze the limes to obtain their juice.",
+        "Blend the mango with the lime juice, the orange juice and the sugar until smooth.",
+        "Pour into a dish and freeze for 4 hours, scraping with a fork every 45 minutes."
+      ]
+    },
+    "salami-chocolat-speculoos": {
+      "title": "Chocolate salami with speculoos and peanuts",
+      "steps": [
+        "Crush the speculoos with a rolling pin inside a plastic bag.",
+        "Melt the butter with the dark chocolate in a bain-marie over low heat, stirring.",
+        "Roughly chop the peanuts and mix them with the speculoos into the melted chocolate.",
+        "Shape into a log on a sheet of baking paper, wrap and refrigerate for 2 hours before slicing."
+      ]
+    },
+    "ecorces-chocolat-fruits-secs": {
+      "title": "Dark chocolate bark with dried fruits",
+      "steps": [
+        "Melt the dark chocolate broken into pieces in a bain-marie over low heat.",
+        "Spread the melted chocolate in a layer about 5 mm thick on a baking sheet lined with baking paper.",
+        "Coarsely chop the dried apricots and the shelled pistachios, then sprinkle them with the flaked almonds and the raisins.",
+        "Let the barks set in the fridge for 30 minutes before breaking them into pieces."
+      ]
+    },
+    "cheesecake-sans-cuisson-framboises": {
+      "title": "No‑bake cheesecake with berry coulis",
+      "steps": [
+        "Crush the speculoos biscuits, melt the butter and mix the two, then press the mixture into the base of a springform pan.",
+        "Whisk the mascarpone with the fromage blanc, 60 g of sugar and the lemon juice until smooth.",
+        "Whip the cold single cream into whipped cream with the remaining sugar, then gently fold it into the mixture.",
+        "Pour the cream over the speculoos base, smooth and refrigerate for 4 hours.",
+        "Heat the frozen berries with a little sugar for 5 minutes, let cool, then spoon the coulis over the cheesecake when serving."
+      ]
+    },
+    "nice-cream-banane-cacao": {
+      "title": "Banana nice cream with cocoa and peanut butter",
+      "steps": [
+        "Peel the bananas, cut them into rounds and freeze for 2 hours on a baking sheet lined with baking paper.",
+        "Blend the frozen banana rounds with the cocoa, the honey and the coconut milk until you obtain an ice-cream-like texture.",
+        "Serve immediately, adding a spoonful of peanut butter to each portion."
+      ]
+    },
+    "polenta-sucree-poire-miel": {
+      "title": "Sweet polenta with pear and honey",
+      "steps": [
+        "Peel the pear, cut it into small dice then sauté in a frying pan with the butter and the cinnamon.",
+        "Bring the milk and the salt to a boil, pour the polenta in a thin stream while whisking, then cook over low heat for 5 minutes, stirring.",
+        "Add the honey, mix, divide into bowls and top with the warm pears."
+      ]
+    },
+    "chaussons-pomme-cannelle": {
+      "title": "Apple and cinnamon turnovers",
+      "steps": [
+        "Peel the apples, cut them into small dice then sauté in a frying pan with the butter, the sugar and the cinnamon for 8 minutes.",
+        "Let the filling cool for 10 minutes, then unroll the puff pastry and cut it into four squares.",
+        "Place a spoonful of filling in the centre of each square, fold into a triangle and seal the edges with a fork.",
+        "Brush with the beaten egg yolk then bake at 200 °C for 20 minutes until the turnovers are golden."
+      ]
+    },
+    "wraps-oeuf-epinards-fromage": {
+      "title": "Scrambled egg, spinach and cheese wraps",
+      "steps": [
+        "Heat the olive oil in a frying pan, add the fresh spinach and let it wilt for 3 minutes over medium heat.",
+        "Beat the eggs with the salt and the pepper, pour them into the pan then gently scramble for 3 minutes.",
+        "Distribute the mixture over the warm tortilla wraps, sprinkle with the grated cheese, fold the sides then roll up.",
+        "Brown the wraps for 2 minutes on each side in a clean frying pan."
+      ]
+    },
+    "muffins-carotte-noix": {
+      "title": "Carrot and walnut muffins",
+      "steps": [
+        "Preheat the oven to 180 °C, grate the carrots finely and roughly chop the walnuts.",
+        "Beat the eggs with the sugar, add the oil then the grated carrot.",
+        "Fold in the flour, the baking powder and the cinnamon, then the walnuts, mixing only until combined.",
+        "Spoon the batter into muffin tins and bake for 25 minutes at 180 °C until a skewer comes out clean."
+      ]
+    },
+    "tartines-fromage-blanc-radis": {
+      "title": "Fresh white cheese, radish and chives toasts",
+      "steps": [
+        "Wash and slice the radishes thinly.",
+        "Mix the fromage blanc with the chopped chives, salt and pepper.",
+        "Toast the slices of bread in a dry pan for 3 minutes per side, then drizzle with a little olive oil.",
+        "Spread each slice with the fromage blanc, top with radishes and serve immediately."
+      ]
+    },
+    "gaufres-yaourt-fruits-rouges": {
+      "title": "Yogurt waffles with berries",
+      "steps": [
+        "Melt the butter, then in a bowl mix the flour, the baking powder and 30 g of sugar.",
+        "Add the eggs, the plain yogurts, the milk and the vanilla extract, then mix until you have a smooth batter.",
+        "Melt the frozen berries in a saucepan over low heat with the remaining 10 g of sugar for 5 minutes.",
+        "Heat the waffle iron, pour a ladle of batter and cook for about 4 minutes per waffle.",
+        "Serve the waffles warm topped with the berry sauce."
+      ]
+    },
+    "galettes-patate-douce-oeuf": {
+      "title": "Sweet potato cakes with fried eggs",
+      "steps": [
+        "Grate the sweet potato and the onion, press to remove excess water, then mix with the paprika, salt and pepper.",
+        "Shape four cakes, pressing them firmly, then brown them for 5 minutes per side in hot oil.",
+        "Crack an egg onto each cake, cover and cook for 4 minutes until the whites are set.",
+        "Sprinkle with chopped chives and serve immediately."
+      ]
     }
   },
   "ingredients": {

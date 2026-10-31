@@ -3119,6 +3119,1212 @@
         "Déposer des boules de pâte à la cuillère et cuire 5 minutes en les retournant, jusqu'à ce qu'elles soient dorées.",
         "Égoutter sur du papier absorbant et servir tiède."
       ]
+    },
+    "salade-lyonnaise-complete": {
+      "title": "Salade lyonnaise complète",
+      "steps": [
+        "Cuire les pommes de terre entières à l'eau bouillante salée, puis les éplucher et les couper en tranches épaisses.",
+        "Faire dorer les lardons à sec dans une poêle, ajouter les tranches de pain-campagne et les faire griller des deux côtés.",
+        "Pocher les oeufs dans de l'eau frémissante additionnée de vinaigre pendant 3 minutes, puis les égoutter.",
+        "Préparer la vinaigrette avec l'échalote hachée, la moutarde, le vinaigre, l'huile, le sel et le poivre. Dresser la salade avec les pommes de terre, les lardons, les croûtons et les oeufs, puis napper de vinaigrette."
+      ]
+    },
+    "oeufs-en-meurette": {
+      "title": "Œufs en meurette",
+      "steps": [
+        "Faire revenir les lardons, l'oignon émincé et l'échalote hachée dans le beurre pendant 5 minutes.",
+        "Verser le vin rouge, ajouter l'ail écrasé, le laurier, le thym et les champignons en quartiers, puis laisser mijoter 20 minutes.",
+        "Pocher les oeufs dans de l'eau frémissante vinaigrée pendant 3 minutes et les égoutter.",
+        "Griller les tranches de pain-campagne, les disposer dans les assiettes, poser les oeufs dessus, napper de sauce, saler, poivrer et servir."
+      ]
+    },
+    "poireaux-vinaigrette-jambon": {
+      "title": "Poireaux vinaigrette au jambon",
+      "steps": [
+        "Nettoyer les poireaux, les couper en deux dans la longueur et les cuire à l'eau salée pendant 20 minutes.",
+        "Cuire les oeufs durs dans une casserole d'eau frémissante pendant 9 minutes, puis les écaler.",
+        "Préparer la vinaigrette avec la moutarde, le vinaigre, l'huile, le sel, le poivre et le persil haché.",
+        "Égoutter les poireaux, les disposer dans un plat, napper de vinaigrette, ajouter le jambon en tranches et les oeufs en quartiers."
+      ]
+    },
+    "aligot-saucisse-comte": {
+      "title": "Aligot au comté et saucisses",
+      "steps": [
+        "Éplucher les pommes de terre, les couper en morceaux et les cuire à l'eau salée avec les gousses d'ail entières pendant 25 minutes.",
+        "Cuire les saucisses à la poêle à feu moyen pendant 15 minutes en les retournant régulièrement.",
+        "Écraser les pommes de terre et l'ail cuit, puis incorporer le beurre et la crème pour obtenir une purée lisse.",
+        "Ajouter le comté râpé petit à petit dans la purée chaude et remuer à feu doux jusqu'à ce qu'il forme des filaments. Saler, poivrer et servir avec les saucisses."
+      ]
+    },
+    "pommes-sarladaises-cuisse-canard": {
+      "title": "Cuisses de canard et pommes sarladaises",
+      "steps": [
+        "Faire cuire les cuisses de canard côté peau dans une poêle à feu moyen pendant 25 minutes pour faire fondre la graisse, puis les réserver.",
+        "Éplucher les pommes de terre, les couper en rondelles épaisses et les faire dorer dans la graisse de canard avec l'ail haché, le thym et le sel pendant 20 minutes.",
+        "Remettre les cuisses sur les pommes de terre, couvrir et poursuivre la cuisson à feu doux pendant 15 minutes.",
+        "Parsemer de persil haché, poivrer et servir bien chaud."
+      ]
+    },
+    "saltimbocca-dinde-jambon": {
+      "title": "Saltimbocca de dinde au jambon et au vin blanc",
+      "steps": [
+        "Aplatir les escalopes de dinde entre deux feuilles de papier cuisson, puis les saler et les poivrer.",
+        "Poser sur chaque escalope une tranche de jambon blanc et saupoudrer d'herbes.",
+        "Faire chauffer l'huile et 15 g de beurre, puis saisir les escalopes côté jambon 3 minutes, retourner et cuire encore 2 minutes.",
+        "Retirer les escalopes, déglacer la poêle avec le vin blanc et réduire de moitié pendant 4 minutes.",
+        "Remettre les escalopes dans la sauce, ajouter le beurre restant, rectifier l'assaisonnement et servir aussitôt."
+      ]
+    },
+    "osso-buco-veau-gremolata": {
+      "title": "Osso buco de veau à la gremolata",
+      "steps": [
+        "Fariner les morceaux de veau, puis les saler et les poivrer.",
+        "Faire dorer les morceaux dans l'huile chaude pendant 8 minutes, puis les réserver.",
+        "Faire revenir l'oignon, la carotte et une gousse d'ail émincés pendant 5 minutes dans la même cocotte.",
+        "Déglacer au vin blanc, ajouter la tomate concassée et le bouillon émietté, remettre le veau, couvrir et mijoter à feu doux pendant 1 h 30.",
+        "Hacher le persil avec le zeste du citron et la seconde gousse d'ail, puis parsemer sur le plat avant de servir."
+      ]
+    },
+    "arancini-jambon-mozzarella": {
+      "title": "Arancini au jambon et à la mozzarella",
+      "steps": [
+        "Faire revenir l'oignon émincé dans le beurre, ajouter le riz et le nacrer 2 minutes.",
+        "Verser peu à peu le bouillon chaud et cuire le riz 18 minutes en remuant, jusqu'à ce qu'il soit tendre.",
+        "Laisser refroidir le riz, puis incorporer le parmesan, un oeuf entier battu et le sel.",
+        "Former des boules de riz autour d'un dé de mozzarella et de jambon, puis les passer dans la farine, l'oeuf battu restant et la chapelure.",
+        "Frire les arancini dans l'huile chaude pendant 4 minutes jusqu'à ce qu'ils soient bien dorés, puis égoutter sur du papier absorbant."
+      ]
+    },
+    "cannelloni-poulet-poivrons": {
+      "title": "Cannelloni au poulet et aux poivrons",
+      "steps": [
+        "Cuire les feuilles de lasagne 8 minutes dans une grande casserole d'eau bouillante salée, puis les égoutter.",
+        "Faire revenir l'oignon et l'ail émincés dans l'huile pendant 4 minutes, ajouter le poulet et les poivrons en dés, puis cuire encore 10 minutes.",
+        "Hors du feu, mélanger la préparation avec la ricotta, la moitié du parmesan, le sel et le poivre. Garnir chaque feuille de farce et rouler. Étaler la tomate concassée au fond d'un plat et y ranger les cannelloni.",
+        "Parsemer de mozzarella et du parmesan restant, puis cuire au four à 190°C pendant 25 minutes."
+      ]
+    },
+    "pollo-al-ajillo": {
+      "title": "Poulet à l'ail à l'espagnole (pollo al ajillo)",
+      "steps": [
+        "Saler et poivrer les cuisses de poulet, puis les faire dorer dans l'huile d'olive pendant 8 min.",
+        "Ajouter l'ail en lamelles et le piment, faire revenir 1 min sans laisser brûler l'ail.",
+        "Déglacer au vin blanc, couvrir et laisser mijoter 25 min à feu doux.",
+        "Saupoudrer de paprika et de persil haché, puis servir bien chaud."
+      ]
+    },
+    "gambas-al-ajillo": {
+      "title": "Gambas à l'ail et au piment (gambas al ajillo)",
+      "steps": [
+        "Chauffer l'huile d'olive avec l'ail émincé et le piment à feu doux pendant 2 min.",
+        "Ajouter les crevettes et les saisir à feu vif pendant 3 min jusqu'à ce qu'elles soient roses.",
+        "Saler, parsemer de persil haché et servir aussitôt avec la baguette coupée en tranches."
+      ]
+    },
+    "fabada-asturienne-simplifiee": {
+      "title": "Fabada asturienne simplifiée",
+      "steps": [
+        "Faire revenir l'oignon émincé et l'ail dans l'huile d'olive pendant 5 min.",
+        "Ajouter le petit salé, le chorizo et la saucisse fumée coupés en morceaux, puis dorer 4 min.",
+        "Verser 1 litre de bouillon préparé avec les cubes, ajouter le laurier et le paprika, puis cuire à frémissement 30 min.",
+        "Ajouter les haricots égouttés, poursuivre la cuisson 15 min à petit frémissement, puis servir."
+      ]
+    },
+    "croquetas-de-jambon": {
+      "title": "Croquetas de jambon à l'espagnole",
+      "steps": [
+        "Faire fondre le beurre, ajouter la farine et cuire 2 min en remuant.",
+        "Verser le lait peu à peu en fouettant, ajouter le jambon haché et la muscade, puis cuire 5 min jusqu'à obtenir une crème épaisse.",
+        "Étaler la préparation sur un plat huilé et laisser refroidir au moins 2 h au réfrigérateur.",
+        "Former des petites boulettes oblongues, les passer dans l'oeuf battu puis dans la chapelure.",
+        "Faire frire les croquetas dans l'huile de tournesol bien chaude pendant 3 min jusqu'à ce qu'elles soient dorées, puis égoutter."
+      ]
+    },
+    "cocido-madrileno": {
+      "title": "Cocido madrilène simplifié",
+      "steps": [
+        "Mettre le bœuf, l'oignon, l'ail et le laurier dans 2 litres de bouillon préparé avec les cubes, puis cuire à frémissement 90 min.",
+        "Ajouter les carottes, le poireau et les pommes de terre coupés, puis cuire 30 min.",
+        "Ajouter le chorizo entier, les pois chiches égouttés et le chou vert en morceaux, puis cuire 20 min.",
+        "Servir le bouillon, les viandes et les légumes coupés dans un grand plat, en accompagnant de moutarde si désiré."
+      ]
+    },
+    "pisto-manchego-aux-oeufs": {
+      "title": "Pisto manchego aux oeufs",
+      "steps": [
+        "Faire revenir l'oignon émincé et l'ail dans l'huile d'olive pendant 5 min.",
+        "Ajouter le poivron, l'aubergine et la courgette coupés en dés, puis cuire 15 min à feu moyen.",
+        "Ajouter les tomates coupées en dés et le sel, couvrir et laisser mijoter 20 min.",
+        "Creuser 4 puits dans le pisto, casser un oeuf dans chacun, couvrir et cuire 6 min jusqu'à ce que les blancs soient pris."
+      ]
+    },
+    "migas-extremenas": {
+      "title": "Migas extremègnes au chorizo",
+      "steps": [
+        "Émietter le pain de campagne, l'arroser de bouillon dilué avec le cube et laisser reposer 15 min.",
+        "Faire dorer les lardons et le chorizo coupé en dés dans l'huile d'olive pendant 4 min.",
+        "Ajouter l'ail écrasé, le poivron en dés et le paprika, puis cuire 3 min.",
+        "Ajouter la mie égouttée et remuer pendant 10 min jusqu'à ce qu'elle devienne croustillante et dorée."
+      ]
+    },
+    "empanada-galicienne-au-thon": {
+      "title": "Empanada galicienne au thon",
+      "steps": [
+        "Faire revenir l'oignon et le poivron émincés dans l'huile d'olive pendant 10 min à feu doux.",
+        "Ajouter l'ail écrasé, la tomate en dés et le paprika, puis cuire 10 min jusqu'à réduction.",
+        "Hors du feu, incorporer le thon égoutté et laisser refroidir la garniture.",
+        "Étaler une pâte sur une plaque, garnir, couvrir avec la seconde pâte, souder les bords, dorer à l'oeuf battu puis enfourner 30 min."
+      ]
+    },
+    "agneau-asado-espagnol": {
+      "title": "Épaule d'agneau rôtie à l'espagnole (cordero asado)",
+      "steps": [
+        "Frotter l'agneau avec l'ail écrasé, le paprika, les herbes, le sel et l'huile d'olive, puis laisser mariner 30 min.",
+        "Disposer l'agneau dans un plat avec les pommes de terre en quartiers, l'oignon émincé et le vin blanc, puis couvrir.",
+        "Enfourner à 160 °C et cuire 2 h 30 en arrosant de temps en temps.",
+        "Découper l'agneau, le servir avec les pommes de terre et le jus de cuisson."
+      ]
+    },
+    "porc-adobado-pommes-de-terre-roties": {
+      "title": "Porc adobado et pommes de terre rôties",
+      "steps": [
+        "Mélanger le paprika, l'ail écrasé, le vinaigre, l'huile d'olive, l'origan et le sel, puis en enrober le filet de porc et laisser reposer 1 h.",
+        "Saisir le porc sur toutes ses faces dans une poêle chaude pendant 8 min.",
+        "Couper les pommes de terre en quartiers, les disposer autour du porc dans un plat, puis enfourner à 200 °C pendant 25 min."
+      ]
+    },
+    "bacalao-al-pil-pil": {
+      "title": "Cabillaud al pil-pil et pommes de terre",
+      "steps": [
+        "Cuire les pommes de terre épluchées à la vapeur pendant 20 min, puis les garder au chaud.",
+        "Faire confire l'ail émincé et le piment dans l'huile d'olive à feu très doux pendant 5 min.",
+        "Poser le cabillaud salé dans l'huile, peau vers le haut, et cuire 4 min sur chaque face à feu doux.",
+        "Retirer le poisson, émulsionner l'huile de cuisson en la secouant hors du feu, ajouter le persil haché, puis napper le poisson et servir avec les pommes de terre."
+      ]
+    },
+    "arroz-al-horno-chorizo-pois-chiches": {
+      "title": "Riz au four au chorizo et aux pois chiches (arroz al horno)",
+      "steps": [
+        "Faire revenir l'oignon émincé, l'ail écrasé et le chorizo coupé en dés dans l'huile d'olive pendant 6 min.",
+        "Ajouter le riz, le concentré de tomate et le paprika, puis mélanger 1 min.",
+        "Verser le bouillon chaud préparé avec les 2 cubes (environ 600 ml), ajouter les pois chiches égouttés et les petits pois, transférer dans un plat et enfourner à 200 °C pendant 25 min.",
+        "Laisser reposer 5 min hors du four avant de servir."
+      ]
+    },
+    "kibbeh-au-four-boulgour-viande": {
+      "title": "Kibbeh au four, boulgour et viande",
+      "steps": [
+        "Faire tremper le boulgour dans de l'eau froide pendant 20 minutes, puis l'essorer soigneusement.",
+        "Faire revenir l'oignon émincé dans la moitié de l'huile d'olive, ajouter la viande hachée, la cannelle, la muscade, le sel et le poivre, puis cuire jusqu'à ce qu'elle soit bien cuite.",
+        "Étaler la moitié du boulgour au fond d'un plat huilé, couvrir avec la viande, puis recouvrir du reste de boulgour bien lissé et strié au couteau.",
+        "Parsemer d'amandes effilées, arroser du reste d'huile et enfourner à 190 °C pendant 30 minutes jusqu'à ce que le dessus soit doré."
+      ]
+    },
+    "makloubeh-au-poulet-riz-renverse": {
+      "title": "Makloubeh au poulet, riz renversé",
+      "steps": [
+        "Faire dorer les cuisses de poulet avec les oignons émincés, puis ajouter la tomate concassée, le curcuma, le cumin, la cannelle, le sel et le poivre, et laisser mijoter.",
+        "Faire frire à part les tranches d'aubergine, les rondelles de pomme de terre et les fleurettes de chou-fleur dans l'huile jusqu'à coloration.",
+        "Rincer le riz, le disposer dans la cocotte sur le poulet, verser le bouillon chaud dilué à hauteur, puis cuire à feu doux à couvert.",
+        "Disposer les légumes frits sur le riz, retourner la cocotte sur un plat chaud et laisser reposer avant de découper."
+      ]
+    },
+    "sayadieh-au-cabillaud-riz-aux-oignons": {
+      "title": "Sayadieh au cabillaud, riz aux oignons",
+      "steps": [
+        "Faire caraméliser les oignons émincés dans l'huile d'olive à feu moyen pendant 20 minutes, puis en réserver la moitié.",
+        "Faire griller les amandes effilées à sec dans une poêle pendant 3 minutes, jusqu'à ce qu'elles soient dorées.",
+        "Cuire les pavés de cabillaud dans le bouillon chaud avec le cumin, le curcuma, le sel et le poivre pendant 10 minutes, puis les réserver au chaud.",
+        "Cuire le riz dans le bouillon de cuisson parfumé, à couvert, jusqu'à absorption complète, puis dresser le riz, le poisson, les oignons restants et les amandes, avec le citron coupé en quartiers."
+      ]
+    },
+    "briouates-a-la-viande-et-aux-amandes": {
+      "title": "Briouates à la viande et aux amandes",
+      "steps": [
+        "Faire revenir l'oignon haché dans l'huile d'olive, ajouter la viande, la cannelle, le ras el hanout, le sel et le poivre, puis cuire jusqu'à ce qu'elle soit sèche.",
+        "Mélanger la farce avec les amandes effilées, le persil et la coriandre hachés, puis laisser refroidir.",
+        "Couper les feuilles de brick en deux, garnir chaque demi-feuille, replier en triangle en soudant le bord avec l'oeuf battu, puis badigeonner de beurre fondu.",
+        "Enfourner les briouates à 190 °C pendant 20 minutes jusqu'à ce qu'ils soient bien dorés et croustillants."
+      ]
+    },
+    "shawarma-de-dinde-en-assiette-sauce-tahini": {
+      "title": "Shawarma de dinde en assiette, sauce tahini",
+      "steps": [
+        "Couper la dinde en fines lanières et la mariner 30 minutes avec l'huile d'olive, le paprika, le cumin, le curcuma, un ail écrasé, le jus du citron, le sel et le poivre.",
+        "Saisir la dinde à la poêle bien chaude pendant 8 minutes, en la faisant dorer sur tous les côtés.",
+        "Mélanger le yaourt, le tahini, le jus d'un demi-citron et l'autre ail écrasé pour obtenir une sauce onctueuse.",
+        "Réchauffer les pains pita, puis dresser la dinde avec la tomate, le concombre et la salade coupés, et napper de sauce tahini."
+      ]
+    },
+    "poulet-tandoori-riz-cumin": {
+      "title": "Poulet tandoori au four et riz au cumin",
+      "steps": [
+        "Mélanger le yaourt, le jus du citron, l'ail écrasé, le gingembre râpé, le paprika, le garam masala, le cumin, le sel et l'huile dans un saladier.",
+        "Entailler les cuisses de poulet, les enrober de marinade et laisser mariner au frais.",
+        "Disposer les cuisses sur une plaque tapissée de papier cuisson et cuire au four jusqu'à ce qu'elles soient bien dorées et cuites à cœur.",
+        "Rincer le riz, le cuire à l'eau salée avec le cumin pendant 12 minutes, puis l'égoutter.",
+        "Parsemer de coriandre hachée et servir les cuisses avec le riz."
+      ]
+    },
+    "butter-chicken-maison": {
+      "title": "Butter chicken à la crème et aux épices",
+      "steps": [
+        "Mélanger le yaourt, la moitié du garam masala, le paprika, le sel et l'ail écrasé, puis enrober le poulet coupé en cubes.",
+        "Faire revenir le poulet dans 20 g de beurre pendant 6 minutes, puis le réserver.",
+        "Faire fondre le reste du beurre, faire revenir l'oignon émincé et le gingembre râpé, puis ajouter la tomate concassée, le reste du garam masala et laisser mijoter 15 minutes.",
+        "Verser la crème, remettre le poulet et laisser mijoter 10 minutes à feu doux.",
+        "Cuire le riz à l'eau salée pendant 12 minutes et le servir avec le poulet."
+      ]
+    },
+    "boeuf-basilic-thai-oeuf": {
+      "title": "Bœuf sauté au basilic thaï et œuf sur le plat",
+      "steps": [
+        "Cuire le riz dans une grande casserole d'eau salée pendant 15 minutes, puis le garder au chaud.",
+        "Hacher finement l'ail et le piment, émincer l'oignon, couper le poivron en lamelles et les haricots verts en tronçons.",
+        "Faire chauffer l'huile de tournesol et saisir le bœuf haché avec l'oignon, l'ail et le piment pendant 5 minutes à feu vif.",
+        "Ajouter le poivron et les haricots verts, puis le nuoc-mam, la sauce soja et le sucre. Cuire 4 minutes, puis retirer du feu et incorporer le basilic.",
+        "Faire frire les oeufs dans une poêle huilée jusqu'à ce que le blanc soit ferme et le jaune coulant, puis servir sur le sauté avec le riz."
+      ]
+    },
+    "oyakodon-poulet-oeuf": {
+      "title": "Oyakodon au poulet et aux oeufs",
+      "steps": [
+        "Cuire le riz dans une casserole couverte, puis le garder au chaud.",
+        "Couper le poulet en morceaux, émincer l'oignon et les faire revenir ensemble à feu moyen jusqu'à ce que le poulet ne soit plus rosé.",
+        "Dissoudre le bouillon dans 150 ml d'eau, ajouter la sauce soja et le sucre, verser sur le poulet et laisser mijoter 5 minutes.",
+        "Battre les oeufs, les verser en deux fois sur la préparation et couvrir 1 minute pour qu'ils restent baveux. Servir aussitôt sur le riz."
+      ]
+    },
+    "bulgogi-boeuf-poire": {
+      "title": "Bulgogi de bœuf, poire et oignons, riz et concombre",
+      "steps": [
+        "Mixer la poire, l'oignon, l'ail et le gingembre, puis mélanger avec la sauce soja, le sucre et l'huile de sésame.",
+        "Couper le bœuf en fines lamelles, les mélanger à la marinade et laisser reposer au frais.",
+        "Faire revenir la viande 3 minutes à feu vif dans une poêle bien chaude, en plusieurs fois si besoin.",
+        "Cuire le riz, émincer les oignons nouveaux et le concombre, puis servir la viande sur le riz, parsemée de sésame."
+      ]
+    },
+    "tonkatsu-porc-chou": {
+      "title": "Tonkatsu de porc croustillant et chou émincé",
+      "steps": [
+        "Aplatir les filets de porc entre deux feuilles de papier, puis saler et poivrer.",
+        "Passer chaque escalope dans la farine, puis dans l'oeuf battu, et enfin dans la chapelure en pressant légèrement.",
+        "Faire frire les escalopes dans l'huile de tournesol chaude pendant 8 minutes au total, en les retournant, jusqu'à ce que la chair ne soit plus rosée.",
+        "Éponger sur du papier absorbant. Émincer le chou finement, mélanger la sauce soja, le vinaigre et le sucre, puis servir les escalopes coupées en tranches sur le chou avec cette sauce."
+      ]
+    },
+    "sundubu-jjigae-tofu": {
+      "title": "Soupe coréenne épicée au tofu et à l'oeuf",
+      "steps": [
+        "Faire revenir l'oignon, l'ail et le gingembre hachés dans l'huile de sésame pendant 3 minutes.",
+        "Ajouter le piment et les champignons émincés, puis verser 1,2 litre d'eau dissoute avec les bouillons et la sauce soja. Laisser frémir 10 minutes.",
+        "Ajouter le tofu coupé en cubes et laisser frémir 3 minutes.",
+        "Casser les oeufs dans la soupe frémissante, couvrir 2 minutes, puis garnir d'oignons nouveaux émincés et servir."
+      ]
+    },
+    "sopa-tortilla-poulet-avocat": {
+      "title": "Sopa de tortilla au poulet et à l'avocat",
+      "steps": [
+        "Couper les tortillas en lanières, puis les faire dorer dans l'huile chaude pendant 3 minutes. Réserver.",
+        "Dans la même huile, faire revenir l'oignon et l'ail émincés, puis ajouter le poulet coupé en dés, le cumin et le paprika. Cuire 5 minutes.",
+        "Verser la tomate concassée, le bouillon émietté et 1 litre d'eau. Laisser mijoter 15 minutes à feu moyen.",
+        "Assaisonner de sel, puis servir dans des bols avec les lanières de tortilla, l'avocat en dés, le fromage râpé, la coriandre ciselée et un filet de citron vert."
+      ]
+    },
+    "mole-poblano-simplifie-poulet": {
+      "title": "Mole poblano simplifié au poulet et au riz",
+      "steps": [
+        "Saler et poivrer les cuisses de poulet, puis les faire dorer dans l'huile chaude pendant 8 minutes. Réserver.",
+        "Dans la même cocotte, faire revenir l'oignon et l'ail émincés, puis ajouter les graines de sésame, la poudre d'amande, la cannelle, le piment, le cacao, le concentré et la tomate concassée. Cuire 5 minutes.",
+        "Mixer la sauce, la remettre dans la cocotte avec le bouillon dilué dans 500 ml d'eau et le chocolat noir haché. Ajouter le poulet et laisser mijoter à couvert 35 minutes.",
+        "Pendant ce temps, cuire le riz à l'eau salée pendant 15 minutes.",
+        "Servir le poulet nappé de mole avec le riz."
+      ]
+    },
+    "cochinita-pibil-simplifiee": {
+      "title": "Cochinita pibil simplifiée, tortillas et radis",
+      "steps": [
+        "Mixer l'ail, le paprika, le cumin, l'origan, le poivre, le sel, l'huile, le jus d'orange et le jus des citrons verts.",
+        "Frotter l'échine avec la marinade, couvrir et laisser reposer 1 heure au frais.",
+        "Disposer le porc, l'oignon émincé et les tranches d'orange dans un plat, couvrir de papier aluminium et cuire au four à 150 °C.",
+        "Effilocher la viande à la fourchette et la mélanger au jus de cuisson.",
+        "Réchauffer les tortillas dans une poêle sèche pendant 2 minutes.",
+        "Garnir les tortillas de porc, de radis émincé et de coriandre ciselée, puis servir."
+      ]
+    },
+    "pozole-rouge-porc-mais": {
+      "title": "Pozole rouge au porc, maïs et radis",
+      "steps": [
+        "Faire revenir l'oignon et l'ail émincés dans l'huile pendant 4 minutes.",
+        "Ajouter le porc en morceaux, le paprika, le cumin, le piment et le concentré. Saisir 5 minutes.",
+        "Verser 1,5 litre d'eau, le bouillon, le maïs égoutté et l'origan. Cuire à couvert 1 heure 30 à feu doux.",
+        "Assaisonner de sel. Servir chaud avec le chou finement émincé, les radis tranchés, la coriandre, un peu d'origan et des quartiers de citron vert."
+      ]
+    },
+    "picadillo-boeuf-olives-raisins": {
+      "title": "Picadillo de bœuf aux olives et raisins secs, riz",
+      "steps": [
+        "Faire revenir l'oignon, l'ail et le poivron coupés en dés dans l'huile pendant 5 minutes.",
+        "Ajouter le bœuf haché, le cumin, la cannelle et le paprika, puis faire dorer 5 minutes.",
+        "Ajouter les pommes de terre en petits dés, la tomate concassée, 150 ml d'eau et le sel. Cuire à couvert 25 minutes.",
+        "Incorporer les olives émincées et les raisins secs, puis cuire 5 minutes à découvert.",
+        "Cuire le riz dans 2 fois son volume d'eau salée pendant 15 minutes, puis servir avec le picadillo."
+      ]
+    },
+    "galettes-quinoa-courgette-feta": {
+      "title": "Galettes de quinoa aux courgettes et à la feta",
+      "steps": [
+        "Faire cuire le quinoa dans deux fois son volume d'eau salée pendant 15 minutes, puis le laisser refroidir.",
+        "Râper les courgettes, les saler, les laisser dégorger puis les essorer dans un torchon. Émincer finement l'oignon, hacher l'ail et le persil.",
+        "Mélanger le quinoa, les courgettes, l'oignon, l'ail, le persil, les oeufs, la farine et la feta émiettée. Assaisonner de sel et de poivre.",
+        "Former des galettes à la main, les disposer sur une plaque couverte de papier cuisson et les badigeonner d'huile d'olive.",
+        "Enfourner à 200 °C pendant 25 minutes en retournant les galettes à mi-cuisson, jusqu'à ce qu'elles soient bien dorées."
+      ]
+    },
+    "chou-fleur-roti-tahini-pois-chiches": {
+      "title": "Chou-fleur rôti au tahini et pois chiches",
+      "steps": [
+        "Préchauffer le four à 220 °C. Détailler le chou-fleur en gros bouquets, les arroser d'un peu d'huile d'olive, les saupoudrer de cumin, de sel et de poivre.",
+        "Disposer le chou-fleur sur une plaque et l'enfourner pendant 25 minutes, jusqu'à ce qu'il soit doré sur les bords.",
+        "Égoutter et rincer les pois chiches, puis les faire revenir à la poêle avec le reste de l'huile d'olive et l'ail écrasé pendant 5 minutes.",
+        "Mélanger le tahini avec le jus du citron, un peu d'eau froide et une pincée de sel jusqu'à obtenir une sauce lisse.",
+        "Dresser le chou-fleur et les pois chiches, arroser de sauce tahini et parsemer de persil ciselé."
+      ]
+    },
+    "aubergines-roties-yaourt-pois-chiches": {
+      "title": "Aubergines rôties au yaourt, pois chiches et zaatar",
+      "steps": [
+        "Préchauffer le four à 220 °C. Couper les aubergines en deux dans la longueur, quadriller la chair et les badigeonner d'huile d'olive avec du sel et du cumin.",
+        "Enfourner les aubergines côté chair vers le haut pendant 30 minutes, jusqu'à ce qu'elles soient bien tendres.",
+        "Mélanger le yaourt avec l'ail finement râpé, le jus du citron, le sel et le poivre. Hacher le persil.",
+        "Égoutter les pois chiches et les faire dorer dans une poêle avec un filet d'huile d'olive pendant 8 minutes.",
+        "Napper les aubergines de sauce au yaourt, garnir de pois chiches dorés, de persil et de zaatar."
+      ]
+    },
+    "gnocchi-gratines-poireaux-comte": {
+      "title": "Gnocchi gratinés aux poireaux et au comté",
+      "steps": [
+        "Préchauffer le four à 200 °C. Couper les poireaux en rondelles, les laver et les faire fondre dans le beurre à feu doux pendant 10 minutes.",
+        "Ajouter la crème, la muscade, le sel et le poivre, puis laisser épaissir la sauce 5 minutes à feu doux.",
+        "Faire cuire les gnocchi dans une grande casserole d'eau salée jusqu'à ce qu'ils remontent à la surface, puis les égoutter.",
+        "Disposer les gnocchi dans un plat à gratin, les recouvrir de sauce aux poireaux et parsemer de comté râpé.",
+        "Enfourner 15 minutes, jusqu'à ce que le fromage soit doré et fondant."
+      ]
+    },
+    "pates-ricotta-courgettes-citron": {
+      "title": "Pâtes à la ricotta et aux courgettes citronnées",
+      "steps": [
+        "Faire cuire les pâtes dans une grande casserole d'eau bouillante salée selon le temps indiqué sur le paquet.",
+        "Détailler les courgettes en fines rondelles et les faire dorer à la poêle dans l'huile d'olive avec l'ail écrasé pendant 6 minutes.",
+        "Mélanger la ricotta avec le zeste et le jus du citron, le parmesan râpé, le sel et le poivre.",
+        "Égoutter les pâtes en gardant un peu d'eau de cuisson, puis les mélanger avec les courgettes, la crème de ricotta et le basilic ciselé, en ajoutant un peu d'eau pour lier."
+      ]
+    },
+    "bricks-epinards-feta": {
+      "title": "Bricks aux épinards et à la feta",
+      "steps": [
+        "Émincer l'oignon et hacher l'ail. Les faire revenir avec l'huile d'olive dans une poêle pendant 3 minutes, puis ajouter les épinards jusqu'à ce qu'ils tombent.",
+        "Égoutter les épinards en les pressant, les mélanger avec la feta émiettée, le persil haché, un oeuf battu, le sel et le poivre.",
+        "Couper chaque feuille de brick en deux, déposer une cuillère de farce au centre de chaque demi-feuille, replier et sceller avec le second oeuf battu.",
+        "Disposer les bricks sur une plaque couverte de papier cuisson, les badigeonner d'huile d'olive et les enfourner à 200 °C pendant 15 minutes, jusqu'à ce qu'ils soient bien dorés."
+      ]
+    },
+    "boulettes-haricots-blancs-sauce-tomate": {
+      "title": "Boulettes de haricots blancs aux herbes en sauce tomate",
+      "steps": [
+        "Égoutter les haricots blancs et les écraser grossièrement à la fourchette dans un saladier.",
+        "Hacher l'oignon et l'ail, puis les faire revenir dans la moitié de l'huile d'olive pendant 5 minutes. Ajouter aux haricots avec le persil haché, les herbes, le parmesan râpé, la chapelure, l'oeuf, le sel et le poivre.",
+        "Former 16 boulettes avec les mains humides, les rouler dans un peu de chapelure et les dorer dans le reste d'huile pendant 8 minutes.",
+        "Verser la tomate concassée et le concentré de tomate dans la poêle, saler, poivrer, ajouter le basilic déchiré et laisser mijoter 10 minutes avec les boulettes."
+      ]
+    },
+    "chou-vert-braise-pommes-de-terre-paprika": {
+      "title": "Chou vert braisé aux pommes de terre et au paprika",
+      "steps": [
+        "Retirer la grosse côte du chou vert et l'émincer en lanières. Éplucher les pommes de terre et les couper en cubes. Émincer l'oignon et l'ail.",
+        "Faire revenir l'oignon et l'ail dans l'huile d'olive pendant 5 minutes, puis ajouter le paprika et le chou émincé.",
+        "Ajouter les pommes de terre, le laurier et le bouillon dissous dans 500 ml d'eau chaude, puis couvrir.",
+        "Laisser braiser à couvert à feu doux pendant 30 minutes. Retirer le laurier, incorporer la crème fraîche, saler et poivrer."
+      ]
+    },
+    "pitas-galettes-haricots-rouges-tahini": {
+      "title": "Pitas aux galettes de haricots rouges et sauce tahini",
+      "steps": [
+        "Mélanger les graines de chia avec 120 ml de boisson de soja et laisser gonfler.",
+        "Mixer les haricots rouges égouttés, l'oignon, l'ail, les flocons d'avoine, le chia gonflé, le cumin, le paprika, le sel et le poivre, puis former 8 galettes.",
+        "Faire dorer les galettes dans l'huile d'olive chaude pendant 4 minutes de chaque côté.",
+        "Mélanger le tahini, le jus du citron, le persil haché et le reste de boisson de soja jusqu'à obtenir une sauce lisse.",
+        "Garnir les pitas tièdes de galettes, de tomate coupée, de salade émincée et de sauce tahini."
+      ]
+    },
+    "socca-poivrons-oignons": {
+      "title": "Socca aux poivrons et aux oignons",
+      "steps": [
+        "Mélanger la farine de pois chiches, la boisson de soja, la moitié de l'huile, le sel, le poivre et le cumin, puis laisser reposer la pâte.",
+        "Faire revenir l'oignon, le poivron et l'ail émincés dans le reste de l'huile jusqu'à ce qu'ils soient fondants.",
+        "Verser la pâte dans un plat huilé, répartir les légumes dessus, puis cuire au four jusqu'à ce que la surface soit dorée.",
+        "Parsemer de persil haché et de paprika, puis couper en parts avec un filet de citron."
+      ]
+    },
+    "ramen-tofu-champignons": {
+      "title": "Ramen au tofu et aux champignons",
+      "steps": [
+        "Couper le tofu en cubes puis le dorer dans l'huile de sésame pendant 8 minutes.",
+        "Faire revenir l'ail, le gingembre râpé et les champignons émincés pendant 5 minutes, puis ajouter la sauce soja.",
+        "Porter à ébullition de l'eau avec les cubes de bouillon, puis cuire les nouilles pendant 4 minutes.",
+        "Répartir les nouilles et les épinards dans les bols, verser le bouillon, puis garnir de tofu, de champignons, d'oignon nouveau émincé et de sésame."
+      ]
+    },
+    "bibimbap-legumes-tofu-croustillant": {
+      "title": "Bibimbap aux légumes et au tofu croustillant",
+      "steps": [
+        "Rincer le riz puis le cuire à couvert pendant 15 minutes.",
+        "Couper la carotte et la courgette en juliennes, puis les faire revenir séparément dans un filet d'huile de sésame pendant 3 minutes chacune.",
+        "Blanchir les germes de soja et les épinards pendant 1 minute, puis les assaisonner avec la moitié de la sauce soja, l'ail écrasé et les graines de sésame.",
+        "Faire dorer le tofu en dés et les champignons émincés avec le piment et le reste de sauce soja pendant 6 minutes.",
+        "Dresser le riz dans les bols avec les légumes, le tofu et l'oignon nouveau émincé."
+      ]
+    },
+    "spaghettis-lentilles-corail-basilic": {
+      "title": "Spaghettis aux lentilles corail et au basilic",
+      "steps": [
+        "Faire revenir l'oignon et la carotte finement hachés dans l'huile d'olive pendant 5 minutes.",
+        "Ajouter l'ail émincé, le concentré de tomate et les lentilles corail rincées, puis mélanger 1 minute.",
+        "Verser les tomates concassées, ajouter les herbes, saler, poivrer, puis laisser mijoter à couvert pendant 20 minutes.",
+        "Cuire les pâtes dans une grande casserole d'eau salée pendant 10 minutes, les égoutter puis les mélanger à la sauce avec le basilic ciselé."
+      ]
+    },
+    "brochettes-crevettes-harissa": {
+      "title": "Brochettes de crevettes à la harissa, courgettes et poivrons",
+      "steps": [
+        "Mélanger la harissa, l'huile d'olive, l'ail écrasé, le jus du citron et le sel dans un saladier.",
+        "Ajouter les crevettes, les courgettes et les poivrons coupés en morceaux, puis mariner 10 minutes.",
+        "Piquer les ingrédients en alternance sur des brochettes et les disposer sur la plaque du four.",
+        "Enfourner 8 minutes en retournant les brochettes à mi-cuisson, jusqu'à ce que les crevettes soient roses."
+      ]
+    },
+    "escabeche-maquereau-carottes-laurier": {
+      "title": "Escabèche de maquereau aux carottes et au laurier",
+      "steps": [
+        "Éplucher les carottes et les tailler en fines rondelles, puis émincer l'oignon en lamelles.",
+        "Faire revenir l'oignon, l'ail écrasé et les carottes dans l'huile d'olive pendant 8 minutes.",
+        "Ajouter le vinaigre, le vin blanc, le laurier, le sel et le poivre, puis laisser frémir 10 minutes.",
+        "Déposer les filets de maquereau dans la marinade et cuire 5 minutes à frémissement, sans bouillonnement.",
+        "Laisser refroidir hors du feu dans la marinade, puis réserver au frais pendant au moins 1 heure avant de servir."
+      ]
+    },
+    "pates-anchois-chapelure-persil": {
+      "title": "Pâtes aux anchois, chapelure croustillante et persil",
+      "steps": [
+        "Faire cuire les pâtes dans une grande casserole d'eau salée jusqu'à ce qu'elles soient al dente, puis égoutter en réservant un peu d'eau de cuisson.",
+        "Faire chauffer la moitié de l'huile d'olive et dorer la chapelure avec la moitié de l'ail écrasé pendant 3 minutes, puis réserver.",
+        "Faire fondre les anchois dans le reste d'huile avec le piment et le reste de l'ail, en écrasant à la spatule pendant 2 minutes.",
+        "Ajouter les pâtes égouttées, un peu d'eau de cuisson, le persil haché et le parmesan râpé, puis mélanger.",
+        "Servir avec la chapelure dorée par-dessus."
+      ]
+    },
+    "cabillaud-croute-moutarde-herbes": {
+      "title": "Dos de cabillaud en croûte de moutarde et d'herbes",
+      "steps": [
+        "Préchauffer le four et disposer les dos de cabillaud sur une plaque recouverte de papier cuisson, assaisonnés de sel et de poivre.",
+        "Faire fondre le beurre, puis le mélanger à la moutarde, la chapelure et les herbes de Provence. Étaler ce mélange sur les filets.",
+        "Enfourner 12 minutes jusqu'à ce que la chair se défasse facilement à la fourchette.",
+        "Faire cuire les haricots verts à l'eau bouillante salée 6 minutes, puis les servir avec le citron coupé en quartiers."
+      ]
+    },
+    "cabillaud-wok-gingembre-germes-soja": {
+      "title": "Wok de cabillaud au gingembre et aux germes de soja",
+      "steps": [
+        "Cuire le riz dans deux fois son volume d'eau salée jusqu'à absorption complète, puis couvrir et réserver.",
+        "Couper le cabillaud en gros morceaux, émincer l'oignon nouveau et le gingembre, écraser l'ail.",
+        "Faire saisir le poisson dans l'huile de sésame pendant 6 minutes en le retournant, puis réserver.",
+        "Faire revenir l'ail, le gingembre et l'oignon nouveau pendant 2 minutes, puis ajouter les germes de soja et la sauce soja et cuire 3 minutes.",
+        "Remettre le poisson dans le wok, parsemer de graines de sésame et servir sur le riz."
+      ]
+    },
+    "burgers-saumon-concombre-yaourt": {
+      "title": "Burgers de saumon, concombre et sauce au yaourt",
+      "steps": [
+        "Hacher finement le saumon au couteau, puis le mélanger avec l'oeuf battu, la chapelure, la ciboulette ciselée, le sel et le poivre.",
+        "Former quatre galettes et les laisser reposer au frais pendant 15 minutes.",
+        "Cuire les galettes dans l'huile de tournesol chaude pendant 8 minutes en les retournant, jusqu'à ce qu'elles soient dorées et bien cuites à coeur.",
+        "Râper le concombre, le mélanger au yaourt avec le jus du citron et assaisonner la sauce.",
+        "Toaster les pains, les garnir de salade, de tomate en rondelles, d'une galette et de sauce, puis refermer."
+      ]
+    },
+    "tortillas-saumon-fume-fromage-blanc": {
+      "title": "Tortillas roulées au saumon fumé et au fromage blanc",
+      "steps": [
+        "Mélanger le fromage blanc avec le jus du citron, la ciboulette ciselée et le poivre.",
+        "Étaler la sauce sur chaque tortilla, puis disposer des lamelles de saumon fumé et des tranches d'avocat.",
+        "Ajouter quelques feuilles de salade et rouler les tortillas bien serrées.",
+        "Couper chaque rouleau en deux en biais et servir aussitôt."
+      ]
+    },
+    "rillettes-thon-ciboulette-toasts": {
+      "title": "Rillettes de thon à la ciboulette et toasts de pain de mie",
+      "steps": [
+        "Égoutter le thon et l'écraser à la fourchette avec le beurre ramolli.",
+        "Ajouter la crème fraîche, le jus du citron, la ciboulette ciselée et le poivre, puis mélanger jusqu'à obtenir une texture homogène.",
+        "Couper les tranches de pain de mie en triangles.",
+        "Couper le radis et le concombre en fines rondelles, puis dresser avec les rillettes et les toasts."
+      ]
+    },
+    "pates-saumon-fume-petits-pois": {
+      "title": "Pâtes crémeuses au saumon fumé et aux petits pois",
+      "steps": [
+        "Faire cuire les pâtes dans une grande casserole d'eau salée pendant 10 minutes, puis égoutter en gardant un peu d'eau de cuisson.",
+        "Faire fondre le beurre et faire revenir l'échalote émincée pendant 3 minutes.",
+        "Verser la crème, ajouter les petits pois et laisser mijoter 5 minutes.",
+        "Hors du feu, ajouter le saumon fumé coupé en lanières, le jus du citron, le persil haché, le parmesan râpé et le poivre, puis incorporer les pâtes."
+      ]
+    },
+    "crevettes-chorizo-tomates-persil": {
+      "title": "Crevettes sautées au chorizo, tomates cerises et persil",
+      "steps": [
+        "Couper le chorizo en rondelles et le faire revenir dans l'huile d'olive pendant 3 minutes pour libérer ses saveurs.",
+        "Ajouter l'ail écrasé, le piment et les tomates cerises coupées en deux, puis cuire 4 minutes.",
+        "Ajouter les crevettes, saler et poivrer, puis cuire 3 minutes jusqu'à ce qu'elles deviennent roses.",
+        "Parsemer de persil haché et servir avec la baguette coupée en tranches pour saucer."
+      ]
+    },
+    "pitas-cabillaud-croustillant-citron": {
+      "title": "Pitas de cabillaud croustillant, salade et sauce citronnée",
+      "steps": [
+        "Couper le cabillaud en bâtonnets, puis les passer dans la farine, l'oeuf battu et la chapelure mélangée au paprika.",
+        "Faire chauffer l'huile de tournesol dans une poêle et dorer les bâtonnets 3 minutes de chaque côté.",
+        "Mélanger le yaourt, le jus du citron, l'ail écrasé, le sel et le poivre pour obtenir la sauce.",
+        "Réchauffer les pains pitas 2 minutes au four, les ouvrir, puis les garnir de salade effeuillée, de bâtonnets croustillants et de sauce."
+      ]
+    },
+    "curry-japonais-poulet-carottes": {
+      "title": "Curry japonais au poulet, carottes et pommes de terre",
+      "steps": [
+        "Couper le poulet en morceaux, émincer les oignons et tailler les carottes et les pommes de terre en gros cubes.",
+        "Faire chauffer l'huile avec le beurre, faire dorer le poulet 5 min, puis ajouter les oignons et les légumes et faire revenir 5 min.",
+        "Saupoudrer de curry et de farine, remuer, puis verser 1 l d'eau chaude avec les bouillons, la sauce soja et le miel. Laisser mijoter à couvert 20 min.",
+        "Cuire le riz à l'eau salée pendant 12 min.",
+        "Rectifier l'assaisonnement avec le sel et le poivre, puis servir le curry avec le riz."
+      ]
+    },
+    "goulasch-hongrois-boeuf-paprika": {
+      "title": "Goulasch hongrois au bœuf et au paprika",
+      "steps": [
+        "Couper la viande en gros cubes, émincer les oignons et couper le poivron en lanières.",
+        "Faire revenir la viande dans l'huile 5 min, puis ajouter les oignons et l'ail et cuire 5 min.",
+        "Ajouter le paprika, déglacer au vin rouge, puis verser le concentré de tomate, les bouillons dilués dans 1 l d'eau, le laurier, le sel et le poivre. Mijoter à couvert 75 min.",
+        "Ajouter les pommes de terre en cubes et les poivrons, puis prolonger la cuisson 25 min à couvert.",
+        "Hors du feu, incorporer la crème fraîche et servir bien chaud."
+      ]
+    },
+    "salade-boulgour-saumon-fume-concombre": {
+      "title": "Salade de boulgour au saumon fumé, concombre et ciboulette",
+      "steps": [
+        "Verser de l'eau bouillante salée sur le boulgour, couvrir et laisser gonfler jusqu'à absorption complète.",
+        "Couper le concombre et les tomates cerises en dés, puis ciseler finement la ciboulette.",
+        "Détailler le saumon fumé en fines lanières.",
+        "Mélanger le jus du citron, l'huile d'olive, le sel et le poivre, puis assaisonner le boulgour refroidi.",
+        "Ajouter les légumes, le saumon et la ciboulette au boulgour, mélanger délicatement et servir frais."
+      ]
+    },
+    "salade-thai-vermicelles-poulet-cacahuetes": {
+      "title": "Salade thaï de vermicelles de riz au poulet et aux cacahuètes",
+      "steps": [
+        "Plonger les vermicelles dans une grande casserole d'eau bouillante hors du feu pendant 5 minutes, puis les égoutter et les rincer à l'eau froide.",
+        "Couper le poulet en fines lanières et le faire dorer dans l'huile de tournesol à feu vif pendant 6 minutes.",
+        "Éplucher et râper la carotte, émincer le concombre en fines bandes et ciseler la coriandre.",
+        "Mélanger le jus des citrons verts, le nuoc-mam, le sucre et le piment pour préparer la sauce.",
+        "Assembler les vermicelles, le poulet tiède et les légumes, arroser de sauce, puis parsemer de cacahuètes concassées et de coriandre."
+      ]
+    },
+    "salade-tiede-pommes-de-terre-chorizo-poivrons": {
+      "title": "Salade tiède de pommes de terre au chorizo et aux poivrons",
+      "steps": [
+        "Cuire les pommes de terre entières dans de l'eau bouillante salée pendant 20 minutes, puis les égoutter, les laisser tiédir et les couper en rondelles.",
+        "Couper le chorizo en rondelles et le faire revenir dans une poêle sèche pendant 4 minutes.",
+        "Émincer le poivron et l'oignon, les ajouter au chorizo et faire colorer le tout à feu moyen pendant 8 minutes.",
+        "Préparer la vinaigrette avec le vinaigre, la moutarde, l'huile d'olive, le sel et le poivre.",
+        "Mélanger les pommes de terre, le chorizo, les poivrons, l'oignon et le persil ciselé avec la vinaigrette, puis servir aussitôt."
+      ]
+    },
+    "salade-pates-poulet-curry-pomme-raisins": {
+      "title": "Salade de pâtes au poulet curry, pomme et raisins secs",
+      "steps": [
+        "Cuire les pâtes dans une grande casserole d'eau bouillante salée selon le temps indiqué sur le paquet, puis les rincer à l'eau froide.",
+        "Couper le poulet en cubes et le saisir dans l'huile d'olive avec le curry pendant 8 minutes à feu moyen.",
+        "Faire tremper les raisins secs dans un bol d'eau tiède pendant 10 minutes, puis les égoutter.",
+        "Éplucher la pomme, la couper en petits dés et l'arroser de jus de citron pour éviter qu'elle noircisse.",
+        "Mélanger le yaourt, la crème fraîche, le sel et le poivre, puis assembler les pâtes, le poulet, la pomme, les raisins et la ciboulette ciselée."
+      ]
+    },
+    "salade-endives-poire-noix-comte-lardons": {
+      "title": "Salade d'endives, poire, noix et comté aux lardons",
+      "steps": [
+        "Faire revenir les lardons dans une poêle sèche pendant 5 minutes, jusqu'à ce qu'ils soient dorés et croustillants.",
+        "Concasser grossièrement les noix et couper le comté en fines lamelles.",
+        "Couper les endives en tronçons et la poire en fines tranches.",
+        "Préparer la vinaigrette avec la moutarde, le vinaigre, le miel, l'huile d'olive, le sel et le poivre.",
+        "Assembler les endives, la poire, le comté, les noix et les lardons tièdes, puis arroser de vinaigrette."
+      ]
+    },
+    "salade-rumsteck-saisi-radis-tomates-cerises": {
+      "title": "Salade de rumsteck saisi, radis et tomates cerises",
+      "steps": [
+        "Saler et poivrer le rumsteck, puis le saisir dans l'huile d'olive très chaude pendant 3 minutes de chaque côté.",
+        "Laisser reposer la viande hors du feu, couverte d'un papier aluminium, pendant 5 minutes.",
+        "Laver et couper les radis en quartiers, couper les tomates cerises en deux et émincer l'oignon nouveau.",
+        "Préparer la vinaigrette avec la moutarde, le vinaigre, l'huile d'olive restante et le persil ciselé.",
+        "Effeuiller la salade, la disposer dans les assiettes avec les légumes, trancher la viande finement, puis napper de vinaigrette."
+      ]
+    },
+    "soupe-crevettes-lait-coco-nouilles-riz": {
+      "title": "Soupe de crevettes au lait de coco et nouilles de riz",
+      "steps": [
+        "Éplucher la carotte et la couper en fines rondelles, émincer l'oignon, hacher l'ail et râper le gingembre.",
+        "Faire revenir l'oignon, l'ail, le gingembre et la carotte dans l'huile pendant 5 minutes à feu moyen.",
+        "Verser le lait de coco, 1 litre d'eau, le bouillon, la sauce soja et le piment, puis laisser frémir 10 minutes.",
+        "Ajouter les crevettes, les nouilles de riz et les germes de soja, cuire 3 minutes puis arroser du jus du citron vert.",
+        "Servir bien chaud, parsemé de coriandre hachée et de quartiers de citron vert."
+      ]
+    },
+    "soupe-chorizo-pois-chiches-epinards": {
+      "title": "Soupe espagnole au chorizo, pois chiches et épinards",
+      "steps": [
+        "Couper le chorizo en rondelles, émincer l'oignon, couper le poivron et les pommes de terre en dés, hacher l'ail.",
+        "Faire revenir le chorizo dans l'huile d'olive pendant 2 minutes, puis ajouter l'oignon, l'ail et le poivron et faire suer 5 minutes.",
+        "Ajouter le paprika, les pommes de terre, la tomate concassée, le bouillon dissous dans 1,5 litre d'eau, puis laisser mijoter 20 minutes à couvert.",
+        "Ajouter les pois chiches égouttés et les épinards, cuire 5 minutes, puis saler et poivrer.",
+        "Servir avec le persil haché."
+      ]
+    },
+    "soupe-boulettes-dinde-boulgour": {
+      "title": "Soupe de boulettes de dinde au boulgour et légumes",
+      "steps": [
+        "Hacher finement l'escalope de dinde, émincer l'oignon, couper la carotte et la courgette en petits dés. Faire gonfler le boulgour dans un bol d'eau chaude.",
+        "Mélanger la dinde hachée, le boulgour égoutté, l'oeuf, la chapelure, la moitié du persil haché, le sel et le poivre, puis former de petites boulettes.",
+        "Porter à frémissement 1,5 litre d'eau avec les bouillons, le concentré de tomate, la carotte et l'oignon, puis ajouter les boulettes et cuire 10 minutes.",
+        "Ajouter la courgette et les herbes de Provence, cuire 5 minutes à frémissement.",
+        "Servir parsemé du reste de persil haché."
+      ]
+    },
+    "soupe-tortilla-poulet-mais-avocat": {
+      "title": "Soupe tortilla au poulet, maïs et avocat",
+      "steps": [
+        "Couper le poulet en fines lanières, émincer l'oignon, hacher l'ail et couper les galettes tortilla en bandes.",
+        "Faire dorer les lanières de poulet dans l'huile avec l'oignon et l'ail pendant 5 minutes, puis ajouter le cumin et le paprika.",
+        "Verser la tomate concassée, le maïs égoutté et les bouillons dissous dans 1,5 litre d'eau, saler et laisser mijoter 15 minutes.",
+        "Disposer les bandes de tortilla sur une plaque et les faire dorer au four 8 minutes.",
+        "Couper l'avocat en dés et l'arroser de jus de citron vert. Servir la soupe avec les bandes de tortilla, l'avocat, la coriandre hachée et le fromage râpé."
+      ]
+    },
+    "soupe-nouilles-oeuf-champignons": {
+      "title": "Soupe de nouilles aux œufs mollets et champignons",
+      "steps": [
+        "Plonger les œufs dans l'eau bouillante pendant 6 minutes, puis les refroidir à l'eau froide et les écaler.",
+        "Faire revenir l'ail haché, le gingembre râpé et les champignons émincés dans l'huile de sésame pendant 5 minutes.",
+        "Verser 1,5 litre d'eau, les bouillons et la sauce soja, porter à ébullition, ajouter l'oignon nouveau émincé et les épinards, cuire 3 minutes.",
+        "Ajouter les nouilles et cuire environ 4 minutes selon le temps indiqué sur le paquet.",
+        "Couper les œufs en deux, les répartir dans les bols avec la soupe et parsemer de graines de sésame."
+      ]
+    },
+    "soupe-gnocchi-pesto-haricots-verts": {
+      "title": "Soupe de gnocchi au pesto, haricots verts et tomates cerises",
+      "steps": [
+        "Émincer l'oignon, couper la courgette en dés, tailler les haricots verts en tronçons et couper les tomates cerises en deux.",
+        "Faire revenir l'oignon et l'ail haché dans l'huile d'olive pendant 4 minutes.",
+        "Verser 1,5 litre d'eau avec les bouillons, porter à ébullition, ajouter les haricots verts et la courgette et cuire 8 minutes.",
+        "Ajouter les gnocchi et les tomates cerises et cuire 3 minutes, jusqu'à ce que les gnocchi remontent à la surface.",
+        "Hors du feu, incorporer le pesto, saler, poivrer et servir avec le parmesan râpé."
+      ]
+    },
+    "velout-petits-pois-menthe": {
+      "title": "Velouté de petits pois à la menthe",
+      "steps": [
+        "Faire revenir l'oignon émincé dans l'huile d'olive jusqu'à ce qu'il devienne translucide.",
+        "Ajouter la pomme de terre coupée en dés, le bouillon émietté et un litre d'eau chaude, puis laisser cuire à couvert.",
+        "Incorporer les petits pois surgelés et poursuivre la cuisson 5 minutes.",
+        "Mixer finement avec les feuilles de menthe, assaisonner de sel et de poivre, puis servir bien chaud."
+      ]
+    },
+    "tartines-radis-beurre-ciboulette": {
+      "title": "Tartines de radis, beurre et ciboulette",
+      "steps": [
+        "Laver les radis, retirer les extrémités et les couper en fines rondelles.",
+        "Tartiner généreusement chaque tranche de pain avec le beurre ramolli.",
+        "Disposer les rondelles de radis sur le beurre, puis saupoudrer de sel et de poivre.",
+        "Ciseler la ciboulette, la répartir sur les tartines et servir aussitôt."
+      ]
+    },
+    "poivrons-grilles-ail-persil": {
+      "title": "Poivrons rôtis à l'ail et au persil",
+      "steps": [
+        "Préchauffer le four à 220°C, couper les poivrons en grosses lanières et les disposer sur une plaque avec les gousses d'ail non épluchées.",
+        "Enfourner et rôtir jusqu'à ce que la peau noircisse légèrement.",
+        "Laisser tiédir, retirer la peau, les graines et l'enveloppe de l'ail, puis couper la chair en morceaux.",
+        "Mélanger avec l'huile, le vinaigre, le persil ciselé, le sel et le poivre, puis laisser mariner 30 minutes avant de servir."
+      ]
+    },
+    "courgettes-dorees-feta-menthe": {
+      "title": "Courgettes dorées, feta et menthe",
+      "steps": [
+        "Couper les courgettes en tranches de 5 mm et les faire dorer dans l'huile d'olive à la poêle, 3 minutes par face.",
+        "Disposer les courgettes dans un plat, arroser du jus du citron, saler et poivrer.",
+        "Émietter la feta sur le dessus et parsemer de menthe ciselée.",
+        "Laisser reposer 10 minutes à température ambiante avant de servir."
+      ]
+    },
+    "bouchees-feuilletees-tomates-cerises": {
+      "title": "Bouchées feuilletées aux tomates cerises et à la mozzarella",
+      "steps": [
+        "Préchauffer le four à 200°C et dérouler la pâte feuilletée sur une plaque recouverte de papier cuisson.",
+        "Étaler la moutarde sur la pâte, disposer dessus les tomates coupées en deux et la mozzarella émiettée, puis assaisonner de sel, de poivre et d'herbes de Provence. Découper la pâte en 8 carrés.",
+        "Enfourner et cuire jusqu'à ce que les bords soient bien dorés.",
+        "Laisser tiédir 5 minutes, parsemer de basilic ciselé et servir."
+      ]
+    },
+    "carpaccio-betterave-poire-chevre": {
+      "title": "Carpaccio de betterave, poire et chèvre",
+      "steps": [
+        "Trancher la betterave et la poire très finement, à l'aide d'un couteau bien aiguisé ou d'une mandoline.",
+        "Préparer la vinaigrette en fouettant le vinaigre, la moutarde, l'huile d'olive, le sel et le poivre.",
+        "Disposer les tranches de betterave et de poire en rosace sur les assiettes, émietter le chèvre et concasser les noix sur le dessus.",
+        "Arroser de vinaigrette et servir à température ambiante."
+      ]
+    },
+    "champignons-sautes-ail-persil": {
+      "title": "Champignons de Paris sautés à l'ail et au persil",
+      "steps": [
+        "Faire chauffer le beurre et l'huile dans une grande poêle, puis faire sauter les champignons émincés à feu vif pendant 8 minutes.",
+        "Ajouter l'ail haché et le persil ciselé, puis cuire encore 1 minute en remuant.",
+        "Assaisonner de sel et de poivre.",
+        "Griller les tranches de pain et les garnir de champignons avant de servir chaud."
+      ]
+    },
+    "choux-bruxelles-roties-miel-noix": {
+      "title": "Choux de Bruxelles rôtis au miel et aux noix",
+      "steps": [
+        "Préchauffer le four à 200°C, couper les choux en deux et les disposer sur une plaque avec l'huile, le sel et le poivre.",
+        "Enfourner et rôtir jusqu'à ce qu'ils soient bien dorés et tendres.",
+        "Faire torréfier les noix concassées à sec dans une poêle pendant 3 minutes.",
+        "Arroser les choux de miel, parsemer de noix et servir chaud."
+      ]
+    },
+    "endives-braisees-orange": {
+      "title": "Endives braisées à l'orange",
+      "steps": [
+        "Faire fondre le beurre dans une sauteuse, saupoudrer de sucre, puis faire revenir les endives coupées en deux pendant 5 minutes.",
+        "Ajouter le jus d'orange, les quartiers d'orange pelés, le sel et le poivre, puis couvrir et braiser à feu doux.",
+        "Retirer le couvercle et laisser le jus caraméliser pendant 5 minutes.",
+        "Servir chaud, nappé de son jus."
+      ]
+    },
+    "poireaux-vinaigrette-oeufs-durs": {
+      "title": "Poireaux vinaigrette aux œufs durs",
+      "steps": [
+        "Cuire les poireaux entiers à l'eau bouillante salée pendant 20 minutes.",
+        "Cuire les œufs 9 minutes dans une casserole séparée, puis les écaler.",
+        "Égoutter les poireaux et les laisser refroidir 10 minutes.",
+        "Fouetter le vinaigre, la moutarde, l'huile, le sel et le poivre, puis arroser les poireaux.",
+        "Servir froid, accompagné des œufs coupés en quatre."
+      ]
+    },
+    "tartinade-feves-menthe-pitas": {
+      "title": "Tartinade de fèves à la menthe et pitas grillés",
+      "steps": [
+        "Égoutter et rincer les fèves, puis les mixer avec la gousse d'ail, le jus du citron, l'huile d'olive, le cumin et le sel.",
+        "Ajouter les feuilles de menthe ciselées et mixer jusqu'à obtenir une texture lisse.",
+        "Couper les pitas en triangles et les faire griller à sec dans une poêle chaude.",
+        "Servir la tartinade avec les triangles de pita grillés."
+      ]
+    },
+    "tartelettes-epinards-ciboulette": {
+      "title": "Tartelettes printanières aux épinards et à la ciboulette",
+      "steps": [
+        "Faire tomber les épinards dans une poêle chaude pendant 3 minutes, puis les égoutter et les hacher.",
+        "Préchauffer le four à 180°C et foncer quatre petits moules avec la pâte brisée.",
+        "Battre les œufs avec la crème, la muscade, le sel, le poivre et la ciboulette ciselée, puis ajouter les épinards et le fromage râpé.",
+        "Répartir la préparation dans les moules, enfourner 30 minutes, puis laisser tiédir 10 minutes avant de démouler."
+      ]
+    },
+    "tartinade-betterave-chevre-noix": {
+      "title": "Tartinade de betterave, chèvre et noix",
+      "steps": [
+        "Mixer la betterave cuite coupée en dés avec le chèvre, l'ail épluché, l'huile d'olive et le vinaigre.",
+        "Assaisonner de sel et de poivre, puis mixer jusqu'à obtenir une texture lisse.",
+        "Concasser grossièrement les noix au couteau.",
+        "Servir la tartinade dans un bol et parsemer de noix concassées."
+      ]
+    },
+    "tartinade-haricots-blancs-citron-persil": {
+      "title": "Tartinade de haricots blancs au citron et au persil",
+      "steps": [
+        "Égoutter et rincer les haricots blancs, puis les mixer avec l'ail épluché, le jus du citron, l'huile d'olive et le cumin.",
+        "Saler, poivrer et mixer encore jusqu'à obtenir une crème onctueuse.",
+        "Ajouter le persil haché, mélanger et servir bien frais."
+      ]
+    },
+    "rillettes-sardines-citron-ciboulette": {
+      "title": "Rillettes de sardines au citron et à la ciboulette",
+      "steps": [
+        "Écraser à la fourchette les sardines égouttées avec le beurre ramolli et le jus du citron.",
+        "Ajouter la ciboulette ciselée, saler légèrement, poivrer et mélanger.",
+        "Réserver au frais pour laisser les saveurs se développer.",
+        "Servir sur des tranches fines ou dans un bol avec une pointe de citron."
+      ]
+    },
+    "bouchees-feuilletees-jambon-moutarde-comte": {
+      "title": "Bouchées feuilletées au jambon, à la moutarde et au comté",
+      "steps": [
+        "Préchauffer le four à 200 °C et couper les pâtes feuilletées en carrés d'environ 8 cm.",
+        "Tartiner chaque carré de moutarde, garnir de jambon déchiqueté et de comté râpé, puis replier pour former des bouchées.",
+        "Battre l'oeuf avec une pincée de sel, badigeonner les bouchées et enfourner 15 minutes jusqu'à ce qu'elles soient bien dorées.",
+        "Laisser tiédir quelques minutes avant de servir."
+      ]
+    },
+    "tartinade-saumon-fume-fromage-blanc": {
+      "title": "Tartinade de saumon fumé au fromage blanc",
+      "steps": [
+        "Hacher finement le saumon fumé au couteau.",
+        "Mélanger le saumon avec le fromage blanc, le jus du citron, la ciboulette ciselée et le poivre.",
+        "Servir immédiatement ou garder au frais jusqu'au moment de l'apéritif."
+      ]
+    },
+    "batons-polenta-parmesan-herbes": {
+      "title": "Bâtonnets de polenta croustillants au parmesan",
+      "steps": [
+        "Porter 1 litre d'eau à ébullition avec le bouillon, puis verser la polenta en pluie en fouettant.",
+        "Cuire 5 minutes à feu moyen en remuant sans cesse, puis incorporer le parmesan râpé, les herbes, le sel et le poivre.",
+        "Étaler la polenta dans un plat huilé sur 2 cm d'épaisseur et laisser refroidir au frais.",
+        "Découper en bâtonnets et les faire dorer dans l'huile d'olive chaude, 3 minutes par face."
+      ]
+    },
+    "galettes-courgette-feta-menthe": {
+      "title": "Galettes de courgette, feta et menthe",
+      "steps": [
+        "Râper les courgettes, les saler et les laisser dégorger 10 minutes dans une passoire.",
+        "Presser les courgettes dans un torchon, puis mélanger avec les oeufs, la farine, la levure, la menthe ciselée et la feta émiettée. Poivrer.",
+        "Poêler des cuillerées de pâte dans l'huile de tournesol chaude, 3 minutes par face.",
+        "Égoutter sur papier absorbant et servir tiède."
+      ]
+    },
+    "tartines-olives-anchois-toasts": {
+      "title": "Tartinade d'olives et d'anchois sur toasts",
+      "steps": [
+        "Préchauffer le four à 200 °C et couper la baguette en tranches obliques.",
+        "Mixer les olives dénoyautées, les anchois égouttés, l'ail épluché et l'huile d'olive jusqu'à obtenir une pâte grossière.",
+        "Ajouter l'origan et une pincée de poivre, puis mélanger.",
+        "Disposer les tranches de baguette sur une plaque et les griller 5 minutes au four.",
+        "Tartiner les toasts encore tièdes et servir aussitôt."
+      ]
+    },
+    "bouchees-quinoa-chevre-carotte": {
+      "title": "Bouchées de quinoa, carotte et chèvre au four",
+      "steps": [
+        "Cuire le quinoa dans 300 ml d'eau salée pendant 15 minutes, puis l'égoutter.",
+        "Râper les carottes et les mélanger au quinoa tiède avec les oeufs battus, le chèvre émietté, la chapelure, le cumin et le poivre.",
+        "Former 16 boules, les badigeonner d'huile d'olive et les disposer sur une plaque recouverte de papier cuisson.",
+        "Enfourner à 200 °C pendant 20 minutes, en retournant les bouchées à mi-cuisson."
+      ]
+    },
+    "tartinade-patate-douce-tahini": {
+      "title": "Tartinade de patate douce rôtie au tahini",
+      "steps": [
+        "Préchauffer le four à 200 °C, couper les patates douces en deux, les huiler avec 1 cs d'huile d'olive puis les poser côté chair vers le bas.",
+        "Cuire 40 minutes jusqu'à ce que la chair soit fondante, puis la récupérer à la cuillère.",
+        "Mixer la chair avec le tahini, le jus du citron, l'ail épluché, le paprika, le sel, le poivre et la seconde cuillère d'huile d'olive.",
+        "Servir tiède ou froid."
+      ]
+    },
+    "beignets-crevettes-coco-citron-vert": {
+      "title": "Beignets de crevettes à la noix de coco et au citron vert",
+      "steps": [
+        "Hacher grossièrement les crevettes décortiquées et les couper en petits morceaux.",
+        "Mélanger la farine, l'oeuf, le lait, le zeste et le jus du citron vert, la noix de coco, le gingembre râpé, le piment, le sel et les crevettes.",
+        "Former de petites galettes à la cuillère et les frire dans l'huile de tournesol chaude, 2 minutes par face.",
+        "Égoutter sur papier absorbant et servir aussitôt."
+      ]
+    },
+    "tartinade-feves-menthe-citron": {
+      "title": "Tartinade de fèves à la menthe et au citron",
+      "steps": [
+        "Rincer les fèves égouttées et les mixer avec l'ail épluché, le jus du citron, la moitié des feuilles de menthe et l'huile d'olive.",
+        "Ajouter le cumin, saler, poivrer et mixer jusqu'à obtenir une texture onctueuse.",
+        "Faire griller les tranches de pain de campagne dans une poêle sèche, 2 minutes par face.",
+        "Tartiner les tranches et garnir de la menthe restante ciselée."
+      ]
+    },
+    "clafoutis-poires-amandes": {
+      "title": "Clafoutis aux poires et aux amandes",
+      "steps": [
+        "Préchauffer le four à 180 °C. Éplucher les poires, les couper en quartiers fins et les disposer dans un plat beurré.",
+        "Mélanger la farine, le sucre et le sucre vanillé, puis ajouter les oeufs battus et le lait pour obtenir une pâte lisse.",
+        "Verser la pâte sur les poires, parsemer d'amandes effilées et enfourner.",
+        "Laisser tiédir 10 minutes avant de servir."
+      ]
+    },
+    "far-breton-pruneaux": {
+      "title": "Far breton aux pruneaux",
+      "steps": [
+        "Préchauffer le four à 180 °C et beurrer un plat à tarte.",
+        "Fouetter les oeufs avec le sucre, ajouter la farine et le sucre vanillé, puis verser le lait peu à peu en remuant.",
+        "Répartir les pruneaux dans le plat, verser la pâte dessus et enfourner.",
+        "Laisser refroidir un peu avant de démouler ou de servir tiède."
+      ]
+    },
+    "creme-citron-legere": {
+      "title": "Crème au citron légère",
+      "steps": [
+        "Presser les citrons et récupérer le zeste.",
+        "Dans une casserole, fouetter les oeufs avec le sucre, le jus et le zeste, puis ajouter le beurre coupé en morceaux.",
+        "Cuire à feu doux en remuant sans cesse jusqu'à épaississement, environ 8 minutes, sans laisser bouillir.",
+        "Laisser refroidir, incorporer la crème fouettée et réserver au frais."
+      ]
+    },
+    "pommes-four-speculoos": {
+      "title": "Pommes au four fourrées aux speculoos",
+      "steps": [
+        "Préchauffer le four à 180 °C. Évider les pommes en gardant la base intacte.",
+        "Écraser les speculoos avec le beurre fondu, le miel et la cannelle.",
+        "Garnir les pommes avec ce mélange, les disposer dans un plat et les enfourner.",
+        "Servir tiède dès la sortie du four."
+      ]
+    },
+    "brownies-aux-noix": {
+      "title": "Brownies aux noix",
+      "steps": [
+        "Préchauffer le four à 170 °C et chemiser un moule carré.",
+        "Faire fondre le chocolat et le beurre au bain-marie, puis laisser tiédir.",
+        "Ajouter le sucre et les oeufs un à un, puis la farine, le cacao et les noix concassées.",
+        "Verser la pâte dans le moule et cuire 25 minutes, jusqu'à ce que le centre soit encore légèrement moelleux. Laisser refroidir avant de couper en carrés."
+      ]
+    },
+    "semoule-lait-fleur-oranger": {
+      "title": "Semoule au lait à la fleur d'oranger",
+      "steps": [
+        "Faire chauffer le lait avec le beurre et le sucre à feu moyen.",
+        "Verser la semoule en pluie en remuant, ajouter les raisins secs et laisser épaissir.",
+        "Hors du feu, parfumer à l'eau de fleur d'oranger.",
+        "Répartir dans des coupes et laisser refroidir au frais."
+      ]
+    },
+    "iles-flottantes-vanille": {
+      "title": "Îles flottantes à la vanille",
+      "steps": [
+        "Séparer les blancs des jaunes d'oeufs.",
+        "Monter les blancs en neige avec 90 g de sucre, puis former des boules à l'aide d'une cuillère.",
+        "Faire frémir le lait dans une grande casserole et pocher les boules de meringue 1 minute de chaque côté. Les retirer et réserver.",
+        "Battre les jaunes avec le reste du sucre et le sucre vanillé, verser le lait de cuisson tiède, puis cuire à feu doux en remuant jusqu'à ce que la crème nappe la cuillère.",
+        "Verser la crème anglaise dans les coupes, poser les îles et réserver au frais."
+      ]
+    },
+    "truffes-coco-chocolat": {
+      "title": "Truffes coco et chocolat",
+      "steps": [
+        "Faire chauffer la crème, la verser sur le chocolat haché et mélanger jusqu'à obtenir une ganache lisse.",
+        "Ajouter le beurre coupé en morceaux et le sucre vanillé, puis bien mélanger.",
+        "Réfrigérer la ganache pendant 2 heures jusqu'à ce qu'elle soit ferme.",
+        "Former des boules, puis les rouler dans la noix de coco râpée mélangée au cacao."
+      ]
+    },
+    "beignets-pommes-cannelle": {
+      "title": "Beignets de pommes à la cannelle",
+      "steps": [
+        "Mélanger la farine, la levure, 40 g de sucre et la cannelle.",
+        "Ajouter les oeufs et le lait pour obtenir une pâte lisse, puis la laisser reposer.",
+        "Éplucher les pommes, les couper en rondelles fines et les tremper dans la pâte.",
+        "Faire frire les rondelles dans l'huile chauffée à 170 °C environ, 3 minutes par face.",
+        "Égoutter sur papier absorbant et rouler les beignets dans le reste du sucre."
+      ]
+    },
+    "tarte-chocolat-framboises": {
+      "title": "Tarte au chocolat et aux framboises",
+      "steps": [
+        "Préchauffer le four à 180 °C et foncer un moule avec la pâte brisée.",
+        "Répartir les framboises surgelées sur le fond de tarte.",
+        "Faire chauffer la crème, la verser sur le chocolat haché, puis incorporer les oeufs battus et le sucre.",
+        "Verser la garniture sur les framboises et enfourner jusqu'à ce que la crème soit prise. Laisser tiédir avant de servir."
+      ]
+    },
+    "glace-yaourt-fruits-rouges": {
+      "title": "Glace express yaourt et fruits rouges",
+      "steps": [
+        "Mixer les fruits rouges surgelés avec le sucre et le jus du citron jusqu'à obtenir une purée.",
+        "Fouetter la crème liquide froide jusqu'à ce qu'elle tienne, puis incorporer les yaourts.",
+        "Mélanger la purée de fruits à la crème, verser dans un moule et congeler au moins 4 heures.",
+        "Sortir la glace du congélateur 10 minutes avant de servir."
+      ]
+    },
+    "bananes-poelees-beurre-cannelle": {
+      "title": "Bananes poêlées au beurre et à la cannelle, crème fouettée",
+      "steps": [
+        "Fouetter la crème froide avec 20 g de sucre jusqu'à obtenir une chantilly ferme, puis réserver au frais.",
+        "Éplucher les bananes et les couper en rondelles épaisses.",
+        "Faire fondre le beurre dans une poêle à feu moyen, ajouter les bananes et le reste du sucre, laisser dorer.",
+        "Saupoudrer de cannelle, faire caraméliser 2 minutes, puis dresser les bananes avec la chantilly."
+      ]
+    },
+    "truffes-chocolat-cacao": {
+      "title": "Truffes au chocolat noir et au cacao",
+      "steps": [
+        "Faire chauffer la crème dans une casserole à feu doux jusqu'à frémissement, puis la verser sur le chocolat haché.",
+        "Incorporer le beurre en morceaux et mélanger jusqu'à obtenir une ganache lisse.",
+        "Laisser refroidir puis réfrigérer la ganache pendant 1 heure.",
+        "Former des boules à la cuillère, les rouler dans le cacao en poudre et les garder au frais."
+      ]
+    },
+    "energy-balls-beurre-cacahuete": {
+      "title": "Energy balls au beurre de cacahuète et au chocolat",
+      "steps": [
+        "Mélanger les flocons d'avoine, le beurre de cacahuète et le miel dans un saladier.",
+        "Hacher le chocolat noir et l'incorporer à la préparation.",
+        "Former des boules de la taille d'une noix avec les mains.",
+        "Rouler les boules dans la noix de coco râpée.",
+        "Réfrigérer les boules pendant 30 minutes pour qu'elles tiennent."
+      ]
+    },
+    "creme-ricotta-pistaches-miel": {
+      "title": "Crème de ricotta aux pistaches et au miel",
+      "steps": [
+        "Presser le citron pour récupérer environ 2 cuillères de jus.",
+        "Fouetter la ricotta avec le miel, le sucre et le jus de citron jusqu'à obtenir une crème onctueuse.",
+        "Hacher grossièrement les pistaches décortiquées.",
+        "Répartir la crème dans quatre coupelles, parsemer de pistaches et réfrigérer 30 minutes avant de servir."
+      ]
+    },
+    "carpaccio-ananas-citron-vert-menthe": {
+      "title": "Carpaccio d'ananas au citron vert et à la menthe",
+      "steps": [
+        "Éplucher l'ananas, retirer le cœur et trancher la chair très finement.",
+        "Presser les citrons verts pour obtenir leur jus.",
+        "Disposer les tranches d'ananas en cercle sur un grand plat, saupoudrer de sucre et arroser de jus de citron vert.",
+        "Ciseler la menthe, en parsemer le carpaccio et laisser macérer 30 minutes au frais."
+      ]
+    },
+    "fraises-vin-blanc-menthe": {
+      "title": "Fraises macérées au vin blanc et à la menthe",
+      "steps": [
+        "Laver les fraises, retirer les équeues et couper les plus grosses en deux.",
+        "Faire chauffer le vin blanc avec le sucre à feu moyen jusqu'à dissolution complète du sucre.",
+        "Laisser refroidir le sirop pendant 30 minutes.",
+        "Verser le sirop sur les fraises, ajouter la menthe ciselée et laisser macérer 1 heure au frais."
+      ]
+    },
+    "semifreddo-framboise": {
+      "title": "Semifreddo à la framboise et au mascarpone",
+      "steps": [
+        "Mixer les framboises décongelées avec 30 g de sucre puis passer la purée au tamis pour retirer les pépins.",
+        "Fouetter la crème liquide froide avec le mascarpone, le sucre restant et le sucre vanillé jusqu'à ce qu'elle tienne.",
+        "Incorporer délicatement la purée de framboises à la crème en formant des marbrures.",
+        "Verser la préparation dans un moule à cake filmé et congeler au moins 6 heures avant de démouler."
+      ]
+    },
+    "sorbet-mangue-citron-vert": {
+      "title": "Sorbet mangue et citron vert sans sorbetière",
+      "steps": [
+        "Peler les mangues, retirer la chair autour du noyau et la couper en morceaux.",
+        "Presser les citrons verts pour obtenir leur jus.",
+        "Mixer la mangue avec le jus de citron vert, le jus d'orange et le sucre jusqu'à obtenir une purée lisse.",
+        "Verser dans un plat, congeler 4 heures en raclant à la fourchette toutes les 45 minutes."
+      ]
+    },
+    "salami-chocolat-speculoos": {
+      "title": "Salami au chocolat, speculoos et cacahuètes",
+      "steps": [
+        "Concasser les speculoos au rouleau à pâtisserie dans un sac en plastique.",
+        "Faire fondre le beurre avec le chocolat noir au bain-marie à feu doux en remuant.",
+        "Hacher grossièrement les cacahuètes et les incorporer avec les speculoos dans le chocolat fondu.",
+        "Former un boudin sur une feuille de papier cuisson, refermer et réfrigérer 2 heures avant de trancher."
+      ]
+    },
+    "ecorces-chocolat-fruits-secs": {
+      "title": "Écorces de chocolat noir aux fruits secs",
+      "steps": [
+        "Faire fondre le chocolat noir cassé en morceaux au bain-marie à feu doux.",
+        "Étaler le chocolat fondu en couche d'environ 5 mm sur une plaque recouverte de papier cuisson.",
+        "Hacher grossièrement les abricots secs et les pistaches, puis les parsemer avec les amandes effilées et les raisins secs.",
+        "Laisser prendre les écorces au frais pendant 30 minutes avant de les casser en morceaux."
+      ]
+    },
+    "cheesecake-sans-cuisson-framboises": {
+      "title": "Cheesecake sans cuisson, coulis de fruits rouges",
+      "steps": [
+        "Écraser les speculoos, faire fondre le beurre et mélanger les deux, puis tasser le mélange au fond d'un moule à fond amovible.",
+        "Fouetter le mascarpone avec le fromage blanc, 60 g de sucre et le jus du citron jusqu'à obtenir une crème lisse.",
+        "Monter la crème liquide froide en chantilly avec le sucre restant, puis l'incorporer délicatement à la préparation.",
+        "Verser la crème sur le fond de speculoos, lisser et réfrigérer 4 heures.",
+        "Faire chauffer les fruits rouges décongelés avec un peu de sucre pendant 5 minutes, laisser refroidir, puis napper le cheesecake au moment de servir."
+      ]
+    },
+    "nice-cream-banane-cacao": {
+      "title": "Crème glacée banane, cacao et beurre de cacahuète",
+      "steps": [
+        "Éplucher les bananes, les couper en rondelles et les congeler 2 heures sur une plaque recouverte de papier cuisson.",
+        "Mixer les rondelles de banane gelées avec le cacao, le miel et le lait de coco jusqu'à obtenir une texture de glace.",
+        "Servir aussitôt en ajoutant une cuillerée de beurre de cacahuète sur chaque portion."
+      ]
+    },
+    "polenta-sucree-poire-miel": {
+      "title": "Polenta sucrée à la poire et au miel",
+      "steps": [
+        "Éplucher la poire, la couper en petits dés puis la faire revenir dans une poêle avec le beurre et la cannelle.",
+        "Porter le lait et le sel à ébullition, verser la polenta en pluie en fouettant, puis cuire à feu doux 5 minutes en remuant.",
+        "Ajouter le miel, mélanger, répartir dans les bols et garnir de poires chaudes."
+      ]
+    },
+    "chaussons-pomme-cannelle": {
+      "title": "Chaussons aux pommes et à la cannelle",
+      "steps": [
+        "Éplucher les pommes, les couper en petits dés puis les faire revenir dans une poêle avec le beurre, le sucre et la cannelle pendant 8 minutes.",
+        "Laisser tiédir la garniture 10 minutes, puis dérouler la pâte et la découper en quatre carrés.",
+        "Déposer une cuillerée de garniture au centre de chaque carré, replier en triangle et souder les bords à la fourchette.",
+        "Badigeonner de jaune d'oeuf battu puis enfourner à 200°C pendant 20 minutes jusqu'à ce que les chaussons soient dorés."
+      ]
+    },
+    "wraps-oeuf-epinards-fromage": {
+      "title": "Wraps aux oeufs brouillés, épinards et fromage",
+      "steps": [
+        "Faire chauffer l'huile d'olive dans une poêle, ajouter les épinards et les laisser tomber 3 minutes à feu moyen.",
+        "Battre les oeufs avec le sel et le poivre, les verser dans la poêle puis brouiller doucement pendant 3 minutes.",
+        "Répartir la préparation sur les tortillas tièdes, parsemer de fromage râpé, replier les côtés puis rouler.",
+        "Faire dorer les wraps 2 minutes de chaque côté dans une poêle propre."
+      ]
+    },
+    "muffins-carotte-noix": {
+      "title": "Muffins à la carotte et aux noix",
+      "steps": [
+        "Préchauffer le four à 180°C, râper finement les carottes et concasser grossièrement les noix.",
+        "Battre les oeufs avec le sucre, ajouter l'huile puis la carotte râpée.",
+        "Incorporer la farine, la levure et la cannelle, puis les noix en mélangeant juste ce qu'il faut.",
+        "Répartir la pâte dans des moules à muffins et cuire 25 minutes à 180°C jusqu'à ce qu'une lame en ressorte sèche."
+      ]
+    },
+    "tartines-fromage-blanc-radis": {
+      "title": "Tartines de fromage blanc, radis et ciboulette",
+      "steps": [
+        "Laver et émincer finement les radis.",
+        "Mélanger le fromage blanc avec la ciboulette ciselée, le sel et le poivre.",
+        "Faire griller les tranches de pain à la poêle sèche 3 minutes par face, puis les arroser d'un filet d'huile d'olive.",
+        "Tartiner chaque tranche de fromage blanc, garnir de radis et servir aussitôt."
+      ]
+    },
+    "gaufres-yaourt-fruits-rouges": {
+      "title": "Gaufres au yaourt et aux fruits rouges",
+      "steps": [
+        "Faire fondre le beurre, puis mélanger dans un saladier la farine, la levure et 30 g de sucre.",
+        "Ajouter les oeufs, les yaourts, le lait et la vanille, puis mélanger jusqu'à obtenir une pâte lisse.",
+        "Faire fondre les fruits rouges surgelés dans une casserole à feu doux avec les 10 g de sucre restants pendant 5 minutes.",
+        "Faire chauffer le gaufrier, verser une louche de pâte et cuire environ 4 minutes par gaufre.",
+        "Servir les gaufres tièdes nappées de coulis de fruits rouges."
+      ]
+    },
+    "galettes-patate-douce-oeuf": {
+      "title": "Galettes de patate douce et oeufs au plat",
+      "steps": [
+        "Râper la patate douce et l'oignon, presser pour retirer l'excès d'eau, puis mélanger avec le paprika, le sel et le poivre.",
+        "Former quatre galettes en les pressant bien, puis les faire dorer 5 minutes par face dans l'huile chaude.",
+        "Casser un oeuf sur chaque galette, couvrir et cuire 4 minutes jusqu'à ce que le blanc soit bien pris.",
+        "Parsemer de ciboulette ciselée et servir aussitôt."
+      ]
     }
   },
   "ingredients": {

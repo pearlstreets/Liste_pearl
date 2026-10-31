@@ -3119,6 +3119,1212 @@
         "Mit einem Löffel Teigbällchen hineingeben und 5 Minuten unter Wenden goldbraun ausbacken.",
         "Auf Küchenpapier abtropfen lassen und lauwarm servieren."
       ]
+    },
+    "salade-lyonnaise-complete": {
+      "title": "Vollständiger Lyoner Salat",
+      "steps": [
+        "Kochen Sie die Kartoffeln ganz in kochendem, gesalzenem Wasser, schälen Sie sie dann und schneiden Sie sie in dicke Scheiben.",
+        "Braten Sie die Speckwürfel trocken in einer Pfanne an, fügen Sie die Landbrotscheiben hinzu und rösten Sie sie auf beiden Seiten.",
+        "Pochieren Sie die Eier 3 Minuten lang in leicht siedendem Wasser, dem Essig zugesetzt ist, und lassen Sie sie dann abtropfen.",
+        "Bereiten Sie das Dressing mit der gehackten Schalotte, dem Senf, dem Essig, dem Olivenöl, dem Salz und dem Pfeffer zu. Richten Sie den Salat mit den Kartoffeln, den Speckwürfeln, den Croutons und den Eiern an und beträufeln Sie alles mit dem Dressing."
+      ]
+    },
+    "oeufs-en-meurette": {
+      "title": "Eier en meurette",
+      "steps": [
+        "Braten Sie die Speckwürfel, die fein geschnittene Zwiebel und die gehackte Schalotte 5 Minuten in der Butter an.",
+        "Gießen Sie den Rotwein dazu, fügen Sie die zerdrückte Knoblauchzehe, das Lorbeerblatt, den Thymian und die in Viertel geschnittenen Champignons hinzu und lassen Sie alles 20 Minuten köcheln.",
+        "Pochieren Sie die Eier 3 Minuten lang in leicht siedendem, mit Essig versetztem Wasser und lassen Sie sie abtropfen.",
+        "Rösten Sie die Landbrotscheiben, legen Sie sie auf die Teller, setzen Sie die Eier darauf, übergießen Sie sie mit der Sauce, salzen, pfeffern und servieren Sie."
+      ]
+    },
+    "poireaux-vinaigrette-jambon": {
+      "title": "Lauch mit Vinaigrette und Schinken",
+      "steps": [
+        "Reinigen Sie den Lauch, halbieren Sie ihn längs und garen Sie ihn 20 Minuten in gesalzenem Wasser.",
+        "Kochen Sie die hartgekochten Eier 9 Minuten in leicht siedendem Wasser und pellen Sie sie dann.",
+        "Bereiten Sie die Vinaigrette mit dem Senf, dem Essig, dem Olivenöl, dem Salz, dem Pfeffer und der gehackten Petersilie zu.",
+        "Lassen Sie den Lauch abtropfen, legen Sie ihn auf eine Platte, beträufeln Sie ihn mit der Vinaigrette, fügen Sie den in Scheiben geschnittenen gekochten Schinken und die in Viertel geschnittenen Eier hinzu."
+      ]
+    },
+    "aligot-saucisse-comte": {
+      "title": "Aligot mit Comté-Käse und Würstchen",
+      "steps": [
+        "Schälen Sie die Kartoffeln, schneiden Sie sie in Stücke und kochen Sie sie 25 Minuten in gesalzenem Wasser zusammen mit den ganzen Knoblauchzehen.",
+        "Braten Sie die Würstchen bei mittlerer Hitze 15 Minuten in der Pfanne und wenden Sie sie regelmäßig.",
+        "Stampfen Sie die Kartoffeln und den gegarten Knoblauch und rühren Sie Butter und die flüssige Sahne ein, bis ein glattes Püree entsteht.",
+        "Geben Sie den geriebenen Comté-Käse nach und nach in das heiße Püree und rühren Sie bei schwacher Hitze, bis er Fäden zieht. Salzen, pfeffern und servieren Sie mit den Würstchen."
+      ]
+    },
+    "pommes-sarladaises-cuisse-canard": {
+      "title": "Entenkeulen mit pommes sarladaises",
+      "steps": [
+        "Braten Sie die Entenkeulen mit der Hautseite nach unten in einer Pfanne bei mittlerer Hitze 25 Minuten, damit das Fett schmilzt, und stellen Sie sie dann beiseite.",
+        "Schälen Sie die Kartoffeln, schneiden Sie sie in dicke Scheiben und braten Sie sie 20 Minuten in dem Entenfett mit gehacktem Knoblauch, dem Thymian und dem Salz.",
+        "Legen Sie die Keulen wieder auf die Kartoffeln, decken Sie die Pfanne ab und setzen Sie das Garen bei schwacher Hitze für 15 Minuten fort.",
+        "Streuen Sie die gehackte Petersilie darüber, pfeffern Sie und servieren Sie heiß."
+      ]
+    },
+    "saltimbocca-dinde-jambon": {
+      "title": "Putensaltimbocca mit Schinken und Weißwein",
+      "steps": [
+        "Klopfen Sie die Putenschnitzel zwischen zwei Blättern Backpapier flach, salzen und pfeffern Sie sie.",
+        "Legen Sie auf jedes Schnitzel eine Scheibe gekochten Schinken und bestreuen Sie es mit den Kräutern.",
+        "Erhitzen Sie das Öl und 15 g Butter, braten Sie die Schnitzel 3 Minuten auf der Schinkenseite an, wenden Sie sie und garen Sie sie weitere 2 Minuten.",
+        "Nehmen Sie die Schnitzel heraus, deglacieren Sie die Pfanne mit dem Weißwein und reduzieren Sie ihn 4 Minuten lang auf die Hälfte.",
+        "Geben Sie die Schnitzel zurück in die Sauce, fügen Sie die restliche Butter hinzu, schmecken Sie ab und servieren Sie sofort."
+      ]
+    },
+    "osso-buco-veau-gremolata": {
+      "title": "Osso buco vom Kalb mit Gremolata",
+      "steps": [
+        "Mehlen Sie die Kalbsstücke, salzen Sie sie dann und pfeffern Sie sie.",
+        "Braten Sie die Stücke 8 Minuten in dem heißen Öl an, legen Sie sie dann beiseite.",
+        "Braten Sie die fein gehackte Zwiebel, die Karotte und eine Knoblauchzehe 5 Minuten in demselben Schmortopf an.",
+        "Löschen Sie mit trockenem Weißwein ab, geben Sie die gehackten Tomaten und den zerbröselten Brühwürfel hinzu, legen Sie das Kalbfleisch zurück hinein, decken Sie zu und schmoren Sie bei schwacher Hitze 1 h 30.",
+        "Hacken Sie die Petersilie mit der Zitronenschale und der zweiten Knoblauchzehe und streuen Sie die Gremolata vor dem Servieren über das Gericht."
+      ]
+    },
+    "arancini-jambon-mozzarella": {
+      "title": "Arancini mit gekochtem Schinken und Mozzarella",
+      "steps": [
+        "Braten Sie die fein gehackte Zwiebel in der Butter an, geben Sie den Reis hinzu und glasieren Sie ihn 2 Minuten.",
+        "Gießen Sie nach und nach die heiße Brühe hinzu und kochen Sie den Reis 18 Minuten unter Rühren, bis er weich ist.",
+        "Lassen Sie den Reis abkühlen, geben Sie den Parmesan, ein ganzes verquirltes Ei und das Salz dazu.",
+        "Formen Sie Reisportionen um einen Würfel Mozzarella und gekochten Schinken, panieren Sie sie dann nacheinander in Mehl, dem restlichen verquirlten Ei und Paniermehl.",
+        "Frittieren Sie die Arancini in dem heißen Sonnenblumenöl 4 Minuten, bis sie goldbraun sind, und lassen Sie sie dann auf Küchenpapier abtropfen."
+      ]
+    },
+    "cannelloni-poulet-poivrons": {
+      "title": "Cannelloni mit Hähnchen und Paprika",
+      "steps": [
+        "Kochen Sie die Lasagneblätter 8 Minuten in einem großen Topf mit kochendem Salzwasser, und lassen Sie sie dann abtropfen.",
+        "Braten Sie die fein gehackte Zwiebel und die Knoblauchzehe 4 Minuten im Öl an, geben Sie das gewürfelte Hähnchen und die gewürfelte Paprika hinzu und garen Sie weitere 10 Minuten.",
+        "Nehmen Sie den Topf vom Herd, mischen Sie die Füllung mit der Ricotta, der Hälfte des Parmesans, Salz und Pfeffer. Füllen Sie jede Lasagneplatte und rollen Sie sie auf. Verstreichen Sie die gehackten Tomaten auf dem Boden einer Auflaufform und legen Sie die Cannelloni hinein.",
+        "Streuen Sie die Mozzarella und den restlichen Parmesan darüber und backen Sie bei 190°C 25 Minuten."
+      ]
+    },
+    "pollo-al-ajillo": {
+      "title": "Hähnchenkeulen mit Knoblauch à la española (pollo al ajillo)",
+      "steps": [
+        "Salzen und pfeffern Sie die Hähnchenkeulen, dann braten Sie sie 8 Minuten im Olivenöl an.",
+        "Geben Sie den in Scheiben geschnittenen Knoblauch und Chili hinzu und braten Sie 1 Minute, ohne den Knoblauch anbrennen zu lassen.",
+        "Löschen Sie mit trockenem Weißwein ab, decken Sie zu und lassen Sie 25 Minuten bei schwacher Hitze schmoren.",
+        "Streuen Sie Paprika und gehackte Petersilie darüber und servieren Sie heiß."
+      ]
+    },
+    "gambas-al-ajillo": {
+      "title": "Gambas mit Knoblauch und Chili (gambas al ajillo)",
+      "steps": [
+        "Erhitzen Sie das Olivenöl mit der fein gehackten Knoblauchzehe und dem Chili 2 min bei schwacher Hitze.",
+        "Geben Sie die Garnelen hinzu und braten Sie sie 3 min bei starker Hitze, bis sie rosa sind.",
+        "Salzen Sie, streuen Sie gehackte Petersilie darüber und servieren Sie sofort mit in Scheiben geschnittenem Baguette."
+      ]
+    },
+    "fabada-asturienne-simplifiee": {
+      "title": "Vereinfachte Fabada asturiana",
+      "steps": [
+        "Braten Sie die fein gehackte Zwiebel und die Knoblauchzehe 5 min im Olivenöl an.",
+        "Geben Sie das gepökelte Schweinefleisch, die Chorizo und die geräucherte Wurst in Stücke geschnitten hinzu und braten Sie 4 min an.",
+        "Gießen Sie 1 Liter Brühe, zubereitet mit den Brühwürfeln, dazu, fügen Sie das Lorbeerblatt und das Paprikapulver hinzu und köcheln Sie 30 min.",
+        "Geben Sie die abgegossenen weißen Bohnen hinzu, lassen Sie weitere 15 min bei schwacher Hitze köcheln und servieren Sie dann."
+      ]
+    },
+    "croquetas-de-jambon": {
+      "title": "Spanische Schinkenkroketten",
+      "steps": [
+        "Butter schmelzen, Mehl hinzufügen und 2 min unter Rühren anschwitzen.",
+        "Milch nach und nach unter Rühren zugießen, gehackten gekochten Schinken und gemahlene Muskatnuss zugeben, dann 5 min kochen, bis eine dicke Creme entsteht.",
+        "Die Masse in einer geölten Form ausbreiten und mindestens 2 h im Kühlschrank abkühlen lassen.",
+        "Kleine längliche Bällchen formen, diese zuerst in das verquirlte Ei tauchen und dann im Paniermehl wenden.",
+        "Die Kroketten in sehr heißem Sonnenblumenöl 3 min frittieren, bis sie goldbraun sind, und danach abtropfen lassen."
+      ]
+    },
+    "cocido-madrileno": {
+      "title": "Vereinfachter Cocido madrileño",
+      "steps": [
+        "Das Schmor-Rindfleisch, die Zwiebel, die Knoblauchzehe und das Lorbeerblatt in 2 Liter mit Brühwürfeln zubereiteten Brühe geben und 90 min bei leichtem Köcheln garen.",
+        "Karotten, Lauch und Kartoffeln in Stücke schneiden, hinzufügen und 30 min weiterkochen.",
+        "Den ganzen Chorizo, die abgetropften Kichererbsen und den in Stücke geschnittenen Wirsing zugeben und 20 min garen.",
+        "Die Brühe, Fleischstücke und Gemüse auf einer großen Platte anrichten und nach Wunsch mit Senf servieren."
+      ]
+    },
+    "migas-extremenas": {
+      "title": "Migas extremeñas mit Chorizo",
+      "steps": [
+        "Landbrot zerbröseln, mit in Wasser aufgelöstem Brühwürfel beträufeln und 15 min ruhen lassen.",
+        "Speckwürfel und in Würfel geschnittenen Chorizo 4 min in Olivenöl goldbraun braten.",
+        "Die zerdrückte Knoblauchzehe, den gewürfelten Paprika und das Paprikapulver hinzufügen und 3 min weitergaren.",
+        "Die abgetropfte Brotkrume zugeben und 10 min unter Rühren braten, bis sie knusprig und goldbraun ist."
+      ]
+    },
+    "empanada-galicienne-au-thon": {
+      "title": "Galicische Empanada mit Thunfisch",
+      "steps": [
+        "Die in Streifen geschnittene Zwiebel und den Paprika 10 min bei schwacher Hitze in Olivenöl andünsten.",
+        "Die zerdrückte Knoblauchzehe, die gewürfelte Tomate und Paprika hinzufügen und 10 min einkochen lassen.",
+        "Vom Herd nehmen, den abgetropften Thunfisch unterheben und die Füllung abkühlen lassen.",
+        "Einen Teig auf ein Blech legen, füllen, mit dem zweiten Teig bedecken, die Ränder verschließen, mit verquirltem Ei bestreichen und 30 min backen."
+      ]
+    },
+    "agneau-asado-espagnol": {
+      "title": "Spanischer Lammbraten (cordero asado)",
+      "steps": [
+        "Die Lammschulter mit zerdrückter Knoblauchzehe, Paprika, Kräutern der Provence, Salz und Olivenöl einreiben und 30 min marinieren lassen.",
+        "Die Lammschulter in eine Form legen, die Kartoffelviertel, die in Scheiben geschnittene Zwiebel und den trockenen Weißwein dazugeben und zudecken.",
+        "Bei 160 °C 2 h 30 backen und zwischendurch mit dem Bratensaft begießen.",
+        "Die Lammschulter tranchieren und mit den Kartoffeln sowie dem Bratensaft servieren."
+      ]
+    },
+    "porc-adobado-pommes-de-terre-roties": {
+      "title": "Schweinefilet adobado mit gerösteten Kartoffeln",
+      "steps": [
+        "Mischen Sie Paprika, die zerdrückte Knoblauchzehe, Essig, Olivenöl, Oregano und Salz, bedecken Sie das Schweinefilet damit und lassen Sie es 1 h ziehen.",
+        "Braten Sie das Schweinefilet in einer heißen Pfanne von allen Seiten 8 min an.",
+        "Schneiden Sie die Kartoffeln in Spalten, legen Sie sie um das Schweinefilet in eine Auflaufform und backen Sie das Ganze bei 200 °C 25 min."
+      ]
+    },
+    "bacalao-al-pil-pil": {
+      "title": "Kabeljau al pil‑pil mit Kartoffeln",
+      "steps": [
+        "Dämpfen Sie die geschälten Kartoffeln 20 min und halten Sie sie dann warm.",
+        "Konfieren Sie die fein geschnittene Knoblauchzehe und den Chili in Olivenöl bei sehr schwacher Hitze 5 min.",
+        "Legen Sie den gesalzenen Kabeljau mit der Haut nach oben in das Öl und garen Sie ihn bei schwacher Hitze 4 min auf jeder Seite.",
+        "Nehmen Sie den Fisch heraus, emulgieren Sie das Bratöl durch Schwenken außerhalb der Hitze, fügen Sie die gehackte Petersilie hinzu, beträufeln Sie den Fisch damit und servieren Sie ihn mit den Kartoffeln."
+      ]
+    },
+    "arroz-al-horno-chorizo-pois-chiches": {
+      "title": "Ofenreis mit Chorizo und Kichererbsen (arroz al horno)",
+      "steps": [
+        "Braten Sie die in Streifen geschnittene Zwiebel, die zerdrückte Knoblauchzehe und das in Würfel geschnittene Chorizo 6 min in Olivenöl an.",
+        "Geben Sie den Reis, das Tomatenmark und Paprika dazu und vermengen Sie alles 1 min.",
+        "Gießen Sie die heiße Brühe, zubereitet mit den 2 Brühwürfeln (etwa 600 ml), fügen Sie die abgetropften Kichererbsen und die tiefgekühlten Erbsen hinzu, geben Sie alles in eine Auflaufform und backen Sie es bei 200 °C 25 min.",
+        "Lassen Sie das Gericht 5 min außerhalb des Ofens ruhen, bevor Sie es servieren."
+      ]
+    },
+    "kibbeh-au-four-boulgour-viande": {
+      "title": "Kibbeh aus dem Ofen mit Bulgur und Fleisch",
+      "steps": [
+        "Weichen Sie den Bulgur 20 min in kaltem Wasser ein und drücken Sie ihn dann sorgfältig aus.",
+        "Braten Sie die fein gehackte Zwiebel in der Hälfte des Olivenöls an, geben Sie das Rinderhackfleisch, Zimt, gemahlene Muskatnuss, Salz und Pfeffer dazu und garen Sie es, bis es durchgebraten ist.",
+        "Verteilen Sie die Hälfte des Bulgurs in einer gefetteten Form, bedecken Sie ihn mit der Fleischmischung, geben Sie den restlichen Bulgur darauf, streichen Sie ihn glatt und ritzen Sie ihn mit einem Messer ein.",
+        "Streuen Sie die gehobelten Mandeln darüber, beträufeln Sie alles mit dem restlichen Öl und backen Sie es bei 190 °C 30 min, bis die Oberfläche goldbraun ist."
+      ]
+    },
+    "makloubeh-au-poulet-riz-renverse": {
+      "title": "Makloubeh mit Hähnchen, umgedrehter Reis",
+      "steps": [
+        "Braten Sie die Hähnchenkeulen mit den in Streifen geschnittenen Zwiebeln an, geben Sie die gehackten Tomaten, Kurkuma, Kreuzkümmel, Zimt, Salz und Pfeffer dazu und lassen Sie alles köcheln.",
+        "Frittieren Sie getrennt die Auberginenscheiben, die Kartoffelscheiben und die Blumenkohlröschen in Öl, bis sie Farbe bekommen.",
+        "Spülen Sie den Reis, geben Sie ihn in den Schmortopf auf das Hähnchen, gießen Sie die heiße Brühe bis zur Höhe des Reises dazu und garen Sie alles bei schwacher Hitze zugedeckt.",
+        "Legen Sie das gebratene Gemüse auf den Reis, stürzen Sie den Topf auf eine vorgewärmte Platte und lassen Sie das Gericht ruhen, bevor Sie es anschneiden."
+      ]
+    },
+    "sayadieh-au-cabillaud-riz-aux-oignons": {
+      "title": "Sayadieh mit Kabeljau, Reis mit Zwiebeln",
+      "steps": [
+        "Karamellisieren Sie die in Streifen geschnittene Zwiebel 20 min in Olivenöl bei mittlerer Hitze und heben Sie dann die Hälfte davon auf.",
+        "Rösten Sie die gehobelten Mandeln ohne Fett 3 min in einer Pfanne, bis sie goldbraun sind.",
+        "Garen Sie die Kabeljaufilets 10 min in der heißen Brühe mit Kreuzkümmel, Kurkuma, Salz und Pfeffer und halten Sie sie dann warm.",
+        "Kochen Sie den Reis in der aromatisierten Kochbrühe zugedeckt, bis die Flüssigkeit vollständig aufgenommen ist, richten Sie den Reis mit dem Fisch, den restlichen Zwiebeln und den Mandeln an und servieren Sie das Ganze mit Zitronenspalten."
+      ]
+    },
+    "briouates-a-la-viande-et-aux-amandes": {
+      "title": "Briouates mit Rinderhackfleisch und gehobelten Mandeln",
+      "steps": [
+        "Die fein gehackte Zwiebel im Olivenöl anschwitzen, das Rinderhackfleisch, den Zimt, Ras el Hanout, Salz und Pfeffer dazugeben und so lange garen, bis die Mischung trocken ist.",
+        "Die Farce mit den gehobelten Mandeln, der gehackten Petersilie und dem gehackten frischen Koriander vermischen und abkühlen lassen.",
+        "Die Brickteigblätter halbieren, jede Hälfte füllen, zu Dreiecken falten und die Ränder mit dem verquirlten Ei verschließen, dann mit geschmolzener Butter bestreichen.",
+        "Die Briouates bei 190 °C 20 Minuten backen, bis sie goldbraun und knusprig sind."
+      ]
+    },
+    "shawarma-de-dinde-en-assiette-sauce-tahini": {
+      "title": "Putenshawarma auf dem Teller mit Tahini-Sauce",
+      "steps": [
+        "Das Putenfleisch in feine Streifen schneiden und 30 Minuten mit Olivenöl, Paprika, Kreuzkümmel, Kurkuma, einer zerdrückten Knoblauchzehe, dem Saft der Zitrone, Salz und Pfeffer marinieren.",
+        "Die Putenstreifen in einer gut heißen Pfanne 8 Minuten scharf anbraten, dabei von allen Seiten bräunen.",
+        "Den Naturjoghurt mit der Sesampaste, dem Saft einer halben Zitrone und der anderen zerdrückten Knoblauchzehe zu einer cremigen Sauce verrühren.",
+        "Die Pita-Brote erwärmen, dann die Pute mit der in Scheiben geschnittenen Tomate, Gurke und dem grünen Salat anrichten und mit der Tahini-Sauce beträufeln."
+      ]
+    },
+    "poulet-tandoori-riz-cumin": {
+      "title": "Ofen-Tandoori-Hähnchen und Kreuzkümmelreis",
+      "steps": [
+        "Den Naturjoghurt mit dem Saft der Zitrone, der zerdrückten Knoblauchzehe, dem geriebenen frischen Ingwer, Paprika, Garam Masala, Kreuzkümmel, Salz und dem Öl in einer Schüssel vermischen.",
+        "Die Hähnchenkeulen einschneiden, mit der Marinade überziehen und im Kühlschrank marinieren lassen.",
+        "Die Keulen auf ein mit Backpapier belegtes Blech legen und im Ofen backen, bis sie gut gebräunt und durchgegart sind.",
+        "Den Reis spülen, in Salzwasser mit dem Kreuzkümmel 12 Minuten garen und dann abgießen.",
+        "Den gehackten frischen Koriander darüberstreuen und die Keulen mit dem Reis servieren."
+      ]
+    },
+    "butter-chicken-maison": {
+      "title": "Butter Chicken mit Sahne und Gewürzen",
+      "steps": [
+        "Den Naturjoghurt mit der Hälfte des Garam Masala, Paprika, Salz und der zerdrückten Knoblauchzehe vermischen und das in Würfel geschnittene Hähnchen damit einreiben.",
+        "Das Hähnchen in 20 g Butter 6 Minuten anbraten, dann beiseitestellen.",
+        "Die restliche Butter schmelzen, die fein geschnittene Zwiebel und den geriebenen frischen Ingwer anschwitzen, dann die gehackten Tomaten und das restliche Garam Masala dazugeben und 15 Minuten köcheln lassen.",
+        "Die flüssige Sahne einrühren, das Hähnchen zurückgeben und bei schwacher Hitze 10 Minuten köcheln lassen.",
+        "Den Reis 12 Minuten in Salzwasser garen und mit dem Hähnchen servieren."
+      ]
+    },
+    "boeuf-basilic-thai-oeuf": {
+      "title": "Rinderpfanne mit Thai-Basilikum und Spiegelei",
+      "steps": [
+        "Den Reis in einem großen Topf mit gesalzenem Wasser 15 Minuten kochen und warm halten.",
+        "Die Knoblauchzehe und den Chili fein hacken, die Zwiebel in feine Scheiben schneiden, die Paprika in Streifen und die grünen Bohnen in Stücke schneiden.",
+        "Das Sonnenblumenöl erhitzen und das Rinderhackfleisch mit der Zwiebel, der Knoblauchzehe und dem Chili 5 Minuten bei starker Hitze anbraten.",
+        "Die Paprika und die grünen Bohnen zugeben, dann Nuoc-mâm, Sojasauce und Zucker hinzufügen. 4 Minuten garen, anschließend vom Herd nehmen und den Basilikum unterrühren.",
+        "Die Eier in einer geölten Pfanne braten, bis das Eiweiß fest und das Eigelb noch flüssig ist, und die Eier zusammen mit dem Reis auf der Rinderpfanne servieren."
+      ]
+    },
+    "oyakodon-poulet-oeuf": {
+      "title": "Oyakodon mit Hähnchen und Eiern",
+      "steps": [
+        "Den Reis in einem bedeckten Topf kochen und warm halten.",
+        "Das Hähnchen in Stücke schneiden, die Zwiebel in Ringe schneiden und beides bei mittlerer Hitze anbraten, bis das Hähnchen nicht mehr rosa ist.",
+        "Die Brühe in 150 ml Wasser auflösen, Sojasauce und Zucker hinzufügen, die Mischung über das Hähnchen gießen und 5 Minuten köcheln lassen.",
+        "Die Eier verquirlen, sie portionsweise in zwei Schritten über die Mischung gießen und 1 Minute zugedeckt stehen lassen, damit sie weich bleiben. Sofort auf dem Reis servieren."
+      ]
+    },
+    "bulgogi-boeuf-poire": {
+      "title": "Bulgogi vom Rind mit Birne und Zwiebeln, Reis und Gurke",
+      "steps": [
+        "Mixen Sie die Birne, die Zwiebel, die Knoblauchzehe und den frischen Ingwer und mischen Sie alles mit der Sojasauce, dem Zucker und dem Sesamöl.",
+        "Schneiden Sie das Rind in dünne Scheiben, vermengen Sie es mit der Marinade und lassen Sie es kalt ziehen.",
+        "Braten Sie das Fleisch 3 Minuten bei starker Hitze in einer sehr heißen Pfanne, gegebenenfalls portionsweise.",
+        "Kochen Sie den Reis, schneiden Sie die Frühlingszwiebeln und die Gurke in feine Scheiben und servieren Sie das Fleisch auf dem Reis, bestreut mit Sesamsamen."
+      ]
+    },
+    "tonkatsu-porc-chou": {
+      "title": "Knuspriges Schweineschnitzel Tonkatsu mit fein geschnittenem Weißkohl",
+      "steps": [
+        "Klopfen Sie die Schweinefilets zwischen zwei Blättern Papier flach und würzen Sie sie mit Salz und Pfeffer.",
+        "Wenden Sie jedes Schnitzel zuerst in Mehl, dann in dem verquirlten Ei und schließlich in dem Paniermehl und drücken Sie leicht an.",
+        "Braten Sie die Schnitzel in heißem Sonnenblumenöl insgesamt 8 Minuten, wenden Sie sie dabei, bis das Fleisch nicht mehr rosa ist.",
+        "Legen Sie die Schnitzel auf Küchenpapier zum Abtropfen. Schneiden Sie den Weißkohl fein, mischen Sie Sojasauce, Essig und Zucker und servieren Sie die in Scheiben geschnittenen Schnitzel auf dem Kohl mit dieser Sauce."
+      ]
+    },
+    "sundubu-jjigae-tofu": {
+      "title": "Würzige koreanische Suppe mit festem Tofu und Ei",
+      "steps": [
+        "Braten Sie die gehackte Zwiebel, die Knoblauchzehe und den frischen Ingwer 3 Minuten im Sesamöl an.",
+        "Geben Sie den Chili und die in Scheiben geschnittenen Champignons hinzu und gießen Sie 1,2 Liter Wasser mit den aufgelösten Brühwürfeln und der Sojasauce hinein. Lassen Sie alles 10 Minuten köcheln.",
+        "Fügen Sie den in Würfel geschnittenen festen Tofu hinzu und lassen Sie ihn 3 Minuten köcheln.",
+        "Schlagen Sie die Eier in die siedende Suppe, decken Sie die Suppe 2 Minuten ab und garnieren Sie mit fein geschnittener Frühlingszwiebel und servieren Sie."
+      ]
+    },
+    "sopa-tortilla-poulet-avocat": {
+      "title": "Tortilla-Suppe mit Hähnchen und Avocado",
+      "steps": [
+        "Schneiden Sie die Tortilla-Fladen in Streifen und braten Sie sie 3 Minuten in heißem Öl goldbraun. Legen Sie sie beiseite.",
+        "Braten Sie in demselben Öl die gewürfelte Zwiebel und die Knoblauchzehe an, geben Sie das in Würfel geschnittene Hähnchenbrustfilet, den Kreuzkümmel und das Paprikapulver hinzu und garen Sie alles 5 Minuten.",
+        "Geben Sie die gehackten Tomaten, den zerbröselten Brühwürfel und 1 Liter Wasser dazu. Lassen Sie alles 15 Minuten bei mittlerer Hitze köcheln.",
+        "Würzen Sie mit Salz und servieren Sie in Schalen mit den Tortilla-Streifen, der in Würfel geschnittenen Avocado, dem geriebenen Käse, dem frischen Koriander und einem Spritzer Limette."
+      ]
+    },
+    "mole-poblano-simplifie-poulet": {
+      "title": "Vereinfachtes Mole poblano mit Hähnchen und Reis",
+      "steps": [
+        "Würzen Sie die Hähnchenkeule mit Salz und Pfeffer und braten Sie sie 8 Minuten in heißem Öl an. Legen Sie sie beiseite.",
+        "Braten Sie in demselben Topf die gehackte Zwiebel und die Knoblauchzehe an, geben Sie die Sesamsamen, die gemahlenen Mandeln, den Zimt, den Chili, das Kakaopulver, das Tomatenmark und die gehackten Tomaten hinzu und garen Sie alles 5 Minuten.",
+        "Pürieren Sie die Sauce und geben Sie sie zurück in den Topf mit dem in 500 ml Wasser aufgelösten Brühwürfel und der gehackten Zartbitterschokolade. Fügen Sie das Hähnchen hinzu und lassen Sie es zugedeckt 35 Minuten köcheln.",
+        "Kochen Sie in der Zwischenzeit den Reis 15 Minuten in gesalzenem Wasser.",
+        "Servieren Sie das Hähnchen mit der Mole überzogen zusammen mit dem Reis."
+      ]
+    },
+    "cochinita-pibil-simplifiee": {
+      "title": "Vereinfachte Cochinita pibil, Tortillas und Radieschen",
+      "steps": [
+        "Mixen Sie die Knoblauchzehe, das Paprikapulver, den Kreuzkümmel, den Oregano, den Pfeffer, das Salz, das Öl, den Orangensaft und den Saft der Limetten.",
+        "Reiben Sie den Schweinenacken mit der Marinade ein, decken Sie ihn ab und lassen Sie ihn 1 Stunde im Kühlschrank ziehen.",
+        "Legen Sie den Schweinebraten, die in Scheiben geschnittene Zwiebel und die Orangenscheiben in eine Form, decken Sie mit Aluminiumfolie ab und garen Sie im Ofen bei 150 °C.",
+        "Zupfen Sie das Fleisch mit einer Gabel auseinander und mischen Sie es mit dem Bratensaft.",
+        "Erwärmen Sie die Tortilla-Fladen 2 Minuten in einer trockenen Pfanne.",
+        "Füllen Sie die Tortilla-Fladen mit dem Schweinefleisch, den fein geschnittenen Radieschen und dem frischen Koriander und servieren Sie."
+      ]
+    },
+    "pozole-rouge-porc-mais": {
+      "title": "Rotes Pozole mit Schweinefleisch, Mais und Radieschen",
+      "steps": [
+        "Zwiebel und Knoblauch fein schneiden und 4 Minuten im Sonnenblumenöl anschwitzen.",
+        "Schweinefleisch in Stücke geben, Paprika, Kreuzkümmel, Chili und Tomatenmark hinzufügen und 5 Minuten anbraten.",
+        "1,5 Liter Wasser, die Brühe, den abgetropften Mais und Oregano dazugießen, zugedeckt 1 Stunde 30 bei schwacher Hitze köcheln lassen.",
+        "Mit Salz abschmecken und heiß mit fein geschnittenem Weißkohl, in Scheiben geschnittenen Radieschen, frischem Koriander, etwas Oregano und Limettenspalten servieren."
+      ]
+    },
+    "picadillo-boeuf-olives-raisins": {
+      "title": "Picadillo aus Rinderhack mit Oliven und Rosinen, dazu Reis",
+      "steps": [
+        "Zwiebel, Knoblauch und in Würfel geschnittene Paprika in Öl 5 Minuten anschwitzen.",
+        "Rinderhackfleisch, Kreuzkümmel, Zimt und Paprika zugeben und 5 Minuten anbraten.",
+        "Kartoffeln in kleine Würfel, gehackte Tomaten, 150 ml Wasser und Salz hinzufügen und zugedeckt 25 Minuten garen.",
+        "Oliven in Scheiben und Rosinen einrühren und 5 Minuten ohne Deckel weiterkochen.",
+        "Reis in der doppelten Menge Salzwasser 15 Minuten kochen und zusammen mit dem Picadillo servieren."
+      ]
+    },
+    "galettes-quinoa-courgette-feta": {
+      "title": "Quinoa-Puffer mit Zucchini und Feta",
+      "steps": [
+        "Quinoa in der doppelten Menge Salzwasser 15 Minuten kochen und anschließend abkühlen lassen.",
+        "Zucchini raspeln, salzen, entwässern und in einem Tuch ausdrücken. Zwiebel fein schneiden, Knoblauch und Petersilie hacken.",
+        "Quinoa, Zucchini, Zwiebel, Knoblauch, Petersilie, Eier, Mehl und zerbröselten Feta mischen und mit Salz und Pfeffer würzen.",
+        "Mit der Hand Puffer formen, auf ein mit Backpapier belegtes Blech legen und mit Olivenöl bestreichen.",
+        "Bei 200 °C 25 Minuten backen und die Puffer zur Hälfte der Garzeit wenden, bis sie goldbraun sind."
+      ]
+    },
+    "chou-fleur-roti-tahini-pois-chiches": {
+      "title": "Gerösteter Blumenkohl mit Sesampaste und Kichererbsen",
+      "steps": [
+        "Backofen auf 220 °C vorheizen. Blumenkohl in große Röschen teilen, mit etwas Olivenöl beträufeln und mit Kreuzkümmel, Salz und Pfeffer bestreuen.",
+        "Blumenkohl auf ein Backblech legen und 25 Minuten backen, bis die Ränder goldbraun sind.",
+        "Kichererbsen abtropfen lassen, abspülen und mit dem restlichen Olivenöl und zerdrücktem Knoblauch 5 Minuten in der Pfanne anbraten.",
+        "Sesampaste mit Zitronensaft, etwas kaltem Wasser und einer Prise Salz zu einer glatten Sauce verrühren.",
+        "Blumenkohl und Kichererbsen anrichten, mit der Sesamsauce beträufeln und mit gehackter Petersilie bestreuen."
+      ]
+    },
+    "aubergines-roties-yaourt-pois-chiches": {
+      "title": "Geröstete Auberginen mit Naturjoghurt, Kichererbsen und Zaatar",
+      "steps": [
+        "Backofen auf 220 °C vorheizen. Auberginen längs halbieren, das Fruchtfleisch rautenförmig einritzen und mit Olivenöl, Salz und Kreuzkümmel bestreichen.",
+        "Auberginen mit der Schnittfläche nach oben 30 Minuten backen, bis sie sehr zart sind.",
+        "Joghurt mit fein geriebenem Knoblauch, Zitronensaft, Salz und Pfeffer verrühren. Petersilie hacken.",
+        "Kichererbsen abtropfen lassen und mit einem Schuss Olivenöl 8 Minuten in der Pfanne goldbraun braten.",
+        "Auberginen mit der Joghurtsoße bestreichen, mit gebratenen Kichererbsen, Petersilie und Zaatar garnieren."
+      ]
+    },
+    "gnocchi-gratines-poireaux-comte": {
+      "title": "Überbackene Gnocchi mit Lauch und Comté-Käse",
+      "steps": [
+        "Backofen auf 200 °C vorheizen. Lauch in Ringe schneiden, waschen und in Butter bei schwacher Hitze 10 Minuten weich dünsten.",
+        "Sahne, gemahlene Muskatnuss, Salz und Pfeffer zugeben und die Sauce 5 Minuten bei schwacher Hitze einkochen lassen.",
+        "Gnocchi in einem großen Topf mit Salzwasser kochen, bis sie an die Oberfläche steigen, dann abgießen.",
+        "Gnocchi in eine Auflaufform geben, mit der Lauchsauce übergießen und Comté grob gerieben darüberstreuen.",
+        "15 Minuten backen, bis der Käse goldbraun geschmolzen ist."
+      ]
+    },
+    "pates-ricotta-courgettes-citron": {
+      "title": "Nudeln mit Ricotta und zitronigen Zucchini",
+      "steps": [
+        "Kochen Sie die Nudeln in einem großen Topf mit gesalzenem, kochendem Wasser gemäß der auf der Packung angegebenen Zeit.",
+        "Schneiden Sie die Zucchini in dünne Scheiben und braten Sie sie 6 Minuten in einer Pfanne im Olivenöl mit der zerdrückten Knoblauchzehe an.",
+        "Vermengen Sie die Ricotta mit dem Abrieb und dem Saft der Zitrone, dem geriebenen Parmesan, Salz und Pfeffer.",
+        "Gießen Sie die Nudeln ab und bewahren Sie etwas Kochwasser auf, mischen Sie sie dann mit den Zucchini, der Ricotta-Creme und dem gehackten Basilikum und geben Sie bei Bedarf etwas Kochwasser hinzu, um die Sauce zu binden."
+      ]
+    },
+    "bricks-epinards-feta": {
+      "title": "Brickteig mit Spinat und Feta",
+      "steps": [
+        "Schneiden Sie die Zwiebel in feine Streifen und hacken Sie die Knoblauchzehe. Braten Sie beides 3 Minuten im Olivenöl in einer Pfanne an, dann fügen Sie den Spinat hinzu, bis er zusammenfällt.",
+        "Pressen Sie den Spinat aus, mischen Sie ihn mit dem zerbröselten Feta, der gehackten Petersilie, einem verquirlten Ei, Salz und Pfeffer.",
+        "Schneiden Sie jedes Brickblatt in zwei Hälften, geben Sie einen Löffel der Füllung in die Mitte jeder Hälfte, falten Sie sie zusammen und verschließen Sie sie mit dem zweiten verquirlten Ei.",
+        "Legen Sie die Bricks auf ein mit Backpapier belegtes Blech, bestreichen Sie sie mit Olivenöl und backen Sie sie 15 Minuten bei 200 °C, bis sie goldbraun sind."
+      ]
+    },
+    "boulettes-haricots-blancs-sauce-tomate": {
+      "title": "Weiße-Bohnen-Bällchen mit Kräutern in Tomatensauce",
+      "steps": [
+        "Gießen Sie die weißen Bohnen ab und zerdrücken Sie sie grob mit einer Gabel in einer Schüssel.",
+        "Hacken Sie die Zwiebel und die Knoblauchzehe und braten Sie beides 5 Minuten in der Hälfte des Olivenöls an. Geben Sie beides zu den Bohnen zusammen mit der gehackten Petersilie, den Kräutern, dem geriebenen Parmesan, dem Paniermehl, dem Ei, Salz und Pfeffer.",
+        "Formen Sie mit feuchten Händen 16 Bällchen, wälzen Sie sie in etwas Paniermehl und braten Sie sie 8 Minuten im restlichen Öl an.",
+        "Geben Sie die gehackten Tomaten und das Tomatenmark in die Pfanne, salzen und pfeffern Sie, fügen Sie das zerzupfte Basilikum hinzu und lassen Sie alles mit den Bällchen 10 Minuten köcheln."
+      ]
+    },
+    "chou-vert-braise-pommes-de-terre-paprika": {
+      "title": "Geschmorter Wirsing mit Kartoffeln und Paprika",
+      "steps": [
+        "Entfernen Sie die dicke Mittelrippe des Wirsings und schneiden Sie ihn in Streifen. Schälen Sie die Kartoffeln und schneiden Sie sie in Würfel. Schneiden Sie die Zwiebel und die Knoblauchzehe in feine Stücke.",
+        "Braten Sie die Zwiebel und die Knoblauchzehe 5 Minuten im Olivenöl an, geben Sie dann das Paprika und den geschnittenen Wirsing hinzu.",
+        "Fügen Sie die Kartoffeln, das Lorbeerblatt und die in 500 ml heißem Wasser aufgelöste Brühe hinzu und decken Sie den Topf ab.",
+        "Lassen Sie alles zugedeckt bei schwacher Hitze 30 Minuten schmoren. Entfernen Sie das Lorbeerblatt, rühren Sie die Crème fraîche ein und schmecken Sie mit Salz und Pfeffer ab."
+      ]
+    },
+    "pitas-galettes-haricots-rouges-tahini": {
+      "title": "Pita-Brote mit Patties aus roten Bohnen und Tahini-Sauce",
+      "steps": [
+        "Mischen Sie die Chiasamen mit 120 ml Sojadrink und lassen Sie sie quellen.",
+        "Pürieren Sie die abgetropften roten Bohnen, die Zwiebel, die Knoblauchzehe, die Haferflocken, die gequollenen Chiasamen, den Kreuzkümmel, das Paprikapulver, Salz und Pfeffer und formen Sie daraus 8 Patties.",
+        "Braten Sie die Patties 4 Minuten auf jeder Seite in heißem Olivenöl goldbraun.",
+        "Vermengen Sie die Sesampaste mit dem Zitronensaft, der gehackten Petersilie und dem restlichen Sojadrink, bis eine glatte Sauce entsteht.",
+        "Füllen Sie die warmen Pita-Brote mit den Patties, in Scheiben geschnittener Tomate, fein geschnittenem Salat und der Tahini-Sauce."
+      ]
+    },
+    "socca-poivrons-oignons": {
+      "title": "Socca mit Paprika und Zwiebeln",
+      "steps": [
+        "Vermischen Sie das Kichererbsenmehl, den Sojadrink, die Hälfte des Öls, Salz, Pfeffer und den Kreuzkümmel und lassen Sie den Teig ruhen.",
+        "Braten Sie die Zwiebel, die Paprika und die gehackte Knoblauchzehe in dem restlichen Öl, bis sie weich sind.",
+        "Geben Sie den Teig in eine gefettete Form, verteilen Sie das Gemüse darauf und backen Sie, bis die Oberfläche goldbraun ist.",
+        "Streuen Sie die gehackte Petersilie und etwas Paprika darüber und schneiden Sie die Socca in Stücke. Beträufeln Sie sie vor dem Servieren mit Zitronensaft."
+      ]
+    },
+    "ramen-tofu-champignons": {
+      "title": "Ramen mit Tofu und Champignons",
+      "steps": [
+        "Den Tofu in Würfel schneiden und 8 Minuten in Sesamöl anbraten.",
+        "Die Knoblauchzehe hacken, den Ingwer reiben und die Champignons in Scheiben schneiden. Alles 5 Minuten anbraten, dann die Sojasauce hinzufügen.",
+        "Wasser mit den Brühwürfeln zum Kochen bringen, dann die Nudeln 4 Minuten garen.",
+        "Die Nudeln und den Spinat auf Schalen verteilen, die Brühe eingießen und mit dem Tofu, den Champignons, der in Ringe geschnittenen Frühlingszwiebel und den Sesamsamen garnieren."
+      ]
+    },
+    "bibimbap-legumes-tofu-croustillant": {
+      "title": "Bibimbap mit Gemüse und knusprigem Tofu",
+      "steps": [
+        "Den Reis abspülen und dann 15 Minuten zugedeckt garen.",
+        "Die Karotte und die Zucchini in Juliennes schneiden und jeweils 3 Minuten separat in etwas Sesamöl anbraten.",
+        "Die Mungbohnensprossen und den frischen Spinat 1 Minute blanchieren, dann mit der Hälfte der Sojasauce, der zerdrückten Knoblauchzehe und den Sesamsamen würzen.",
+        "Den in Würfel geschnittenen Tofu und die in Scheiben geschnittenen Champignons mit dem Chili und der restlichen Sojasauce 6 Minuten goldbraun braten.",
+        "Den Reis in Schalen anrichten und mit dem Gemüse, dem Tofu und der in Ringe geschnittenen Frühlingszwiebel belegen."
+      ]
+    },
+    "spaghettis-lentilles-corail-basilic": {
+      "title": "Spaghetti mit roten Linsen und Basilikum",
+      "steps": [
+        "Die Zwiebel und die fein gehackte Karotte 5 Minuten in Olivenöl anbraten.",
+        "Die gehackte Knoblauchzehe, das Tomatenmark und die abgespülten roten Linsen hinzufügen und 1 Minute vermengen.",
+        "Die gehackten Tomaten einrühren, die Kräuter der Provence zugeben, mit Salz und Pfeffer würzen und zugedeckt 20 Minuten köcheln lassen.",
+        "Die Nudeln 10 Minuten in reichlich gesalzenem Wasser kochen, abgießen und mit der Sauce sowie dem fein geschnittenen Basilikum vermengen."
+      ]
+    },
+    "brochettes-crevettes-harissa": {
+      "title": "Garnelenspieße mit Harissa, Zucchini und Paprika",
+      "steps": [
+        "Die Harissa, das Olivenöl, die zerdrückte Knoblauchzehe, den Saft der Zitrone und Salz in einer Schüssel vermischen.",
+        "Die geschälten Garnelen, die Zucchini und die in Stücke geschnittene Paprika hinzufügen und 10 Minuten marinieren.",
+        "Die Zutaten abwechselnd auf Spieße stecken und auf dem Backblech auslegen.",
+        "Im Ofen 8 Minuten backen und die Spieße zur Hälfte der Garzeit wenden, bis die Garnelen rosa sind."
+      ]
+    },
+    "escabeche-maquereau-carottes-laurier": {
+      "title": "Makrelen-Escabèche mit Karotten und Lorbeer",
+      "steps": [
+        "Die Karotten schälen und in dünne Scheiben schneiden, dann die Zwiebel in Streifen schneiden.",
+        "Die Zwiebel, die zerdrückte Knoblauchzehe und die Karotten 8 Minuten in Olivenöl anbraten.",
+        "Den Essig, den trockenen Weißwein, das Lorbeerblatt, Salz und Pfeffer hinzufügen und 10 Minuten leicht köcheln lassen.",
+        "Die Makrelenfilets in die Marinade legen und 5 Minuten bei schwacher Hitze ohne starkes Kochen garen.",
+        "Aus der Hitze nehmen, in der Marinade abkühlen lassen und mindestens 1 Stunde im Kühlschrank ziehen lassen."
+      ]
+    },
+    "pates-anchois-chapelure-persil": {
+      "title": "Nudeln mit Sardellenfilets, knusprigem Paniermehl und Petersilie",
+      "steps": [
+        "Die Nudeln in reichlich gesalzenem Wasser bis al dente kochen, dann abgießen und etwas Kochwasser auffangen.",
+        "Die Hälfte des Olivenöls erhitzen und das Paniermehl mit der Hälfte der zerdrückten Knoblauchzehe 3 Minuten goldbraun rösten, dann beiseitestellen.",
+        "Die Sardellenfilets im restlichen Öl mit dem Chili und der restlichen zerdrückten Knoblauchzehe schmelzen, dabei 2 Minuten mit dem Spatel zerdrücken.",
+        "Die abgetropften Nudeln, etwas Kochwasser, die gehackte Petersilie und den geriebenen Parmesan hinzufügen und vermischen.",
+        "Mit dem gerösteten Paniermehl bestreuen und servieren."
+      ]
+    },
+    "cabillaud-croute-moutarde-herbes": {
+      "title": "Kabeljaufilet in Senfkruste mit Kräutern",
+      "steps": [
+        "Heizen Sie den Ofen vor und legen Sie die Kabeljaufilets auf ein mit Backpapier belegtes Blech, würzen Sie sie mit Salz und Pfeffer.",
+        "Schmelzen Sie die Butter, vermischen Sie sie dann mit dem Senf, dem Paniermehl und den Kräutern der Provence. Bestreichen Sie die Filets mit dieser Mischung.",
+        "Backen Sie sie 12 Minuten, bis das Fleisch sich leicht mit der Gabel löst.",
+        "Kochen Sie die grünen Bohnen 6 Minuten in kochendem Salzwasser und servieren Sie sie mit der Zitrone in Spalten."
+      ]
+    },
+    "cabillaud-wok-gingembre-germes-soja": {
+      "title": "Kabeljau-Wok mit frischem Ingwer und Mungbohnensprossen",
+      "steps": [
+        "Kochen Sie den Reis in der doppelten Menge Salzwasser, bis die Flüssigkeit vollständig aufgenommen ist, decken Sie ihn dann zu und stellen Sie ihn beiseite.",
+        "Schneiden Sie den Kabeljau in grobe Stücke, die Frühlingszwiebel und den frischen Ingwer in feine Scheiben und zerdrücken Sie die Knoblauchzehe.",
+        "Braten Sie den Fisch 6 Minuten in Sesamöl an, wenden Sie ihn dabei und stellen Sie ihn dann beiseite.",
+        "Braten Sie die Knoblauchzehe, den frischen Ingwer und die Frühlingszwiebel 2 Minuten an, geben Sie die Mungbohnensprossen und die Sojasauce dazu und garen Sie alles 3 Minuten.",
+        "Geben Sie den Fisch zurück in den Wok, bestreuen Sie ihn mit Sesamsamen und servieren Sie ihn auf dem Reis."
+      ]
+    },
+    "burgers-saumon-concombre-yaourt": {
+      "title": "Lachs-Burger mit Gurke und Joghurtsoße",
+      "steps": [
+        "Hacken Sie den Lachs fein mit dem Messer und vermengen Sie ihn dann mit dem geschlagenen Ei, dem Paniermehl, dem gehackten Schnittlauch, Salz und Pfeffer.",
+        "Formen Sie vier Frikadellen und kühlen Sie sie 15 Minuten.",
+        "Braten Sie die Frikadellen 8 Minuten in heißem Sonnenblumenöl und wenden Sie sie, bis sie goldbraun und durchgegart sind.",
+        "Reiben Sie die Gurke und mischen Sie sie mit dem Naturjoghurt und dem Saft der Zitrone, würzen Sie die Soße.",
+        "Toasten Sie die Burgerbrötchen, belegen Sie sie mit grünem Salat, Tomatenscheiben, einer Frikadelle und der Soße und schließen Sie den Burger."
+      ]
+    },
+    "tortillas-saumon-fume-fromage-blanc": {
+      "title": "Tortilla-Rollen mit Räucherlachs und Speisequark",
+      "steps": [
+        "Vermischen Sie den Speisequark mit dem Saft der Zitrone, dem gehackten Schnittlauch und Pfeffer.",
+        "Bestreichen Sie jede Tortilla mit der Soße und legen Sie Scheiben von Räucherlachs und Avocado darauf.",
+        "Fügen Sie einige Blätter grünen Salat hinzu und rollen Sie die Tortillas fest zusammen.",
+        "Schneiden Sie jede Rolle schräg in zwei Hälften und servieren Sie sie sofort."
+      ]
+    },
+    "rillettes-thon-ciboulette-toasts": {
+      "title": "Thunfisch-Rillettes mit Schnittlauch und Toasts",
+      "steps": [
+        "Lassen Sie den Thunfisch abtropfen und zerdrücken Sie ihn mit einer Gabel zusammen mit der weichen Butter.",
+        "Fügen Sie die Crème fraîche, den Saft der Zitrone, den gehackten Schnittlauch und Pfeffer hinzu und verrühren Sie alles, bis eine homogene Textur entsteht.",
+        "Schneiden Sie das Toastbrot in Dreiecke.",
+        "Schneiden Sie die Radieschen und die Gurke in dünne Scheiben und richten Sie sie mit den Rillettes und den Toasts an."
+      ]
+    },
+    "pates-saumon-fume-petits-pois": {
+      "title": "Cremige Nudeln mit Räucherlachs und tiefgekühlten Erbsen",
+      "steps": [
+        "Kochen Sie die Nudeln 10 Minuten in einem großen Topf mit Salzwasser, gießen Sie sie ab und fangen Sie dabei etwas Kochwasser auf.",
+        "Schmelzen Sie die Butter und dünsten Sie die fein geschnittene Schalotte 3 Minuten an.",
+        "Gießen Sie die flüssige Sahne dazu, geben Sie die tiefgekühlten Erbsen hinzu und lassen Sie alles 5 Minuten köcheln.",
+        "Nehmen Sie den Topf vom Herd, fügen Sie den in Streifen geschnittenen Räucherlachs, den Saft der Zitrone, die gehackte Petersilie, den geriebenen Parmesan und Pfeffer hinzu und mischen Sie die Nudeln unter."
+      ]
+    },
+    "crevettes-chorizo-tomates-persil": {
+      "title": "Gebratene Garnelen mit Chorizo, Cherrytomaten und Petersilie",
+      "steps": [
+        "Schneiden Sie den Chorizo in Scheiben und braten Sie ihn 3 Minuten im Olivenöl an, damit er sein Aroma entfaltet.",
+        "Fügen Sie die zerdrückte Knoblauchzehe, den Chili und die halbierten Cherrytomaten hinzu und garen Sie alles 4 Minuten.",
+        "Geben Sie die geschälten Garnelen dazu, salzen und pfeffern Sie, und garen Sie sie 3 Minuten, bis sie rosa werden.",
+        "Streuen Sie gehackte Petersilie darüber und servieren Sie mit der in Scheiben geschnittenen Baguette zum Tunken."
+      ]
+    },
+    "pitas-cabillaud-croustillant-citron": {
+      "title": "Knusprige Kabeljau-Pitas mit Salat und Zitronensauce",
+      "steps": [
+        "Schneiden Sie das Kabeljaufilet in Stäbchen und wenden Sie sie nacheinander in Mehl, verquirltem Ei und Paniermehl, das mit Paprika vermischt ist.",
+        "Erhitzen Sie das Sonnenblumenöl in einer Pfanne und braten Sie die Stäbchen 3 Minuten auf jeder Seite goldbraun.",
+        "Vermengen Sie den Naturjoghurt mit dem Saft der Zitrone, der zerdrückten Knoblauchzehe, Salz und Pfeffer zu einer Sauce.",
+        "Wärmen Sie das Pita-Brot 2 Minuten im Ofen, öffnen Sie es und füllen Sie es mit zerpflücktem grünem Salat, den knusprigen Stäbchen und der Sauce."
+      ]
+    },
+    "curry-japonais-poulet-carottes": {
+      "title": "Japanisches Curry mit Hähnchen, Karotten und Kartoffeln",
+      "steps": [
+        "Schneiden Sie das Hähnchen in Stücke, schneiden Sie die Zwiebeln in feine Streifen und würfeln Sie Karotten und Kartoffeln grob.",
+        "Erhitzen Sie das Öl mit der Butter, braten Sie das Hähnchen 5 Minuten an, geben Sie dann die Zwiebeln und das Gemüse hinzu und braten Sie alles 5 Minuten weiter.",
+        "Streuen Sie Currypulver und Mehl darüber, rühren Sie um, und gießen Sie 1 l heißes Wasser mit den Brühwürfeln, Sojasauce und Honig hinein. Lassen Sie das Ganze zugedeckt 20 Minuten köcheln.",
+        "Kochen Sie den Reis 12 Minuten in gesalzenem Wasser.",
+        "Schmecken Sie mit Salz und Pfeffer ab und servieren Sie das Curry mit dem Reis."
+      ]
+    },
+    "goulasch-hongrois-boeuf-paprika": {
+      "title": "Ungarisches Gulasch vom Schmor-Rindfleisch mit Paprika",
+      "steps": [
+        "Schneiden Sie das Schmor-Rindfleisch in grobe Würfel, schneiden Sie die Zwiebeln in feine Streifen und schneiden Sie die Paprika in Streifen.",
+        "Braten Sie das Fleisch 5 Minuten im Öl an, geben Sie dann die Zwiebeln und die zerdrückte Knoblauchzehe hinzu und garen Sie alles 5 Minuten.",
+        "Fügen Sie Paprika hinzu, deglacieren Sie mit Rotwein, dann geben Sie Tomatenmark, die in 1 l Wasser aufgelösten Brühwürfel, das Lorbeerblatt, Salz und Pfeffer dazu. Schmoren Sie das Ganze zugedeckt 75 Minuten.",
+        "Geben Sie die gewürfelten Kartoffeln und die Paprika hinzu und verlängern Sie die Garzeit zugedeckt um 25 Minuten.",
+        "Nehmen Sie den Topf vom Herd, rühren Sie die Crème fraîche ein und servieren Sie das Gericht heiß."
+      ]
+    },
+    "salade-boulgour-saumon-fume-concombre": {
+      "title": "Bulgursalat mit Räucherlachs, Gurke und Schnittlauch",
+      "steps": [
+        "Gießen Sie gesalzenes kochendes Wasser über den Bulgur, decken Sie ihn ab und lassen Sie ihn quellen, bis das Wasser vollständig aufgesogen ist.",
+        "Schneiden Sie die Gurke und die Cherrytomaten in Würfel und schneiden Sie den Schnittlauch fein.",
+        "Schneiden Sie den Räucherlachs in feine Streifen.",
+        "Vermischen Sie den Saft der Zitrone mit Olivenöl, Salz und Pfeffer und würzen Sie den abgekühlten Bulgur damit.",
+        "Geben Sie das Gemüse, den Räucherlachs und den Schnittlauch zum Bulgur, mischen Sie alles vorsichtig und servieren Sie den Salat kalt."
+      ]
+    },
+    "salade-thai-vermicelles-poulet-cacahuetes": {
+      "title": "Thailändischer Reisnudelsalat mit Hähnchen und Erdnüssen",
+      "steps": [
+        "Geben Sie die Reisnudeln in einen großen Topf mit kochendem Wasser, nehmen Sie den Topf vom Herd und lassen Sie die Nudeln 5 Minuten ziehen, dann gießen Sie sie ab und spülen Sie sie mit kaltem Wasser.",
+        "Schneiden Sie das Hähnchen in feine Streifen und braten Sie es 6 Minuten bei hoher Hitze im Sonnenblumenöl an.",
+        "Schälen und raspeln Sie die Karotte, schneiden Sie die Gurke in feine Streifen und schneiden Sie den Koriander fein.",
+        "Vermischen Sie den Saft der Limetten mit Nuoc-mâm, Zucker und Chili, um das Dressing zuzubereiten.",
+        "Vermengen Sie die Reisnudeln mit dem noch warmen Hähnchen und dem Gemüse, beträufeln Sie alles mit dem Dressing und bestreuen Sie den Salat mit gehackten Erdnüssen und frischem Koriander."
+      ]
+    },
+    "salade-tiede-pommes-de-terre-chorizo-poivrons": {
+      "title": "Warmer Kartoffelsalat mit Chorizo und Paprika",
+      "steps": [
+        "Die Kartoffeln ganz in kochendem Salzwasser 20 Minuten garen, dann abgießen, etwas abkühlen lassen und in Scheiben schneiden.",
+        "Den Chorizo in Scheiben schneiden und in einer trockenen Pfanne 4 Minuten anbraten.",
+        "Den Paprika und die Zwiebel in Streifen schneiden, zum Chorizo geben und alles bei mittlerer Hitze 8 Minuten anbraten, bis es Farbe nimmt.",
+        "Den Essig, den Senf, das Olivenöl, das Salz und den Pfeffer zur Vinaigrette verrühren.",
+        "Die Kartoffeln, den Chorizo, den Paprika, die Zwiebel und die gehackte Petersilie mit der Vinaigrette vermengen und sofort servieren."
+      ]
+    },
+    "salade-pates-poulet-curry-pomme-raisins": {
+      "title": "Nudelsalat mit Hähnchen-Curry, Apfel und Rosinen",
+      "steps": [
+        "Die Nudeln in einem großen Topf mit kochendem Salzwasser nach Packungsanweisung garen, dann mit kaltem Wasser abspülen.",
+        "Schneiden Sie das Hähnchen in Würfel und braten Sie es in Olivenöl mit dem Currypulver bei mittlerer Hitze 8 Minuten an.",
+        "Die Rosinen 10 Minuten in einer Schüssel mit warmem Wasser einweichen und dann abgießen.",
+        "Den Apfel schälen, in kleine Würfel schneiden und mit Zitronensaft beträufeln, damit er nicht braun wird.",
+        "Den Naturjoghurt, die Crème fraîche, das Salz und den Pfeffer verrühren, dann Nudeln, Hähnchen, Apfel, Rosinen und den gehackten Schnittlauch damit vermengen."
+      ]
+    },
+    "salade-endives-poire-noix-comte-lardons": {
+      "title": "Chicorée-Salat mit Birne, Nüssen, Comté und Speckwürfeln",
+      "steps": [
+        "Die Speckwürfel in einer trockenen Pfanne 5 Minuten braten, bis sie goldbraun und knusprig sind.",
+        "Die Nüsse grob hacken und den Comté-Käse in feine Scheiben schneiden.",
+        "Die Chicorée in Stücke schneiden und die Birne in dünne Scheiben schneiden.",
+        "Den Senf, den Essig, den Honig, das Olivenöl, das Salz und den Pfeffer zur Vinaigrette verrühren.",
+        "Die Chicorée, die Birne, den Comté, die Nüsse und die noch warmen Speckwürfel anrichten und mit der Vinaigrette beträufeln."
+      ]
+    },
+    "salade-rumsteck-saisi-radis-tomates-cerises": {
+      "title": "Gebratenes Rinderhüftsteak mit Radieschen und Cherrytomaten auf Salat",
+      "steps": [
+        "Das Rinderhüftsteak salzen und pfeffern und in sehr heißem Olivenöl 3 Minuten auf jeder Seite scharf anbraten.",
+        "Das Fleisch vom Herd nehmen, mit Aluminiumfolie abdecken und 5 Minuten ruhen lassen.",
+        "Die Radieschen waschen und vierteln, die Cherrytomaten halbieren und die Frühlingszwiebel in feine Ringe schneiden.",
+        "Den Senf, den Essig, das übrige Olivenöl und die gehackte Petersilie zur Vinaigrette verrühren.",
+        "Den grünen Salat zupfen, auf Tellern anrichten, das Gemüse dazugeben, das Fleisch dünn aufschneiden und alles mit der Vinaigrette beträufeln."
+      ]
+    },
+    "soupe-crevettes-lait-coco-nouilles-riz": {
+      "title": "Garnelensuppe mit Kokosmilch und Reisnudeln",
+      "steps": [
+        "Die Karotte schälen und in feine Scheiben schneiden, die Zwiebel fein hacken, die Knoblauchzehe fein schneiden und den frischen Ingwer reiben.",
+        "Die Zwiebel, die Knoblauchzehe, den frischen Ingwer und die Karotte 5 Minuten in Öl bei mittlerer Hitze anschwitzen.",
+        "Die Kokosmilch, 1 Liter Wasser, den Brühwürfel, die Sojasauce und den Chili zugeben und 10 Minuten simmern lassen.",
+        "Die geschälten Garnelen, die Reisnudeln und die Mungbohnensprossen zugeben, 3 Minuten garen und mit dem Saft der Limette beträufeln.",
+        "Heiß servieren, mit dem gehackten frischen Koriander bestreuen und Limettenspalten dazugeben."
+      ]
+    },
+    "soupe-chorizo-pois-chiches-epinards": {
+      "title": "Spanische Suppe mit Chorizo, Kichererbsen und frischem Spinat",
+      "steps": [
+        "Den Chorizo in Scheiben schneiden, die Zwiebel fein hacken, den Paprika und die Kartoffeln würfeln und die Knoblauchzehe hacken.",
+        "Den Chorizo 2 Minuten im Olivenöl anbraten, dann Zwiebel, Knoblauchzehe und Paprika zugeben und 5 Minuten andünsten.",
+        "Das Paprikapulver, die Kartoffeln, die gehackten Tomaten und den in 1,5 Liter Wasser aufgelösten Brühwürfel zugeben und zugedeckt 20 Minuten köcheln lassen.",
+        "Die abgetropften Kichererbsen und den frischen Spinat zugeben, 5 Minuten garen und dann mit Salz und Pfeffer abschmecken.",
+        "Mit gehackter Petersilie servieren."
+      ]
+    },
+    "soupe-boulettes-dinde-boulgour": {
+      "title": "Suppe mit Putengehackfleischklößchen, Bulgur und Gemüse",
+      "steps": [
+        "Hacken Sie das Putenschnitzel fein, schneiden Sie die Zwiebel in feine Streifen, würfeln Sie die Karotte und die Zucchini klein und weichen Sie den Bulgur in einer Schüssel mit heißem Wasser ein.",
+        "Vermengen Sie das gehackte Putenfleisch, den abgetropften Bulgur, das Ei, das Paniermehl, die Hälfte der gehackten Petersilie, Salz und Pfeffer und formen Sie kleine Klößchen.",
+        "Bringen Sie 1,5 Liter Wasser mit den Brühwürfeln, dem Tomatenmark, der Karotte und der Zwiebel zum Sieden, geben Sie die Klößchen dazu und kochen Sie sie 10 Minuten.",
+        "Fügen Sie die Zucchini und die Kräuter der Provence hinzu und lassen Sie alles 5 Minuten leicht köcheln.",
+        "Servieren Sie die Suppe bestreut mit der restlichen gehackten Petersilie."
+      ]
+    },
+    "soupe-tortilla-poulet-mais-avocat": {
+      "title": "Tortilla-Suppe mit Hähnchenbrustfilet, Mais und Avocado",
+      "steps": [
+        "Schneiden Sie das Hähnchenbrustfilet in dünne Streifen, die Zwiebel in feine Streifen, hacken Sie die Knoblauchzehe und schneiden Sie die Tortilla-Fladen in Streifen.",
+        "Braten Sie die Hähnchenstreifen in Olivenöl mit der Zwiebel und der Knoblauchzehe 5 Minuten an und fügen Sie dann den Kreuzkümmel und das Paprikapulver hinzu.",
+        "Geben Sie die gehackten Tomaten, den abgetropften Mais und die in 1,5 Liter Wasser aufgelösten Brühwürfel dazu, salzen Sie und lassen Sie die Suppe 15 Minuten köcheln.",
+        "Legen Sie die Tortilla-Streifen auf ein Blech und backen Sie sie 8 Minuten im Ofen goldbraun.",
+        "Würfeln Sie die Avocado und beträufeln Sie sie mit Limettensaft. Servieren Sie die Suppe mit den Tortilla-Streifen, der Avocado, dem gehackten frischen Koriander und dem geriebenen Käse."
+      ]
+    },
+    "soupe-nouilles-oeuf-champignons": {
+      "title": "Suppe mit chinesischen Nudeln, Ei und Champignons",
+      "steps": [
+        "Kochen Sie die Eier 6 Minuten in kochendem Wasser, schrecken Sie sie dann in kaltem Wasser ab und pellen Sie sie.",
+        "Braten Sie die gehackte Knoblauchzehe, den frischen Ingwer und die in Scheiben geschnittenen Champignons 5 Minuten in Sesamöl an.",
+        "Geben Sie 1,5 Liter Wasser, die Brühwürfel und die Sojasauce dazu, bringen Sie alles zum Kochen, fügen Sie die in feine Ringe geschnittene Frühlingszwiebel und den frischen Spinat hinzu und kochen Sie 3 Minuten.",
+        "Fügen Sie die chinesischen Nudeln hinzu und kochen Sie sie etwa 4 Minuten, je nach Packungsangabe.",
+        "Halbieren Sie die Eier, verteilen Sie sie in den Schalen mit der Suppe und bestreuen Sie mit Sesamsamen."
+      ]
+    },
+    "soupe-gnocchi-pesto-haricots-verts": {
+      "title": "Gnocchi-Suppe mit Pesto, grünen Bohnen und Cherrytomaten",
+      "steps": [
+        "Schneiden Sie die Zwiebel in feine Streifen, würfeln Sie die Zucchini, schneiden Sie die grünen Bohnen in Stücke und halbieren Sie die Cherrytomaten.",
+        "Braten Sie die Zwiebel und die gehackte Knoblauchzehe 4 Minuten in Olivenöl an.",
+        "Gießen Sie 1,5 Liter Wasser mit den Brühwürfeln auf, bringen Sie es zum Kochen, fügen Sie die grünen Bohnen und die Zucchini hinzu und kochen Sie 8 Minuten.",
+        "Geben Sie die Gnocchi und die Cherrytomaten dazu und kochen Sie 3 Minuten, bis die Gnocchi an die Oberfläche steigen.",
+        "Nehmen Sie die Suppe vom Herd, rühren Sie das Pesto ein, salzen Sie, pfeffern Sie und servieren Sie mit Parmesan."
+      ]
+    },
+    "velout-petits-pois-menthe": {
+      "title": "Erbsen-Cremesuppe mit Minze",
+      "steps": [
+        "Braten Sie die in Streifen geschnittene Zwiebel in Olivenöl an, bis sie glasig wird.",
+        "Fügen Sie die gewürfelte Kartoffel, den zerbröselten Brühwürfel und 1 Liter heißes Wasser hinzu und lassen Sie alles zugedeckt garen.",
+        "Geben Sie die tiefgekühlten Erbsen dazu und kochen Sie weitere 5 Minuten.",
+        "Pürieren Sie fein zusammen mit den Minzblättern, schmecken Sie mit Salz und Pfeffer ab und servieren Sie heiß."
+      ]
+    },
+    "tartines-radis-beurre-ciboulette": {
+      "title": "Landbrot mit Radieschen, Butter und Schnittlauch",
+      "steps": [
+        "Waschen Sie die Radieschen, entfernen Sie die Enden und schneiden Sie sie in dünne Scheiben.",
+        "Bestreichen Sie jede Scheibe Landbrot großzügig mit weicher Butter.",
+        "Legen Sie die Radieschenscheiben auf die Butter und würzen Sie mit Salz und Pfeffer.",
+        "Schneiden Sie den Schnittlauch fein, verteilen Sie ihn über die Brotscheiben und servieren Sie sofort."
+      ]
+    },
+    "poivrons-grilles-ail-persil": {
+      "title": "Geröstete Paprika mit Knoblauchzehen und Petersilie",
+      "steps": [
+        "Heizen Sie den Ofen auf 220 °C vor, schneiden Sie die Paprika in grobe Streifen und legen Sie sie zusammen mit den ungeschälten Knoblauchzehen auf ein Backblech.",
+        "Backen Sie sie, bis die Haut leicht schwarz wird.",
+        "Lassen Sie sie etwas abkühlen, entfernen Sie die Haut, die Kerne und die Knoblauchhaut, und schneiden Sie das Fruchtfleisch in Stücke.",
+        "Vermengen Sie es mit Olivenöl, Essig, fein gehackter Petersilie, Salz und Pfeffer und lassen Sie es 30 Minuten ziehen, bevor Sie servieren."
+      ]
+    },
+    "courgettes-dorees-feta-menthe": {
+      "title": "Goldene Zucchini mit Feta und Minze",
+      "steps": [
+        "Schneiden Sie die Zucchini in 5 mm dicke Scheiben und braten Sie sie in der Pfanne in Olivenöl 3 Minuten pro Seite goldbraun.",
+        "Legen Sie die Zucchini auf eine Platte, beträufeln Sie sie mit dem Saft der Zitrone, salzen und pfeffern Sie.",
+        "Zerbröseln Sie die Feta darüber und streuen Sie fein gehackte Minze darauf.",
+        "Lassen Sie das Gericht 10 Minuten bei Raumtemperatur ruhen, bevor Sie servieren."
+      ]
+    },
+    "bouchees-feuilletees-tomates-cerises": {
+      "title": "Blätterteighäppchen mit Cherrytomaten und Mozzarella",
+      "steps": [
+        "Heizen Sie den Ofen auf 200 °C vor und rollen Sie den Blätterteig auf einem mit Backpapier belegten Blech aus.",
+        "Bestreichen Sie den Teig mit Senf, verteilen Sie die halbierten Cherrytomaten und die zerzupfte Mozzarella darauf, würzen Sie mit Salz, Pfeffer und Kräutern der Provence und schneiden Sie den Teig in 8 Quadrate.",
+        "Backen Sie sie, bis die Ränder goldbraun sind.",
+        "Lassen Sie sie 5 Minuten abkühlen, bestreuen Sie sie mit fein gehacktem Basilikum und servieren Sie."
+      ]
+    },
+    "carpaccio-betterave-poire-chevre": {
+      "title": "Carpaccio aus Roter Bete, Birne und Ziegenkäse",
+      "steps": [
+        "Schneiden Sie die Rote Bete und die Birne sehr dünn mit einem scharfen Messer oder einer Mandoline.",
+        "Bereiten Sie das Dressing zu, indem Sie Essig, Senf, Olivenöl, Salz und Pfeffer verquirlen.",
+        "Arrangieren Sie die Scheiben von Roter Bete und Birne fächerförmig auf den Tellern, bröseln Sie den Ziegenkäse darüber und hacken Sie die Nüsse grob.",
+        "Geben Sie das Dressing darüber und servieren Sie bei Raumtemperatur."
+      ]
+    },
+    "champignons-sautes-ail-persil": {
+      "title": "In Butter gebratene Champignons mit Knoblauch und Petersilie",
+      "steps": [
+        "Erhitzen Sie Butter und Öl in einer großen Pfanne und braten Sie die in Scheiben geschnittenen Champignons bei starker Hitze 8 Minuten.",
+        "Fügen Sie die gehackte Knoblauchzehe und die fein gehackte Petersilie hinzu und garen Sie unter Rühren noch 1 Minute.",
+        "Würzen Sie mit Salz und Pfeffer.",
+        "Rösten Sie die Landbrot-Scheiben, belegen Sie sie mit den Champignons und servieren Sie sie heiß."
+      ]
+    },
+    "choux-bruxelles-roties-miel-noix": {
+      "title": "Rosenkohl aus dem Ofen mit Honig und Nüssen",
+      "steps": [
+        "Heizen Sie den Ofen auf 200 °C vor, halbieren Sie den Rosenkohl und verteilen Sie ihn auf einem Backblech mit Olivenöl, Salz und Pfeffer.",
+        "Backen Sie ihn, bis er gut gebräunt und zart ist.",
+        "Rösten Sie die grob gehackten Nüsse ohne Fett in einer Pfanne 3 Minuten.",
+        "Träufeln Sie den Honig über den Rosenkohl, streuen Sie die Nüsse darüber und servieren Sie heiß."
+      ]
+    },
+    "endives-braisees-orange": {
+      "title": "Geschmorte Chicorée mit Orange",
+      "steps": [
+        "Butter in einer Pfanne schmelzen, mit Zucker bestreuen und die halbierten Chicorées 5 Minuten anbraten.",
+        "Orangensaft, geschälte Orangenviertel, Salz und Pfeffer hinzufügen, dann abdecken und bei schwacher Hitze schmoren.",
+        "Den Deckel entfernen und den Saft 5 Minuten karamellisieren lassen.",
+        "Heiß servieren und mit dem Saft überziehen."
+      ]
+    },
+    "poireaux-vinaigrette-oeufs-durs": {
+      "title": "Lauch mit Vinaigrette und hartgekochten Eiern",
+      "steps": [
+        "Die Lauche ganz in kochendem Salzwasser 20 Minuten garen.",
+        "Die Eier 9 Minuten in einem separaten Topf kochen, dann schälen.",
+        "Die Lauche abtropfen lassen und 10 Minuten abkühlen lassen.",
+        "Essig, Senf, Olivenöl, Salz und Pfeffer verquirlen und die Lauche damit beträufeln.",
+        "Kalt servieren, mit den geviertelten Eiern."
+      ]
+    },
+    "tartinade-feves-menthe-pitas": {
+      "title": "Saubohnen-Aufstrich mit Minze und gegrilltem Pita-Brot",
+      "steps": [
+        "Die Saubohnen aus der Dose abtropfen lassen und abspülen, dann mit der Knoblauchzehe, dem Saft der Zitrone, Olivenöl, Kreuzkümmel und Salz pürieren.",
+        "Die gehackten Minzblätter hinzufügen und bis zu einer glatten Konsistenz weiterpürieren.",
+        "Die Pita-Brote in Dreiecke schneiden und in einer heißen Pfanne trocken rösten.",
+        "Den Aufstrich mit den gerösteten Pita-Dreiecken servieren."
+      ]
+    },
+    "tartelettes-epinards-ciboulette": {
+      "title": "Frühlingshafte Tartelettes mit frischem Spinat und Schnittlauch",
+      "steps": [
+        "Frischen Spinat 3 Minuten in einer heißen Pfanne zusammenfallen lassen, dann abtropfen und hacken.",
+        "Den Ofen auf 180 °C vorheizen und vier kleine Förmchen mit Mürbeteig auslegen.",
+        "Die Eier mit der flüssigen Sahne, der gemahlenen Muskatnuss, Salz, Pfeffer und dem gehackten Schnittlauch verquirlen, dann den Spinat und den geriebenen Käse unterrühren.",
+        "Die Mischung in die Förmchen füllen, 30 Minuten backen und vor dem Stürzen 10 Minuten abkühlen lassen."
+      ]
+    },
+    "tartinade-betterave-chevre-noix": {
+      "title": "Aufstrich aus gekochter roter Bete, Ziegenkäse und Nüssen",
+      "steps": [
+        "Gekochte Rote Bete in Würfeln mit Ziegenkäse, der geschälten Knoblauchzehe, Olivenöl und Essig pürieren.",
+        "Mit Salz und Pfeffer würzen und bis zur gewünschten Glätte weiterpürieren.",
+        "Die Nüsse grob mit dem Messer zerkleinern.",
+        "Den Aufstrich in einer Schale anrichten und mit den grob zerkleinerten Nüssen bestreuen."
+      ]
+    },
+    "tartinade-haricots-blancs-citron-persil": {
+      "title": "Aufstrich aus weißen Bohnen mit Zitrone und Petersilie",
+      "steps": [
+        "Weiße Bohnen aus der Dose abtropfen lassen und abspülen, dann mit der geschälten Knoblauchzehe, dem Saft der Zitrone, Olivenöl und Kreuzkümmel pürieren.",
+        "Mit Salz und Pfeffer abschmecken und weiter pürieren, bis eine cremige Textur entsteht.",
+        "Die gehackte Petersilie unterrühren, mischen und gut gekühlt servieren."
+      ]
+    },
+    "rillettes-sardines-citron-ciboulette": {
+      "title": "Sardinenrillettes mit Zitrone und Schnittlauch",
+      "steps": [
+        "Die Sardinen aus der Dose abtropfen lassen und mit der weichen Butter und dem Saft der Zitrone mit einer Gabel zerdrücken.",
+        "Den fein geschnittenen Schnittlauch zugeben, leicht salzen, pfeffern und vermengen.",
+        "Kalt stellen, damit sich die Aromen entfalten.",
+        "Auf feinen Scheiben oder in einer Schale mit einem Spritzer Zitrone servieren."
+      ]
+    },
+    "bouchees-feuilletees-jambon-moutarde-comte": {
+      "title": "Blätterteighäppchen mit gekochtem Schinken, Senf und Comté-Käse",
+      "steps": [
+        "Den Ofen auf 200 °C vorheizen und den Blätterteig in etwa 8 cm große Quadrate schneiden.",
+        "Jedes Quadrat mit Senf bestreichen, mit zerrissenem gekochtem Schinken und geriebenem Comté-Käse belegen und zu Häppchen zusammenklappen.",
+        "Das Ei mit einer Prise Salz verquirlen, die Häppchen damit bestreichen und 15 Minuten backen, bis sie goldbraun sind.",
+        "Einige Minuten abkühlen lassen, dann servieren."
+      ]
+    },
+    "tartinade-saumon-fume-fromage-blanc": {
+      "title": "Räucherlachsaufstrich mit Fromage blanc",
+      "steps": [
+        "Den Räucherlachs mit dem Messer fein hacken.",
+        "Den Lachs mit dem Fromage blanc, dem Saft der Zitrone, dem fein geschnittenen Schnittlauch und Pfeffer vermischen.",
+        "Sofort servieren oder bis zum Aperitif kalt stellen."
+      ]
+    },
+    "batons-polenta-parmesan-herbes": {
+      "title": "Knusprige Polentasticks mit Parmesan",
+      "steps": [
+        "1 Liter Wasser mit dem Brühwürfel zum Kochen bringen, dann die Polenta unter Rühren einrieseln lassen.",
+        "5 Minuten bei mittlerer Hitze unter ständigem Rühren garen, dann den geriebenen Parmesan, die Kräuter der Provence, Salz und Pfeffer unterheben.",
+        "Die Polenta in eine geölte Form 2 cm dick ausstreichen und kalt stellen.",
+        "In Sticks schneiden und in heißem Olivenöl 3 Minuten pro Seite goldbraun braten."
+      ]
+    },
+    "galettes-courgette-feta-menthe": {
+      "title": "Zucchinipuffer mit Feta und Minze",
+      "steps": [
+        "Die Zucchini reiben, salzen und 10 Minuten in einem Sieb abtropfen lassen.",
+        "Die Zucchini in einem Tuch auspressen und dann mit den Eiern, dem Mehl, dem Backpulver, der fein geschnittenen Minze und dem zerbröselten Feta vermengen. Pfeffern.",
+        "Löffelweise Teig in heißem Sonnenblumenöl 3 Minuten pro Seite ausbacken.",
+        "Auf Küchenpapier abtropfen lassen und lauwarm servieren."
+      ]
+    },
+    "tartines-olives-anchois-toasts": {
+      "title": "Oliven-Sardellen-Aufstrich auf Toasts",
+      "steps": [
+        "Den Ofen auf 200 °C vorheizen und das Baguette schräg in Scheiben schneiden.",
+        "Die entsteinten Oliven, die abgetropften Sardellenfilets, die geschälte Knoblauchzehe und das Olivenöl pürieren, bis eine grobe Paste entsteht.",
+        "Oregano und eine Prise Pfeffer zugeben und vermischen.",
+        "Die Baguettescheiben auf ein Blech legen und 5 Minuten im Ofen rösten.",
+        "Die noch warmen Toasts bestreichen und sofort servieren."
+      ]
+    },
+    "bouchees-quinoa-chevre-carotte": {
+      "title": "Quinoa-Häppchen mit Karotte und Ziegenkäse aus dem Ofen",
+      "steps": [
+        "Den Quinoa in 300 ml gesalzenem Wasser 15 Minuten kochen, dann abgießen.",
+        "Die Karotten reiben und mit dem noch lauwarmen Quinoa, den verquirlten Eiern, dem zerbröselten Ziegenkäse, dem Paniermehl, dem Kreuzkümmel und dem Pfeffer vermengen.",
+        "16 Kugeln formen, mit Olivenöl bestreichen und auf ein mit Backpapier belegtes Blech legen.",
+        "Bei 200 °C 20 Minuten backen und die Häppchen zur Hälfte der Garzeit wenden."
+      ]
+    },
+    "tartinade-patate-douce-tahini": {
+      "title": "Ofengerösteter Süßkartoffel-Aufstrich mit Sesampaste",
+      "steps": [
+        "Den Ofen auf 200 °C vorheizen, die Süßkartoffeln halbieren, mit 1 EL Olivenöl einreiben und mit der Schnittfläche nach unten legen.",
+        "40 Minuten backen, bis das Fruchtfleisch weich ist, dann das Fruchtfleisch mit einem Löffel herausnehmen.",
+        "Das Fruchtfleisch mit der Sesampaste, dem Saft der Zitrone, der geschälten Knoblauchzehe, dem Paprikapulver, Salz, Pfeffer und dem zweiten Esslöffel Olivenöl pürieren.",
+        "Lauwarm oder kalt servieren."
+      ]
+    },
+    "beignets-crevettes-coco-citron-vert": {
+      "title": "Garnelenküchlein mit geriebener Kokosnuss und Limette",
+      "steps": [
+        "Die geschälten Garnelen grob hacken und in kleine Stücke schneiden.",
+        "Mehl, Ei, Milch, den Abrieb und Saft der Limette, die geriebene Kokosnuss, den geriebenen frischen Ingwer, den Chili, Salz und die Garnelen vermischen.",
+        "Mit einem Löffel kleine Küchlein formen und in heißem Sonnenblumenöl 2 Minuten pro Seite frittieren.",
+        "Auf Küchenpapier abtropfen lassen und sofort servieren."
+      ]
+    },
+    "tartinade-feves-menthe-citron": {
+      "title": "Saubohnen-Aufstrich mit Minze und Zitrone",
+      "steps": [
+        "Die abgetropften Saubohnen abspülen und mit der geschälten Knoblauchzehe, dem Saft der Zitrone, der Hälfte der Minzblätter und dem Olivenöl pürieren.",
+        "Den Kreuzkümmel zugeben, salzen, pfeffern und alles zu einer cremigen Konsistenz mixen.",
+        "Die Landbrotscheiben in einer trockenen Pfanne 2 Minuten pro Seite rösten.",
+        "Die Scheiben bestreichen und mit der restlichen, fein geschnittenen Minze garnieren."
+      ]
+    },
+    "clafoutis-poires-amandes": {
+      "title": "Birnen-Mandel-Clafoutis",
+      "steps": [
+        "Den Ofen auf 180 °C vorheizen. Die Birnen schälen, in dünne Spalten schneiden und in eine gebutterte Form legen.",
+        "Mehl, Zucker und Vanillezucker mischen, dann die verquirlten Eier und die Milch zufügen und zu einem glatten Teig verrühren.",
+        "Den Teig über die Birnen gießen, die gehobelten Mandeln darüber streuen und backen.",
+        "10 Minuten abkühlen lassen, dann servieren."
+      ]
+    },
+    "far-breton-pruneaux": {
+      "title": "Far breton mit Backpflaumen",
+      "steps": [
+        "Den Ofen auf 180 °C vorheizen und eine Tarteform mit Butter ausfetten.",
+        "Die Eier mit dem Zucker aufschlagen, das Mehl und den Vanillezucker hinzufügen und unter Rühren nach und nach die Milch einfließen lassen.",
+        "Die Backpflaumen in der Form verteilen, den Teig darüber gießen und backen.",
+        "Etwas abkühlen lassen, dann aus der Form stürzen oder lauwarm servieren."
+      ]
+    },
+    "creme-citron-legere": {
+      "title": "Leichte Zitronencreme",
+      "steps": [
+        "Pressen Sie die Zitronen und reiben Sie die Schale.",
+        "Schlagen Sie in einem Topf die Eier mit dem Zucker, dem Saft und der Schale, fügen Sie dann die in Stücke geschnittene Butter hinzu.",
+        "Erhitzen Sie die Masse bei schwacher Hitze unter ständigem Rühren etwa 8 Minuten, bis sie eindickt, ohne sie kochen zu lassen.",
+        "Lassen Sie die Creme abkühlen, heben Sie die geschlagene Sahne unter und stellen Sie die Creme kalt."
+      ]
+    },
+    "pommes-four-speculoos": {
+      "title": "Im Ofen gebackene Äpfel mit Speculoos-Füllung",
+      "steps": [
+        "Heizen Sie den Ofen auf 180 °C vor. Höhlen Sie die Äpfel aus und lassen Sie dabei den Boden intakt.",
+        "Zerdrücken Sie die Speculoos mit der geschmolzenen Butter, dem Honig und dem Zimt.",
+        "Füllen Sie die Äpfel mit dieser Mischung, setzen Sie sie in eine Form und schieben Sie sie in den Ofen.",
+        "Servieren Sie die Äpfel warm, sobald sie aus dem Ofen kommen."
+      ]
+    },
+    "brownies-aux-noix": {
+      "title": "Walnuss-Brownies",
+      "steps": [
+        "Heizen Sie den Ofen auf 170 °C vor und legen Sie eine quadratische Form mit Backpapier aus.",
+        "Schmelzen Sie die Zartbitterschokolade und die Butter im Wasserbad und lassen Sie die Mischung etwas abkühlen.",
+        "Geben Sie den Zucker und die Eier nacheinander hinzu, dann Mehl, Kakaopulver und die grob gehackten Nüsse.",
+        "Gießen Sie den Teig in die Form und backen Sie 25 Minuten, bis der Kern noch leicht feucht ist. Lassen Sie die Brownies vor dem Schneiden abkühlen."
+      ]
+    },
+    "semoule-lait-fleur-oranger": {
+      "title": "Grießbrei mit Orangenblütenwasser",
+      "steps": [
+        "Erhitzen Sie die Milch mit der Butter und dem Zucker bei mittlerer Hitze.",
+        "Streuen Sie den Grieß unter Rühren ein, fügen Sie die Rosinen hinzu und lassen Sie die Masse eindicken.",
+        "Nehmen Sie den Topf vom Herd und aromatisieren Sie die Masse mit Orangenblütenwasser.",
+        "Verteilen Sie den Grießbrei in Schalen und stellen Sie ihn kalt."
+      ]
+    },
+    "iles-flottantes-vanille": {
+      "title": "Vanille-Schauminseln",
+      "steps": [
+        "Trennen Sie das Eiweiß von den Eigelben.",
+        "Schlagen Sie das Eiweiß mit 90 g Zucker steif und formen Sie mit einem Löffel Nocken.",
+        "Lassen Sie die Milch in einem großen Topf leicht köcheln und pochieren Sie die Baisernocken 1 Minute pro Seite. Nehmen Sie sie heraus und stellen Sie sie beiseite.",
+        "Schlagen Sie die Eigelbe mit dem restlichen Zucker und dem Vanillezucker, gießen Sie die warme Kochmilch dazu und erhitzen Sie bei schwacher Hitze unter Rühren, bis die Creme den Löffel überzieht.",
+        "Gießen Sie die Crème anglaise in die Schalen, setzen Sie die Inseln darauf und stellen Sie das Dessert kalt."
+      ]
+    },
+    "truffes-coco-chocolat": {
+      "title": "Kokos-Schokoladentrüffel",
+      "steps": [
+        "Erhitzen Sie die flüssige Sahne, gießen Sie sie über die gehackte Schokolade und rühren Sie, bis eine glatte Ganache entsteht.",
+        "Fügen Sie die in Stücke geschnittene Butter und den Vanillezucker hinzu und mischen Sie gründlich.",
+        "Kühlen Sie die Ganache 2 Stunden im Kühlschrank, bis sie fest ist.",
+        "Formen Sie Kugeln und wälzen Sie sie in der mit Kakaopulver vermischten geriebenen Kokosnuss."
+      ]
+    },
+    "beignets-pommes-cannelle": {
+      "title": "Apfelkrapfen mit Zimt",
+      "steps": [
+        "Mehl, Backpulver, 40 g Zucker und Zimt vermengen.",
+        "Eier und Milch hinzufügen, zu einem glatten Teig verrühren und den Teig ruhen lassen.",
+        "Äpfel schälen, in dünne Scheiben schneiden und in den Teig tauchen.",
+        "Die Scheiben in 170 °C heißem Öl etwa 3 Minuten pro Seite frittieren.",
+        "Auf Küchenpapier abtropfen lassen und die Krapfen im restlichen Zucker wälzen."
+      ]
+    },
+    "tarte-chocolat-framboises": {
+      "title": "Schokoladentarte mit Himbeeren",
+      "steps": [
+        "Den Ofen auf 180 °C vorheizen und eine Form mit Mürbeteig auslegen.",
+        "Tiefgekühlte Himbeeren gleichmäßig auf dem Tarteboden verteilen.",
+        "Die Flüssigsahne erhitzen, über die gehackte Zartbitterschokolade gießen und dann die verquirlten Eier und den Zucker unterrühren.",
+        "Die Füllung über die Himbeeren gießen und backen, bis die Creme gestockt ist. Vor dem Servieren etwas abkühlen lassen."
+      ]
+    },
+    "glace-yaourt-fruits-rouges": {
+      "title": "Schnelles Joghurteis mit Beeren",
+      "steps": [
+        "Tiefgekühlte Beeren mit Zucker und dem Saft der Zitrone mixen, bis ein Püree entsteht.",
+        "Die kalte Schlagsahne steif schlagen und die Naturjoghurts unterheben.",
+        "Das Beerenpüree unter die Sahne mischen, in eine Form füllen und mindestens 4 Stunden gefrieren.",
+        "Das Eis 10 Minuten vor dem Servieren aus dem Gefrierfach nehmen."
+      ]
+    },
+    "bananes-poelees-beurre-cannelle": {
+      "title": "In der Pfanne gebratene Bananen mit Butter und Zimt, Schlagsahne",
+      "steps": [
+        "Die kalte Sahne mit 20 g Zucker steif schlagen und kalt stellen.",
+        "Bananen schälen und in dicke Scheiben schneiden.",
+        "Butter in einer Pfanne bei mittlerer Hitze schmelzen, die Bananenscheiben und den restlichen Zucker zugeben und goldbraun braten.",
+        "Mit Zimt bestreuen, 2 Minuten karamellisieren lassen und die Bananen mit der Schlagsahne anrichten."
+      ]
+    },
+    "truffes-chocolat-cacao": {
+      "title": "Zartbitterschokoladentrüffel mit Kakaopulver",
+      "steps": [
+        "Die Sahne bei schwacher Hitze in einem Topf erhitzen, bis sie leicht wallt, und über die gehackte Zartbitterschokolade gießen.",
+        "Butter in Stücken einrühren und so lange mischen, bis eine glatte Ganache entsteht.",
+        "Die Ganache abkühlen lassen und anschließend 1 Stunde im Kühlschrank kaltstellen.",
+        "Mit einem Löffel Kugeln formen, in Kakaopulver wälzen und kühl aufbewahren."
+      ]
+    },
+    "energy-balls-beurre-cacahuete": {
+      "title": "Energy Balls mit Erdnussbutter und Schokolade",
+      "steps": [
+        "Haferflocken, Erdnussbutter und Honig in einer Schüssel vermengen.",
+        "Zartbitterschokolade hacken und unter die Masse heben.",
+        "Mit den Händen walnussgroße Kugeln formen.",
+        "Die Kugeln in der geriebenen Kokosnuss wälzen.",
+        "Die Kugeln 30 Minuten im Kühlschrank kühlen, damit sie fest werden."
+      ]
+    },
+    "creme-ricotta-pistaches-miel": {
+      "title": "Ricotta-Creme mit Pistazien und Honig",
+      "steps": [
+        "Den Saft der Zitrone auspressen und etwa 2 Esslöffel Saft auffangen.",
+        "Die Ricotta mit dem Honig, dem Zucker und dem Zitronensaft zu einer cremigen Masse verquirlen.",
+        "Die geschälten Pistazien grob hacken.",
+        "Die Creme auf vier Schälchen verteilen, mit Pistazien bestreuen und 30 Minuten im Kühlschrank kaltstellen."
+      ]
+    },
+    "carpaccio-ananas-citron-vert-menthe": {
+      "title": "Ananascarpaccio mit Limette und Minze",
+      "steps": [
+        "Die Ananas schälen, das Herz entfernen und das Fruchtfleisch sehr dünn aufschneiden.",
+        "Die Limetten auspressen und den Saft auffangen.",
+        "Die Ananasscheiben kreisförmig auf einer großen Platte anrichten, mit Zucker bestreuen und mit Limettensaft beträufeln.",
+        "Die Minze fein schneiden, über das Carpaccio streuen und 30 Minuten kalt ziehen lassen."
+      ]
+    },
+    "fraises-vin-blanc-menthe": {
+      "title": "Erdbeeren in Weißwein und Minze mariniert",
+      "steps": [
+        "Die Erdbeeren waschen, die Stiele entfernen und die größeren halbieren.",
+        "Den Weißwein mit dem Zucker bei mittlerer Hitze erwärmen, bis sich der Zucker vollständig aufgelöst hat.",
+        "Den Sirup 30 Minuten abkühlen lassen.",
+        "Den Sirup über die Erdbeeren gießen, die Minze hinzufügen und 1 Stunde im Kühlschrank ziehen lassen."
+      ]
+    },
+    "semifreddo-framboise": {
+      "title": "Himbeer-Semifreddo mit Mascarpone",
+      "steps": [
+        "Die aufgetauten Himbeeren mit 30 g Zucker pürieren und die Passiermasse durch ein Sieb streichen, um die Kerne zu entfernen.",
+        "Die kalte flüssige Sahne mit dem Mascarpone, dem restlichen Zucker und dem Vanillezucker schlagen, bis sie Stand hat.",
+        "Das Himbeerpüree vorsichtig unter die Creme heben, sodass Marmorierungen entstehen.",
+        "Die Mischung in eine mit Folie ausgelegte Kastenform füllen, mindestens 6 Stunden einfrieren und dann stürzen."
+      ]
+    },
+    "sorbet-mangue-citron-vert": {
+      "title": "Mango-Limetten-Sorbet ohne Eismaschine",
+      "steps": [
+        "Die Mango schälen, das Fruchtfleisch um den Kern entfernen und in Stücke schneiden.",
+        "Die Limetten auspressen und den Saft auffangen.",
+        "Die Mango mit Limettensaft, Orangensaft und Zucker zu einem glatten Püree mixen.",
+        "Die Masse in eine Form füllen und 4 Stunden einfrieren, dabei alle 45 Minuten mit einer Gabel durchkratzen."
+      ]
+    },
+    "salami-chocolat-speculoos": {
+      "title": "Schokoladensalami mit Speculoos und Erdnüssen",
+      "steps": [
+        "Die Speculoos in einem Gefrierbeutel mit dem Nudelholz zerkleinern.",
+        "Die Butter zusammen mit der Zartbitterschokolade im Wasserbad bei schwacher Hitze schmelzen und dabei rühren.",
+        "Die Erdnüsse grob hacken und zusammen mit den zerbröselten Speculoos unter die geschmolzene Schokolade mischen.",
+        "Die Masse auf einem Blatt Backpapier zu einer Rolle formen, einwickeln, 2 Stunden im Kühlschrank fest werden lassen und dann in Scheiben schneiden."
+      ]
+    },
+    "ecorces-chocolat-fruits-secs": {
+      "title": "Zartbitterschokoladenrinde mit getrockneten Früchten",
+      "steps": [
+        "Zartbitterschokolade in Stücke brechen und im Wasserbad bei schwacher Hitze schmelzen.",
+        "Die geschmolzene Schokolade etwa 5 mm dick auf ein mit Backpapier belegtes Blech streichen.",
+        "Getrocknete Aprikosen und geschälte Pistazien grob hacken und zusammen mit gehobelten Mandeln und Rosinen darüberstreuen.",
+        "Die Rinde 30 Minuten kalt stellen, dann in Stücke brechen."
+      ]
+    },
+    "cheesecake-sans-cuisson-framboises": {
+      "title": "No‑Bake Cheesecake mit Speculoos und Fruchtcoulis",
+      "steps": [
+        "Speculoos zerdrücken, Butter schmelzen und beides vermischen, dann die Mischung fest auf den Boden einer Springform drücken.",
+        "Mascarpone mit Frischkäse, 60 g Zucker und dem Saft der Zitrone zu einer glatten Creme schlagen.",
+        "Kalte Sahne mit dem restlichen Zucker steif schlagen und dann vorsichtig unter die Masse heben.",
+        "Die Creme auf den Speculoos‑Boden gießen, glattstreichen und 4 Stunden kühlen.",
+        "Die aufgetauten Beeren mit etwas Zucker 5 Minuten erhitzen, abkühlen lassen und den Cheesecake beim Servieren damit beträufeln."
+      ]
+    },
+    "nice-cream-banane-cacao": {
+      "title": "Bananeneis mit Kakaopulver und Erdnussbutter",
+      "steps": [
+        "Bananen schälen, in Scheiben schneiden und 2 Stunden auf einem mit Backpapier belegten Blech einfrieren.",
+        "Die gefrorenen Bananenscheiben mit Kakaopulver, Honig und Kokosmilch zu einer eisähnlichen Konsistenz mixen.",
+        "Sofort servieren und je Portion einen Löffel Erdnussbutter dazugeben."
+      ]
+    },
+    "polenta-sucree-poire-miel": {
+      "title": "Süße Polenta mit Birne und Honig",
+      "steps": [
+        "Birne schälen, in kleine Würfel schneiden und mit Butter und Zimt in einer Pfanne anbraten.",
+        "Milch und Salz zum Kochen bringen, Polenta unter ständigem Rühren einrieseln lassen und 5 Minuten bei schwacher Hitze unter Rühren garen.",
+        "Honig einrühren, auf Schalen verteilen und mit der warmen Birne garnieren."
+      ]
+    },
+    "chaussons-pomme-cannelle": {
+      "title": "Apfeltaschen mit Zimt",
+      "steps": [
+        "Äpfel schälen, in kleine Würfel schneiden und mit Butter, Zucker und Zimt 8 Minuten in einer Pfanne anbraten.",
+        "Die Füllung 10 Minuten abkühlen lassen, dann den Blätterteig ausrollen und in vier Quadrate schneiden.",
+        "Jeweils einen Löffel der Füllung in die Mitte jedes Quadrats geben, zu Dreiecken falten und die Ränder mit einer Gabel verschließen.",
+        "Mit verquirltem Ei bestreichen und bei 200 °C 20 Minuten backen, bis die Taschen goldbraun sind."
+      ]
+    },
+    "wraps-oeuf-epinards-fromage": {
+      "title": "Tortilla‑Fladen mit Rührei, frischem Spinat und geriebenem Käse",
+      "steps": [
+        "Olivenöl in einer Pfanne erhitzen, frischen Spinat hinzufügen und bei mittlerer Hitze 3 Minuten zusammenfallen lassen.",
+        "Eier mit Salz und Pfeffer verquirlen, in die Pfanne geben und 3 Minuten sanft zu Rührei stocken lassen.",
+        "Die Mischung auf den warmen Tortilla‑Fladen verteilen, mit geriebenem Käse bestreuen, die Seiten einschlagen und aufrollen.",
+        "Die Wraps in einer sauberen Pfanne 2 Minuten pro Seite anbraten, bis sie Farbe bekommen."
+      ]
+    },
+    "muffins-carotte-noix": {
+      "title": "Karotten‑Walnuss‑Muffins",
+      "steps": [
+        "Heizen Sie den Ofen auf 180 °C vor, reiben Sie die Karotten fein und hacken Sie die Nüsse grob.",
+        "Schlagen Sie die Eier mit dem Zucker, fügen Sie das Sonnenblumenöl hinzu und dann die geriebene Karotte.",
+        "Heben Sie das Mehl, das Backpulver und den Zimt unter, geben Sie dann die Nüsse hinzu und rühren Sie nur so lange wie nötig.",
+        "Verteilen Sie den Teig in Muffinförmchen und backen Sie 25 Minuten bei 180 °C, bis ein Stäbchen trocken herauskommt."
+      ]
+    },
+    "tartines-fromage-blanc-radis": {
+      "title": "Brot mit Quark, Radieschen und Schnittlauch",
+      "steps": [
+        "Waschen und schneiden Sie die Radieschen in feine Scheiben.",
+        "Vermengen Sie den Quark mit dem Schnittlauch, Salz und Pfeffer.",
+        "Rösten Sie die Brotscheiben 3 Minuten pro Seite in einer trockenen Pfanne, beträufeln Sie sie dann mit etwas Olivenöl.",
+        "Bestreichen Sie jede Scheibe mit dem Quark, belegen Sie sie mit den Radieschen und servieren Sie sofort."
+      ]
+    },
+    "gaufres-yaourt-fruits-rouges": {
+      "title": "Joghurtwaffeln mit tiefgekühlten Beeren",
+      "steps": [
+        "Schmelzen Sie die Butter, mischen Sie dann in einer Schüssel das Mehl, das Backpulver und 30 g Zucker.",
+        "Fügen Sie die Eier, den Naturjoghurt, die Milch und den Vanilleextrakt hinzu und rühren Sie, bis ein glatter Teig entsteht.",
+        "Erwärmen Sie die tiefgekühlten Beeren in einem Topf bei geringer Hitze mit den verbleibenden 10 g Zucker und lassen Sie sie 5 Minuten köcheln.",
+        "Heizen Sie das Waffeleisen vor, geben Sie eine Kelle Teig hinein und backen Sie etwa 4 Minuten pro Waffel.",
+        "Servieren Sie die Waffeln lauwarm mit dem Beerenpüree."
+      ]
+    },
+    "galettes-patate-douce-oeuf": {
+      "title": "Süßkartoffel‑Puffer mit Spiegelei",
+      "steps": [
+        "Reiben Sie die Süßkartoffel und die Zwiebel, drücken Sie die überschüssige Flüssigkeit aus und vermengen Sie alles mit Paprikapulver, Salz und Pfeffer.",
+        "Formen Sie vier Puffer, drücken Sie sie kräftig zusammen und braten Sie sie 5 Minuten pro Seite in heißem Öl goldbraun.",
+        "Schlagen Sie je ein Ei auf jeden Puffer, decken Sie die Pfanne ab und garen Sie 4 Minuten, bis das Eiweiß gestockt ist.",
+        "Streuen Sie Schnittlauch darüber und servieren Sie sofort."
+      ]
+    },
+    "pisto-manchego-aux-oeufs": {
+      "title": "Pisto Manchego mit Ei",
+      "steps": [
+        "Braten Sie die fein geschnittene Zwiebel und die Knoblauchzehe 5 min im Olivenöl an.",
+        "Geben Sie den in Würfel geschnittenen Paprika, die in Würfel geschnittene Aubergine und die in Würfel geschnittene Zucchini hinzu und garen Sie alles 15 min bei mittlerer Hitze.",
+        "Fügen Sie die in Würfel geschnittene Tomate und das Salz hinzu, decken Sie ab und lassen Sie 20 min köcheln.",
+        "Höhlen Sie 4 Vertiefungen in den Pisto aus, schlagen Sie jeweils ein Ei hinein, decken Sie ab und garen Sie 6 min, bis das Eiweiß gestockt ist."
+      ]
     }
   },
   "ingredients": {
