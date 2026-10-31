@@ -3,7 +3,7 @@
     "name": "Pearl List",
     "slug": "pearl-list",
     "scheme": "pearl-list",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pearlstreets.list",
-      "buildNumber": "1027",
+      "buildNumber": "1028",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "Pearl List utilise l'appareil photo pour photographier votre liste de courses manuscrite ou un produit, par exemple prendre en photo un ticket de caisse pour ajouter les articles à votre liste.",
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "com.pearlstreets.list",
-      "versionCode": 17,
+      "versionCode": 18,
       "allowBackup": false,
       "config": {
         "googleMaps": {
@@ -67,6 +67,14 @@
       "expo-localization",
       "expo-location",
       "expo-font",
+      [
+        "expo-notifications",
+        {
+          "color": "#09d7aa",
+          "defaultChannel": "menus-rappels",
+          "mode": "production"
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {

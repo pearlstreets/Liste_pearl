@@ -2,6 +2,7 @@ import { apiPost, apiPut, apiUpload, apiDeleteWithStatus, saveTokens, clearToken
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { clearAllMenus } from '../lib/menus/storage';
 import { setSecureItem, removeSecureItem, removeSecureItems, SECURE_KEYS } from './secureStorage';
+import { flushMenusSync, resetMenusSyncSession, requestMenusSync } from './menusSync';
 
 const KEY_AUTH = 'KEY_AUTH';
 const KEY_PROFILE = 'KEY_PROFILE';
@@ -71,6 +72,7 @@ export async function registerUser({
     };
     await setSecureItem(KEY_AUTH, JSON.stringify(authData));
     await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
+    requestMenusSync();
     return { success: true, user: authData };
   }
 
@@ -122,6 +124,7 @@ export async function loginUser(identifier, password) {
     };
     await setSecureItem(KEY_AUTH, JSON.stringify(authData));
     await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
+    requestMenusSync();
     return { success: true, user: authData };
   }
 
@@ -130,6 +133,8 @@ export async function loginUser(identifier, password) {
 
 // Logout
 export async function logoutUser() {
+  // Les menus en attente partent tant que les jetons sont valables.
+  await flushMenusSync();
   try {
     const tokens = await getTokens();
     if (tokens?.refresh) {
@@ -182,6 +187,8 @@ const isUserScopedKey = (k) =>
     k.startsWith('__SECURE__'));
 
 export async function clearLocalUserData() {
+  await flushMenusSync();
+  resetMenusSyncSession();
   // Jetons, compte et profil : stockage chiffré ET ancienne copie AsyncStorage.
   await removeSecureItems(SECURE_KEYS);
   try {
@@ -197,6 +204,10 @@ export async function clearLocalUserData() {
   } catch {}
   try {
     await clearAllMenus();
+  } catch {}
+  try {
+    // Chargé ici : `auth` reste utilisable sans react-native, le module des rappels ne l'est pas.
+    await require('./menuReminders').cancelMenuReminders();
   } catch {}
 }
 
@@ -350,6 +361,7 @@ export async function registerProfessional({
     };
     await setSecureItem(KEY_AUTH, JSON.stringify(authData));
     await setSecureItem(KEY_PROFILE, JSON.stringify(authData));
+    requestMenusSync();
     return { success: true, user: authData };
   }
 

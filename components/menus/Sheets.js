@@ -1,6 +1,14 @@
 // Feuilles du bas : changer un plat (3 idées) et confirmation d'ajout à la liste.
 import React, { memo, useEffect, useState } from 'react';
-import { View, Text, Pressable, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { formatEur } from '../../lib/menus';
 import { T } from './theme';
@@ -21,10 +29,81 @@ function Sheet({ onClose, children, label }) {
   );
 }
 
+/** "gluten, lait" : ce que l'avertissement a repéré, en clair. */
+export function warningList(w, t) {
+  const propres = ['porc', 'viande', 'alcool'];
+  return [
+    ...w.allergens.map((a) => t(propres.includes(a) ? `myRecipes.allergen.${a}` : `allergens.${a}`)),
+    ...w.ingredients,
+  ].join(', ');
+}
+
+/** Recette personnelle posée à la main : profil restreint = accord explicite d'abord. */
+function confirmManual(warning, t, onOk) {
+  if (!warning) {
+    onOk();
+    return;
+  }
+  Alert.alert(
+    t('myRecipes.confirmTitle'),
+    warning.found
+      ? t('myRecipes.warnFound', { list: warningList(warning, t) })
+      : t('myRecipes.warnUnknown'),
+    [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('myRecipes.confirmAdd'), onPress: onOk },
+    ]
+  );
+}
+
+/** Choisir le repas du plan où poser une recette personnelle. */
+export const PlanPickSheet = memo(function PlanPickSheet({ recipe, onClose, onDone }) {
+  const t = useT();
+  const { plan, swap, texts, warningOf } = useMenus();
+  const meals = ((plan && plan.meals) || []).filter((x) => x && !x.leftoverOf);
+  const pick = (key) =>
+    confirmManual(warningOf(recipe), t, async () => {
+      await swap(key, recipe.id, { manual: true });
+      onClose();
+      onDone();
+    });
+  return (
+    <Sheet onClose={onClose} label={t('common.close')}>
+      <Text style={s.title}>{t('myRecipes.planTitle')}</Text>
+      {meals.length === 0 ? (
+        <Empty emoji="🗓️" title={t('myRecipes.noPlanTitle')} text={t('myRecipes.noPlanText')} />
+      ) : (
+        <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
+          {meals.map((x) => (
+            <TouchableOpacity
+              key={x.key}
+              activeOpacity={0.85}
+              onPress={() => pick(x.key)}
+              style={s.idea}
+              accessibilityRole="button"
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={s.ideaTitle}>
+                  {t(`days.long.${x.day}`)} · {t(`slot.${x.slot}`)}
+                </Text>
+                <Text style={s.ideaMeta} numberOfLines={1}>
+                  {x.recipeId ? texts.recipeTitle(x.recipeId) : t('week.free')}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={T.faint} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
+      <GhostButton label={t('common.cancel')} onPress={onClose} />
+    </Sheet>
+  );
+});
+
 /** Changer un plat : 3 idées au choix, ou une surprise. */
 export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
   const t = useT();
-  const { suggest, swap, texts, ingredients, lang, costOf, plan } = useMenus();
+  const { suggest, swap, texts, ingredients, lang, costOf, plan, myRecipes, warningOf } = useMenus();
   const [ideas, setIdeas] = useState([]);
   const meal = plan && plan.meals.find((m) => m.key === mealKey);
   useEffect(() => {
@@ -35,6 +114,12 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
     onClose();
     await swap(mealKey, id);
   };
+  const pickMine = (r) =>
+    confirmManual(warningOf(r), t, async () => {
+      onClose();
+      await swap(mealKey, r.id, { manual: true });
+    });
+  const mine = myRecipes.filter((r) => !ideas.some((x) => x.id === r.id));
   return (
     <Sheet onClose={onClose} label={t('common.close')}>
       <Text style={s.title}>{t('swap.title')}</Text>
@@ -59,8 +144,10 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
                     {texts.recipeTitle(r.id)}
                   </Text>
                   <Text style={s.ideaMeta}>
-                    {t('recipe.minutes', { n: r.timeMin })} ·{' '}
-                    {t('week.perPerson', { price: formatEur(c.perPerson, lang) })}
+                    {t('recipe.minutes', { n: r.timeMin })}
+                    {r.custom
+                      ? ''
+                      : ` · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`}
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color={T.faint} />
@@ -68,6 +155,25 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
             );
           })
         )}
+        {mine.length ? <Text style={s.mineLabel}>{t('discover.modes.myRecipes')}</Text> : null}
+        {mine.map((r) => (
+          <TouchableOpacity
+            key={r.id}
+            activeOpacity={0.85}
+            onPress={() => pickMine(r)}
+            style={s.idea}
+            accessibilityRole="button"
+          >
+            <RecipeVisual recipe={r} ingredients={ingredients} height={64} round />
+            <View style={{ flex: 1, marginLeft: 14 }}>
+              <Text style={s.ideaTitle} numberOfLines={2}>
+                {r.title}
+              </Text>
+              <Text style={s.ideaMeta}>{t('recipe.minutes', { n: r.timeMin })}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={T.faint} />
+          </TouchableOpacity>
+        ))}
       </ScrollView>
       <View style={{ marginTop: 14 }}>
         <PrimaryButton
@@ -140,6 +246,7 @@ export const AddedSheet = memo(function AddedSheet({
 });
 
 const s = StyleSheet.create({
+  mineLabel: { fontSize: 14, fontWeight: '800', color: T.ink, marginTop: 14, marginBottom: 8 },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

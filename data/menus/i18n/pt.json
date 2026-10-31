@@ -1151,6 +1151,1974 @@
         "Fechar e reservar no frio durante a noite.",
         "Consumir frio."
       ]
+    },
+    "boeuf-carottes-mijote": {
+      "title": "Carne de vaca para estufar com cenouras estufadas",
+      "steps": [
+        "Cortar a carne de vaca para estufar em cubos grandes, a cenoura em rodelas e picar a cebola.",
+        "Alourar a carne numa panela com azeite, depois juntar a cebola e o alho picado.",
+        "Polvilhar com farinha, misturar, depois juntar o tomate pelado picado, o caldo (cubo) esfarelado, o tomilho seco, o louro (folha) e 60 cl de água.",
+        "Tapar e deixar estufar 1 h em lume brando.",
+        "Juntar as cenouras e continuar a cozedura por mais 1 h 30, até a carne ficar tenra. Retirar o louro."
+      ]
+    },
+    "carbonade-flamande": {
+      "title": "Carbonada flamenga com cerveja loira",
+      "steps": [
+        "Cortar a carne de vaca para estufar em pedaços e picar a cebola.",
+        "Alourar a carne numa panela com manteiga, reservar, depois refogar a cebola com o açúcar durante 10 minutos.",
+        "Voltar a colocar a carne, deitar a cerveja loira, juntar o tomilho seco e o louro (folha).",
+        "Barrar as fatias de pão de mistura com mostarda e colocar por cima.",
+        "Tapar e deixar estufar 2 h 30 em lume brando, mexendo de vez em quando. Retirar o louro."
+      ]
+    },
+    "daube-provencale": {
+      "title": "Estufado de carne de vaca à provençal",
+      "steps": [
+        "Cortar a carne de vaca para estufar em cubos, a cenoura em rodelas e picar a cebola. Retirar uma tira de casca de laranja.",
+        "Alourar a carne numa panela com azeite, juntar a cebola e o alho picado.",
+        "Deitar o vinho tinto, deixar ferver 5 minutos, depois juntar a cenoura, o tomate pelado picado, as ervas da Provença, o louro (folha) e a casca de laranja.",
+        "Tapar e deixar estufar 2 h 45 em lume muito brando.",
+        "Juntar as azeitonas 15 minutos antes do fim, depois retirar o louro e a casca de laranja."
+      ]
+    },
+    "blanquette-veau-riz": {
+      "title": "Blanquette de vitela com arroz",
+      "steps": [
+        "Colocar a carne de vitela salteada em cubos numa panela, cobrir com água fria e o caldo (cubo), levar a ferver e retirar a espuma.",
+        "Juntar a cenoura em rodelas, o alho-francês, a cebola e o louro (folha), depois deixar estufar 1 h 15 em lume brando.",
+        "Saltear os cogumelos de Paris fatiados com um pouco de manteiga e cozer o arroz à parte.",
+        "Derreter o resto da manteiga, juntar a farinha e depois 50 cl do caldo da cozedura, batendo até engrossar.",
+        "Fora do lume, juntar as natas espessas e o sumo de limão, depois a carne, as cenouras e os cogumelos. Servir com o arroz."
+      ]
+    },
+    "veau-marengo": {
+      "title": "Carne de vitela salteada Marengo",
+      "steps": [
+        "Cortar a carne de vitela salteada em cubos, picar a cebola e os cogumelos de Paris.",
+        "Alourar a carne numa panela com azeite, juntar a cebola e o alho picado, depois polvilhar com farinha.",
+        "Deitar o vinho branco seco, juntar o tomate pelado picado, as ervas da Provença, o louro (folha) e 20 cl de água.",
+        "Tapar e deixar estufar 1 h 15 em lume brando.",
+        "Juntar os cogumelos e continuar a cozedura mais 20 minutos. Retirar o louro."
+      ]
+    },
+    "veau-olives-carottes": {
+      "title": "Carne de vitela salteada com azeitonas e cenouras",
+      "steps": [
+        "Cortar a carne de vitela salteada em cubos, a cenoura em rodelas e picar a cebola.",
+        "Alourar a carne numa panela com azeite, juntar a cebola e o alho picado.",
+        "Juntar a cenoura, o tomate pelado picado, o tomilho seco e 25 cl de água.",
+        "Tapar e deixar estufar 1 h 30 em lume brando.",
+        "Juntar as azeitonas, aquecer 5 minutos e servir."
+      ]
+    },
+    "navarin-agneau-printanier": {
+      "title": "Navarin de borrego primaveril",
+      "steps": [
+        "Cortar a pá de borrego em pedaços. Alourar numa panela com azeite, depois juntar a cebola picada e o alho picado.",
+        "Polvilhar com farinha, juntar o concentrado de tomate, o tomilho seco, o louro (folha) e 80 cl de água.",
+        "Tapar e deixar estufar 1 h em lume brando.",
+        "Juntar a cenoura, o nabo e a batata em pedaços, depois cozer 30 minutos.",
+        "Juntar as ervilhas congeladas, cozer 10 minutos e retirar o louro."
+      ]
+    },
+    "agneau-haricots-blancs": {
+      "title": "Pá de borrego com feijão branco",
+      "steps": [
+        "Cortar a pá de borrego em pedaços. Picar a cebola e picar o alho.",
+        "Alourar a carne numa panela com azeite, juntar a cebola e o alho.",
+        "Juntar o tomate pelado picado, o tomilho seco, o louro (folha) e 30 cl de água.",
+        "Tapar e deixar estufar 1 h 45 em lume brando.",
+        "Juntar o feijão branco de conserva escorrido, cozer mais 15 minutos e retirar o louro."
+      ]
+    },
+    "poulet-chasseur": {
+      "title": "Frango à caçador",
+      "steps": [
+        "Alourar as pernas de frango numa panela com azeite, depois reservar.",
+        "Refogar as chalotas picadas e os cogumelos de Paris laminados, juntar o alho picado.",
+        "Deitar o vinho branco seco, deixar reduzir 3 minutos, depois juntar o tomate pelado picado e o tomilho seco.",
+        "Voltar a colocar o frango, tapar e deixar estufar 45 minutos em lume brando."
+      ]
+    },
+    "coq-au-vin-cuisses": {
+      "title": "Coq au vin com pernas de frango",
+      "steps": [
+        "Alourar as pernas numa panela com azeite, depois reservar.",
+        "Refogar o bacon em cubos, a cebola picada, a cenoura em rodelas e o alho picado. Polvilhar com farinha.",
+        "Voltar a colocar o frango, deitar o vinho tinto, juntar o tomilho seco e o louro (folha).",
+        "Tapar e deixar estufar 1 h em lume brando.",
+        "Juntar os cogumelos de Paris picados, cozer 15 minutos e retirar o louro."
+      ]
+    },
+    "poulet-vallee-auge": {
+      "title": "Frango com cidrão bruto e natas",
+      "steps": [
+        "Alourar as pernas numa panela com manteiga, depois reservar.",
+        "Refogar a cebola picada e os cogumelos de Paris laminados.",
+        "Voltar a colocar o frango, deitar o cidrão bruto, tapar e cozer 35 minutos em lume brando.",
+        "Juntar as maçãs em quartos e cozer 10 minutos.",
+        "Retirar o frango e as maçãs, juntar as natas líquidas, deixar reduzir 3 minutos e regar."
+      ]
+    },
+    "poulet-estragon-creme": {
+      "title": "Frango com estragão e natas",
+      "steps": [
+        "Cozer o arroz conforme a embalagem.",
+        "Cortar o peito de frango em pedaços e alourar numa frigideira com manteiga e as chalotas picadas.",
+        "Juntar as natas líquidas, a mostarda e o estragão seco, depois deixar estufar 10 minutos.",
+        "Temperar com sal e pimenta e servir com o arroz."
+      ]
+    },
+    "poule-au-pot-simple": {
+      "title": "Poule ao pote simplificada com perna de frango",
+      "steps": [
+        "Colocar a perna de frango e a cebola inteira numa panela grande, cobrir com 2,5 litros de água, juntar o caldo, o tomilho seco e o louro (folha).",
+        "Levar a ferver, retirar a espuma e deixar cozinhar em lume brando durante 30 minutos.",
+        "Adicionar as cenouras, os alhos-franceses e os nabos cortados em pedaços, depois cozinhar durante 25 minutos.",
+        "Juntar as batatas em pedaços e cozinhar mais 25 minutos.",
+        "Servir a perna de frango e os legumes com um pouco de caldo. Retirar o louro (folha)."
+      ]
+    },
+    "poulet-vinaigre-lyonnais": {
+      "title": "Frango com vinagre à moda de Lyon",
+      "steps": [
+        "Dourar as pernas de frango numa sauteuse com manteiga, 10 minutos de cada lado.",
+        "Adicionar as chalotas laminadas e o alho picado, depois refogar durante 3 minutos.",
+        "Juntar o vinagre, deixar reduzir, depois adicionar o tomate pelado picado e 10 cl de água.",
+        "Tapar e cozinhar 25 minutos em lume brando, depois juntar as natas líquidas e deixar engrossar 3 minutos."
+      ]
+    },
+    "fricassee-poulet-poireaux": {
+      "title": "Fricassé de frango com alho-francês",
+      "steps": [
+        "Cozer as batatas em pedaços durante 20 minutos em água com sal.",
+        "Cortar o peito de frango em pedaços e laminar os alhos-franceses.",
+        "Dourar o frango numa sauteuse com manteiga, juntar o alho-francês e cozinhar durante 10 minutos.",
+        "Adicionar as natas líquidas e a mostarda, deixar cozinhar em lume brando durante 5 minutos e servir com as batatas."
+      ]
+    },
+    "poulet-olives-tomates": {
+      "title": "Frango com azeitonas e tomate",
+      "steps": [
+        "Dourar as pernas de frango numa panela com azeite, depois reservar.",
+        "Refogar a cebola laminada e o pimento em tiras, depois juntar o alho picado.",
+        "Adicionar o tomate pelado picado e as ervas da Provença, voltar a colocar o frango, tapar e deixar cozinhar em lume brando durante 40 minutos.",
+        "Juntar as azeitonas, cozinhar mais 5 minutos e servir."
+      ]
+    },
+    "saute-dinde-carottes-curry": {
+      "title": "Salteado de peru com cenoura e caril suave",
+      "steps": [
+        "Cortar o bife de peru em pedaços, as cenouras em rodelas e laminar a cebola.",
+        "Dourar o peru numa panela com azeite, juntar a cebola e o caril.",
+        "Adicionar as cenouras e 30 cl de água, tapar e deixar cozinhar em lume brando durante 30 minutos.",
+        "Juntar as natas líquidas, deixar engrossar 3 minutos e servir."
+      ]
+    },
+    "dinde-normande-pommes": {
+      "title": "Bifes de peru à normanda",
+      "steps": [
+        "Cortar as maçãs em quartos e dourar durante 8 minutos em metade da manteiga, depois reservar.",
+        "Dourar os bifes de peru com o resto da manteiga e a cebola laminada, 4 minutos de cada lado.",
+        "Adicionar as natas líquidas e as maçãs, deixar cozinhar em lume brando durante 5 minutos.",
+        "Temperar com sal e pimenta e servir bem quente."
+      ]
+    },
+    "lapin-moutarde": {
+      "title": "Coelho com mostarda",
+      "steps": [
+        "Barrar os pedaços de coelho com mostarda.",
+        "Dourar numa panela com manteiga, depois juntar as chalotas laminadas.",
+        "Adicionar o vinho branco seco, juntar o tomilho seco, tapar e deixar cozinhar em lume brando durante 45 minutos.",
+        "Juntar as natas líquidas, deixar reduzir 5 minutos e servir."
+      ]
+    },
+    "lapin-pruneaux": {
+      "title": "Coelho com ameixas secas sem caroço",
+      "steps": [
+        "Dourar os pedaços de coelho numa panela com azeite, depois reservar.",
+        "Refogar a cebola laminada e as cenouras em rodelas.",
+        "Voltar a colocar o coelho, juntar o vinho tinto, o tomilho seco, o louro (folha) e 10 cl de água.",
+        "Tapar e deixar cozinhar em lume brando durante 45 minutos.",
+        "Adicionar as ameixas secas sem caroço e cozinhar mais 20 minutos. Retirar o louro (folha)."
+      ]
+    },
+    "canard-navets": {
+      "title": "Coxa de pato com nabos",
+      "steps": [
+        "Dourar as coxas de pato com a pele para baixo numa panela sem gordura, durante 10 minutos, depois reservar.",
+        "Retirar quase toda a gordura, refogar a cebola laminada e os nabos em pedaços com o açúcar.",
+        "Voltar a colocar o pato, juntar o tomilho seco, o caldo (cubo) e 30 cl de água.",
+        "Tapar e deixar cozinhar em lume brando durante 50 minutos."
+      ]
+    },
+    "canard-petits-pois": {
+      "title": "Coxa de pato com ervilhas congeladas",
+      "steps": [
+        "Dourar as coxas de pato com a pele para baixo numa panela sem gordura, durante 10 minutos, depois reservar.",
+        "Retirar quase toda a gordura, refogar o bacon em cubos, a cebola laminada e as cenouras em rodelas.",
+        "Voltar a colocar o pato, juntar o tomilho seco, o caldo (cubo) e 25 cl de água, tapar e deixar cozinhar em lume brando durante 35 minutos.",
+        "Adicionar as ervilhas congeladas e cozinhar 12 minutos."
+      ]
+    },
+    "cassoulet-simple": {
+      "title": "Cassoulet simplificado",
+      "steps": [
+        "Pré-aquecer o forno a 160 °C.",
+        "Dourar a coxa de pato com a pele para baixo numa panela, depois as salsichas. Reservar.",
+        "Refogar o bacon em cubos, a cebola laminada e o alho picado, juntar o tomate pelado picado, o tomilho seco e o louro (folha).",
+        "Adicionar o feijão branco de conserva escorrido, o pato cortado em pedaços e as salsichas, depois 30 cl de água.",
+        "Polvilhar com pão ralado e levar ao forno durante 1 h sem tapar. Retirar o louro (folha)."
+      ]
+    },
+    "potee-auvergnate": {
+      "title": "Cozido à auvernhata",
+      "steps": [
+        "Dessalgar a entremeada de porco salgada durante 30 minutos em água fria, depois colocar numa panela grande com 3 litros de água.",
+        "Levar a ferver, retirar a espuma, juntar a cebola e o louro (folha), depois deixar cozinhar em lume brando durante 1 h.",
+        "Adicionar a couve frisada em quartos, as cenouras, os nabos, os alhos-franceses e a salsicha de porco, depois cozinhar durante 30 minutos.",
+        "Juntar as batatas e cozinhar mais 30 minutos. Retirar o louro (folha), provar antes de temperar com sal."
+      ]
+    },
+    "choucroute-garnie-simple": {
+      "title": "Chucrute guarnecida simplificada",
+      "steps": [
+        "Lavar a chucrute cru e escorrer. Cortar a cebola em rodelas finas.",
+        "Refogar a cebola numa panela grande, adicionar metade da chucrute, a entremeada de porco salgada e o louro, depois o resto da chucrute.",
+        "Deitar o vinho branco seco e 20 cl de água, tapar e deixar estufar 1 h em lume brando.",
+        "Juntar as salsichas e as batatas descascadas, depois cozinhar mais 35 minutos.",
+        "Retirar o louro e servir."
+      ]
+    },
+    "petit-sale-lentilles": {
+      "title": "Entremeada de porco salgada com lentilhas",
+      "steps": [
+        "Dessalgar a entremeada de porco salgada durante 30 minutos em água fria.",
+        "Colocar numa panela, cobrir com água, juntar a cebola, o tomilho seco e o louro, depois deixar ferver suavemente 1 h.",
+        "Adicionar as lentilhas lavadas e as cenouras em rodelas, depois cozinhar 30 minutos.",
+        "Escorrer se necessário, retirar o louro, provar antes de temperar com sal e servir."
+      ]
+    },
+    "saute-porc-moutarde": {
+      "title": "Guisado de porco com mostarda",
+      "steps": [
+        "Cortar o cachaço de porco em cubos e fatiar as cebolas.",
+        "Dourar a carne numa panela com o azeite, juntar as cebolas.",
+        "Adicionar o caldo (cubo), o tomilho seco e 30 cl de água, tapar e deixar estufar 50 minutos.",
+        "Juntar a mostarda e as natas líquidas, deixar reduzir 5 minutos."
+      ]
+    },
+    "porc-pommes-cidre": {
+      "title": "Guisado de porco com maçã e cidrão",
+      "steps": [
+        "Cortar o cachaço de porco em cubos, fatiar as cebolas.",
+        "Dourar a carne numa panela com o azeite, juntar as cebolas, depois polvilhar com farinha.",
+        "Deitar o cidrão bruto, juntar o tomilho seco, tapar e deixar estufar 1 h.",
+        "Adicionar as maçãs em quartos e cozinhar 15 minutos."
+      ]
+    },
+    "saute-porc-pruneaux": {
+      "title": "Guisado de porco com ameixas secas",
+      "steps": [
+        "Cortar o cachaço de porco em cubos, as cenouras em rodelas e fatiar as cebolas.",
+        "Dourar a carne numa panela com o azeite, juntar as cebolas e as cenouras.",
+        "Deitar o vinho branco seco e 20 cl de água, juntar o tomilho seco, tapar e deixar estufar 50 minutos.",
+        "Adicionar as ameixas secas sem caroço e cozinhar mais 20 minutos."
+      ]
+    },
+    "chou-farci-familial": {
+      "title": "Couve recheada familiar",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Escaldar 12 folhas grandes de couve frisada durante 5 minutos em água a ferver e escorrer.",
+        "Misturar a carne de vaca picada, a carne de salsicha, a cebola e o alho (dente) picados, o ovo e a salsa.",
+        "Colocar recheio em cada folha e enrolar em pequenos pacotes.",
+        "Dispor num tabuleiro, juntar o tomate pelado picado, o caldo (cubo) esfarelado e 20 cl de água.",
+        "Tapar e levar ao forno 1 h 15."
+      ]
+    },
+    "saucisses-puree-oignons": {
+      "title": "Salsichas, puré e cebolas caramelizadas",
+      "steps": [
+        "Cozinhar as batatas em pedaços durante 20 minutos em água salgada, depois esmagar com o leite quente e metade da manteiga. Adicionar a noz-moscada moída.",
+        "Cozinhar as cebolas fatiadas em lume brando durante 20 minutos com o resto da manteiga.",
+        "Dourar as salsichas numa frigideira durante 15 minutos, virando-as.",
+        "Servir as salsichas sobre o puré, com as cebolas."
+      ]
+    },
+    "boudin-noir-pommes": {
+      "title": "Morcela com maçã e puré",
+      "steps": [
+        "Cozinhar as batatas durante 20 minutos em água salgada e esmagar com o leite quente e 20 g de manteiga.",
+        "Dourar as maçãs em quartos durante 10 minutos com o resto da manteiga, depois reservar.",
+        "Dourar a morcela 5 minutos de cada lado na mesma frigideira.",
+        "Servir a morcela com as maçãs e o puré."
+      ]
+    },
+    "endives-jambon-gratinees": {
+      "title": "Endívias gratinadas com fiambre",
+      "steps": [
+        "Cozinhar as endívias inteiras durante 25 minutos em água salgada, depois espremer bem.",
+        "Preparar um molho bechamel: derreter a manteiga, juntar a farinha e depois o leite, mexendo até engrossar, com a noz-moscada moída.",
+        "Pré-aquecer o forno a 200 °C. Enrolar cada endívia numa fatia de fiambre e dispor num tabuleiro.",
+        "Cobrir com bechamel, polvilhar com queijo ralado e levar ao forno 25 minutos."
+      ]
+    },
+    "tomates-farcies-viande-riz": {
+      "title": "Tomates recheados com carne e arroz",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Cortar a parte de cima dos tomates, retirar o interior e reservar a polpa.",
+        "Misturar a carne de vaca picada, a carne de salsicha, a cebola, o alho (dente) e a salsa picados com o pão ralado.",
+        "Rechear os tomates e dispor num tabuleiro, com a polpa à volta e o arroz cru no molho.",
+        "Adicionar 30 cl de água, colocar as tampas e levar ao forno 50 minutos."
+      ]
+    },
+    "courgettes-farcies-boeuf": {
+      "title": "Curgetes recheadas com carne de vaca",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Cortar as curgetes ao meio e retirar o interior.",
+        "Refogar no azeite a cebola, o alho (dente), a carne de vaca picada e a polpa das curgetes picada, durante 10 minutos. Juntar as ervas da Provença.",
+        "Rechear as curgetes e dispor num tabuleiro sobre o tomate pelado picado.",
+        "Polvilhar com queijo ralado e levar ao forno 40 minutos."
+      ]
+    },
+    "pain-viande-tomate": {
+      "title": "Rolo de carne com molho de tomate",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Misturar o pão ralado e o leite.",
+        "Adicionar a carne de vaca picada, a cebola picada, os ovos, a salsa e a mostarda, depois temperar com sal e pimenta.",
+        "Formar um rolo numa forma de bolo inglês e levar ao forno 50 minutos.",
+        "Aquecer o tomate pelado picado com as ervas da Provença durante 10 minutos e servir em fatias com o molho."
+      ]
+    },
+    "boulettes-creme-champignons": {
+      "title": "Almôndegas de carne de vaca com natas e cogumelos",
+      "steps": [
+        "Misturar a carne de vaca picada, a cebola picada, o ovo e o pão ralado, depois formar almôndegas.",
+        "Dourar durante 10 minutos numa frigideira funda com o azeite, depois reservar.",
+        "Saltear os cogumelos de Paris laminados, juntar as natas líquidas e voltar a colocar as almôndegas durante 10 minutos em lume brando.",
+        "Cozinhar a massa conforme a embalagem e servir com as almôndegas."
+      ]
+    },
+    "escalopes-panees-puree": {
+      "title": "Bifes de peru panados e puré de cenoura",
+      "steps": [
+        "Cozinhar as cenouras e as batatas cortadas em pedaços durante 20 minutos em água com sal, depois esmagar com a manteiga.",
+        "Passar os bifes de peru pela farinha, pelos ovos batidos e depois pelo pão ralado.",
+        "Dourar 4 minutos de cada lado numa frigideira com o azeite.",
+        "Servir os bifes panados com o puré."
+      ]
+    },
+    "poulet-riz-supreme": {
+      "title": "Frango com arroz e molho supremo",
+      "steps": [
+        "Colocar a perna de frango, as cenouras em rodelas, a cebola e o caldo (cubo) numa panela, cobrir com água e deixar ferver suavemente durante 35 minutos.",
+        "Cozinhar o arroz conforme a embalagem.",
+        "Derreter a manteiga, juntar a farinha e os cogumelos de Paris laminados, depois 30 cl do caldo de cozedura, mexendo com uma vara de arames.",
+        "Adicionar as natas líquidas, deixar engrossar durante 3 minutos e servir sobre o frango e o arroz."
+      ]
+    },
+    "parmentier-canard-simple": {
+      "title": "Parmentier de pato",
+      "steps": [
+        "Colocar a coxa de pato numa panela com a cebola, o tomilho seco e o louro (folha), cobrir com água e deixar ferver suavemente durante 45 minutos. Escorrer e desfiar a carne sem pele.",
+        "Cozinhar as batatas durante 20 minutos em água com sal e esmagar com o leite quente e a manteiga.",
+        "Pré-aquecer o forno a 200 °C. Dispor o pato num tabuleiro e cobrir com o puré.",
+        "Polvilhar com pão ralado e levar ao forno durante 25 minutos."
+      ]
+    },
+    "parmentier-potimarron-boeuf": {
+      "title": "Parmentier de carne de vaca com abóbora hokkaido",
+      "steps": [
+        "Cozinhar a abóbora hokkaido e as batatas cortadas em pedaços durante 20 minutos em água com sal, depois esmagar com o leite e a manteiga.",
+        "Saltear a cebola laminada, o alho picado e a carne de vaca picada durante 10 minutos. Temperar com sal e pimenta.",
+        "Pré-aquecer o forno a 200 °C. Dispor a carne num tabuleiro e cobrir com o puré.",
+        "Polvilhar com queijo ralado e levar ao forno durante 25 minutos."
+      ]
+    },
+    "pates-saucisse-brocoli": {
+      "title": "Massa com salsicha de porco e brócolo",
+      "steps": [
+        "Cozinhar a massa com os floretes de brócolo conforme o tempo da embalagem.",
+        "Dourar a carne da salsicha de porco esfarelada numa frigideira com o azeite e o alho picado, durante 8 minutos.",
+        "Escorrer a massa e o brócolo, misturar com a salsicha.",
+        "Polvilhar com parmesão e servir."
+      ]
+    },
+    "tarte-jambon-comte": {
+      "title": "Tarte de fiambre e queijo Comté",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e estender a massa quebrada numa forma.",
+        "Dispor o fiambre em pedaços e o queijo Comté em cubos.",
+        "Bater os ovos com as natas líquidas e a noz-moscada moída, verter sobre o recheio.",
+        "Levar ao forno durante 35 minutos, até a tarte ficar dourada."
+      ]
+    },
+    "cake-jambon-olives-salade": {
+      "title": "Bolo salgado de fiambre e azeitonas, alface",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C.",
+        "Misturar a farinha, o fermento em pó, os ovos, o leite e 3 colheres de azeite.",
+        "Adicionar o fiambre em cubos, as azeitonas e o queijo ralado, depois verter numa forma de bolo inglês.",
+        "Levar ao forno durante 45 minutos e deixar arrefecer um pouco.",
+        "Servir em fatias com a alface temperada com o resto do azeite e vinagre."
+      ]
+    },
+    "parmentier-cabillaud": {
+      "title": "Parmentier de lombo de bacalhau fresco",
+      "steps": [
+        "Cozinhar as batatas durante 20 minutos em água com sal e esmagar com o leite quente e a manteiga.",
+        "Escalfar o lombo de bacalhau fresco durante 6 minutos em água a ferver suavemente com o sumo de limão, depois desfiar sem espinhas.",
+        "Pré-aquecer o forno a 200 °C. Misturar o peixe e a salsa picada num tabuleiro, cobrir com o puré.",
+        "Polvilhar com queijo ralado e levar ao forno durante 20 minutos."
+      ]
+    },
+    "cabillaud-sauce-vierge": {
+      "title": "Lombo de bacalhau fresco com molho vierge e batatas a vapor",
+      "steps": [
+        "Cozinhar as batatas durante 20 minutos em água ou a vapor.",
+        "Cortar os tomates em pequenos cubos e misturar com o manjericão picado, o sumo de limão e 3 colheres de azeite.",
+        "Cozinhar o lombo de bacalhau fresco durante 4 minutos de cada lado numa frigideira com o resto do azeite.",
+        "Servir o peixe com as batatas e o molho vierge."
+      ]
+    },
+    "cabillaud-lentilles-carottes": {
+      "title": "Lombo de bacalhau fresco com lentilhas e cenouras",
+      "steps": [
+        "Cozinhar as lentilhas lavadas durante 30 minutos em água com as cenouras em cubos, a cebola laminada, o tomilho seco e o louro (folha).",
+        "Escorrer, retirar o louro, temperar com o vinagre e 1 colher de azeite.",
+        "Cozinhar o lombo de bacalhau fresco durante 4 minutos de cada lado numa frigideira com o resto do azeite.",
+        "Servir o peixe sobre as lentilhas."
+      ]
+    },
+    "papillotes-saumon-poireaux": {
+      "title": "Papelotes de lombo de salmão com alho-francês",
+      "steps": [
+        "Cozinhar as batatas durante 20 minutos em água com sal. Pré-aquecer o forno a 200 °C.",
+        "Laminhar o alho-francês e saltear durante 5 minutos numa frigideira com um pouco de água, depois juntar as natas líquidas.",
+        "Distribuir o alho-francês por 4 folhas de papel vegetal, colocar o lombo de salmão e o sumo de limão, temperar com sal e pimenta e fechar.",
+        "Levar ao forno durante 15 minutos e servir com as batatas."
+      ]
+    },
+    "truite-amandes-haricots-verts": {
+      "title": "Filete de truta com amêndoas e feijão-verde",
+      "steps": [
+        "Cozinhar o feijão-verde durante 10 minutos em água com sal.",
+        "Passar ligeiramente os filetes de truta por farinha e cozinhar 3 minutos de cada lado em metade da manteiga.",
+        "Dourar as amêndoas laminadas no resto da manteiga e juntar o sumo de limão.",
+        "Cobrir o filete de truta com as amêndoas e servir com o feijão-verde."
+      ]
+    },
+    "maquereaux-moutarde-pommes-de-terre": {
+      "title": "Filete de cavala com mostarda e batatas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar as batatas em rodelas, misturar com o azeite e o tomilho, e levar ao forno durante 20 minutos.",
+        "Barrar os filetes de cavala com mostarda.",
+        "Colocar sobre as batatas e levar ao forno durante 10 minutos.",
+        "Regar com sumo de limão e servir."
+      ]
+    },
+    "colin-meuniere-epinards": {
+      "title": "Filete de pescada meunière com espinafres",
+      "steps": [
+        "Saltear os espinafres congelados numa frigideira com o alho picado, durante 10 minutos.",
+        "Passar ligeiramente os filetes de pescada por farinha.",
+        "Cozinhar 3 minutos de cada lado na manteiga.",
+        "Regar com sumo de limão e servir com os espinafres."
+      ]
+    },
+    "colin-sauce-tomate-olives": {
+      "title": "Filete de pescada com tomate e azeitonas",
+      "steps": [
+        "Cozinhar o arroz conforme as instruções da embalagem.",
+        "Refogar a cebola laminada e o alho picado no azeite, juntar o tomate pelado picado e as ervas da Provença, e deixar cozinhar em lume brando durante 10 minutos.",
+        "Colocar o filete de pescada no molho com as azeitonas, tapar e cozinhar 10 minutos em lume brando.",
+        "Servir com o arroz."
+      ]
+    },
+    "colin-provencale-four": {
+      "title": "Filete de pescada à provençal no forno",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar o tomate e a curgete em rodelas finas.",
+        "Dispor os legumes num tabuleiro, juntar o alho picado, as ervas da Provença e 2 colheres de azeite, depois levar ao forno durante 15 minutos.",
+        "Colocar o filete de pescada por cima, polvilhar com pão ralado e regar com o restante azeite.",
+        "Levar ao forno durante 15 minutos."
+      ]
+    },
+    "pain-thon-tomate": {
+      "title": "Pão de atum com tomate",
+      "steps": [
+        "Pré-aquecer o forno a 170 °C. Escorrer e desfiar o atum em conserva.",
+        "Bater os ovos com as natas líquidas, o concentrado de tomate e as ervas da Provença, juntar o atum e o pão ralado.",
+        "Verter numa forma de bolo inglês e levar ao forno durante 45 minutos. Deixar arrefecer.",
+        "Servir em fatias com alface temperada com azeite e vinagre."
+      ]
+    },
+    "tarte-thon-tomates-moutarde": {
+      "title": "Tarte de atum, tomate e mostarda",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e estender a massa quebrada numa forma.",
+        "Barrar o fundo com mostarda e distribuir o atum em conserva desfiado.",
+        "Cobrir com rodelas de tomate, juntar as ervas da Provença e o queijo ralado.",
+        "Levar ao forno durante 35 minutos."
+      ]
+    },
+    "quiche-saumon-poireaux": {
+      "title": "Quiche de salmão e alho-francês",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e estender a massa quebrada numa forma.",
+        "Refogar o alho-francês cortado em juliana durante 10 minutos com a manteiga.",
+        "Cortar o lombo de salmão em cubos e distribuir com o alho-francês sobre a massa.",
+        "Bater os ovos e as natas líquidas, verter por cima e levar ao forno durante 35 minutos."
+      ]
+    },
+    "blanquette-poisson-riz": {
+      "title": "Blanquette de peixe e arroz",
+      "steps": [
+        "Cozinhar o arroz conforme as instruções da embalagem.",
+        "Cozinhar as cenouras, o alho-francês cortado em pedaços e os cogumelos de Paris laminados durante 15 minutos em 50 cl de água com o caldo (cubo).",
+        "Escalfar o peixe cortado em pedaços neste caldo durante 5 minutos, depois escorrer juntamente com os legumes.",
+        "Derreter a manteiga, juntar a farinha, depois 30 cl do caldo mexendo com uma vara de arames e as natas líquidas.",
+        "Adicionar o sumo de limão, o peixe e os legumes, aquecer suavemente e servir com o arroz."
+      ]
+    },
+    "cotriade-bretonne-simple": {
+      "title": "Cotriade, sopa de peixe da Bretanha",
+      "steps": [
+        "Refogar a cebola e o alho-francês laminados na manteiga, no fundo de uma panela grande.",
+        "Adicionar as batatas cortadas em pedaços, 1,5 litro de água, o tomilho seco e o louro (folha), depois cozinhar durante 20 minutos.",
+        "Juntar o peixe cortado em pedaços grandes e deixar ferver suavemente durante 8 minutos sem deixar levantar fervura.",
+        "Retirar o louro e servir o peixe e as batatas no caldo."
+      ]
+    },
+    "chaudree-poisson-mais": {
+      "title": "Chaudrée de peixe com milho",
+      "steps": [
+        "Alourar o bacon em cubos e a cebola laminada numa panela.",
+        "Adicionar as batatas em cubos, o leite, 30 cl de água e o tomilho seco, depois cozinhar durante 15 minutos.",
+        "Juntar o filete de pescada cortado em pedaços, o milho enlatado escorrido e as natas líquidas.",
+        "Deixar ferver suavemente durante 6 minutos e servir."
+      ]
+    },
+    "gratin-crevettes-poireaux": {
+      "title": "Gratinado de camarões e alho-francês",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Refogar o alho-francês laminado durante 10 minutos com um pouco de manteiga.",
+        "Preparar um molho bechamel com o resto da manteiga, a farinha e o leite, depois adicionar a noz-moscada moída.",
+        "Misturar o alho-francês e os camarões descascados descongelados numa travessa, cobrir com o bechamel.",
+        "Polvilhar com queijo ralado e levar ao forno durante 20 minutos."
+      ]
+    },
+    "haddock-poche-epinards": {
+      "title": "Haddock fumado escalfado, espinafres e batatas",
+      "steps": [
+        "Cozinhar as batatas 20 minutos em água.",
+        "Aquecer os espinafres com a manteiga, durante 8 minutos.",
+        "Aquecer o leite com o louro até levantar fervura, escalfar o haddock 8 minutos sem ferver.",
+        "Escorrer o haddock e servir com os espinafres e as batatas. Temperar com pimenta."
+      ]
+    },
+    "parmentier-saumon-epinards": {
+      "title": "Parmentier de salmão com espinafres",
+      "steps": [
+        "Cozinhar as batatas 20 minutos em água com sal e esmagar com o leite quente, a manteiga e a noz-moscada.",
+        "Aquecer os espinafres 8 minutos e escorrer.",
+        "Pré-aquecer o forno a 200 °C. Dispor o salmão em cubos e os espinafres num prato, cobrir com o puré.",
+        "Levar ao forno 25 minutos."
+      ]
+    },
+    "crumble-cabillaud-parmesan": {
+      "title": "Crumble de lombo de bacalhau fresco com parmesão",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar o alho-francês em rodelas finas e a cenoura em rodelas finas, cozinhar 10 minutos numa frigideira com um pouco de água.",
+        "Dispor os legumes num prato com as natas e o lombo de bacalhau fresco em pedaços.",
+        "Misturar a farinha, a manteiga e o parmesão com a ponta dos dedos até obter uma textura de areia grossa.",
+        "Espalhar o crumble sobre o peixe e levar ao forno 20 minutos."
+      ]
+    },
+    "tian-sardines-pommes-de-terre": {
+      "title": "Tian de sardinhas e batatas",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C. Cortar as batatas, os tomates e a cebola em rodelas finas.",
+        "Dispor em camadas num prato com o alho picado, as ervas da Provença e o azeite.",
+        "Levar ao forno 35 minutos.",
+        "Adicionar as sardinhas escorridas e levar ao forno mais 10 minutos."
+      ]
+    },
+    "saumon-lentilles-moutarde": {
+      "title": "Salmão com lentilhas e molho de mostarda",
+      "steps": [
+        "Cozinhar as lentilhas lavadas 30 minutos com o tomilho seco, depois escorrer.",
+        "Refogar as chalotas picadas, juntar as natas líquidas e a mostarda.",
+        "Cozinhar o lombo de salmão 4 minutos de cada lado na frigideira.",
+        "Servir o salmão sobre as lentilhas e cobrir com o molho."
+      ]
+    },
+    "croquettes-thon-pommes-de-terre": {
+      "title": "Croquetes de atum e batata",
+      "steps": [
+        "Cozinhar as batatas 20 minutos em água com sal e esmagar.",
+        "Pré-aquecer o forno a 200 °C. Misturar o puré, o atum em conserva desfeito, 1 ovo e a salsa picada.",
+        "Formar croquetes, passar no outro ovo batido e depois no pão ralado.",
+        "Colocar num tabuleiro, regar com 2 colheres de azeite e levar ao forno 15 minutos.",
+        "Servir com limão e a alface temperada com o resto do azeite e vinagre."
+      ]
+    },
+    "pissaladiere-salade": {
+      "title": "Pissaladière e alface",
+      "steps": [
+        "Misturar a farinha, o fermento de padeiro seco, 2 colheres de azeite, 15 cl de água e o sal, depois deixar repousar 20 minutos.",
+        "Refogar as cebolas cortadas em meias-luas 30 minutos em lume brando com 3 colheres de azeite e o tomilho seco.",
+        "Pré-aquecer o forno a 220 °C. Estender a massa, cobrir com as cebolas, dispor os filetes de anchova e as azeitonas.",
+        "Levar ao forno 20 minutos e servir com a alface temperada com o resto do azeite e vinagre."
+      ]
+    },
+    "salade-nicoise-chaude-thon": {
+      "title": "Batatas, feijão-verde e atum à niçoise",
+      "steps": [
+        "Cozinhar as batatas 20 minutos em água com sal, o feijão-verde 10 minutos e os ovos 9 minutos.",
+        "Cortar as batatas e os tomates em pedaços, descascar os ovos.",
+        "Misturar o azeite, o vinagre e a mostarda.",
+        "Distribuir tudo com o atum em conserva desfeito e as azeitonas, depois regar com o molho vinagrete."
+      ]
+    },
+    "gratin-dauphinois-salade": {
+      "title": "Gratin dauphinois e alface",
+      "steps": [
+        "Pré-aquecer o forno a 160 °C. Cortar as batatas em rodelas finas sem lavar.",
+        "Esfregar um prato untado com manteiga com o alho, dispor as batatas em camadas, com sal, pimenta e noz-moscada moída.",
+        "Verter o leite e as natas líquidas, depois levar ao forno 1 h 15.",
+        "Servir com a alface temperada com azeite e vinagre."
+      ]
+    },
+    "gratin-savoyard-comte": {
+      "title": "Gratin savoyard com queijo Comté",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Cortar as batatas em rodelas finas e cortar as cebolas em meias-luas.",
+        "Num prato untado com manteiga, alternar camadas de batata, cebola e queijo Comté ralado, com um pouco de noz-moscada moída.",
+        "Verter 40 cl de água quente com o caldo (cubo) de legumes.",
+        "Levar ao forno 1 h, até dourar por cima."
+      ]
+    },
+    "gratin-butternut-creme": {
+      "title": "Gratin de abóbora butternut com natas",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Descascar a abóbora butternut e cortar em fatias finas.",
+        "Dispor num prato esfregado com alho, verter as natas líquidas com noz-moscada moída, sal e pimenta.",
+        "Polvilhar com queijo ralado e levar ao forno 45 minutos."
+      ]
+    },
+    "gratin-brocoli-pates": {
+      "title": "Gratin de massa com brócolo",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar a massa e o brócolo em raminhos juntos, conforme indicado na embalagem.",
+        "Preparar um molho bechamel: derreter a manteiga, juntar a farinha e depois o leite, mexendo com vara de arames, com noz-moscada moída e metade do queijo ralado.",
+        "Misturar tudo num prato e polvilhar com o resto do queijo ralado.",
+        "Levar ao forno 20 minutos."
+      ]
+    },
+    "gratin-poireaux-jambon": {
+      "title": "Gratinado de alho-francês com fiambre",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar o alho-francês em pedaços durante 15 minutos em água com sal e escorrer bem.",
+        "Preparar um molho bechamel com a manteiga, a farinha e o leite, juntar a noz-moscada moída.",
+        "Dispor o alho-francês e o fiambre em pedaços numa travessa, cobrir com o bechamel.",
+        "Polvilhar com queijo ralado e levar ao forno durante 25 minutos."
+      ]
+    },
+    "tian-legumes-provencal": {
+      "title": "Tian provençal de legumes com arroz",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Refogar a cebola fatiada e o alho picado em 1 colher de azeite, no fundo de uma travessa.",
+        "Cortar os legumes em rodelas finas e dispor na vertical, alternando-os.",
+        "Adicionar as ervas da Provença e o resto do azeite, temperar com sal e pimenta.",
+        "Levar ao forno durante 50 minutos, tapando a meio da cozedura. Servir com o arroz cozido conforme as instruções da embalagem."
+      ]
+    },
+    "parmigiana-aubergines": {
+      "title": "Gratinado de beringela à parmesã",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar as beringelas em fatias, pincelar com azeite e assar durante 20 minutos num tabuleiro.",
+        "Deixar a tomate pelado picado cozinhar com o alho picado durante 15 minutos, depois juntar o manjericão.",
+        "Alternar num prato a molho, as beringelas, a mozzarella e o parmesão.",
+        "Levar ao forno durante 30 minutos a 180 °C e deixar repousar 10 minutos."
+      ]
+    },
+    "gratin-epinards-oeufs": {
+      "title": "Gratinado de espinafres com ovos",
+      "steps": [
+        "Cozinhar os ovos durante 9 minutos, descascar e cortar ao meio. Aquecer os espinafres e escorrer bem.",
+        "Pré-aquecer o forno a 200 °C. Preparar um molho bechamel com a manteiga, a farinha e o leite, juntar a noz-moscada moída.",
+        "Misturar os espinafres e metade do bechamel numa travessa, colocar os ovos, cobrir com o restante.",
+        "Polvilhar com queijo ralado e levar ao forno durante 15 minutos."
+      ]
+    },
+    "gratin-panais-carottes": {
+      "title": "Gratinado de cherovia e cenoura",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Cortar os legumes em rodelas finas e cozinhar a vapor durante 10 minutos.",
+        "Dispor numa travessa esfregada com alho, juntamente com o tomilho seco.",
+        "Verter as natas líquidas, polvilhar com queijo ralado e levar ao forno durante 35 minutos."
+      ]
+    },
+    "gratin-pommes-de-terre-champignons": {
+      "title": "Gratinado de batata com cogumelos de Paris",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Refogar a cebola e os cogumelos de Paris fatiados com a manteiga e o alho picado.",
+        "Cortar as batatas em rodelas finas.",
+        "Alternar batatas e cogumelos numa travessa, juntar o tomilho seco e verter as natas líquidas com 10 cl de água.",
+        "Polvilhar com queijo ralado e levar ao forno durante 55 minutos."
+      ]
+    },
+    "quiche-poireaux-chevre": {
+      "title": "Quiche de alho-francês e queijo de cabra",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e estender a massa quebrada numa forma.",
+        "Refogar o alho-francês fatiado durante 10 minutos com a manteiga.",
+        "Distribuir o alho-francês e o queijo de cabra em pedaços sobre a massa.",
+        "Bater os ovos com as natas líquidas, verter por cima e levar ao forno durante 35 minutos."
+      ]
+    },
+    "tarte-oignons-alsacienne": {
+      "title": "Tarte de cebola",
+      "steps": [
+        "Refogar as cebolas fatiadas durante 25 minutos em lume brando com a manteiga, sem deixar ganhar cor.",
+        "Pré-aquecer o forno a 180 °C e estender a massa quebrada numa forma.",
+        "Bater os ovos, as natas líquidas e a noz-moscada moída, juntar as cebolas e verter sobre a massa.",
+        "Levar ao forno durante 30 minutos."
+      ]
+    },
+    "tarte-courgettes-feta": {
+      "title": "Tarte de curgete e feta",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C e estender a massa quebrada numa forma.",
+        "Cortar as curgetes em rodelas finas e dourar durante 8 minutos numa frigideira.",
+        "Distribuir sobre a massa com a feta esfarelada e a hortelã picada.",
+        "Bater os ovos com as natas líquidas, verter por cima e levar ao forno durante 30 minutos."
+      ]
+    },
+    "flamiche-poireaux": {
+      "title": "Flamiche de alho-francês",
+      "steps": [
+        "Refogar o alho-francês fatiado durante 15 minutos com a manteiga. Fora do lume, juntar 1 ovo e as natas líquidas.",
+        "Pré-aquecer o forno a 190 °C. Estender uma massa folhada num tabuleiro e colocar o alho-francês deixando o bordo livre.",
+        "Cobrir com a segunda massa, unir as bordas e pincelar com o segundo ovo batido.",
+        "Levar ao forno durante 35 minutos."
+      ]
+    },
+    "tourte-epinards-ricotta": {
+      "title": "Empada de espinafres e ricotta",
+      "steps": [
+        "Aquecer os espinafres e espremer bem.",
+        "Pré-aquecer o forno a 190 °C. Misturar os espinafres, a ricotta, 1 ovo, o parmesão e a noz-moscada moída.",
+        "Colocar sobre uma massa folhada, cobrir com a segunda, unir as bordas e pincelar com o segundo ovo batido.",
+        "Levar ao forno durante 40 minutos."
+      ]
+    },
+    "lentilles-vigneronnes-oeuf": {
+      "title": "Lentilhas à vigneronne com ovo escalfado",
+      "steps": [
+        "Refogar a cebola fatiada e as cenouras em cubos no azeite.",
+        "Adicionar as lentilhas lavadas, o vinho tinto, o tomilho seco, o louro (folha) e 60 cl de água, depois cozinhar durante 35 minutos.",
+        "Cozinhar os ovos durante 6 minutos, arrefecer e descascar.",
+        "Retirar o louro, servir as lentilhas com um ovo em cada prato."
+      ]
+    },
+    "flageolets-tomates-herbes": {
+      "title": "Feijão-flageolet com tomate e ervas",
+      "steps": [
+        "Refogar a cebola picada e o alho picado no azeite.",
+        "Juntar o tomate pelado picado e o tomilho seco, depois deixar cozinhar em lume brando durante 10 minutos.",
+        "Adicionar o feijão-flageolet escorrido e cozinhar mais 10 minutos.",
+        "Polvilhar com salsa picada e servir."
+      ]
+    },
+    "tomates-farcies-riz-feta": {
+      "title": "Tomate recheado com arroz e feta",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Cozinhar o arroz 10 minutos em água salgada e escorrer.",
+        "Cortar a parte de cima das tomates, retirar o interior e picar a polpa.",
+        "Misturar o arroz, a feta, as ervas picadas, a polpa e 2 colheres de azeite, depois rechear as tomates.",
+        "Regar com o restante azeite e levar ao forno durante 35 minutos."
+      ]
+    },
+    "courgettes-farcies-quinoa-chevre": {
+      "title": "Curgete recheada com quinoa e queijo de cabra",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C. Cozinhar a quinoa conforme as instruções da embalagem.",
+        "Cortar as curgetes ao meio, retirar o interior e picar a polpa.",
+        "Refogar a cebola, a polpa da curgete e o tomate em cubos no azeite, juntar a quinoa e as ervas.",
+        "Rechear as curgetes, adicionar o queijo de cabra e levar ao forno durante 30 minutos."
+      ]
+    },
+    "aubergines-farcies-tomate-mozzarella": {
+      "title": "Beringela recheada com tomate e mozzarella",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C. Cortar as beringelas ao meio, fazer cortes na polpa, pincelar com azeite e assar durante 25 minutos.",
+        "Retirar a polpa e refogar com a cebola e o alho picados, juntar o tomate pelado picado e as ervas.",
+        "Deixar cozinhar em lume brando durante 10 minutos, depois rechear as beringelas.",
+        "Cobrir com mozzarella e levar ao forno durante 15 minutos."
+      ]
+    },
+    "champignons-farcis-riz": {
+      "title": "Cogumelo de Paris recheado e arroz com ervas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar o arroz conforme as instruções da embalagem.",
+        "Separar os pés dos cogumelos e picar juntamente com o alho, a salsa e as chalotas.",
+        "Refogar esta mistura 5 minutos com a manteiga e juntar o pão ralado.",
+        "Rechear os chapéus e levar ao forno durante 20 minutos."
+      ]
+    },
+    "galettes-sarrasin-champignons-oeuf": {
+      "title": "Panquecas de trigo-sarraceno com cogumelos e ovo",
+      "steps": [
+        "Misturar a farinha de trigo-sarraceno, o sal e 45 cl de água, depois deixar repousar 20 minutos.",
+        "Refogar as chalotas e os cogumelos de Paris laminados com um pouco de manteiga.",
+        "Cozinhar uma panqueca numa frigideira untada com manteiga, partir um ovo no centro, adicionar os cogumelos e deixar cozinhar 3 minutos.",
+        "Dobrar as bordas e servir. Repetir para as restantes panquecas."
+      ]
+    },
+    "souffle-fromage-salade": {
+      "title": "Soufflé de queijo e alface",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C e untar uma forma de soufflé com manteiga. Preparar um molho béchamel espesso com manteiga, farinha e leite.",
+        "Separar as claras das gemas. Fora do lume, juntar as gemas ao béchamel, com o queijo Comté ralado e a noz-moscada moída.",
+        "Bater as claras em castelo firme e incorporar delicadamente.",
+        "Deitar na forma e levar ao forno durante 30 minutos sem abrir a porta.",
+        "Servir de imediato com a alface temperada com azeite e vinagre."
+      ]
+    },
+    "oeufs-cocotte-epinards-creme": {
+      "title": "Ovos cocotte com espinafres e mouillettes",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Aquecer os espinafres congelados com noz-moscada moída e escorrer.",
+        "Distribuir os espinafres e as natas líquidas por 4 pequenos recipientes, partir 2 ovos em cada um.",
+        "Cozinhar em banho-maria no forno durante 12 min.",
+        "Servir com a baguete cortada em mouillettes."
+      ]
+    },
+    "omelette-fines-herbes-salade": {
+      "title": "Omelete de ervas aromáticas e batatas salteadas",
+      "steps": [
+        "Cortar as batatas em cubos e dourar durante 20 minutos em 2 colheres de azeite.",
+        "Bater os ovos com as ervas picadas, sal e pimenta.",
+        "Cozinhar a omelete durante 4 minutos com manteiga.",
+        "Servir com as batatas e a alface temperada com o restante azeite e vinagre."
+      ]
+    },
+    "crepes-epinards-ricotta": {
+      "title": "Crepes gratinados com espinafres e ricotta",
+      "steps": [
+        "Misturar a farinha, os ovos e o leite, depois cozinhar 8 crepes numa frigideira untada com manteiga.",
+        "Aquecer os espinafres, escorrer bem e misturar com a ricotta e a noz-moscada moída.",
+        "Pré-aquecer o forno a 200 °C. Rechear e enrolar os crepes, dispor num tabuleiro.",
+        "Polvilhar com queijo ralado e levar ao forno durante 15 minutos."
+      ]
+    },
+    "pates-champignons-creme": {
+      "title": "Massa com cogumelos e natas",
+      "steps": [
+        "Cozinhar a massa conforme as instruções da embalagem.",
+        "Refogar as chalotas e os cogumelos de Paris laminados com manteiga, durante 8 minutos.",
+        "Adicionar as natas líquidas e o parmesão, deixar engrossar 2 minutos.",
+        "Misturar com a massa e polvilhar com salsa."
+      ]
+    },
+    "polenta-champignons-comte": {
+      "title": "Polenta cremosa com cogumelos",
+      "steps": [
+        "Refogar os cogumelos de Paris laminados com manteiga e alho picado, durante 10 minutos.",
+        "Levar o leite e 60 cl de água a ferver, deitar a polenta em chuva e mexer durante 5 minutos.",
+        "Adicionar o queijo Comté ralado e temperar com sal.",
+        "Servir a polenta com os cogumelos e salsa picada."
+      ]
+    },
+    "polenta-gratinee-tomate": {
+      "title": "Polenta gratinada com tomate",
+      "steps": [
+        "Levar 1,2 litro de água com sal a ferver, deitar a polenta em chuva, mexer durante 5 minutos e espalhar num tabuleiro. Deixar solidificar 15 minutos.",
+        "Refogar a cebola picada e o alho picado no azeite, juntar o tomate pelado picado e as ervas da Provença, e cozinhar 10 minutos.",
+        "Pré-aquecer o forno a 200 °C. Cobrir a polenta com o molho e a mozzarella.",
+        "Levar ao forno 15 minutos."
+      ]
+    },
+    "risotto-butternut": {
+      "title": "Risotto de abóbora butternut",
+      "steps": [
+        "Aquecer 1,2 litro de água com o caldo de legumes.",
+        "Refogar a cebola picada e a abóbora butternut em cubos pequenos na manteiga, durante 5 minutos.",
+        "Juntar o arroz e deixar fritar 2 minutos, depois adicionar o caldo concha a concha, mexendo, durante 20 minutos.",
+        "Fora do lume, juntar o parmesão e servir."
+      ]
+    },
+    "haricots-blancs-tomate-oeufs": {
+      "title": "Feijão branco com tomate e ovos",
+      "steps": [
+        "Refogar a cebola picada e o alho picado no azeite com o pimentão doce.",
+        "Juntar o tomate pelado picado e o feijão branco de conserva escorrido, depois deixar cozinhar em lume brando 12 minutos.",
+        "Abrir 4 cavidades, partir um ovo em cada uma, tapar e cozinhar 6 minutos."
+      ]
+    },
+    "parmentier-lentilles-carottes": {
+      "title": "Parmentier de lentilhas e cenouras",
+      "steps": [
+        "Cozinhar as lentilhas lavadas durante 30 minutos com as cenouras em cubos, a cebola picada, o tomilho seco e o concentrado de tomate.",
+        "Cozinhar as batatas 20 minutos em água com sal e esmagar com o leite quente e a manteiga.",
+        "Pré-aquecer o forno a 200 °C. Dispor as lentilhas num tabuleiro e cobrir com o puré.",
+        "Levar ao forno 20 minutos."
+      ]
+    },
+    "bourguignon-champignons-lentilles": {
+      "title": "Bourguignon de cogumelos de Paris e lentilhas",
+      "steps": [
+        "Dourar os cogumelos de Paris em quartos numa panela com azeite, depois reservar.",
+        "Refogar a cebola picada, as cenouras em rodelas e o alho picado. Polvilhar com farinha.",
+        "Juntar o vinho tinto, o concentrado de tomate, as lentilhas, o tomilho seco, o louro (folha) e 50 cl de água.",
+        "Tapar e deixar cozinhar em lume brando 40 minutos.",
+        "Juntar novamente os cogumelos, cozinhar 10 minutos e retirar o louro."
+      ]
+    },
+    "pot-au-feu-legumes-bouillon": {
+      "title": "Cozido de legumes e grão-de-bico",
+      "steps": [
+        "Levar 2 litros de água a ferver com o caldo de legumes, o tomilho seco e o louro (folha).",
+        "Juntar as cenouras, os nabos e o alho-francês em pedaços, depois cozinhar 20 minutos.",
+        "Adicionar o repolho branco em quartos e as batatas, depois cozinhar 20 minutos.",
+        "Juntar o grão-de-bico escorrido, aquecer 5 minutos, retirar o louro e servir com mostarda."
+      ]
+    },
+    "clafoutis-courgettes-chevre": {
+      "title": "Clafoutis de curgete com queijo de cabra",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Dourar as curgetes em rodelas no azeite, durante 8 minutos.",
+        "Bater os ovos, a farinha e o leite, juntar a hortelã picada.",
+        "Dispor as curgetes e o queijo de cabra num tabuleiro, verter a massa.",
+        "Levar ao forno 30 minutos."
+      ]
+    },
+    "chou-rouge-pommes-pommes-de-terre": {
+      "title": "Couve-roxa com maçã e batata",
+      "steps": [
+        "Cortar a couve-roxa e a cebola em juliana, cortar as maçãs em cubos.",
+        "Refogar a cebola no azeite, juntar a couve-roxa, as maçãs, o vinagre, o açúcar e 20 cl de água.",
+        "Tapar e deixar cozinhar em lume brando 50 minutos.",
+        "Cozinhar as batatas 20 minutos em água com sal e servir com a couve-roxa."
+      ]
+    },
+    "choux-bruxelles-gratines-pommes-de-terre": {
+      "title": "Couve-de-bruxelas e batatas gratinadas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar as couves-de-bruxelas 10 minutos e as batatas em rodelas 12 minutos em água com sal.",
+        "Escorrer e dispor num tabuleiro.",
+        "Verter as natas líquidas com a noz-moscada moída, polvilhar com queijo ralado e levar ao forno 20 minutos."
+      ]
+    },
+    "fenouil-gratine-parmesan-riz": {
+      "title": "Funcho gratinado com parmesão e arroz",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar o funcho em quartos 15 minutos em água com sal e escorrer.",
+        "Cozinhar o arroz conforme as instruções da embalagem.",
+        "Dispor o funcho num tabuleiro untado com azeite, verter as natas líquidas, polvilhar com parmesão e levar ao forno 20 minutos."
+      ]
+    },
+    "soupe-pistou": {
+      "title": "Sopa ao pistou",
+      "steps": [
+        "Cortar todos os legumes em cubos pequenos.",
+        "Colocar em 2 litros de água, exceto o feijão branco de conserva, e cozinhar 30 minutos.",
+        "Adicionar o feijão branco de conserva escorrido e a massa, depois cozinhar 10 minutos.",
+        "Triturar o manjericão, o alho, o parmesão e o azeite para fazer o pistou.",
+        "Adicionar o pistou fora do lume e servir."
+      ]
+    },
+    "garbure-bearnaise-simple": {
+      "title": "Garbure bearnesa simplificada",
+      "steps": [
+        "Colocar a coxa de pato numa panela grande com 2,5 litros de água, o alho, o tomilho seco e o louro (folha), depois deixar ferver suavemente 45 minutos.",
+        "Adicionar a couve frisada em juliana, as cenouras, os nabos e o alho-francês em pedaços, depois cozinhar 30 minutos.",
+        "Juntar as batatas e o feijão branco de conserva escorrido, depois cozinhar 20 minutos.",
+        "Desfiar a coxa de pato, voltar a colocar na sopa e retirar o louro."
+      ]
+    },
+    "soupe-oignon-gratinee": {
+      "title": "Sopa gratinada de cebola",
+      "steps": [
+        "Derreter a cebola fatiada durante 25 minutos em lume brando com a manteiga, até ficar dourada.",
+        "Polvilhar com farinha, juntar 1,5 litro de água com o caldo de legumes e deixar ferver suavemente durante 15 minutos.",
+        "Pré-aquecer o forno a 220 °C. Distribuir por taças que possam ir ao forno e colocar as fatias de pão por cima.",
+        "Polvilhar com queijo Comté ralado e levar ao forno durante 10 minutos."
+      ]
+    },
+    "soupe-pois-casses-lardons": {
+      "title": "Sopa de ervilhas secas partidas com bacon em cubos",
+      "steps": [
+        "Passar as ervilhas secas partidas por água. Refogar o bacon em cubos e a cebola fatiada numa panela.",
+        "Juntar as ervilhas, as cenouras e o alho-francês em rodelas, o tomilho, o louro e 2 litros de água.",
+        "Deixar ferver suavemente durante 50 minutos.",
+        "Retirar o louro e triturar uma parte da sopa. Provar antes de temperar com sal."
+      ]
+    },
+    "soupe-paysanne-lardons-pain": {
+      "title": "Sopa camponesa com bacon em cubos",
+      "steps": [
+        "Refogar o bacon em cubos numa panela.",
+        "Juntar os legumes cortados em cubos, o tomilho e 2 litros de água.",
+        "Deixar ferver suavemente durante 35 minutos e provar antes de temperar com sal.",
+        "Torrar o pão, cobrir com queijo e servir sobre a sopa."
+      ]
+    },
+    "soupe-haricots-blancs-chou": {
+      "title": "Sopa de feijão branco com repolho",
+      "steps": [
+        "Refogar a cebola fatiada e o alho picado no azeite.",
+        "Juntar as cenouras em cubos, o repolho fatiado, o tomate pelado picado, o tomilho, 1,5 litro de água e o caldo de legumes.",
+        "Deixar ferver suavemente durante 30 minutos.",
+        "Adicionar o feijão branco de conserva escorrido, cozinhar 5 minutos e servir."
+      ]
+    },
+    "soupe-butternut-lentilles-corail": {
+      "title": "Sopa de abóbora butternut com lentilhas cor-de-rosa",
+      "steps": [
+        "Refogar a cebola fatiada e o gengibre fresco ralado no azeite com os cominhos.",
+        "Juntar a abóbora em cubos, as lentilhas cor-de-rosa passadas por água e 1 litro de água, depois cozinhar durante 20 minutos.",
+        "Adicionar o leite de coco e triturar."
+      ]
+    },
+    "veloute-cresson-oeuf-mollet": {
+      "title": "Creme de agrião com ovo escalfado",
+      "steps": [
+        "Refogar a cebola fatiada na manteiga, juntar as batatas em cubos, 1 litro de água e o caldo de legumes, depois cozinhar durante 20 minutos.",
+        "Adicionar o agrião, cozinhar 3 minutos e triturar com as natas líquidas.",
+        "Cozer os ovos durante 6 minutos, arrefecer e descascar.",
+        "Servir o creme com um ovo em cada prato e a baguete."
+      ]
+    },
+    "soupe-poulet-riz-citron": {
+      "title": "Sopa de frango com arroz e limão",
+      "steps": [
+        "Colocar a perna de frango em 2 litros de água com o caldo e deixar ferver suavemente durante 30 minutos.",
+        "Retirar o frango, juntar as cenouras e o alho-francês em rodelas, assim como o arroz, depois cozinhar durante 15 minutos.",
+        "Desfiar o frango e voltar a colocar na sopa.",
+        "Adicionar o sumo de limão e a salsa picada."
+      ]
+    },
+    "soupe-boeuf-legumes-pates": {
+      "title": "Sopa de carne de vaca com legumes e massinhas",
+      "steps": [
+        "Colocar a carne de vaca para estufar em cubos em 2,5 litros de água com a cebola, o caldo, o tomilho e o louro. Levar a ferver e retirar a espuma.",
+        "Deixar ferver suavemente durante 1 h 15.",
+        "Adicionar os legumes em cubos e cozinhar durante 30 minutos.",
+        "Juntar a massa, cozinhar conforme a embalagem e retirar o louro."
+      ]
+    },
+    "potage-poireaux-haddock": {
+      "title": "Sopa de alho-francês e haddock fumado",
+      "steps": [
+        "Cozinhar o alho-francês fatiado e as batatas em cubos durante 20 minutos em 70 cl de água.",
+        "Adicionar o leite e o haddock fumado, depois escalfar durante 8 minutos sem ferver.",
+        "Retirar o haddock e desfiar.",
+        "Triturar a sopa com as natas líquidas, juntar o peixe e temperar com pimenta. Provar antes de temperar com sal."
+      ]
+    },
+    "soupe-pois-chiches-pates": {
+      "title": "Sopa de grão-de-bico com massinhas",
+      "steps": [
+        "Refogar a cebola fatiada e o alho picado no azeite.",
+        "Juntar o tomate pelado picado, o grão-de-bico de conserva escorrido, as ervas da Provença, o caldo de legumes e 1,2 litro de água, depois deixar ferver suavemente durante 15 minutos.",
+        "Adicionar a massa e cozinhar conforme a embalagem."
+      ]
+    },
+    "veloute-chou-fleur-lardons": {
+      "title": "Creme de couve-flor com bacon em cubos e croutons",
+      "steps": [
+        "Cozinhar a couve-flor em raminhos, as batatas e a cebola durante 20 minutos em 80 cl de água.",
+        "Adicionar o leite e triturar. Provar antes de temperar com sal.",
+        "Dourar o bacon em cubos numa frigideira e depois torrar a baguete em cubos na gordura do bacon.",
+        "Servir o creme com o bacon e os croutons."
+      ]
+    },
+    "soupe-potimarron-tartines-chevre": {
+      "title": "Sopa de abóbora hokkaido e tostas de queijo de cabra",
+      "steps": [
+        "Cortar a abóbora hokkaido em pedaços, com a casca bem lavada. Cozinhar com a cebola durante 25 minutos em 1 litro de água.",
+        "Triturar com as natas líquidas e a noz-moscada moída.",
+        "Torrar o pão, barrar com queijo de cabra e levar 3 minutos ao grill do forno.",
+        "Servir a sopa com as tostas."
+      ]
+    },
+    "soupe-lentilles-corail-epinards-citron": {
+      "title": "Sopa de lentilhas cor-de-rosa, espinafres e limão",
+      "steps": [
+        "Refogar a cebola picada no azeite com os cominhos e o açafrão-da-Índia.",
+        "Juntar as lentilhas cor-de-rosa lavadas, o tomate pelado picado e 1 litro de água, depois cozinhar 15 minutos.",
+        "Adicionar os espinafres congelados e cozinhar 5 minutos.",
+        "Juntar o sumo de limão, temperar com sal e pimenta e servir."
+      ]
+    },
+    "soupe-legumes-vermicelles-poulet": {
+      "title": "Sopa de legumes com massa de arroz e frango",
+      "steps": [
+        "Levar 1,8 litro de água a ferver com o caldo (cubo).",
+        "Adicionar os legumes em cubos e o peito de frango inteiro, depois deixar ferver suavemente 15 minutos.",
+        "Retirar o frango, desfiar e voltar a colocar na sopa.",
+        "Juntar a massa de arroz, cozinhar 3 minutos e polvilhar com salsa."
+      ]
+    },
+    "potage-tomate-riz-oeuf-poche": {
+      "title": "Sopa de tomate com arroz e ovo escalfado",
+      "steps": [
+        "Refogar a cebola picada e o alho (dente) picado no azeite, juntar o tomate pelado picado, as ervas da Provença e 80 cl de água.",
+        "Adicionar o arroz e deixar ferver suavemente 15 minutos.",
+        "Escalfar os ovos 3 minutos em água a ferver com vinagre.",
+        "Servir a sopa com um ovo em cada prato."
+      ]
+    },
+    "soupe-fenouil-tomate-cabillaud": {
+      "title": "Sopa de tomate com funcho e lombo de bacalhau fresco",
+      "steps": [
+        "Refogar a cebola e o funcho picados no azeite, juntar o alho (dente) picado.",
+        "Adicionar o tomate pelado picado, as batatas em cubos e 70 cl de água, depois deixar ferver suavemente 20 minutes.",
+        "Juntar o lombo de bacalhau fresco em pedaços e cozinhar 6 minutos em lume brando."
+      ]
+    },
+    "boeuf-miroton-oignons": {
+      "title": "Carne de vaca para estufar com cebolas",
+      "steps": [
+        "Cortar a carne de vaca para estufar em cubos e dourar numa panela com azeite, depois reservar.",
+        "Refogar as cebolas picadas 10 minutos, polvilhar com farinha e juntar o vinagre.",
+        "Voltar a colocar a carne com o concentrado de tomate, o caldo (cubo), o louro (folha) e 50 cl de água, tapar e deixar estufar 1 h 30.",
+        "Adicionar as batatas em pedaços e cozinhar 25 minutos. Retirar o louro."
+      ]
+    },
+    "gratin-colin-chou-fleur": {
+      "title": "Gratinado de pescada com couve-flor",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cozinhar a couve-flor em raminhos 12 minutos em água com sal e escorrer.",
+        "Preparar um molho bechamel com manteiga, farinha e leite, juntar noz-moscada moída.",
+        "Dispor a couve-flor e o filete de pescada em pedaços num tabuleiro, cobrir com o bechamel.",
+        "Polvilhar com queijo ralado e levar ao forno 20 minutos."
+      ]
+    },
+    "gratin-riz-courgettes-tomates": {
+      "title": "Gratinado de arroz com curgete e tomate",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C. Cozinhar o arroz 10 minutos em água com sal e escorrer.",
+        "Refogar a cebola picada, o alho (dente) picado e a curgete em cubos no azeite, 10 minutos.",
+        "Adicionar o tomate pelado picado e as ervas da Provença, depois misturar com o arroz num tabuleiro.",
+        "Polvilhar com queijo ralado e levar ao forno 25 minutos."
+      ]
+    },
+    "tajine-poulet-citron-olives": {
+      "title": "Tajine de frango com limão e azeitonas",
+      "steps": [
+        "Dourar as pernas de frango no azeite com a cebola picada, o alho (dente) esmagado, o gengibre fresco ralado e o açafrão-da-Índia.",
+        "Juntar 30 cl de água, temperar com sal e pimenta, tapar e deixar estufar 25 minutos.",
+        "Adicionar as batatas em quartos e o limão em rodelas finas, depois cozinhar mais 25 minutos tapado.",
+        "Juntar as azeitonas e os coentros frescos picados, deixar reduzir o molho destapado e servir."
+      ]
+    },
+    "couscous-legumes-pois-chiches": {
+      "title": "Cuscuz de legumes e grão-de-bico",
+      "steps": [
+        "Refogar a cebola picada em 2 colheres de azeite com o ras el hanout.",
+        "Adicionar as cenouras em pedaços, o tomate pelado picado, 1 litro de água e sal, depois cozinhar 20 minutos.",
+        "Juntar a curgete em pedaços e o grão-de-bico escorrido, depois cozinhar mais 15 minutos.",
+        "Verter sobre a sêmola o mesmo volume de água a ferver com sal e o resto do azeite, tapar 5 minutos, soltar com um garfo e servir com os legumes e o caldo."
+      ]
+    },
+    "harira-agneau-lentilles": {
+      "title": "Harira com borrego e lentilhas",
+      "steps": [
+        "Dourar a pá de borrego em cubos pequenos com a cebola picada no azeite, depois juntar o gengibre fresco ralado, o açafrão-da-Índia e a canela.",
+        "Adicionar o tomate pelado picado, as lentilhas lavadas, 1,5 litro de água e sal, tapar e deixar estufar 45 minutos.",
+        "Juntar o grão-de-bico escorrido, os coentros frescos e a salsa picados, depois cozinhar mais 10 minutos.",
+        "Dissolver o amido de milho num pouco de água fria, juntar mexendo e deixar engrossar 2 minutos.",
+        "Servir bem quente com um fio de sumo de limão."
+      ]
+    },
+    "loubia-haricots-blancs-tomate": {
+      "title": "Feijão branco de conserva guisado com tomate",
+      "steps": [
+        "Refogar a cebola picada e o alho (dente) esmagado no azeite.",
+        "Adicionar o pimentão doce, os cominhos, a malagueta, o tomate pelado picado, 20 cl de água e sal, depois cozinhar 10 minutos.",
+        "Juntar o feijão branco de conserva escorrido e passado por água e cozinhar mais 10 minutos em lume brando.",
+        "Polvilhar com salsa picada e servir."
+      ]
+    },
+    "tajine-boeuf-abricots-amandes": {
+      "title": "Tajine de vaca com alperces secos e amêndoas",
+      "steps": [
+        "Dourar a carne de vaca para estufar em cubos grandes no azeite com a cebola picada, o gengibre fresco ralado e a canela.",
+        "Cobrir com água até cobrir a carne, temperar com sal, tapar e deixar estufar 1 hora 30.",
+        "Adicionar os alperces secos e o mel, depois cozinhar mais 20 minutos destapado.",
+        "Torrar as amêndoas laminadas numa frigideira sem gordura.",
+        "Hidratar a sêmola com o mesmo volume de água a ferver com sal, depois servir o tajine polvilhado com as amêndoas."
+      ]
+    },
+    "pastilla-poulet-amandes": {
+      "title": "Pastilla de peito de frango e amêndoas",
+      "steps": [
+        "Cozinhar o peito de frango com a cebola picada, o gengibre fresco, o açafrão-da-Índia, o sal e 30 cl de água durante 20 minutos, depois desfiar a carne.",
+        "Deixar reduzir o molho da cozedura, cozinhar aí os ovos batidos mexendo como ovos mexidos, depois juntar o frango e os coentros frescos picados.",
+        "Torrar as amêndoas moídas numa frigideira sem gordura, depois misturar com o açúcar e a canela, reservando 1 colher desta mistura.",
+        "Pré-aquecer o forno a 180 °C, derreter a manteiga e forrar uma forma redonda com 6 folhas de brick pinceladas com manteiga, deixando-as sobressair.",
+        "Distribuir a mistura de amêndoas, depois o recheio, dobrar as folhas, cobrir com as 2 últimas folhas pinceladas com manteiga.",
+        "Levar ao forno durante 25 minutos até a pastilla ficar dourada e polvilhar com a mistura reservada."
+      ]
+    },
+    "colin-chermoula-pommes-de-terre": {
+      "title": "Filete de pescada com chermoula e batatas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e triturar os coentros frescos, o alho, o pimentão doce, os cominhos, o sumo do limão, o azeite e o sal.",
+        "Misturar as batatas cortadas em rodelas finas com metade desta chermoula num tabuleiro e levar ao forno durante 25 minutos.",
+        "Dispor os tomates em quartos e o peixe, regar com o resto da chermoula.",
+        "Levar ao forno durante 15 minutos, até o peixe se desfazer facilmente."
+      ]
+    },
+    "mujaddara-lentilles-riz-oignons": {
+      "title": "Mujaddara, lentilhas e arroz com cebola caramelizada",
+      "steps": [
+        "Cozinhar as lentilhas lavadas durante 15 minutos em 80 cl de água.",
+        "Dourar lentamente a cebola picada no azeite em lume médio durante 20 minutos, até ficar bem castanha.",
+        "Juntar o arroz, os cominhos, o sal e a pimenta às lentilhas e à sua água, acrescentando água até cobrir se necessário, tapar e cozinhar durante 15 minutos em lume brando.",
+        "Deixar repousar tapado e servir coberto com a cebola."
+      ]
+    },
+    "chich-taouk-poulet-riz": {
+      "title": "Chich taouk, peito de frango marinado à libanesa e arroz",
+      "steps": [
+        "Misturar o iogurte natural, o sumo do limão, o alho esmagado, o concentrado de tomate, o pimentão doce, 1 colher de azeite e o sal.",
+        "Cortar o peito de frango em cubos, envolver nesta marinada e deixar 30 minutos no frio.",
+        "Cozinhar o arroz.",
+        "Saltear o frango no restante azeite em lume forte durante 10 minutos, virando, até ficar bem cozinhado e dourado.",
+        "Servir com o arroz."
+      ]
+    },
+    "colin-sauce-tahini-riz": {
+      "title": "Filete de pescada no forno, molho tahini de limão e arroz",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e cozinhar o arroz.",
+        "Colocar o peixe num tabuleiro, regar com azeite, salpicar com sal e cominhos e levar ao forno durante 15 minutos.",
+        "Misturar o tahini, o sumo dos limões, o alho esmagado e 10 cl de água até obter um molho liso.",
+        "Cobrir o peixe com o molho, levar ao forno mais 5 minutos e polvilhar com salsa picada.",
+        "Servir com o arroz."
+      ]
+    },
+    "maghmour-aubergines-pois-chiches": {
+      "title": "Maghmour, beringela e grão-de-bico com tomate",
+      "steps": [
+        "Pré-aquecer o forno a 220 °C, cortar as beringelas em cubos, misturar com 3 colheres de azeite e levar ao forno durante 25 minutos.",
+        "Refogar a cebola picada e o alho esmagado no restante azeite com os cominhos e a malagueta.",
+        "Juntar o tomate, o grão-de-bico escorrido, as beringelas e o sal, depois deixar cozinhar em lume brando durante 20 minutos.",
+        "Polvilhar com hortelã picada e servir quente ou morno."
+      ]
+    },
+    "palak-tofu-epinards-riz": {
+      "title": "Palak de tofu, espinafres com especiarias e arroz",
+      "steps": [
+        "Cozinhar o arroz e dourar o tofu firme em cubos em 1 colher de azeite, depois reservar.",
+        "Refogar a cebola picada, o alho e o gengibre fresco ralado no restante azeite com as especiarias.",
+        "Juntar os espinafres congelados e o sal e cozinhar durante 10 minutos.",
+        "Triturar com o leite de coco, juntar o tofu e aquecer mais 5 minutos antes de servir com o arroz."
+      ]
+    },
+    "aloo-gobi-chou-fleur-pommes-de-terre": {
+      "title": "Aloo gobi, couve-flor e batata com especiarias",
+      "steps": [
+        "Refogar a cebola picada no azeite com os cominhos, depois juntar o alho e o gengibre fresco ralado.",
+        "Adicionar o açafrão-da-Índia, o garam masala, as batatas em cubos e a couve-flor em raminhos.",
+        "Juntar o tomate em cubos, o sal e 15 cl de água, tapar e cozinhar durante 25 minutos em lume brando.",
+        "Polvilhar com coentros frescos picados e servir."
+      ]
+    },
+    "biryani-poulet-epices": {
+      "title": "Biryani de peito de frango com especiarias",
+      "steps": [
+        "Misturar o peito de frango em pedaços com o iogurte natural, o alho esmagado, o gengibre fresco ralado, as especiarias e metade do sal, depois deixar 20 minutos no frio.",
+        "Dourar a cebola picada no azeite, reservar metade, depois saltear o frango na frigideira durante 10 minutos.",
+        "Cozinhar o arroz durante 6 minutos numa panela grande com água salgada e escorrer, deve ficar firme.",
+        "Espalhar o arroz sobre o frango com as uvas passas, os coentros frescos e a hortelã picados e 10 cl de água.",
+        "Tapar bem e cozinhar em lume muito brando durante 20 minutos, depois servir com a cebola reservada."
+      ]
+    },
+    "poulet-korma-amandes": {
+      "title": "Peito de frango korma com amêndoas",
+      "steps": [
+        "Cozinhar o arroz e refogar a cebola picada no azeite com o alho e o gengibre fresco ralado.",
+        "Adicionar o peito de frango em pedaços e as especiarias, depois dourar durante 5 minutos.",
+        "Juntar as amêndoas moídas, 20 cl de água e o sal, depois deixar cozinhar em lume brando durante 15 minutos.",
+        "Fora do lume, incorporar o iogurte natural e as natas líquidas, aquecer suavemente sem ferver e servir com o arroz."
+      ]
+    },
+    "keema-boeuf-petits-pois": {
+      "title": "Keema, carne de vaca picada com ervilhas e especiarias",
+      "steps": [
+        "Cozinhar o arroz e refogar a cebola picada no azeite com o alho e o gengibre fresco ralado.",
+        "Adicionar a carne de vaca picada e as especiarias e cozinhar até a carne ficar bem dourada.",
+        "Juntar o tomate e o sal e deixar cozinhar durante 10 minutos.",
+        "Adicionar as ervilhas congeladas, cozinhar mais 5 minutos e servir com o arroz."
+      ]
+    },
+    "crevettes-masala-tomate-riz": {
+      "title": "Camarões masala com tomate e arroz",
+      "steps": [
+        "Cozinhar o arroz e descongelar os camarões descascados, depois escorrer bem.",
+        "Refogar a cebola picada no azeite com o alho, o gengibre fresco ralado e as especiarias.",
+        "Juntar o tomate, o leite de coco e o sal, depois deixar cozinhar durante 10 minutos.",
+        "Adicionar os camarões, cozinhar 5 minutos, polvilhar com coentros frescos picados e servir com o arroz."
+      ]
+    },
+    "pad-thai-crevettes": {
+      "title": "Pad thai de camarões",
+      "steps": [
+        "Demolhar a massa de arroz em água quente conforme indicado na embalagem e escorrer.",
+        "Misturar o tamari, o nuoc-mâm, o açúcar e o sumo de uma lima.",
+        "Saltear os camarões descascados e o alho (dente) esmagado no óleo a lume forte, empurrar para o lado e mexer os ovos.",
+        "Adicionar a massa de arroz e o molho, misturar durante 3 minutos, depois juntar os germes de feijão mungo e o cebolinho fatiado.",
+        "Servir com amendoins picados e a outra lima em quartos."
+      ]
+    },
+    "bibimbap-boeuf-legumes": {
+      "title": "Bibimbap de vaca e legumes",
+      "steps": [
+        "Cozinhar o arroz e cortar o rumsteak de vaca em tiras finas, depois misturar com o molho de soja, o açúcar e o alho (dente) esmagado.",
+        "Saltear separadamente em um pouco de óleo de sésamo as cenouras em palitos, os cogumelos de Paris fatiados e depois o espinafre fresco.",
+        "Saltear a carne de vaca durante 2 minutos a lume forte.",
+        "Estrelar os ovos.",
+        "Distribuir o arroz nas tigelas, dispor os legumes, a carne e o ovo, depois polvilhar com sementes de sésamo e malagueta."
+      ]
+    },
+    "porc-caramel-vietnamien-oeufs": {
+      "title": "Porco caramelizado vietnamita com ovos",
+      "steps": [
+        "Cozinhar os ovos durante 9 minutos, descascar e cozinhar o arroz.",
+        "Derreter o açúcar a seco numa panela até obter um caramelo dourado, depois deitar cuidadosamente 30 cl de água quente.",
+        "Dourar o lombo de porco em cubos no óleo com a chalota fatiada e o alho (dente) esmagado, depois juntar o caramelo e o nuoc-mâm.",
+        "Deixar cozinhar em lume brando, destapado, durante 25 minutos, juntar os ovos e cozinhar mais 5 minutos até o molho ficar xaroposo.",
+        "Temperar com pimenta e servir com o arroz."
+      ]
+    },
+    "poulet-gong-bao-cacahuetes": {
+      "title": "Frango gong bao com amendoins",
+      "steps": [
+        "Cozinhar o arroz e envolver o peito de frango em cubos com o amido de milho e 1 colher de molho de soja.",
+        "Misturar o restante molho de soja, o vinagre, o açúcar e 5 cl de água.",
+        "Saltear o frango a lume forte no óleo durante 5 minutos e reservar.",
+        "Saltear o pimento em cubos, o alho, o gengibre fresco ralado e a malagueta durante 3 minutos.",
+        "Juntar o frango, adicionar o molho, os amendoins e o cebolinho fatiado, depois servir com o arroz."
+      ]
+    },
+    "mapo-tofu-boeuf": {
+      "title": "Mapo tofu com carne de vaca",
+      "steps": [
+        "Cozinhar o arroz e cortar o tofu firme em cubos.",
+        "Dourar a carne de vaca picada no óleo com o alho (dente) esmagado, o gengibre fresco ralado e a malagueta.",
+        "Adicionar o molho de soja e 25 cl de água, depois o tofu, e deixar ferver suavemente durante 5 minutos.",
+        "Dissolver o amido de milho em um pouco de água fria, verter mexendo suavemente e polvilhar com cebolinho fatiado antes de servir com o arroz."
+      ]
+    },
+    "riz-saute-ananas-crevettes": {
+      "title": "Arroz frito tailandês com ananás e camarões",
+      "steps": [
+        "Cozinhar o arroz, espalhar num tabuleiro e deixar arrefecer.",
+        "Saltear os camarões descascados no óleo a lume forte, empurrar para o lado e mexer os ovos.",
+        "Adicionar o arroz, o caril, o tamari e o nuoc-mâm e saltear durante 5 minutos.",
+        "Juntar o ananás em pedaços pequenos, as ervilhas congeladas e o cebolinho fatiado, cozinhar mais 3 minutos e servir de imediato."
+      ]
+    },
+    "okonomiyaki-chou": {
+      "title": "Okonomiyaki, panqueca japonesa de repolho",
+      "steps": [
+        "Fatiar muito finamente o repolho branco e o cebolinho.",
+        "Bater a farinha, os ovos e 12 cl de água, depois juntar o repolho e o cebolinho.",
+        "Cozinhar 2 panquecas grandes no óleo a lume médio, 6 minutos de cada lado, tapadas.",
+        "Regar com molho de soja, polvilhar com sementes de sésamo e servir de imediato."
+      ]
+    },
+    "rendang-boeuf-coco": {
+      "title": "Rendang de vaca com leite de coco",
+      "steps": [
+        "Triturar a cebola, o alho (dente), o gengibre fresco, o açafrão-da-Índia, a malagueta e a canela até obter uma pasta.",
+        "Refogar esta pasta durante 5 minutos no óleo, depois dourar a carne de vaca para estufar em cubos.",
+        "Torrar o coco ralado a seco, depois juntar com o leite de coco, 20 cl de água e o sal.",
+        "Deixar cozinhar em lume brando, destapado, durante 2 horas, mexendo de vez em quando, até o molho estar quase absorvido.",
+        "Regar com sumo de lima e servir com o arroz."
+      ]
+    },
+    "saute-boeuf-brocoli": {
+      "title": "Salteado de vaca com brócolo",
+      "steps": [
+        "Cozinhar o arroz e escaldar o brócolo em raminhos durante 3 minutos em água a ferver.",
+        "Cortar o rumsteak de vaca em tiras finas e envolver com o amido de milho e 1 colher de molho de soja.",
+        "Saltear a carne de vaca durante 2 minutos a lume forte no óleo com o alho (dente) e o gengibre fresco ralado.",
+        "Adicionar o brócolo, o restante molho de soja, o açúcar e 5 cl de água, misturar durante 2 minutos e servir com o arroz."
+      ]
+    },
+    "tinga-poulet-tostadas": {
+      "title": "Tinga de frango em tostadas",
+      "steps": [
+        "Cozer o peito de frango durante 15 minutos em água fervente com sal e desfiar.",
+        "Pré-aquecer o forno a 200 °C e levar as tortilhas ao forno durante 6 minutos até ficarem crocantes.",
+        "Refogar a cebola fatiada e o alho (dente) no azeite, juntar o pimentão doce, a malagueta e o tomate, depois cozinhar durante 10 minutos.",
+        "Adicionar o frango e misturar durante 3 minutos.",
+        "Rechear as tostadas com a tinga, fatias de abacate e um pouco de natas espessas."
+      ]
+    },
+    "enchiladas-haricots-rouges-four": {
+      "title": "Enchiladas gratinadas com feijão encarnado",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e refogar a cebola fatiada e o alho (dente) no azeite com os cominhos e o pimentão doce.",
+        "Adicionar o tomate e o sal, cozinhar durante 10 minutos, depois misturar um terço deste molho com o feijão encarnado e o milho enlatado escorrido.",
+        "Rechear e enrolar as tortilhas, depois dispor num tabuleiro.",
+        "Cobrir com o restante molho, polvilhar com queijo ralado e levar ao forno durante 20 minutos."
+      ]
+    },
+    "bol-burrito-riz-haricots-avocat": {
+      "title": "Burrito bowl com arroz, feijão e abacate",
+      "steps": [
+        "Cozinhar o arroz e temperar com o sumo de uma lima e coentros frescos picados.",
+        "Refogar a cebola picada no azeite, juntar os cominhos, o feijão encarnado escorrido e 5 cl de água, depois aquecer durante 5 minutos.",
+        "Cortar o tomate e o abacate em cubos e regar com o sumo da outra lima.",
+        "Distribuir o arroz nas tigelas com o feijão, o milho enlatado escorrido, o tomate e o abacate, temperar com sal e servir."
+      ]
+    },
+    "arroz-rojo-poulet": {
+      "title": "Arroz vermelho com perna de frango",
+      "steps": [
+        "Dourar a perna de frango no óleo numa panela, depois reservar.",
+        "Refogar a cebola picada, o alho e o arroz durante 3 minutos na mesma panela.",
+        "Adicionar o tomate pelado picado, as especiarias, o sal, a cenoura em cubos pequenos, 50 cl de água e a perna de frango.",
+        "Tapar e cozinhar 25 minutos em lume brando, juntando um pouco de água se necessário.",
+        "Adicionar as ervilhas congeladas, cozinhar mais 5 minutos e servir."
+      ]
+    },
+    "pasta-alla-norma-aubergines-ricotta": {
+      "title": "Massa alla norma, beringela e ricotta",
+      "steps": [
+        "Cortar a beringela em cubos e dourar durante 15 minutos em 3 colheres de azeite.",
+        "Refogar o alho no restante azeite, adicionar o tomate pelado picado e o sal, depois deixar cozinhar em lume brando durante 15 minutos.",
+        "Cozinhar a massa e juntar a beringela ao molho.",
+        "Envolver a massa com o molho e servir com a ricotta esfarelada e o manjericão."
+      ]
+    },
+    "pasta-e-fagioli-haricots-blancs": {
+      "title": "Pasta e fagioli com feijão branco de conserva",
+      "steps": [
+        "Refogar a cebola e a cenoura em cubos pequenos no azeite com o alho esmagado.",
+        "Adicionar o tomate pelado picado, os orégãos, o sal e 1 litro de água, depois cozinhar 10 minutos.",
+        "Juntar o feijão branco de conserva escorrido e a massa e cozinhar o tempo indicado na embalagem, mexendo frequentemente.",
+        "Deixar repousar 2 minutos e servir bem quente."
+      ]
+    },
+    "polenta-champignons-tomate": {
+      "title": "Polenta cremosa com cogumelo de Paris e tomate",
+      "steps": [
+        "Refogar a cebola picada em 2 colheres de azeite, depois adicionar o cogumelo de Paris laminado e o alho e cozinhar 8 minutos.",
+        "Adicionar o tomate pelado picado, os orégãos e metade do sal, depois deixar cozinhar em lume brando durante 10 minutos.",
+        "Levar 1,2 litro de água ao lume com o restante sal, deitar a polenta em chuva e cozinhar, mexendo, o tempo indicado na embalagem.",
+        "Envolver o restante azeite e servir a polenta coberta com o molho."
+      ]
+    },
+    "piccata-dinde-citron-pates": {
+      "title": "Piccata de bife de peru com limão e massa",
+      "steps": [
+        "Cozinhar a massa e passar ligeiramente os bifes de peru salgados por farinha.",
+        "Dourar os bifes de peru 4 minutos de cada lado no azeite e metade da manteiga, depois reservar.",
+        "Deitar na frigideira o sumo dos limões e 10 cl de água, raspar os sucos, depois adicionar o resto da manteiga.",
+        "Voltar a colocar os bifes de peru 1 minuto no molho, polvilhar com salsa picada e servir com a massa."
+      ]
+    },
+    "penne-arrabbiata": {
+      "title": "Penne all'arrabbiata",
+      "steps": [
+        "Aquecer suavemente o azeite com o alho picado e a malagueta.",
+        "Adicionar o tomate pelado picado e o sal e deixar cozinhar em lume brando durante 12 minutos.",
+        "Cozinhar a massa, escorrer e envolver no molho.",
+        "Polvilhar com salsa picada e servir."
+      ]
+    },
+    "mafe-boeuf-cacahuete": {
+      "title": "Mafé de carne de vaca para estufar com manteiga de amendoim",
+      "steps": [
+        "Dourar a carne de vaca para estufar em cubos no óleo com a cebola picada.",
+        "Adicionar o tomate pelado picado, o concentrado de tomate, a malagueta, o sal e 50 cl de água, depois deixar cozinhar em lume brando durante 45 minutos.",
+        "Dissolver a manteiga de amendoim num pouco de molho, juntar com a cenoura e a batata-doce em pedaços grandes.",
+        "Deixar cozinhar em lume brando durante 30 minutos, mexendo para evitar que o molho agarre.",
+        "Cozinhar o arroz e servir com o mafé."
+      ]
+    },
+    "thieboudienne-cabillaud-riz": {
+      "title": "Thieboudienne com lombo de bacalhau fresco e arroz de tomate",
+      "steps": [
+        "Triturar a salsa, o alho, a malagueta e metade do sal, depois esfregar o peixe em pedaços com esta mistura.",
+        "Refogar a cebola picada no óleo, adicionar o concentrado de tomate e cozinhar 5 minutos, mexendo.",
+        "Juntar 1 litro de água, adicionar a cenoura, o repolho branco e a beringela em pedaços grandes e o restante sal, depois cozinhar 20 minutos.",
+        "Adicionar o peixe, cozinhar 10 minutos, depois reservar o peixe e os legumes quentes.",
+        "Adicionar o arroz lavado ao caldo, tapar e cozinhar 20 minutos em lume brando.",
+        "Servir o arroz com o peixe, os legumes e o limão em quartos."
+      ]
+    },
+    "misir-wat-lentilles-corail": {
+      "title": "Misir wat, lentilhas cor-de-rosa à etíope",
+      "steps": [
+        "Refogar a cebola picada durante 10 minutos no óleo, depois adicionar o alho e o gengibre fresco ralado.",
+        "Adicionar o pimentão doce, a malagueta, o açafrão-da-Índia e o concentrado de tomate e mexer durante 2 minutos.",
+        "Adicionar as lentilhas cor-de-rosa lavadas, 80 cl de água e o sal, depois deixar cozinhar em lume brando durante 20 minutos, mexendo.",
+        "Cozinhar o arroz e servir com as lentilhas."
+      ]
+    },
+    "jollof-riz-poulet": {
+      "title": "Jollof, arroz de tomate e perna de frango",
+      "steps": [
+        "Dourar a perna de frango no óleo numa panela, depois reservar.",
+        "Triturar o tomate pelado picado, o pimento, a cebola, o alho e o gengibre fresco.",
+        "Deitar esta mistura na panela com o concentrado de tomate, o caril, a malagueta e o sal, depois cozinhar 10 minutos.",
+        "Adicionar o arroz lavado, a perna de frango e 40 cl de água, tapar e cozinhar 25 minutos em lume brando, mexendo uma vez.",
+        "Deixar repousar 5 minutos tapado e servir."
+      ]
+    },
+    "bricks-thon-oeuf-persil": {
+      "title": "Bricks de atum em conserva e ovo",
+      "steps": [
+        "Misturar o atum em conserva escorrido e a salsa picada, depois temperar com sal.",
+        "Distribuir esta mistura no centro de cada folha de brick, formando uma cavidade, e aí partir um ovo.",
+        "Dobrar a folha em triângulo sem partir o ovo.",
+        "Dourar em óleo quente, 2 minutos de cada lado, depois escorrer sobre papel absorvente.",
+        "Servir de imediato com o limão em quartos."
+      ]
+    },
+    "salade-mechouia-poivrons-tomates": {
+      "title": "Salada méchouia, pimentos e tomate grelhados",
+      "steps": [
+        "Pré-aquecer o forno a 230 °C e levar ao forno os pimentos e os tomates inteiros durante 35 minutos, virando-os.",
+        "Deixar arrefecer tapado, depois pelar e retirar as sementes.",
+        "Picar os legumes com uma faca juntamente com o alho.",
+        "Temperar com cominhos, o sumo do limão, azeite e sal, depois decorar com azeitonas e servir fresco."
+      ]
+    },
+    "zaalouk-aubergines-tomates": {
+      "title": "Zaalouk, caviar de beringela com tomate",
+      "steps": [
+        "Cortar a beringela em cubos pequenos e o tomate em pedaços.",
+        "Refogar o alho no azeite com as especiarias.",
+        "Juntar a beringela, o tomate e o sal, tapar e cozinhar 25 minutos em lume médio, mexendo.",
+        "Esmagar com um garfo, juntar os coentros frescos picados e o sumo de limão, depois servir morno ou frio."
+      ]
+    },
+    "carottes-cumin-citron-marocaines": {
+      "title": "Cenouras marroquinas com cominhos e limão",
+      "steps": [
+        "Cozinhar as cenouras em rodelas 10 minutos em água com sal, devem ficar firmes, depois escorrer.",
+        "Misturar o alho esmagado, as especiarias, o sumo de limão e o azeite.",
+        "Deitar sobre as cenouras, juntar a salsa picada e servir fresco."
+      ]
+    },
+    "fattouch-pita-grillee": {
+      "title": "Fattouch, salada libanesa com pão pita tostado",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C, cortar o pão pita em pedaços e levar ao forno 8 minutos até ficar crocante.",
+        "Cortar o tomate, o pepino e o rabanete, picar a alface e as ervas.",
+        "Misturar o sumo de limão, o azeite e o sal.",
+        "Misturar tudo no último momento com os pedaços de pita e servir."
+      ]
+    },
+    "mouhammara-poivrons-noix": {
+      "title": "Mouhammara, pasta de pimento com nozes",
+      "steps": [
+        "Pré-aquecer o forno a 230 °C e levar os pimentos inteiros ao forno 30 minutos, depois pelar e retirar as sementes.",
+        "Triturar os pimentos com as nozes, o pão ralado, o concentrado de tomate, o alho, os cominhos, a malagueta e o sal.",
+        "Adicionar o sumo de limão e o azeite, triturar novamente e servir fresco."
+      ]
+    },
+    "baba-ghanouj-aubergines-tahini": {
+      "title": "Baba ghanouj, beringela fumada com tahini",
+      "steps": [
+        "Pré-aquecer o forno a 220 °C, picar as beringelas e levá-las inteiras ao forno 40 minutos.",
+        "Retirar a polpa e deixar escorrer num passador.",
+        "Esmagar a polpa com o tahini, o sumo de limão, o alho esmagado, os cominhos e o sal.",
+        "Regar com azeite, polvilhar com salsa picada e servir fresco."
+      ]
+    },
+    "samoussas-legumes-four": {
+      "title": "Chamuças de legumes no forno",
+      "steps": [
+        "Cozinhar as batatas em cubos pequenos 10 minutos em água com sal, depois escorrer.",
+        "Refogar a cebola picada em 1 colher de azeite com o garam masala, depois juntar as batatas, as ervilhas congeladas e os coentros frescos picados.",
+        "Pré-aquecer o forno a 200 °C e cortar cada folha ao meio.",
+        "Dobrar cada meia folha em triângulo à volta de uma colher de recheio, colocar num tabuleiro e pincelar com o resto do azeite.",
+        "Levar ao forno 15 minutos, até as chamuças ficarem douradas."
+      ]
+    },
+    "bhajis-oignons-pois-chiches": {
+      "title": "Bhajis de cebola com farinha de grão-de-bico",
+      "steps": [
+        "Cortar finamente a cebola e picar os coentros frescos.",
+        "Misturar a farinha, as especiarias, o sal e cerca de 12 cl de água até obter uma massa espessa, depois juntar a cebola e os coentros.",
+        "Colocar colheradas em óleo quente e achatar ligeiramente.",
+        "Cozinhar 3 minutos de cada lado, escorrer sobre papel absorvente e servir quente."
+      ]
+    },
+    "rouleaux-printemps-crevettes": {
+      "title": "Rolinhos primavera com camarão",
+      "steps": [
+        "Cozinhar os camarões 3 minutos em água a ferver, depois escorrer, e demolhar a massa de arroz conforme a embalagem.",
+        "Ralar as cenouras e picar a alface.",
+        "Demolhar uma folha de arroz alguns segundos em água morna e colocar sobre um pano húmido.",
+        "Rechear com alface, massa de arroz, cenoura, ervas e camarão, depois enrolar apertando e dobrando as pontas.",
+        "Misturar o nuoc-mâm, o sumo da lima, o açúcar e 3 colheres de água e servir como molho."
+      ]
+    },
+    "salade-mangue-crevettes-citron-vert": {
+      "title": "Salada de manga e camarão com lima",
+      "steps": [
+        "Saltear os camarões 3 minutos no azeite, depois deixar arrefecer.",
+        "Cortar a manga e o pepino em cubos.",
+        "Misturar o sumo das limas, o nuoc-mâm e a malagueta.",
+        "Misturar tudo com os coentros frescos picados e servir fresco."
+      ]
+    },
+    "soupe-coco-poulet-citron-vert": {
+      "title": "Sopa tailandesa de frango, coco e lima",
+      "steps": [
+        "Levar o leite de coco a ferver suavemente com 50 cl de água, o gengibre fresco em fatias e a malagueta.",
+        "Juntar o peito de frango em fatias finas e os cogumelos de Paris laminados, depois cozinhar 10 minutos.",
+        "Adicionar o nuoc-mâm, o açúcar e o sumo das limas.",
+        "Polvilhar com coentros frescos picados e servir."
+      ]
+    },
+    "guacamole-chips-tortilla": {
+      "title": "Guacamole e chips de tortilha",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C, cortar as tortilhas em triângulos, pincelar com azeite e levar ao forno 8 minutos.",
+        "Esmagar o abacate com um garfo com o sumo da lima e o sal.",
+        "Adicionar o tomate em cubos pequenos, a cebola picada fina e os coentros frescos picados.",
+        "Servir de imediato com os chips."
+      ]
+    },
+    "esquites-mais-citron-vert": {
+      "title": "Esquites, milho salteado com lima",
+      "steps": [
+        "Dourar o milho enlatado escorrido na manteiga 6 minutos em lume forte.",
+        "Fora do lume, juntar as natas espessas, o sumo da lima, o pimentão doce e o sal.",
+        "Distribuir por taças, esfarelar a feta e polvilhar com coentros frescos picados."
+      ]
+    },
+    "caponata-aubergines-olives": {
+      "title": "Caponata siciliana de beringela e azeitonas",
+      "steps": [
+        "Dourar a beringela em cubos em 3 colheres de azeite durante 15 minutos, depois reservar.",
+        "Refogar a cebola picada no restante azeite, adicionar o tomate pelado picado e o sal e cozinhar 10 minutos.",
+        "Adicionar a beringela, as azeitonas, o açúcar e o vinagre e cozinhar mais 10 minutos.",
+        "Deixar arrefecer, juntar o manjericão e servir à temperatura ambiente."
+      ]
+    },
+    "panzanella-tomates-pain": {
+      "title": "Panzanella, salada toscana de tomate e pão",
+      "steps": [
+        "Cortar a baguete do dia anterior em cubos.",
+        "Cortar o tomate e o pepino em pedaços e a cebola em fatias finas, depois misturar com o sal.",
+        "Adicionar o pão, o vinagre e o azeite, misturar e deixar repousar 10 minutos para o pão absorver.",
+        "Adicionar o manjericão e servir."
+      ]
+    },
+    "minestrone-legumes-haricots": {
+      "title": "Minestrone de legumes e feijão branco",
+      "steps": [
+        "Refogar a cebola e o alho picados no azeite.",
+        "Adicionar a cenoura e a batata em cubos, o tomate pelado picado, o sal e 1,2 litro de água, depois cozinhar 15 minutos.",
+        "Adicionar a curgete em cubos, o feijão-verde em pedaços e o feijão branco de conserva escorrido, depois cozinhar mais 15 minutos.",
+        "Adicionar o manjericão picado e servir."
+      ]
+    },
+    "salade-concombre-sesame": {
+      "title": "Salada de pepino com sésamo",
+      "steps": [
+        "Esmagar ligeiramente os pepinos, depois cortar em pedaços irregulares.",
+        "Misturar o tamari, o vinagre, o óleo de sésamo, o açúcar, o alho esmagado e a malagueta.",
+        "Misturar com os pepinos, polvilhar com sementes de sésamo e servir fresco."
+      ]
+    },
+    "kachumbari-tomates-oignon": {
+      "title": "Kachumbari, salada da África Oriental de tomate e cebola",
+      "steps": [
+        "Cortar a cebola muito finamente e deixar 5 minutos no sumo das limas com o sal.",
+        "Cortar o tomate e o pepino em pequenos cubos.",
+        "Misturar tudo com os coentros frescos picados e a malagueta, depois servir fresco."
+      ]
+    },
+    "soupe-arachide-patate-douce": {
+      "title": "Sopa oeste-africana de amendoim e batata-doce",
+      "steps": [
+        "Refogar a cebola picada no azeite com o alho e o gengibre fresco ralado.",
+        "Adicionar a batata-doce em cubos, o tomate pelado picado, a malagueta, o sal e 1 litro de água, depois cozinhar 20 minutos.",
+        "Adicionar a manteiga de amendoim e triturar até obter um creme liso.",
+        "Aquecer mais 2 minutos a mexer e servir."
+      ]
+    },
+    "mouhalabieh-fleur-oranger-pistache": {
+      "title": "Mouhalabieh com água de flor de laranjeira e pistácios",
+      "steps": [
+        "Dissolver o amido de milho em 10 cl de leite frio.",
+        "Levar o restante leite ao lume até levantar fervura com o açúcar, juntar o amido e mexer 3 minutos até engrossar.",
+        "Fora do lume, adicionar a água de flor de laranjeira e distribuir por taças.",
+        "Deixar solidificar 2 horas no frio e polvilhar com pistácios descascados picados."
+      ]
+    },
+    "salade-oranges-cannelle": {
+      "title": "Salada de laranja com canela",
+      "steps": [
+        "Descascar as laranjas e cortar em rodelas finas.",
+        "Dispor num prato e regar com água de flor de laranjeira.",
+        "Polvilhar com açúcar e canela, depois juntar hortelã picada e servir fresco."
+      ]
+    },
+    "ghribas-noix-de-coco": {
+      "title": "Ghribas de coco ralado",
+      "steps": [
+        "Pré-aquecer o forno a 170 °C.",
+        "Misturar o coco ralado, a sêmola, o açúcar, o açúcar baunilhado, o fermento em pó e os ovos, depois deixar repousar 10 minutos.",
+        "Formar bolas, colocar num tabuleiro forrado com papel vegetal e achatar ligeiramente.",
+        "Levar ao forno 15 minutos até ficarem ligeiramente douradas e deixar arrefecer no tabuleiro."
+      ]
+    },
+    "baklava-noix-miel": {
+      "title": "Baklava de nozes e mel",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C, triturar grosseiramente as nozes com o açúcar e a canela, e derreter a manteiga.",
+        "Cortar as folhas de brick ao tamanho de um pequeno tabuleiro, depois alternar folhas pinceladas com manteiga e nozes, terminando com uma folha.",
+        "Cortar em losangos e levar ao forno 25 minutos até dourar por cima.",
+        "Aquecer o mel com o sumo do limão e 5 cl de água, depois verter sobre o baklava quente.",
+        "Deixar repousar várias horas antes de servir."
+      ]
+    },
+    "gajar-halwa-carottes-pistaches": {
+      "title": "Gajar halwa, doce indiano de cenoura",
+      "steps": [
+        "Ralar finamente as cenouras.",
+        "Cozinhar 25 minutos no leite, mexendo, até o leite ser absorvido.",
+        "Adicionar o açúcar, a manteiga, a canela e as uvas passas, depois cozinhar 8 minutos até a mistura se soltar do tacho.",
+        "Servir morno, polvilhado com pistácios descascados picados."
+      ]
+    },
+    "riz-coco-mangue": {
+      "title": "Arroz doce com leite de coco e manga",
+      "steps": [
+        "Lavar o arroz, depois cozinhar 20 minutos em lume brando com o leite de coco, 30 cl de água, o açúcar e o sal, mexendo frequentemente.",
+        "Deixar repousar 10 minutos tapado.",
+        "Cortar a manga em fatias e servir sobre o arroz morno."
+      ]
+    },
+    "che-bananes-coco": {
+      "title": "Chè, bananas com leite de coco à vietnamita",
+      "steps": [
+        "Levar o leite de coco a ferver suavemente com 20 cl de água e o açúcar.",
+        "Adicionar as bananas em rodelas e cozinhar durante 5 minutos.",
+        "Dissolver o amido de milho num pouco de água fria, verter mexendo e deixar engrossar 1 minuto.",
+        "Servir morno, polvilhado com sementes de sésamo."
+      ]
+    },
+    "churros-four-cannelle": {
+      "title": "Churros de forno com canela",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e levar a ferver 25 cl de água com a manteiga e o sal.",
+        "Fora do lume, juntar a farinha de uma só vez, mexer energicamente e depois secar 1 minuto em lume brando.",
+        "Incorporar os ovos um a um até obter uma massa lisa.",
+        "Formar bastões com um saco de pasteleiro sobre um tabuleiro forrado com papel vegetal e levar ao forno durante 22 minutos.",
+        "Enrolar os churros quentes no açúcar misturado com a canela e servir de imediato."
+      ]
+    },
+    "flan-caramel-oeufs": {
+      "title": "Flan de ovos com caramelo",
+      "steps": [
+        "Pré-aquecer o forno a 160 °C e derreter 80 g de açúcar a seco até obter um caramelo dourado, depois verter numa forma.",
+        "Aquecer ligeiramente o leite com o açúcar baunilhado.",
+        "Bater os ovos com o restante açúcar e depois juntar o leite mexendo.",
+        "Verter sobre o caramelo, colocar a forma num tabuleiro com água quente e levar ao forno durante 40 minutos.",
+        "Deixar arrefecer, guardar 3 horas no frio e desenformar."
+      ]
+    },
+    "panna-cotta-fruits-rouges-agar": {
+      "title": "Panna cotta com agar-agar e frutos vermelhos",
+      "steps": [
+        "Misturar as natas líquidas, o leite, 40 g de açúcar, o açúcar baunilhado e o agar-agar a frio.",
+        "Levar a ferver e deixar ferver 2 minutos mexendo.",
+        "Distribuir por copos, deixar arrefecer e depois guardar 2 horas no frio.",
+        "Cozinhar os frutos vermelhos 5 minutos com o restante açúcar, deixar arrefecer e cobrir as panna cottas."
+      ]
+    },
+    "tiramisu-cafe-classique": {
+      "title": "Tiramisu de café",
+      "steps": [
+        "Dissolver o café em 25 cl de água quente e deixar arrefecer.",
+        "Bater as gemas com o açúcar até a mistura ficar esbranquiçada e depois incorporar o mascarpone.",
+        "Bater as claras em castelo e envolver delicadamente.",
+        "Mergulhar rapidamente os biscoitos no café e alternar num prato com o creme.",
+        "Guardar 4 horas no frio e polvilhar com cacau antes de servir."
+      ]
+    },
+    "thiakry-semoule-yaourt": {
+      "title": "Thiakry, sêmola doce com iogurte",
+      "steps": [
+        "Verter sobre a sêmola 20 cl de água a ferver, tapar 5 minutos e soltar com um garfo.",
+        "Misturar os iogurtes, o leite, o açúcar, o açúcar baunilhado e a canela.",
+        "Adicionar a sêmola e as uvas passas, misturar e deixar 1 hora no frio.",
+        "Polvilhar com coco ralado e servir fresco."
+      ]
+    },
+    "ananas-gingembre-citron-vert": {
+      "title": "Ananás fresco com gengibre e lima",
+      "steps": [
+        "Descascar o ananás, retirar o centro e cortar a polpa em pedaços pequenos.",
+        "Misturar o gengibre ralado, a raspa e o sumo da lima e o açúcar.",
+        "Verter sobre o ananás, adicionar a hortelã picada e servir fresco."
+      ]
+    },
+    "gateau-cacao-vegan": {
+      "title": "Bolo de cacau vegan",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e untar uma forma.",
+        "Misturar a farinha, o cacau, o açúcar, o açúcar baunilhado, o fermento em pó e o sal.",
+        "Adicionar o óleo, o vinagre e 20 cl de água, depois bater apenas até obter uma massa lisa.",
+        "Verter na forma, levar ao forno durante 30 minutos e deixar arrefecer um pouco antes de desenformar."
+      ]
+    },
+    "shrikhand-yaourt-mangue": {
+      "title": "Shrikhand, iogurte escorrido com manga",
+      "steps": [
+        "Colocar os iogurtes num passador forrado com um pano limpo e deixar escorrer 3 horas no frio.",
+        "Misturar o iogurte escorrido com o açúcar e a canela.",
+        "Distribuir por taças, adicionar a manga em cubos e os pistácios picados."
+      ]
+    },
+    "baghrir-crepes-mille-trous": {
+      "title": "Baghrir, crepes marroquinas mil furos",
+      "steps": [
+        "Triturar a sêmola, a farinha, o açúcar, o sal, os dois fermentos e 45 cl de água morna durante 1 minuto.",
+        "Deixar a massa repousar 30 minutos à temperatura ambiente, até ficar com espuma.",
+        "Verter uma pequena concha numa frigideira antiaderente quente e cozinhar sem virar até a superfície secar e ficar coberta de furos.",
+        "Derreter a manteiga com o mel e regar os crepes."
+      ]
+    },
+    "foul-feves-citron-cumin": {
+      "title": "Foul, favas com limão e cominhos",
+      "steps": [
+        "Aquecer as favas escorridas durante 8 minutos com 10 cl de água.",
+        "Esmagar grosseiramente com o alho esmagado, os cominhos, o sal e o sumo de limão.",
+        "Servir regado com azeite, com o tomate em cubos e a salsa picada."
+      ]
+    },
+    "pita-zaatar-huile-olive": {
+      "title": "Pitas com zaatar e crudités",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e misturar o zaatar com o azeite.",
+        "Barrar as pitas com esta mistura e levar ao forno durante 6 minutos.",
+        "Servir quente com o tomate e o pepino em rodelas e a hortelã."
+      ]
+    },
+    "upma-semoule-legumes": {
+      "title": "Upma, sêmola salgada com legumes",
+      "steps": [
+        "Torrar a sêmola a seco durante 3 minutos numa frigideira e reservar.",
+        "Refogar em óleo os cominhos, a cebola picada, a cenoura em pequenos cubos e o gengibre fresco ralado.",
+        "Juntar as ervilhas congeladas, o açafrão-da-Índia, o sal e 55 cl de água, depois levar a ferver.",
+        "Adicionar a sêmola em chuva, mexer durante 2 minutos, tapar fora do lume durante 3 minutos e regar com sumo de limão."
+      ]
+    },
+    "omelette-masala-tomate": {
+      "title": "Omelete masala com tomate",
+      "steps": [
+        "Bater os ovos com o sal e as especiarias.",
+        "Juntar a cebola picada, o tomate em pequenos cubos e os coentros frescos picados.",
+        "Cozinhar em óleo em lume médio em duas vezes, dobrando a omelete enquanto ainda estiver cremosa."
+      ]
+    },
+    "congee-riz-poulet-gingembre": {
+      "title": "Congee, papa de arroz com frango e gengibre",
+      "steps": [
+        "Levar o arroz lavado a ferver com 2 litros de água, o gengibre fresco em lâminas, o sal e o peito de frango inteiro.",
+        "Deixar ferver suavemente durante 15 minutos, retirar o frango e desfiar.",
+        "Continuar a cozedura do arroz durante 35 minutos em lume brando, mexendo, até obter uma papa.",
+        "Juntar novamente o frango e servir com tamari, óleo de sésamo e cebolinho fatiado."
+      ]
+    },
+    "tamagoyaki-omelette-roulee": {
+      "title": "Tamagoyaki, omelete japonesa enrolada",
+      "steps": [
+        "Bater os ovos com o açúcar, o tamari e o cebolinho fatiado.",
+        "Deitar uma camada fina numa frigideira untada com óleo em lume médio, depois enrolar a omelete para um dos lados quando estiver firme.",
+        "Deitar uma nova camada por baixo do rolo e repetir até terminar.",
+        "Deixar arrefecer um pouco e cortar em fatias."
+      ]
+    },
+    "huevos-rancheros-haricots": {
+      "title": "Huevos rancheros com feijão encarnado",
+      "steps": [
+        "Refogar a cebola picada e o alho (dente) em azeite, juntar o tomate, os cominhos, a malagueta e o sal, depois cozinhar durante 8 minutos.",
+        "Adicionar o feijão encarnado escorrido e aquecer.",
+        "Abrir 4 cavidades no molho, partir os ovos para dentro, tapar e cozinhar durante 5 minutos.",
+        "Aquecer as tortilhas na frigideira, rechear com o molho e um ovo, depois polvilhar com coentros frescos picados."
+      ]
+    },
+    "frittata-legumes-four": {
+      "title": "Frittata de legumes",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C.",
+        "Refogar a cebola, o pimento e a curgete em pequenos cubos durante 8 minutos em azeite, numa frigideira que possa ir ao forno.",
+        "Bater os ovos com o sal e o manjericão picado, depois deitar sobre os legumes.",
+        "Cozinhar 2 minutos no lume, depois levar ao forno durante 12 minutos."
+      ]
+    },
+    "tartines-ricotta-miel-fraises": {
+      "title": "Tostas de ricotta com mel e morangos",
+      "steps": [
+        "Cortar a baguete ao meio no sentido do comprimento e depois em pedaços.",
+        "Barrar com ricotta.",
+        "Adicionar os morangos em fatias e regar com mel."
+      ]
+    },
+    "porridge-arachide-banane": {
+      "title": "Papas de aveia com manteiga de amendoim e banana",
+      "steps": [
+        "Levar a bebida de soja a ferver suavemente com a canela.",
+        "Adicionar os flocos de aveia e cozinhar durante 5 minutos, mexendo.",
+        "Fora do lume, incorporar a manteiga de amendoim.",
+        "Servir com as bananas em rodelas."
+      ]
+    },
+    "chia-coco-mangue": {
+      "title": "Pudim de chia com coco e manga",
+      "steps": [
+        "Misturar o leite de coco, 20 cl de água, o açúcar e as sementes de chia.",
+        "Mexer novamente após 10 minutos e deixar no frio durante toda a noite.",
+        "Triturar a manga com o sumo da lima.",
+        "Servir o pudim com o puré de manga."
+      ]
+    },
+    "tofu-brouille-tomate-curcuma": {
+      "title": "Tofu mexido com tomate e açafrão-da-Índia",
+      "steps": [
+        "Esmigalhar o tofu firme com um garfo.",
+        "Refogar o cebolinho fatiado em óleo, juntar o açafrão-da-Índia e o pimentão doce.",
+        "Adicionar o tofu, o tomate em cubos e o sal, depois cozinhar durante 6 minutos, mexendo."
+      ]
+    },
+    "smoothie-mangue-banane-coco": {
+      "title": "Smoothie de manga, banana e coco",
+      "steps": [
+        "Descascar a manga e as bananas e cortar em pedaços.",
+        "Triturar com o leite de coco, o sumo da lima e 30 cl de água bem fria.",
+        "Servir de imediato."
+      ]
+    },
+    "puff-puff-beignets": {
+      "title": "Puff-puff, bolinhos fritos da África Ocidental",
+      "steps": [
+        "Misturar a farinha, o açúcar, o fermento de padeiro seco, o sal e 20 cl de água morna até obter uma massa espessa e pegajosa.",
+        "Tapar e deixar levedar durante 1 hora num local morno.",
+        "Aquecer óleo até 3 cm de altura num tacho fundo.",
+        "Colocar colheradas de massa e fritar durante 5 minutos, virando, até ficarem douradas.",
+        "Escorrer sobre papel absorvente e servir morno."
+      ]
     }
   },
   "ingredients": {
@@ -1281,6 +3249,77 @@
     "poelee-legumes": "Legumes salteados congelados",
     "framboise-surgelee": "Frutos vermelhos congelados",
     "crevette": "Camarões descascados",
-    "jus-orange": "Sumo de laranja"
+    "jus-orange": "Sumo de laranja",
+    "citron-vert": "Lima",
+    "ananas": "Ananás",
+    "oignon-nouveau": "Cebolinho",
+    "germes-soja": "Germes de feijão mungo",
+    "boeuf-rumsteck": "Rumsteak de vaca",
+    "abricot-sec": "Alperces secos",
+    "raisins-secs": "Uvas passas",
+    "amande-poudre": "Amêndoas moídas",
+    "amande-effilee": "Amêndoas laminadas",
+    "pistache": "Pistácios descascados",
+    "noix-coco-rapee": "Coco ralado",
+    "beurre-cacahuete": "Manteiga de amendoim",
+    "feuille-brick": "Folha de brick",
+    "galette-riz": "Folha de arroz",
+    "haricots-blancs": "Feijão branco de conserva",
+    "feves": "Favas de conserva",
+    "lentilles-corail": "Lentilhas cor-de-rosa",
+    "farine-pois-chiches": "Farinha de grão-de-bico",
+    "polenta": "Polenta",
+    "boisson-soja": "Bebida de soja",
+    "chia": "Sementes de chia",
+    "maizena": "Amido de milho",
+    "agar": "Agar-agar",
+    "cafe": "Café solúvel",
+    "sesame": "Sementes de sésamo",
+    "huile-sesame": "Óleo de sésamo",
+    "huile-tournesol": "Óleo de girassol",
+    "tamari": "Tamari (molho de soja sem glúten)",
+    "nuoc-mam": "Nuoc-mâm",
+    "ras-el-hanout": "Ras el hanout",
+    "garam-masala": "Garam masala",
+    "origan": "Orégãos",
+    "zaatar": "Zaatar (tomilho e sésamo)",
+    "sucre-vanille": "Açúcar baunilhado",
+    "eau-fleur-oranger": "Água de flor de laranjeira",
+    "levure-boulangere": "Fermento de padeiro seco",
+    "vin-blanc": "Vinho branco seco",
+    "vin-rouge": "Vinho tinto",
+    "biere": "Cerveja loira",
+    "cidre": "Cidrão bruto",
+    "veau": "Carne de vitela salteada",
+    "lapin": "Coelho em pedaços",
+    "cuisse-canard": "Coxa de pato",
+    "porc-echine": "Cachaço de porco",
+    "petit-sale": "Entremeada de porco salgada",
+    "saucisse-fumee": "Salsicha fumada de porco",
+    "boudin-noir": "Morcela",
+    "anchois": "Filetes de anchova",
+    "truite": "Filete de truta",
+    "maquereau": "Filete de cavala",
+    "haddock": "Haddock fumado",
+    "navet": "Nabo",
+    "panais": "Cherovia",
+    "fenouil": "Funcho",
+    "endive": "Endívia",
+    "chou-vert": "Couve frisada",
+    "chou-rouge": "Couve-roxa",
+    "chou-bruxelles": "Couve-de-bruxelas",
+    "potimarron": "Abóbora hokkaido",
+    "cresson": "Agrião",
+    "choucroute": "Chucrute cru",
+    "flageolets": "Feijão-flageolet",
+    "pois-casses": "Ervilhas secas partidas",
+    "sarrasin": "Farinha de trigo-sarraceno",
+    "pruneau": "Ameixas secas sem caroço",
+    "comte": "Queijo Comté",
+    "pain-campagne": "Pão de mistura (fatia)",
+    "laurier": "Louro (folha)",
+    "thym": "Tomilho seco",
+    "muscade": "Noz-moscada moída",
+    "estragon": "Estragão seco"
   }
 }

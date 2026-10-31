@@ -52,6 +52,26 @@ const counts = {};
   if (r.servings !== 4) err(`${id} : servings doit valoir 4`);
   if (!(r.kcal > 0) || !(r.protein >= 0)) err(`${id} : kcal ou protein`);
   if (typeof r.leftoverOk !== 'boolean') err(`${id} : leftoverOk`);
+  // Conservation : prudente et exigée. Poisson et fruits de mer : 2 jours au réfrigérateur, jamais congelés ici.
+  if (!Number.isInteger(r.keepDays) || r.keepDays < 1 || r.keepDays > 14) err(`${id} : keepDays`);
+  if (typeof r.freezable !== 'boolean') err(`${id} : freezable`);
+  const seafood = (Array.isArray(r.ingredients) ? r.ingredients : []).some((x) =>
+    ((ings[x.key] && ings[x.key].allergens) || []).some((a) => a === 'poisson' || a === 'crustaces')
+  );
+  if (seafood && r.keepDays > 2) err(`${id} : keepDays trop long pour du poisson`);
+  if (seafood && r.freezable) err(`${id} : poisson deja cuisine, pas de congelation`);
+  const timers = r.stepTimers && typeof r.stepTimers === 'object' ? r.stepTimers : {};
+  if (r.stepKinds !== undefined) {
+    if (!r.stepKinds || typeof r.stepKinds !== 'object') err(`${id} : stepKinds`);
+    else
+      Object.entries(r.stepKinds).forEach(([k, v]) => {
+        if (!['four', 'feu', 'repos'].includes(v)) err(`${id} : stepKinds ${k}`);
+        if (!(k in timers)) err(`${id} : stepKinds ${k} sans minuteur`);
+      });
+  }
+  if (Object.keys(timers).some((k) => !r.stepKinds || !r.stepKinds[k])) err(`${id} : stepKinds incomplet`);
+  if (r.ovenTempC !== undefined && !(Number.isInteger(r.ovenTempC) && r.ovenTempC >= 100 && r.ovenTempC <= 280))
+    err(`${id} : ovenTempC`);
   if (!Array.isArray(r.tags)) err(`${id} : tags`);
   else {
     r.tags.forEach((t) => { if (!TAGS.includes(t)) err(`${id} : tag inconnu ${t}`); });

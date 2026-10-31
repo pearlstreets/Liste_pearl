@@ -5,16 +5,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { searchRecipes, recipesByPantry, eligibleRecipes, norm, formatEur } from '../../lib/menus';
 import { T } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
+import { warningList } from './Sheets';
 import RecipeVisual from './RecipeVisual';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 
-const MODES = ['ideas', 'favorites', 'season', 'fridge', 'history'];
+const MODES = ['ideas', 'myRecipes', 'favorites', 'season', 'fridge', 'batch', 'history'];
 const MODE_ICON = {
   ideas: 'search',
+  myRecipes: 'book',
   favorites: 'heart',
   season: 'leaf',
   fridge: 'snow',
+  batch: 'layers',
   history: 'time',
 };
 const COURSES = ['plat', 'entree', 'dessert', 'petit-dejeuner'];
@@ -67,10 +70,10 @@ const RecipeRow = memo(function RecipeRow({
   );
 });
 
-export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
+export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, onOpenBatch }) {
   const t = useT();
   const m = useMenus();
-  const { recipes, texts, ingredients, favorites, profile, fridge, history, lang } = m;
+  const { recipes, myRecipes, texts, ingredients, favorites, profile, fridge, history, lang } = m;
   const [mode, setMode] = useState('ideas');
   const [q, setQ] = useState('');
   const dq = useDeferredValue(q);
@@ -80,10 +83,14 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
   const [fq, setFq] = useState('');
   const [useUp, setUseUp] = useState([]);
 
-  const base = useMemo(
-    () => (mine ? eligibleRecipes({ recipes, ingredients, profile }).all : recipes),
-    [mine, recipes, ingredients, profile]
-  );
+  // Ses propres recettes restent toujours visibles : leurs tags sont inconnus, l'écran avertit.
+  const base = useMemo(() => {
+    if (mode === 'myRecipes') return myRecipes;
+    if (!mine) return recipes;
+    const all = eligibleRecipes({ recipes, ingredients, profile }).all;
+    const vus = new Set(all.map((r) => r.id));
+    return [...all, ...myRecipes.filter((r) => !vus.has(r.id))];
+  }, [mode, mine, recipes, myRecipes, ingredients, profile]);
   const month = new Date().getMonth();
 
   const results = useMemo(() => {
@@ -138,6 +145,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
 
   const metaOf = useCallback(
     (r) => {
+      if (r.custom) return t('recipe.minutes', { n: r.timeMin });
       const c = m.costOf(r, Math.max(1, profile.adults + profile.children * 0.6));
       return `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} kcal · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
     },
@@ -157,6 +165,8 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
         if (item.uses.length)
           extra = `${t('fridge.usesUp', { count: item.uses.length })}  ${extra}`;
       }
+      const w = r.custom ? m.warningOf(r) : null;
+      if (w && w.found) extra = t('myRecipes.rowWarning', { list: warningList(w, t) });
       return (
         <RecipeRow
           recipe={r}
@@ -176,18 +186,23 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
         />
       );
     },
-    [texts, ingredients, favorites, onOpenRecipe, m.toggleFav, metaOf, t]
+    [texts, ingredients, favorites, onOpenRecipe, m, metaOf, t]
   );
 
   const modeBar = (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.modes}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={s.modesBar}
+      contentContainerStyle={s.modes}
+    >
       {MODES.map((x) => (
         <Chip
           key={x}
           icon={MODE_ICON[x]}
           label={t(`discover.modes.${x}`)}
           on={mode === x}
-          onPress={() => setMode(x)}
+          onPress={() => (x === 'batch' ? onOpenBatch() : setMode(x))}
         />
       ))}
     </ScrollView>
@@ -234,7 +249,24 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek }) {
   let header;
   let data = results;
   let empty = null;
-  if (mode === 'ideas' || mode === 'favorites' || mode === 'season') {
+  if (mode === 'myRecipes') {
+    header = (
+      <PrimaryButton
+        soft
+        icon="add"
+        label={t('myRecipes.add')}
+        onPress={() => onAddRecipe()}
+        style={{ marginBottom: 12 }}
+      />
+    );
+    empty = (
+      <Empty
+        emoji="📖"
+        title={t(myRecipes.length ? 'discover.noResultsTitle' : 'myRecipes.emptyTitle')}
+        text={t(myRecipes.length ? 'discover.noResultsText' : 'myRecipes.emptyText')}
+      />
+    );
+  } else if (mode === 'ideas' || mode === 'favorites' || mode === 'season') {
     header = (
       <View>
         {mode === 'season' ? <Text style={s.modeNote}>{t('discover.seasonNote')}</Text> : null}
@@ -439,6 +471,7 @@ const s = StyleSheet.create({
     marginTop: 12,
   },
   searchInput: { flex: 1, borderWidth: 0, paddingHorizontal: 0, paddingVertical: 12 },
+  modesBar: { flexGrow: 0, flexShrink: 0 },
   modes: { paddingHorizontal: 18, paddingTop: 14, paddingBottom: 4 },
   filters: { paddingTop: 6, paddingBottom: 0 },
   mineRow: { flexDirection: 'row', marginBottom: 4 },

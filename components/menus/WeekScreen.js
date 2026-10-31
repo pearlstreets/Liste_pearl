@@ -60,7 +60,7 @@ const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress
   );
 });
 
-export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop }) {
+export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpenBatch }) {
   const t = useT();
   const m = useMenus();
   const { plan, busy, genError, dirty, texts, recipeById, ingredients, lang } = m;
@@ -202,6 +202,14 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop }) {
           />
         </View>
 
+        <PrimaryButton
+          soft
+          icon="layers"
+          label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
+          onPress={onOpenBatch}
+          style={{ alignSelf: 'stretch', marginTop: 12, minHeight: 46 }}
+        />
+
         {target0.proposeNext && plan.weekStart !== target0.next ? (
           <View style={s.nextBox}>
             <Text style={s.nextTxt}>
@@ -257,6 +265,9 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop }) {
             </>
           ) : null}
           <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text>
+          {m.shopping && m.shopping.unpricedCount > 0 ? (
+            <Text style={s.gaugeFoot}>{t('shop.unpriced', { count: m.shopping.unpricedCount })}</Text>
+          ) : null}
         </View>
 
         {dirty ? (

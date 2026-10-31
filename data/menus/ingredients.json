@@ -1022,7 +1022,10 @@
    "unit": "g",
    "label": "tablette"
   },
-  "pantry": false
+  "pantry": false,
+  "allergens": [
+   "lait"
+  ]
  },
  "cacao": {
   "emoji": "🍫",
@@ -1289,7 +1292,11 @@
    "unit": "u",
    "label": "boîte de cubes"
   },
-  "pantry": true
+  "pantry": true,
+  "allergens": [
+   "gluten",
+   "lait"
+  ]
  },
  "sel": {
   "emoji": "🧂",
@@ -1477,7 +1484,8 @@
   },
   "pantry": false,
   "allergens": [
-   "gluten"
+   "gluten",
+   "lait"
   ]
  },
  "pain-pita": {
@@ -1562,5 +1570,852 @@
    "label": "brique"
   },
   "pantry": false
+ },
+ "citron-vert": {
+  "emoji": "🍋",
+  "aisle": "fruits-legumes",
+  "pricePerUnit": 0.5,
+  "pack": {
+   "qty": 1,
+   "unit": "u",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "ananas": {
+  "emoji": "🍍",
+  "aisle": "fruits-legumes",
+  "pricePerUnit": 2.5,
+  "pack": {
+   "qty": 1,
+   "unit": "u",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "oignon-nouveau": {
+  "emoji": "🧅",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 8,
+  "pack": {
+   "qty": 150,
+   "unit": "g",
+   "label": "botte"
+  },
+  "pantry": false
+ },
+ "germes-soja": {
+  "emoji": "🌱",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 6,
+  "pack": {
+   "qty": 300,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false
+ },
+ "boeuf-rumsteck": {
+  "emoji": "🥩",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 24,
+  "pack": {
+   "qty": 400,
+   "unit": "g",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "abricot-sec": {
+  "emoji": "🍑",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 250,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "raisins-secs": {
+  "emoji": "🍇",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 7,
+  "pack": {
+   "qty": 250,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "amande-poudre": {
+  "emoji": "🌰",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 18,
+  "pack": {
+   "qty": 125,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false,
+  "allergens": [
+   "fruits-a-coque"
+  ]
+ },
+ "amande-effilee": {
+  "emoji": "🌰",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 20,
+  "pack": {
+   "qty": 100,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false,
+  "allergens": [
+   "fruits-a-coque"
+  ]
+ },
+ "pistache": {
+  "emoji": "🌰",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 35,
+  "pack": {
+   "qty": 100,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false,
+  "allergens": [
+   "fruits-a-coque"
+  ]
+ },
+ "noix-coco-rapee": {
+  "emoji": "🥥",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 9,
+  "pack": {
+   "qty": 200,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "beurre-cacahuete": {
+  "emoji": "🥜",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 9,
+  "pack": {
+   "qty": 340,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": false,
+  "allergens": [
+   "fruits-a-coque"
+  ]
+ },
+ "feuille-brick": {
+  "emoji": "🥟",
+  "aisle": "cremerie",
+  "pricePerUnit": 0.35,
+  "pack": {
+   "qty": 10,
+   "unit": "u",
+   "label": "lot de 10"
+  },
+  "pantry": false,
+  "allergens": [
+   "gluten"
+  ]
+ },
+ "galette-riz": {
+  "emoji": "🍚",
+  "aisle": "epicerie",
+  "pricePerUnit": 0.12,
+  "pack": {
+   "qty": 22,
+   "unit": "u",
+   "label": "lot de 22"
+  },
+  "pantry": false
+ },
+ "haricots-blancs": {
+  "emoji": "🫘",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 3.2,
+  "pack": {
+   "qty": 265,
+   "unit": "g",
+   "label": "boîte"
+  },
+  "pantry": false
+ },
+ "feves": {
+  "emoji": "🫘",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 4,
+  "pack": {
+   "qty": 265,
+   "unit": "g",
+   "label": "boîte"
+  },
+  "pantry": false
+ },
+ "lentilles-corail": {
+  "emoji": "🫘",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 5,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "farine-pois-chiches": {
+  "emoji": "🌾",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 5,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "polenta": {
+  "emoji": "🌽",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 3,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "paquet"
+  },
+  "pantry": false
+ },
+ "boisson-soja": {
+  "emoji": "🥛",
+  "aisle": "boissons",
+  "pricePerKgOrL": 1.6,
+  "pack": {
+   "qty": 1000,
+   "unit": "ml",
+   "label": "brique"
+  },
+  "pantry": false,
+  "allergens": [
+   "soja"
+  ]
+ },
+ "chia": {
+  "emoji": "🌱",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 250,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "maizena": {
+  "emoji": "🌽",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 6,
+  "pack": {
+   "qty": 250,
+   "unit": "g",
+   "label": "boîte"
+  },
+  "pantry": true
+ },
+ "agar": {
+  "emoji": "🌿",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 100,
+  "pack": {
+   "qty": 20,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": true
+ },
+ "cafe": {
+  "emoji": "☕",
+  "aisle": "boissons",
+  "pricePerKgOrL": 25,
+  "pack": {
+   "qty": 100,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "sesame": {
+  "emoji": "🌱",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 100,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": true,
+  "allergens": [
+   "sesame"
+  ]
+ },
+ "huile-sesame": {
+  "emoji": "🫒",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 20,
+  "pack": {
+   "qty": 250,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": true,
+  "allergens": [
+   "sesame"
+  ]
+ },
+ "huile-tournesol": {
+  "emoji": "🌻",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 3,
+  "pack": {
+   "qty": 1000,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": true
+ },
+ "tamari": {
+  "emoji": "🍶",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 16,
+  "pack": {
+   "qty": 250,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": true,
+  "allergens": [
+   "soja"
+  ]
+ },
+ "nuoc-mam": {
+  "emoji": "🍶",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 200,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": true,
+  "allergens": [
+   "poisson"
+  ]
+ },
+ "ras-el-hanout": {
+  "emoji": "🌶️",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 30,
+  "pack": {
+   "qty": 50,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "garam-masala": {
+  "emoji": "🌶️",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 30,
+  "pack": {
+   "qty": 50,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "origan": {
+  "emoji": "🌿",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 30,
+  "pack": {
+   "qty": 30,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "zaatar": {
+  "emoji": "🌿",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 40,
+  "pack": {
+   "qty": 50,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true,
+  "allergens": [
+   "sesame"
+  ]
+ },
+ "sucre-vanille": {
+  "emoji": "🍬",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 15,
+  "pack": {
+   "qty": 75,
+   "unit": "g",
+   "label": "étui"
+  },
+  "pantry": true
+ },
+ "eau-fleur-oranger": {
+  "emoji": "🌼",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 250,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": true
+ },
+ "levure-boulangere": {
+  "emoji": "🍞",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 40,
+  "pack": {
+   "qty": 40,
+   "unit": "g",
+   "label": "étui"
+  },
+  "pantry": true
+ },
+ "vin-blanc": {
+  "emoji": "🍾",
+  "aisle": "boissons",
+  "pricePerKgOrL": 6,
+  "pack": {
+   "qty": 750,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": false
+ },
+ "vin-rouge": {
+  "emoji": "🍷",
+  "aisle": "boissons",
+  "pricePerKgOrL": 6.5,
+  "pack": {
+   "qty": 750,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": false
+ },
+ "biere": {
+  "emoji": "🍺",
+  "aisle": "boissons",
+  "pricePerKgOrL": 3.5,
+  "pack": {
+   "qty": 750,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": false,
+  "allergens": [
+   "gluten"
+  ]
+ },
+ "cidre": {
+  "emoji": "🍏",
+  "aisle": "boissons",
+  "pricePerKgOrL": 4,
+  "pack": {
+   "qty": 750,
+   "unit": "ml",
+   "label": "bouteille"
+  },
+  "pantry": false
+ },
+ "veau": {
+  "emoji": "🥩",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 19,
+  "pack": {
+   "qty": 600,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false
+ },
+ "lapin": {
+  "emoji": "🥩",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 13,
+  "pack": {
+   "qty": 1200,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false
+ },
+ "cuisse-canard": {
+  "emoji": "🍗",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 12,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false
+ },
+ "porc-echine": {
+  "emoji": "🥩",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 11,
+  "pack": {
+   "qty": 600,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "porc"
+  ]
+ },
+ "petit-sale": {
+  "emoji": "🥩",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 9,
+  "pack": {
+   "qty": 800,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "porc"
+  ]
+ },
+ "saucisse-fumee": {
+  "emoji": "🌭",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 13,
+  "pack": {
+   "qty": 300,
+   "unit": "g",
+   "label": "pièce"
+  },
+  "pantry": false,
+  "allergens": [
+   "porc"
+  ]
+ },
+ "boudin-noir": {
+  "emoji": "🌭",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 9,
+  "pack": {
+   "qty": 400,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "porc"
+  ]
+ },
+ "anchois": {
+  "emoji": "🐟",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 40,
+  "pack": {
+   "qty": 50,
+   "unit": "g",
+   "label": "bocal"
+  },
+  "pantry": false,
+  "allergens": [
+   "poisson"
+  ]
+ },
+ "truite": {
+  "emoji": "🐟",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 20,
+  "pack": {
+   "qty": 300,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "poisson"
+  ]
+ },
+ "maquereau": {
+  "emoji": "🐟",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 13,
+  "pack": {
+   "qty": 300,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "poisson"
+  ]
+ },
+ "haddock": {
+  "emoji": "🐟",
+  "aisle": "viandes-poissons",
+  "pricePerKgOrL": 28,
+  "pack": {
+   "qty": 300,
+   "unit": "g",
+   "label": "barquette"
+  },
+  "pantry": false,
+  "allergens": [
+   "poisson"
+  ]
+ },
+ "navet": {
+  "emoji": "🥕",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 3,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "botte"
+  },
+  "pantry": false
+ },
+ "panais": {
+  "emoji": "🥕",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 4,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "fenouil": {
+  "emoji": "🌿",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 3.5,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "bulbe"
+  },
+  "pantry": false
+ },
+ "endive": {
+  "emoji": "🥬",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 3.5,
+  "pack": {
+   "qty": 1000,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "chou-vert": {
+  "emoji": "🥬",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 2.2,
+  "pack": {
+   "qty": 1000,
+   "unit": "g",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "chou-rouge": {
+  "emoji": "🥬",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 2,
+  "pack": {
+   "qty": 1000,
+   "unit": "g",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "chou-bruxelles": {
+  "emoji": "🥦",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 4.5,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "filet"
+  },
+  "pantry": false
+ },
+ "potimarron": {
+  "emoji": "🎃",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 2.8,
+  "pack": {
+   "qty": 1000,
+   "unit": "g",
+   "label": "pièce"
+  },
+  "pantry": false
+ },
+ "cresson": {
+  "emoji": "🌿",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 15,
+  "pack": {
+   "qty": 100,
+   "unit": "g",
+   "label": "botte"
+  },
+  "pantry": false
+ },
+ "choucroute": {
+  "emoji": "🥬",
+  "aisle": "fruits-legumes",
+  "pricePerKgOrL": 4,
+  "pack": {
+   "qty": 800,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "flageolets": {
+  "emoji": "🫘",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 3.6,
+  "pack": {
+   "qty": 265,
+   "unit": "g",
+   "label": "boîte"
+  },
+  "pantry": false
+ },
+ "pois-casses": {
+  "emoji": "🫘",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 3.6,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "sarrasin": {
+  "emoji": "🌾",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 4.5,
+  "pack": {
+   "qty": 500,
+   "unit": "g",
+   "label": "paquet"
+  },
+  "pantry": false
+ },
+ "pruneau": {
+  "emoji": "🫐",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 10,
+  "pack": {
+   "qty": 250,
+   "unit": "g",
+   "label": "sachet"
+  },
+  "pantry": false
+ },
+ "comte": {
+  "emoji": "🧀",
+  "aisle": "cremerie",
+  "pricePerKgOrL": 18,
+  "pack": {
+   "qty": 200,
+   "unit": "g",
+   "label": "morceau"
+  },
+  "pantry": false,
+  "allergens": [
+   "lait"
+  ]
+ },
+ "pain-campagne": {
+  "emoji": "🍞",
+  "aisle": "boulangerie",
+  "pricePerUnit": 0.35,
+  "pack": {
+   "qty": 12,
+   "unit": "u",
+   "label": "paquet (tranches)"
+  },
+  "pantry": false,
+  "allergens": [
+   "gluten"
+  ]
+ },
+ "laurier": {
+  "emoji": "🍃",
+  "aisle": "epicerie",
+  "pricePerUnit": 0.1,
+  "pack": {
+   "qty": 20,
+   "unit": "u",
+   "label": "lot de 20"
+  },
+  "pantry": true
+ },
+ "thym": {
+  "emoji": "🌿",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 40,
+  "pack": {
+   "qty": 30,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "muscade": {
+  "emoji": "🌰",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 50,
+  "pack": {
+   "qty": 40,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
+ },
+ "estragon": {
+  "emoji": "🌿",
+  "aisle": "epicerie",
+  "pricePerKgOrL": 60,
+  "pack": {
+   "qty": 20,
+   "unit": "g",
+   "label": "pot"
+  },
+  "pantry": true
  }
 }

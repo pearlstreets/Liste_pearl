@@ -78,7 +78,7 @@ export function refreshTokens(staleRefresh) {
 
 // ========== SECURE FETCH ==========
 
-async function apiFetch(endpoint, { multipart, ...options } = {}) {
+async function apiFetch(endpoint, { multipart, timeoutMs, ...options } = {}) {
   const tokens = await getTokens();
   const headers = {
     // Envoi de fichiers (FormData) : le Content-Type multipart est posé par fetch.
@@ -97,7 +97,7 @@ async function apiFetch(endpoint, { multipart, ...options } = {}) {
   }
 
   const url = `${BASE_URL}${endpoint}`;
-  let res = await fetchWithTimeout(url, { ...options, headers });
+  let res = await fetchWithTimeout(url, { ...options, headers }, timeoutMs);
 
   // If 401, try refresh once more
   const refreshToUse = refreshed?.refresh || tokens?.refresh;
@@ -105,7 +105,7 @@ async function apiFetch(endpoint, { multipart, ...options } = {}) {
     const again = await refreshTokens(refreshToUse);
     if (again?.access) {
       headers['Authorization'] = `Bearer ${again.access}`;
-      res = await fetchWithTimeout(url, { ...options, headers });
+      res = await fetchWithTimeout(url, { ...options, headers }, timeoutMs);
     }
   }
 
@@ -175,6 +175,22 @@ export async function apiDeleteWithStatus(endpoint, body) {
   return { ok: !!res.ok, status: res.status, data };
 }
 
+// Requête JSON qui garde le statut HTTP (sauvegarde des menus : 200, 409 et 413 ont chacun leur
+// sens). Ne lève que si le réseau est coupé ou le délai dépassé.
+// `timeoutMs` : délai propre à un appel long (lecture d'une page par le serveur, par exemple).
+export async function apiJsonWithStatus(method, endpoint, body, { timeoutMs } = {}) {
+  const opts = { method, timeoutMs };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  const res = await apiFetch(endpoint, opts);
+  let data = null;
+  try {
+    data = sanitizeResponse(await res.json());
+  } catch {
+    data = null;
+  }
+  return { ok: !!res.ok, status: res.status, data };
+}
+
 // `method` : POST par défaut ; PUT pour les vues qui n'acceptent que PUT
 // (ex. /users/update-profile/).
 // Même rafraîchissement du jeton que les autres appels (jeton expiré, 401).
@@ -182,6 +198,23 @@ export async function apiUpload(endpoint, formData, method = 'POST') {
   const res = await apiFetch(endpoint, { method, body: formData, multipart: true });
   const data = await res.json();
   return sanitizeResponse(data);
+}
+
+// Comme apiUpload, avec le statut HTTP ; un corps illisible n'est pas une erreur (data = null).
+export async function apiUploadWithStatus(endpoint, formData, { timeoutMs } = {}) {
+  const res = await apiFetch(endpoint, {
+    method: 'POST',
+    body: formData,
+    multipart: true,
+    timeoutMs,
+  });
+  let data = null;
+  try {
+    data = sanitizeResponse(await res.json());
+  } catch {
+    data = null;
+  }
+  return { ok: !!res.ok, status: res.status, data };
 }
 
 export { BASE_URL };

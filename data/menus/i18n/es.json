@@ -1151,6 +1151,1974 @@
         "Cierre y guarde toda la noche en frío.",
         "Disfrute frío."
       ]
+    },
+    "boeuf-carottes-mijote": {
+      "title": "Carne de res para guisar con zanahorias estofada",
+      "steps": [
+        "Cortar la carne de res para guisar en cubos grandes, las zanahorias en rodajas y picar la cebolla en tiras finas.",
+        "Dorar la carne en una cacerola con el aceite de oliva, luego añadir la cebolla y el ajo (diente) picado.",
+        "Espolvorear con harina, mezclar, luego añadir los tomates triturados, el caldo (cubito) desmenuzado, el tomillo seco, la hoja de laurel y 60 cl de agua.",
+        "Tapar y dejar cocer a fuego lento durante 1 h.",
+        "Agregar las zanahorias y continuar la cocción 1 h 30, hasta que la carne esté tierna. Retirar la hoja de laurel."
+      ]
+    },
+    "carbonade-flamande": {
+      "title": "Carbonada flamenca con cerveza rubia",
+      "steps": [
+        "Cortar la carne de res para guisar en trozos y picar la cebolla en tiras finas.",
+        "Dorar la carne en una cacerola con mantequilla, reservarla, luego pochar la cebolla con el azúcar durante 10 minutos.",
+        "Volver a poner la carne, verter la cerveza rubia, añadir el tomillo seco y la hoja de laurel.",
+        "Untar las rebanadas de pan de campo con mostaza y colocarlas encima.",
+        "Tapar y dejar cocer a fuego lento 2 h 30, removiendo de vez en cuando. Retirar la hoja de laurel."
+      ]
+    },
+    "daube-provencale": {
+      "title": "Estofado de res a la provenzal",
+      "steps": [
+        "Cortar la carne de res para guisar en cubos, las zanahorias en rodajas y picar la cebolla en tiras finas. Sacar una tira de piel de naranja.",
+        "Dorar la carne en una cacerola con aceite de oliva, añadir la cebolla y el ajo (diente) picado.",
+        "Verter el vino tinto, llevar a ebullición durante 5 minutos, luego añadir las zanahorias, los tomates triturados, las hierbas provenzales, la hoja de laurel y la piel de naranja.",
+        "Tapar y dejar cocer a fuego muy lento durante 2 h 45.",
+        "Agregar las aceitunas 15 minutos antes del final, luego retirar la hoja de laurel y la piel de naranja."
+      ]
+    },
+    "blanquette-veau-riz": {
+      "title": "Blanqueta de ternera y arroz",
+      "steps": [
+        "Poner la ternera en cubos en una cacerola, cubrir con agua fría y el caldo (cubito), llevar a ebullición y desespumar.",
+        "Añadir las zanahorias en rodajas, el puerro, la cebolla y la hoja de laurel, luego dejar cocer a fuego lento 1 h 15.",
+        "Saltear los champiñones de París en láminas en un poco de mantequilla y cocinar el arroz aparte.",
+        "Derretir el resto de la mantequilla, añadir la harina y luego 50 cl del caldo de cocción, batiendo hasta que espese.",
+        "Fuera del fuego, añadir la nata espesa y el zumo de limón, luego la carne, las zanahorias y los champiñones. Servir con el arroz."
+      ]
+    },
+    "veau-marengo": {
+      "title": "Saltear la ternera Marengo",
+      "steps": [
+        "Cortar la ternera en cubos, picar la cebolla y los champiñones de París.",
+        "Dorar la carne en una cacerola con aceite de oliva, añadir la cebolla y el ajo (diente) picado, luego espolvorear con harina.",
+        "Verter el vino blanco seco, añadir los tomates triturados, las hierbas provenzales, la hoja de laurel y 20 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 1 h 15.",
+        "Agregar los champiñones de París y continuar la cocción 20 minutos. Retirar la hoja de laurel."
+      ]
+    },
+    "veau-olives-carottes": {
+      "title": "Saltear la ternera con aceitunas y zanahorias",
+      "steps": [
+        "Cortar la ternera en cubos, las zanahorias en rodajas y picar la cebolla.",
+        "Dorar la carne en una cacerola con aceite de oliva, añadir la cebolla y el ajo (diente) picado.",
+        "Agregar las zanahorias, los tomates triturados, el tomillo seco y 25 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 1 h 30.",
+        "Añadir las aceitunas, calentar 5 minutos y servir."
+      ]
+    },
+    "navarin-agneau-printanier": {
+      "title": "Navarín de cordero primaveral",
+      "steps": [
+        "Cortar la paleta de cordero en trozos. Dorar en una cacerola con aceite de oliva, luego añadir la cebolla picada y el ajo (diente) picado.",
+        "Espolvorear con harina, añadir el concentrado de tomate, el tomillo seco, la hoja de laurel y 80 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 1 h.",
+        "Añadir las zanahorias, los nabos y las patatas en trozos, luego cocinar 30 minutos.",
+        "Agregar los guisantes congelados, cocinar 10 minutos y retirar la hoja de laurel."
+      ]
+    },
+    "agneau-haricots-blancs": {
+      "title": "Paleta de cordero con judías blancas",
+      "steps": [
+        "Cortar la paleta de cordero en trozos. Picar la cebolla y picar el ajo (diente).",
+        "Dorar la carne en una cacerola con aceite de oliva, añadir la cebolla y el ajo (diente).",
+        "Agregar los tomates triturados, el tomillo seco, la hoja de laurel y 30 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 1 h 45.",
+        "Añadir las judías blancas en conserva escurridas, cocinar 15 minutos más y retirar la hoja de laurel."
+      ]
+    },
+    "poulet-chasseur": {
+      "title": "Pollo a la cazadora",
+      "steps": [
+        "Dorar los muslos de pollo en una cacerola con aceite de oliva, luego reservarlos.",
+        "Rehogar las chalotas picadas y los champiñones de París en láminas, añadir el ajo (diente) picado.",
+        "Verter el vino blanco seco, dejar reducir 3 minutos, luego añadir los tomates triturados y el tomillo seco.",
+        "Volver a poner el pollo, tapar y dejar cocer a fuego lento 45 minutos."
+      ]
+    },
+    "coq-au-vin-cuisses": {
+      "title": "Coq au vin con muslos de pollo",
+      "steps": [
+        "Dorar los muslos en una cacerola con aceite de oliva, luego reservarlos.",
+        "Rehogar el tocino en tiras, la cebolla picada, las zanahorias en rodajas y el ajo (diente) picado. Espolvorear con harina.",
+        "Volver a poner el pollo, verter el vino tinto, añadir el tomillo seco y la hoja de laurel.",
+        "Tapar y dejar cocer a fuego lento 1 h.",
+        "Agregar los champiñones de París picados, cocinar 15 minutos y retirar la hoja de laurel."
+      ]
+    },
+    "poulet-vallee-auge": {
+      "title": "Pollo con sidra y nata",
+      "steps": [
+        "Dorar los muslos en una cacerola con mantequilla, luego reservarlos.",
+        "Rehogar la cebolla picada y los champiñones de París en láminas.",
+        "Volver a poner el pollo, verter la sidra brut, tapar y cocinar 35 minutos a fuego lento.",
+        "Añadir las manzanas en cuartos y cocinar 10 minutos.",
+        "Retirar el pollo y las manzanas, añadir la nata líquida, dejar reducir 3 minutos y napar."
+      ]
+    },
+    "poulet-estragon-creme": {
+      "title": "Pollo con estragón y nata",
+      "steps": [
+        "Cocinar el arroz según el paquete.",
+        "Cortar la pechuga de pollo en trozos y dorarlos en una sartén con mantequilla y las chalotas picadas.",
+        "Añadir la nata líquida, la mostaza y el estragón seco, luego dejar cocer a fuego lento 10 minutos.",
+        "Salpimentar y servir con el arroz."
+      ]
+    },
+    "poule-au-pot-simple": {
+      "title": "Poule au pot simplificada con muslos de pollo",
+      "steps": [
+        "Colocar el muslo de pollo y la cebolla entera en una olla grande, cubrir con 2,5 litros de agua junto con el caldo (cubito), el tomillo seco y la hoja de laurel.",
+        "Llevar a ebullición, desespumar y dejar hervir suavemente 30 minutos.",
+        "Añadir la zanahoria, el puerro y el nabo cortados en trozos, luego cocinar 25 minutos.",
+        "Agregar la patata en trozos y cocinar 25 minutos más.",
+        "Servir el muslo de pollo y las verduras con un poco de caldo. Retirar la hoja de laurel."
+      ]
+    },
+    "poulet-vinaigre-lyonnais": {
+      "title": "Pollo al vinagre a la lionesa",
+      "steps": [
+        "Dorar los muslos en una sartén con la mantequilla, 10 minutos por cada lado.",
+        "Añadir la chalota picada y el ajo (diente) picado, luego rehogar 3 minutos.",
+        "Verter el vinagre, dejar reducir, luego añadir los tomates triturados y 10 cl de agua.",
+        "Tapar y cocinar 25 minutos a fuego bajo, luego añadir la nata líquida y dejar espesar 3 minutos."
+      ]
+    },
+    "fricassee-poulet-poireaux": {
+      "title": "Fricasé de pollo con puerros",
+      "steps": [
+        "Cocinar la patata en trozos 20 minutos en agua con sal.",
+        "Cortar la pechuga de pollo en trozos y picar el puerro.",
+        "Dorar el pollo en una sartén con la mantequilla, añadir el puerro y cocinar 10 minutos.",
+        "Agregar la nata líquida y la mostaza, dejar cocer a fuego lento 5 minutos y servir con las patatas."
+      ]
+    },
+    "poulet-olives-tomates": {
+      "title": "Pollo con aceitunas y tomates",
+      "steps": [
+        "Dorar los muslos en una cazuela con el aceite de oliva, luego reservar.",
+        "Rehogar la cebolla picada y el pimiento en tiras, luego añadir el ajo (diente) picado.",
+        "Agregar los tomates triturados y las hierbas provenzales, reincorporar el pollo, tapar y dejar cocer a fuego lento 40 minutos.",
+        "Añadir las aceitunas, cocinar 5 minutos y servir."
+      ]
+    },
+    "saute-dinde-carottes-curry": {
+      "title": "Salteado de pavo con zanahorias y curry suave",
+      "steps": [
+        "Cortar el filete de pavo en trozos, la zanahoria en rodajas y picar la cebolla.",
+        "Dorar el pavo en una cazuela con el aceite de oliva, añadir la cebolla y el curry.",
+        "Agregar la zanahoria y 30 cl de agua, tapar y dejar cocer a fuego lento 30 minutos.",
+        "Añadir la nata líquida, dejar espesar 3 minutos y servir."
+      ]
+    },
+    "dinde-normande-pommes": {
+      "title": "Filetes de pavo a la normanda",
+      "steps": [
+        "Cortar la manzana en cuartos y dorar 8 minutos con la mitad de la mantequilla, luego reservar.",
+        "Dorar los filetes con el resto de la mantequilla y la cebolla picada, 4 minutos por cada lado.",
+        "Añadir la nata líquida y la manzana, dejar cocer a fuego lento 5 minutos.",
+        "Salpimentar y servir bien caliente."
+      ]
+    },
+    "lapin-moutarde": {
+      "title": "Conejo a la mostaza",
+      "steps": [
+        "Untar los trozos de conejo con mostaza.",
+        "Dorar en una cazuela con la mantequilla, luego añadir la chalota picada.",
+        "Verter el vino blanco seco, añadir el tomillo seco, tapar y dejar cocer a fuego lento 45 minutos.",
+        "Añadir la nata líquida, dejar reducir 5 minutos y servir."
+      ]
+    },
+    "lapin-pruneaux": {
+      "title": "Conejo con ciruelas pasas",
+      "steps": [
+        "Dorar los trozos de conejo en una cazuela con el aceite de oliva, luego reservar.",
+        "Rehogar la cebolla picada y la zanahoria en rodajas.",
+        "Reincorporar el conejo, verter el vino tinto, añadir el tomillo seco, la hoja de laurel y 10 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 45 minutos.",
+        "Añadir las ciruelas pasas sin hueso y cocinar 20 minutos más. Retirar la hoja de laurel."
+      ]
+    },
+    "canard-navets": {
+      "title": "Muslos de pato con nabos",
+      "steps": [
+        "Dorar los muslos de pato por el lado de la piel en una cazuela sin grasa, 10 minutos, luego reservar.",
+        "Desechar casi toda la grasa, rehogar la cebolla picada y el nabo en trozos con el azúcar.",
+        "Reincorporar el pato, añadir el tomillo seco, el caldo (cubito) y 30 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 50 minutos."
+      ]
+    },
+    "canard-petits-pois": {
+      "title": "Muslos de pato con guisantes",
+      "steps": [
+        "Dorar los muslos de pato por el lado de la piel en una cazuela sin grasa, 10 minutos, luego reservar.",
+        "Desechar casi toda la grasa, rehogar el tocino en tiras, la cebolla picada y la zanahoria en rodajas.",
+        "Reincorporar el pato, añadir el tomillo seco, el caldo (cubito) y 25 cl de agua, tapar y dejar cocer a fuego lento 35 minutos.",
+        "Añadir los guisantes congelados y cocinar 12 minutos."
+      ]
+    },
+    "cassoulet-simple": {
+      "title": "Cassoulet simplificado",
+      "steps": [
+        "Precalentar el horno a 160 °C.",
+        "Dorar el muslo de pato por el lado de la piel en una cazuela, luego las salchichas de cerdo. Reservar.",
+        "Rehogar el tocino en tiras, la cebolla picada y el ajo (diente) picado, añadir los tomates triturados, el tomillo seco y la hoja de laurel.",
+        "Agregar las judías blancas en conserva escurridas, el pato cortado en trozos y las salchichas, luego 30 cl de agua.",
+        "Espolvorear con pan rallado y hornear 1 h sin tapar. Retirar la hoja de laurel."
+      ]
+    },
+    "potee-auvergnate": {
+      "title": "Potée auvergnate",
+      "steps": [
+        "Desalar la panceta salada de cerdo 30 minutos en agua fría, luego colocar en una olla grande con 3 litros de agua.",
+        "Llevar a ebullición, desespumar, añadir la cebolla y la hoja de laurel, luego dejar hervir suavemente 1 h.",
+        "Agregar el repollo rizado en cuartos, la zanahoria, el nabo, el puerro y la salchicha de cerdo, luego cocinar 30 minutos.",
+        "Añadir la patata y cocinar 30 minutos más. Retirar la hoja de laurel, probar antes de salar."
+      ]
+    },
+    "choucroute-garnie-simple": {
+      "title": "Chucrut guarnecido simplificado",
+      "steps": [
+        "Enjuagar el chucrut crudo y escurrirlo. Cortar la cebolla en tiras finas.",
+        "Rehogar la cebolla en una olla grande, añadir la mitad del chucrut crudo, la panceta salada de cerdo y la hoja de laurel, luego el resto del chucrut crudo.",
+        "Verter el vino blanco seco y 20 cl de agua, tapar y dejar cocer a fuego lento 1 h.",
+        "Añadir las salchichas y las patatas peladas, luego cocinar 35 minutos más.",
+        "Retirar la hoja de laurel y servir."
+      ]
+    },
+    "petit-sale-lentilles": {
+      "title": "Panceta salada de cerdo con lentejas",
+      "steps": [
+        "Desalar la panceta salada de cerdo 30 minutos en agua fría.",
+        "Colocar en una olla, cubrir con agua, añadir la cebolla, el tomillo seco y la hoja de laurel, luego dejar hervir suavemente 1 h.",
+        "Añadir las lentejas enjuagadas y las zanahorias en rodajas, luego cocinar 30 minutos.",
+        "Escurrir si es necesario, retirar la hoja de laurel, probar antes de salar y servir."
+      ]
+    },
+    "saute-porc-moutarde": {
+      "title": "Salteado de cerdo a la mostaza",
+      "steps": [
+        "Cortar el lomo de cerdo en cubos y cortar las cebollas en tiras finas.",
+        "Dorar la carne en una olla con el aceite de oliva, añadir las cebollas.",
+        "Añadir el caldo (cubito), el tomillo seco y 30 cl de agua, tapar y dejar cocer a fuego lento 50 minutos.",
+        "Añadir la mostaza y la nata líquida, dejar reducir 5 minutos."
+      ]
+    },
+    "porc-pommes-cidre": {
+      "title": "Salteado de cerdo con manzanas y sidra",
+      "steps": [
+        "Cortar el lomo de cerdo en cubos, cortar las cebollas en tiras finas.",
+        "Dorar la carne en una olla con el aceite de oliva, añadir las cebollas, luego espolvorear con harina.",
+        "Verter la sidra brut, añadir el tomillo seco, tapar y dejar cocer a fuego lento 1 h.",
+        "Añadir las manzanas en cuartos y cocinar 15 minutos."
+      ]
+    },
+    "saute-porc-pruneaux": {
+      "title": "Salteado de cerdo con ciruelas pasas",
+      "steps": [
+        "Cortar el lomo de cerdo en cubos, las zanahorias en rodajas y cortar las cebollas en tiras finas.",
+        "Dorar la carne en una olla con el aceite de oliva, añadir las cebollas y las zanahorias.",
+        "Verter el vino blanco seco y 20 cl de agua, añadir el tomillo seco, tapar y dejar cocer a fuego lento 50 minutos.",
+        "Añadir las ciruelas pasas sin hueso y cocinar 20 minutos más."
+      ]
+    },
+    "chou-farci-familial": {
+      "title": "Repollo relleno familiar",
+      "steps": [
+        "Precalentar el horno a 180 °C. Escaldar 12 hojas grandes de repollo rizado 5 minutos en agua hirviendo y escurrirlas.",
+        "Mezclar la carne picada de ternera, la carne de salchicha de cerdo, la cebolla y el ajo (diente) picados, el huevo y el perejil.",
+        "Colocar el relleno sobre cada hoja y enrollar formando paquetes.",
+        "Colocar en una fuente, añadir los tomates triturados, el caldo (cubito) desmenuzado y 20 cl de agua.",
+        "Tapar y hornear 1 h 15."
+      ]
+    },
+    "saucisses-puree-oignons": {
+      "title": "Salchichas, puré y cebollas caramelizadas",
+      "steps": [
+        "Cocinar las patatas en trozos 20 minutos en agua salada, luego triturarlas con la leche caliente y la mitad de la mantequilla. Añadir la nuez moscada molida.",
+        "Cocinar las cebollas cortadas en tiras finas 20 minutos a fuego lento con el resto de la mantequilla.",
+        "Dorar las salchichas en la sartén durante 15 minutos dándoles la vuelta.",
+        "Servir las salchichas sobre el puré, con las cebollas."
+      ]
+    },
+    "boudin-noir-pommes": {
+      "title": "Morcilla con manzanas y puré",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua salada y triturarlas con la leche caliente y 20 g de mantequilla.",
+        "Dorar las manzanas en cuartos 10 minutos con el resto de la mantequilla, luego reservar.",
+        "Dorar la morcilla 5 minutos por cada lado en la misma sartén.",
+        "Servir la morcilla con las manzanas y el puré."
+      ]
+    },
+    "endives-jambon-gratinees": {
+      "title": "Endivias gratinadas con jamón",
+      "steps": [
+        "Cocinar las endivias enteras 25 minutos en agua salada, luego escurrirlas bien.",
+        "Preparar una bechamel: derretir la mantequilla, añadir la harina y luego la leche batiendo hasta que espese, con la nuez moscada molida.",
+        "Precalentar el horno a 200 °C. Envolver cada endivia en una loncha de jamón cocido y colocarlas en una fuente.",
+        "Cubrir con la bechamel, espolvorear con queso rallado y hornear 25 minutos."
+      ]
+    },
+    "tomates-farcies-viande-riz": {
+      "title": "Tomates rellenos y arroz",
+      "steps": [
+        "Precalentar el horno a 180 °C. Cortar la parte superior de los tomates, vaciarlos y reservar la pulpa.",
+        "Mezclar la carne picada de ternera, la carne de salchicha de cerdo, la cebolla, el ajo (diente) y el perejil picados con el pan rallado.",
+        "Rellenar los tomates y colocarlos en una fuente, con la pulpa alrededor y el arroz crudo en el jugo.",
+        "Añadir 30 cl de agua, colocar las tapas y hornear 50 minutos."
+      ]
+    },
+    "courgettes-farcies-boeuf": {
+      "title": "Calabacines rellenos de ternera",
+      "steps": [
+        "Precalentar el horno a 180 °C. Cortar los calabacines por la mitad y vaciarlos.",
+        "Rehogar en el aceite de oliva la cebolla, el ajo (diente), la carne picada de ternera y la pulpa de calabacín picada, 10 minutos. Añadir las hierbas provenzales.",
+        "Rellenar los calabacines y colocarlos en una fuente sobre los tomates triturados.",
+        "Espolvorear con queso rallado y hornear 40 minutos."
+      ]
+    },
+    "pain-viande-tomate": {
+      "title": "Pastel de carne con salsa de tomate",
+      "steps": [
+        "Precalentar el horno a 180 °C. Mezclar el pan rallado y la leche.",
+        "Añadir la carne picada de ternera, la cebolla picada, los huevos, el perejil y la mostaza, luego salar y añadir pimienta.",
+        "Formar un pastel en un molde de cake y hornear 50 minutos.",
+        "Calentar los tomates triturados con las hierbas provenzales 10 minutos, y servir en rebanadas con la salsa."
+      ]
+    },
+    "boulettes-creme-champignons": {
+      "title": "Albóndigas de carne con nata y champiñones",
+      "steps": [
+        "Mezclar la carne picada de ternera, la cebolla picada, el huevo y el pan rallado, luego formar albóndigas.",
+        "Dorar las albóndigas 10 minutos en una sartén honda con el aceite de oliva, luego reservarlas.",
+        "Saltear los champiñones de París laminados, añadir la nata líquida y volver a poner las albóndigas 10 minutos a fuego bajo.",
+        "Cocinar la pasta según el paquete y servir con las albóndigas."
+      ]
+    },
+    "escalopes-panees-puree": {
+      "title": "Filetes empanados y puré de zanahorias",
+      "steps": [
+        "Cocinar las zanahorias y las patatas en trozos 20 minutos en agua con sal, luego triturarlas con la mantequilla.",
+        "Pasar los filetes de pavo por harina, huevos batidos y después pan rallado.",
+        "Dorar los filetes 4 minutos por cada lado en una sartén con el aceite de oliva.",
+        "Servir los filetes con el puré."
+      ]
+    },
+    "poulet-riz-supreme": {
+      "title": "Pollo con arroz y salsa suprema",
+      "steps": [
+        "Poner el muslo de pollo, las zanahorias en rodajas, la cebolla y el caldo (cubito) en una olla, cubrir con agua y dejar hervir suavemente 35 minutos.",
+        "Cocinar el arroz según el paquete.",
+        "Derretir la mantequilla, añadir la harina y los champiñones de París laminados, luego 30 cl de caldo de cocción batiendo.",
+        "Añadir la nata líquida, dejar espesar 3 minutos y servir sobre el pollo y el arroz."
+      ]
+    },
+    "parmentier-canard-simple": {
+      "title": "Parmentier de pato",
+      "steps": [
+        "Poner el muslo de pato en una cacerola con la cebolla, el tomillo seco y la hoja de laurel, cubrir con agua y dejar hervir suavemente 45 minutos. Escurrir y desmenuzar la carne sin la piel.",
+        "Cocinar las patatas 20 minutos en agua con sal y triturarlas con la leche caliente y la mantequilla.",
+        "Precalentar el horno a 200 °C. Disponer el pato en una fuente y cubrir con el puré.",
+        "Espolvorear con pan rallado y hornear 25 minutos."
+      ]
+    },
+    "parmentier-potimarron-boeuf": {
+      "title": "Parmentier de carne con calabaza potimarrón",
+      "steps": [
+        "Cocinar la calabaza potimarrón y las patatas en trozos 20 minutos en agua con sal, luego triturarlas con la leche y la mantequilla.",
+        "Saltear la cebolla picada, el ajo (diente) picado y la carne picada de ternera 10 minutos. Salpimentar.",
+        "Precalentar el horno a 200 °C. Disponer la carne en una fuente y cubrir con el puré.",
+        "Espolvorear con queso rallado y hornear 25 minutos."
+      ]
+    },
+    "pates-saucisse-brocoli": {
+      "title": "Pasta con salchicha y brócoli",
+      "steps": [
+        "Cocinar la pasta con los ramilletes de brócoli según el tiempo del paquete.",
+        "Dorar la carne de salchicha de cerdo desmenuzada en una sartén con el aceite de oliva y el ajo (diente) picado, 8 minutos.",
+        "Escurrir la pasta y el brócoli, mezclarlos con la salchicha.",
+        "Espolvorear con parmesano y servir."
+      ]
+    },
+    "tarte-jambon-comte": {
+      "title": "Tarta de jamón cocido y queso Comté",
+      "steps": [
+        "Precalentar el horno a 180 °C y extender la masa quebrada en un molde.",
+        "Repartir el jamón cocido en trozos y el queso Comté en dados.",
+        "Batir los huevos con la nata líquida y la nuez moscada molida, verter sobre el relleno.",
+        "Hornear 35 minutos, hasta que la tarta esté dorada."
+      ]
+    },
+    "cake-jambon-olives-salade": {
+      "title": "Bizcocho salado de jamón y aceitunas, lechuga verde",
+      "steps": [
+        "Precalentar el horno a 180 °C.",
+        "Mezclar la harina, la levadura química, los huevos, la leche y 3 cucharadas de aceite de oliva.",
+        "Añadir el jamón cocido en dados, las aceitunas y el queso rallado, luego verter en un molde para bizcocho.",
+        "Hornear 45 minutos y dejar templar.",
+        "Servir en rebanadas con la lechuga verde aliñada con el resto del aceite de oliva y el vinagre."
+      ]
+    },
+    "parmentier-cabillaud": {
+      "title": "Parmentier de bacalao",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua con sal y triturarlas con la leche caliente y la mantequilla.",
+        "Escalfar el lomo de bacalao 6 minutos en agua hirviendo suave con el zumo de limón, luego desmenuzarlo sin espinas.",
+        "Precalentar el horno a 200 °C. Mezclar el pescado y el perejil picado en una fuente, cubrir con el puré.",
+        "Espolvorear con queso rallado y hornear 20 minutos."
+      ]
+    },
+    "cabillaud-sauce-vierge": {
+      "title": "Bacalao con salsa vierge y patatas al vapor",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua o al vapor.",
+        "Cortar los tomates en dados pequeños y mezclarlos con la albahaca picada, el zumo de limón y 3 cucharadas de aceite de oliva.",
+        "Cocinar el lomo de bacalao 4 minutos por cada lado en la sartén con el resto del aceite de oliva.",
+        "Servir el pescado con las patatas y la salsa vierge."
+      ]
+    },
+    "cabillaud-lentilles-carottes": {
+      "title": "Bacalao con lentejas y zanahorias",
+      "steps": [
+        "Cocinar las lentejas enjuagadas 30 minutos en agua con las zanahorias en dados, la cebolla picada, el tomillo seco y la hoja de laurel.",
+        "Escurrir, retirar la hoja de laurel, aliñar con el vinagre y 1 cucharada de aceite de oliva.",
+        "Cocinar el lomo de bacalao 4 minutos por cada lado en la sartén con el resto del aceite de oliva.",
+        "Servir el pescado sobre las lentejas."
+      ]
+    },
+    "papillotes-saumon-poireaux": {
+      "title": "Papillotes de salmón con puerros",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua con sal. Precalentar el horno a 200 °C.",
+        "Cortar los puerros en tiras finas y saltearlos 5 minutos en la sartén con un poco de agua, luego añadir la nata líquida.",
+        "Repartir los puerros sobre 4 hojas de papel de horno, colocar el lomo de salmón y el zumo de limón, salar, pimentar y cerrar.",
+        "Hornear 15 minutos y servir con las patatas."
+      ]
+    },
+    "truite-amandes-haricots-verts": {
+      "title": "Filete de trucha con almendras y judías verdes",
+      "steps": [
+        "Cocinar las judías verdes 10 minutos en agua con sal.",
+        "Enharinar ligeramente los filetes de trucha y cocinarlos 3 minutos por cada lado en la mitad de la mantequilla.",
+        "Dorar las almendras laminadas en el resto de la mantequilla y añadir el jugo de limón.",
+        "Cubrir la trucha con las almendras y servir con las judías."
+      ]
+    },
+    "maquereaux-moutarde-pommes-de-terre": {
+      "title": "Filete de caballa con mostaza y patatas",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cortar las patatas en rodajas, mezclarlas con el aceite y el tomillo, y hornear 20 minutos.",
+        "Untar los filetes de caballa con mostaza.",
+        "Colocarlos sobre las patatas y hornear 10 minutos.",
+        "Rociar con jugo de limón y servir."
+      ]
+    },
+    "colin-meuniere-epinards": {
+      "title": "Filete de merluza a la meunière con espinacas",
+      "steps": [
+        "Calentar las espinacas congeladas en la sartén con el ajo picado, 10 minutos.",
+        "Enharinar ligeramente los filetes de merluza.",
+        "Cocinarlos 3 minutos por cada lado en la mantequilla.",
+        "Rociar con jugo de limón y servir con las espinacas."
+      ]
+    },
+    "colin-sauce-tomate-olives": {
+      "title": "Filete de merluza con tomate y aceitunas",
+      "steps": [
+        "Cocinar el arroz según el paquete.",
+        "Rehogar la cebolla picada y el ajo picado en el aceite, añadir los tomates triturados y las hierbas provenzales, y dejar cocer a fuego lento 10 minutos.",
+        "Colocar la merluza en la salsa con las aceitunas, tapar y cocinar 10 minutos a fuego bajo.",
+        "Servir con el arroz."
+      ]
+    },
+    "colin-provencale-four": {
+      "title": "Filete de merluza a la provenzal al horno",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cortar el tomate y el calabacín en rodajas finas.",
+        "Colocar las verduras en una fuente, añadir el ajo picado, las hierbas provenzales y 2 cucharadas de aceite de oliva, luego hornear 15 minutos.",
+        "Colocar el filete de merluza encima, espolvorear con pan rallado y rociar con el resto del aceite de oliva.",
+        "Hornear 15 minutos."
+      ]
+    },
+    "pain-thon-tomate": {
+      "title": "Pastel de atún con tomate",
+      "steps": [
+        "Precalentar el horno a 170 °C. Escurrir y desmenuzar el atún en conserva.",
+        "Batir los huevos con la nata líquida, el concentrado de tomate y las hierbas provenzales, añadir el atún y el pan rallado.",
+        "Verter en un molde para bizcocho y hornear 45 minutos. Dejar enfriar.",
+        "Servir en rebanadas con la lechuga verde aliñada con aceite de oliva y vinagre."
+      ]
+    },
+    "tarte-thon-tomates-moutarde": {
+      "title": "Tarta de atún, tomate y mostaza",
+      "steps": [
+        "Precalentar el horno a 180 °C y extender la masa quebrada en un molde.",
+        "Untar el fondo con mostaza y repartir el atún en conserva desmenuzado.",
+        "Cubrir con rodajas de tomate, añadir las hierbas provenzales y el queso rallado.",
+        "Hornear 35 minutos."
+      ]
+    },
+    "quiche-saumon-poireaux": {
+      "title": "Quiche de salmón y puerro",
+      "steps": [
+        "Precalentar el horno a 180 °C y extender la masa quebrada en un molde.",
+        "Rehogar el puerro picado 10 minutos con la mantequilla.",
+        "Cortar el lomo de salmón en dados y repartirlo con el puerro sobre la masa.",
+        "Batir los huevos y la nata líquida, verter encima y hornear 35 minutos."
+      ]
+    },
+    "blanquette-poisson-riz": {
+      "title": "Blanqueta de pescado y arroz",
+      "steps": [
+        "Cocinar el arroz según el paquete.",
+        "Cocinar la zanahoria, el puerro en trozos y el champiñón de París laminado durante 15 minutos en 50 cl de agua con el caldo (cubito).",
+        "Escalfar el pescado en trozos 5 minutos en este caldo, luego escurrir junto con las verduras.",
+        "Derretir la mantequilla, añadir la harina, luego 30 cl de caldo batiendo y la nata líquida.",
+        "Añadir el jugo de limón, el pescado y las verduras, calentar suavemente y servir con el arroz."
+      ]
+    },
+    "cotriade-bretonne-simple": {
+      "title": "Cotriade, sopa bretona de pescado",
+      "steps": [
+        "Rehogar la cebolla y el puerro picados en la mantequilla, en el fondo de una olla grande.",
+        "Añadir las patatas en trozos, 1,5 litro de agua, el tomillo seco y la hoja de laurel, luego cocinar 20 minutos.",
+        "Añadir el pescado en trozos grandes y dejar hervir suavemente 8 minutos sin que llegue a ebullición.",
+        "Retirar la hoja de laurel y servir el pescado y las patatas en el caldo."
+      ]
+    },
+    "chaudree-poisson-mais": {
+      "title": "Chaudrée de pescado con maíz",
+      "steps": [
+        "Sofreír el tocino en tiras y la cebolla picada en una cacerola.",
+        "Añadir las patatas en cubos, la leche, 30 cl de agua y el tomillo seco, luego cocinar 15 minutos.",
+        "Añadir el filete de merluza en trozos, el maíz en conserva escurrido y la nata líquida.",
+        "Dejar hervir suavemente 6 minutos y servir."
+      ]
+    },
+    "gratin-crevettes-poireaux": {
+      "title": "Gratén de gambas y puerros",
+      "steps": [
+        "Precalentar el horno a 200 °C. Rehogar los puerros picados 10 minutos con un poco de mantequilla.",
+        "Preparar una bechamel con el resto de la mantequilla, la harina y la leche, luego añadir la nuez moscada molida.",
+        "Mezclar los puerros y las gambas peladas descongeladas en una fuente, cubrir con la bechamel.",
+        "Espolvorear con queso rallado y hornear 20 minutos."
+      ]
+    },
+    "haddock-poche-epinards": {
+      "title": "Eglefino ahumado pochado, espinacas y patatas",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua.",
+        "Calentar las espinacas congeladas con la mantequilla, 8 minutos.",
+        "Llevar la leche con la hoja de laurel a ebullición suave, pochar el eglefino ahumado 8 minutos sin hervir.",
+        "Escurrir el eglefino ahumado y servir con las espinacas y las patatas. Añadir pimienta."
+      ]
+    },
+    "parmentier-saumon-epinards": {
+      "title": "Parmentier de salmón con espinacas",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua con sal y triturarlas con la leche caliente, la mantequilla y la nuez moscada molida.",
+        "Calentar las espinacas congeladas 8 minutos y escurrirlas.",
+        "Precalentar el horno a 200 °C. Disponer el lomo de salmón en dados y las espinacas en una fuente, cubrir con el puré.",
+        "Hornear 25 minutos."
+      ]
+    },
+    "crumble-cabillaud-parmesan": {
+      "title": "Crumble de bacalao con parmesano",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cortar el puerro en tiras finas y la zanahoria en rodajas finas, cocinarlas 10 minutos en la sartén con un poco de agua.",
+        "Colocar las verduras en una fuente con la nata líquida y el lomo de bacalao en trozos.",
+        "Mezclar la harina, la mantequilla y el parmesano con las yemas de los dedos hasta obtener una textura arenosa.",
+        "Espolvorear el crumble sobre el pescado y hornear 20 minutos."
+      ]
+    },
+    "tian-sardines-pommes-de-terre": {
+      "title": "Tian de sardinas y patatas",
+      "steps": [
+        "Precalentar el horno a 190 °C. Cortar las patatas, los tomates y la cebolla en rodajas finas.",
+        "Colocarlas en capas en una fuente con el ajo picado, las hierbas provenzales y el aceite de oliva.",
+        "Hornear 35 minutos.",
+        "Añadir las sardinas en conserva escurridas y hornear 10 minutos más."
+      ]
+    },
+    "saumon-lentilles-moutarde": {
+      "title": "Salmón con lentejas y salsa de mostaza",
+      "steps": [
+        "Cocinar las lentejas enjuagadas 30 minutos con tomillo seco, luego escurrirlas.",
+        "Pochar la chalota picada, añadir la nata líquida y la mostaza.",
+        "Cocinar el lomo de salmón 4 minutos por cada lado en la sartén.",
+        "Servir el salmón sobre las lentejas y cubrir con la salsa."
+      ]
+    },
+    "croquettes-thon-pommes-de-terre": {
+      "title": "Croquetas de atún y patatas",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua con sal y triturarlas.",
+        "Precalentar el horno a 200 °C. Mezclar el puré, el atún en conserva desmenuzado, 1 huevo y el perejil picado.",
+        "Formar croquetas, pasarlas por el otro huevo batido y después por el pan rallado.",
+        "Colocarlas en una bandeja, rociar con 2 cucharadas de aceite de oliva y hornear 15 minutos.",
+        "Servir con limón y la lechuga verde aliñada con el resto del aceite y el vinagre."
+      ]
+    },
+    "pissaladiere-salade": {
+      "title": "Pissaladière y lechuga verde",
+      "steps": [
+        "Mezclar la harina, la levadura seca de panadería, 2 cucharadas de aceite de oliva, 15 cl de agua y la sal, luego dejar reposar 20 minutos.",
+        "Pochar la cebolla picada 30 minutos a fuego lento con 3 cucharadas de aceite de oliva y tomillo seco.",
+        "Precalentar el horno a 220 °C. Estirar la masa, cubrir con la cebolla, colocar los filetes de anchoa y las aceitunas.",
+        "Hornear 20 minutos y servir con la lechuga verde aliñada con el resto del aceite y el vinagre."
+      ]
+    },
+    "salade-nicoise-chaude-thon": {
+      "title": "Patatas, judías verdes y atún a la nicoise",
+      "steps": [
+        "Cocinar las patatas 20 minutos en agua con sal, las judías verdes 10 minutos y los huevos 9 minutos.",
+        "Cortar las patatas y los tomates en trozos, pelar los huevos.",
+        "Mezclar el aceite de oliva, el vinagre y la mostaza.",
+        "Repartir todo con el atún en conserva desmenuzado y las aceitunas, luego rociar con la vinagreta."
+      ]
+    },
+    "gratin-dauphinois-salade": {
+      "title": "Gratin dauphinois y lechuga verde",
+      "steps": [
+        "Precalentar el horno a 160 °C. Cortar las patatas en rodajas finas sin enjuagar.",
+        "Frotar una fuente engrasada con ajo, colocar las patatas en capas, con sal, pimienta y nuez moscada molida.",
+        "Verter la leche y la nata líquida, luego hornear 1 h 15.",
+        "Servir con la lechuga verde aliñada con aceite de oliva y vinagre."
+      ]
+    },
+    "gratin-savoyard-comte": {
+      "title": "Gratin savoyard con queso Comté",
+      "steps": [
+        "Precalentar el horno a 180 °C. Cortar las patatas en rodajas finas y picar la cebolla.",
+        "En una fuente engrasada, alternar capas de patatas, cebolla y queso Comté rallado, con un poco de nuez moscada molida.",
+        "Verter 40 cl de agua caliente con el caldo (cubito).",
+        "Hornear 1 h, hasta que la superficie esté dorada."
+      ]
+    },
+    "gratin-butternut-creme": {
+      "title": "Gratinado de calabaza butternut con nata",
+      "steps": [
+        "Precalentar el horno a 180 °C. Pelar la calabaza butternut y cortarla en rodajas finas.",
+        "Colocarlas en una fuente frotada con ajo, verter la nata líquida con la nuez moscada molida, la sal y la pimienta.",
+        "Espolvorear con queso rallado y hornear 45 minutos."
+      ]
+    },
+    "gratin-brocoli-pates": {
+      "title": "Gratinado de pasta con brócoli",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar la pasta y el brócoli en ramilletes juntos, según las indicaciones del paquete.",
+        "Preparar una bechamel: derretir la mantequilla, añadir la harina y luego la leche batiendo, con la nuez moscada molida y la mitad del queso rallado.",
+        "Mezclar todo en una fuente y espolvorear con el resto del queso rallado.",
+        "Hornear 20 minutos."
+      ]
+    },
+    "gratin-poireaux-jambon": {
+      "title": "Gratén de puerro con jamón cocido",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar el puerro en trozos durante 15 minutos en agua con sal y escurrir bien.",
+        "Preparar una bechamel con la mantequilla, la harina y la leche, añadir la nuez moscada.",
+        "Disponer el puerro y el jamón cocido en trozos en una fuente, cubrir con la bechamel.",
+        "Espolvorear con queso rallado y hornear durante 25 minutos."
+      ]
+    },
+    "tian-legumes-provencal": {
+      "title": "Tian de verduras provenzal y arroz",
+      "steps": [
+        "Precalentar el horno a 180 °C. Pochar la cebolla picada y el ajo (diente) picado en 1 cucharada de aceite de oliva, en el fondo de una fuente.",
+        "Cortar las verduras en rodajas finas y colocarlas de pie, alternándolas.",
+        "Añadir las hierbas provenzales y el resto del aceite de oliva, salar y añadir pimienta.",
+        "Hornear durante 50 minutos, cubriendo a mitad de cocción. Servir con el arroz cocido según el paquete."
+      ]
+    },
+    "parmigiana-aubergines": {
+      "title": "Gratén de berenjena a la parmesana",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cortar la berenjena en rodajas, pincelar con aceite de oliva y asar durante 20 minutos en una bandeja.",
+        "Cocinar a fuego lento los tomates triturados con el ajo (diente) picado durante 15 minutos, luego añadir la albahaca.",
+        "Alternar en una fuente la salsa, la berenjena, la mozzarella y el parmesano.",
+        "Hornear durante 30 minutos a 180 °C y dejar reposar 10 minutos."
+      ]
+    },
+    "gratin-epinards-oeufs": {
+      "title": "Gratén de espinacas con huevo",
+      "steps": [
+        "Cocinar los huevos durante 9 minutos, pelar y cortar por la mitad. Calentar las espinacas y escurrir bien.",
+        "Precalentar el horno a 200 °C. Preparar una bechamel con la mantequilla, la harina y la leche, añadir la nuez moscada.",
+        "Mezclar las espinacas y la mitad de la bechamel en una fuente, colocar los huevos, cubrir con el resto.",
+        "Espolvorear con queso rallado y hornear durante 15 minutos."
+      ]
+    },
+    "gratin-panais-carottes": {
+      "title": "Gratén de chirivía y zanahoria",
+      "steps": [
+        "Precalentar el horno a 180 °C. Cortar las verduras en rodajas finas y cocer al vapor durante 10 minutos.",
+        "Colocarlas en una fuente frotada con ajo (diente), junto con el tomillo seco.",
+        "Verter la nata líquida, espolvorear con queso rallado y hornear durante 35 minutos."
+      ]
+    },
+    "gratin-pommes-de-terre-champignons": {
+      "title": "Gratén de patata con champiñón de París",
+      "steps": [
+        "Precalentar el horno a 180 °C. Saltear la cebolla y los champiñones de París picados con la mantequilla y el ajo (diente) picado.",
+        "Cortar las patatas en rodajas finas.",
+        "Alternar capas de patata y champiñón de París en una fuente, añadir el tomillo seco y verter la nata líquida con 10 cl de agua.",
+        "Espolvorear con queso rallado y hornear durante 55 minutos."
+      ]
+    },
+    "quiche-poireaux-chevre": {
+      "title": "Quiche de puerro y queso de cabra",
+      "steps": [
+        "Precalentar el horno a 180 °C y extender la masa quebrada en un molde.",
+        "Pochar el puerro picado durante 10 minutos con la mantequilla.",
+        "Repartir el puerro y el queso de cabra en trozos sobre la masa.",
+        "Batir los huevos y la nata líquida, verter encima y hornear durante 35 minutos."
+      ]
+    },
+    "tarte-oignons-alsacienne": {
+      "title": "Tarta de cebolla",
+      "steps": [
+        "Pochar la cebolla picada durante 25 minutos a fuego lento con la mantequilla, sin dorar.",
+        "Precalentar el horno a 180 °C y extender la masa quebrada en un molde.",
+        "Batir los huevos, la nata líquida y la nuez moscada molida, añadir la cebolla y verter sobre la masa.",
+        "Hornear durante 30 minutos."
+      ]
+    },
+    "tarte-courgettes-feta": {
+      "title": "Tarta de calabacín y feta",
+      "steps": [
+        "Precalentar el horno a 190 °C y extender la masa quebrada en un molde.",
+        "Cortar el calabacín en rodajas finas y dorar durante 8 minutos en la sartén.",
+        "Repartir sobre la masa junto con la feta desmenuzada y la menta picada.",
+        "Batir los huevos y la nata líquida, verter encima y hornear durante 30 minutos."
+      ]
+    },
+    "flamiche-poireaux": {
+      "title": "Flamiche de puerro",
+      "steps": [
+        "Pochar el puerro picado durante 15 minutos con la mantequilla. Fuera del fuego, añadir 1 huevo y la nata líquida.",
+        "Precalentar el horno a 190 °C. Extender una masa de hojaldre sobre una bandeja y colocar el puerro dejando libre el borde.",
+        "Cubrir con la segunda masa de hojaldre, sellar los bordes y pincelar con el segundo huevo batido.",
+        "Hornear durante 35 minutos."
+      ]
+    },
+    "tourte-epinards-ricotta": {
+      "title": "Empanada de espinacas y ricotta",
+      "steps": [
+        "Calentar las espinacas y escurrir bien.",
+        "Precalentar el horno a 190 °C. Mezclar las espinacas, la ricotta, 1 huevo, el parmesano y la nuez moscada molida.",
+        "Colocar sobre una masa de hojaldre, cubrir con la segunda, sellar y pincelar con el segundo huevo batido.",
+        "Hornear durante 40 minutos."
+      ]
+    },
+    "lentilles-vigneronnes-oeuf": {
+      "title": "Lentejas a la vinagreta con huevo mollet",
+      "steps": [
+        "Sofreír la cebolla picada y la zanahoria en dados en el aceite de oliva.",
+        "Añadir las lentejas enjuagadas, el vino tinto, el tomillo seco, la hoja de laurel y 60 cl de agua, luego cocinar durante 35 minutos.",
+        "Cocinar los huevos durante 6 minutos, enfriar y pelar.",
+        "Retirar la hoja de laurel, servir las lentejas con un huevo en cada plato."
+      ]
+    },
+    "flageolets-tomates-herbes": {
+      "title": "Frijoles flageolet con tomate y hierbas",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo (diente) picado en el aceite de oliva.",
+        "Añadir los tomates triturados y el tomillo seco, luego dejar cocer a fuego lento 10 minutos.",
+        "Agregar los frijoles flageolet escurridos y cocinar 10 minutos.",
+        "Espolvorear con perejil picado y servir."
+      ]
+    },
+    "tomates-farcies-riz-feta": {
+      "title": "Tomates rellenos de arroz y feta",
+      "steps": [
+        "Precalentar el horno a 180 °C. Cocinar el arroz 10 minutos en agua con sal y escurrir.",
+        "Cortar la parte superior de los tomates, vaciarlos y picar la pulpa.",
+        "Mezclar el arroz, la feta, las hierbas picadas, la pulpa y 2 cucharadas de aceite de oliva, luego rellenar los tomates.",
+        "Rociar con el resto del aceite de oliva y hornear 35 minutos."
+      ]
+    },
+    "courgettes-farcies-quinoa-chevre": {
+      "title": "Calabacines rellenos de quinoa y queso de cabra",
+      "steps": [
+        "Precalentar el horno a 190 °C. Cocinar la quinoa según el paquete.",
+        "Cortar los calabacines por la mitad, vaciarlos y picar la pulpa.",
+        "Sofreír la cebolla, la pulpa de calabacín y el tomate en dados en el aceite de oliva, añadir la quinoa y las hierbas provenzales.",
+        "Rellenar los calabacines, añadir el queso de cabra y hornear 30 minutos."
+      ]
+    },
+    "aubergines-farcies-tomate-mozzarella": {
+      "title": "Berenjenas rellenas de tomate y mozzarella",
+      "steps": [
+        "Precalentar el horno a 190 °C. Cortar las berenjenas por la mitad, hacer cortes en la pulpa, untar con aceite de oliva y asar 25 minutos.",
+        "Vaciar la pulpa y sofreírla con la cebolla y el ajo (diente) picados, añadir los tomates triturados y las hierbas provenzales.",
+        "Dejar cocer a fuego lento 10 minutos, luego rellenar las berenjenas.",
+        "Cubrir con mozzarella y hornear 15 minutos."
+      ]
+    },
+    "champignons-farcis-riz": {
+      "title": "Champiñones de París rellenos y arroz con hierbas",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar el arroz según el paquete.",
+        "Separar los tallos de los champiñones de París y picarlos junto con el ajo (diente), el perejil y las chalotas.",
+        "Sofreír esta mezcla 5 minutos con la mantequilla y añadir el pan rallado.",
+        "Rellenar los sombreros y hornear 20 minutos."
+      ]
+    },
+    "galettes-sarrasin-champignons-oeuf": {
+      "title": "Galettes de trigo sarraceno con champiñones y huevo",
+      "steps": [
+        "Mezclar la harina de trigo sarraceno, la sal y 45 cl de agua, luego dejar reposar 20 minutos.",
+        "Sofreír las chalotas y los champiñones de París laminados con un poco de mantequilla.",
+        "Cocinar una galette en una sartén enmantequillada, cascar un huevo en el centro, añadir los champiñones y dejar cuajar 3 minutos.",
+        "Doblar los bordes y servir. Repetir para las demás galettes."
+      ]
+    },
+    "souffle-fromage-salade": {
+      "title": "Soufflé de queso y ensalada",
+      "steps": [
+        "Precalentar el horno a 190 °C y enmantequillar un molde para soufflé. Preparar una bechamel espesa con la mantequilla, la harina y la leche.",
+        "Separar las claras de las yemas. Fuera del fuego, añadir las yemas a la bechamel, junto con el queso Comté rallado y la nuez moscada molida.",
+        "Montar las claras a punto de nieve firme e incorporarlas delicadamente.",
+        "Verter en el molde y hornear 30 minutos sin abrir la puerta.",
+        "Servir enseguida con la lechuga verde aliñada con aceite de oliva y vinagre."
+      ]
+    },
+    "oeufs-cocotte-epinards-creme": {
+      "title": "Huevos al plato con espinacas y bastones de pan",
+      "steps": [
+        "Precalentar el horno a 180 °C. Calentar las espinacas congeladas con la nuez moscada molida y escurrirlas.",
+        "Repartir las espinacas y la nata líquida en 4 recipientes pequeños, cascar 2 huevos en cada uno.",
+        "Cocinar al baño maría en el horno durante 12 min.",
+        "Servir con la baguette cortada en bastones."
+      ]
+    },
+    "omelette-fines-herbes-salade": {
+      "title": "Tortilla de hierbas finas y patatas salteadas",
+      "steps": [
+        "Cortar las patatas en dados y dorarlas 20 minutos en 2 cucharadas de aceite de oliva.",
+        "Batir los huevos con las hierbas picadas, la sal y la pimienta.",
+        "Cocinar la tortilla 4 minutos con la mantequilla.",
+        "Servir con las patatas y la lechuga verde aliñada con el resto del aceite de oliva y el vinagre."
+      ]
+    },
+    "crepes-epinards-ricotta": {
+      "title": "Crepes gratinados de espinacas y ricotta",
+      "steps": [
+        "Mezclar la harina, los huevos y la leche, luego cocinar 8 crepes en una sartén enmantequillada.",
+        "Calentar las espinacas congeladas, escurrirlas y mezclarlas con la ricotta y la nuez moscada molida.",
+        "Precalentar el horno a 200 °C. Rellenar y enrollar las crepes, colocarlas en una fuente.",
+        "Espolvorear con queso rallado y hornear 15 minutos."
+      ]
+    },
+    "pates-champignons-creme": {
+      "title": "Pasta con champiñones y nata",
+      "steps": [
+        "Cocinar la pasta según el paquete.",
+        "Sofreír las chalotas y los champiñones de París laminados con la mantequilla, 8 minutos.",
+        "Añadir la nata líquida y el parmesano, dejar espesar 2 minutos.",
+        "Mezclar con la pasta y espolvorear con perejil."
+      ]
+    },
+    "polenta-champignons-comte": {
+      "title": "Polenta cremosa con champiñones",
+      "steps": [
+        "Sofreír los champiñones de París laminados con la mantequilla y el ajo (diente) picado, 10 minutos.",
+        "Llevar la leche y 60 cl de agua a ebullición, verter la polenta en forma de lluvia y remover 5 minutos.",
+        "Añadir el queso Comté rallado y salar.",
+        "Servir la polenta con los champiñones y el perejil picado."
+      ]
+    },
+    "polenta-gratinee-tomate": {
+      "title": "Polenta gratinada con tomate",
+      "steps": [
+        "Llevar a ebullición 1,2 litro de agua con sal, verter la polenta en forma de lluvia, remover 5 minutos y extender en una fuente. Dejar reposar 15 minutos.",
+        "Sofreír la cebolla picada y el ajo picado en el aceite, añadir los tomates triturados y las hierbas provenzales, y cocinar 10 minutos.",
+        "Precalentar el horno a 200 °C. Cubrir la polenta con la salsa y la mozzarella.",
+        "Hornear 15 minutos."
+      ]
+    },
+    "risotto-butternut": {
+      "title": "Risotto de calabaza butternut",
+      "steps": [
+        "Calentar 1,2 litro de agua con el caldo (cubito) de verduras.",
+        "Sofreír la cebolla picada y la calabaza butternut en dados pequeños en la mantequilla, 5 minutos.",
+        "Añadir el arroz y nacararlo 2 minutos, luego verter el caldo poco a poco removiendo, durante 20 minutos.",
+        "Fuera del fuego, añadir el parmesano y servir."
+      ]
+    },
+    "haricots-blancs-tomate-oeufs": {
+      "title": "Judías blancas con tomate y huevos",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo picado en el aceite con el pimentón.",
+        "Añadir los tomates triturados y las judías blancas en conserva escurridas, luego dejar cocer a fuego lento 12 minutos.",
+        "Hacer 4 huecos, cascar un huevo en cada uno, tapar y cocinar 6 minutos."
+      ]
+    },
+    "parmentier-lentilles-carottes": {
+      "title": "Parmentier de lentejas y zanahorias",
+      "steps": [
+        "Cocinar las lentejas enjuagadas 30 minutos con las zanahorias en dados, la cebolla picada, el tomillo seco y el concentrado de tomate.",
+        "Cocinar las patatas 20 minutos en agua con sal y triturarlas con la leche caliente y la mantequilla.",
+        "Precalentar el horno a 200 °C. Disponer las lentejas en una fuente y cubrir con el puré.",
+        "Hornear 20 minutos."
+      ]
+    },
+    "bourguignon-champignons-lentilles": {
+      "title": "Bourguignon de champiñones y lentejas",
+      "steps": [
+        "Dorar los champiñones de París en cuartos en una cazuela con el aceite, luego reservarlos.",
+        "Sofreír la cebolla picada, las zanahorias en rodajas y el ajo picado. Espolvorear con harina.",
+        "Añadir el vino tinto, el concentrado de tomate, las lentejas, el tomillo seco, la hoja de laurel y 50 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 40 minutos.",
+        "Volver a poner los champiñones, cocinar 10 minutos y retirar la hoja de laurel."
+      ]
+    },
+    "pot-au-feu-legumes-bouillon": {
+      "title": "Puchero de verduras y garbanzos",
+      "steps": [
+        "Llevar a ebullición 2 litros de agua con el caldo (cubito) de verduras, el tomillo seco y la hoja de laurel.",
+        "Añadir las zanahorias, los nabos y los puerros en trozos, luego cocinar 20 minutos.",
+        "Añadir la col blanca en cuartos y las patatas, luego cocinar 20 minutos.",
+        "Añadir los garbanzos escurridos, calentar 5 minutos, retirar la hoja de laurel y servir con la mostaza."
+      ]
+    },
+    "clafoutis-courgettes-chevre": {
+      "title": "Clafoutis de calabacín y queso de cabra",
+      "steps": [
+        "Precalentar el horno a 180 °C. Dorar los calabacines en rodajas en el aceite, 8 minutos.",
+        "Batir los huevos, la harina y la leche, añadir la menta picada.",
+        "Disponer los calabacines y el queso de cabra en una fuente, verter la mezcla.",
+        "Hornear 30 minutos."
+      ]
+    },
+    "chou-rouge-pommes-pommes-de-terre": {
+      "title": "Repollo morado con manzanas y patatas",
+      "steps": [
+        "Picar el repollo morado y la cebolla, cortar las manzanas en dados.",
+        "Sofreír la cebolla en el aceite, añadir el repollo morado, las manzanas, el vinagre, el azúcar y 20 cl de agua.",
+        "Tapar y dejar cocer a fuego lento 50 minutos.",
+        "Cocinar las patatas 20 minutos en agua con sal y servir con el repollo morado."
+      ]
+    },
+    "choux-bruxelles-gratines-pommes-de-terre": {
+      "title": "Coles de Bruselas y patatas gratinadas",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar las coles de Bruselas 10 minutos y las patatas en rodajas 12 minutos en agua con sal.",
+        "Escurrirlas y colocarlas en una fuente.",
+        "Verter la nata líquida con la nuez moscada molida, espolvorear con queso rallado y hornear 20 minutos."
+      ]
+    },
+    "fenouil-gratine-parmesan-riz": {
+      "title": "Hinojo gratinado con parmesano y arroz",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar el hinojo en cuartos 15 minutos en agua con sal y escurrir.",
+        "Cocinar el arroz según el paquete.",
+        "Colocar el hinojo en una fuente engrasada, verter la nata líquida, espolvorear con parmesano y hornear 20 minutos."
+      ]
+    },
+    "soupe-pistou": {
+      "title": "Sopa al pistou",
+      "steps": [
+        "Cortar todas las verduras en dados pequeños.",
+        "Ponerlas en 2 litros de agua, excepto las judías blancas en conserva, y cocinar 30 minutos.",
+        "Añadir las judías blancas en conserva escurridas y la pasta, luego cocinar 10 minutos.",
+        "Triturar la albahaca, el ajo, el parmesano y el aceite para hacer el pistou.",
+        "Añadir el pistou fuera del fuego y servir."
+      ]
+    },
+    "garbure-bearnaise-simple": {
+      "title": "Garbure bearnesa simplificada",
+      "steps": [
+        "Poner el muslo de pato en una olla grande con 2,5 litros de agua, el ajo, el tomillo seco y la hoja de laurel, luego dejar hervir suavemente 45 minutos.",
+        "Añadir el repollo rizado picado, las zanahorias, los nabos y los puerros en trozos, luego cocinar 30 minutos.",
+        "Añadir las patatas y las judías blancas en conserva escurridas, luego cocinar 20 minutos.",
+        "Desmenuzar el muslo de pato, volver a ponerlo en la sopa y retirar la hoja de laurel."
+      ]
+    },
+    "soupe-oignon-gratinee": {
+      "title": "Sopa gratinada de cebolla",
+      "steps": [
+        "Derretir la cebolla picada 25 minutos a fuego bajo con la mantequilla, hasta que esté dorada.",
+        "Espolvorear con harina, añadir 1,5 litros de agua con el caldo de verduras y dejar hervir suavemente 15 minutos.",
+        "Precalentar el horno a 220 °C. Repartir en cuencos aptos para horno y colocar las rebanadas de pan encima.",
+        "Espolvorear con queso Comté rallado y hornear 10 minutos."
+      ]
+    },
+    "soupe-pois-casses-lardons": {
+      "title": "Sopa de guisantes partidos con tocino en tiras",
+      "steps": [
+        "Enjuagar los guisantes partidos. Sofreír el tocino en tiras y la cebolla picada en una olla.",
+        "Añadir los guisantes, las zanahorias y el puerro en rodajas, el tomillo, la hoja de laurel y 2 litros de agua.",
+        "Dejar hervir suavemente 50 minutos.",
+        "Retirar la hoja de laurel y triturar una parte de la sopa. Probar antes de salar."
+      ]
+    },
+    "soupe-paysanne-lardons-pain": {
+      "title": "Sopa campesina con tocino en tiras",
+      "steps": [
+        "Sofreír el tocino en tiras en una olla.",
+        "Añadir las verduras cortadas en dados, el tomillo y 2 litros de agua.",
+        "Dejar hervir suavemente 35 minutos y probar antes de salar.",
+        "Tostar el pan, cubrirlo con queso y servir sobre la sopa."
+      ]
+    },
+    "soupe-haricots-blancs-chou": {
+      "title": "Sopa de judías blancas con col",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo picado en el aceite.",
+        "Añadir las zanahorias en dados, la col picada, los tomates, el tomillo, 1,5 litros de agua y el caldo de verduras.",
+        "Dejar hervir suavemente 30 minutos.",
+        "Añadir las judías blancas escurridas, cocinar 5 minutos y servir."
+      ]
+    },
+    "soupe-butternut-lentilles-corail": {
+      "title": "Sopa de calabaza butternut con lentejas coral",
+      "steps": [
+        "Sofreír la cebolla picada y el jengibre rallado en el aceite con el comino.",
+        "Añadir la calabaza en dados, las lentejas enjuagadas y 1 litro de agua, luego cocinar 20 minutos.",
+        "Añadir la leche de coco y triturar."
+      ]
+    },
+    "veloute-cresson-oeuf-mollet": {
+      "title": "Crema de berro y huevo mollet",
+      "steps": [
+        "Derretir la cebolla picada en la mantequilla, añadir las patatas en dados, 1 litro de agua y el caldo de verduras, luego cocinar 20 minutos.",
+        "Añadir el berro, cocinar 3 minutos y triturar con la nata líquida.",
+        "Cocer los huevos 6 minutos, enfriar y pelar.",
+        "Servir la crema con un huevo en cada plato y la baguette."
+      ]
+    },
+    "soupe-poulet-riz-citron": {
+      "title": "Sopa de pollo con arroz y limón",
+      "steps": [
+        "Poner el muslo de pollo en 2 litros de agua con el caldo y dejar hervir suavemente 30 minutos.",
+        "Sacar el pollo, añadir las zanahorias y el puerro en rodajas, así como el arroz, luego cocinar 15 minutos.",
+        "Desmenuzar el pollo y volver a ponerlo en la sopa.",
+        "Añadir el jugo de limón y el perejil picado."
+      ]
+    },
+    "soupe-boeuf-legumes-pates": {
+      "title": "Sopa de carne de res con verduras y pasta pequeña",
+      "steps": [
+        "Poner la carne de res para guisar en cubos en 2,5 litros de agua con la cebolla, el caldo, el tomillo y la hoja de laurel. Llevar a ebullición y desespumar.",
+        "Dejar hervir suavemente 1 h 15.",
+        "Añadir las verduras en dados y cocinar 30 minutos.",
+        "Añadir la pasta, cocinar según el paquete y retirar la hoja de laurel."
+      ]
+    },
+    "potage-poireaux-haddock": {
+      "title": "Crema de puerro y eglefino ahumado",
+      "steps": [
+        "Cocer los puerros picados y las patatas en dados 20 minutos en 70 cl de agua.",
+        "Añadir la leche y el eglefino ahumado, luego escalfar 8 minutos sin hervir.",
+        "Sacar el eglefino y desmenuzarlo.",
+        "Triturar la sopa con la nata líquida, añadir el pescado y añadir pimienta. Probar antes de salar."
+      ]
+    },
+    "soupe-pois-chiches-pates": {
+      "title": "Sopa de garbanzos y pasta pequeña",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo picado en el aceite.",
+        "Añadir los tomates, los garbanzos escurridos, las hierbas provenzales, el caldo de verduras y 1,2 litros de agua, luego dejar hervir suavemente 15 minutos.",
+        "Añadir la pasta y cocinar según el paquete."
+      ]
+    },
+    "veloute-chou-fleur-lardons": {
+      "title": "Crema de coliflor con tocino en tiras y picatostes",
+      "steps": [
+        "Cocer la coliflor en ramilletes, las patatas y la cebolla 20 minutos en 80 cl de agua.",
+        "Añadir la leche y triturar. Probar antes de salar.",
+        "Dorar el tocino en tiras en la sartén, luego tostar la baguette en dados en su grasa.",
+        "Servir la crema con el tocino en tiras y los picatostes."
+      ]
+    },
+    "soupe-potimarron-tartines-chevre": {
+      "title": "Sopa de calabaza potimarrón y tostadas de queso de cabra",
+      "steps": [
+        "Cortar la calabaza potimarrón en trozos, con la piel bien lavada. Cocerla con la cebolla 25 minutos en 1 litro de agua.",
+        "Triturar con la nata líquida y la nuez moscada molida.",
+        "Tostar el pan, untarlo con queso de cabra y gratinar 3 minutos bajo el grill del horno.",
+        "Servir la sopa con las tostadas."
+      ]
+    },
+    "soupe-lentilles-corail-epinards-citron": {
+      "title": "Sopa de lentejas coral, espinacas y limón",
+      "steps": [
+        "Sofreír la cebolla picada en el aceite con el comino y la cúrcuma.",
+        "Añadir las lentejas enjuagadas, los tomates y 1 litro de agua, luego cocinar 15 minutos.",
+        "Agregar las espinacas y cocinar 5 minutos.",
+        "Añadir el jugo de limón, salar, pimientar y servir."
+      ]
+    },
+    "soupe-legumes-vermicelles-poulet": {
+      "title": "Sopa de verduras con fideos y pollo",
+      "steps": [
+        "Llevar 1,8 litro de agua a ebullición con el caldo.",
+        "Añadir las verduras en dados y la pechuga de pollo entera, luego dejar hervir suavemente 15 minutos.",
+        "Sacar el pollo, desmenuzarlo y volver a ponerlo en la sopa.",
+        "Agregar los fideos, cocinar 3 minutos y espolvorear con perejil."
+      ]
+    },
+    "potage-tomate-riz-oeuf-poche": {
+      "title": "Sopa de tomate con arroz y huevo escalfado",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo picado en el aceite, añadir los tomates, las hierbas y 80 cl de agua.",
+        "Agregar el arroz y dejar hervir suavemente 15 minutos.",
+        "Escalfar los huevos 3 minutos en agua hirviendo con vinagre.",
+        "Servir la sopa con un huevo en cada plato."
+      ]
+    },
+    "soupe-fenouil-tomate-cabillaud": {
+      "title": "Sopa de tomate con hinojo y bacalao",
+      "steps": [
+        "Sofreír la cebolla y el hinojo picados en el aceite, añadir el ajo picado.",
+        "Agregar los tomates, las patatas en dados y 70 cl de agua, luego dejar hervir suavemente 20 minutos.",
+        "Añadir el bacalao en trozos y cocinar 6 minutos a fuego bajo."
+      ]
+    },
+    "boeuf-miroton-oignons": {
+      "title": "Carne de res para guisar con cebolla (Miroton)",
+      "steps": [
+        "Cortar la carne de res para guisar en cubos y dorarla en una olla con el aceite, luego reservar.",
+        "Pochar la cebolla picada 10 minutos, espolvorear con harina y añadir el vinagre.",
+        "Volver a poner la carne con el concentrado de tomate, el caldo, la hoja de laurel y 50 cl de agua, tapar y dejar cocer a fuego lento 1 h 30.",
+        "Agregar las patatas en trozos y cocinar 25 minutos. Retirar la hoja de laurel."
+      ]
+    },
+    "gratin-colin-chou-fleur": {
+      "title": "Gratén de merluza con coliflor",
+      "steps": [
+        "Precalentar el horno a 200 °C. Cocinar la coliflor en ramilletes 12 minutos en agua salada y escurrir.",
+        "Preparar una bechamel con la mantequilla, la harina y la leche, añadir la nuez moscada.",
+        "Colocar la coliflor y la merluza en trozos en una fuente, cubrir con la bechamel.",
+        "Espolvorear con queso rallado y hornear 20 minutos."
+      ]
+    },
+    "gratin-riz-courgettes-tomates": {
+      "title": "Gratén de arroz con calabacín y tomate",
+      "steps": [
+        "Precalentar el horno a 190 °C. Cocinar el arroz 10 minutos en agua salada y escurrir.",
+        "Sofreír la cebolla picada, el ajo picado y el calabacín en dados en el aceite, 10 minutos.",
+        "Agregar los tomates y las hierbas, luego mezclar con el arroz en una fuente.",
+        "Espolvorear con queso rallado y hornear 25 minutos."
+      ]
+    },
+    "tajine-poulet-citron-olives": {
+      "title": "Tajín de pollo con limón y aceitunas",
+      "steps": [
+        "Dorar los muslos de pollo en el aceite con la cebolla picada, el ajo machacado, el jengibre fresco rallado y la cúrcuma.",
+        "Verter 30 cl de agua, salar, pimientar, tapar y dejar cocer a fuego lento 25 minutos.",
+        "Agregar las patatas en cuartos y el limón en rodajas finas, luego continuar 25 minutos tapado.",
+        "Añadir las aceitunas y el cilantro fresco picado, dejar reducir la salsa sin tapa y servir."
+      ]
+    },
+    "couscous-legumes-pois-chiches": {
+      "title": "Cuscús de verduras y garbanzos",
+      "steps": [
+        "Sofreír la cebolla picada en 2 cucharadas de aceite con el ras el hanout.",
+        "Agregar las zanahorias en trozos, los tomates, 1 litro de agua y la sal, luego cocinar 20 minutos.",
+        "Añadir el calabacín en trozos y los garbanzos escurridos, luego continuar 15 minutos.",
+        "Verter sobre la sémola el mismo volumen de agua hirviendo salada con el resto del aceite, tapar 5 minutos, desgranar y servir con las verduras y su caldo."
+      ]
+    },
+    "harira-agneau-lentilles": {
+      "title": "Harira de cordero y lentejas",
+      "steps": [
+        "Dorar la paleta de cordero en dados pequeños con la cebolla picada en el aceite, luego añadir el jengibre fresco rallado, la cúrcuma y la canela.",
+        "Agregar los tomates, las lentejas enjuagadas, 1,5 litro de agua y la sal, tapar y dejar cocer a fuego lento 45 minutos.",
+        "Añadir los garbanzos escurridos, el cilantro fresco y el perejil picados, luego continuar 10 minutos.",
+        "Disolver la fécula de maíz en un poco de agua fría, verter removiendo y dejar espesar 2 minutos.",
+        "Servir bien caliente con un chorrito de jugo de limón."
+      ]
+    },
+    "loubia-haricots-blancs-tomate": {
+      "title": "Loubia, judías blancas guisadas con tomate",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo machacado en el aceite.",
+        "Añadir el pimentón, el comino, la guindilla, los tomates, 20 cl de agua y la sal, luego dejar cocer a fuego lento 10 minutos.",
+        "Agregar las judías blancas en conserva escurridas y enjuagadas y continuar 10 minutos a fuego bajo.",
+        "Espolvorear con perejil picado y servir."
+      ]
+    },
+    "tajine-boeuf-abricots-amandes": {
+      "title": "Tajín de carne de res con albaricoques y almendras",
+      "steps": [
+        "Dorar la carne de res para guisar en trozos grandes en el aceite con la cebolla picada, el jengibre fresco rallado y la canela.",
+        "Cubrir con agua hasta cubrir, salar, tapar y dejar cocer a fuego lento 1 hora 30.",
+        "Agregar los albaricoques y la miel, luego continuar 20 minutos destapado.",
+        "Tostar las almendras laminadas en una sartén sin grasa.",
+        "Hidratar la sémola con el mismo volumen de agua hirviendo salada, luego servir el tajín espolvoreado con las almendras."
+      ]
+    },
+    "pastilla-poulet-amandes": {
+      "title": "Pastela de pollo y almendras",
+      "steps": [
+        "Cocinar la pechuga de pollo con la cebolla picada, el jengibre fresco, la cúrcuma, la sal y 30 cl de agua durante 20 minutos, luego desmenuzar la carne.",
+        "Dejar reducir el jugo de cocción, cocinar los huevos batidos en él removiendo como huevos revueltos, luego añadir el pollo y el cilantro fresco picado.",
+        "Tostar la almendra molida en seco en una sartén, luego mezclar con el azúcar y la canela reservando 1 cucharada de esta mezcla.",
+        "Precalentar el horno a 180 °C, derretir la mantequilla y forrar un molde redondo con 6 hojas de brick untadas en mantequilla, dejando que sobresalgan.",
+        "Repartir la mezcla de almendras, luego el relleno, doblar las hojas, cubrir con las 2 últimas hojas untadas en mantequilla.",
+        "Hornear 25 minutos hasta que la pastela esté dorada y espolvorear con la mezcla reservada."
+      ]
+    },
+    "colin-chermoula-pommes-de-terre": {
+      "title": "Merluza a la chermoula con patatas",
+      "steps": [
+        "Precalentar el horno a 200 °C y triturar el cilantro fresco, el ajo (diente), el pimentón, el comino, el zumo de limón, el aceite de oliva y la sal.",
+        "Mezclar las patatas en rodajas finas con la mitad de esta chermoula en una fuente y hornear 25 minutos.",
+        "Colocar los tomates en cuartos y el filete de merluza, cubrir con el resto de la chermoula.",
+        "Hornear 15 minutos, hasta que el pescado se desmenuce fácilmente."
+      ]
+    },
+    "mujaddara-lentilles-riz-oignons": {
+      "title": "Mujaddara, lentejas y arroz con cebolla caramelizada",
+      "steps": [
+        "Cocinar las lentejas lavadas 15 minutos en 80 cl de agua.",
+        "Dorar la cebolla picada en el aceite a fuego medio durante 20 minutos, hasta que esté bien marrón.",
+        "Añadir el arroz, el comino, la sal y la pimienta a las lentejas y su agua, completando con agua si es necesario, tapar y cocinar 15 minutos a fuego bajo.",
+        "Dejar reposar tapado y servir cubierto con la cebolla."
+      ]
+    },
+    "chich-taouk-poulet-riz": {
+      "title": "Chich taouk, pollo marinado al estilo libanés con arroz",
+      "steps": [
+        "Mezclar el yogur natural, el zumo de limón, el ajo (diente) machacado, el concentrado de tomate, el pimentón, 1 cucharada de aceite de oliva y la sal.",
+        "Cortar la pechuga de pollo en cubos, cubrir con esta marinada y dejar 30 minutos en frío.",
+        "Cocinar el arroz.",
+        "Dorar el pollo en el resto del aceite a fuego fuerte durante 10 minutos, dándole la vuelta, hasta que esté bien cocido y dorado.",
+        "Servir con el arroz."
+      ]
+    },
+    "colin-sauce-tahini-riz": {
+      "title": "Merluza al horno, salsa de tahini con limón y arroz",
+      "steps": [
+        "Precalentar el horno a 200 °C y cocinar el arroz.",
+        "Colocar el filete de merluza en una fuente, rociar con aceite de oliva, salar, espolvorear con comino y hornear 15 minutos.",
+        "Mezclar la pasta de sésamo, el zumo de los limones, el ajo (diente) machacado y 10 cl de agua hasta obtener una salsa lisa.",
+        "Cubrir el pescado con la salsa, hornear 5 minutos más y espolvorear con perejil picado.",
+        "Servir con el arroz."
+      ]
+    },
+    "maghmour-aubergines-pois-chiches": {
+      "title": "Maghmour, berenjenas y garbanzos con tomate",
+      "steps": [
+        "Precalentar el horno a 220 °C, cortar la berenjena en cubos, mezclar con 3 cucharadas de aceite de oliva y hornear 25 minutos.",
+        "Sofreír la cebolla picada y el ajo (diente) machacado en el resto del aceite de oliva con el comino y la guindilla.",
+        "Añadir los tomates, los garbanzos escurridos, la berenjena y la sal, luego dejar cocer a fuego lento 20 minutos.",
+        "Espolvorear con menta picada y servir caliente o templado."
+      ]
+    },
+    "palak-tofu-epinards-riz": {
+      "title": "Palak con tofu, espinacas especiadas y arroz",
+      "steps": [
+        "Cocinar el arroz y dorar el tofu firme en cubos en 1 cucharada de aceite de girasol, luego reservar.",
+        "Sofreír la cebolla picada, el ajo (diente) y el jengibre fresco rallado en el resto del aceite de girasol con las especias.",
+        "Añadir las espinacas congeladas y la sal y cocinar 10 minutos.",
+        "Triturar con la leche de coco, añadir el tofu y calentar 5 minutos antes de servir con el arroz."
+      ]
+    },
+    "aloo-gobi-chou-fleur-pommes-de-terre": {
+      "title": "Aloo gobi, coliflor y patatas con especias",
+      "steps": [
+        "Sofreír la cebolla picada en el aceite de girasol con el comino, luego añadir el ajo (diente) y el jengibre fresco rallado.",
+        "Añadir la cúrcuma, el garam masala, las patatas en cubos y la coliflor en ramilletes.",
+        "Añadir los tomates en dados, la sal y 15 cl de agua, tapar y cocinar 25 minutos a fuego bajo.",
+        "Espolvorear con cilantro fresco picado y servir."
+      ]
+    },
+    "biryani-poulet-epices": {
+      "title": "Biryani de pollo con especias",
+      "steps": [
+        "Mezclar la pechuga de pollo en trozos con el yogur natural, el ajo (diente) machacado, el jengibre fresco rallado, las especias y la mitad de la sal, luego dejar 20 minutos en frío.",
+        "Dorar la cebolla picada en el aceite de girasol, reservar la mitad, luego dorar el pollo en la sartén durante 10 minutos.",
+        "Cocinar el arroz 6 minutos en una olla grande con agua salada y escurrir, debe quedar firme.",
+        "Extender el arroz sobre el pollo con las pasas, el cilantro fresco y la menta picados y 10 cl de agua.",
+        "Tapar herméticamente y cocinar a fuego muy bajo 20 minutos, luego servir con la cebolla reservada."
+      ]
+    },
+    "poulet-korma-amandes": {
+      "title": "Pollo korma con almendras",
+      "steps": [
+        "Cocinar el arroz y sofreír la cebolla picada en el aceite de girasol con el ajo (diente) y el jengibre fresco rallado.",
+        "Añadir la pechuga de pollo en trozos y las especias, luego dorar 5 minutos.",
+        "Añadir la almendra molida, 20 cl de agua y la sal, luego dejar cocer a fuego lento 15 minutos.",
+        "Fuera del fuego, incorporar el yogur natural y la nata líquida, calentar suavemente sin hervir y servir con el arroz."
+      ]
+    },
+    "keema-boeuf-petits-pois": {
+      "title": "Keema, carne picada de ternera con guisantes y especias",
+      "steps": [
+        "Cocinar el arroz y sofreír la cebolla picada en el aceite de girasol con el ajo (diente) y el jengibre fresco rallado.",
+        "Añadir la carne picada de ternera y las especias y cocinar hasta que la carne esté bien dorada.",
+        "Añadir los tomates y la sal y dejar cocer a fuego lento 10 minutos.",
+        "Añadir los guisantes congelados, cocinar 5 minutos más y servir con el arroz."
+      ]
+    },
+    "crevettes-masala-tomate-riz": {
+      "title": "Gambas masala con tomate y arroz",
+      "steps": [
+        "Cocinar el arroz y descongelar las gambas peladas, luego escurrir bien.",
+        "Sofreír la cebolla picada en el aceite de girasol con el ajo (diente), el jengibre fresco rallado y las especias.",
+        "Añadir los tomates, la leche de coco y la sal, luego dejar cocer a fuego lento 10 minutos.",
+        "Añadir las gambas, cocinar 5 minutos, espolvorear con cilantro fresco picado y servir con el arroz."
+      ]
+    },
+    "pad-thai-crevettes": {
+      "title": "Pad thai de gambas",
+      "steps": [
+        "Remojar los fideos de arroz en agua caliente según el paquete y escurrir.",
+        "Mezclar el tamari, el nuoc-mâm, el azúcar y el zumo de una lima.",
+        "Saltear las gambas peladas y el ajo (diente) machacado en aceite de girasol a fuego fuerte, apartar a un lado y cuajar el huevo.",
+        "Añadir los fideos de arroz y la salsa, mezclar 3 minutos, luego incorporar los brotes de soja y la cebolla tierna picada.",
+        "Servir con cacahuetes picados y la otra lima en gajos."
+      ]
+    },
+    "bibimbap-boeuf-legumes": {
+      "title": "Bibimbap de ternera y verduras",
+      "steps": [
+        "Cocinar el arroz y cortar el filete de ternera en tiras finas, luego mezclar con salsa de soja, azúcar y ajo (diente) machacado.",
+        "Saltear por separado en un poco de aceite de sésamo la zanahoria en bastones, el champiñón de París laminado y después la espinaca fresca.",
+        "Saltear la ternera 2 minutos a fuego fuerte.",
+        "Cocinar el huevo frito.",
+        "Repartir el arroz en los boles, colocar las verduras, la ternera y el huevo, y espolvorear con semillas de sésamo y guindilla."
+      ]
+    },
+    "porc-caramel-vietnamien-oeufs": {
+      "title": "Cerdo caramelizado vietnamita con huevo",
+      "steps": [
+        "Cocinar el huevo 9 minutos, pelar y cocinar el arroz.",
+        "Fundir el azúcar en seco en una cazuela hasta obtener un caramelo ámbar, luego verter con cuidado 30 cl de agua caliente.",
+        "Dorar el solomillo de cerdo en cubos en aceite de girasol con la chalota picada y el ajo (diente) machacado, luego añadir el caramelo y el nuoc-mâm.",
+        "Dejar cocer a fuego lento 25 minutos destapado, añadir los huevos y continuar 5 minutos hasta que la salsa esté almibarada.",
+        "Pimentar y servir con el arroz."
+      ]
+    },
+    "poulet-gong-bao-cacahuetes": {
+      "title": "Pollo gong bao con cacahuetes",
+      "steps": [
+        "Cocinar el arroz y mezclar la pechuga de pollo en dados con fécula de maíz y 1 cucharada de salsa de soja.",
+        "Mezclar el resto de salsa de soja, el vinagre, el azúcar y 5 cl de agua.",
+        "Saltear el pollo a fuego fuerte en aceite de girasol durante 5 minutos y reservar.",
+        "Saltear el pimiento en dados, el ajo (diente), el jengibre fresco rallado y la guindilla 3 minutos.",
+        "Volver a añadir el pollo, incorporar la salsa, los cacahuetes y la cebolla tierna picada, y servir con el arroz."
+      ]
+    },
+    "mapo-tofu-boeuf": {
+      "title": "Mapo tofu con ternera",
+      "steps": [
+        "Cocinar el arroz y cortar el tofu firme en cubos.",
+        "Dorar la carne picada de ternera en aceite de girasol con ajo (diente) machacado, jengibre fresco rallado y guindilla.",
+        "Añadir la salsa de soja y 25 cl de agua, luego el tofu firme, y dejar hervir suavemente 5 minutos.",
+        "Disolver la fécula de maíz en un poco de agua fría, verter removiendo suavemente y espolvorear con cebolla tierna picada antes de servir con el arroz."
+      ]
+    },
+    "riz-saute-ananas-crevettes": {
+      "title": "Arroz salteado tailandés con piña y gambas",
+      "steps": [
+        "Cocinar el arroz, extenderlo en una bandeja y dejar enfriar.",
+        "Saltear las gambas peladas en aceite de girasol a fuego fuerte, apartar a un lado y cuajar el huevo.",
+        "Añadir el arroz, el curry, el tamari y el nuoc-mâm y saltear 5 minutos.",
+        "Agregar la piña en trozos pequeños, los guisantes congelados y la cebolla tierna picada, saltear 3 minutos más y servir enseguida."
+      ]
+    },
+    "okonomiyaki-chou": {
+      "title": "Okonomiyaki, tortilla japonesa de col blanca",
+      "steps": [
+        "Picar muy fino la col blanca y la cebolla tierna.",
+        "Batir la harina, los huevos y 12 cl de agua, luego añadir la col blanca y la cebolla tierna.",
+        "Cocinar 2 tortillas grandes en aceite de girasol a fuego medio, 6 minutos por cada lado, tapadas.",
+        "Rociar con salsa de soja, espolvorear con semillas de sésamo y servir enseguida."
+      ]
+    },
+    "rendang-boeuf-coco": {
+      "title": "Rendang de ternera con leche de coco",
+      "steps": [
+        "Triturar la cebolla, el ajo (diente), el jengibre fresco, la cúrcuma, la guindilla y la canela hasta obtener una pasta.",
+        "Rehogar esta pasta 5 minutos en aceite de girasol y dorar la carne de res para guisar en cubos.",
+        "Tostar el coco rallado en seco, luego añadir junto con la leche de coco, 20 cl de agua y la sal.",
+        "Cocer a fuego lento y destapado 2 horas, removiendo de vez en cuando, hasta que la salsa esté casi absorbida.",
+        "Rociar con zumo de lima y servir con el arroz."
+      ]
+    },
+    "saute-boeuf-brocoli": {
+      "title": "Salteado de ternera con brócoli",
+      "steps": [
+        "Cocinar el arroz y escaldar el brócoli en ramilletes 3 minutos en agua hirviendo.",
+        "Cortar la carne de res para guisar en tiras finas y mezclar con fécula de maíz y 1 cucharada de salsa de soja.",
+        "Saltear la ternera 2 minutos a fuego fuerte en aceite de girasol con ajo (diente) y jengibre fresco rallado.",
+        "Añadir el brócoli, el resto de salsa de soja, el azúcar y 5 cl de agua, mezclar 2 minutos y servir con el arroz."
+      ]
+    },
+    "tinga-poulet-tostadas": {
+      "title": "Tinga de pollo sobre tostadas",
+      "steps": [
+        "Cocer la pechuga de pollo 15 minutos en agua hirviendo con sal y desmenuzar.",
+        "Precalentar el horno a 200 °C y hornear las tortillas 6 minutos, hasta que estén crujientes.",
+        "Rehogar la cebolla picada y el ajo (diente) en aceite de oliva, añadir pimentón, guindilla y tomate, y cocinar 10 minutos.",
+        "Añadir el pollo y mezclar 3 minutos.",
+        "Rellenar las tostadas con la tinga, rodajas de aguacate y un poco de nata espesa."
+      ]
+    },
+    "enchiladas-haricots-rouges-four": {
+      "title": "Enchiladas gratinadas con frijoles rojos",
+      "steps": [
+        "Precalentar el horno a 200 °C y rehogar la cebolla picada y el ajo (diente) en aceite de oliva con comino y pimentón.",
+        "Añadir el tomate y la sal, cocinar 10 minutos, luego mezclar un tercio de esta salsa con los frijoles rojos y el maíz en conserva escurridos.",
+        "Rellenar y enrollar las tortillas, colocarlas juntas en una fuente.",
+        "Cubrir con el resto de la salsa, espolvorear queso rallado y hornear 20 minutos."
+      ]
+    },
+    "bol-burrito-riz-haricots-avocat": {
+      "title": "Bol burrito de arroz, frijoles y aguacate",
+      "steps": [
+        "Cocinar el arroz y aliñar con el zumo de una lima y cilantro fresco picado.",
+        "Rehogar la cebolla picada en aceite de oliva, añadir comino, los frijoles rojos escurridos y 5 cl de agua, y calentar 5 minutos.",
+        "Cortar el tomate y el aguacate en dados y rociar con el zumo de la otra lima.",
+        "Repartir el arroz en los boles con los frijoles, el maíz en conserva escurrido, el tomate y el aguacate, salar y servir."
+      ]
+    },
+    "arroz-rojo-poulet": {
+      "title": "Arroz rojo con muslo de pollo",
+      "steps": [
+        "Dorar el muslo de pollo en el aceite en una cazuela, luego reservar.",
+        "Rehogar la cebolla picada, el ajo y el arroz 3 minutos en la misma cazuela.",
+        "Añadir los tomates triturados, las especias, la sal, la zanahoria en dados pequeños, 50 cl de agua y el muslo de pollo.",
+        "Tapar y cocinar 25 minutos a fuego bajo, añadiendo un poco de agua si es necesario.",
+        "Agregar los guisantes congelados, cocinar 5 minutos más y servir."
+      ]
+    },
+    "pasta-alla-norma-aubergines-ricotta": {
+      "title": "Pasta alla norma, berenjena y ricotta",
+      "steps": [
+        "Cortar la berenjena en cubos y dorar 15 minutos en 3 cucharadas de aceite.",
+        "Rehogar el ajo en el resto del aceite, añadir los tomates triturados y la sal, luego dejar cocer a fuego lento 15 minutos.",
+        "Cocinar la pasta y añadir la berenjena a la salsa.",
+        "Mezclar la pasta con la salsa y servir con la ricotta desmenuzada y la albahaca."
+      ]
+    },
+    "pasta-e-fagioli-haricots-blancs": {
+      "title": "Pasta e fagioli con judías blancas en conserva",
+      "steps": [
+        "Rehogar la cebolla y la zanahoria en dados pequeños en el aceite con el ajo machacado.",
+        "Añadir los tomates triturados, el orégano, la sal y 1 litro de agua, luego cocinar 10 minutos.",
+        "Agregar las judías blancas en conserva escurridas y la pasta y cocinar el tiempo indicado en el paquete, removiendo a menudo.",
+        "Dejar reposar 2 minutos y servir bien caliente."
+      ]
+    },
+    "polenta-champignons-tomate": {
+      "title": "Polenta cremosa con champiñón de París y tomate",
+      "steps": [
+        "Rehogar la cebolla picada en 2 cucharadas de aceite, luego añadir el champiñón de París laminado y el ajo y cocinar 8 minutos.",
+        "Añadir los tomates triturados, el orégano y la mitad de la sal, luego dejar cocer a fuego lento 10 minutos.",
+        "Llevar a ebullición 1,2 litros de agua con el resto de la sal, verter la polenta en forma de lluvia y cocinar removiendo el tiempo indicado en el paquete.",
+        "Incorporar el resto del aceite y servir la polenta cubierta con la salsa."
+      ]
+    },
+    "piccata-dinde-citron-pates": {
+      "title": "Piccata de filete de pavo al limón y pasta",
+      "steps": [
+        "Cocinar la pasta y enharinar ligeramente los filetes de pavo salados.",
+        "Dorar los filetes 4 minutos por cada lado en el aceite y la mitad de la mantequilla, luego reservar.",
+        "Verter en la sartén el zumo de los limones y 10 cl de agua, raspar los jugos, luego añadir el resto de la mantequilla.",
+        "Volver a poner los filetes 1 minuto en la salsa, espolvorear con perejil picado y servir con la pasta."
+      ]
+    },
+    "penne-arrabbiata": {
+      "title": "Penne all'arrabbiata",
+      "steps": [
+        "Calentar suavemente el aceite con el ajo picado y la guindilla.",
+        "Añadir los tomates triturados y la sal y dejar cocer a fuego lento 12 minutos.",
+        "Cocinar la pasta, escurrir y mezclar con la salsa.",
+        "Espolvorear con perejil picado y servir."
+      ]
+    },
+    "mafe-boeuf-cacahuete": {
+      "title": "Mafé de carne de res para guisar con mantequilla de cacahuete",
+      "steps": [
+        "Dorar la carne de res para guisar en cubos en el aceite con la cebolla picada.",
+        "Añadir los tomates triturados, el concentrado de tomate, la guindilla, la sal y 50 cl de agua, luego dejar cocer a fuego lento 45 minutos.",
+        "Disolver la mantequilla de cacahuete en un poco de salsa, añadirla junto con la zanahoria y la batata en trozos grandes.",
+        "Dejar cocer a fuego lento 30 minutos, removiendo para evitar que la salsa se pegue.",
+        "Cocinar el arroz y servir con el mafé."
+      ]
+    },
+    "thieboudienne-cabillaud-riz": {
+      "title": "Thieboudienne con lomo de bacalao y arroz con tomate",
+      "steps": [
+        "Triturar el perejil, el ajo, la guindilla y la mitad de la sal, luego frotar el pescado en trozos con esta mezcla.",
+        "Rehogar la cebolla picada en el aceite, añadir el concentrado de tomate y cocinar 5 minutos removiendo.",
+        "Verter 1 litro de agua, añadir la zanahoria, la col blanca y la berenjena en trozos grandes y el resto de la sal, luego cocinar 20 minutos.",
+        "Añadir el pescado, cocinar 10 minutos, luego reservar pescado y verduras en caliente.",
+        "Añadir el arroz lavado al caldo, tapar y cocinar 20 minutos a fuego bajo.",
+        "Servir el arroz con el pescado, las verduras y el limón en cuartos."
+      ]
+    },
+    "misir-wat-lentilles-corail": {
+      "title": "Misir wat, lentejas coral al estilo etíope",
+      "steps": [
+        "Rehogar la cebolla picada 10 minutos en el aceite, luego añadir el ajo y el jengibre fresco rallado.",
+        "Añadir el pimentón, la guindilla, la cúrcuma y el concentrado de tomate y mezclar 2 minutos.",
+        "Agregar las lentejas coral lavadas, 80 cl de agua y la sal, luego dejar cocer a fuego lento 20 minutos removiendo.",
+        "Cocinar el arroz y servir con las lentejas."
+      ]
+    },
+    "jollof-riz-poulet": {
+      "title": "Jollof, arroz con tomate y muslo de pollo",
+      "steps": [
+        "Dorar el muslo de pollo en el aceite en una cazuela, luego reservar.",
+        "Triturar los tomates, el pimiento, la cebolla, el ajo y el jengibre fresco.",
+        "Verter esta mezcla en la cazuela con el concentrado de tomate, el curry, la guindilla y la sal, luego cocinar 10 minutos.",
+        "Añadir el arroz lavado, el muslo de pollo y 40 cl de agua, tapar y cocinar 25 minutos a fuego bajo, removiendo una vez.",
+        "Dejar reposar 5 minutos tapado y servir."
+      ]
+    },
+    "bricks-thon-oeuf-persil": {
+      "title": "Bricks de atún en conserva y huevo",
+      "steps": [
+        "Mezclar el atún en conserva escurrido y el perejil picado, luego salar.",
+        "Repartir esta mezcla en el centro de cada hoja de brick, formando un hueco, y cascar un huevo en él.",
+        "Doblar la hoja en triángulo sin romper el huevo.",
+        "Dorar en aceite caliente, 2 minutos por cada lado, luego escurrir sobre papel absorbente.",
+        "Servir enseguida con el limón en cuartos."
+      ]
+    },
+    "salade-mechouia-poivrons-tomates": {
+      "title": "Ensalada méchouia, pimientos y tomates asados",
+      "steps": [
+        "Precalentar el horno a 230 °C y hornear los pimientos y los tomates enteros 35 minutos, dándoles la vuelta.",
+        "Dejar templar tapados, luego pelar y quitar las semillas.",
+        "Picar las verduras con el cuchillo junto con el ajo.",
+        "Aliñar con comino, el zumo de limón, el aceite y la sal, luego decorar con aceitunas y servir frío."
+      ]
+    },
+    "zaalouk-aubergines-tomates": {
+      "title": "Zaalouk, caviar de berenjena con tomate",
+      "steps": [
+        "Cortar la berenjena en cubos pequeños y el tomate en dados.",
+        "Sofreír el ajo en el aceite con las especias.",
+        "Añadir la berenjena, el tomate y la sal, tapar y cocinar 25 minutos a fuego medio removiendo.",
+        "Machacar con un tenedor, añadir el cilantro fresco picado y el jugo de limón, luego servir templado o frío."
+      ]
+    },
+    "carottes-cumin-citron-marocaines": {
+      "title": "Zanahorias marroquíes con comino y limón",
+      "steps": [
+        "Cocinar la zanahoria en rodajas 10 minutos en agua con sal, deben quedar firmes, luego escurrir.",
+        "Mezclar el ajo machacado, las especias, el jugo de limón y el aceite.",
+        "Verter sobre las zanahorias, añadir el perejil picado y servir frío."
+      ]
+    },
+    "fattouch-pita-grillee": {
+      "title": "Fattouch, ensalada libanesa con pan de pita tostado",
+      "steps": [
+        "Precalentar el horno a 200 °C, cortar el pan de pita en trozos y hornear 8 minutos hasta que estén crujientes.",
+        "Cortar el tomate, el pepino y el rábano, picar la lechuga y las hierbas.",
+        "Mezclar el jugo de limón, el aceite y la sal.",
+        "Mezclar todo en el último momento con los trozos de pan de pita y servir."
+      ]
+    },
+    "mouhammara-poivrons-noix": {
+      "title": "Mouhammara, crema de pimiento con nueces",
+      "steps": [
+        "Precalentar el horno a 230 °C y hornear los pimientos enteros 30 minutos, luego pelar y quitar las semillas.",
+        "Triturar los pimientos con las nueces, el pan rallado, el concentrado, el ajo, el comino, la guindilla y la sal.",
+        "Añadir el jugo de limón y el aceite, triturar de nuevo y servir frío."
+      ]
+    },
+    "baba-ghanouj-aubergines-tahini": {
+      "title": "Baba ghanouj, berenjena asada con pasta de sésamo",
+      "steps": [
+        "Precalentar el horno a 220 °C, pinchar las berenjenas y hornear enteras 40 minutos.",
+        "Recuperar la pulpa y dejar escurrir en un colador.",
+        "Machacar la pulpa con la pasta de sésamo, el jugo de limón, el ajo machacado, el comino y la sal.",
+        "Rociar con aceite, espolvorear con perejil picado y servir frío."
+      ]
+    },
+    "samoussas-legumes-four": {
+      "title": "Samosas de verduras al horno",
+      "steps": [
+        "Cocinar la patata en dados pequeños 10 minutos en agua con sal, luego escurrir.",
+        "Sofreír la cebolla picada en 1 cucharada de aceite con el garam masala, luego añadir la patata, los guisantes congelados y el cilantro fresco picado.",
+        "Precalentar el horno a 200 °C y cortar cada hoja en dos.",
+        "Doblar cada media hoja en triángulo alrededor de una cucharada de relleno, colocar en una bandeja y pincelar con el resto del aceite.",
+        "Hornear 15 minutos, hasta que las samosas estén doradas."
+      ]
+    },
+    "bhajis-oignons-pois-chiches": {
+      "title": "Bhajis de cebolla con harina de garbanzo",
+      "steps": [
+        "Cortar finamente la cebolla y picar el cilantro fresco.",
+        "Mezclar la harina, las especias, la sal y unos 12 cl de agua hasta obtener una masa espesa, luego añadir la cebolla y el cilantro.",
+        "Colocar cucharadas en el aceite caliente y aplastar ligeramente.",
+        "Cocinar 3 minutos por cada lado, escurrir sobre papel absorbente y servir caliente."
+      ]
+    },
+    "rouleaux-printemps-crevettes": {
+      "title": "Rollitos de primavera con gambas",
+      "steps": [
+        "Cocinar las gambas peladas 3 minutos en agua hirviendo, luego escurrir, y remojar los fideos de arroz según el paquete.",
+        "Rallar la zanahoria y picar la lechuga.",
+        "Remojar una oblea de arroz unos segundos en agua tibia y colocar sobre un paño húmedo.",
+        "Rellenar con lechuga, fideos de arroz, zanahoria, hierbas y gambas, luego enrollar apretando y doblando los lados.",
+        "Mezclar el nuoc-mâm, el jugo de lima, el azúcar y 3 cucharadas de agua y servir como salsa."
+      ]
+    },
+    "salade-mangue-crevettes-citron-vert": {
+      "title": "Ensalada de mango y gambas con lima",
+      "steps": [
+        "Saltear las gambas peladas 3 minutos en aceite, luego dejar enfriar.",
+        "Cortar el mango y el pepino en dados.",
+        "Mezclar el jugo de las limas, el nuoc-mâm y la guindilla.",
+        "Mezclar todo con el cilantro fresco picado y servir frío."
+      ]
+    },
+    "soupe-coco-poulet-citron-vert": {
+      "title": "Sopa tailandesa de pollo, coco y lima",
+      "steps": [
+        "Llevar a ebullición la leche de coco con 50 cl de agua, el jengibre fresco en láminas y la guindilla.",
+        "Añadir la pechuga de pollo en tiras finas y los champiñones de París laminados, luego cocinar 10 minutos.",
+        "Añadir el nuoc-mâm, el azúcar y el jugo de las limas.",
+        "Espolvorear con cilantro fresco picado y servir."
+      ]
+    },
+    "guacamole-chips-tortilla": {
+      "title": "Guacamole y chips de tortilla",
+      "steps": [
+        "Precalentar el horno a 200 °C, cortar las tortillas en triángulos, pincelar con aceite y hornear 8 minutos.",
+        "Machacar los aguacates con un tenedor junto con el jugo de lima y la sal.",
+        "Añadir el tomate en dados pequeños, la cebolla finamente picada y el cilantro fresco picado.",
+        "Servir enseguida con los chips."
+      ]
+    },
+    "esquites-mais-citron-vert": {
+      "title": "Esquites, maíz salteado con lima",
+      "steps": [
+        "Dorar el maíz en conserva escurrido en la mantequilla 6 minutos a fuego fuerte.",
+        "Fuera del fuego, añadir la nata espesa, el jugo de lima, el pimentón y la sal.",
+        "Repartir en cuencos, desmenuzar la feta y espolvorear con cilantro fresco picado."
+      ]
+    },
+    "caponata-aubergines-olives": {
+      "title": "Caponata siciliana de berenjenas y aceitunas",
+      "steps": [
+        "Dorar las berenjenas en cubos en 3 cucharadas de aceite durante 15 minutos, luego reservar.",
+        "Sofreír la cebolla picada en el resto del aceite, añadir los tomates triturados y la sal y cocinar 10 minutos.",
+        "Agregar las berenjenas, las aceitunas, el azúcar y el vinagre y continuar 10 minutos.",
+        "Dejar enfriar, añadir la albahaca y servir a temperatura ambiente."
+      ]
+    },
+    "panzanella-tomates-pain": {
+      "title": "Panzanella, ensalada toscana de tomate y pan",
+      "steps": [
+        "Cortar la baguette del día anterior en cubos.",
+        "Cortar el tomate y el pepino en trozos y la cebolla en finas láminas, luego mezclar con la sal.",
+        "Añadir el pan, el vinagre y el aceite, mezclar y dejar reposar 10 minutos para que el pan se empape.",
+        "Agregar la albahaca y servir."
+      ]
+    },
+    "minestrone-legumes-haricots": {
+      "title": "Minestrone de verduras y judías blancas",
+      "steps": [
+        "Sofreír la cebolla y el ajo picados en el aceite.",
+        "Añadir las zanahorias y las patatas en dados, los tomates triturados, la sal y 1,2 litros de agua, luego cocinar 15 minutos.",
+        "Agregar el calabacín en dados, las judías verdes en trozos y las judías blancas en conserva escurridas, luego continuar 15 minutos.",
+        "Añadir la albahaca picada y servir."
+      ]
+    },
+    "salade-concombre-sesame": {
+      "title": "Ensalada de pepino con sésamo",
+      "steps": [
+        "Aplastar ligeramente los pepinos y cortarlos en trozos irregulares.",
+        "Mezclar el tamari, el vinagre, el aceite de sésamo, el azúcar, el ajo machacado y la guindilla.",
+        "Mezclar con los pepinos, espolvorear con semillas de sésamo y servir frío."
+      ]
+    },
+    "kachumbari-tomates-oignon": {
+      "title": "Kachumbari, ensalada de África oriental de tomate y cebolla",
+      "steps": [
+        "Cortar muy finamente la cebolla y dejarla 5 minutos en el jugo de las limas con la sal.",
+        "Cortar el tomate y el pepino en dados pequeños.",
+        "Mezclar todo con el cilantro picado y la guindilla, luego servir frío."
+      ]
+    },
+    "soupe-arachide-patate-douce": {
+      "title": "Sopa de cacahuete y batata de África occidental",
+      "steps": [
+        "Sofreír la cebolla picada en el aceite con el ajo y el jengibre fresco rallado.",
+        "Añadir las batatas en cubos, los tomates triturados, la guindilla, la sal y 1 litro de agua, luego cocinar 20 minutos.",
+        "Agregar la mantequilla de cacahuete y triturar hasta obtener una sopa lisa.",
+        "Calentar 2 minutos removiendo y servir."
+      ]
+    },
+    "mouhalabieh-fleur-oranger-pistache": {
+      "title": "Mouhalabieh con agua de azahar y pistachos",
+      "steps": [
+        "Disolver la fécula de maíz en 10 cl de leche fría.",
+        "Llevar el resto de la leche a ebullición suave con el azúcar, verter la fécula y remover 3 minutos hasta que espese.",
+        "Fuera del fuego, añadir el agua de azahar y repartir en cuencos.",
+        "Dejar cuajar 2 horas en frío y espolvorear con pistachos picados."
+      ]
+    },
+    "salade-oranges-cannelle": {
+      "title": "Ensalada de naranja con canela",
+      "steps": [
+        "Pelar las naranjas al vivo y cortarlas en rodajas finas.",
+        "Disponerlas en una fuente y rociar con agua de azahar.",
+        "Espolvorear con azúcar y canela, luego añadir menta picada y servir frío."
+      ]
+    },
+    "ghribas-noix-de-coco": {
+      "title": "Ghribas de coco rallado",
+      "steps": [
+        "Precalentar el horno a 170 °C.",
+        "Mezclar el coco rallado, la sémola, el azúcar, el azúcar avainillado, la levadura química y los huevos, luego dejar reposar 10 minutos.",
+        "Formar bolas, colocarlas en una bandeja cubierta con papel de horno y aplanarlas ligeramente.",
+        "Hornear 15 minutos hasta que estén apenas doradas y dejar enfriar en la bandeja."
+      ]
+    },
+    "baklava-noix-miel": {
+      "title": "Baklava de nueces y miel",
+      "steps": [
+        "Precalentar el horno a 180 °C, triturar groseramente las nueces con el azúcar y la canela, y derretir la mantequilla.",
+        "Cortar las hojas al tamaño de una fuente pequeña, luego alternar hojas untadas con mantequilla y nueces, terminando con una hoja.",
+        "Cortar en rombos y hornear 25 minutos hasta que la superficie esté dorada.",
+        "Calentar la miel con el jugo de limón y 5 cl de agua, luego verter sobre el baklava caliente.",
+        "Dejar reposar varias horas antes de servir."
+      ]
+    },
+    "gajar-halwa-carottes-pistaches": {
+      "title": "Gajar halwa, postre indio de zanahoria",
+      "steps": [
+        "Rallar finamente las zanahorias.",
+        "Cocerlas 25 minutos en la leche, removiendo, hasta que la leche se absorba.",
+        "Añadir el azúcar, la mantequilla, la canela y las pasas, luego cocinar 8 minutos hasta que la mezcla se despegue de la cazuela.",
+        "Servir tibio, espolvoreado con pistachos picados."
+      ]
+    },
+    "riz-coco-mangue": {
+      "title": "Arroz con leche de coco y mango",
+      "steps": [
+        "Enjuagar el arroz, luego cocerlo 20 minutos a fuego lento con la leche de coco, 30 cl de agua, el azúcar y la sal, removiendo a menudo.",
+        "Dejar reposar 10 minutos tapado.",
+        "Cortar el mango en rodajas y servir sobre el arroz tibio."
+      ]
+    },
+    "che-bananes-coco": {
+      "title": "Chè, bananas con leche de coco al estilo vietnamita",
+      "steps": [
+        "Llevar la leche de coco a ebullición suave con 20 cl de agua y el azúcar.",
+        "Agregar las bananas en rodajas y cocinar 5 minutos.",
+        "Disolver la fécula de maíz en un poco de agua fría, verter removiendo y dejar espesar 1 minuto.",
+        "Servir tibio, espolvoreado con semillas de sésamo."
+      ]
+    },
+    "churros-four-cannelle": {
+      "title": "Churros al horno con canela",
+      "steps": [
+        "Precalentar el horno a 200 °C y llevar a ebullición 25 cl de agua con la mantequilla y la sal.",
+        "Fuera del fuego, añadir la harina de golpe, remover enérgicamente y luego secar 1 minuto a fuego bajo.",
+        "Incorporar los huevos uno a uno hasta obtener una masa lisa.",
+        "Formar bastones con manga pastelera sobre una bandeja cubierta con papel de horno y hornear 22 minutos.",
+        "Rebozar los churros calientes en el azúcar mezclado con canela y servir enseguida."
+      ]
+    },
+    "flan-caramel-oeufs": {
+      "title": "Flan de huevo y caramelo",
+      "steps": [
+        "Precalentar el horno a 160 °C y derretir 80 g de azúcar en seco hasta obtener un caramelo ámbar, luego verter en un molde.",
+        "Entibiar la leche con el azúcar avainillado.",
+        "Batir los huevos con el resto del azúcar y luego añadir la leche removiendo.",
+        "Verter sobre el caramelo, colocar el molde en una bandeja con agua caliente y hornear 40 minutos.",
+        "Dejar enfriar, reservar 3 horas en frío y desmoldar."
+      ]
+    },
+    "panna-cotta-fruits-rouges-agar": {
+      "title": "Panna cotta con agar-agar y frutos rojos",
+      "steps": [
+        "Mezclar la nata líquida, la leche, 40 g de azúcar, el azúcar avainillado y el agar-agar en frío.",
+        "Llevar a ebullición y dejar hervir 2 minutos removiendo.",
+        "Repartir en vasitos, dejar enfriar y luego reservar 2 horas en frío.",
+        "Cocinar los frutos rojos 5 minutos con el resto del azúcar, dejar enfriar y cubrir las panna cottas."
+      ]
+    },
+    "tiramisu-cafe-classique": {
+      "title": "Tiramisú de café",
+      "steps": [
+        "Disolver el café soluble en 25 cl de agua caliente y dejar enfriar.",
+        "Batir las yemas con el azúcar hasta que la mezcla blanquee, luego incorporar el mascarpone.",
+        "Montar las claras a punto de nieve e incorporarlas suavemente.",
+        "Sumergir rápidamente las galletas en el café y alternar en una fuente con la crema.",
+        "Reservar 4 horas en frío y espolvorear con cacao en polvo antes de servir."
+      ]
+    },
+    "thiakry-semoule-yaourt": {
+      "title": "Thiakry, sémola dulce con yogur",
+      "steps": [
+        "Verter sobre la sémola 20 cl de agua hirviendo, cubrir 5 minutos y desgranar con un tenedor.",
+        "Mezclar los yogures, la leche, el azúcar, el azúcar avainillado y la canela.",
+        "Añadir la sémola y las pasas, mezclar y dejar 1 hora en frío.",
+        "Espolvorear con coco rallado y servir frío."
+      ]
+    },
+    "ananas-gingembre-citron-vert": {
+      "title": "Piña fresca con jengibre y lima",
+      "steps": [
+        "Pelar la piña, quitar el corazón y cortar la pulpa en trozos pequeños.",
+        "Mezclar el jengibre rallado, la ralladura y el jugo de la lima y el azúcar.",
+        "Verter sobre la piña, añadir la menta picada y servir frío."
+      ]
+    },
+    "gateau-cacao-vegan": {
+      "title": "Bizcocho vegano de cacao",
+      "steps": [
+        "Precalentar el horno a 180 °C y engrasar un molde.",
+        "Mezclar la harina, el cacao en polvo, el azúcar, el azúcar avainillado, la levadura química y la sal.",
+        "Añadir el aceite, el vinagre y 20 cl de agua, luego batir solo hasta obtener una masa lisa.",
+        "Verter en el molde, hornear 30 minutos y dejar templar antes de desmoldar."
+      ]
+    },
+    "shrikhand-yaourt-mangue": {
+      "title": "Shrikhand, yogur escurrido con mango",
+      "steps": [
+        "Verter los yogures en un colador forrado con un paño limpio y dejar escurrir 3 horas en frío.",
+        "Mezclar el yogur escurrido con el azúcar y la canela.",
+        "Repartir en cuencos, añadir el mango en dados y los pistachos picados."
+      ]
+    },
+    "baghrir-crepes-mille-trous": {
+      "title": "Baghrir, crepes marroquíes mil agujeros",
+      "steps": [
+        "Triturar la sémola, la harina, el azúcar, la sal, las dos levaduras y 45 cl de agua tibia durante 1 minuto.",
+        "Dejar reposar la masa 30 minutos a temperatura ambiente, hasta que haga espuma.",
+        "Verter un pequeño cucharón en una sartén antiadherente caliente y cocinar sin dar la vuelta hasta que la superficie esté seca y cubierta de agujeros.",
+        "Derretir la mantequilla con la miel y bañar las crepes con esta mezcla."
+      ]
+    },
+    "foul-feves-citron-cumin": {
+      "title": "Foul, habas con limón y comino",
+      "steps": [
+        "Calentar las habas escurridas 8 minutos con 10 cl de agua.",
+        "Machacar groseramente con el ajo triturado, el comino, la sal y el jugo de limón.",
+        "Servir rociado con aceite de oliva, con el tomate en dados y el perejil picado."
+      ]
+    },
+    "pita-zaatar-huile-olive": {
+      "title": "Pitas con zaatar y crudités",
+      "steps": [
+        "Precalentar el horno a 200 °C y mezclar el zaatar con el aceite de oliva.",
+        "Untar las pitas con esta mezcla y hornear 6 minutos.",
+        "Servir caliente con el tomate y el pepino en rodajas y la menta."
+      ]
+    },
+    "upma-semoule-legumes": {
+      "title": "Upma, sémola salada con verduras",
+      "steps": [
+        "Tostar la sémola en seco 3 minutos en una sartén, luego reservar.",
+        "Sofreír en el aceite el comino, la cebolla picada, la zanahoria en dados pequeños y el jengibre fresco rallado.",
+        "Añadir los guisantes congelados, la cúrcuma, la sal y 55 cl de agua, luego llevar a ebullición.",
+        "Verter la sémola en forma de lluvia, remover 2 minutos, tapar fuera del fuego 3 minutos y rociar con jugo de limón."
+      ]
+    },
+    "omelette-masala-tomate": {
+      "title": "Tortilla masala con tomate",
+      "steps": [
+        "Batir los huevos con la sal y las especias.",
+        "Añadir la cebolla picada, el tomate en dados pequeños y el cilantro fresco picado.",
+        "Cocinar en el aceite a fuego medio en dos veces, doblando la tortilla cuando aún esté jugosa."
+      ]
+    },
+    "congee-riz-poulet-gingembre": {
+      "title": "Congee, gachas de arroz con pollo y jengibre",
+      "steps": [
+        "Llevar a ebullición el arroz enjuagado con 2 litros de agua, el jengibre fresco en láminas, la sal y la pechuga de pollo entera.",
+        "Dejar hervir suavemente 15 minutos, retirar el pollo y desmenuzarlo.",
+        "Continuar la cocción del arroz 35 minutos a fuego bajo, removiendo, hasta obtener una papilla.",
+        "Volver a poner el pollo y servir con tamari, aceite de sésamo y cebolla tierna en rodajas finas."
+      ]
+    },
+    "tamagoyaki-omelette-roulee": {
+      "title": "Tamagoyaki, tortilla japonesa enrollada",
+      "steps": [
+        "Batir los huevos con el azúcar, el tamari y la cebolla tierna en rodajas finas.",
+        "Verter una capa fina en una sartén engrasada a fuego medio, luego enrollar la tortilla hacia un lado cuando cuaje.",
+        "Verter una nueva capa debajo del rollo y repetir hasta terminar.",
+        "Dejar templar y cortar en rodajas."
+      ]
+    },
+    "huevos-rancheros-haricots": {
+      "title": "Huevos rancheros con frijoles rojos",
+      "steps": [
+        "Sofreír la cebolla picada y el ajo en el aceite, añadir los tomates, el comino, la guindilla y la sal, luego cocinar 8 minutos.",
+        "Añadir los frijoles rojos escurridos y calentar.",
+        "Hacer 4 huecos en la salsa, cascar los huevos en ellos, tapar y cocinar 5 minutos.",
+        "Calentar las tortillas en la sartén, rellenar con la salsa y un huevo, luego espolvorear con cilantro fresco picado."
+      ]
+    },
+    "frittata-legumes-four": {
+      "title": "Frittata de verduras",
+      "steps": [
+        "Precalentar el horno a 190 °C.",
+        "Sofreír la cebolla, el pimiento y el calabacín en dados pequeños 8 minutos en el aceite, en una sartén apta para horno.",
+        "Batir los huevos con la sal y la albahaca picada, luego verter sobre las verduras.",
+        "Cocinar 2 minutos al fuego, luego hornear 12 minutos."
+      ]
+    },
+    "tartines-ricotta-miel-fraises": {
+      "title": "Tostadas de ricotta con miel y fresas",
+      "steps": [
+        "Cortar la baguette por la mitad a lo largo, luego en trozos.",
+        "Untar con ricotta.",
+        "Añadir las fresas en rodajas y rociar con miel."
+      ]
+    },
+    "porridge-arachide-banane": {
+      "title": "Porridge de cacahuete y banana",
+      "steps": [
+        "Llevar la bebida de soja a ebullición suave con la canela.",
+        "Añadir los copos de avena y cocinar 5 minutos removiendo.",
+        "Fuera del fuego, incorporar la mantequilla de cacahuete.",
+        "Servir con las bananas en rodajas."
+      ]
+    },
+    "chia-coco-mangue": {
+      "title": "Pudín de chía con coco y mango",
+      "steps": [
+        "Mezclar la leche de coco, 20 cl de agua, el azúcar y las semillas de chía.",
+        "Remover de nuevo después de 10 minutos y dejar en frío toda la noche.",
+        "Triturar el mango con el jugo de la lima.",
+        "Servir el pudín con el puré de mango."
+      ]
+    },
+    "tofu-brouille-tomate-curcuma": {
+      "title": "Tofu revuelto con tomate y cúrcuma",
+      "steps": [
+        "Desmenuzar el tofu firme con un tenedor.",
+        "Sofreír la cebolla tierna en rodajas finas en el aceite, añadir la cúrcuma y el pimentón.",
+        "Añadir el tofu, el tomate en dados y la sal, luego cocinar 6 minutos removiendo."
+      ]
+    },
+    "smoothie-mangue-banane-coco": {
+      "title": "Batido de mango, banana y coco",
+      "steps": [
+        "Pelar el mango y las bananas y cortarlas en trozos.",
+        "Triturar con la leche de coco, el jugo de la lima y 30 cl de agua bien fría.",
+        "Servir enseguida."
+      ]
+    },
+    "puff-puff-beignets": {
+      "title": "Puff-puff, buñuelos de África occidental",
+      "steps": [
+        "Mezclar la harina, el azúcar, la levadura seca de panadería, la sal y 20 cl de agua tibia hasta obtener una masa espesa y pegajosa.",
+        "Tapar y dejar levar 1 h en un lugar templado.",
+        "Calentar aceite hasta 3 cm de altura en una cacerola profunda.",
+        "Depositar bolas de masa con una cuchara y freír 5 minutos dándoles la vuelta, hasta que estén doradas.",
+        "Escurrir sobre papel absorbente y servir templado."
+      ]
     }
   },
   "ingredients": {
@@ -1281,6 +3249,77 @@
     "poelee-legumes": "Salteado de verduras congeladas",
     "framboise-surgelee": "Frutos rojos congelados",
     "crevette": "Gambas peladas",
-    "jus-orange": "Zumo de naranja"
+    "jus-orange": "Zumo de naranja",
+    "citron-vert": "Lima",
+    "ananas": "Piña",
+    "oignon-nouveau": "Cebolla tierna",
+    "germes-soja": "Brotes de soja",
+    "boeuf-rumsteck": "Filete de ternera",
+    "abricot-sec": "Albaricoques secos",
+    "raisins-secs": "Pasas",
+    "amande-poudre": "Almendra molida",
+    "amande-effilee": "Almendras laminadas",
+    "pistache": "Pistachos pelados",
+    "noix-coco-rapee": "Coco rallado",
+    "beurre-cacahuete": "Mantequilla de cacahuete",
+    "feuille-brick": "Hoja de brick",
+    "galette-riz": "Oblea de arroz",
+    "haricots-blancs": "Judías blancas en conserva",
+    "feves": "Habas en conserva",
+    "lentilles-corail": "Lentejas coral",
+    "farine-pois-chiches": "Harina de garbanzo",
+    "polenta": "Polenta",
+    "boisson-soja": "Bebida de soja",
+    "chia": "Semillas de chía",
+    "maizena": "Fécula de maíz",
+    "agar": "Agar-agar",
+    "cafe": "Café soluble",
+    "sesame": "Semillas de sésamo",
+    "huile-sesame": "Aceite de sésamo",
+    "huile-tournesol": "Aceite de girasol",
+    "tamari": "Tamari (salsa de soja sin gluten)",
+    "nuoc-mam": "Nuoc-mâm",
+    "ras-el-hanout": "Ras el hanout",
+    "garam-masala": "Garam masala",
+    "origan": "Orégano",
+    "zaatar": "Zaatar (tomillo y sésamo)",
+    "sucre-vanille": "Azúcar avainillado",
+    "eau-fleur-oranger": "Agua de azahar",
+    "levure-boulangere": "Levadura seca de panadería",
+    "vin-blanc": "Vino blanco seco",
+    "vin-rouge": "Vino tinto",
+    "biere": "Cerveza rubia",
+    "cidre": "Sidra brut",
+    "veau": "Saltear la ternera",
+    "lapin": "Cortar el conejo en trozos",
+    "cuisse-canard": "Muslo de pato",
+    "porc-echine": "Lomo de cerdo",
+    "petit-sale": "Panceta salada de cerdo",
+    "saucisse-fumee": "Salchicha ahumada de cerdo",
+    "boudin-noir": "Morcilla",
+    "anchois": "Filetes de anchoa",
+    "truite": "Filete de trucha",
+    "maquereau": "Filete de caballa",
+    "haddock": "Eglefino ahumado",
+    "navet": "Nabo",
+    "panais": "Chirivía",
+    "fenouil": "Hinojo",
+    "endive": "Endivia",
+    "chou-vert": "Repollo rizado",
+    "chou-rouge": "Repollo morado",
+    "chou-bruxelles": "Coles de Bruselas",
+    "potimarron": "Calabaza potimarrón",
+    "cresson": "Berro",
+    "choucroute": "Chucrut crudo",
+    "flageolets": "Frijoles flageolet",
+    "pois-casses": "Guisantes partidos",
+    "sarrasin": "Harina de trigo sarraceno",
+    "pruneau": "Ciruelas pasas sin hueso",
+    "comte": "Queso Comté",
+    "pain-campagne": "Pan de campo (rebanada)",
+    "laurier": "Hoja de laurel",
+    "thym": "Tomillo seco",
+    "muscade": "Nuez moscada molida",
+    "estragon": "Estragón seco"
   }
 }

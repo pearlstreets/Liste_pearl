@@ -176,7 +176,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
           onToggle={toggleHave}
           qtyText={lt.qtyText}
           packText={lt.packText}
-          priceText={`${item.priceKnown ? '' : '~'}${formatEur(item.estimatedEur, lang)}`}
+          priceText={item.free ? '' : `${item.priceKnown ? '' : '~'}${formatEur(item.estimatedEur, lang)}`}
           usedText={
             Array.isArray(item.usedIn) && item.usedIn.length > 1
               ? t('shop.usedIn', { count: item.usedIn.length })
@@ -230,6 +230,12 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
       <Text style={s.big}>{t('shop.title')}</Text>
       <Text style={s.sub}>{t('shop.summary', { count, total: formatEur(total, lang) })}</Text>
       <Text style={s.note}>{t('shop.estimateNote')}</Text>
+      {shopping && shopping.unpricedCount > 0 ? (
+        <Text style={s.note}>{t('shop.unpriced', { count: shopping.unpricedCount })}</Text>
+      ) : null}
+      {shopping && shopping.missingRecipes && shopping.missingRecipes.length > 0 ? (
+        <Text style={s.note}>{t('shop.missingRecipes')}</Text>
+      ) : null}
       {pearl.covered.length > 0 ? (
         <View style={s.pearlBox}>
           <Text style={s.pearlTitle}>

@@ -113,7 +113,7 @@ function MealCard({
     return (
       <View style={[s.card, s.free, { paddingVertical: 18 }]}>
         <Text style={s.slot}>{slotLabel}</Text>
-        <Text style={s.freeText}>{t('week.noMeal')}</Text>
+        <Text style={s.freeText}>{t(meal.recipeId ? 'week.unavailable' : 'week.noMeal')}</Text>
         <View style={s.actions}>
           <Action icon="shuffle" label={t('week.change')} onPress={onChange} />
           <Action icon="restaurant-outline" label={t('week.free')} onPress={() => onFree(true)} />
@@ -134,6 +134,9 @@ function MealCard({
         <RecipeVisual recipe={recipe} ingredients={ingredients} height={132} radius={22} />
         <View style={s.badges}>
           {left ? <Badge icon="repeat" label={t('week.leftover')} tone="info" /> : null}
+          {meal.batchOf ? (
+            <Badge icon="checkmark-circle" label={t('week.prepared')} tone="info" />
+          ) : null}
           {meal.cookPersons > meal.persons + 0.01 && !meal.leftoverOf && !meal.free ? (
             <Badge icon="people" label={t('week.cookDouble')} tone="accent" />
           ) : null}
@@ -151,14 +154,18 @@ function MealCard({
               <Ionicons name="time-outline" size={14} color={T.muted} />
               <Text style={s.metaTxt}>{t('recipe.minutes', { n: recipe.timeMin })}</Text>
             </View>
-            <View style={s.meta}>
-              <Ionicons name="pricetag-outline" size={14} color={T.muted} />
-              <Text style={s.metaTxt}>{left ? t('week.alreadyCooked') : priceText}</Text>
-            </View>
-            <View style={s.meta}>
-              <Ionicons name="flame-outline" size={14} color={T.muted} />
-              <Text style={s.metaTxt}>{recipe.kcal} kcal</Text>
-            </View>
+            {!recipe.custom || left ? (
+              <View style={s.meta}>
+                <Ionicons name="pricetag-outline" size={14} color={T.muted} />
+                <Text style={s.metaTxt}>{left ? t('week.alreadyCooked') : priceText}</Text>
+              </View>
+            ) : null}
+            {!recipe.custom ? (
+              <View style={s.meta}>
+                <Ionicons name="flame-outline" size={14} color={T.muted} />
+                <Text style={s.metaTxt}>{recipe.kcal} kcal</Text>
+              </View>
+            ) : null}
           </View>
         </View>
       </TouchableOpacity>
