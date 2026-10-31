@@ -107,6 +107,7 @@ async function poster(events) {
   try {
     const res = await fetch(`${BASE_URL}${USAGE_PATH}`, {
       method: 'POST',
+      credentials: 'omit', // aucun cookie de l'appareil ne doit accompagner les compteurs
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ events }),
       signal: ctrl.signal,

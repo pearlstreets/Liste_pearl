@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Dela min vecka med mina nära",
       "familyShareHint": "Personer med tillgång till din lista ser dina måltider för veckan, aldrig din profil, dina anteckningar eller din budget.",
       "usageLabel": "Anonym användningsmätning",
-      "usageHint": "Vi räknar bara, per dag och språk, skapade menyer, skickade inköp och återbesök från en vecka till nästa. Utan konto, utan enhets-id och utan att spara ip-adress."
+      "usageHint": "Vi räknar bara, per dag och språk, skapade menyer, skickade inköp och återbesök från en vecka till nästa. Räknarna innehåller varken konto, enhets-id eller ip-adress."
     },
     "swap": {
       "title": "Byt ut den här rätten",

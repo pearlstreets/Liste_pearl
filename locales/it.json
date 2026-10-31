@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Condividere la mia settimana con i miei cari",
       "familyShareHint": "Le persone che hanno accesso alla Sua lista vedono i Suoi pasti della settimana, mai il Suo profilo, le Sue note o il Suo budget.",
       "usageLabel": "Misurazione anonima dell'utilizzo",
-      "usageHint": "Contiamo solo, per giorno e per lingua, i menu generati, le spese inviate e i ritorni da una settimana all'altra. Senza account, senza identificativo del dispositivo, senza conservare l'indirizzo IP."
+      "usageHint": "Contiamo solo, per giorno e per lingua, i menu generati, le spese inviate e i ritorni da una settimana all'altra. Questi contatori non contengono account, identificativo del dispositivo né indirizzo IP."
     },
     "swap": {
       "title": "Cambiare questo piatto",

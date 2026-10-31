@@ -104,6 +104,7 @@ describe('envoi', () => {
     const [url, opts] = global.fetch.mock.calls[0];
     expect(url).toBe('https://api.test/api/v1/users/list-menus/usage/');
     expect(opts.headers).toEqual({ 'Content-Type': 'application/json' });
+    expect(opts.credentials).toBe('omit');
     expect(JSON.parse(opts.body)).toEqual({ events: [{ event: 'plan_genere', lang: 'fr' }] });
     expect(etat().queue).toEqual([]);
   });

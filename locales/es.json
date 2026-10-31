@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Compartir mi semana con mis allegados",
       "familyShareHint": "Las personas con acceso a su lista ven sus comidas de la semana, nunca su perfil, sus notas ni su presupuesto.",
       "usageLabel": "Medición de uso anónima",
-      "usageHint": "Solo contamos, por día e idioma, los menús generados, las compras enviadas y los regresos de una semana a otra. Sin cuenta, sin identificador de dispositivo y sin conservar la dirección IP."
+      "usageHint": "Solo contamos, por día e idioma, los menús generados, las compras enviadas y los regresos de una semana a otra. Estos contadores no contienen cuenta, identificador de dispositivo ni dirección IP."
     },
     "swap": {
       "title": "Cambiar este plato",

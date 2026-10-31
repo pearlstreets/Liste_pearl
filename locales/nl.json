@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Mijn week delen met mijn naasten",
       "familyShareHint": "Mensen met toegang tot uw lijst zien uw maaltijden van de week, nooit uw profiel, notities of budget.",
       "usageLabel": "Anonieme gebruiksmeting",
-      "usageHint": "We tellen alleen, per dag en per taal, de gemaakte menu's, de verstuurde boodschappen en de terugkeer van de ene week naar de andere. Zonder account, zonder apparaat-ID, zonder bewaard IP-adres."
+      "usageHint": "We tellen alleen, per dag en per taal, de gemaakte menu's, de verstuurde boodschappen en de terugkeer van de ene week naar de andere. Deze tellers bevatten geen account, apparaat-ID of IP-adres."
     },
     "swap": {
       "title": "Dit gerecht wijzigen",

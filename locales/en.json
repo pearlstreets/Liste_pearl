@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Share my week with my loved ones",
       "familyShareHint": "People who have access to your list can see your meals for the week, never your profile, notes or budget.",
       "usageLabel": "Anonymous usage statistics",
-      "usageHint": "We only count, per day and per language, the menus generated, the shopping lists sent and the returns from one week to the next. No account, no device identifier, no IP address kept."
+      "usageHint": "We only count, per day and per language, the menus generated, the shopping lists sent and the returns from one week to the next. These counts contain no account, device identifier or IP address."
     },
     "swap": {
       "title": "Change this dish",

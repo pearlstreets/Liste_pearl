@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Partager ma semaine avec mes proches",
       "familyShareHint": "Les personnes qui ont accès à votre liste voient vos repas de la semaine, jamais votre profil, vos notes ni votre budget.",
       "usageLabel": "Mesure d'usage anonyme",
-      "usageHint": "Nous comptons seulement, par jour et par langue, les menus générés, les courses envoyées et les retours d'une semaine à l'autre. Sans compte, sans identifiant d'appareil, sans adresse IP conservée."
+      "usageHint": "Nous comptons seulement, par jour et par langue, les menus générés, les courses envoyées et les retours d'une semaine à l'autre. Ces compteurs ne contiennent ni compte, ni identifiant d'appareil, ni adresse IP."
     },
     "swap": {
       "title": "Changer ce plat",

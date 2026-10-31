@@ -1,6 +1,6 @@
 // Semaine partagée en famille : réglage, lecture de la réponse du serveur, accès sans compte.
 import { cleanFamilyShare, cleanSharedWeeks, defaultFamilyShare } from '../lib/menus/sharedWeek';
-import { SYNC_KEYS, SYNC_SHAPES } from '../lib/menus/sync';
+import { SYNC_KEYS, SYNC_SHAPES, mergeSync } from '../lib/menus/sync';
 import { MENUS_KEY } from '../lib/menus/storage';
 import { fetchSharedWeeks } from '../services/sharedMenus';
 import { apiJsonWithStatus, getTokens } from '../services/api';
@@ -50,10 +50,47 @@ describe('réglage familyShare', () => {
   });
 });
 
+describe('conflit entre deux téléphones sur familyShare', () => {
+  const fusion = (local, distant) =>
+    mergeSync(
+      { familyShare: { u: local.u, v: { enabled: local.on } } },
+      { familyShare: { u: distant.u, v: { enabled: distant.on } } },
+      { dirty: { familyShare: true }, base: { familyShare: 1 } }
+    );
+
+  test('couper gagne même avec une horloge en retard', () => {
+    const r = fusion({ u: 100, on: false }, { u: 200, on: true });
+    expect(r.data.familyShare.v).toEqual({ enabled: false });
+    expect(r.data.familyShare.u).toBeGreaterThan(200);
+    expect(r.toApply).toContain('familyShare');
+    expect(r.toPush).toContain('familyShare');
+  });
+
+  test('couper gagne aussi quand il vient du serveur', () => {
+    const r = fusion({ u: 100, on: true }, { u: 200, on: false });
+    expect(r.data.familyShare.v).toEqual({ enabled: false });
+  });
+
+  test('sans conflit, rallumer reste possible', () => {
+    const r = mergeSync(
+      { familyShare: { u: 300, v: { enabled: true } } },
+      { familyShare: { u: 200, v: { enabled: false } } },
+      { dirty: { familyShare: true }, base: { familyShare: 200 } }
+    );
+    expect(r.data.familyShare.v).toEqual({ enabled: true });
+  });
+});
+
 describe('cleanSharedWeeks', () => {
+  test('deux proches au même pseudo gardent chacun leur clé', () => {
+    const [a, b] = cleanSharedWeeks({ weeks: [SEMAINE, SEMAINE] });
+    expect(a.id).not.toBe(b.id);
+  });
+
   test('garde les trois formes de repas', () => {
     expect(cleanSharedWeeks({ weeks: [SEMAINE] })).toEqual([
       {
+        id: 0,
         name: 'Maman',
         weekStart: '2026-11-02',
         meals: [

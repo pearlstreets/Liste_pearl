@@ -96,7 +96,7 @@ export default function SharedWeekScreen({ weeks, onClose }) {
       ) : (
         <ScrollView contentContainerStyle={s.body} showsVerticalScrollIndicator={false}>
           {weeks.map((w) => (
-            <View key={`${w.name}:${w.weekStart}`}>
+            <View key={w.id}>
               <SectionTitle
                 title={t('shared.weekOf', { name: w.name })}
                 hint={weekLabel(w.weekStart, lang, t)}

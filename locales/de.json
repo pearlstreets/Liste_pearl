@@ -1189,7 +1189,7 @@
       "familyShareLabel": "Meine Woche mit meinen Liebsten teilen",
       "familyShareHint": "Personen mit Zugriff auf Ihre Liste sehen Ihre Mahlzeiten der Woche, niemals Ihr Profil, Ihre Notizen oder Ihr Budget.",
       "usageLabel": "Anonyme Nutzungsmessung",
-      "usageHint": "Wir zählen nur pro Tag und Sprache die erstellten Menüs, die gesendeten Einkäufe und die Rückkehr von einer Woche zur nächsten. Ohne Konto, ohne Gerätekennung, ohne gespeicherte IP-Adresse."
+      "usageHint": "Wir zählen nur pro Tag und Sprache die erstellten Menüs, die gesendeten Einkäufe und die Rückkehr von einer Woche zur nächsten. Diese Zähler enthalten weder Konto noch Gerätekennung noch IP-Adresse."
     },
     "swap": {
       "title": "Dieses Gericht austauschen",
