@@ -60,7 +60,13 @@ const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress
   );
 });
 
-export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpenBatch }) {
+export default function WeekScreen({
+  navigation,
+  onOpenRecipe,
+  onOpenShop,
+  onOpenBatch,
+  onOpenShared,
+}) {
   const t = useT();
   const m = useMenus();
   const { plan, busy, genError, dirty, texts, recipeById, ingredients, lang } = m;
@@ -140,6 +146,11 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
             />
           }
         />
+        {onOpenShared ? (
+          <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
+            <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
+          </TouchableOpacity>
+        ) : null}
         {genError ? (
           <View style={{ paddingHorizontal: 20 }}>
             <ErrorBox
@@ -209,6 +220,11 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
           onPress={onOpenBatch}
           style={{ alignSelf: 'stretch', marginTop: 12, minHeight: 46 }}
         />
+        {onOpenShared ? (
+          <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
+            <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
+          </TouchableOpacity>
+        ) : null}
 
         {target0.proposeNext && plan.weekStart !== target0.next ? (
           <View style={s.nextBox}>
@@ -266,7 +282,9 @@ export default function WeekScreen({ navigation, onOpenRecipe, onOpenShop, onOpe
           ) : null}
           <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text>
           {m.shopping && m.shopping.unpricedCount > 0 ? (
-            <Text style={s.gaugeFoot}>{t('shop.unpriced', { count: m.shopping.unpricedCount })}</Text>
+            <Text style={s.gaugeFoot}>
+              {t('shop.unpriced', { count: m.shopping.unpricedCount })}
+            </Text>
           ) : null}
         </View>
 

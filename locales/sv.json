@@ -1184,7 +1184,12 @@
       "syncLast": "Senaste säkerhetskopia: {{date}}",
       "syncPending": "Första säkerhetskopian väntar",
       "syncGuest": "Logga in för att säkerhetskopiera dina menyer på ditt konto.",
-      "resetTextAccount": "Din vecka, dina favoriter, anteckningar och historik raderas från den här enheten och från ditt konto."
+      "resetTextAccount": "Din vecka, dina favoriter, anteckningar och historik raderas från den här enheten och från ditt konto.",
+      "privacy": "Delning och integritet",
+      "familyShareLabel": "Dela min vecka med mina nära",
+      "familyShareHint": "Personer med tillgång till din lista ser dina måltider för veckan, aldrig din profil, dina anteckningar eller din budget.",
+      "usageLabel": "Anonym användningsmätning",
+      "usageHint": "Vi räknar bara, per dag och språk, skapade menyer, skickade inköp och återbesök från en vecka till nästa. Utan konto, utan enhets-id och utan att spara ip-adress."
     },
     "swap": {
       "title": "Byt ut den här rätten",
@@ -1256,7 +1261,8 @@
       "composeNext": "Planera nästa vecka",
       "nextBanner": "Helgen närmar sig. Förbered nästa vecka: {{date}}.",
       "unavailable": "Det här receptet är inte längre tillgängligt",
-      "prepared": "Förberedd"
+      "prepared": "Förberedd",
+      "sharedLink": "Se mina näras vecka"
     },
     "recipe": {
       "minutes": "{{n}} min",
@@ -1526,6 +1532,18 @@
         "cut": "Skär",
         "prepare": "Förbered"
       }
+    },
+    "shared": {
+      "title": "Mina näras vecka",
+      "weekOf": "Veckan för {{name}}",
+      "emptyTitle": "Inget att visa just nu",
+      "emptyText": "Ingen av dina nära delar sin vecka just nu.",
+      "personal": "Eget recept",
+      "unknown": "Receptet är inte tillgängligt",
+      "addShop": "Lägg till i mina inköp",
+      "addWeek": "Lägg till i min vecka",
+      "addedShop": "Tillagt i dina inköp",
+      "addedWeek": "Tillagt i din vecka"
     }
   }
 }

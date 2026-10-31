@@ -1182,7 +1182,12 @@
       "syncLast": "上次备份：{{date}}",
       "syncPending": "等待首次备份",
       "syncGuest": "请登录，以便将您的菜单备份到您的账户。",
-      "resetTextAccount": "您的一周菜单、收藏、笔记和历史记录将从此设备和您的账户中删除。"
+      "resetTextAccount": "您的一周菜单、收藏、笔记和历史记录将从此设备和您的账户中删除。",
+      "privacy": "分享与隐私",
+      "familyShareLabel": "与亲友分享我的一周",
+      "familyShareHint": "可访问您清单的人能看到您本周的餐食，但绝不会看到您的个人资料、笔记或预算。",
+      "usageLabel": "匿名使用统计",
+      "usageHint": "我们仅按日期和语言统计生成的菜单、发送的购物清单以及隔周回访次数。不涉及账户，不使用设备标识符，不保存 IP 地址。"
     },
     "swap": {
       "title": "更换此菜品",
@@ -1254,7 +1259,8 @@
       "composeNext": "规划下周",
       "nextBanner": "周末将至，请提前准备下一周: {{date}}。",
       "unavailable": "此食谱已不可用",
-      "prepared": "已批量备好"
+      "prepared": "已批量备好",
+      "sharedLink": "查看亲友的一周"
     },
     "recipe": {
       "minutes": "{{n}} 分钟",
@@ -1514,6 +1520,18 @@
         "cut": "切块",
         "prepare": "准备"
       }
+    },
+    "shared": {
+      "title": "亲友的一周",
+      "weekOf": "{{name}} 的一周",
+      "emptyTitle": "暂无内容",
+      "emptyText": "目前没有亲友分享他们的一周。",
+      "personal": "个人食谱",
+      "unknown": "食谱不可用",
+      "addShop": "添加到我的购物清单",
+      "addWeek": "添加到我的一周",
+      "addedShop": "已添加到您的购物清单",
+      "addedWeek": "已添加到您的一周"
     }
   }
 }

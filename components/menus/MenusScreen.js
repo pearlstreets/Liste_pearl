@@ -17,6 +17,8 @@ import CookMode from './CookMode';
 import BatchScreen from './BatchScreen';
 import RecipeEditScreen from './RecipeEditScreen';
 import SettingsScreen from './SettingsScreen';
+import SharedWeekScreen from './SharedWeekScreen';
+import useSharedWeeks from './useSharedWeeks';
 import { onMenuReminderOpen, takePendingMenuReminder } from '../../services/menuReminders';
 
 const TABS = ['week', 'shop', 'discover'];
@@ -40,9 +42,11 @@ function Inner({ navigation }) {
     setTab('week');
   }, []);
   const goShop = useCallback(() => setTab('shop'), []);
+  const openShared = useCallback(() => push({ type: 'sharedWeek' }), [push]);
 
   // Notification de rappel touchée : on arrive sur le bon écran, sans calque par-dessus.
   const { ready, onboarded, recipeById } = m;
+  const sharedWeeks = useSharedWeeks(focused && ready && onboarded);
   useEffect(() => {
     if (!ready || !onboarded) return undefined;
     const ouvrir = () => {
@@ -131,6 +135,7 @@ function Inner({ navigation }) {
             onOpenRecipe={openRecipe}
             onOpenShop={goShop}
             onOpenBatch={openBatch}
+            onOpenShared={sharedWeeks.length ? openShared : null}
           />
         </View>
         <View style={[s.fill, tab !== 'shop' && s.hidden]}>
@@ -164,6 +169,9 @@ function Inner({ navigation }) {
           {top.type === 'batch' ? <BatchScreen onClose={pop} onOpenRecipe={openRecipe} /> : null}
           {top.type === 'recipeEdit' ? <RecipeEditScreen id={top.id} onClose={pop} /> : null}
           {top.type === 'settings' ? <SettingsScreen onClose={pop} /> : null}
+          {top.type === 'sharedWeek' ? (
+            <SharedWeekScreen weeks={sharedWeeks} onClose={pop} />
+          ) : null}
         </View>
       ) : null}
     </View>

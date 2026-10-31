@@ -54,6 +54,8 @@ import {
   loadMyRecipes,
   loadReminders,
   saveReminders,
+  loadFamilyShare,
+  saveFamilyShare,
   loadBatch,
   saveBatch,
   newSession,
@@ -75,6 +77,8 @@ import {
 import { mondayISO, weekTarget, isPastWeek, toISO } from '../../lib/menus/weeks';
 import { recipeListLines } from '../../lib/menus/recipeList';
 import { ingredientQueries } from '../../lib/menus/pearl';
+import { cleanFamilyShare, defaultFamilyShare } from '../../lib/menus/sharedWeek';
+import { noteMenusVisit, startMenusUsage, trackMenusUsage } from '../../services/menusUsage';
 import { onMenusRemoteChange } from '../../services/menusSync';
 import {
   persistPhoto,
@@ -129,6 +133,9 @@ export function MenusProvider({ children }) {
   const [pantryOn, setPantryOn] = useState(false);
   const [reminders, setReminders] = useState(defaultReminders());
   const remindersRef = useRef(reminders);
+  const [familyShare, setFamilyShare] = useState(defaultFamilyShare());
+  const langRef = useRef(lang);
+  langRef.current = lang;
   const [batch, setBatch] = useState(null);
   const batchRef = useRef(null);
 
@@ -156,7 +163,7 @@ export function MenusProvider({ children }) {
     const seq = editSeq.current;
     setLoadError(false);
     try {
-      const [pr, pl, hi, fa, no, co, fr, me, my, rm, ba] = await Promise.all([
+      const [pr, pl, hi, fa, no, co, fr, me, my, rm, ba, fs] = await Promise.all([
         loadProfile(),
         loadPlan(),
         loadHistory(),
@@ -168,6 +175,7 @@ export function MenusProvider({ children }) {
         loadMyRecipes(),
         loadReminders(),
         loadBatch(),
+        loadFamilyShare(),
       ]);
       if (opts.remote && seq !== editSeq.current) return false;
       let plan0 = pl || null;
@@ -192,6 +200,7 @@ export function MenusProvider({ children }) {
       setMyRecipes(Array.isArray(my) ? my : []);
       remindersRef.current = cleanReminders(rm);
       setReminders(remindersRef.current);
+      setFamilyShare(cleanFamilyShare(fs));
       batchRef.current = ba || null;
       setBatch(batchRef.current);
       if (!holdOnboarding.current) setOnboarded(!!(me && me.onboarded) || !!pl);
@@ -204,6 +213,13 @@ export function MenusProvider({ children }) {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Mesure d'usage anonyme : jamais bloquante, désactivable dans les réglages.
+  useEffect(() => {
+    if (!ready || !onboarded) return;
+    startMenusUsage(AppState);
+    noteMenusVisit(langRef.current);
+  }, [ready, onboarded]);
 
   // Photos restées sur le téléphone (hors ligne à l'enregistrement) : reprise à l'ouverture et au
   // retour dans l'application.
@@ -295,6 +311,7 @@ export function MenusProvider({ children }) {
               setPlan(next);
               setRemoved([]);
               setDirty(false);
+              trackMenusUsage('plan_genere', langRef.current);
               resolve(next);
             } catch {
               setGenError(true);
@@ -349,6 +366,14 @@ export function MenusProvider({ children }) {
     remindersRef.current = next;
     setReminders(next);
     await saveReminders(next);
+  }, []);
+
+  /** Partage de ma semaine : suit l'écriture, donc la synchronisation. */
+  const updateFamilyShare = useCallback(async (enabled) => {
+    noteEdit();
+    const next = cleanFamilyShare({ enabled });
+    setFamilyShare(next);
+    await saveFamilyShare(next);
   }, []);
 
   const swap = useCallback(
@@ -466,7 +491,9 @@ export function MenusProvider({ children }) {
       if (d.photoTemp) {
         const file = await persistPhoto(d.photoTemp);
         photoLost = !file;
-        d = file ? { ...d, photoFile: file, photoUrl: null, photoTemp: null } : { ...d, photoTemp: null };
+        d = file
+          ? { ...d, photoFile: file, photoUrl: null, photoTemp: null }
+          : { ...d, photoTemp: null };
       }
       const nameIndex = buildNameIndex(ingredients, [baseTexts, getTexts('fr')]);
       const recipe = recipeFromDraft(d, { nameIndex });
@@ -528,6 +555,7 @@ export function MenusProvider({ children }) {
     profileRef.current = defaultProfile();
     remindersRef.current = defaultReminders();
     setReminders(remindersRef.current);
+    setFamilyShare(defaultFamilyShare());
     batchRef.current = null;
     setBatch(null);
     setOnboarded(false);
@@ -601,6 +629,7 @@ export function MenusProvider({ children }) {
           const packs = {};
           for (const l of all) packs[l.key] = l.packs;
           await markSent(id, packs);
+          trackMenusUsage('courses_envoyees', langRef.current);
           if (hasRecipes(planRef.current)) {
             try {
               await pushHistory(planRef.current);
@@ -725,6 +754,7 @@ export function MenusProvider({ children }) {
           DeviceEventEmitter.emit('LISTS_UPDATED');
         } catch {}
         await setBatchPrepared(true);
+        trackMenusUsage('courses_envoyees', langRef.current);
       }
       return { ...r, count: (r.added || 0) + (r.merged || 0) };
     } catch {
@@ -766,6 +796,8 @@ export function MenusProvider({ children }) {
       updateProfile,
       reminders,
       updateReminders,
+      familyShare,
+      updateFamilyShare,
       plan,
       busy,
       genError,
@@ -823,6 +855,8 @@ export function MenusProvider({ children }) {
       updateProfile,
       reminders,
       updateReminders,
+      familyShare,
+      updateFamilyShare,
       plan,
       busy,
       genError,

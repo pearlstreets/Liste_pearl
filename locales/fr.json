@@ -1184,7 +1184,12 @@
       "syncLast": "Dernière sauvegarde : {{date}}",
       "syncPending": "Première sauvegarde en attente",
       "syncGuest": "Connectez-vous pour sauvegarder vos menus sur votre compte.",
-      "resetTextAccount": "Votre semaine, vos favoris, vos notes et votre historique seront effacés de cet appareil et de votre compte."
+      "resetTextAccount": "Votre semaine, vos favoris, vos notes et votre historique seront effacés de cet appareil et de votre compte.",
+      "privacy": "Partage et confidentialité",
+      "familyShareLabel": "Partager ma semaine avec mes proches",
+      "familyShareHint": "Les personnes qui ont accès à votre liste voient vos repas de la semaine, jamais votre profil, vos notes ni votre budget.",
+      "usageLabel": "Mesure d'usage anonyme",
+      "usageHint": "Nous comptons seulement, par jour et par langue, les menus générés, les courses envoyées et les retours d'une semaine à l'autre. Sans compte, sans identifiant d'appareil, sans adresse IP conservée."
     },
     "swap": {
       "title": "Changer ce plat",
@@ -1256,7 +1261,8 @@
       "composeNext": "Composer la semaine prochaine",
       "nextBanner": "Le week-end arrive. Préparez la suite : {{date}}.",
       "unavailable": "Cette recette n'est plus disponible",
-      "prepared": "Préparé en lot"
+      "prepared": "Préparé en lot",
+      "sharedLink": "Voir la semaine de mes proches"
     },
     "recipe": {
       "minutes": "{{n}} min",
@@ -1526,6 +1532,18 @@
         "cut": "Couper",
         "prepare": "Préparer"
       }
+    },
+    "shared": {
+      "title": "Semaine de mes proches",
+      "weekOf": "Semaine de {{name}}",
+      "emptyTitle": "Rien à afficher pour le moment",
+      "emptyText": "Aucun proche ne partage sa semaine actuellement.",
+      "personal": "Recette personnelle",
+      "unknown": "Recette non disponible",
+      "addShop": "Ajouter à mes courses",
+      "addWeek": "Ajouter à ma semaine",
+      "addedShop": "Ajouté à vos courses",
+      "addedWeek": "Ajouté à votre semaine"
     }
   }
 }

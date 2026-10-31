@@ -6,6 +6,7 @@ import { T } from './theme';
 import { SectionTitle, GhostButton } from './ui';
 import { HouseholdSection, MealsSection, DietSection } from './ProfileForms';
 import RemindersSection from './RemindersSection';
+import PrivacySection from './PrivacySection';
 import { useMenus } from './MenusContext';
 import { loadMenusSyncStatus, onMenusSyncStatus } from '../../services/menusSync';
 import useT from './useT';
@@ -89,6 +90,7 @@ export default function SettingsScreen({ onClose }) {
         <SectionTitle title={t('settings.diet')} />
         <DietSection profile={profile} onChange={change} texts={texts} ingredients={ingredients} />
         <RemindersSection />
+        <PrivacySection connected={!!(sync && sync.connected)} />
         <SectionTitle title={t('settings.sync')} />
         <Text style={s.sync}>{syncLine(t, sync, lang)}</Text>
         <View style={{ marginTop: 34, alignItems: 'center' }}>
