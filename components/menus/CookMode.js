@@ -15,12 +15,18 @@ const fmt = (sec) => {
   return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
 };
 
-export default function CookMode({ id, persons, onClose }) {
+// guided (cuisine en lot) : { steps:[{ text, title, timerSec }], startIdx, onAdvance(i), onFinish() }.
+// Sans lui, le mode suit une recette, comme avant.
+export default function CookMode({ id, persons, onClose, guided }) {
   const t = useT();
   const { recipeById, texts, ingredients, lang, markCooked } = useMenus();
   const recipe = recipeById.get(id);
-  const steps = useMemo(() => (recipe ? texts.recipeSteps(id) : []), [recipe, texts, id]);
-  const [idx, setIdx] = useState(0);
+  const seq = guided ? guided.steps : null;
+  const steps = useMemo(
+    () => (seq ? seq.map((x) => x.text) : recipe ? texts.recipeSteps(id) : []),
+    [seq, recipe, texts, id]
+  );
+  const [idx, setIdx] = useState(() => (guided ? Number(guided.startIdx) || 0 : 0));
   const [showIng, setShowIng] = useState(false);
   // minuteurs : { [étape]: { total, left, endAt } } ; endAt = fin prévue quand il tourne
   const [timers, setTimers] = useState({});
@@ -51,13 +57,15 @@ export default function CookMode({ id, persons, onClose }) {
 
   const timerOf = useCallback(
     (i) => {
-      const secs = recipe && recipe.stepTimers && Number(recipe.stepTimers[String(i)]);
+      const secs = seq
+        ? seq[i] && Number(seq[i].timerSec)
+        : recipe && recipe.stepTimers && Number(recipe.stepTimers[String(i)]);
       if (!secs || !(secs > 0)) return null;
       const cur = timers[i] || { total: secs, left: secs, endAt: null };
       const left = cur.endAt ? Math.max(0, Math.ceil((cur.endAt - now) / 1000)) : cur.left;
       return { ...cur, total: secs, left };
     },
-    [recipe, timers, now]
+    [seq, recipe, timers, now]
   );
 
   const startPause = (i) => {
@@ -93,7 +101,7 @@ export default function CookMode({ id, persons, onClose }) {
     [t]
   );
 
-  if (!recipe || steps.length === 0) {
+  if ((!recipe && !seq) || steps.length === 0) {
     return (
       <View style={[s.root, { alignItems: 'center', justifyContent: 'center', padding: 24 }]}>
         <Text style={s.stepTxt}>{t('cook.none')}</Text>
@@ -103,15 +111,23 @@ export default function CookMode({ id, persons, onClose }) {
     );
   }
 
-  const last = idx === steps.length - 1;
-  const tm = timerOf(idx);
+  const cur = Math.min(idx, steps.length - 1);
+  const last = cur === steps.length - 1;
+  const tm = timerOf(cur);
   const others = Object.keys(timers)
     .map((k) => Number(k))
-    .filter((k) => k !== idx && timers[k].endAt);
+    .filter((k) => k !== cur && timers[k].endAt);
 
   const finish = async () => {
-    await markCooked(id);
+    if (guided) {
+      await guided.onAdvance(cur);
+      await guided.onFinish();
+    } else await markCooked(id);
     onClose();
+  };
+  const next = () => {
+    if (guided) guided.onAdvance(cur);
+    setIdx(cur + 1);
   };
 
   return (
@@ -126,25 +142,29 @@ export default function CookMode({ id, persons, onClose }) {
           <Ionicons name="close" size={26} color={T.ink} />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={s.counter}>{t('cook.stepOf', { n: idx + 1, total: steps.length })}</Text>
+          <Text style={s.counter}>{t('cook.stepOf', { n: cur + 1, total: steps.length })}</Text>
           <Text style={s.name} numberOfLines={1}>
-            {texts.recipeTitle(id)}
+            {seq ? seq[cur].title : texts.recipeTitle(id)}
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => setShowIng(!showIng)}
-          style={s.x}
-          accessibilityLabel={t('recipe.ingredients')}
-        >
-          <Ionicons
-            name={showIng ? 'list' : 'list-outline'}
-            size={24}
-            color={showIng ? T.brandDark : T.ink}
-          />
-        </TouchableOpacity>
+        {seq ? (
+          <View style={s.x} />
+        ) : (
+          <TouchableOpacity
+            onPress={() => setShowIng(!showIng)}
+            style={s.x}
+            accessibilityLabel={t('recipe.ingredients')}
+          >
+            <Ionicons
+              name={showIng ? 'list' : 'list-outline'}
+              size={24}
+              color={showIng ? T.brandDark : T.ink}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={s.progress}>
-        <View style={[s.progressFill, { width: `${((idx + 1) / steps.length) * 100}%` }]} />
+        <View style={[s.progressFill, { width: `${((cur + 1) / steps.length) * 100}%` }]} />
       </View>
 
       {others.length ? (
@@ -163,18 +183,19 @@ export default function CookMode({ id, persons, onClose }) {
       <ScrollView contentContainerStyle={s.body} showsVerticalScrollIndicator={false}>
         {showIng ? (
           <View style={s.ingBox}>
-            {lines.map((l) => {
+            {lines.map((l, i) => {
               const u = labels[l.displayUnit] !== undefined ? labels[l.displayUnit] : l.displayUnit;
               return (
-                <Text key={l.key} style={s.ingTxt}>
+                <Text key={`${l.key}-${i}`} style={s.ingTxt}>
                   {(ingredients[l.key] && ingredients[l.key].emoji) || '•'}{' '}
-                  {texts.ingredientName(l.key)} : {u ? `${l.amount} ${u}` : l.amount}
+                  {texts.ingredientName(l.key)}
+                  {l.amount ? ` : ${u ? `${l.amount} ${u}` : l.amount}` : ''}
                 </Text>
               );
             })}
           </View>
         ) : null}
-        <Text style={s.stepTxt}>{steps[idx]}</Text>
+        <Text style={s.stepTxt}>{steps[cur]}</Text>
         {tm ? (
           <View style={[s.timer, tm.left === 0 && !tm.endAt && { backgroundColor: T.accentSoft }]}>
             <Text style={s.timerLabel}>
@@ -192,14 +213,14 @@ export default function CookMode({ id, persons, onClose }) {
                       ? t('cook.resume')
                       : t('cook.start')
                 }
-                onPress={() => startPause(idx)}
+                onPress={() => startPause(cur)}
               />
               <PrimaryButton
                 soft
                 style={{ minHeight: 48 }}
                 icon="refresh"
                 label={t('cook.reset')}
-                onPress={() => reset(idx)}
+                onPress={() => reset(cur)}
               />
             </View>
           </View>
@@ -212,8 +233,8 @@ export default function CookMode({ id, persons, onClose }) {
           style={{ flex: 1, marginRight: 10 }}
           icon="chevron-back"
           label={t('cook.prev')}
-          disabled={idx === 0}
-          onPress={() => setIdx(idx - 1)}
+          disabled={cur === 0}
+          onPress={() => setIdx(cur - 1)}
         />
         {last ? (
           <PrimaryButton
@@ -227,7 +248,7 @@ export default function CookMode({ id, persons, onClose }) {
             style={{ flex: 1.4 }}
             icon="chevron-forward"
             label={t('cook.next')}
-            onPress={() => setIdx(idx + 1)}
+            onPress={next}
           />
         )}
       </View>

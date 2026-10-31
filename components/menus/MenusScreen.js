@@ -14,7 +14,10 @@ import ShoppingScreen from './ShoppingScreen';
 import DiscoverScreen from './DiscoverScreen';
 import RecipeScreen from './RecipeScreen';
 import CookMode from './CookMode';
+import BatchScreen from './BatchScreen';
+import RecipeEditScreen from './RecipeEditScreen';
 import SettingsScreen from './SettingsScreen';
+import { onMenuReminderOpen, takePendingMenuReminder } from '../../services/menuReminders';
 
 const TABS = ['week', 'shop', 'discover'];
 
@@ -30,11 +33,31 @@ function Inner({ navigation }) {
 
   const openRecipe = useCallback((id, mealKey) => push({ type: 'recipe', id, mealKey }), [push]);
   const openCook = useCallback((id, persons) => push({ type: 'cook', id, persons }), [push]);
+  const openEdit = useCallback((id) => push({ type: 'recipeEdit', id: id || null }), [push]);
+  const openBatch = useCallback(() => push({ type: 'batch' }), [push]);
   const goWeek = useCallback(() => {
     setStack([]);
     setTab('week');
   }, []);
   const goShop = useCallback(() => setTab('shop'), []);
+
+  // Notification de rappel touchée : on arrive sur le bon écran, sans calque par-dessus.
+  const { ready, onboarded, recipeById } = m;
+  useEffect(() => {
+    if (!ready || !onboarded) return undefined;
+    const ouvrir = () => {
+      const c = takePendingMenuReminder();
+      if (!c) return;
+      setTab(c.target);
+      setStack(
+        c.recipeId && recipeById.has(c.recipeId)
+          ? [{ type: 'recipe', id: c.recipeId, mealKey: c.mealKey || undefined }]
+          : []
+      );
+    };
+    ouvrir();
+    return onMenuReminderOpen(ouvrir);
+  }, [ready, onboarded, recipeById]);
 
   useEffect(() => {
     if (!focused) return undefined;
@@ -103,13 +126,23 @@ function Inner({ navigation }) {
 
       <View style={s.fill}>
         <View style={[s.fill, tab !== 'week' && s.hidden]}>
-          <WeekScreen navigation={navigation} onOpenRecipe={openRecipe} onOpenShop={goShop} />
+          <WeekScreen
+            navigation={navigation}
+            onOpenRecipe={openRecipe}
+            onOpenShop={goShop}
+            onOpenBatch={openBatch}
+          />
         </View>
         <View style={[s.fill, tab !== 'shop' && s.hidden]}>
           <ShoppingScreen navigation={navigation} onOpenPlan={goWeek} />
         </View>
         {tab === 'discover' ? (
-          <DiscoverScreen onOpenRecipe={openRecipe} onOpenWeek={goWeek} />
+          <DiscoverScreen
+            onOpenRecipe={openRecipe}
+            onOpenWeek={goWeek}
+            onAddRecipe={openEdit}
+            onOpenBatch={openBatch}
+          />
         ) : null}
       </View>
 
@@ -121,12 +154,15 @@ function Inner({ navigation }) {
               mealKey={top.mealKey}
               onClose={pop}
               onCook={openCook}
+              onEdit={openEdit}
               navigation={navigation}
             />
           ) : null}
           {top.type === 'cook' ? (
             <CookMode id={top.id} persons={top.persons} onClose={pop} />
           ) : null}
+          {top.type === 'batch' ? <BatchScreen onClose={pop} onOpenRecipe={openRecipe} /> : null}
+          {top.type === 'recipeEdit' ? <RecipeEditScreen id={top.id} onClose={pop} /> : null}
           {top.type === 'settings' ? <SettingsScreen onClose={pop} /> : null}
         </View>
       ) : null}

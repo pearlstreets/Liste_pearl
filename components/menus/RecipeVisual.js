@@ -1,15 +1,16 @@
 // Visuel d'une recette : photo si elle existe un jour, sinon une composition d'émojis
 // d'ingrédients sur fond teinté (jamais d'image vide).
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import RECIPE_IMAGES from '../../lib/menus/recipeImages';
+import { photoSources } from '../../services/recipePhotos';
 import { COURSE_TINT, T } from './theme';
 
 const cache = new Map();
 
 function emojisOf(recipe, ingredients) {
   if (!recipe) return ['🍽️'];
-  const hit = cache.get(recipe.id);
+  const hit = !recipe.custom && cache.get(recipe.id); // une recette personnelle peut changer
   if (hit) return hit;
   const list = (recipe.ingredients || [])
     .map((i) => ({ i, ing: ingredients && ingredients[i.key] }))
@@ -23,7 +24,7 @@ function emojisOf(recipe, ingredients) {
   const out = [];
   for (const x of list) if (!out.includes(x.ing.emoji)) out.push(x.ing.emoji);
   const res = out.length ? out.slice(0, 3) : ['🍽️'];
-  cache.set(recipe.id, res);
+  if (!recipe.custom) cache.set(recipe.id, res);
   return res;
 }
 
@@ -37,11 +38,16 @@ const RecipeVisual = memo(function RecipeVisual({
   const em = useMemo(() => emojisOf(recipe, ingredients), [recipe, ingredients]);
   const tint = (recipe && COURSE_TINT[recipe.course]) || T.brandSoft;
   const big = Math.round(height * 0.5);
-  const photo = recipe && RECIPE_IMAGES[recipe.id];
+  const sources = useMemo(() => photoSources(recipe), [recipe]);
+  const [failed, setFailed] = useState(0); // fichier absent : adresse suivante, puis les émojis
+  useEffect(() => setFailed(0), [sources]);
+  const uri = sources[failed];
+  const photo = (recipe && RECIPE_IMAGES[recipe.id]) || (uri ? { uri } : null);
   if (photo) {
     return (
       <Image
         source={photo}
+        onError={uri ? () => setFailed((n) => n + 1) : undefined}
         resizeMode="cover"
         style={{
           height,

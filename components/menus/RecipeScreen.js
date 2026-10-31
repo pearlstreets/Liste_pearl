@@ -1,5 +1,5 @@
 // Fiche recette : visuel, portions, ingrédients cochables, nutrition estimée, favori, note, étapes.
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Share,
   DeviceEventEmitter,
+  Alert,
 } from 'react-native';
 import { prefillProducts } from '../../lib/menus/listBridge';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +22,7 @@ import {
 import { T } from './theme';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
 import RecipeVisual from './RecipeVisual';
-import { AddedSheet } from './Sheets';
+import { AddedSheet, PlanPickSheet, warningList } from './Sheets';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
@@ -36,7 +37,7 @@ const Dots = ({ n }) => (
   </View>
 );
 
-export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation }) {
+export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, navigation }) {
   const t = useT();
   const m = useMenus();
   const { recipeById, texts, ingredients, lang, profile, plan, favorites, notes, cooked } = m;
@@ -51,8 +52,14 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [adding, setAdding] = useState(false);
+  const [planPick, setPlanPick] = useState(false);
   const [note, setNoteTxt] = useState(notes[id] || '');
+  const noteFocused = useRef(false);
   useEffect(() => setNoteTxt(notes[id] || ''), [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Note arrivée du compte : affichée, sauf si la personne est en train d'écrire.
+  useEffect(() => {
+    if (!noteFocused.current) setNoteTxt(notes[id] || '');
+  }, [notes[id]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const labels = useMemo(
     () => ({
@@ -118,9 +125,22 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
   };
 
   const qtyText = (l) => {
+    if (!l.amount) return '';
     const u = labels[l.displayUnit] !== undefined ? labels[l.displayUnit] : l.displayUnit;
     return u ? `${l.amount} ${u}` : `${l.amount}`;
   };
+
+  const askDelete = () =>
+    Alert.alert(t('myRecipes.deleteTitle'), t('myRecipes.deleteText'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('myRecipes.delete'),
+        style: 'destructive',
+        onPress: async () => {
+          if (await m.removeMyRecipe(id)) onClose();
+        },
+      },
+    ]);
 
   const share = useCallback(async () => {
     if (!recipe) return;
@@ -131,7 +151,10 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
       t('recipe.ingredients') + ' :',
       ...lines
         .filter((l) => !l.optional)
-        .map((l) => `- ${texts.ingredientName(l.key)} : ${qtyText(l)}`),
+        .map((l) => {
+          const q = qtyText(l);
+          return `- ${texts.ingredientName(l.key)}${q ? ` : ${q}` : ''}`;
+        }),
       '',
       t('recipe.steps') + ' :',
       ...steps.map((st, i) => `${i + 1}. ${st}`),
@@ -155,7 +178,9 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
   }
 
   const fav = favorites.includes(id);
-  const nut = recipeNutrition(recipe);
+  const mine = !!recipe.custom;
+  const nut = mine ? null : recipeNutrition(recipe);
+  const warning = mine ? m.warningOf(recipe) : null;
   const times = cooked[id] ? cooked[id].count : 0;
   const shownTags = (recipe.tags || [])
     .filter((x) => !['hiver', 'printemps', 'ete', 'automne'].includes(x))
@@ -178,6 +203,24 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
               bg="rgba(255,255,255,0.95)"
             />
             <View style={{ flexDirection: 'row' }}>
+              {mine ? (
+                <>
+                  <RoundIcon
+                    name="trash-outline"
+                    onPress={askDelete}
+                    label={t('myRecipes.delete')}
+                    bg="rgba(255,255,255,0.95)"
+                  />
+                  <View style={{ width: 10 }} />
+                  <RoundIcon
+                    name="create-outline"
+                    onPress={() => onEdit(id)}
+                    label={t('myRecipes.edit')}
+                    bg="rgba(255,255,255,0.95)"
+                  />
+                  <View style={{ width: 10 }} />
+                </>
+              ) : null}
               <RoundIcon
                 name="share-outline"
                 onPress={share}
@@ -203,10 +246,12 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
               <Ionicons name="time-outline" size={16} color={T.muted} />
               <Text style={s.metaTxt}>{t('recipe.minutes', { n: recipe.timeMin })}</Text>
             </View>
-            <View style={s.meta}>
-              <Dots n={recipe.difficulty} />
-              <Text style={s.metaTxt}>{t(`recipe.difficulty.${recipe.difficulty}`)}</Text>
-            </View>
+            {mine ? null : (
+              <View style={s.meta}>
+                <Dots n={recipe.difficulty} />
+                <Text style={s.metaTxt}>{t(`recipe.difficulty.${recipe.difficulty}`)}</Text>
+              </View>
+            )}
             {times > 0 ? (
               <View style={s.meta}>
                 <Ionicons name="checkmark-circle" size={16} color={T.brandDark} />
@@ -214,6 +259,20 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
               </View>
             ) : null}
           </View>
+          {warning ? (
+            <View style={[s.warn, warning.found && s.warnFound]}>
+              <Ionicons
+                name={warning.found ? 'warning' : 'information-circle-outline'}
+                size={20}
+                color={warning.found ? T.danger : T.muted}
+              />
+              <Text style={s.warnTxt}>
+                {warning.found
+                  ? t('myRecipes.warnFound', { list: warningList(warning, t) })
+                  : t('myRecipes.warnUnknown')}
+              </Text>
+            </View>
+          ) : null}
           <View style={s.tags}>
             {shownTags.map((x) => (
               <View key={x} style={s.tag}>
@@ -225,7 +284,17 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
           <View style={s.portion}>
             <View style={{ flex: 1 }}>
               <Text style={s.portionTitle}>{t('recipe.servings')}</Text>
-              {cost ? (
+              {cost && mine ? (
+                cost.unpriced > 0 ? null : (
+                  <Text style={s.portionHint}>
+                    {t('recipe.costNote', {
+                      total: formatEur(cost.total, lang),
+                      per: formatEur(cost.perPerson, lang),
+                    })}
+                  </Text>
+                )
+              ) : null}
+              {cost && !mine ? (
                 <Text style={s.portionHint}>
                   {t('recipe.costNote', {
                     total: formatEur(cost.total, lang),
@@ -244,12 +313,12 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
           </View>
 
           <Text style={s.h2}>{t('recipe.ingredients')}</Text>
-          {lines.map((l) => {
+          {lines.map((l, i) => {
             const ing = ingredients[l.key] || {};
             const on = !!have[l.key];
             return (
               <TouchableOpacity
-                key={l.key}
+                key={`${l.key}-${i}`}
                 activeOpacity={0.8}
                 onPress={() => setHave((h) => ({ ...h, [l.key]: !h[l.key] }))}
                 style={s.ing}
@@ -294,6 +363,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
             </View>
           ) : null}
 
+          {nut ? (
           <View style={s.nutri}>
             <Text style={s.nutriTitle}>{t('recipe.nutrition')}</Text>
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
@@ -308,6 +378,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
             </View>
             <Text style={s.nutriNote}>{t('recipe.nutritionNote')}</Text>
           </View>
+          ) : null}
 
           <Text style={s.h2}>{t('recipe.steps')}</Text>
           {steps.map((st, i) => (
@@ -323,7 +394,13 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
           <Field
             value={note}
             onChangeText={setNoteTxt}
-            onBlur={() => m.setNote(id, note)}
+            onFocus={() => {
+              noteFocused.current = true;
+            }}
+            onBlur={() => {
+              noteFocused.current = false;
+              m.setNote(id, note);
+            }}
             placeholder={t('recipe.notePlaceholder')}
             multiline
             style={{ minHeight: 84, textAlignVertical: 'top' }}
@@ -331,6 +408,15 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
         </View>
       </ScrollView>
       <View style={s.bar}>
+        {mine ? (
+          <PrimaryButton
+            soft
+            icon="calendar-outline"
+            label={t('myRecipes.addToPlan')}
+            onPress={() => setPlanPick(true)}
+            style={{ marginBottom: 10 }}
+          />
+        ) : null}
         <PrimaryButton
           soft
           icon="cart"
@@ -341,6 +427,9 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
         />
         <PrimaryButton icon="play" label={t('recipe.cook')} onPress={() => onCook(id, persons)} />
       </View>
+      {planPick ? (
+        <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />
+      ) : null}
       {added ? (
         <AddedSheet
           result={added}
@@ -355,6 +444,16 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, navigation 
 }
 
 const s = StyleSheet.create({
+  warn: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: T.subtle,
+    borderRadius: 14,
+    padding: 12,
+    marginTop: 12,
+  },
+  warnFound: { backgroundColor: T.dangerSoft },
+  warnTxt: { flex: 1, marginLeft: 8, fontSize: 14, lineHeight: 20, color: T.ink, fontWeight: '600' },
   topBtns: {
     position: 'absolute',
     left: 14,

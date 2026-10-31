@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { InteractionManager, DeviceEventEmitter } from 'react-native';
+import { InteractionManager, DeviceEventEmitter, AppState } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
   getRecipes,
@@ -49,12 +49,39 @@ import {
   addToList,
   readMyLists,
   clearAllMenus,
+  resetAllMenus,
   personsFor,
+  loadMyRecipes,
+  loadReminders,
+  saveReminders,
+  loadBatch,
+  saveBatch,
+  newSession,
+  setStepDone,
+  sessionLines,
+  linkedMealKeys,
+  setMealsPrepared,
+  cleanReminders,
+  defaultReminders,
+  saveMyRecipe as storeMyRecipe,
+  deleteMyRecipe,
+  recipeFromDraft,
+  buildNameIndex,
+  withMyTexts,
+  recipeWarnings,
+  MAX_MY_RECIPES,
 } from '../../lib/menus';
 
-import { mondayISO, weekTarget, isPastWeek } from '../../lib/menus/weeks';
+import { mondayISO, weekTarget, isPastWeek, toISO } from '../../lib/menus/weeks';
 import { recipeListLines } from '../../lib/menus/recipeList';
 import { ingredientQueries } from '../../lib/menus/pearl';
+import { onMenusRemoteChange } from '../../services/menusSync';
+import {
+  persistPhoto,
+  deletePhotoFile,
+  deleteAllPhotos,
+  flushPendingPhotos,
+} from '../../services/recipePhotos';
 
 const Ctx = createContext(null);
 export const useMenus = () => useContext(Ctx);
@@ -73,8 +100,11 @@ const hasRecipes = (p) => !!p && Array.isArray(p.meals) && p.meals.some((m) => m
 export function MenusProvider({ children }) {
   const { i18n } = useTranslation();
   const lang = i18n && i18n.language;
-  const texts = useMemo(() => getTexts(lang), [lang]);
-  const recipes = useMemo(() => getRecipes(), []);
+  const [myRecipes, setMyRecipes] = useState([]);
+  const baseTexts = useMemo(() => getTexts(lang), [lang]);
+  const texts = useMemo(() => withMyTexts(baseTexts, myRecipes), [baseTexts, myRecipes]);
+  const catalog = useMemo(() => getRecipes(), []);
+  const recipes = useMemo(() => [...catalog, ...myRecipes], [catalog, myRecipes]);
   const ingredients = useMemo(() => getIngredients(), []);
   const recipeById = useMemo(() => {
     const m = new Map();
@@ -97,6 +127,10 @@ export function MenusProvider({ children }) {
   const [dirty, setDirty] = useState(false);
   const [removed, setRemoved] = useState([]);
   const [pantryOn, setPantryOn] = useState(false);
+  const [reminders, setReminders] = useState(defaultReminders());
+  const remindersRef = useRef(reminders);
+  const [batch, setBatch] = useState(null);
+  const batchRef = useRef(null);
 
   const planRef = useRef(null);
   const genBusy = useRef(false);
@@ -111,10 +145,18 @@ export function MenusProvider({ children }) {
   planRef.current = plan;
   profileRef.current = profile;
 
-  const load = useCallback(async () => {
+  // Fusion distante : une modification faite pendant la relecture la rend périmée, on recommence.
+  const editSeq = useRef(0);
+  const holdOnboarding = useRef(false); // présentation commencée : un retour du compte ne la coupe pas
+  const noteEdit = () => {
+    editSeq.current += 1;
+  };
+
+  const load = useCallback(async (opts = {}) => {
+    const seq = editSeq.current;
     setLoadError(false);
     try {
-      const [pr, pl, hi, fa, no, co, fr, me] = await Promise.all([
+      const [pr, pl, hi, fa, no, co, fr, me, my, rm, ba] = await Promise.all([
         loadProfile(),
         loadPlan(),
         loadHistory(),
@@ -123,7 +165,11 @@ export function MenusProvider({ children }) {
         loadCooked(),
         loadFridge(),
         loadMeta(),
+        loadMyRecipes(),
+        loadReminders(),
+        loadBatch(),
       ]);
+      if (opts.remote && seq !== editSeq.current) return false;
       let plan0 = pl || null;
       let hist = hi;
       // Semaine terminée : archivée dans l'historique sans perte, puis retirée de l'écran.
@@ -143,15 +189,60 @@ export function MenusProvider({ children }) {
       setNotes(no || {});
       setCooked(co || {});
       setFridgeState(Array.isArray(fr) ? fr : []);
-      setOnboarded(!!(me && me.onboarded) || !!pl);
+      setMyRecipes(Array.isArray(my) ? my : []);
+      remindersRef.current = cleanReminders(rm);
+      setReminders(remindersRef.current);
+      batchRef.current = ba || null;
+      setBatch(batchRef.current);
+      if (!holdOnboarding.current) setOnboarded(!!(me && me.onboarded) || !!pl);
     } catch {
       setLoadError(true);
     }
     setReady(true);
+    return true;
   }, []);
   useEffect(() => {
     load();
   }, [load]);
+
+  // Photos restées sur le téléphone (hors ligne à l'enregistrement) : reprise à l'ouverture et au
+  // retour dans l'application.
+  const flushPhotos = useCallback(async () => {
+    const list = await flushPendingPhotos();
+    if (list && mounted.current) setMyRecipes(list);
+  }, []);
+  useEffect(() => {
+    if (!ready) return undefined;
+    flushPhotos();
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active') flushPhotos();
+    });
+    return () => sub.remove();
+  }, [ready, flushPhotos]);
+
+  // Données du compte fusionnées : on relit le stockage, sans écraser ce qui vient d'être saisi.
+  useEffect(() => {
+    let timer = null;
+    const reload = async (dejaFait) => {
+      if (!mounted.current) return;
+      const fait = await load({ remote: true });
+      if (!fait) timer = setTimeout(() => reload(dejaFait), 250);
+      else if (dejaFait && !holdOnboarding.current && mounted.current) {
+        await setMeta({ onboarded: true });
+        setOnboarded(true);
+      }
+    };
+    const off = onMenusRemoteChange(({ filled }) => {
+      if (timer) clearTimeout(timer);
+      reload(filled.includes('profile') || filled.includes('plan'));
+      // Connexion en cours d'usage : les photos en attente partent sans attendre un retour.
+      flushPhotos();
+    });
+    return () => {
+      off();
+      if (timer) clearTimeout(timer);
+    };
+  }, [load, flushPhotos]);
 
   const planProfile = useCallback(
     () => ({ ...profileRef.current, month: new Date().getMonth() }),
@@ -160,6 +251,7 @@ export function MenusProvider({ children }) {
 
   const persist = useCallback(async (next) => {
     if (!next || next === planRef.current) return;
+    noteEdit();
     planRef.current = next;
     setPlan(next);
     await savePlan(next);
@@ -197,6 +289,7 @@ export function MenusProvider({ children }) {
                 locked,
                 weekStart,
               });
+              noteEdit();
               await savePlan(next);
               planRef.current = next;
               setPlan(next);
@@ -218,6 +311,7 @@ export function MenusProvider({ children }) {
 
   const finishOnboarding = useCallback(
     async (patch) => {
+      noteEdit();
       if (patch) {
         const saved = await saveProfile(patch);
         setProfile(normalizeProfile(saved));
@@ -230,7 +324,12 @@ export function MenusProvider({ children }) {
     [generate]
   );
 
+  const startOnboarding = useCallback(() => {
+    holdOnboarding.current = true;
+  }, []);
+
   const updateProfile = useCallback(async (patch) => {
+    noteEdit();
     const merged = normalizeProfile({ ...profileRef.current, ...patch });
     profileRef.current = merged;
     setProfile(merged);
@@ -242,14 +341,25 @@ export function MenusProvider({ children }) {
     if (planRef.current) setDirty(true);
   }, []);
 
+  /** Réglage d'un rappel ('plan', 'shop' ou 'prep') : la reprogrammation suit l'écriture. */
+  const updateReminders = useCallback(async (key, patch) => {
+    noteEdit();
+    const cur = remindersRef.current;
+    const next = cleanReminders({ ...cur, [key]: { ...cur[key], ...patch } });
+    remindersRef.current = next;
+    setReminders(next);
+    await saveReminders(next);
+  }, []);
+
   const swap = useCallback(
-    async (mealKey, recipeId) => {
+    async (mealKey, recipeId, opts = {}) => {
       const cur = planRef.current;
       if (!cur) return;
       const next = swapMeal({
         plan: cur,
         mealKey,
         recipeId,
+        manual: !!opts.manual,
         recipes,
         ingredients,
         profile: planProfile(),
@@ -317,11 +427,13 @@ export function MenusProvider({ children }) {
   );
 
   const toggleFav = useCallback(async (id) => {
+    noteEdit();
     setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
     const now = await toggleFavorite(id);
     if (now === null) setFavorites(await loadFavorites());
   }, []);
   const setNote = useCallback(async (id, text) => {
+    noteEdit();
     setNotes((n) => {
       const c = { ...n };
       if (text && text.trim()) c[id] = text;
@@ -331,16 +443,79 @@ export function MenusProvider({ children }) {
     await storeNote(id, text);
   }, []);
   const markCooked = useCallback(async (id) => {
+    noteEdit();
     await storeCooked(id);
     setCooked(await loadCooked());
   }, []);
   const setFridge = useCallback(async (keys) => {
+    noteEdit();
     setFridgeState(keys);
     await saveFridge(keys);
   }, []);
 
-  const resetAll = useCallback(async () => {
-    await clearAllMenus();
+  // Oublie tout ce qui est en mémoire, sans rien écrire.
+  /* ------------------------------ recettes personnelles ------------------------------ */
+
+  /** -> { ok, id, photoLost } | { ok:false, reason:'invalid'|'full'|'storage' } */
+  const saveMyRecipe = useCallback(
+    async (draft) => {
+      let d = draft;
+      let photoLost = false;
+      const before = myRecipes.find((r) => r.id === draft.id);
+      if (!before && myRecipes.length >= MAX_MY_RECIPES) return { ok: false, reason: 'full' };
+      if (d.photoTemp) {
+        const file = await persistPhoto(d.photoTemp);
+        photoLost = !file;
+        d = file ? { ...d, photoFile: file, photoUrl: null, photoTemp: null } : { ...d, photoTemp: null };
+      }
+      const nameIndex = buildNameIndex(ingredients, [baseTexts, getTexts('fr')]);
+      const recipe = recipeFromDraft(d, { nameIndex });
+      if (!recipe) return { ok: false, reason: 'invalid' };
+      noteEdit();
+      const r = await storeMyRecipe(recipe);
+      if (!r.ok) return { ok: false, reason: 'storage' };
+      setMyRecipes(r.list);
+      if (before && before.photoFile && before.photoFile !== recipe.photoFile)
+        deletePhotoFile(before.photoFile);
+      flushPhotos();
+      return { ok: true, id: recipe.id, photoLost };
+    },
+    [myRecipes, ingredients, baseTexts, flushPhotos]
+  );
+
+  /** Les plans qui la contiennent gardent leur repas, affiché comme indisponible et remplaçable. */
+  const removeMyRecipe = useCallback(
+    async (id) => {
+      const before = myRecipes.find((r) => r.id === id);
+      noteEdit();
+      const r = await deleteMyRecipe(id);
+      if (!r.ok) return false;
+      setMyRecipes(r.list);
+      if (favorites.includes(id)) {
+        setFavorites((f) => f.filter((x) => x !== id));
+        await toggleFavorite(id);
+      }
+      setNotes((n) => {
+        const c = { ...n };
+        delete c[id];
+        return c;
+      });
+      await storeNote(id, '');
+      if (before && before.photoFile) deletePhotoFile(before.photoFile);
+      return true;
+    },
+    [myRecipes, favorites]
+  );
+
+  /** Avertissement alimentaire d'une recette personnelle pour ce profil, sinon null. */
+  const warningOf = useCallback(
+    (recipe) => recipeWarnings({ recipe, profile, ingredients, texts }),
+    [profile, ingredients, texts]
+  );
+
+  const forget = useCallback(() => {
+    noteEdit();
+    holdOnboarding.current = false;
     planRef.current = null;
     setPlan(null);
     setHistory([]);
@@ -348,20 +523,35 @@ export function MenusProvider({ children }) {
     setNotes({});
     setCooked({});
     setFridgeState([]);
+    setMyRecipes([]);
     setProfile(defaultProfile());
     profileRef.current = defaultProfile();
+    remindersRef.current = defaultReminders();
+    setReminders(remindersRef.current);
+    batchRef.current = null;
+    setBatch(null);
     setOnboarded(false);
     setRemoved([]);
     setDirty(false);
   }, []);
 
+  /** Réinitialisation demandée : sur un compte, l'effacement part aussi sur le compte. */
+  const resetAll = useCallback(async () => {
+    await resetAllMenus();
+    await deleteAllPhotos();
+    forget();
+  }, [forget]);
+
   // Déconnexion / suppression du compte : on oublie tout ce qui est en mémoire (aucune fuite vers le compte suivant).
+  // Surtout pas resetAll : l'effacement local ne doit jamais partir sur un compte.
   useEffect(() => {
-    const sub = DeviceEventEmitter.addListener('USER_DATA_CLEARED', () => {
-      resetAll();
+    const sub = DeviceEventEmitter.addListener('USER_DATA_CLEARED', async () => {
+      await clearAllMenus();
+      await deleteAllPhotos();
+      forget();
     });
     return () => sub.remove();
-  }, [resetAll]);
+  }, [forget]);
 
   /* ------------------------------- courses ------------------------------- */
 
@@ -457,6 +647,91 @@ export function MenusProvider({ children }) {
     [recipeById, recipes, ingredients, texts]
   );
 
+  const writeBatch = useCallback(async (next) => {
+    noteEdit();
+    batchRef.current = next;
+    setBatch(next);
+    await saveBatch(next);
+  }, []);
+
+  /** Crée la session de cuisine en lot. Rend false si le choix ne tient pas en 2 à 5 recettes. */
+  const startBatch = useCallback(
+    async (items) => {
+      const cur = planRef.current;
+      const session = newSession({
+        items,
+        today: toISO(new Date()),
+        weekStart: cur ? cur.weekStart : null,
+        id: `batch-${Date.now()}`,
+      });
+      if (!session) return false;
+      await writeBatch(session);
+      return true;
+    },
+    [writeBatch]
+  );
+
+  /** Coche une étape : enregistré aussitôt, la session se reprend après fermeture de l'app. */
+  const setBatchStep = useCallback(
+    async (stepId, value) => {
+      const cur = batchRef.current;
+      if (cur) await writeBatch(setStepDone(cur, stepId, value, toISO(new Date())));
+    },
+    [writeBatch]
+  );
+
+  const clearBatch = useCallback(() => writeBatch(null), [writeBatch]);
+
+  /** Repas de la semaine liés à la session : déjà préparés, ils sortent des courses de la semaine. */
+  const setBatchPrepared = useCallback(
+    async (value) => {
+      const cur = batchRef.current;
+      if (cur) await persist(setMealsPrepared(planRef.current, cur, value));
+    },
+    [persist]
+  );
+
+  /**
+   * Courses de la session vers la liste active. Si la liste de la semaine est déjà partie avec ces
+   * repas, seule la différence s'ajoute ; les repas liés sont ensuite marqués, pour ne rien racheter.
+   */
+  const sendBatchToList = useCallback(async () => {
+    try {
+      const cur = batchRef.current;
+      if (!cur) return { status: 'empty', count: 0 };
+      const all = sessionLines({
+        session: cur,
+        recipes,
+        ingredients,
+        profile: profileRef.current,
+      });
+      if (all.length === 0) return { status: 'empty', count: 0 };
+      const id = (await readMyLists()).activeId;
+      const nameOf = (l) => texts.ingredientName(l.key);
+      const matchOf = (l) => ingredientQueries(l.key, getTexts('fr').ingredientName(l.key));
+      const linked = linkedMealKeys(planRef.current, cur).length > 0;
+      const lines = linked ? await pendingLines(id, all, nameOf) : all;
+      if (lines.length === 0) {
+        await setBatchPrepared(true);
+        return { status: 'already', count: 0, listId: id };
+      }
+      const r = await addToList(id, lines, {
+        nameOf,
+        matchOf,
+        fingerprint: `batch:${cur.id}:${linesFingerprint(all)}`,
+      });
+      if (r.status === 'ok') {
+        try {
+          DeviceEventEmitter.emit('LISTS_UPDATED');
+        } catch {}
+        await setBatchPrepared(true);
+      }
+      return { ...r, count: (r.added || 0) + (r.merged || 0) };
+    } catch {
+      return { status: 'error', count: 0 };
+    }
+  }, [recipes, ingredients, texts, setBatchPrepared]);
+
   const costOf = useCallback(
     (recipe, persons) => {
       try {
@@ -464,7 +739,7 @@ export function MenusProvider({ children }) {
           pantry: profileRef.current.pantry,
         });
       } catch {
-        return { total: 0, perPerson: 0, unknown: 0 };
+        return { total: 0, perPerson: 0, unknown: 0, unpriced: 0 };
       }
     },
     [ingredients]
@@ -477,13 +752,20 @@ export function MenusProvider({ children }) {
       reload: load,
       onboarded,
       finishOnboarding,
+      startOnboarding,
       lang,
       texts,
       recipes,
       ingredients,
       recipeById,
+      myRecipes,
+      saveMyRecipe,
+      removeMyRecipe,
+      warningOf,
       profile,
       updateProfile,
+      reminders,
+      updateReminders,
       plan,
       busy,
       genError,
@@ -511,6 +793,12 @@ export function MenusProvider({ children }) {
       setPantryOn,
       sendToList,
       sendRecipeToList,
+      batch,
+      startBatch,
+      setBatchStep,
+      clearBatch,
+      setBatchPrepared,
+      sendBatchToList,
       costOf,
       resetAll,
       persons: (d, s) => personsFor(profile, d, s),
@@ -521,13 +809,20 @@ export function MenusProvider({ children }) {
       load,
       onboarded,
       finishOnboarding,
+      startOnboarding,
       lang,
       texts,
       recipes,
       ingredients,
       recipeById,
+      myRecipes,
+      saveMyRecipe,
+      removeMyRecipe,
+      warningOf,
       profile,
       updateProfile,
+      reminders,
+      updateReminders,
       plan,
       busy,
       genError,
@@ -554,6 +849,12 @@ export function MenusProvider({ children }) {
       pantryOn,
       sendToList,
       sendRecipeToList,
+      batch,
+      startBatch,
+      setBatchStep,
+      clearBatch,
+      setBatchPrepared,
+      sendBatchToList,
       costOf,
       resetAll,
     ]

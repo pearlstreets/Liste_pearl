@@ -16,11 +16,17 @@ const STEPS = [
 
 export default function Onboarding() {
   const t = useT();
-  const { profile, finishOnboarding, texts, ingredients } = useMenus();
+  const { profile, finishOnboarding, startOnboarding, texts, ingredients } = useMenus();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState(profile);
   const [busy, setBusy] = useState(false);
-  const change = useCallback((patch) => setDraft((d) => ({ ...d, ...patch })), []);
+  const change = useCallback(
+    (patch) => {
+      startOnboarding();
+      setDraft((d) => ({ ...d, ...patch }));
+    },
+    [startOnboarding]
+  );
   const last = step === STEPS.length - 1;
   const st = STEPS[step];
 
@@ -86,7 +92,7 @@ export default function Onboarding() {
           label={last ? t('onboarding.finish') : t('onboarding.next')}
           icon={last ? 'sparkles' : undefined}
           loading={busy}
-          onPress={() => (last ? done(false) : setStep(step + 1))}
+          onPress={() => (last ? done(false) : (startOnboarding(), setStep(step + 1)))}
         />
       </View>
     </View>

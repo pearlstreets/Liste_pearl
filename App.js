@@ -45,7 +45,7 @@ function itemsToRenderForShop(allUserItems, assignedForThisShop, optimized){
 
 import i18nApi from './i18n';
 import { useTranslation } from 'react-i18next';
-import { DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, AppState } from 'react-native';
 import SearchPopup from './components/SearchPopup';
 // Modal de react-native, sauf sur l'ecran deplie d'un pliable Android :
 // liste a gauche, page ouverte a droite (voir le fichier).
@@ -65,11 +65,13 @@ const DragWrap = ({ enabled, children }) => {
   return children(enabled ? drag : undefined);
 };
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect, createNavigationContainerRef } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { loadListItems, persistActiveItems, listItemsKey as listItemsKeyLib } from "./lib/listStore";
 import MenusScreen from "./components/menus/MenusScreen";
+import { startMenusSync } from "./services/menusSync";
+import { startMenuReminders, onMenuReminderOpen, hasPendingMenuReminder } from "./services/menuReminders";
 import TabLabel from "./components/menus/TabLabel";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -182,6 +184,11 @@ const GAP = 10;
 const CurrencyContext = React.createContext({ currency: CURRENCIES[0], fmtPrice: (n) => n.toFixed(2) + ' €' });
 
 const Tab = createBottomTabNavigator();
+// Notification de rappel touchée : ouverture de l'onglet Menus, qui prend ensuite le bon écran.
+const navRef = createNavigationContainerRef();
+const ouvrirMenusDepuisRappel = () => {
+  if (navRef.isReady() && hasPendingMenuReminder()) navRef.navigate('menus');
+};
 const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: BRAND, background: "#fff" } };
 
 const Square = ({ value, onPress }) => (
@@ -6085,9 +6092,13 @@ export default function App() {
     await AsyncStorage.setItem('APP_CURRENCY', cur.code);
   }, [liveRates]);
 
+  React.useEffect(() => onMenuReminderOpen(ouvrirMenusDepuisRappel), []);
+
   React.useEffect(() => {
     (async () => {
       await purgeLegacyLocalAccounts();
+      startMenusSync(AppState);
+      startMenuReminders(AppState, i18nApp);
       const raw = await getSecureItem(KEY_AUTH);
       // 1er lancement = aucune langue enregistrée → on présentera le choix de langue.
       const savedLang = await AsyncStorage.getItem('APP_LANGUAGE');
@@ -6124,7 +6135,7 @@ export default function App() {
     <StatusBar style="dark" />
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <DeuxEcrans>
-      <NavigationContainer theme={navTheme}>
+      <NavigationContainer ref={navRef} onReady={ouvrirMenusDepuisRappel} theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
       <Modal visible={authVisible} animationType="slide" onRequestClose={() => {

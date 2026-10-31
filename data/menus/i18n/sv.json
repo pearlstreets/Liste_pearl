@@ -1151,6 +1151,1974 @@
         "Sätt på lock och ställ kallt över natten.",
         "Ät kall."
       ]
+    },
+    "boeuf-carottes-mijote": {
+      "title": "Långkokt biff med morötter",
+      "steps": [
+        "Skär biffen i stora tärningar, morötterna i skivor och strimla löken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt sedan lök och hackad vitlök.",
+        "Strö över mjöl, rör om, tillsätt sedan krossade tomater, smulad buljong (tärning), torkad timjan, lagerblad och 60 cl vatten.",
+        "Lägg på lock och låt sjuda 1 h på låg värme.",
+        "Tillsätt morötterna och fortsätt koka 1 h 30, tills köttet är riktigt mört. Ta bort lagerbladet."
+      ]
+    },
+    "carbonade-flamande": {
+      "title": "Flamländsk köttgryta med ljus öl",
+      "steps": [
+        "Skär biffen i bitar och strimla löken.",
+        "Bryn köttet i en gryta med smör, ta upp det och låt löken mjukna med socker i 10 minuter.",
+        "Lägg tillbaka köttet, häll på ljus öl, tillsätt torkad timjan och lagerblad.",
+        "Bred senap på lantbrödsskivorna och lägg dem ovanpå.",
+        "Lägg på lock och låt sjuda 2 h 30 på låg värme, rör om då och då. Ta bort lagerbladet."
+      ]
+    },
+    "daube-provencale": {
+      "title": "Provensalsk biffgryta",
+      "steps": [
+        "Skär biffen i tärningar, morötterna i skivor och strimla löken. Skala av en remsa apelsinskal.",
+        "Bryn köttet i en gryta med olivolja, tillsätt lök och hackad vitlök.",
+        "Häll på rödvin, koka upp i 5 minuter, tillsätt sedan morötter, krossade tomater, provencalska örter, lagerblad och apelsinskal.",
+        "Lägg på lock och låt sjuda 2 h 45 på mycket låg värme.",
+        "Tillsätt oliver 15 minuter före slutet, ta sedan bort lagerblad och apelsinskal."
+      ]
+    },
+    "blanquette-veau-riz": {
+      "title": "Kalvgryta med ris",
+      "steps": [
+        "Lägg kalvgryta i tärningar i en gryta, täck med kallt vatten och buljong (tärning), koka upp och skumma av.",
+        "Tillsätt morötter i skivor, purjolök, lök och lagerblad, låt sjuda 1 h 15 på låg värme.",
+        "Stek skivade champinjoner i lite smör och koka riset separat.",
+        "Smält resten av smöret, tillsätt mjöl och sedan 50 cl kokspad under vispning tills det tjocknar.",
+        "Ta av från värmen, tillsätt crème fraîche och citronsaft, sedan kött, morötter och champinjoner. Servera med riset."
+      ]
+    },
+    "veau-marengo": {
+      "title": "Kalvgryta Marengo",
+      "steps": [
+        "Skär kalvgryta i tärningar, strimla löken och skiva champinjonerna.",
+        "Bryn köttet i en gryta med olivolja, tillsätt lök och hackad vitlök, strö över mjöl.",
+        "Häll på torrt vitt vin, tillsätt krossade tomater, provencalska örter, lagerblad och 20 cl vatten.",
+        "Lägg på lock och låt sjuda 1 h 15 på låg värme.",
+        "Tillsätt champinjonerna och koka ytterligare 20 minuter. Ta bort lagerbladet."
+      ]
+    },
+    "veau-olives-carottes": {
+      "title": "Kalvgryta med oliver och morötter",
+      "steps": [
+        "Skär kalvgryta i tärningar, morötterna i skivor och strimla löken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt lök och hackad vitlök.",
+        "Tillsätt morötter, krossade tomater, torkad timjan och 25 cl vatten.",
+        "Lägg på lock och låt sjuda 1 h 30 på låg värme.",
+        "Tillsätt oliver, värm i 5 minuter och servera."
+      ]
+    },
+    "navarin-agneau-printanier": {
+      "title": "Lammgryta med primörgrönsaker",
+      "steps": [
+        "Skär lammstek (bog) i bitar. Bryn i en gryta med olivolja, tillsätt sedan strimlad lök och hackad vitlök.",
+        "Strö över mjöl, tillsätt tomatpuré, torkad timjan, lagerblad och 80 cl vatten.",
+        "Lägg på lock och låt sjuda 1 h på låg värme.",
+        "Tillsätt morötter, majrovor och potatis i bitar, koka 30 minuter.",
+        "Tillsätt frysta ärtor, koka 10 minuter och ta bort lagerbladet."
+      ]
+    },
+    "agneau-haricots-blancs": {
+      "title": "Lammstek (bog) med vita bönor",
+      "steps": [
+        "Skär lammstek (bog) i bitar. Strimla löken och hacka vitlöken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt lök och vitlök.",
+        "Tillsätt krossade tomater, torkad timjan, lagerblad och 30 cl vatten.",
+        "Lägg på lock och låt sjuda 1 h 45 på låg värme.",
+        "Tillsätt avrunna konserverade vita bönor, koka ytterligare 15 minuter och ta bort lagerbladet."
+      ]
+    },
+    "poulet-chasseur": {
+      "title": "Kyckling chasseur",
+      "steps": [
+        "Bryn kycklinglår i en gryta med olivolja, ta upp dem.",
+        "Fräs strimlad schalottenlök och champinjoner i skivor, tillsätt hackad vitlök.",
+        "Häll på torrt vitt vin, låt reducera i 3 minuter, tillsätt sedan krossade tomater och torkad timjan.",
+        "Lägg tillbaka kycklingen, lägg på lock och låt sjuda 45 minuter på låg värme."
+      ]
+    },
+    "coq-au-vin-cuisses": {
+      "title": "Coq au vin med kycklinglår",
+      "steps": [
+        "Bryn kycklinglåren i en gryta med olivolja, ta upp dem.",
+        "Fräs bacontärningar, strimlad lök, morötter i skivor och hackad vitlök. Strö över mjöl.",
+        "Lägg tillbaka kycklingen, häll på rödvin, tillsätt torkad timjan och lagerblad.",
+        "Lägg på lock och låt sjuda 1 h på låg värme.",
+        "Tillsätt skivade champinjoner, koka 15 minuter och ta bort lagerbladet."
+      ]
+    },
+    "poulet-vallee-auge": {
+      "title": "Kyckling med cider och grädde",
+      "steps": [
+        "Bryn kycklinglåren i en gryta med smör, ta upp dem.",
+        "Fräs strimlad lök och champinjoner i skivor.",
+        "Lägg tillbaka kycklingen, häll på torr cider, lägg på lock och koka 35 minuter på låg värme.",
+        "Tillsätt äppelklyftor och koka 10 minuter.",
+        "Ta upp kyckling och äpplen, tillsätt flytande grädde, låt reducera 3 minuter och häll över."
+      ]
+    },
+    "poulet-estragon-creme": {
+      "title": "Kyckling med dragon och grädde",
+      "steps": [
+        "Koka riset enligt anvisningarna på paketet.",
+        "Skär kycklingfilé i bitar och bryn dem i en stekpanna med smör och strimlad schalottenlök.",
+        "Tillsätt flytande grädde, senap och torkad dragon, låt sjuda 10 minuter.",
+        "Salta, peppra och servera med riset."
+      ]
+    },
+    "poule-au-pot-simple": {
+      "title": "Förenklad kycklinglår i gryta",
+      "steps": [
+        "Lägg kycklinglåren och hela löken i en stor gryta, täck med 2,5 liter vatten tillsammans med buljong, torkad timjan och lagerblad.",
+        "Koka upp, skumma av och låt sjuda i 30 minuter.",
+        "Tillsätt morötter, purjolök och majrova i bitar, koka ytterligare 25 minuter.",
+        "Lägg i potatis i bitar och koka ytterligare 25 minuter.",
+        "Servera kyckling och grönsaker med lite buljong. Ta bort lagerbladet."
+      ]
+    },
+    "poulet-vinaigre-lyonnais": {
+      "title": "Kyckling med vinäger på lyonnais-vis",
+      "steps": [
+        "Bryn kycklinglåren i en stekgryta med smör, 10 minuter på varje sida.",
+        "Tillsätt hackad schalottenlök och vitlök, fräs i 3 minuter.",
+        "Häll på vinäger, låt reducera, tillsätt sedan krossade tomater och 10 cl vatten.",
+        "Täck över och sjud 25 minuter på låg värme, tillsätt sedan flytande grädde och låt tjockna i 3 minuter."
+      ]
+    },
+    "fricassee-poulet-poireaux": {
+      "title": "Kycklingfrikassé med purjolök",
+      "steps": [
+        "Koka potatis i bitar i saltat vatten i 20 minuter.",
+        "Skär kycklingen i bitar och strimla purjolöken.",
+        "Bryn kycklingen i en stekgryta med smör, tillsätt purjolök och stek i 10 minuter.",
+        "Tillsätt flytande grädde och senap, låt sjuda i 5 minuter och servera med potatisen."
+      ]
+    },
+    "poulet-olives-tomates": {
+      "title": "Kyckling med oliver och tomater",
+      "steps": [
+        "Bryn kycklinglåren i en gryta med olivolja, ta sedan upp dem.",
+        "Fräs hackad lök och paprika i strimlor, tillsätt sedan hackad vitlök.",
+        "Tillsätt krossade tomater och provencalska örter, lägg tillbaka kycklingen, täck över och låt sjuda i 40 minuter.",
+        "Tillsätt oliver, koka i 5 minuter och servera."
+      ]
+    },
+    "saute-dinde-carottes-curry": {
+      "title": "Kalkonwok med morötter och mild curry",
+      "steps": [
+        "Skär kalkonfilén i bitar, morötterna i skivor och strimla löken.",
+        "Bryn kalkonen i en gryta med olivolja, tillsätt lök och curry.",
+        "Tillsätt morötter och 30 cl vatten, täck över och låt sjuda i 30 minuter.",
+        "Tillsätt flytande grädde, låt tjockna i 3 minuter och servera."
+      ]
+    },
+    "dinde-normande-pommes": {
+      "title": "Normandisk kalkonfilé med äpple",
+      "steps": [
+        "Skär äpplena i klyftor och bryn dem i halva mängden smör i 8 minuter, ta sedan upp dem.",
+        "Bryn kalkonfilén med resten av smöret och hackad lök, 4 minuter på varje sida.",
+        "Tillsätt flytande grädde och äpplen, låt sjuda i 5 minuter.",
+        "Salta, peppra och servera riktigt varmt."
+      ]
+    },
+    "lapin-moutarde": {
+      "title": "Kanin med senap",
+      "steps": [
+        "Pensla kaninbitarna med senap.",
+        "Bryn dem i en gryta med smör, tillsätt sedan hackad schalottenlök.",
+        "Häll på torrt vitt vin, tillsätt torkad timjan, täck över och låt sjuda i 45 minuter på låg värme.",
+        "Tillsätt flytande grädde, låt reducera i 5 minuter och servera."
+      ]
+    },
+    "lapin-pruneaux": {
+      "title": "Kanin med katrinplommon",
+      "steps": [
+        "Bryn kaninbitarna i en gryta med olivolja, ta sedan upp dem.",
+        "Fräs hackad lök och morötter i skivor.",
+        "Lägg tillbaka kaninen, häll på torrt vitt vin, tillsätt torkad timjan, lagerblad och 10 cl vatten.",
+        "Täck över och låt sjuda i 45 minuter.",
+        "Tillsätt urkärnade katrinplommon och koka ytterligare 20 minuter. Ta bort lagerbladet."
+      ]
+    },
+    "canard-navets": {
+      "title": "Anklår med majrova",
+      "steps": [
+        "Bryn anklåren med skinnsidan nedåt i en torr gryta i 10 minuter, ta sedan upp dem.",
+        "Häll bort nästan allt fett, fräs hackad lök och majrova i bitar tillsammans med socker.",
+        "Lägg tillbaka anklåren, tillsätt torkad timjan, buljong (tärning) och 30 cl vatten.",
+        "Täck över och låt sjuda i 50 minuter på låg värme."
+      ]
+    },
+    "canard-petits-pois": {
+      "title": "Anklår med frysta ärtor",
+      "steps": [
+        "Bryn anklåren med skinnsidan nedåt i en torr gryta i 10 minuter, ta sedan upp dem.",
+        "Häll bort nästan allt fett, fräs bacontärningar, hackad lök och morötter i skivor.",
+        "Lägg tillbaka anklåren, tillsätt torkad timjan, buljong (tärning) och 25 cl vatten, täck över och låt sjuda i 35 minuter.",
+        "Tillsätt frysta ärtor och koka i 12 minuter."
+      ]
+    },
+    "cassoulet-simple": {
+      "title": "Förenklad cassoulet",
+      "steps": [
+        "Sätt ugnen på 160 °C.",
+        "Bryn anklåren med skinnsidan nedåt i en gryta, bryn sedan fläskkorven. Ta upp dem.",
+        "Fräs bacontärningar, hackad lök och hackad vitlök, tillsätt krossade tomater, torkad timjan och lagerblad.",
+        "Tillsätt avrunna konserverade vita bönor, anklår i bitar och fläskkorv, samt 30 cl vatten.",
+        "Strö över ströbröd och grädda 1 h utan lock. Ta bort lagerbladet."
+      ]
+    },
+    "potee-auvergnate": {
+      "title": "Potée från Auvergne",
+      "steps": [
+        "Lägg saltat sidfläsk i kallt vatten i 30 minuter för att dra ut saltet, lägg det sedan i en stor gryta med 3 liter vatten.",
+        "Koka upp, skumma av, tillsätt lök och lagerblad, låt sjuda i 1 h.",
+        "Tillsätt savoykål i klyftor, morötter, majrova, purjolök och fläskkorv, koka i 30 minuter.",
+        "Tillsätt potatis och koka ytterligare 30 minuter. Ta bort lagerbladet, smaka av innan du saltar."
+      ]
+    },
+    "choucroute-garnie-simple": {
+      "title": "Förenklad choucroute garnie",
+      "steps": [
+        "Skölj rå surkål och låt rinna av. Skiva löken.",
+        "Fräs löken i en stor gryta, tillsätt hälften av surkålen, saltat sidfläsk och lagerblad, sedan resten av surkålen.",
+        "Häll i det torra vita vinet och 20 cl vatten, lägg på lock och låt sjuda 1 h på låg värme.",
+        "Tillsätt korvarna och de skalade potatisarna, koka ytterligare 35 minuter.",
+        "Ta bort lagerbladet och servera."
+      ]
+    },
+    "petit-sale-lentilles": {
+      "title": "Saltat sidfläsk med linser",
+      "steps": [
+        "Blötlägg saltat sidfläsk 30 minuter i kallt vatten.",
+        "Lägg det i en gryta, täck med vatten, tillsätt lök, torkad timjan och lagerblad, låt sedan sjuda 1 h.",
+        "Tillsätt sköljda linser och morötter i skivor, koka sedan 30 minuter.",
+        "Häll av om det behövs, ta bort lagerbladet, smaka av med salt och servera."
+      ]
+    },
+    "saute-porc-moutarde": {
+      "title": "Fläskgryta med senap",
+      "steps": [
+        "Skär fläskkarrén i tärningar och skiva löken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt löken.",
+        "Tillsätt buljong (tärning), torkad timjan och 30 cl vatten, lägg på lock och låt sjuda 50 minuter.",
+        "Tillsätt senap och flytande grädde, låt reducera 5 minuter."
+      ]
+    },
+    "porc-pommes-cidre": {
+      "title": "Fläskgryta med äpple och cider",
+      "steps": [
+        "Skär fläskkarrén i tärningar, skiva löken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt löken och pudra över mjöl.",
+        "Häll på torr cider, tillsätt torkad timjan, lägg på lock och låt sjuda 1 h.",
+        "Tillsätt äppelklyftor och koka 15 minuter."
+      ]
+    },
+    "saute-porc-pruneaux": {
+      "title": "Fläskgryta med katrinplommon",
+      "steps": [
+        "Skär fläskkarrén i tärningar, morötterna i skivor och skiva löken.",
+        "Bryn köttet i en gryta med olivolja, tillsätt lök och morötter.",
+        "Häll i torrt vitt vin och 20 cl vatten, tillsätt torkad timjan, lägg på lock och låt sjuda 50 minuter.",
+        "Tillsätt urkärnade katrinplommon och koka ytterligare 20 minuter."
+      ]
+    },
+    "chou-farci-familial": {
+      "title": "Fylld savoykål för familjen",
+      "steps": [
+        "Sätt ugnen på 180 °C. Förväll 12 stora savoykålsblad 5 minuter i kokande vatten och låt rinna av.",
+        "Blanda nötfärs, fläskkorv, hackad lök och vitlök, ägg och persilja.",
+        "Lägg fyllning på varje blad och rulla ihop till paket.",
+        "Lägg i en form, tillsätt krossade tomater, smulad buljong (tärning) och 20 cl vatten.",
+        "Täck över och baka i ugnen 1 h 15."
+      ]
+    },
+    "saucisses-puree-oignons": {
+      "title": "Korv, potatismos och smörstekt lök",
+      "steps": [
+        "Koka potatis i bitar 20 minuter i saltat vatten, mosa med varm mjölk och hälften av smöret. Tillsätt malen muskotnöt.",
+        "Låt skivad lök mjukna 20 minuter på låg värme med resten av smöret.",
+        "Bryn korvarna i stekpanna i 15 minuter och vänd dem under tiden.",
+        "Servera korven på moset med löken."
+      ]
+    },
+    "boudin-noir-pommes": {
+      "title": "Blodkorv med äpple och potatismos",
+      "steps": [
+        "Koka potatis 20 minuter i saltat vatten och mosa med varm mjölk och 20 g smör.",
+        "Bryn äppelklyftor 10 minuter med resten av smöret, lägg åt sidan.",
+        "Bryn blodkorven 5 minuter på varje sida i samma stekpanna.",
+        "Servera blodkorven med äpple och mos."
+      ]
+    },
+    "endives-jambon-gratinees": {
+      "title": "Gratinerad endive med skinka",
+      "steps": [
+        "Koka hela endiver 25 minuter i saltat vatten, pressa ur vätskan ordentligt.",
+        "Gör en béchamelsås: smält smör, tillsätt mjöl och sedan mjölk under vispning tills det tjocknar, smaksätt med malen muskotnöt.",
+        "Sätt ugnen på 200 °C. Rulla varje endive i en skiva kokt skinka och lägg i en form.",
+        "Täck med béchamel, strö över riven ost och gratinera 25 minuter."
+      ]
+    },
+    "tomates-farcies-viande-riz": {
+      "title": "Fyllda tomater med köttfärs och ris",
+      "steps": [
+        "Sätt ugnen på 180 °C. Skär av toppen på tomaterna, gröp ur och spara innanmätet.",
+        "Blanda nötfärs, fläskkorv, hackad lök, vitlök och persilja med ströbröd.",
+        "Fyll tomaterna och lägg dem i en form, lägg innanmätet runt om och det okokta riset i saften.",
+        "Tillsätt 30 cl vatten, lägg på locken och baka i ugnen 50 minuter."
+      ]
+    },
+    "courgettes-farcies-boeuf": {
+      "title": "Fyllda zucchinis med nötfärs",
+      "steps": [
+        "Sätt ugnen på 180 °C. Dela zucchinin på längden och gröp ur.",
+        "Fräs lök, vitlök, nötfärs och hackad zucchini i olivolja i 10 minuter. Tillsätt provencalska örter.",
+        "Fyll zucchinin och lägg dem i en form ovanpå tomater.",
+        "Strö över riven ost och baka i ugnen 40 minuter."
+      ]
+    },
+    "pain-viande-tomate": {
+      "title": "Köttfärslimpa med tomatsås",
+      "steps": [
+        "Sätt ugnen på 180 °C. Blanda ströbröd och mjölk.",
+        "Tillsätt nötfärs, hackad lök, ägg, persilja och senap, salta och peppra.",
+        "Forma till en limpa i en brödform och baka i ugnen 50 minuter.",
+        "Värm krossade tomater med provencalska örter i 10 minuter och servera limpan i skivor med såsen."
+      ]
+    },
+    "boulettes-creme-champignons": {
+      "title": "Nötfärsbullar med gräddsås och champinjoner",
+      "steps": [
+        "Blanda nötfärs, hackad lök, ägg och ströbröd, forma till bullar.",
+        "Bryn bullarna i 10 minuter i en stekpanna med olivolja, lägg åt sidan.",
+        "Fräs skivade champinjoner, tillsätt flytande grädde och lägg tillbaka bullarna. Låt sjuda på låg värme i 10 minuter.",
+        "Koka pastan enligt anvisningarna på paketet och servera med bullarna."
+      ]
+    },
+    "escalopes-panees-puree": {
+      "title": "Panerade kalkonskivor med morotspuré",
+      "steps": [
+        "Koka morot och potatis i bitar i saltat vatten i 20 minuter, mosa sedan med smör.",
+        "Vänd kalkonskivorna i mjöl, uppvispat ägg och sedan ströbröd.",
+        "Bryn dem 4 minuter på varje sida i en stekpanna med olivolja.",
+        "Servera kalkonen med purén."
+      ]
+    },
+    "poulet-riz-supreme": {
+      "title": "Kyckling med ris och suprêmesås",
+      "steps": [
+        "Lägg kycklinglår, morot i skivor, lök och buljong (tärning) i en gryta, täck med vatten och sjud i 35 minuter.",
+        "Koka riset enligt anvisningarna på paketet.",
+        "Smält smör, tillsätt mjöl och skivade champinjoner, vispa ner 30 cl av kokbuljongen.",
+        "Tillsätt flytande grädde, låt tjockna i 3 minuter och servera över kycklingen och riset."
+      ]
+    },
+    "parmentier-canard-simple": {
+      "title": "Ankparmentier",
+      "steps": [
+        "Lägg anklår i en kastrull med lök, torkad timjan och lagerblad, täck med vatten och sjud i 45 minuter. Häll av och dra isär köttet utan skinn.",
+        "Koka potatis i saltat vatten i 20 minuter och mosa med varm mjölk och smör.",
+        "Sätt ugnen på 200 °C. Lägg ankköttet i en ugnsform och täck med potatismos.",
+        "Strö över ströbröd och grädda i 25 minuter."
+      ]
+    },
+    "parmentier-potimarron-boeuf": {
+      "title": "Nötfärsparmentier med hokkaidopumpa",
+      "steps": [
+        "Koka hokkaidopumpa och potatis i bitar i saltat vatten i 20 minuter, mosa sedan med mjölk och smör.",
+        "Fräs skivad lök, hackad vitlök och nötfärs i 10 minuter. Salta och peppra.",
+        "Sätt ugnen på 200 °C. Lägg köttet i en ugnsform och täck med moset.",
+        "Strö över riven ost och grädda i 25 minuter."
+      ]
+    },
+    "pates-saucisse-brocoli": {
+      "title": "Pasta med fläskkorv och broccoli",
+      "steps": [
+        "Koka pastan tillsammans med broccolibuketter enligt tiden på paketet.",
+        "Bryn smulad fläskkorv i en stekpanna med olivolja och hackad vitlök i 8 minuter.",
+        "Häll av pastan och broccolin, blanda med korven.",
+        "Strö över parmesan och servera."
+      ]
+    },
+    "tarte-jambon-comte": {
+      "title": "Paj med kokt skinka och comtéost",
+      "steps": [
+        "Sätt ugnen på 180 °C och tryck ut pajdegen i en form.",
+        "Lägg ut skivad kokt skinka i bitar och comtéost i tärningar.",
+        "Vispa ihop ägg med flytande grädde och malen muskotnöt, häll över fyllningen.",
+        "Grädda i 35 minuter tills pajen är gyllene."
+      ]
+    },
+    "cake-jambon-olives-salade": {
+      "title": "Matkaka med skinka och oliver, grönsallad",
+      "steps": [
+        "Sätt ugnen på 180 °C.",
+        "Blanda mjöl, bakpulver, ägg, mjölk och 3 matskedar olivolja.",
+        "Tillsätt skinka i tärningar, oliver och riven ost, häll i en kakform.",
+        "Grädda i 45 minuter och låt svalna något.",
+        "Servera i skivor med sallad blandad med resten av olivoljan och vinäger."
+      ]
+    },
+    "parmentier-cabillaud": {
+      "title": "Torskparmentier",
+      "steps": [
+        "Koka potatis i saltat vatten i 20 minuter och mosa med varm mjölk och smör.",
+        "Pochera torskrygg i 6 minuter i sjudande vatten med citronsaft, plocka bort benen och smula fisken.",
+        "Sätt ugnen på 200 °C. Blanda fisken med hackad persilja i en form, täck med moset.",
+        "Strö över riven ost och grädda i 20 minuter."
+      ]
+    },
+    "cabillaud-sauce-vierge": {
+      "title": "Torsk med sauce vierge och kokt potatis",
+      "steps": [
+        "Koka potatis i 20 minuter i vatten eller ångkoka.",
+        "Tärna tomater och blanda med strimlad basilika, citronsaft och 3 matskedar olivolja.",
+        "Stek torskrygg 4 minuter på varje sida i en stekpanna med resten av olivoljan.",
+        "Servera fisken med potatisen och sauce vierge."
+      ]
+    },
+    "cabillaud-lentilles-carottes": {
+      "title": "Torsk med linser och morot",
+      "steps": [
+        "Koka sköljda linser i 30 minuter i vatten med morot i tärningar, skivad lök, torkad timjan och lagerblad.",
+        "Häll av, ta bort lagerbladet, smaksätt med vinäger och 1 matsked olivolja.",
+        "Stek torskrygg 4 minuter på varje sida i en stekpanna med resten av olivoljan.",
+        "Servera fisken på linserna."
+      ]
+    },
+    "papillotes-saumon-poireaux": {
+      "title": "Lax i paket med purjolök",
+      "steps": [
+        "Koka potatis i saltat vatten i 20 minuter. Sätt ugnen på 200 °C.",
+        "Strimla purjolök och fräs i 5 minuter i en stekpanna med lite vatten, tillsätt sedan flytande grädde.",
+        "Fördela purjolöken på 4 ark bakplåtspapper, lägg på laxfilé och citronsaft, salta, peppra och vik ihop.",
+        "Baka i ugnen i 15 minuter och servera med potatisen."
+      ]
+    },
+    "truite-amandes-haricots-verts": {
+      "title": "Forellfilé med skivade mandlar och brytbönor",
+      "steps": [
+        "Koka brytbönorna 10 minuter i saltat vatten.",
+        "Mjöla forellfiléerna lätt och stek dem 3 minuter på varje sida i hälften av smöret.",
+        "Rosta de skivade mandlarna i resten av smöret och tillsätt citronsaften.",
+        "Häll mandlarna över forellen och servera med brytbönorna."
+      ]
+    },
+    "maquereaux-moutarde-pommes-de-terre": {
+      "title": "Makrillfilé med senap och potatis",
+      "steps": [
+        "Sätt ugnen på 200 °C. Skiva potatisen, blanda med olivolja och torkad timjan och ugnsbaka i 20 minuter.",
+        "Bred senap på makrillfiléerna.",
+        "Lägg dem ovanpå potatisen och baka i ugnen i 10 minuter.",
+        "Pressa över citronsaft och servera."
+      ]
+    },
+    "colin-meuniere-epinards": {
+      "title": "Koljafilé meunière med spenat",
+      "steps": [
+        "Värm den frysta spenaten i stekpanna med hackad vitlök i 10 minuter.",
+        "Mjöla koljafiléerna lätt.",
+        "Stek dem 3 minuter på varje sida i smör.",
+        "Pressa över citronsaft och servera med spenaten."
+      ]
+    },
+    "colin-sauce-tomate-olives": {
+      "title": "Koljafilé med tomatsås och oliver",
+      "steps": [
+        "Koka riset enligt anvisningarna på paketet.",
+        "Fräs den skivade löken och hackad vitlök i olivolja, tillsätt krossade tomater och provencalska örter och låt sjuda i 10 minuter.",
+        "Lägg koljafilén i såsen tillsammans med oliverna, täck över och sjud på låg värme i 10 minuter.",
+        "Servera med riset."
+      ]
+    },
+    "colin-provencale-four": {
+      "title": "Koljafilé provençale i ugn",
+      "steps": [
+        "Sätt ugnen på 200 °C. Skiva tomater och zucchini tunt.",
+        "Lägg grönsakerna i en ugnsform, tillsätt hackad vitlök, provencalska örter och 2 matskedar olivolja, och baka i ugnen i 15 minuter.",
+        "Lägg koljafilén ovanpå, strö över ströbröd och ringla över resten av olivoljan.",
+        "Baka i ugnen i 15 minuter."
+      ]
+    },
+    "pain-thon-tomate": {
+      "title": "Tonfisklimpa med tomat",
+      "steps": [
+        "Sätt ugnen på 170 °C. Häll av och smula tonfisken.",
+        "Vispa ihop ägg med flytande grädde, tomatpuré och provencalska örter, tillsätt tonfisk och ströbröd.",
+        "Häll smeten i en brödform och grädda i ugnen i 45 minuter. Låt svalna.",
+        "Servera i skivor med sallad som dressats med olivolja och vinäger."
+      ]
+    },
+    "tarte-thon-tomates-moutarde": {
+      "title": "Tonfiskpaj med tomat och senap",
+      "steps": [
+        "Sätt ugnen på 180 °C och tryck ut pajdegen i en form.",
+        "Bred senap på botten och fördela den smulade tonfisken ovanpå.",
+        "Täck med tomatskivor, tillsätt provencalska örter och riven ost.",
+        "Grädda i ugnen i 35 minuter."
+      ]
+    },
+    "quiche-saumon-poireaux": {
+      "title": "Quiche med lax och purjolök",
+      "steps": [
+        "Sätt ugnen på 180 °C och tryck ut pajdegen i en form.",
+        "Fräs den strimlade purjolöken i smör i 10 minuter.",
+        "Skär laxen i tärningar och fördela tillsammans med purjolöken på pajdegen.",
+        "Vispa ihop ägg och flytande grädde, häll över och grädda i ugnen i 35 minuter."
+      ]
+    },
+    "blanquette-poisson-riz": {
+      "title": "Fiskgryta med ris",
+      "steps": [
+        "Koka riset enligt anvisningarna på paketet.",
+        "Koka morötter, purjolök i bitar och skivade champinjoner i 15 minuter i 50 cl vatten med buljongtärning.",
+        "Pochera fisken i bitar i buljongen i 5 minuter, ta sedan upp fisken och grönsakerna.",
+        "Smält smöret, tillsätt mjölet och vispa ner 30 cl av buljongen och grädden.",
+        "Tillsätt citronsaft, fisken och grönsakerna, värm försiktigt och servera med riset."
+      ]
+    },
+    "cotriade-bretonne-simple": {
+      "title": "Cotriade, bretonsk fisksoppa",
+      "steps": [
+        "Fräs lök och purjolök i smör i botten av en stor kastrull.",
+        "Tillsätt potatis i bitar, 1,5 liter vatten, torkad timjan och lagerblad och koka i 20 minuter.",
+        "Lägg i fisken i stora bitar och sjud i 8 minuter utan att koka.",
+        "Ta bort lagerbladet och servera fisk och potatis i buljongen."
+      ]
+    },
+    "chaudree-poisson-mais": {
+      "title": "Fiskgryta med majs",
+      "steps": [
+        "Fräs bacontärningar och skivad lök i en kastrull.",
+        "Tillsätt tärnad potatis, mjölk, 30 cl vatten och torkad timjan och koka i 15 minuter.",
+        "Lägg i koljafilé i bitar, avrunnen majs och flytande grädde.",
+        "Låt sjuda i 6 minuter och servera."
+      ]
+    },
+    "gratin-crevettes-poireaux": {
+      "title": "Gratäng med räkor och purjolök",
+      "steps": [
+        "Sätt ugnen på 200 °C. Fräs strimlad purjolök i lite smör i 10 minuter.",
+        "Gör en béchamelsås med resten av smöret, mjöl och mjölk, tillsätt malen muskotnöt.",
+        "Blanda purjolök och tinade räkor i en form och häll över béchamelsåsen.",
+        "Strö över riven ost och grädda i ugnen i 20 minuter."
+      ]
+    },
+    "haddock-poche-epinards": {
+      "title": "Pochad rökt kolja med spenat och potatis",
+      "steps": [
+        "Koka potatisen 20 minuter i vatten.",
+        "Värm den frysta spenaten med smöret i 8 minuter.",
+        "Låt mjölken sjuda med lagerbladet och pochera den rökta koljan i 8 minuter utan att koka.",
+        "Låt koljan rinna av och servera med spenaten och potatisen. Peppra."
+      ]
+    },
+    "parmentier-saumon-epinards": {
+      "title": "Laxparmentier med spenat",
+      "steps": [
+        "Koka potatisen 20 minuter i saltat vatten och mosa dem med den varma mjölken, smöret och muskotnöten.",
+        "Värm spenaten i 8 minuter och låt den rinna av.",
+        "Sätt ugnen på 200 °C. Lägg laxen i tärningar och spenaten i en form, täck med potatismos.",
+        "Grädda i 25 minuter."
+      ]
+    },
+    "crumble-cabillaud-parmesan": {
+      "title": "Torskcrumble med parmesan",
+      "steps": [
+        "Sätt ugnen på 200 °C. Strimla purjolöken och skär morötterna i tunna skivor, stek dem 10 minuter i panna med lite vatten.",
+        "Lägg grönsakerna i en form med grädden och torskryggen i bitar.",
+        "Nyp ihop mjölet, smöret och parmesanen med fingertopparna.",
+        "Strö crumblen över fisken och grädda i 20 minuter."
+      ]
+    },
+    "tian-sardines-pommes-de-terre": {
+      "title": "Tian med sardiner och potatis",
+      "steps": [
+        "Sätt ugnen på 190 °C. Skiva potatis, tomater och lök tunt.",
+        "Varva dem i en form med hackad vitlök, provencalska örter och olivolja.",
+        "Grädda i 35 minuter.",
+        "Tillsätt de avrunna sardinerna och grädda ytterligare 10 minuter."
+      ]
+    },
+    "saumon-lentilles-moutarde": {
+      "title": "Lax med linser och senapssås",
+      "steps": [
+        "Koka de sköljda linserna i 30 minuter med torkad timjan, låt dem sedan rinna av.",
+        "Fräs den hackade schalottenlöken, tillsätt grädden och senapen.",
+        "Stek laxen 4 minuter på varje sida i panna.",
+        "Servera laxen på linserna och häll över såsen."
+      ]
+    },
+    "croquettes-thon-pommes-de-terre": {
+      "title": "Tonfiskkroketter med potatis",
+      "steps": [
+        "Koka potatisen 20 minuter i saltat vatten och mosa dem.",
+        "Sätt ugnen på 200 °C. Blanda moset, den smulade tonfisken, 1 ägg och hackad persilja.",
+        "Forma till kroketter, doppa dem i det andra uppvispade ägget och sedan i ströbröd.",
+        "Lägg dem på en plåt, ringla över 2 matskedar olja och grädda i 15 minuter.",
+        "Servera med citron och sallad som dressats med resten av oljan och vinägern."
+      ]
+    },
+    "pissaladiere-salade": {
+      "title": "Pissaladière och grönsallad",
+      "steps": [
+        "Blanda mjölet, torrjästen, 2 matskedar olja, 15 cl vatten och saltet, låt sedan jäsa i 20 minuter.",
+        "Låt den strimlade löken mjukna i 30 minuter på låg värme med 3 matskedar olja och torkad timjan.",
+        "Sätt ugnen på 220 °C. Kavla ut degen, täck med lök, lägg på ansjovisfiléer och oliver.",
+        "Grädda i 20 minuter och servera med sallad dressad med resten av oljan och vinägern."
+      ]
+    },
+    "salade-nicoise-chaude-thon": {
+      "title": "Potatis, brytbönor och tonfisk à la niçoise",
+      "steps": [
+        "Koka potatisen 20 minuter i saltat vatten, brytbönorna i 10 minuter och äggen i 9 minuter.",
+        "Skär potatisen och tomaterna i bitar, skala äggen.",
+        "Blanda olja, vinäger och senap.",
+        "Fördela allt med smulad tonfisk och oliver, ringla över vinägretten."
+      ]
+    },
+    "gratin-dauphinois-salade": {
+      "title": "Gratin dauphinois och grönsallad",
+      "steps": [
+        "Sätt ugnen på 160 °C. Skiva potatisen tunt utan att skölja dem.",
+        "Gnid en smord form med vitlök, lägg potatisen i lager med salt, peppar och muskotnöt.",
+        "Häll över mjölk och grädde, grädda sedan i 1 h 15.",
+        "Servera med sallad dressad med olja och vinäger."
+      ]
+    },
+    "gratin-savoyard-comte": {
+      "title": "Savojisk gratäng med comtéost",
+      "steps": [
+        "Sätt ugnen på 180 °C. Skiva potatisen tunt och strimla löken.",
+        "Varva potatis, lök och riven comtéost i en smord form, med lite muskotnöt.",
+        "Häll över 40 cl hett vatten med grönsaksbuljong.",
+        "Grädda i 1 h, tills ytan är gyllene."
+      ]
+    },
+    "gratin-butternut-creme": {
+      "title": "Butternutgratäng med grädde",
+      "steps": [
+        "Sätt ugnen på 180 °C. Skala butternutpumpan och skär den i tunna skivor.",
+        "Lägg dem i en form gniden med vitlök, häll över grädden med muskotnöt, salt och peppar.",
+        "Strö över riven ost och grädda i 45 minuter."
+      ]
+    },
+    "gratin-brocoli-pates": {
+      "title": "Pastagratäng med broccoli",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka pastan och broccolin i buketter tillsammans enligt anvisningarna på paketet.",
+        "Gör en béchamelsås: smält smöret, tillsätt mjölet och sedan mjölken under vispning, med muskotnöt och hälften av osten.",
+        "Blanda allt i en form och strö över resten av osten.",
+        "Grädda i 20 minuter."
+      ]
+    },
+    "gratin-poireaux-jambon": {
+      "title": "Purjolöksgratäng med skinka",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka purjolöken i bitar i saltat vatten i 15 minuter och låt den rinna av ordentligt.",
+        "Gör en béchamelsås med smör, mjöl och mjölk, tillsätt malen muskotnöt.",
+        "Lägg purjolök och skivad kokt skinka i bitar i en ugnsform och häll över béchamelsåsen.",
+        "Strö över riven ost och grädda i 25 minuter."
+      ]
+    },
+    "tian-legumes-provencal": {
+      "title": "Provencalsk grönsakstian med ris",
+      "steps": [
+        "Sätt ugnen på 180 °C. Fräs den skivade löken och hackad vitlök i 1 matsked olivolja i botten av en ugnsform.",
+        "Skär grönsakerna i tunna skivor och ställ dem upprätt, varva dem.",
+        "Tillsätt provencalska örter och resten av olivoljan, salta och peppra.",
+        "Grädda i 50 minuter och täck formen halvvägs in i tillagningen. Servera med ris kokt enligt anvisningarna på paketet."
+      ]
+    },
+    "parmigiana-aubergines": {
+      "title": "Auberginegratäng med parmesan",
+      "steps": [
+        "Sätt ugnen på 200 °C. Skär auberginen i skivor, pensla med olivolja och rosta dem på en plåt i 20 minuter.",
+        "Låt krossade tomater sjuda med hackad vitlök i 15 minuter, tillsätt sedan basilika.",
+        "Varva i en ugnsform sås, aubergineskivor, mozzarella och parmesan.",
+        "Grädda i 30 minuter på 180 °C och låt vila i 10 minuter."
+      ]
+    },
+    "gratin-epinards-oeufs": {
+      "title": "Spenatgratäng med ägg",
+      "steps": [
+        "Koka äggen i 9 minuter, skala dem och dela på mitten. Värm den frysta spenaten och låt rinna av ordentligt.",
+        "Sätt ugnen på 200 °C. Gör en béchamelsås med smör, mjöl och mjölk, tillsätt malen muskotnöt.",
+        "Blanda spenaten med hälften av béchamelsåsen i en form, lägg på ägghalvorna och täck med resten.",
+        "Strö över riven ost och grädda i 15 minuter."
+      ]
+    },
+    "gratin-panais-carottes": {
+      "title": "Gratäng med palsternacka och morot",
+      "steps": [
+        "Sätt ugnen på 180 °C. Skär grönsakerna i tunna skivor och ångkoka dem i 10 minuter.",
+        "Lägg dem i en ugnsform gnuggad med vitlök, tillsammans med torkad timjan.",
+        "Häll över flytande grädde, strö över riven ost och grädda i 35 minuter."
+      ]
+    },
+    "gratin-pommes-de-terre-champignons": {
+      "title": "Potatisgratäng med champinjoner",
+      "steps": [
+        "Sätt ugnen på 180 °C. Fräs skivad lök och champinjoner med smör och hackad vitlök.",
+        "Skär potatisen i tunna skivor.",
+        "Varva potatis och champinjoner i en form, tillsätt torkad timjan och häll över grädden blandad med 10 cl vatten.",
+        "Strö över riven ost och grädda i 55 minuter."
+      ]
+    },
+    "quiche-poireaux-chevre": {
+      "title": "Quiche med purjolök och getost",
+      "steps": [
+        "Sätt ugnen på 180 °C och tryck ut pajdegen i en form.",
+        "Fräs den skivade purjolöken med smör i 10 minuter.",
+        "Fördela purjolöken och getosten i bitar över pajdegen.",
+        "Vispa ihop ägg och flytande grädde, häll över och grädda i 35 minuter."
+      ]
+    },
+    "tarte-oignons-alsacienne": {
+      "title": "Lökpaj",
+      "steps": [
+        "Fräs den skivade löken med smör på låg värme i 25 minuter utan att den tar färg.",
+        "Sätt ugnen på 180 °C och tryck ut pajdegen i en form.",
+        "Vispa ihop ägg, flytande grädde och malen muskotnöt, tillsätt löken och häll blandningen i pajskalet.",
+        "Grädda i 30 minuter."
+      ]
+    },
+    "tarte-courgettes-feta": {
+      "title": "Zucchinipaj med feta",
+      "steps": [
+        "Sätt ugnen på 190 °C och tryck ut pajdegen i en form.",
+        "Skär zucchinin i tunna skivor och stek dem gyllene i 8 minuter.",
+        "Fördela zucchinin över pajdegen tillsammans med smulad feta och hackad mynta.",
+        "Vispa ihop ägg och flytande grädde, häll över och grädda i 30 minuter."
+      ]
+    },
+    "flamiche-poireaux": {
+      "title": "Flamiche med purjolök",
+      "steps": [
+        "Fräs den skivade purjolöken med smör i 15 minuter. Ta från värmen och rör ner 1 ägg och flytande grädde.",
+        "Sätt ugnen på 190 °C. Kavla ut en smördeg och lägg på en plåt, fördela purjolöken ovanpå men lämna kanten fri.",
+        "Täck med den andra smördegen, nyp ihop kanterna och pensla med det andra uppvispade ägget.",
+        "Grädda i 35 minuter."
+      ]
+    },
+    "tourte-epinards-ricotta": {
+      "title": "Spenat- och ricottapaj",
+      "steps": [
+        "Värm den frysta spenaten och pressa ur vätskan ordentligt.",
+        "Sätt ugnen på 190 °C. Blanda spenat, ricotta, 1 ägg, parmesan och malen muskotnöt.",
+        "Lägg blandningen på en smördeg, täck med den andra, nyp ihop och pensla med det andra uppvispade ägget.",
+        "Grädda i 40 minuter."
+      ]
+    },
+    "lentilles-vigneronnes-oeuf": {
+      "title": "Linser à la vigneronne med mjukkokt ägg",
+      "steps": [
+        "Fräs den skivade löken och morotstärningarna i olivolja.",
+        "Tillsätt sköljda linser, rödvin, torkad timjan, lagerblad och 60 cl vatten, koka i 35 minuter.",
+        "Koka äggen i 6 minuter, spola dem kalla och skala.",
+        "Ta bort lagerbladet och servera linserna med ett ägg på varje tallrik."
+      ]
+    },
+    "flageolets-tomates-herbes": {
+      "title": "Flageoletbönor med tomat och örter",
+      "steps": [
+        "Fräs den hackade löken och vitlöken i oljan.",
+        "Tillsätt de krossade tomaterna och torkad timjan, låt sjuda i 10 minuter.",
+        "Tillsätt de avrunna flageoletbönorna och koka i 10 minuter.",
+        "Strö över hackad persilja och servera."
+      ]
+    },
+    "tomates-farcies-riz-feta": {
+      "title": "Fyllda tomater med ris och feta",
+      "steps": [
+        "Sätt ugnen på 180 °C. Koka riset i 10 minuter i saltat vatten och häll av.",
+        "Skär av toppen på tomaterna, gröp ur dem och hacka innanmätet.",
+        "Blanda ris, feta, finhackade örter, tomatinnanmätet och 2 matskedar olivolja, fyll tomaterna med blandningen.",
+        "Ringla över resten av oljan och grädda i ugnen i 35 minuter."
+      ]
+    },
+    "courgettes-farcies-quinoa-chevre": {
+      "title": "Fyllda zucchinis med quinoa och getost",
+      "steps": [
+        "Sätt ugnen på 190 °C. Koka quinoan enligt anvisningarna på paketet.",
+        "Dela zucchinin på längden, gröp ur och hacka innanmätet.",
+        "Fräs lök, zucchiniinnanmätet och tärnad tomat i olivolja, tillsätt quinoa och örter.",
+        "Fyll zucchinibåtarna, toppa med getost och grädda i ugnen i 30 minuter."
+      ]
+    },
+    "aubergines-farcies-tomate-mozzarella": {
+      "title": "Fyllda auberginer med tomat och mozzarella",
+      "steps": [
+        "Sätt ugnen på 190 °C. Dela auberginerna på längden, snitta köttet, pensla med olja och rosta i 25 minuter.",
+        "Gröp ur köttet och fräs det med hackad lök och vitlök, tillsätt tomat och örter.",
+        "Låt sjuda i 10 minuter och fyll sedan auberginerna.",
+        "Toppa med mozzarella och grädda i ugnen i 15 minuter."
+      ]
+    },
+    "champignons-farcis-riz": {
+      "title": "Fyllda champinjoner och ris med örter",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka riset enligt anvisningarna på paketet.",
+        "Ta bort fötterna från champinjonerna och hacka dem tillsammans med vitlök, persilja och schalottenlök.",
+        "Fräs blandningen i smör i 5 minuter och tillsätt ströbröd.",
+        "Fyll svamphattarna och grädda i ugnen i 20 minuter."
+      ]
+    },
+    "galettes-sarrasin-champignons-oeuf": {
+      "title": "Bovetegaletter med svamp och ägg",
+      "steps": [
+        "Blanda bovetemjöl, salt och 45 cl vatten, låt vila i 20 minuter.",
+        "Fräs schalottenlök och skivade champinjoner i lite smör.",
+        "Stek en galette i en smörad stekpanna, knäck ett ägg i mitten, tillsätt svamp och låt stelna i 3 minuter.",
+        "Vik in kanterna och servera. Upprepa med resten av smeten."
+      ]
+    },
+    "souffle-fromage-salade": {
+      "title": "Ost-soufflé med sallad",
+      "steps": [
+        "Sätt ugnen på 190 °C och smörj en souffléform. Gör en tjock béchamelsås av smör, mjöl och mjölk.",
+        "Separera äggulor och vitor. Ta kastrullen från värmen, rör ner äggulor, riven comtéost och muskot i béchamelen.",
+        "Vispa äggvitorna till hårt skum och vänd försiktigt ner dem.",
+        "Häll smeten i formen och grädda i 30 minuter utan att öppna ugnsluckan.",
+        "Servera genast med sallad dressad med olja och vinäger."
+      ]
+    },
+    "oeufs-cocotte-epinards-creme": {
+      "title": "Ägg cocotte med spenat och baguettstavar",
+      "steps": [
+        "Värm ugnen till 180 °C. Värm den frysta spenaten med malen muskotnöt och låt rinna av.",
+        "Fördela spenaten och den flytande grädden i 4 små formar, knäck 2 ägg i varje.",
+        "Grädda i vattenbad i ugnen i 12 min.",
+        "Servera med baguetten skuren i stavar."
+      ]
+    },
+    "omelette-fines-herbes-salade": {
+      "title": "Omelett med örter och stekt potatis",
+      "steps": [
+        "Skär potatisen i tärningar och stek gyllene i 20 minuter i 2 matskedar olja.",
+        "Vispa äggen med finhackade örter, salt och peppar.",
+        "Stek omeletten i 4 minuter med smör.",
+        "Servera med potatisen och sallad dressad med resten av oljan och vinäger."
+      ]
+    },
+    "crepes-epinards-ricotta": {
+      "title": "Gratinerade crêpes med spenat och ricotta",
+      "steps": [
+        "Blanda mjöl, ägg och mjölk, stek 8 crêpes i en smörad stekpanna.",
+        "Värm spenaten, pressa ur vätskan och blanda med ricotta och muskot.",
+        "Sätt ugnen på 200 °C. Fyll och rulla crêpesen, lägg dem i en ugnsform.",
+        "Strö över riven ost och gratinera i 15 minuter."
+      ]
+    },
+    "pates-champignons-creme": {
+      "title": "Pasta med svamp och grädde",
+      "steps": [
+        "Koka pastan enligt anvisningarna på paketet.",
+        "Fräs schalottenlök och skivade champinjoner i smör i 8 minuter.",
+        "Tillsätt grädde och parmesan, låt tjockna i 2 minuter.",
+        "Blanda med pastan och strö över persilja."
+      ]
+    },
+    "polenta-champignons-comte": {
+      "title": "Krämig polenta med svamp",
+      "steps": [
+        "Fräs skivade champinjoner med smör och hackad vitlök i 10 minuter.",
+        "Koka upp mjölk och 60 cl vatten, vispa ner polentan och rör i 5 minuter.",
+        "Tillsätt riven comtéost och salta.",
+        "Servera polentan med svampen och hackad persilja."
+      ]
+    },
+    "polenta-gratinee-tomate": {
+      "title": "Gratinerad polenta med tomat",
+      "steps": [
+        "Koka upp 1,2 liter saltat vatten, strö i polentan under omrörning, rör i 5 minuter och bred ut i en form. Låt stelna i 15 minuter.",
+        "Fräs den hackade löken och vitlöken i olivolja, tillsätt krossade tomater och provencalska örter, och koka i 10 minuter.",
+        "Sätt ugnen på 200 °C. Täck polentan med sås och mozzarella.",
+        "Gratinera i ugnen i 15 minuter."
+      ]
+    },
+    "risotto-butternut": {
+      "title": "Risotto med butternutpumpa",
+      "steps": [
+        "Värm 1,2 liter vatten med buljong (tärning).",
+        "Fräs den hackade löken och butternutpumpan i små tärningar i smör, 5 minuter.",
+        "Tillsätt riset och fräs i 2 minuter, häll sedan på buljongen slev för slev under omrörning i 20 minuter.",
+        "Ta av från värmen, tillsätt parmesan och servera."
+      ]
+    },
+    "haricots-blancs-tomate-oeufs": {
+      "title": "Vita bönor med tomat och ägg",
+      "steps": [
+        "Fräs den hackade löken och vitlöken i olivolja med paprika.",
+        "Tillsätt krossade tomater och avrunna konserverade vita bönor, låt sjuda i 12 minuter.",
+        "Gör 4 gropar, knäck ett ägg i varje, lägg på lock och koka i 6 minuter."
+      ]
+    },
+    "parmentier-lentilles-carottes": {
+      "title": "Parmentier med linser och morötter",
+      "steps": [
+        "Koka de sköljda linserna i 30 minuter med morotstärningar, hackad lök, torkad timjan och tomatpuré.",
+        "Koka potatisarna i 20 minuter i saltat vatten och mosa dem med varm mjölk och smör.",
+        "Sätt ugnen på 200 °C. Lägg linserna i en form och täck med potatismos.",
+        "Gratinera i ugnen i 20 minuter."
+      ]
+    },
+    "bourguignon-champignons-lentilles": {
+      "title": "Bourguignon med champinjoner och linser",
+      "steps": [
+        "Bryn champinjonerna i klyftor i en gryta med olivolja, ta sedan upp dem.",
+        "Fräs hackad lök, morot i skivor och hackad vitlök. Strö över mjöl.",
+        "Tillsätt rödvin, tomatpuré, linser, torkad timjan, lagerblad och 50 cl vatten.",
+        "Lägg på lock och låt sjuda i 40 minuter.",
+        "Lägg tillbaka champinjonerna, koka i 10 minuter och ta bort lagerbladet."
+      ]
+    },
+    "pot-au-feu-legumes-bouillon": {
+      "title": "Grönsakspot-au-feu med kikärtor",
+      "steps": [
+        "Koka upp 2 liter vatten med buljong (tärning), torkad timjan och lagerblad.",
+        "Tillsätt morötter, majrovor och purjolök i bitar, koka i 20 minuter.",
+        "Tillsätt vitkål i klyftor och potatis, koka i 20 minuter till.",
+        "Tillsätt avrunna kikärtor, värm i 5 minuter, ta bort lagerbladet och servera med senap."
+      ]
+    },
+    "clafoutis-courgettes-chevre": {
+      "title": "Clafoutis med zucchini och getost",
+      "steps": [
+        "Sätt ugnen på 180 °C. Bryn zucchiniskivor i olivolja i 8 minuter.",
+        "Vispa ihop ägg, mjöl och mjölk, tillsätt finhackad mynta.",
+        "Lägg zucchini och getost i en form, häll över smeten.",
+        "Grädda i ugnen i 30 minuter."
+      ]
+    },
+    "chou-rouge-pommes-pommes-de-terre": {
+      "title": "Rödkål med äpple och potatis",
+      "steps": [
+        "Strimla rödkål och lök, skär äpple i tärningar.",
+        "Fräs löken i olivolja, tillsätt rödkål, äpple, vinäger, socker och 20 cl vatten.",
+        "Lägg på lock och låt sjuda i 50 minuter på låg värme.",
+        "Koka potatisarna i 20 minuter i saltat vatten och servera med kålen."
+      ]
+    },
+    "choux-bruxelles-gratines-pommes-de-terre": {
+      "title": "Gratinerad brysselkål och potatis",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka brysselkålen i 10 minuter och potatisskivorna i 12 minuter i saltat vatten.",
+        "Häll av och lägg i en form.",
+        "Häll över flytande grädde med malen muskotnöt, strö över riven ost och gratinera i 20 minuter."
+      ]
+    },
+    "fenouil-gratine-parmesan-riz": {
+      "title": "Gratinerad fänkål med parmesan och ris",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka fänkål i klyftor i 15 minuter i saltat vatten och häll av.",
+        "Koka riset enligt anvisningarna på paketet.",
+        "Lägg fänkålen i en smord form, häll över flytande grädde, strö över parmesan och gratinera i 20 minuter."
+      ]
+    },
+    "soupe-pistou": {
+      "title": "Soppa med pistou",
+      "steps": [
+        "Skär alla grönsaker i små tärningar.",
+        "Lägg dem i 2 liter vatten, utom konserverade vita bönor, och koka i 30 minuter.",
+        "Tillsätt avrunna konserverade vita bönor och pasta, koka i 10 minuter.",
+        "Mixa basilika, vitlök, parmesan och olivolja till pistou.",
+        "Tillsätt pistou när soppan är klar och servera."
+      ]
+    },
+    "garbure-bearnaise-simple": {
+      "title": "Förenklad béarnsk garbure",
+      "steps": [
+        "Lägg anklår i en stor gryta med 2,5 liter vatten, vitlök, torkad timjan och lagerblad, låt sjuda i 45 minuter.",
+        "Tillsätt strimlad savoykål, morötter, majrovor och purjolök i bitar, koka i 30 minuter.",
+        "Tillsätt potatis och avrunna konserverade vita bönor, koka i 20 minuter.",
+        "Dra isär anklåren, lägg tillbaka köttet i soppan och ta bort lagerbladet."
+      ]
+    },
+    "soupe-oignon-gratinee": {
+      "title": "Gratinerad löksoppa",
+      "steps": [
+        "Fräs den skivade löken på låg värme i smöret i 25 minuter tills den är gyllene.",
+        "Strö över mjölet, tillsätt 1,5 liter vatten med grönsaksbuljong och låt sjuda i 15 minuter.",
+        "Värm ugnen till 220 °C. Fördela soppan i ugnsfasta skålar och lägg brödskivorna ovanpå.",
+        "Strö över riven comtéost och gratinera i 10 minuter."
+      ]
+    },
+    "soupe-pois-casses-lardons": {
+      "title": "Soppa på delade ärtor med bacontärningar",
+      "steps": [
+        "Skölj de delade ärtorna. Fräs bacontärningarna och den skivade löken i en gryta.",
+        "Tillsätt ärtorna, morötterna och purjolöken i skivor, timjan, lagerblad och 2 liter vatten.",
+        "Låt sjuda i 50 minuter.",
+        "Ta bort lagerbladet och mixa en del av soppan. Smaka av innan du saltar."
+      ]
+    },
+    "soupe-paysanne-lardons-pain": {
+      "title": "Bondesoppa med bacontärningar",
+      "steps": [
+        "Fräs bacontärningarna i en gryta.",
+        "Tillsätt grönsakerna i tärningar, timjan och 2 liter vatten.",
+        "Låt sjuda i 35 minuter och smaka av innan du saltar.",
+        "Rosta brödet, täck med ost och servera på soppan."
+      ]
+    },
+    "soupe-haricots-blancs-chou": {
+      "title": "Soppa på vita bönor och kål",
+      "steps": [
+        "Fräs den skivade löken och hackad vitlök i olivolja.",
+        "Tillsätt morötterna i tärningar, strimlad vitkål, krossade tomater, timjan, 1,5 liter vatten och grönsaksbuljong.",
+        "Låt sjuda i 30 minuter.",
+        "Tillsätt avrunna vita bönor, koka i 5 minuter och servera."
+      ]
+    },
+    "soupe-butternut-lentilles-corail": {
+      "title": "Butternutsoppa med röda linser",
+      "steps": [
+        "Fräs den skivade löken och riven färsk ingefära i olivolja med spiskummin.",
+        "Tillsätt butternutpumpa i tärningar, sköljda röda linser och 1 liter vatten, koka i 20 minuter.",
+        "Tillsätt kokosmjölk och mixa."
+      ]
+    },
+    "veloute-cresson-oeuf-mollet": {
+      "title": "Krassesoppa med krämigt ägg",
+      "steps": [
+        "Fräs den skivade löken i smör, tillsätt potatis i tärningar, 1 liter vatten och grönsaksbuljong, koka i 20 minuter.",
+        "Tillsätt krasse, koka i 3 minuter och mixa med flytande grädde.",
+        "Koka äggen i 6 minuter, spola dem kalla och skala.",
+        "Servera soppan med ett ägg i varje tallrik och baguette."
+      ]
+    },
+    "soupe-poulet-riz-citron": {
+      "title": "Kycklingsoppa med ris och citron",
+      "steps": [
+        "Lägg kycklinglåren i 2 liter vatten med buljong och låt sjuda i 30 minuter.",
+        "Ta upp kycklingen, tillsätt morötter och purjolök i skivor samt riset, koka i 15 minuter.",
+        "Dra isär kycklingen och lägg tillbaka i soppan.",
+        "Tillsätt citronsaft och hackad persilja."
+      ]
+    },
+    "soupe-boeuf-legumes-pates": {
+      "title": "Köttsoppa med grönsaker och småpasta",
+      "steps": [
+        "Lägg biff (grytbitar) i tärningar i 2,5 liter vatten med lök, buljong, timjan och lagerblad. Koka upp och skumma av.",
+        "Låt sjuda i 1 h 15.",
+        "Tillsätt grönsaker i tärningar och koka i 30 minuter.",
+        "Tillsätt pastan, koka enligt paketet och ta bort lagerbladet."
+      ]
+    },
+    "potage-poireaux-haddock": {
+      "title": "Purjolökssoppa med rökt kolja",
+      "steps": [
+        "Koka strimlad purjolök och potatis i tärningar i 70 cl vatten i 20 minuter.",
+        "Tillsätt mjölk och rökt kolja, sjud i 8 minuter utan att koka.",
+        "Ta upp fisken och smula den.",
+        "Mixa soppan med grädde, tillsätt fisken och peppra. Smaka av innan du saltar."
+      ]
+    },
+    "soupe-pois-chiches-pates": {
+      "title": "Kikärtssoppa med småpasta",
+      "steps": [
+        "Fräs den skivade löken och hackad vitlök i olivolja.",
+        "Tillsätt krossade tomater, avrunna kikärtor, provencalska örter, grönsaksbuljong och 1,2 liter vatten, låt sjuda i 15 minuter.",
+        "Tillsätt pastan och koka enligt paketet."
+      ]
+    },
+    "veloute-chou-fleur-lardons": {
+      "title": "Blomkålssoppa med bacontärningar och krutonger",
+      "steps": [
+        "Koka blomkålsbuketter, potatis och lök i 80 cl vatten i 20 minuter.",
+        "Tillsätt mjölk och mixa. Smaka av innan du saltar.",
+        "Stek bacontärningarna i stekpanna och rosta baguette i tärningar i baconfettet.",
+        "Servera soppan med bacontärningar och krutonger."
+      ]
+    },
+    "soupe-potimarron-tartines-chevre": {
+      "title": "Hokkaidopumpasoppa med getostmackor",
+      "steps": [
+        "Skär hokkaidopumpan i bitar med väl tvättat skal. Koka med lök i 1 liter vatten i 25 minuter.",
+        "Mixa med grädde och malen muskotnöt.",
+        "Rosta brödet, bred på getost och gratinera under ugnens grill i 3 minuter.",
+        "Servera soppan med mackorna."
+      ]
+    },
+    "soupe-lentilles-corail-epinards-citron": {
+      "title": "Soppa med röda linser, spenat och citron",
+      "steps": [
+        "Fräs den hackade löken i olivolja tillsammans med spiskummin och gurkmeja.",
+        "Tillsätt de sköljda röda linserna, krossade tomater och 1 liter vatten, koka i 15 minuter.",
+        "Tillsätt fryst spenat och koka ytterligare 5 minuter.",
+        "Pressa i citron, salta, peppra och servera."
+      ]
+    },
+    "soupe-legumes-vermicelles-poulet": {
+      "title": "Grönsakssoppa med risbandsnudlar och kyckling",
+      "steps": [
+        "Koka upp 1,8 liter vatten med buljong (tärning).",
+        "Tillsätt grönsaker i tärningar och hel kycklingfilé, låt sjuda i 15 minuter.",
+        "Ta upp kycklingen, dra isär den och lägg tillbaka i soppan.",
+        "Tillsätt risbandsnudlar, koka 3 minuter och strö över persilja."
+      ]
+    },
+    "potage-tomate-riz-oeuf-poche": {
+      "title": "Tomatsoppa med ris och pocherat ägg",
+      "steps": [
+        "Fräs hackad lök och vitlök i olivolja, tillsätt krossade tomater, provencalska örter och 80 cl vatten.",
+        "Tillsätt ris och låt sjuda i 15 minuter.",
+        "Pochera äggen 3 minuter i sjudande vatten med vinäger.",
+        "Servera soppan med ett ägg i varje tallrik."
+      ]
+    },
+    "soupe-fenouil-tomate-cabillaud": {
+      "title": "Tomatsoppa med fänkål och torskrygg",
+      "steps": [
+        "Fräs hackad lök och fänkål i olivolja, tillsätt hackad vitlök.",
+        "Tillsätt krossade tomater, potatis i tärningar och 70 cl vatten, låt sjuda i 20 minuter.",
+        "Lägg i torskrygg i bitar och sjud 6 minuter på låg värme."
+      ]
+    },
+    "boeuf-miroton-oignons": {
+      "title": "Biffgryta med lök (Miroton)",
+      "steps": [
+        "Skär biff (grytbitar) i tärningar och bryn dem i olivolja i en gryta, ta sedan upp köttet.",
+        "Mjukstek hackad lök i 10 minuter, strö över mjöl och tillsätt vinäger.",
+        "Lägg tillbaka köttet tillsammans med tomatpuré, buljong (tärning), lagerblad och 50 cl vatten, täck över och låt sjuda i 1 h 30.",
+        "Tillsätt potatis i bitar och koka 25 minuter. Ta bort lagerbladet."
+      ]
+    },
+    "gratin-colin-chou-fleur": {
+      "title": "Gratäng med koljafilé och blomkål",
+      "steps": [
+        "Sätt ugnen på 200 °C. Koka blomkålsbuketter i saltat vatten i 12 minuter och låt rinna av.",
+        "Gör en béchamelsås med smör, mjöl och mjölk, tillsätt malen muskotnöt.",
+        "Lägg blomkål och koljafilé i bitar i en ugnsform, häll över béchamelsåsen.",
+        "Strö över riven ost och gratinera i 20 minuter."
+      ]
+    },
+    "gratin-riz-courgettes-tomates": {
+      "title": "Gratäng med ris, zucchini och tomater",
+      "steps": [
+        "Sätt ugnen på 190 °C. Koka riset i saltat vatten i 10 minuter och låt rinna av.",
+        "Fräs hackad lök, vitlök och zucchini i tärningar i olivolja i 10 minuter.",
+        "Tillsätt krossade tomater och provencalska örter, blanda sedan med riset i en ugnsform.",
+        "Strö över riven ost och gratinera i 25 minuter."
+      ]
+    },
+    "tajine-poulet-citron-olives": {
+      "title": "Kycklingtajine med citron och oliver",
+      "steps": [
+        "Bryn kycklinglår i olivolja med hackad lök, pressad vitlök, riven färsk ingefära och gurkmeja.",
+        "Häll på 30 cl vatten, salta, peppra, täck över och låt sjuda i 25 minuter.",
+        "Tillsätt potatis i klyftor och citron i tunna skivor, koka ytterligare 25 minuter under lock.",
+        "Tillsätt oliver och hackad färsk koriander, låt såsen reducera utan lock och servera."
+      ]
+    },
+    "couscous-legumes-pois-chiches": {
+      "title": "Couscous med grönsaker och kikärtor",
+      "steps": [
+        "Fräs hackad lök i 2 matskedar olivolja med ras el hanout.",
+        "Tillsätt morötter i bitar, krossade tomater, 1 liter vatten och salt, koka i 20 minuter.",
+        "Tillsätt zucchini i bitar och avrunna kikärtor, koka ytterligare 15 minuter.",
+        "Häll samma volym kokande saltat vatten med resten av olivoljan över grynen, täck över 5 minuter, fluffa upp och servera med grönsaker och buljong."
+      ]
+    },
+    "harira-agneau-lentilles": {
+      "title": "Harira med lamm och linser",
+      "steps": [
+        "Bryn lammstek (bog) i små tärningar med hackad lök i olivolja, tillsätt riven färsk ingefära, gurkmeja och kanel.",
+        "Tillsätt krossade tomater, sköljda linser, 1,5 liter vatten och salt, täck över och låt sjuda i 45 minuter.",
+        "Tillsätt avrunna kikärtor, hackad färsk koriander och persilja, koka ytterligare 10 minuter.",
+        "Rör ut majsstärkelse i lite kallt vatten, häll i under omrörning och låt tjockna i 2 minuter.",
+        "Servera riktigt varm med lite pressad citron."
+      ]
+    },
+    "loubia-haricots-blancs-tomate": {
+      "title": "Loubia, långkokta vita bönor i tomatsås",
+      "steps": [
+        "Fräs hackad lök och pressad vitlök i olivolja.",
+        "Tillsätt paprika, spiskummin, chili, krossade tomater, 20 cl vatten och salt, låt sjuda i 10 minuter.",
+        "Tillsätt avrunna och sköljda konserverade vita bönor och koka ytterligare 10 minuter på låg värme.",
+        "Strö över hackad persilja och servera."
+      ]
+    },
+    "tajine-boeuf-abricots-amandes": {
+      "title": "Bifftajine med torkade aprikoser och mandel",
+      "steps": [
+        "Bryn biff (grytbitar) i stora tärningar i olivolja med hackad lök, riven färsk ingefära och kanel.",
+        "Täck med vatten så det precis täcker, salta, täck över och låt sjuda i 1 timme 30 minuter.",
+        "Tillsätt torkade aprikoser och honung, koka ytterligare 20 minuter utan lock.",
+        "Rosta skivade mandlar i en torr stekpanna.",
+        "Sväll grynen med samma volym kokande saltat vatten, servera tajinen toppad med mandel."
+      ]
+    },
+    "pastilla-poulet-amandes": {
+      "title": "Pastilla med kyckling och mandel",
+      "steps": [
+        "Koka kycklingen med hackad lök, färsk ingefära, gurkmeja, salt och 30 cl vatten i 20 minuter, dra sedan isär köttet.",
+        "Låt kokspadet reducera, tillsätt de uppvispade äggen och rör runt som till äggröra, tillsätt sedan kycklingen och hackad färsk koriander.",
+        "Rosta mandelmjölet torrt i en stekpanna, blanda sedan med socker och kanel och spara 1 sked av blandningen.",
+        "Sätt ugnen på 180 °C, smält smöret och klä en rund form med 6 smörpenslade filodegsark så att de hänger över kanten.",
+        "Fördela mandelblandningen, sedan fyllningen, vik över arken och täck med de 2 sista smörpenslade arken.",
+        "Grädda i 25 minuter tills pastillan är gyllene och strö över den sparade blandningen."
+      ]
+    },
+    "colin-chermoula-pommes-de-terre": {
+      "title": "Koljafilé med chermoula och potatis",
+      "steps": [
+        "Sätt ugnen på 200 °C och mixa färsk koriander, vitlök, paprika, spiskummin, citronsaft, olivolja och salt.",
+        "Blanda potatisen i tunna skivor med hälften av chermoulan i en ugnsform och baka i 25 minuter.",
+        "Lägg på tomatklyftor och fisken, skeda över resten av chermoulan.",
+        "Baka i ytterligare 15 minuter, tills fisken lätt faller isär."
+      ]
+    },
+    "mujaddara-lentilles-riz-oignons": {
+      "title": "Mujaddara, linser och ris med karamelliserad lök",
+      "steps": [
+        "Koka de sköljda linserna i 80 cl vatten i 15 minuter.",
+        "Stek den hackade löken länge i olivolja på medelvärme i 20 minuter tills den är riktigt brun.",
+        "Tillsätt ris, spiskummin, salt och peppar till linserna och deras vatten, fyll på med vatten om det behövs, lägg på lock och koka på låg värme i 15 minuter.",
+        "Låt vila under lock och servera med löken ovanpå."
+      ]
+    },
+    "chich-taouk-poulet-riz": {
+      "title": "Chich taouk, libanesiskt marinerad kyckling och ris",
+      "steps": [
+        "Blanda naturell yoghurt, citronsaft, pressad vitlök, tomatpuré, paprika, 1 matsked olivolja och salt.",
+        "Skär kycklingen i kuber, täck dem med marinaden och låt stå kallt i 30 minuter.",
+        "Koka riset.",
+        "Stek kycklingen i resten av oljan på hög värme i 10 minuter, vänd runt, tills den är genomstekt och gyllene.",
+        "Servera med riset."
+      ]
+    },
+    "colin-sauce-tahini-riz": {
+      "title": "Ugnsbakad koljafilé med tahinisås och ris",
+      "steps": [
+        "Sätt ugnen på 200 °C och koka riset.",
+        "Lägg fisken i en form, ringla över olivolja, salta, strö över spiskummin och baka i 15 minuter.",
+        "Blanda sesampasta, citronsaft, pressad vitlök och 10 cl vatten till en slät sås.",
+        "Häll såsen över fisken, baka ytterligare 5 minuter och strö över hackad persilja.",
+        "Servera med riset."
+      ]
+    },
+    "maghmour-aubergines-pois-chiches": {
+      "title": "Maghmour, aubergine och kikärtor i tomatsås",
+      "steps": [
+        "Sätt ugnen på 220 °C, skär auberginen i tärningar, blanda med 3 matskedar olivolja och rosta i ugnen i 25 minuter.",
+        "Fräs hackad lök och pressad vitlök i resten av oljan med spiskummin och chili.",
+        "Tillsätt tomater, avrunna kikärtor, aubergine och salt, låt sjuda i 20 minuter.",
+        "Strö över hackad mynta och servera varm eller ljummen."
+      ]
+    },
+    "palak-tofu-epinards-riz": {
+      "title": "Palak med tofu, kryddad spenat och ris",
+      "steps": [
+        "Koka riset och stek tofu i kuber i 1 matsked olja, lägg åt sidan.",
+        "Fräs hackad lök, vitlök och riven färsk ingefära i resten av oljan med kryddorna.",
+        "Tillsätt fryst spenat och salt och koka i 10 minuter.",
+        "Mixa med kokosmjölk, lägg i tofun och värm i 5 minuter innan du serverar med riset."
+      ]
+    },
+    "aloo-gobi-chou-fleur-pommes-de-terre": {
+      "title": "Aloo gobi, blomkål och potatis med kryddor",
+      "steps": [
+        "Fräs hackad lök i olja med spiskummin, tillsätt sedan vitlök och riven färsk ingefära.",
+        "Tillsätt gurkmeja, garam masala, potatis i tärningar och blomkål i buketter.",
+        "Tillsätt tärnad tomat, salt och 15 cl vatten, lägg på lock och koka på låg värme i 25 minuter.",
+        "Strö över hackad färsk koriander och servera."
+      ]
+    },
+    "biryani-poulet-epices": {
+      "title": "Kycklingbiryani med kryddor",
+      "steps": [
+        "Blanda kycklingbitar med naturell yoghurt, pressad vitlök, riven färsk ingefära, kryddor och hälften av saltet, låt stå kallt i 20 minuter.",
+        "Stek hackad lök i olja, spara hälften, bryn sedan kycklingen i grytan i 10 minuter.",
+        "Koka riset i 6 minuter i en stor kastrull med saltat vatten och häll av, det ska vara fast.",
+        "Fördela riset över kycklingen med russin, hackad koriander och mynta samt 10 cl vatten.",
+        "Täck ordentligt och koka på mycket låg värme i 20 minuter, servera med den sparade löken."
+      ]
+    },
+    "poulet-korma-amandes": {
+      "title": "Kycklingkorma med mandel",
+      "steps": [
+        "Koka riset och fräs hackad lök i olja med vitlök och riven färsk ingefära.",
+        "Tillsätt kycklingbitar och kryddor, bryn i 5 minuter.",
+        "Tillsätt mandel, 20 cl vatten och salt, låt sjuda i 15 minuter.",
+        "Ta från värmen, rör ner yoghurt och flytande grädde, värm försiktigt utan att koka och servera med riset."
+      ]
+    },
+    "keema-boeuf-petits-pois": {
+      "title": "Keema, nötfärs med ärtor och kryddor",
+      "steps": [
+        "Koka riset och fräs hackad lök i olja med vitlök och riven färsk ingefära.",
+        "Tillsätt nötfärs och kryddor och stek tills köttet är ordentligt brynt.",
+        "Tillsätt tomater och salt och låt sjuda i 10 minuter.",
+        "Tillsätt frysta ärtor, koka ytterligare 5 minuter och servera med riset."
+      ]
+    },
+    "crevettes-masala-tomate-riz": {
+      "title": "Räkor masala med tomat och ris",
+      "steps": [
+        "Koka riset och tina de skalade räkorna, låt dem rinna av ordentligt.",
+        "Fräs hackad lök i olja med vitlök, riven färsk ingefära och kryddor.",
+        "Tillsätt tomater, kokosmjölk och salt, låt sjuda i 10 minuter.",
+        "Tillsätt räkorna, koka i 5 minuter, strö över hackad koriander och servera med riset."
+      ]
+    },
+    "pad-thai-crevettes": {
+      "title": "Pad thai med räkor",
+      "steps": [
+        "Lägg risbandsnudlarna i blöt i varmt vatten enligt anvisningarna på paketet, häll sedan av vattnet.",
+        "Blanda tamari, fisksås, socker och saften från en lime.",
+        "Stek de skalade räkorna och pressad vitlök i solrosolja på hög värme, skjut åt sidan och rör ner äggen tills de är lätt krämiga.",
+        "Tillsätt risbandsnudlarna och såsen, blanda i 3 minuter, tillsätt sedan mungböngroddar och finstrimlad salladslök.",
+        "Servera med krossade jordnötter och den andra limen i klyftor."
+      ]
+    },
+    "bibimbap-boeuf-legumes": {
+      "title": "Bibimbap med nötkött och grönsaker",
+      "steps": [
+        "Koka riset och skär rostbiff av nötkött i tunna strimlor, blanda sedan med sojasås, socker och pressad vitlök.",
+        "Fräs morötter i stavar, skivade champinjoner och färsk spenat var för sig i lite sesamolja.",
+        "Stek nötköttet 2 minuter på hög värme.",
+        "Stek ägg till stekta ägg.",
+        "Fördela riset i skålar, lägg på grönsaker, kött och ägg, toppa med sesamfrön och chili."
+      ]
+    },
+    "porc-caramel-vietnamien-oeufs": {
+      "title": "Vietnamesisk karamelliserad fläsk med ägg",
+      "steps": [
+        "Koka äggen i 9 minuter, skala dem och koka riset.",
+        "Smält socker torrt i en gryta tills det blir bärnstensfärgat karamell, häll sedan försiktigt på 30 cl hett vatten.",
+        "Bryn fläskytterfilé i tärningar i olja med finhackad schalottenlök och pressad vitlök, tillsätt sedan karamellen och fisksåsen.",
+        "Låt sjuda utan lock i 25 minuter, lägg i äggen och låt sjuda ytterligare 5 minuter tills såsen är sirapsliknande.",
+        "Peppra och servera med riset."
+      ]
+    },
+    "poulet-gong-bao-cacahuetes": {
+      "title": "Gong bao-kyckling med jordnötter",
+      "steps": [
+        "Koka riset och blanda kycklingfilé i tärningar med majsstärkelse och 1 matsked sojasås.",
+        "Blanda resten av sojasåsen, vinäger, socker och 5 cl vatten.",
+        "Stek kycklingen på hög värme i olja i 5 minuter, lägg åt sidan.",
+        "Fräs paprika i tärningar, vitlök, riven färsk ingefära och chili i 3 minuter.",
+        "Lägg tillbaka kycklingen, tillsätt såsen, jordnötterna och finstrimlad salladslök, servera med riset."
+      ]
+    },
+    "mapo-tofu-boeuf": {
+      "title": "Mapo tofu med nötfärs",
+      "steps": [
+        "Koka riset och skär fast tofu i tärningar.",
+        "Bryn nötfärs i olja med pressad vitlök, riven färsk ingefära och chili.",
+        "Tillsätt sojasås och 25 cl vatten, lägg i tofun och låt sjuda i 5 minuter.",
+        "Rör ut majsstärkelse i lite kallt vatten, häll i under omrörning och toppa med finstrimlad salladslök innan du serverar med riset."
+      ]
+    },
+    "riz-saute-ananas-crevettes": {
+      "title": "Thailändskt stekt ris med ananas och räkor",
+      "steps": [
+        "Koka riset, bred ut det på en plåt och låt svalna.",
+        "Stek de skalade räkorna i olja på hög värme, skjut åt sidan och rör ner äggen tills de är lätt krämiga.",
+        "Tillsätt riset, curry, tamari och fisksås och stek i 5 minuter.",
+        "Tillsätt ananas i små bitar, frysta ärtor och finstrimlad salladslök, stek ytterligare 3 minuter och servera genast."
+      ]
+    },
+    "okonomiyaki-chou": {
+      "title": "Okonomiyaki, japansk kålpannkaka",
+      "steps": [
+        "Strimla vitkål och salladslök mycket fint.",
+        "Vispa ihop mjöl, ägg och 12 cl vatten, blanda sedan ner kålen och salladslöken.",
+        "Stek 2 stora pannkakor i olja på medelvärme, 6 minuter per sida under lock.",
+        "Ringla över sojasås, strö över sesamfrön och servera genast."
+      ]
+    },
+    "rendang-boeuf-coco": {
+      "title": "Rendang med biff och kokosmjölk",
+      "steps": [
+        "Mixa lök, vitlök, färsk ingefära, gurkmeja, chili och kanel till en pasta.",
+        "Fräs pastan i olja i 5 minuter, bryn sedan biff (grytbitar) i tärningar.",
+        "Rosta riven kokos torrt, tillsätt den tillsammans med kokosmjölk, 20 cl vatten och salt.",
+        "Låt sjuda utan lock i 2 timmar på låg värme, rör om då och då tills såsen nästan kokat in.",
+        "Pressa över limesaft och servera med riset."
+      ]
+    },
+    "saute-boeuf-brocoli": {
+      "title": "Wokad biff med broccoli",
+      "steps": [
+        "Koka riset och blanchera broccolibuketter i kokande vatten i 3 minuter.",
+        "Skär rostbiff av nötkött i tunna strimlor och blanda med majsstärkelse och 1 matsked sojasås.",
+        "Stek köttet i 2 minuter på hög värme i olja med vitlök och riven färsk ingefära.",
+        "Tillsätt broccoli, resten av sojasåsen, socker och 5 cl vatten, blanda i 2 minuter och servera med riset."
+      ]
+    },
+    "tinga-poulet-tostadas": {
+      "title": "Tinga med kyckling på tostadas",
+      "steps": [
+        "Koka kycklingfilé i sjudande saltat vatten i 15 minuter, dra isär den i strimlor.",
+        "Värm ugnen till 200 °C och baka tortillabröd i 6 minuter tills de är krispiga.",
+        "Fräs hackad lök och vitlök i olja, tillsätt paprika, chili och krossade tomater, koka i 10 minuter.",
+        "Tillsätt kycklingen och blanda i 3 minuter.",
+        "Toppa tostadas med tinga, skivad avokado och lite crème fraîche."
+      ]
+    },
+    "enchiladas-haricots-rouges-four": {
+      "title": "Gratinerade enchiladas med röda bönor",
+      "steps": [
+        "Värm ugnen till 200 °C och fräs hackad lök och vitlök i olja med spiskummin och paprika.",
+        "Tillsätt krossade tomater och salt, koka i 10 minuter, blanda sedan en tredjedel av såsen med röda bönor och avrunnen majs.",
+        "Fyll och rulla tortillabröden, lägg dem tätt i en form.",
+        "Täck med resten av såsen, strö över riven ost och grädda i 20 minuter."
+      ]
+    },
+    "bol-burrito-riz-haricots-avocat": {
+      "title": "Burritobowl med ris, bönor och avokado",
+      "steps": [
+        "Koka riset och smaksätt med saften från en lime och hackad färsk koriander.",
+        "Fräs hackad lök i olja, tillsätt spiskummin, avrunna röda bönor och 5 cl vatten, värm i 5 minuter.",
+        "Skär tomater och avokado i tärningar och pressa över saften från den andra limen.",
+        "Fördela riset i skålar med bönor, avrunnen majs, tomater och avokado, salta och servera."
+      ]
+    },
+    "arroz-rojo-poulet": {
+      "title": "Arroz rojo med kyckling",
+      "steps": [
+        "Bryn kycklinglåren i olja i en gryta, ta sedan upp dem.",
+        "Fräs den hackade löken, vitlöken och riset i samma gryta i 3 minuter.",
+        "Tillsätt krossade tomater, kryddor, salt, morot i små tärningar, 50 cl vatten och kycklingen.",
+        "Lägg på lock och koka på låg värme i 25 minuter, tillsätt lite vatten om det behövs.",
+        "Tillsätt frysta ärtor, koka ytterligare 5 minuter och servera."
+      ]
+    },
+    "pasta-alla-norma-aubergines-ricotta": {
+      "title": "Pasta alla norma med aubergine och ricotta",
+      "steps": [
+        "Skär auberginen i tärningar och stek dem gyllene i 15 minuter i 3 matskedar olja.",
+        "Fräs vitlöken i resten av oljan, tillsätt krossade tomater och salt, låt sedan sjuda i 15 minuter.",
+        "Koka pastan och blanda ner auberginen i såsen.",
+        "Blanda pastan med såsen och servera med smulad ricotta och basilika."
+      ]
+    },
+    "pasta-e-fagioli-haricots-blancs": {
+      "title": "Pasta e fagioli med vita bönor",
+      "steps": [
+        "Fräs lök och morot i små tärningar i olja tillsammans med pressad vitlök.",
+        "Tillsätt krossade tomater, oregano, salt och 1 liter vatten, koka sedan i 10 minuter.",
+        "Tillsätt avrunna vita bönor och pastan och koka enligt anvisningarna på paketet, rör ofta.",
+        "Låt vila i 2 minuter och servera riktigt varmt."
+      ]
+    },
+    "polenta-champignons-tomate": {
+      "title": "Krämig polenta med champinjoner och tomat",
+      "steps": [
+        "Fräs den skivade löken i 2 matskedar olja, tillsätt sedan skivade champinjoner och vitlök och stek i 8 minuter.",
+        "Tillsätt krossade tomater, oregano och hälften av saltet, låt sedan sjuda i 10 minuter.",
+        "Koka upp 1,2 liter vatten med resten av saltet, vispa ner polentan och koka under omrörning enligt anvisningarna på paketet.",
+        "Rör ner resten av oljan och servera polentan med såsen ovanpå."
+      ]
+    },
+    "piccata-dinde-citron-pates": {
+      "title": "Kalkonpiccata med citron och pasta",
+      "steps": [
+        "Koka pastan och vänd de saltade kalkonskivorna lätt i mjöl.",
+        "Bryn kalkonskivorna 4 minuter på varje sida i olja och hälften av smöret, ta sedan upp dem.",
+        "Häll citronsaften och 10 cl vatten i pannan, skrapa upp stekskyn och tillsätt resten av smöret.",
+        "Lägg tillbaka kalkonskivorna i såsen i 1 minut, strö över hackad persilja och servera med pastan."
+      ]
+    },
+    "penne-arrabbiata": {
+      "title": "Penne all'arrabbiata",
+      "steps": [
+        "Värm försiktigt oljan med skivad vitlök och chili.",
+        "Tillsätt krossade tomater och salt och låt sjuda i 12 minuter.",
+        "Koka pastan, häll av och blanda med såsen.",
+        "Strö över hackad persilja och servera."
+      ]
+    },
+    "mafe-boeuf-cacahuete": {
+      "title": "Mafé med biff och jordnötssmör",
+      "steps": [
+        "Bryn biff (grytbitar) i olja med skivad lök.",
+        "Tillsätt krossade tomater, tomatpuré, chili, salt och 50 cl vatten, låt sedan sjuda i 45 minuter.",
+        "Rör ut jordnötssmöret i lite av såsen, tillsätt det tillsammans med morot och sötpotatis i stora bitar.",
+        "Låt sjuda i 30 minuter på låg värme, rör om så att såsen inte bränner fast.",
+        "Koka riset och servera med mafé."
+      ]
+    },
+    "thieboudienne-cabillaud-riz": {
+      "title": "Thieboudienne med torskrygg och tomatris",
+      "steps": [
+        "Mixa persilja, vitlök, chili och hälften av saltet, gnid in fiskbitarna med blandningen.",
+        "Fräs skivad lök i olja, tillsätt tomatpuré och stek i 5 minuter under omrörning.",
+        "Häll i 1 liter vatten, tillsätt morot, vitkål och aubergine i stora bitar samt resten av saltet, koka i 20 minuter.",
+        "Lägg i fisken, koka i 10 minuter, ta sedan upp fisk och grönsaker och håll dem varma.",
+        "Tillsätt det sköljda riset i buljongen, lägg på lock och koka på låg värme i 20 minuter.",
+        "Servera riset med fisken, grönsakerna och citron i klyftor."
+      ]
+    },
+    "misir-wat-lentilles-corail": {
+      "title": "Misir wat, etiopiska röda linser",
+      "steps": [
+        "Fräs hackad lök i olja i 10 minuter, tillsätt sedan vitlök och riven färsk ingefära.",
+        "Tillsätt paprika, chili, gurkmeja och tomatpuré och rör i 2 minuter.",
+        "Tillsätt sköljda röda linser, 80 cl vatten och salt, låt sjuda i 20 minuter under omrörning.",
+        "Koka riset och servera med linserna."
+      ]
+    },
+    "jollof-riz-poulet": {
+      "title": "Jollof, tomatris med kyckling",
+      "steps": [
+        "Bryn kycklinglåren i olja i en gryta, ta sedan upp dem.",
+        "Mixa krossade tomater, paprika, lök, vitlök och färsk ingefära.",
+        "Häll blandningen i grytan med tomatpuré, curry, chili och salt, koka i 10 minuter.",
+        "Tillsätt det sköljda riset, kycklingen och 40 cl vatten, lägg på lock och koka på låg värme i 25 minuter, rör om en gång.",
+        "Låt vila 5 minuter under lock och servera."
+      ]
+    },
+    "bricks-thon-oeuf-persil": {
+      "title": "Brik med tonfisk och ägg",
+      "steps": [
+        "Blanda avrunnen tonfisk och hackad persilja, salta.",
+        "Fördela blandningen i mitten av varje filodegsark, gör en grop och knäck ett ägg i den.",
+        "Vik ihop arket till en triangel utan att ägget går sönder.",
+        "Stek gyllene i het olja, 2 minuter på varje sida, låt rinna av på hushållspapper.",
+        "Servera genast med citron i klyftor."
+      ]
+    },
+    "salade-mechouia-poivrons-tomates": {
+      "title": "Mechouia-sallad med grillad paprika och tomat",
+      "steps": [
+        "Värm ugnen till 230 °C och rosta hela paprikor och tomater i 35 minuter, vänd dem under tiden.",
+        "Låt svalna under lock, skala och kärna ur.",
+        "Hacka grönsakerna och vitlöken fint.",
+        "Krydda med spiskummin, citronsaft, olja och salt, toppa med oliver och servera kall."
+      ]
+    },
+    "zaalouk-aubergines-tomates": {
+      "title": "Zaalouk, aubergineröra med tomat",
+      "steps": [
+        "Skär auberginerna i små tärningar och tomaterna i bitar.",
+        "Fräs vitlöken i olivolja med kryddorna.",
+        "Tillsätt aubergine, tomat och salt, lägg på lock och koka 25 minuter på medelvärme under omrörning.",
+        "Mosa med en gaffel, tillsätt hackad färsk koriander och citronsaft, servera ljummen eller kall."
+      ]
+    },
+    "carottes-cumin-citron-marocaines": {
+      "title": "Marockanska morötter med spiskummin och citron",
+      "steps": [
+        "Koka morötterna i skivor 10 minuter i saltat vatten, de ska vara fasta, häll sedan av vattnet.",
+        "Blanda pressad vitlök, kryddor, citronsaft och olivolja.",
+        "Häll över morötterna, tillsätt hackad persilja och servera kall."
+      ]
+    },
+    "fattouch-pita-grillee": {
+      "title": "Fattoush, libanesisk sallad med rostad pita",
+      "steps": [
+        "Värm ugnen till 200 °C, skär pitabröden i bitar och rosta dem i ugnen 8 minuter tills de är krispiga.",
+        "Skär tomater, gurka och rädisor, strimla sallad och örter.",
+        "Blanda citronsaft, olivolja och salt.",
+        "Blanda allt precis före servering med pitabitarna och servera."
+      ]
+    },
+    "mouhammara-poivrons-noix": {
+      "title": "Muhammara, paprikaröra med nötter",
+      "steps": [
+        "Värm ugnen till 230 °C och rosta hela paprikor i 30 minuter, skala och kärna ur dem.",
+        "Mixa paprikorna med nötter, ströbröd, tomatpuré, vitlök, spiskummin, chili och salt.",
+        "Tillsätt citronsaft och olivolja, mixa igen och servera kall."
+      ]
+    },
+    "baba-ghanouj-aubergines-tahini": {
+      "title": "Baba ghanouj, rökig aubergineröra med sesampasta",
+      "steps": [
+        "Värm ugnen till 220 °C, stick hål i auberginerna och baka dem hela i 40 minuter.",
+        "Ta ut fruktköttet och låt rinna av i en sil.",
+        "Mosa fruktköttet med sesampasta, citronsaft, pressad vitlök, spiskummin och salt.",
+        "Ringla över olivolja, strö över hackad persilja och servera kall."
+      ]
+    },
+    "samoussas-legumes-four": {
+      "title": "Samosas med grönsaker i ugn",
+      "steps": [
+        "Koka potatisen i små tärningar 10 minuter i saltat vatten, häll sedan av vattnet.",
+        "Fräs hackad lök i 1 matsked olja med garam masala, tillsätt potatis, frysta ärtor och hackad koriander.",
+        "Värm ugnen till 200 °C och dela varje filodegsark på mitten.",
+        "Vik varje halva till en triangel runt en sked fyllning, lägg på en plåt och pensla med resten av oljan.",
+        "Baka i ugnen 15 minuter tills samosas är gyllene."
+      ]
+    },
+    "bhajis-oignons-pois-chiches": {
+      "title": "Lökbhajis med kikärtsmjöl",
+      "steps": [
+        "Skiva löken tunt och hacka koriandern.",
+        "Blanda kikärtsmjöl, kryddor, salt och cirka 12 cl vatten till en tjock smet, tillsätt sedan lök och koriander.",
+        "Lägg matskedar av smeten i het olja och platta till lätt.",
+        "Stek 3 minuter per sida, låt rinna av på hushållspapper och servera varma."
+      ]
+    },
+    "rouleaux-printemps-crevettes": {
+      "title": "Vårrullar med räkor",
+      "steps": [
+        "Koka de skalade räkorna 3 minuter i kokande vatten, häll av och blötlägg risbandsnudlar enligt anvisning.",
+        "Riv morötterna och strimla salladen.",
+        "Blöt ett rispapper några sekunder i ljummet vatten och lägg på en fuktig kökshandduk.",
+        "Fyll med sallad, nudlar, morot, örter och räkor, rulla ihop tätt och vik in kanterna.",
+        "Blanda fisksås, limesaft, socker och 3 matskedar vatten och servera som dipp."
+      ]
+    },
+    "salade-mangue-crevettes-citron-vert": {
+      "title": "Sallad med mango och räkor med lime",
+      "steps": [
+        "Stek räkorna 3 minuter i olja, låt svalna.",
+        "Skär mango och gurka i tärningar.",
+        "Blanda limesaft, fisksås och chili.",
+        "Blanda allt med hackad koriander och servera kall."
+      ]
+    },
+    "soupe-coco-poulet-citron-vert": {
+      "title": "Thailändsk soppa med kyckling, kokos och lime",
+      "steps": [
+        "Koka upp kokosmjölk med 50 cl vatten, skivad färsk ingefära och chili.",
+        "Tillsätt kyckling i tunna skivor och skivade champinjoner, koka 10 minuter.",
+        "Tillsätt fisksås, socker och limesaft.",
+        "Strö över hackad koriander och servera."
+      ]
+    },
+    "guacamole-chips-tortilla": {
+      "title": "Guacamole och tortillachips",
+      "steps": [
+        "Värm ugnen till 200 °C, skär tortillabröd i trianglar, pensla med olja och baka 8 minuter.",
+        "Mosa avokado med limesaft och salt.",
+        "Tillsätt tomat i små tärningar, finhackad lök och hackad koriander.",
+        "Servera genast med chipsen."
+      ]
+    },
+    "esquites-mais-citron-vert": {
+      "title": "Esquites, stekt majs med lime",
+      "steps": [
+        "Stek avrunnen majs i smör 6 minuter på hög värme.",
+        "Ta från värmen, tillsätt crème fraîche, limesaft, paprika och salt.",
+        "Fördela i små skålar, smula över feta och strö över hackad koriander."
+      ]
+    },
+    "caponata-aubergines-olives": {
+      "title": "Siciliansk caponata med aubergine och oliver",
+      "steps": [
+        "Stek auberginetärningarna gyllene i 3 matskedar olja i 15 minuter, ställ åt sidan.",
+        "Fräs den skivade löken i resten av oljan, tillsätt krossade tomater och salt och koka i 10 minuter.",
+        "Tillsätt aubergine, oliver, socker och vinäger och låt koka ytterligare 10 minuter.",
+        "Låt svalna, tillsätt basilika och servera rumstempererad."
+      ]
+    },
+    "panzanella-tomates-pain": {
+      "title": "Panzanella, toskansk sallad med tomat och bröd",
+      "steps": [
+        "Skär gårdagens baguette i tärningar.",
+        "Skär tomater och gurka i bitar och löken i tunna skivor, blanda med saltet.",
+        "Tillsätt brödet, vinäger och olivolja, blanda och låt stå i 10 minuter så att brödet suger upp vätskan.",
+        "Tillsätt basilika och servera."
+      ]
+    },
+    "minestrone-legumes-haricots": {
+      "title": "Minestrone med grönsaker och vita bönor",
+      "steps": [
+        "Fräs lök och hackad vitlök i olivolja.",
+        "Tillsätt tärnad morot och potatis, krossade tomater, salt och 1,2 liter vatten, koka i 15 minuter.",
+        "Tillsätt tärnad zucchini, brytbönor i bitar och avrunna konserverade vita bönor, koka ytterligare 15 minuter.",
+        "Tillsätt hackad basilika och servera."
+      ]
+    },
+    "salade-concombre-sesame": {
+      "title": "Gurksallad med sesam",
+      "steps": [
+        "Krossa gurkorna lätt och skär dem i ojämna bitar.",
+        "Blanda tamari, vinäger, sesamolja, socker, pressad vitlök och chili.",
+        "Blanda med gurkorna, strö över sesamfrön och servera kall."
+      ]
+    },
+    "kachumbari-tomates-oignon": {
+      "title": "Kachumbari, östafrikansk sallad med tomat och lök",
+      "steps": [
+        "Skiva löken mycket tunt och låt den ligga 5 minuter i limesaft och salt.",
+        "Skär tomater och gurka i små tärningar.",
+        "Blanda allt med hackad färsk koriander och chili, servera kall."
+      ]
+    },
+    "soupe-arachide-patate-douce": {
+      "title": "Västafrikansk soppa med jordnöt och sötpotatis",
+      "steps": [
+        "Fräs skivad lök i olja med pressad vitlök och riven färsk ingefära.",
+        "Tillsätt tärnad sötpotatis, krossade tomater, chili, salt och 1 liter vatten, koka i 20 minuter.",
+        "Tillsätt jordnötssmör och mixa till en slät soppa.",
+        "Värm upp 2 minuter under omrörning och servera."
+      ]
+    },
+    "mouhalabieh-fleur-oranger-pistache": {
+      "title": "Mouhalabieh med apelsinblomvatten och pistagenötter",
+      "steps": [
+        "Rör ut majsstärkelsen i 10 cl kall mjölk.",
+        "Koka upp resten av mjölken med socker, tillsätt majsstärkelsen och rör i 3 minuter tills det tjocknar.",
+        "Ta från värmen, tillsätt apelsinblomvatten och häll upp i små skålar.",
+        "Låt stelna 2 timmar i kylen och strö över hackade pistagenötter."
+      ]
+    },
+    "salade-oranges-cannelle": {
+      "title": "Apelsinsallad med kanel",
+      "steps": [
+        "Skala apelsinerna med kniv och skär dem i tunna skivor.",
+        "Lägg upp på ett fat och ringla över apelsinblomvatten.",
+        "Strö över socker och kanel, toppa med hackad mynta och servera kall."
+      ]
+    },
+    "ghribas-noix-de-coco": {
+      "title": "Ghribas med riven kokos",
+      "steps": [
+        "Sätt ugnen på 170 °C.",
+        "Blanda riven kokos, gryn, socker, vaniljsocker, bakpulver och ägg, låt vila i 10 minuter.",
+        "Forma bollar, lägg dem på en plåt med bakplåtspapper och platta till dem lätt.",
+        "Grädda i 15 minuter tills de är lätt gyllene och låt svalna på plåten."
+      ]
+    },
+    "baklava-noix-miel": {
+      "title": "Baklava med nötter och honung",
+      "steps": [
+        "Sätt ugnen på 180 °C, mixa nötter grovt med socker och kanel, smält smöret.",
+        "Skär filodegen i storlek för en liten form, varva smörpenslade degark och nötter, avsluta med ett degark.",
+        "Skär i rutor och grädda i 25 minuter tills ytan är gyllene.",
+        "Värm honung med citronsaft och 5 cl vatten, häll över den varma baklavan.",
+        "Låt stå flera timmar innan servering."
+      ]
+    },
+    "gajar-halwa-carottes-pistaches": {
+      "title": "Gajar halwa, indisk dessert med morot",
+      "steps": [
+        "Riv morötterna fint.",
+        "Koka dem i mjölk i 25 minuter under omrörning tills mjölken har absorberats.",
+        "Tillsätt socker, smör, kanel och russin, koka 8 minuter tills blandningen släpper från kastrullen.",
+        "Servera ljummen, toppad med hackade pistagenötter."
+      ]
+    },
+    "riz-coco-mangue": {
+      "title": "Ris med kokosmjölk och mango",
+      "steps": [
+        "Skölj riset och koka det i 20 minuter på låg värme med kokosmjölk, 30 cl vatten, socker och salt, rör ofta.",
+        "Låt vila 10 minuter under lock.",
+        "Skär mangon i skivor och servera på det ljumma riset."
+      ]
+    },
+    "che-bananes-coco": {
+      "title": "Chè, vietnamesisk banan med kokosmjölk",
+      "steps": [
+        "Koka upp kokosmjölken med 20 cl vatten och sockret.",
+        "Tillsätt bananen i skivor och koka i 5 minuter.",
+        "Rör ut majsstärkelsen i lite kallt vatten, häll i under omrörning och låt tjockna i 1 minut.",
+        "Servera ljummen och strö över sesamfrön."
+      ]
+    },
+    "churros-four-cannelle": {
+      "title": "Ugnsbakade churros med kanel",
+      "steps": [
+        "Sätt ugnen på 200 °C och koka upp 25 cl vatten med smör och salt.",
+        "Ta av från värmen, tillsätt mjölet på en gång, rör kraftigt och torka sedan degen 1 minut på låg värme.",
+        "Tillsätt äggen ett i taget tills du får en slät smet.",
+        "Spritsa ut stavar på en plåt med bakplåtspapper och grädda i 22 minuter.",
+        "Rulla de varma churrosen i socker blandat med kanel och servera genast."
+      ]
+    },
+    "flan-caramel-oeufs": {
+      "title": "Flan med ägg och karamell",
+      "steps": [
+        "Sätt ugnen på 160 °C och smält 80 g socker torrt tills det blir bärnstensfärgad karamell, häll sedan i en form.",
+        "Värm mjölken med vaniljsockret tills den är ljummen.",
+        "Vispa äggen med resten av sockret och häll i mjölken under omrörning.",
+        "Häll smeten över karamellen, ställ formen i ett vattenbad och grädda i 40 minuter.",
+        "Låt svalna, ställ kallt i 3 timmar och stjälp upp."
+      ]
+    },
+    "panna-cotta-fruits-rouges-agar": {
+      "title": "Pannacotta med agar-agar och röda bär",
+      "steps": [
+        "Blanda flytande grädde, mjölk, 40 g socker, vaniljsocker och agar-agar kallt.",
+        "Koka upp och låt koka i 2 minuter under omrörning.",
+        "Fördela i glas, låt svalna och ställ sedan kallt i 2 timmar.",
+        "Koka de frysta bären i 5 minuter med resten av sockret, låt svalna och häll över pannacottan."
+      ]
+    },
+    "tiramisu-cafe-classique": {
+      "title": "Tiramisu med kaffe",
+      "steps": [
+        "Lös upp snabbkaffet i 25 cl hett vatten och låt svalna.",
+        "Vispa äggulorna med sockret tills det blir ljust, rör sedan ner mascarpone.",
+        "Vispa äggvitorna till hårt skum och vänd försiktigt ner dem.",
+        "Doppa snabbt mördegskakorna i kaffet och varva med krämen i en form.",
+        "Ställ kallt i 4 timmar och pudra över kakao före servering."
+      ]
+    },
+    "thiakry-semoule-yaourt": {
+      "title": "Thiakry, söt grynrätt med yoghurt",
+      "steps": [
+        "Häll 20 cl kokande vatten över grynen, täck och låt stå i 5 minuter, fluffa sedan med en gaffel.",
+        "Blanda naturell yoghurt, mjölk, socker, vaniljsocker och kanel.",
+        "Tillsätt grynen och russinen, blanda och låt stå kallt i 1 timme.",
+        "Strö över riven kokos och servera kall."
+      ]
+    },
+    "ananas-gingembre-citron-vert": {
+      "title": "Färsk ananas med ingefära och lime",
+      "steps": [
+        "Skala ananasen, ta bort mitten och skär fruktköttet i små bitar.",
+        "Blanda riven färsk ingefära, rivet skal och saft från lime och socker.",
+        "Häll över ananasen, tillsätt hackad mynta och servera kall."
+      ]
+    },
+    "gateau-cacao-vegan": {
+      "title": "Vegansk kaka med kakao",
+      "steps": [
+        "Sätt ugnen på 180 °C och smörj en form med solrosolja.",
+        "Blanda mjöl, kakao, socker, vaniljsocker, bakpulver och salt.",
+        "Tillsätt solrosolja, vinäger och 20 cl vatten, vispa bara tills smeten är slät.",
+        "Häll i formen, grädda i 30 minuter och låt svalna innan du stjälper upp."
+      ]
+    },
+    "shrikhand-yaourt-mangue": {
+      "title": "Shrikhand, avrunnen yoghurt med mango",
+      "steps": [
+        "Häll naturell yoghurt i en sil klädd med en ren handduk och låt rinna av i 3 timmar i kylen.",
+        "Blanda den avrunna yoghurten med socker och kanel.",
+        "Fördela i skålar, toppa med tärnad mango och grovhackade pistagenötter."
+      ]
+    },
+    "baghrir-crepes-mille-trous": {
+      "title": "Baghrir, marockanska tusenhålspannkakor",
+      "steps": [
+        "Mixa gryn, mjöl, socker, salt, båda jästerna och 45 cl ljummet vatten i 1 minut.",
+        "Låt smeten vila i 30 minuter i rumstemperatur tills den bubblar.",
+        "Häll en liten slev i en het nonstick-panna och stek utan att vända tills ovansidan är torr och täckt av hål.",
+        "Smält smör med honung och ringla över pannkakorna."
+      ]
+    },
+    "foul-feves-citron-cumin": {
+      "title": "Foul, bondbönor med citron och spiskummin",
+      "steps": [
+        "Värm de avrunna konserverade bondbönorna i 8 minuter med 10 cl vatten.",
+        "Mosa grovt med pressad vitlök, spiskummin, salt och citronsaft.",
+        "Servera med olivolja ringlad över, samt tärnad tomat och hackad persilja."
+      ]
+    },
+    "pita-zaatar-huile-olive": {
+      "title": "Pitabröd med za'atar och råa grönsaker",
+      "steps": [
+        "Sätt ugnen på 200 °C och blanda za'atar med olivolja.",
+        "Bred blandningen på pitabröden och grädda i 6 minuter.",
+        "Servera varma med skivad tomat, gurka och mynta."
+      ]
+    },
+    "upma-semoule-legumes": {
+      "title": "Upma, saltad gryn med grönsaker",
+      "steps": [
+        "Rosta grynen torra i en stekpanna i 3 minuter, ställ åt sidan.",
+        "Fräs spiskummin, hackad lök, morot i små tärningar och riven färsk ingefära i solrosolja.",
+        "Tillsätt frysta ärtor, gurkmeja, salt och 55 cl vatten, koka upp.",
+        "Strö ner grynen under omrörning, rör i 2 minuter, ta från värmen, täck över i 3 minuter och pressa över citronsaft."
+      ]
+    },
+    "omelette-masala-tomate": {
+      "title": "Masalaomelett med tomat",
+      "steps": [
+        "Vispa äggen med salt och kryddor.",
+        "Tillsätt hackad lök, tomat i små tärningar och hackad färsk koriander.",
+        "Stek i olja på medelvärme i två omgångar, vik omeletten när den fortfarande är krämig."
+      ]
+    },
+    "congee-riz-poulet-gingembre": {
+      "title": "Congee, risgröt med kyckling och ingefära",
+      "steps": [
+        "Koka upp det sköljda riset med 2 liter vatten, färsk ingefära i skivor, salt och hel kycklingfilé.",
+        "Låt sjuda i 15 minuter, ta upp kycklingen och dra isär köttet.",
+        "Fortsätt koka riset på låg värme i 35 minuter under omrörning tills det blir en gröt.",
+        "Lägg tillbaka kycklingen och servera med tamari, sesamolja och strimlad salladslök."
+      ]
+    },
+    "tamagoyaki-omelette-roulee": {
+      "title": "Tamagoyaki, japansk rullad omelett",
+      "steps": [
+        "Vispa äggen med socker, tamari och strimlad salladslök.",
+        "Häll ett tunt lager i en oljad stekpanna på medelvärme, rulla omeletten mot ena kanten när den stelnat.",
+        "Häll i ett nytt lager under rullen och upprepa tills smeten är slut.",
+        "Låt svalna och skär i skivor."
+      ]
+    },
+    "huevos-rancheros-haricots": {
+      "title": "Huevos rancheros med röda bönor",
+      "steps": [
+        "Fräs hackad lök och vitlök i olja, tillsätt krossade tomater, spiskummin, chili och salt, koka i 8 minuter.",
+        "Tillsätt avrunna röda bönor och värm upp.",
+        "Gör 4 gropar i såsen, knäck i äggen, täck över och koka i 5 minuter.",
+        "Värm tortillabröden i stekpanna, toppa med sås och ett ägg, strö över hackad färsk koriander."
+      ]
+    },
+    "frittata-legumes-four": {
+      "title": "Frittata med grönsaker",
+      "steps": [
+        "Sätt ugnen på 190 °C.",
+        "Fräs lök, paprika och zucchini i små tärningar i olja i en ugnsfast stekpanna i 8 minuter.",
+        "Vispa äggen med salt och hackad basilika, häll över grönsakerna.",
+        "Stek i 2 minuter på spisen, grädda sedan i ugnen i 12 minuter."
+      ]
+    },
+    "tartines-ricotta-miel-fraises": {
+      "title": "Ricottasmörgåsar med honung och jordgubbar",
+      "steps": [
+        "Dela baguetten på längden och skär i bitar.",
+        "Bred på ricotta.",
+        "Lägg på skivade jordgubbar och ringla över honung."
+      ]
+    },
+    "porridge-arachide-banane": {
+      "title": "Porridge med jordnötssmör och banan",
+      "steps": [
+        "Koka upp sojadryck med kanel.",
+        "Tillsätt havregryn och koka i 5 minuter under omrörning.",
+        "Rör ner jordnötssmör när du tagit kastrullen från värmen.",
+        "Servera med banan i skivor."
+      ]
+    },
+    "chia-coco-mangue": {
+      "title": "Chiapudding med kokos och mango",
+      "steps": [
+        "Blanda kokosmjölk, 20 cl vatten, socker och chiafrön.",
+        "Rör om igen efter 10 minuter och ställ kallt över natten.",
+        "Mixa mango med saften från limen.",
+        "Servera puddingen med mangopurén."
+      ]
+    },
+    "tofu-brouille-tomate-curcuma": {
+      "title": "Scramblad tofu med tomat och gurkmeja",
+      "steps": [
+        "Smula fast tofu med en gaffel.",
+        "Fräs strimlad salladslök i olja, tillsätt gurkmeja och paprika.",
+        "Tillsätt tofu, tomat i tärningar och salt, stek i 6 minuter under omrörning."
+      ]
+    },
+    "smoothie-mangue-banane-coco": {
+      "title": "Smoothie med mango, banan och kokos",
+      "steps": [
+        "Skala mango och bananer och skär i bitar.",
+        "Mixa med kokosmjölk, saften från limen och 30 cl riktigt kallt vatten.",
+        "Servera direkt."
+      ]
+    },
+    "puff-puff-beignets": {
+      "title": "Puff-puff, västafrikanska munkar",
+      "steps": [
+        "Blanda mjöl, socker, torrjäst, salt och 20 cl ljummet vatten till en tjock och kladdig deg.",
+        "Täck över och låt jäsa i 1 timme på en varm plats.",
+        "Värm olja till 3 cm djup i en kastrull.",
+        "Klicka ner degen med en sked och fritera i 5 minuter, vänd runt tills de är gyllene.",
+        "Låt rinna av på hushållspapper och servera ljumma."
+      ]
     }
   },
   "ingredients": {
@@ -1281,6 +3249,77 @@
     "poelee-legumes": "Frysta wokgrönsaker",
     "framboise-surgelee": "Frysta bär",
     "crevette": "Skalade räkor",
-    "jus-orange": "Apelsinjuice"
+    "jus-orange": "Apelsinjuice",
+    "citron-vert": "Lime",
+    "ananas": "Ananas",
+    "oignon-nouveau": "Salladslök",
+    "germes-soja": "Mungböngroddar",
+    "boeuf-rumsteck": "Rostbiff av nötkött",
+    "abricot-sec": "Torkade aprikoser",
+    "raisins-secs": "Russin",
+    "amande-poudre": "Mandelmjöl",
+    "amande-effilee": "Skivade mandlar",
+    "pistache": "Pistagenötter",
+    "noix-coco-rapee": "Riven kokos",
+    "beurre-cacahuete": "Jordnötssmör",
+    "feuille-brick": "Filodeg",
+    "galette-riz": "Rispapper",
+    "haricots-blancs": "Konserverade vita bönor",
+    "feves": "Konserverade bondbönor",
+    "lentilles-corail": "Röda linser",
+    "farine-pois-chiches": "Kikärtsmjöl",
+    "polenta": "Polenta",
+    "boisson-soja": "Sojadryck",
+    "chia": "Chiafrön",
+    "maizena": "Majsstärkelse",
+    "agar": "Agar-agar",
+    "cafe": "Snabbkaffe",
+    "sesame": "Sesamfrön",
+    "huile-sesame": "Sesamolja",
+    "huile-tournesol": "Solrosolja",
+    "tamari": "Tamari (glutenfri sojasås)",
+    "nuoc-mam": "Fisksås",
+    "ras-el-hanout": "Ras el hanout",
+    "garam-masala": "Garam masala",
+    "origan": "Oregano",
+    "zaatar": "Za'atar (timjan och sesam)",
+    "sucre-vanille": "Vaniljsocker",
+    "eau-fleur-oranger": "Apelsinblomvatten",
+    "levure-boulangere": "Torrjäst",
+    "vin-blanc": "Torrt vitt vin",
+    "vin-rouge": "Rödvin",
+    "biere": "Ljus öl",
+    "cidre": "Torr cider",
+    "veau": "Kalvgryta",
+    "lapin": "Kanin i bitar",
+    "cuisse-canard": "Anklår",
+    "porc-echine": "Fläskkarré",
+    "petit-sale": "Saltat sidfläsk",
+    "saucisse-fumee": "Rökt fläskkorv",
+    "boudin-noir": "Blodkorv",
+    "anchois": "Ansjovisfiléer",
+    "truite": "Forellfilé",
+    "maquereau": "Makrillfilé",
+    "haddock": "Rökt kolja",
+    "navet": "Majrova",
+    "panais": "Palsternacka",
+    "fenouil": "Fänkål",
+    "endive": "Endive",
+    "chou-vert": "Savoykål",
+    "chou-rouge": "Rödkål",
+    "chou-bruxelles": "Brysselkål",
+    "potimarron": "Hokkaidopumpa",
+    "cresson": "Krasse",
+    "choucroute": "Rå surkål",
+    "flageolets": "Flageoletbönor",
+    "pois-casses": "Delade ärtor",
+    "sarrasin": "Bovetemjöl",
+    "pruneau": "Urkärnade katrinplommon",
+    "comte": "Comtéost",
+    "pain-campagne": "Lantbröd (skiva)",
+    "laurier": "Lagerblad",
+    "thym": "Torkad timjan",
+    "muscade": "Malen muskotnöt",
+    "estragon": "Torkad dragon"
   }
 }
