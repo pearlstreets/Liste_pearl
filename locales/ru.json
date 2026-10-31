@@ -1313,7 +1313,7 @@
       "for_few": "На {{count}} человека",
       "for_many": "На {{count}} человек",
       "for_other": "На {{count}} человека",
-      "signature": "Составлено с помощью Pearl Liste"
+      "signature": "Составлено с помощью Pearl List"
     },
     "units": {
       "g": "г",
