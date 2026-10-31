@@ -5,7 +5,8 @@
     "favorites": "收藏夹",
     "cart": "购物车",
     "profile": "个人资料",
-    "shops": "商店"
+    "shops": "商店",
+    "menus": "菜单"
   },
   "listScreen": {
     "scan": "扫描",
@@ -1034,5 +1035,342 @@
     "alternative_therapies": "替代疗法",
     "yoga": "瑜伽",
     "pilates": "普拉提"
+  },
+  "menus": {
+    "nav": {
+      "week": "我的一周",
+      "shop": "购物清单",
+      "discover": "发现"
+    },
+    "common": {
+      "back": "返回",
+      "close": "关闭",
+      "cancel": "取消",
+      "retry": "重试",
+      "clear": "清除"
+    },
+    "days": {
+      "short": {
+        "0": "周一",
+        "1": "周二",
+        "2": "周三",
+        "3": "周四",
+        "4": "周五",
+        "5": "周六",
+        "6": "周日"
+      },
+      "long": {
+        "0": "星期一",
+        "1": "星期二",
+        "2": "星期三",
+        "3": "星期四",
+        "4": "星期五",
+        "5": "星期六",
+        "6": "星期日"
+      }
+    },
+    "slot": {
+      "midi": "午餐",
+      "soir": "晚餐"
+    },
+    "profile": {
+      "adults": "成人",
+      "adultsHint": "餐桌人数",
+      "children": "儿童",
+      "childrenHint": "按小份计算",
+      "budget": "每周预算",
+      "budgetHint": "预估金额，可随时修改",
+      "noBudget": "无预算"
+    },
+    "meals": {
+      "all": "所有餐食",
+      "soirOnly": "仅晚餐",
+      "weekdays": "仅工作日",
+      "cantine": "食堂或外出用餐",
+      "cantineHint": "工作日午餐不安排",
+      "leftovers": "使用剩菜",
+      "leftoversHint": "多做一份可吃两餐"
+    },
+    "diet": {
+      "diets": "饮食",
+      "allergies": "过敏",
+      "dislikes": "不喜欢的食材",
+      "dislikesPlaceholder": "搜索食材",
+      "maxTime": "准备时间",
+      "upTo": "最多{{n}}分钟",
+      "noLimit": "无限制"
+    },
+    "tags": {
+      "vegetarien": "素食",
+      "vegan": "纯素",
+      "sans-gluten": "无麸质",
+      "sans-lactose": "不含乳糖",
+      "sans-porc": "无猪肉",
+      "halal-possible": "可清真",
+      "sans-fruits-a-coque": "不含坚果",
+      "sans-cuisson": "免烹饪",
+      "four": "烤箱",
+      "rapide": "快捷",
+      "batch": "可提前准备",
+      "economique": "经济实惠",
+      "leger": "清淡",
+      "enfants": "适合儿童",
+      "hiver": "冬季",
+      "printemps": "春季",
+      "ete": "夏季",
+      "automne": "秋季"
+    },
+    "allergens": {
+      "gluten": "麸质",
+      "lait": "牛奶",
+      "oeuf": "鸡蛋",
+      "poisson": "鱼",
+      "crustaces": "甲壳类",
+      "soja": "大豆",
+      "sesame": "芝麻",
+      "fruits-a-coque": "坚果",
+      "miel": "蜂蜜"
+    },
+    "onboarding": {
+      "skip": "跳过",
+      "step": "第{{n}}步，共{{total}}步",
+      "next": "下一步",
+      "finish": "制定我的一周",
+      "later": "以后再说",
+      "s1Title": "为谁做饭？",
+      "s1Text": "请填写您的家庭人数和预算，我们将为您调整用量。",
+      "s2Title": "计划哪些餐食？",
+      "s2Text": "请选择本周要安排的餐食。",
+      "s3Title": "您的口味和需求",
+      "s3Text": "饮食习惯、过敏和可用时间，均可在设置中修改。"
+    },
+    "settings": {
+      "title": "菜单设置",
+      "intro": "您的选择会应用于接下来制定的每周菜单。",
+      "household": "我的家庭",
+      "meals": "我的餐食",
+      "mealsHint": "点击餐食可开启或移除。",
+      "diet": "我的口味和需求",
+      "reset": "全部重置",
+      "resetTitle": "确定全部重置？",
+      "resetText": "您的本周菜单、收藏、笔记和历史记录将从此设备中删除。",
+      "resetAction": "重置"
+    },
+    "swap": {
+      "title": "更换此菜品",
+      "sub": "为您的家庭量身推荐三道菜",
+      "noneTitle": "没有更多选择",
+      "noneText": "请尝试在设置中放宽您的限制。",
+      "surprise": "给我个惊喜"
+    },
+    "added": {
+      "ok": "已添加 {{count}} 个产品",
+      "already": "已添加到您的清单",
+      "okText": "您的“{{name}}”清单已更新。",
+      "deltaText": "仅将差异项添加到“{{name}}”。",
+      "alreadyText": "所有内容已在“{{name}}”中。",
+      "seeList": "查看我的清单",
+      "compare": "比较价格",
+      "compareHint": "请比较 Pearl Streets 各店铺的实际价格。",
+      "err": {
+        "error": "发生错误，请重试。",
+        "refused_shared": "该清单已与您共享，请选择您自己的清单之一。",
+        "unknown_list": "此清单已不存在。",
+        "corrupt": "您的清单无法读取，未做任何更改。",
+        "empty": "没有可添加的内容。"
+      }
+    },
+    "week": {
+      "title": "我的一周",
+      "thisWeek": "本周",
+      "weekOf": "{{date}} 这一周",
+      "composing": "正在为您制定本周计划...",
+      "emptyTitle": "您的周计划已准备好",
+      "emptyText": "我们根据您的家庭、预算和口味制定多样化的餐食。",
+      "compose": "制定我的周计划",
+      "error": "目前无法制定本周计划。",
+      "regenerate": "全部重新制定",
+      "estimated": "预计预算",
+      "budget": "共计 {{amount}}",
+      "noBudget": "未设定预算",
+      "overBudget": "超出预算 {{amount}}",
+      "underBudget": "低于预算 {{amount}}",
+      "estimateNote": "价格为预估，门店价格可能有所不同。",
+      "dirty": "自上次添加到清单后，您已修改本周内容。",
+      "dirtyAction": "查看购物清单",
+      "warn": {
+        "no_eligible": "没有符合您要求的食谱。请在设置中放宽条件。",
+        "few_recipes": "符合条件的食谱较少，部分餐食会重复。",
+        "over_budget": "本周超出您的预算。",
+        "no_slots": "未安排任何餐食。请在设置中开启餐食。",
+        "no_recipes": "食谱暂时不可用。",
+        "lock_invalid": "部分已保留餐食已不再符合您的条件。",
+        "error": "目前无法制定本周计划。"
+      },
+      "noMeal": "未安排餐食",
+      "validate": "确认并添加到我的清单",
+      "reviewShopping": "查看购物清单",
+      "freeTitle": "自由餐",
+      "freeText": "暂无计划，您可自行安排。",
+      "takeRecipe": "选择食谱",
+      "change": "更换",
+      "lock": "保留",
+      "unlock": "取消保留",
+      "free": "自由",
+      "leftover": "剩菜",
+      "cookDouble": "做双份",
+      "locked": "已保留",
+      "persons": "{{count}} 人",
+      "alreadyCooked": "已做过",
+      "perPerson": "每人 {{price}}",
+      "composeNext": "规划下周",
+      "nextBanner": "周末将至，请提前准备下一周: {{date}}。"
+    },
+    "recipe": {
+      "minutes": "{{n}} 分钟",
+      "difficulty": {
+        "1": "简单",
+        "2": "中等",
+        "3": "较难"
+      },
+      "servings": "人数",
+      "costNote": "总计约 {{total}}，每人约 {{per}}",
+      "ingredients": "食材",
+      "optional": "可选",
+      "nutrition": "预计每人营养值",
+      "protein": "克蛋白质",
+      "nutritionNote": "仅供参考，不含配菜。",
+      "steps": "制作步骤",
+      "note": "我的备注",
+      "notePlaceholder": "您的小技巧或调整...",
+      "cook": "分步烹饪",
+      "share": "分享",
+      "favorite": "收藏",
+      "missingTitle": "找不到食谱",
+      "missingText": "该食谱已不可用。",
+      "cookedTimes": "已做 {{count}} 次",
+      "addToList": "添加到我的清单"
+    },
+    "course": {
+      "plat": "主菜",
+      "entree": "前菜",
+      "dessert": "甜点",
+      "petit-dejeuner": "早餐"
+    },
+    "share": {
+      "for": "适用于 {{count}} 人",
+      "signature": "由 Pearl Liste 精选组合"
+    },
+    "units": {
+      "g": "克",
+      "kg": "千克",
+      "ml": "毫升",
+      "l": "升",
+      "u": "",
+      "cs": "汤匙",
+      "cc": "茶匙"
+    },
+    "cook": {
+      "none": "此食谱没有步骤。",
+      "quit": "退出",
+      "stepOf": "第 {{n}} 步，共 {{total}} 步",
+      "stepShort": "第 {{n}} 步",
+      "timer": "计时器",
+      "timerDone": "计时完成",
+      "pause": "暂停",
+      "resume": "继续",
+      "start": "开始",
+      "reset": "重置",
+      "prev": "上一步",
+      "next": "下一步",
+      "done": "完成，祝您好胃口"
+    },
+    "shop": {
+      "title": "我的购物清单",
+      "summary": "{{count}} 件商品，约 {{total}}",
+      "estimateNote": "此为大致估算（~）。实际价格以店铺为准，请随后比较。",
+      "targetList": "添加到列表",
+      "defaultList": "我的清单",
+      "activeList": "正在使用",
+      "showBasics": "显示厨房常备",
+      "have": "家中已有",
+      "haveHint": "点击已有的商品可移除。",
+      "packs": "{{count}} x {{size}}",
+      "usedIn": "用于 {{count}} 个食谱",
+      "emptyTitle": "暂无购物清单",
+      "emptyText": "请先制定您的本周计划。",
+      "goPlan": "查看本周计划",
+      "noneTitle": "您家中已有全部物品",
+      "noneText": "本周无需购买。",
+      "alreadyAdded": "已添加",
+      "addDelta": "添加差额（{{count}}）",
+      "add": "添加到我的清单",
+      "noun_clove_other": "{{amount}}瓣",
+      "noun_cube_other": "{{amount}}块",
+      "pack_head_other": "{{count}}头",
+      "pack_box_other": "{{count}}盒（每盒{{size}}个）",
+      "pack_lot_other": "{{count}}包（每包{{size}}个）",
+      "pack_roll_other": "{{count}}卷",
+      "pack_slices_other": "{{count}}包切片",
+      "pack_cubes_other": "{{count}}盒块状调味料"
+    },
+    "aisles": {
+      "fruits-legumes": "水果和蔬菜",
+      "viandes-poissons": "肉类和鱼类",
+      "cremerie": "乳制品",
+      "epicerie": "杂货",
+      "surgeles": "冷冻食品",
+      "boulangerie": "烘焙面包",
+      "boissons": "饮品"
+    },
+    "discover": {
+      "title": "发现",
+      "searchPlaceholder": "菜品、食材…",
+      "modes": {
+        "ideas": "灵感",
+        "favorites": "收藏",
+        "season": "当季",
+        "fridge": "我的冰箱",
+        "history": "历史"
+      },
+      "mine": "适合我的推荐",
+      "seasonNote": "这些食谱适合当前季节。",
+      "favEmptyTitle": "暂无收藏",
+      "favEmptyText": "点击食谱上的爱心可收藏至此。",
+      "noResultsTitle": "未找到结果",
+      "noResultsText": "请尝试其他词或去掉筛选条件。"
+    },
+    "fridge": {
+      "intro": "请告诉我们您还有什么，系统会帮您找使用这些食材的食谱。",
+      "mine": "我的冰箱",
+      "starTip": "点击食材可标记为优先消耗。",
+      "clear": "全部清空",
+      "add": "添加食材",
+      "search": "搜索食材",
+      "results": "可做的食谱",
+      "coverage": "已有 {{pct}} %",
+      "allThere": "您已全部具备。",
+      "missing": "还缺：{{list}}",
+      "usesUp": "用完 {{count}} 种剩料。",
+      "noneTitle": "未找到食谱",
+      "noneText": "请添加更多食材。"
+    },
+    "history": {
+      "intro": "您已确认的周计划。",
+      "emptyTitle": "暂无历史记录",
+      "emptyText": "您已确认的周计划将在此显示。",
+      "week": "过去的一周",
+      "meals": "{{count}} 餐",
+      "redo": "重做"
+    },
+    "pearl": {
+      "line_other": "{{count}}家店铺，{{price}}起",
+      "summary_other": "Pearl Streets 上的最低实际价格：{{total}}（找到的商品：{{count}}）",
+      "realNote": "这是店铺的实际价格，并非估算。",
+      "coverTitle": "覆盖您清单最多的店铺",
+      "coverItem": "商品 {{count}}/{{total}}：{{price}}",
+      "recipeTitle": "Pearl Streets 可购买的食材",
+      "freeCta": "在 Pearl Streets 订购或预订"
+    }
   }
 }

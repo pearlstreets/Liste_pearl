@@ -18,6 +18,9 @@ import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, 
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
 import { estRefusSurPlaceSeul } from "./lib/surPlaceSeul";
+import { matchProduct } from "./lib/matchProduct";
+import { loadShops } from "./lib/shopsCache";
+import { takePendingShop, onOpenShop } from "./lib/openShop";
 import { libelleDetail } from "./lib/libelleDetail";
 import { StripeAvailable } from "./services/stripeNative";
 import CardPaymentModal from "./components/CardPaymentModal";
@@ -65,6 +68,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { loadListItems, persistActiveItems, listItemsKey as listItemsKeyLib } from "./lib/listStore";
+import MenusScreen from "./components/menus/MenusScreen";
+import TabLabel from "./components/menus/TabLabel";
 import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
@@ -131,8 +137,8 @@ const KEY_LISTS = "SG_LISTS";                 // registre de MES listes : [{ id,
 const KEY_ACTIVE_LIST = "SG_ACTIVE_LIST";     // id de la liste active
 const DEFAULT_LIST_ID = "default";
 // Clé de stockage canonique des articles d'une liste donnée.
-// 'default' garde KEY_ITEMS (compat historique + points d'ajout au panier).
-const listItemsKey = (id) => (id && id !== DEFAULT_LIST_ID ? `SG_ITEMS__${id}` : KEY_ITEMS);
+// Chaque liste (« default » comprise) a sa clé SG_ITEMS__<id> ; KEY_ITEMS = miroir de l'active.
+const listItemsKey = (id) => listItemsKeyLib(id);
 const KEY_SELECTED = "SG_SELECTED_FOR_PRODUCTS";
 
 // Règles de validation d'inscription — STRICTEMENT identiques à l'inscription
@@ -379,6 +385,20 @@ function ListScreen() {
   }, [items, activeListId]);
 
   const hydrated = React.useRef(false);
+  const externalReload = React.useRef(false); // un rechargement (ajout depuis Menus) a déjà eu lieu
+  // Une écriture venue d'ailleurs (onglet Menus) recharge la liste active depuis le stockage.
+  useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('LISTS_UPDATED', async () => {
+      try {
+        const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
+        const r = await loadListItems(act, act);
+        if (!r.ok) return;
+        if (!hydrated.current) externalReload.current = true;
+        setItems(r.items);
+      } catch {}
+    });
+    return () => sub.remove();
+  }, []);
   useEffect(() => { (async () => {
     try {
       // Registre de MES listes (migration : crée 'default' si absent)
@@ -392,11 +412,9 @@ function ListScreen() {
       if (!lists.some(l => l.id === active)) active = DEFAULT_LIST_ID;
       setActiveListId(active);
       // Articles de la liste active — KEY_ITEMS reste le miroir de l'active (compat panier)
-      const key = listItemsKey(active);
-      const s = await AsyncStorage.getItem(key);
-      const parsed = s ? JSON.parse(s) : [];
-      setItems(parsed);
-      if (key !== KEY_ITEMS) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
+      const { items: parsed } = await loadListItems(active, active);
+      if (!externalReload.current) setItems(parsed);
+      if (!externalReload.current) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
     } catch {}
     hydrated.current = true;
   })(); }, []);
@@ -419,10 +437,7 @@ function ListScreen() {
   // overwrites the saved list on every cold start.
   useEffect(() => {
     if (!hydrated.current) return;
-    const payload = JSON.stringify(items);
-    AsyncStorage.setItem(KEY_ITEMS, payload).catch(() => {});               // miroir actif (compat panier)
-    const key = listItemsKey(activeListId);
-    if (key !== KEY_ITEMS) AsyncStorage.setItem(key, payload).catch(() => {}); // canonique de l'active
+    persistActiveItems(activeListId, items).catch(() => {}); // canonique de l'active + miroir (compat panier)
   }, [items, activeListId]);
 
   // Reload items when returning to this tab (e.g. after adding to cart crosses them off)
@@ -497,8 +512,7 @@ function ListScreen() {
       // avant ce handler d'événement). On ne ré-écrit donc PAS la liste courante
       // ici : cela éviterait de ressusciter une clé qu'on vient de supprimer
       // (deleteList) et supprime des écritures AsyncStorage redondantes.
-      const s = await AsyncStorage.getItem(listItemsKey(id));
-      const parsed = s ? JSON.parse(s) : [];
+      const parsed = (await loadListItems(id, activeListId)).items;
       setActiveListId(id);
       setItems(parsed);
       setViewingShareId(null);
@@ -893,7 +907,10 @@ function ListScreen() {
           // Un seul critère : les articles à envoyer (non barrés), jamais les barrés.
           const chosen = itemsToSend.map(it=>({
             name: String(it.name||it.title||'').trim(),
-            qty: Number(it.qty||it.quantity||1)
+            qty: Number(it.qty||it.quantity||1),
+            // Article venu de Menus : noms français équivalents pour la correspondance
+            // (valables tant que le nom n'a pas été modifié).
+            ...((Array.isArray(it.matchNames) && it.matchNames.length && it.matchFor === it.name) ? { matchNames: it.matchNames, matchFor: it.name } : {})
           })).filter(it=>it.name);
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
@@ -1413,7 +1430,7 @@ const ProductsScreen = () => {
   // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
   const [realShops,setRealShops]=React.useState(null);
   React.useEffect(()=>{ let a=true; (async()=>{
-    try{ const d=await getShopsByCategory('product_purchase'); if(a) setRealShops(d); }
+    try{ const d=await loadShops('product_purchase'); if(a) setRealShops(d); }
     catch(e){ if(a) setRealShops([]); }
   })(); return ()=>{a=false}; },[]);
 
@@ -1521,20 +1538,12 @@ const ProductsScreen = () => {
           time: timeMin+" min",
           fee,
           items: items.map(it=>{
-            const inm = norm(it.name);
-            const match = (shop.products||[]).find(p=>{
-              const pn = norm(p.name);
-              if (!pn || !inm) return false;
-              if (pn === inm) return true;                                  // égalité exacte
-              const ptok = pn.split(/\s+/).filter(Boolean);
-              const itok = inm.split(/\s+/).filter(Boolean);
-              // article multi-mots : tous ses mots présents dans le produit
-              if (itok.length >= 2 && itok.every(w=>ptok.includes(w))) return true;
-              // mot unique : uniquement si assez long (>=6) ET mot ENTIER du produit
-              // (évite « eau »→« eau de parfum », « pain »→« pain au chocolat »)
-              if (itok.length === 1 && inm.length >= 6 && ptok.includes(inm)) return true;
-              return false;
-            });
+            // Règle de correspondance : lib/matchProduct.js (partagée avec Menus).
+            // Un article venu de Menus porte ses noms français équivalents (matchNames).
+            const match = matchProduct(
+              (it.matchFor === it.name && Array.isArray(it.matchNames) && it.matchNames.length) ? it.matchNames : it.name,
+              shop.products || []
+            );
             return {
               name: it.name, qty: it.qty,
               available: !!match,
@@ -4733,10 +4742,10 @@ const ShopsScreen = () => {
   const [busyAdd, setBusyAdd] = React.useState(null); // id du produit dont on lit les options
   const pdReqRef = React.useRef(0);
 
-  const load = React.useCallback(async () => {
+  const load = React.useCallback(async (force) => {
     setError(false);
     try {
-      const data = await getShopsByCategory('product_purchase');
+      const data = await loadShops('product_purchase', { force: force === true });
       setShops(Array.isArray(data) ? data : []);
     } catch (e) {
       setError(true);
@@ -4748,7 +4757,18 @@ const ShopsScreen = () => {
 
   React.useEffect(() => { load(); }, [load]);
 
-  const onRefresh = () => { setRefreshing(true); load(); };
+  // Fiche demandée depuis Menus (Soir libre, courses) : ouvre la boutique donnée.
+  React.useEffect(() => {
+    const ouvrir = (shop) => {
+      if (!shop) return;
+      setSelectedProduct(null); setProductSearch(''); setSelectedShop(shop);
+      if ((shop.products || []).some((p) => p.options === undefined)) prefetchShopOptions(shop.id);
+    };
+    ouvrir(takePendingShop());
+    return onOpenShop(() => ouvrir(takePendingShop()));
+  }, []);
+
+  const onRefresh = () => { setRefreshing(true); load(true); };
 
   // `option` = option choisie (fiche à plusieurs options) ou prise d'office :
   // gardée dans l'article (`variant`) et envoyée à la création de la course.
@@ -4783,7 +4803,7 @@ const ShopsScreen = () => {
           productId: product.id,
           companyId: shop.id,
           image: product.image || '',
-          category: 'product_purchase',
+          category: shop.category || 'product_purchase',
           ...(variant ? { variant } : {}),
           ...(cap !== null ? { maxQty: cap } : {}),
         });
@@ -4924,7 +4944,7 @@ const ShopsScreen = () => {
         <View style={shopStyles.center}>
           <Ionicons name="cloud-offline-outline" size={40} color={THEME.faint} />
           <Text style={shopStyles.emptyTxt}>{t('shops.error', 'Impossible de charger les boutiques')}</Text>
-          <TouchableOpacity style={shopStyles.retryBtn} onPress={() => { setLoading(true); load(); }}>
+          <TouchableOpacity style={shopStyles.retryBtn} onPress={() => { setLoading(true); load(true); }}>
             <Text style={shopStyles.retryTxt}>{t('shops.retry', 'Réessayer')}</Text>
           </TouchableOpacity>
         </View>
@@ -5197,6 +5217,7 @@ function MainNavigator({ onLogout, isAuth }) {
     "profile": { focused: "person", unfocused: "person-outline" },
     "myList": { focused: "reorder-three", unfocused: "reorder-three-outline" },
     // Optimiseur = comparaison de prix (icône distincte du Panier)
+    "menus": { focused: "restaurant", unfocused: "restaurant-outline" },
     "products": { focused: "pricetags",      unfocused: "pricetags-outline" },
     "shops": { focused: "storefront",      unfocused: "storefront-outline" },
     "cart":   { focused: "bag-handle",     unfocused: "bag-handle-outline" }
@@ -5205,6 +5226,7 @@ function MainNavigator({ onLogout, isAuth }) {
   const getTabName = (key) => {
     const tabNames = {
       myList: t('tabs.myList'),
+      menus: t('tabs.menus'),
       products: t('tabs.products'),
       shops: t('tabs.shops', 'Boutiques'),
       cart: t('tabs.cart'),
@@ -5219,7 +5241,7 @@ function MainNavigator({ onLogout, isAuth }) {
         headerShown: true,
         headerTitleAlign: "center",
         headerTitle: getTabName(route.name),
-        tabBarLabel: getTabName(route.name),
+        tabBarLabel: ({ color }) => <TabLabel label={getTabName(route.name)} color={color} />,
         tabBarActiveTintColor: BRAND,
         tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28 },
         tabBarIcon: ({ focused, color, size }) => {
@@ -5230,6 +5252,7 @@ function MainNavigator({ onLogout, isAuth }) {
       })}
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
       <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>

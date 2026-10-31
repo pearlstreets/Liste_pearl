@@ -1,5 +1,6 @@
 import { apiPost, apiPut, apiUpload, apiDeleteWithStatus, saveTokens, clearTokens, getTokens, apiGet } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clearAllMenus } from '../lib/menus/storage';
 import { setSecureItem, removeSecureItem, removeSecureItems, SECURE_KEYS } from './secureStorage';
 
 const KEY_AUTH = 'KEY_AUTH';
@@ -193,6 +194,9 @@ export async function clearLocalUserData() {
     const all = await AsyncStorage.getAllKeys();
     const scoped = (all || []).filter(isUserScopedKey);
     if (scoped.length) await AsyncStorage.multiRemove(scoped);
+  } catch {}
+  try {
+    await clearAllMenus();
   } catch {}
 }
 

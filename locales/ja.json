@@ -5,7 +5,8 @@
     "favorites": "お気に入り",
     "cart": "カート",
     "profile": "プロフィール",
-    "shops": "ショップ"
+    "shops": "ショップ",
+    "menus": "メニュー"
   },
   "listScreen": {
     "scan": "スキャン",
@@ -1034,5 +1035,342 @@
     "alternative_therapies": "代替療法",
     "yoga": "ヨガ",
     "pilates": "ピラティス"
+  },
+  "menus": {
+    "nav": {
+      "week": "私の週間",
+      "shop": "買い物",
+      "discover": "発見する"
+    },
+    "common": {
+      "back": "戻る",
+      "close": "閉じる",
+      "cancel": "キャンセル",
+      "retry": "再試行します",
+      "clear": "クリアします"
+    },
+    "days": {
+      "short": {
+        "0": "月",
+        "1": "火",
+        "2": "水",
+        "3": "木",
+        "4": "金",
+        "5": "土",
+        "6": "日"
+      },
+      "long": {
+        "0": "月曜日",
+        "1": "火曜日",
+        "2": "水曜日",
+        "3": "木曜日",
+        "4": "金曜日",
+        "5": "土曜日",
+        "6": "日曜日"
+      }
+    },
+    "slot": {
+      "midi": "昼",
+      "soir": "夜"
+    },
+    "profile": {
+      "adults": "大人",
+      "adultsHint": "食卓の人数",
+      "children": "子供",
+      "childrenHint": "小さい分量として計算します",
+      "budget": "今週の予算",
+      "budgetHint": "目安ですので、いつでも変更できます",
+      "noBudget": "予算なし"
+    },
+    "meals": {
+      "all": "すべての食事",
+      "soirOnly": "夜のみ",
+      "weekdays": "平日のみ",
+      "cantine": "社食または外食",
+      "cantineHint": "平日の昼食は計画されません",
+      "leftovers": "残り物を使います",
+      "leftoversHint": "2食分として作った料理は、もう1回の食事に使います"
+    },
+    "diet": {
+      "diets": "食事制限",
+      "allergies": "アレルギー",
+      "dislikes": "避けたい食材",
+      "dislikesPlaceholder": "食材を検索してください",
+      "maxTime": "調理時間",
+      "upTo": "{{n}}分まで",
+      "noLimit": "制限なし"
+    },
+    "tags": {
+      "vegetarien": "ベジタリアン",
+      "vegan": "ヴィーガン",
+      "sans-gluten": "グルテンフリー",
+      "sans-lactose": "乳糖不使用",
+      "sans-porc": "豚肉なし",
+      "halal-possible": "ハラール対応可能",
+      "sans-fruits-a-coque": "ナッツ不使用",
+      "sans-cuisson": "加熱不要",
+      "four": "オーブン使用",
+      "rapide": "時短",
+      "batch": "作り置き可能",
+      "economique": "節約",
+      "leger": "ヘルシー",
+      "enfants": "お子様向け",
+      "hiver": "冬",
+      "printemps": "春",
+      "ete": "夏",
+      "automne": "秋"
+    },
+    "allergens": {
+      "gluten": "グルテン",
+      "lait": "乳",
+      "oeuf": "卵",
+      "poisson": "魚",
+      "crustaces": "甲殻類",
+      "soja": "大豆",
+      "sesame": "ごま",
+      "fruits-a-coque": "ナッツ類",
+      "miel": "はちみつ"
+    },
+    "onboarding": {
+      "skip": "スキップ",
+      "step": "ステップ{{n}}/{{total}}",
+      "next": "次へ",
+      "finish": "一週間分を作成する",
+      "later": "後で",
+      "s1Title": "どなたのために料理しますか？",
+      "s1Text": "ご家庭とご予算を教えていただくことで、分量を調整します。",
+      "s2Title": "どの食事を計画しますか？",
+      "s2Text": "今週作りたい食事を選択してください。",
+      "s3Title": "お好みと制約",
+      "s3Text": "食事制限、アレルギー、利用可能な時間などは、設定でいつでも変更できます。"
+    },
+    "settings": {
+      "title": "メニュー設定",
+      "intro": "選択内容は今後の週に適用されます。",
+      "household": "私の家庭",
+      "meals": "私の食事",
+      "mealsHint": "食事をタップしてオン・オフを切り替えてください。",
+      "diet": "好みと制約",
+      "reset": "すべてリセット",
+      "resetTitle": "すべてリセットしますか？",
+      "resetText": "一週間分、保存済み、お気に入り、履歴がこの端末から消去されます。",
+      "resetAction": "リセットする"
+    },
+    "swap": {
+      "title": "この料理を変更する",
+      "sub": "ご家庭に合った三つのおすすめ",
+      "noneTitle": "この食事のおすすめはありません",
+      "noneText": "設定で制約を緩和してみてください。",
+      "surprise": "おまかせで選ぶ"
+    },
+    "added": {
+      "ok": "{{count}} 品の商品を追加しました",
+      "already": "すでにリストに追加されています",
+      "okText": "「{{name}}」リストが最新になりました。",
+      "deltaText": "差分のみ「{{name}}」に追加しました。",
+      "alreadyText": "すべて「{{name}}」にすでに含まれています。",
+      "seeList": "リストを見る",
+      "compare": "価格を比較する",
+      "compareHint": "Pearl Streetsの店舗の実際の価格をお比べください。",
+      "err": {
+        "error": "エラーが発生しました。再度お試しください。",
+        "refused_shared": "このリストは共有されています。ご自身のリストのいずれかをお選びください。",
+        "unknown_list": "このリストは存在しません。",
+        "corrupt": "リストが読み取れませんでした。変更はされていません。",
+        "empty": "追加するものがありません。"
+      }
+    },
+    "week": {
+      "title": "私の今週",
+      "thisWeek": "今週",
+      "weekOf": "{{date}}の週",
+      "composing": "今週のメニューを作成しています...",
+      "emptyTitle": "今週のメニューをご用意しています",
+      "emptyText": "ご家庭、ご予算、お好みに合わせて様々な食事を作成します。",
+      "compose": "今週のメニューを作成する",
+      "error": "現在、今週のメニューを作成できません。",
+      "regenerate": "すべて再作成する",
+      "estimated": "予算見積もり",
+      "budget": "{{amount}}まで",
+      "noBudget": "予算は設定されていません",
+      "overBudget": "予算より{{amount}}超えています",
+      "underBudget": "予算より{{amount}}少ないです",
+      "estimateNote": "おおよその見積もりであり、店頭の価格と異なる場合があります。",
+      "dirty": "前回リストに追加してから内容が変更されています。",
+      "dirtyAction": "買い物リストを見直す",
+      "warn": {
+        "no_eligible": "ご希望の条件に合うレシピがありません。設定を調整してください。",
+        "few_recipes": "該当するレシピが少ないため、同じ料理が重複しています。",
+        "over_budget": "今週の予算を超えています。",
+        "no_slots": "予定されている食事がありません。設定で有効にしてください。",
+        "no_recipes": "現在レシピが利用できません。",
+        "lock_invalid": "保存している食事の一部が条件に合わなくなりました。",
+        "error": "現在、今週のメニューを作成できません。"
+      },
+      "noMeal": "予定された食事がありません",
+      "validate": "確定してリストに追加する",
+      "reviewShopping": "買い物リストを見る",
+      "freeTitle": "自由な食事",
+      "freeText": "予定はありませんので、ご自由にお楽しみください。",
+      "takeRecipe": "レシピを選ぶ",
+      "change": "変更する",
+      "lock": "保存する",
+      "unlock": "保存しない",
+      "free": "自由",
+      "leftover": "残り物",
+      "cookDouble": "2倍作る",
+      "locked": "保存済み",
+      "persons": "{{count}}人分",
+      "alreadyCooked": "すでに調理済み",
+      "perPerson": "1人あたり{{price}}",
+      "composeNext": "来週の献立を作る",
+      "nextBanner": "週末が近づいています。次の週の準備をしましょう: {{date}}。"
+    },
+    "recipe": {
+      "minutes": "{{n}}分",
+      "difficulty": {
+        "1": "簡単",
+        "2": "普通",
+        "3": "やや難しい"
+      },
+      "servings": "人数",
+      "costNote": "合計約{{total}}、1人あたり{{per}}です",
+      "ingredients": "材料",
+      "optional": "任意",
+      "nutrition": "1人あたりの推定栄養価",
+      "protein": "gのたんぱく質",
+      "nutritionNote": "目安であり、副菜を含みません。",
+      "steps": "作り方",
+      "note": "メモ",
+      "notePlaceholder": "コツやアレンジなど…",
+      "cook": "手順ごとに調理する",
+      "share": "共有する",
+      "favorite": "お気に入り",
+      "missingTitle": "レシピが見つかりません",
+      "missingText": "このレシピはもう利用できません。",
+      "cookedTimes": "{{count}}回作りました",
+      "addToList": "マイリストに追加"
+    },
+    "course": {
+      "plat": "メイン",
+      "entree": "前菜",
+      "dessert": "デザート",
+      "petit-dejeuner": "朝食"
+    },
+    "share": {
+      "for": "{{count}}人用",
+      "signature": "Pearl Listeで作成されています"
+    },
+    "units": {
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "u": "",
+      "cs": "大さじ",
+      "cc": "小さじ"
+    },
+    "cook": {
+      "none": "このレシピには手順がありません。",
+      "quit": "終了します",
+      "stepOf": "ステップ{{n}}／{{total}}",
+      "stepShort": "ステップ{{n}}",
+      "timer": "タイマー",
+      "timerDone": "タイマーが終了しました",
+      "pause": "一時停止",
+      "resume": "再開します",
+      "start": "開始します",
+      "reset": "リセットします",
+      "prev": "前へ",
+      "next": "次へ",
+      "done": "完了です。どうぞ召し上がってください。"
+    },
+    "shop": {
+      "title": "買い物リスト",
+      "summary": "{{count}}品目、約{{total}}",
+      "estimateNote": "概算です（~）。実際の価格は各店舗の価格ですので、あとで比べてご確認ください。",
+      "targetList": "リストに追加します",
+      "defaultList": "マイリスト",
+      "activeList": "使用中",
+      "showBasics": "常備品を表示します",
+      "have": "すでにあります",
+      "haveHint": "すでにお持ちの品目をタップして削除してください。",
+      "packs": "{{count}}個（{{size}}）",
+      "usedIn": "{{count}}レシピで使用",
+      "emptyTitle": "まだ買い物がありません",
+      "emptyText": "まず1週間の計画を立ててください。",
+      "goPlan": "1週間の内容を確認します",
+      "noneTitle": "すべてすでにあります",
+      "noneText": "今週は購入の必要がありません。",
+      "alreadyAdded": "すでに追加済みです",
+      "addDelta": "差分を追加します（{{count}}）",
+      "add": "リストに追加します",
+      "noun_clove_other": "{{amount}}片",
+      "noun_cube_other": "{{amount}}個",
+      "pack_head_other": "{{count}}玉",
+      "pack_box_other": "{{count}}箱（{{size}}個入り）",
+      "pack_lot_other": "{{count}}パック（{{size}}個入り）",
+      "pack_roll_other": "{{count}}ロール",
+      "pack_slices_other": "{{count}}袋（スライス）",
+      "pack_cubes_other": "{{count}}箱（キューブ）"
+    },
+    "aisles": {
+      "fruits-legumes": "野菜・果物",
+      "viandes-poissons": "肉・魚",
+      "cremerie": "乳製品",
+      "epicerie": "食品",
+      "surgeles": "冷凍食品",
+      "boulangerie": "ベーカリー",
+      "boissons": "飲料"
+    },
+    "discover": {
+      "title": "発見する",
+      "searchPlaceholder": "料理名、食材など",
+      "modes": {
+        "ideas": "アイデア",
+        "favorites": "お気に入り",
+        "season": "旬の料理",
+        "fridge": "冷蔵庫の中",
+        "history": "履歴"
+      },
+      "mine": "私のプロフィールに合ったもの",
+      "seasonNote": "季節に合うレシピです。",
+      "favEmptyTitle": "まだお気に入りがありません",
+      "favEmptyText": "レシピのハートをタップすると、ここで見つかります。",
+      "noResultsTitle": "結果がありません",
+      "noResultsText": "他のキーワードかフィルターをお試しください。"
+    },
+    "fridge": {
+      "intro": "ご自宅に残っている食材を入力してください。それを活用したレシピをご提案します。",
+      "mine": "冷蔵庫の中身",
+      "starTip": "食材をタップすると優先して使い切り対象になります。",
+      "clear": "すべて削除します",
+      "add": "食材を追加します",
+      "search": "食材検索",
+      "results": "提案レシピ",
+      "coverage": "{{pct}}％ すでにあります",
+      "allThere": "すべて揃っています。",
+      "missing": "足りないもの：{{list}}",
+      "usesUp": "{{count}}個の残り物を消費します。",
+      "noneTitle": "レシピが見つかりません",
+      "noneText": "他の食材も追加してください。"
+    },
+    "history": {
+      "intro": "確定済みの週が表示されます。",
+      "emptyTitle": "まだ履歴がありません",
+      "emptyText": "確定済みの週がこちらに表示されます。",
+      "week": "前の週",
+      "meals": "{{count}}食",
+      "redo": "もう一度実施します"
+    },
+    "pearl": {
+      "line_other": "{{count}}店舗、{{price}}から",
+      "summary_other": "Pearl Streetsでの最安の実際の価格：{{total}}（見つかった商品：{{count}}点）",
+      "realNote": "これは各店舗の実際の価格で、概算ではありません。",
+      "coverTitle": "リストを最も多くカバーする店舗",
+      "coverItem": "商品 {{count}}/{{total}}：{{price}}",
+      "recipeTitle": "Pearl Streetsで購入できる材料",
+      "freeCta": "Pearl Streetsで注文または予約"
+    }
   }
 }
