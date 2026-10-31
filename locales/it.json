@@ -5,7 +5,8 @@
     "favorites": "Preferiti",
     "cart": "Carrello",
     "profile": "Profilo",
-    "shops": "Negozi"
+    "shops": "Negozi",
+    "menus": "Menu"
   },
   "listScreen": {
     "scan": "Scansiona",
@@ -1036,5 +1037,352 @@
     "alternative_therapies": "Terapie alternative",
     "yoga": "Yoga",
     "pilates": "Pilates"
+  },
+  "menus": {
+    "nav": {
+      "week": "La mia settimana",
+      "shop": "Spesa",
+      "discover": "Scoprire"
+    },
+    "common": {
+      "back": "Indietro",
+      "close": "Chiudere",
+      "cancel": "Annullare",
+      "retry": "Riprova",
+      "clear": "Cancella"
+    },
+    "days": {
+      "short": {
+        "0": "Lun",
+        "1": "Mar",
+        "2": "Mer",
+        "3": "Gio",
+        "4": "Ven",
+        "5": "Sab",
+        "6": "Dom"
+      },
+      "long": {
+        "0": "Lunedì",
+        "1": "Martedì",
+        "2": "Mercoledì",
+        "3": "Giovedì",
+        "4": "Venerdì",
+        "5": "Sabato",
+        "6": "Domenica"
+      }
+    },
+    "slot": {
+      "midi": "Pranzo",
+      "soir": "Cena"
+    },
+    "profile": {
+      "adults": "Adulti",
+      "adultsHint": "Persone a tavola",
+      "children": "Bambini",
+      "childrenHint": "Contati come porzioni piccole",
+      "budget": "Budget settimanale",
+      "budgetHint": "Stima indicativa, modificabile in qualsiasi momento",
+      "noBudget": "Nessun budget"
+    },
+    "meals": {
+      "all": "Tutti i pasti",
+      "soirOnly": "Solo cene",
+      "weekdays": "Solo giorni feriali",
+      "cantine": "Mensa o pasti fuori casa",
+      "cantineHint": "I pranzi nei giorni feriali non sono previsti",
+      "leftovers": "Usare gli avanzi",
+      "leftoversHint": "Un piatto cucinato in doppia dose serve per un secondo pasto"
+    },
+    "diet": {
+      "diets": "Diete",
+      "allergies": "Allergie",
+      "dislikes": "Ingredienti da evitare",
+      "dislikesPlaceholder": "Cercare un ingrediente",
+      "maxTime": "Tempo di preparazione",
+      "upTo": "Fino a {{n}} min",
+      "noLimit": "Senza limite"
+    },
+    "tags": {
+      "vegetarien": "Vegetariano",
+      "vegan": "Vegano",
+      "sans-gluten": "Senza glutine",
+      "sans-lactose": "Senza lattosio",
+      "sans-porc": "Senza maiale",
+      "halal-possible": "Halal possibile",
+      "sans-fruits-a-coque": "Senza frutta secca",
+      "sans-cuisson": "Senza cottura",
+      "four": "Al forno",
+      "rapide": "Veloce",
+      "batch": "Si prepara in anticipo",
+      "economique": "Economico",
+      "leger": "Leggero",
+      "enfants": "Per bambini",
+      "hiver": "Inverno",
+      "printemps": "Primavera",
+      "ete": "Estate",
+      "automne": "Autunno"
+    },
+    "allergens": {
+      "gluten": "Glutine",
+      "lait": "Latte",
+      "oeuf": "Uovo",
+      "poisson": "Pesce",
+      "crustaces": "Crostacei",
+      "soja": "Soia",
+      "sesame": "Sesamo",
+      "fruits-a-coque": "Frutta secca",
+      "miel": "Miele"
+    },
+    "onboarding": {
+      "skip": "Salta",
+      "step": "Fase {{n}} di {{total}}",
+      "next": "Avanti",
+      "finish": "Comporre la mia settimana",
+      "later": "Più tardi",
+      "s1Title": "Per chi si cucina?",
+      "s1Text": "Indichi il Suo nucleo familiare e il Suo budget, adatteremo le quantità.",
+      "s2Title": "Quali pasti pianificare?",
+      "s2Text": "Selezioni i pasti da pianificare per questa settimana.",
+      "s3Title": "I Suoi gusti e le Sue esigenze",
+      "s3Text": "Diete, allergie e tempo a disposizione. Tutto resta modificabile nelle impostazioni."
+    },
+    "settings": {
+      "title": "Impostazioni menu",
+      "intro": "Le Sue scelte verranno applicate alle prossime settimane composte.",
+      "household": "La mia famiglia",
+      "meals": "I miei pasti",
+      "mealsHint": "Selezioni un pasto per attivarlo o rimuoverlo.",
+      "diet": "I miei gusti ed esigenze",
+      "reset": "Reimposta tutto",
+      "resetTitle": "Reimpostare tutto?",
+      "resetText": "La Sua settimana, i preferiti, le note e la cronologia verranno cancellati da questo dispositivo.",
+      "resetAction": "Reimposta"
+    },
+    "swap": {
+      "title": "Cambiare questo piatto",
+      "sub": "Tre idee adatte al Suo nucleo familiare",
+      "noneTitle": "Altre idee per questo pasto",
+      "noneText": "Provi ad allentare le Sue restrizioni nelle impostazioni.",
+      "surprise": "Mi sorprenda"
+    },
+    "added": {
+      "ok": "{{count}} prodotti aggiunti",
+      "already": "Già aggiunto alla Sua lista",
+      "okText": "La Sua lista « {{name}} » è aggiornata.",
+      "deltaText": "Solo la differenza è stata aggiunta a « {{name}} ».",
+      "alreadyText": "Tutto è già presente in « {{name}} ».",
+      "seeList": "Vedere la mia lista",
+      "compare": "Confrontare i prezzi",
+      "compareHint": "Confronti i prezzi reali dei negozi Pearl Streets.",
+      "err": {
+        "error": "Si è verificato un errore, La preghiamo di riprovare.",
+        "refused_shared": "Questa lista è condivisa con Lei, scelga una delle Sue liste.",
+        "unknown_list": "Questa lista non esiste più.",
+        "corrupt": "La Sua lista non è leggibile, nessuna modifica effettuata.",
+        "empty": "Non c'è nulla da aggiungere."
+      }
+    },
+    "week": {
+      "title": "La mia settimana",
+      "thisWeek": "Questa settimana",
+      "weekOf": "Settimana del {{date}}",
+      "composing": "Stiamo componendo la Sua settimana...",
+      "emptyTitle": "La Sua settimana La aspetta",
+      "emptyText": "Componiamo pasti variati in base alla Sua famiglia, al Suo budget e ai Suoi gusti.",
+      "compose": "Comporre la mia settimana",
+      "error": "Impossibile comporre la settimana al momento.",
+      "regenerate": "Ricostruire tutto",
+      "estimated": "Budget stimato",
+      "budget": "su {{amount}}",
+      "noBudget": "Nessun budget impostato",
+      "overBudget": "{{amount}} oltre il budget",
+      "underBudget": "{{amount}} sotto il budget",
+      "estimateNote": "Stima indicativa, i prezzi nei negozi possono variare.",
+      "dirty": "Ha modificato la settimana dall’ultimo aggiunta alla Sua lista.",
+      "dirtyAction": "Rivedere la spesa",
+      "warn": {
+        "no_eligible": "Nessuna ricetta corrisponde alle Sue restrizioni. Allenti i criteri nelle impostazioni.",
+        "few_recipes": "Poche ricette rispettano le Sue restrizioni, alcuni piatti si ripetono.",
+        "over_budget": "La settimana supera il Suo budget.",
+        "no_slots": "Nessun pasto pianificato. Attivi i pasti nelle impostazioni.",
+        "no_recipes": "Le ricette non sono disponibili al momento.",
+        "lock_invalid": "Alcuni pasti mantenuti non soddisfano più le Sue restrizioni.",
+        "error": "Impossibile comporre la settimana al momento."
+      },
+      "noMeal": "Nessun pasto pianificato",
+      "validate": "Confermare e aggiungere alla mia lista",
+      "reviewShopping": "Vedere la spesa",
+      "freeTitle": "Pasto libero",
+      "freeText": "Nessuna previsione, può improvvisare.",
+      "takeRecipe": "Scegliere una ricetta",
+      "change": "Cambiare",
+      "lock": "Tenere",
+      "unlock": "Non tenere più",
+      "free": "Libero",
+      "leftover": "Avanzo",
+      "cookDouble": "Cucinare doppia porzione",
+      "locked": "Tenuto",
+      "persons": "{{count}} pers.",
+      "alreadyCooked": "Già cucinato",
+      "perPerson": "{{price}} a persona",
+      "composeNext": "Pianifica la prossima settimana",
+      "nextBanner": "Il fine settimana si avvicina. Preparate la prossima: {{date}}."
+    },
+    "recipe": {
+      "minutes": "{{n}} min",
+      "difficulty": {
+        "1": "Facile",
+        "2": "Medio",
+        "3": "Più tecnico"
+      },
+      "servings": "Persone",
+      "costNote": "Circa {{total}} in totale, ovvero {{per}} a persona",
+      "ingredients": "Ingredienti",
+      "optional": "facoltativo",
+      "nutrition": "Valori stimati per persona",
+      "protein": "g di proteine",
+      "nutritionNote": "Stima indicativa, senza contorni.",
+      "steps": "Preparazione",
+      "note": "Il mio appunto",
+      "notePlaceholder": "I Suoi consigli, i Suoi aggiustamenti...",
+      "cook": "Cucinare passo dopo passo",
+      "share": "Condividere",
+      "favorite": "Preferito",
+      "missingTitle": "Ricetta non trovata",
+      "missingText": "Questa ricetta non è più disponibile.",
+      "cookedTimes": "Cucinata {{count}} volte",
+      "addToList": "Aggiungi alla mia lista"
+    },
+    "course": {
+      "plat": "Piatto principale",
+      "entree": "Antipasto",
+      "dessert": "Dessert",
+      "petit-dejeuner": "Colazione"
+    },
+    "share": {
+      "for": "Per {{count}} persone",
+      "signature": "Composto con Pearl Liste"
+    },
+    "units": {
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "u": "",
+      "cs": "cucchiaio",
+      "cc": "cucchiaino"
+    },
+    "cook": {
+      "none": "Nessun passaggio per questa ricetta.",
+      "quit": "Uscire",
+      "stepOf": "Passaggio {{n}} di {{total}}",
+      "stepShort": "Passaggio {{n}}",
+      "timer": "Timer",
+      "timerDone": "Timer terminato",
+      "pause": "Pausa",
+      "resume": "Riprendere",
+      "start": "Avviare",
+      "reset": "Azzera",
+      "prev": "Precedente",
+      "next": "Successivo",
+      "done": "Terminato, buon appetito"
+    },
+    "shop": {
+      "title": "La mia spesa",
+      "summary": "{{count}} articoli, circa {{total}}",
+      "estimateNote": "Stima indicativa (~). Il prezzo reale è quello del negozio, lo confronti in seguito.",
+      "targetList": "Aggiungere alla lista",
+      "defaultList": "La mia lista",
+      "activeList": "attiva",
+      "showBasics": "Mostra i prodotti di base",
+      "have": "Già a casa",
+      "haveHint": "Tocchi un articolo che ha già per rimuoverlo.",
+      "packs": "{{count}} x {{size}}",
+      "usedIn": "In {{count}} ricette",
+      "emptyTitle": "Ancora nessuna spesa",
+      "emptyText": "Componi prima la Sua settimana.",
+      "goPlan": "Veda la mia settimana",
+      "noneTitle": "Ha già tutto a casa",
+      "noneText": "Nulla da acquistare per questa settimana.",
+      "alreadyAdded": "Già aggiunto",
+      "addDelta": "Aggiungere la differenza ({{count}})",
+      "add": "Aggiungere alla mia lista",
+      "noun_clove_one": "{{amount}} spicchio",
+      "noun_clove_other": "{{amount}} spicchi",
+      "noun_cube_one": "{{amount}} dado",
+      "noun_cube_other": "{{amount}} dadi",
+      "pack_head_one": "{{count}} testa",
+      "pack_head_other": "{{count}} teste",
+      "pack_box_one": "{{count}} scatola da {{size}}",
+      "pack_box_other": "{{count}} scatole da {{size}}",
+      "pack_lot_one": "{{count}} confezione da {{size}}",
+      "pack_lot_other": "{{count}} confezioni da {{size}}",
+      "pack_roll_one": "{{count}} rotolo",
+      "pack_roll_other": "{{count}} rotoli",
+      "pack_slices_one": "{{count}} confezione di fette",
+      "pack_slices_other": "{{count}} confezioni di fette",
+      "pack_cubes_one": "{{count}} scatola di dadi",
+      "pack_cubes_other": "{{count}} scatole di dadi"
+    },
+    "aisles": {
+      "fruits-legumes": "Frutta e verdura",
+      "viandes-poissons": "Carne e pesce",
+      "cremerie": "Latticini",
+      "epicerie": "Dispensa",
+      "surgeles": "Surgelati",
+      "boulangerie": "Panetteria",
+      "boissons": "Bevande"
+    },
+    "discover": {
+      "title": "Scoprire",
+      "searchPlaceholder": "Un piatto, un ingrediente...",
+      "modes": {
+        "ideas": "Idee",
+        "favorites": "Preferiti",
+        "season": "Di stagione",
+        "fridge": "Nel mio frigo",
+        "history": "Storico"
+      },
+      "mine": "Adatto al Suo profilo",
+      "seasonNote": "Ricette adatte alla stagione.",
+      "favEmptyTitle": "Ancora nessun preferito",
+      "favEmptyText": "Tocchi il cuore di una ricetta per ritrovarla qui.",
+      "noResultsTitle": "Nessun risultato",
+      "noResultsText": "Provi un'altra parola o tolga un filtro."
+    },
+    "fridge": {
+      "intro": "Indichi cosa Le resta, troviamo le ricette che lo usano.",
+      "mine": "Nel mio frigo",
+      "starTip": "Tocchi un ingrediente per segnarlo da finire con priorità.",
+      "clear": "Svuotare tutto",
+      "add": "Aggiungere un ingrediente",
+      "search": "Cercare un ingrediente",
+      "results": "Ricette possibili",
+      "coverage": "{{pct}} % già a casa",
+      "allThere": "Ha tutto.",
+      "missing": "Manca: {{list}}",
+      "usesUp": "Termina {{count}} avanzi.",
+      "noneTitle": "Nessuna ricetta trovata",
+      "noneText": "Aggiunga altri ingredienti."
+    },
+    "history": {
+      "intro": "Le settimane che ha confermato.",
+      "emptyTitle": "Nessuno storico ancora",
+      "emptyText": "Le settimane confermate appariranno qui.",
+      "week": "Settimana passata",
+      "meals": "{{count}} pasti",
+      "redo": "Ripetere"
+    },
+    "pearl": {
+      "line_one": "{{count}} negozio, da {{price}}",
+      "line_other": "{{count}} negozi, da {{price}}",
+      "summary_one": "Miglior prezzo reale su Pearl Streets: {{total}} (articoli trovati: {{count}})",
+      "summary_other": "Miglior prezzo reale su Pearl Streets: {{total}} (articoli trovati: {{count}})",
+      "realNote": "Sono i prezzi reali dei negozi, non la stima.",
+      "coverTitle": "I negozi che coprono di più la vostra lista",
+      "coverItem": "Articoli {{count}}/{{total}}: {{price}}",
+      "recipeTitle": "Ingredienti disponibili su Pearl Streets",
+      "freeCta": "Ordinare o prenotare su Pearl Streets"
+    }
   }
 }

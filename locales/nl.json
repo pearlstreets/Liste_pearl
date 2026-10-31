@@ -5,7 +5,8 @@
     "favorites": "Favorieten",
     "cart": "Winkelwagen",
     "profile": "Profiel",
-    "shops": "Winkels"
+    "shops": "Winkels",
+    "menus": "Menu's"
   },
   "listScreen": {
     "scan": "Scannen",
@@ -1036,5 +1037,352 @@
     "alternative_therapies": "Alternatieve therapieën",
     "yoga": "Yoga",
     "pilates": "Pilates"
+  },
+  "menus": {
+    "nav": {
+      "week": "Mijn week",
+      "shop": "Boodschappen",
+      "discover": "Ontdekken"
+    },
+    "common": {
+      "back": "Terug",
+      "close": "Sluiten",
+      "cancel": "Annuleren",
+      "retry": "Opnieuw proberen",
+      "clear": "Wissen"
+    },
+    "days": {
+      "short": {
+        "0": "Ma",
+        "1": "Di",
+        "2": "Wo",
+        "3": "Do",
+        "4": "Vr",
+        "5": "Za",
+        "6": "Zo"
+      },
+      "long": {
+        "0": "Maandag",
+        "1": "Dinsdag",
+        "2": "Woensdag",
+        "3": "Donderdag",
+        "4": "Vrijdag",
+        "5": "Zaterdag",
+        "6": "Zondag"
+      }
+    },
+    "slot": {
+      "midi": "Middag",
+      "soir": "Avond"
+    },
+    "profile": {
+      "adults": "Volwassenen",
+      "adultsHint": "Personen aan tafel",
+      "children": "Kinderen",
+      "childrenHint": "Geteld als kleine porties",
+      "budget": "Weekbudget",
+      "budgetHint": "Indicatieve schatting, op elk moment aanpasbaar",
+      "noBudget": "Zonder budget"
+    },
+    "meals": {
+      "all": "Alle maaltijden",
+      "soirOnly": "Alleen avonden",
+      "weekdays": "Alleen weekdagen",
+      "cantine": "Kantine of buitenshuis gegeten",
+      "cantineHint": "Middagmaaltijden op werkdagen zijn niet gepland",
+      "leftovers": "Restjes gebruiken",
+      "leftoversHint": "Een dubbele portie wordt gebruikt voor een tweede maaltijd"
+    },
+    "diet": {
+      "diets": "Diëten",
+      "allergies": "Allergieën",
+      "dislikes": "Ingrediënten om te vermijden",
+      "dislikesPlaceholder": "Zoek een ingrediënt",
+      "maxTime": "Bereidingstijd",
+      "upTo": "Tot {{n}} min",
+      "noLimit": "Geen limiet"
+    },
+    "tags": {
+      "vegetarien": "Vegetarisch",
+      "vegan": "Veganistisch",
+      "sans-gluten": "Glutenvrij",
+      "sans-lactose": "Lactosevrij",
+      "sans-porc": "Varkensvrij",
+      "halal-possible": "Halal mogelijk",
+      "sans-fruits-a-coque": "Notenvrij",
+      "sans-cuisson": "Zonder koken",
+      "four": "In de oven",
+      "rapide": "Snel",
+      "batch": "Vooruit te bereiden",
+      "economique": "Budgetvriendelijk",
+      "leger": "Licht",
+      "enfants": "Voor kinderen",
+      "hiver": "Winter",
+      "printemps": "Lente",
+      "ete": "Zomer",
+      "automne": "Herfst"
+    },
+    "allergens": {
+      "gluten": "Gluten",
+      "lait": "Melk",
+      "oeuf": "Ei",
+      "poisson": "Vis",
+      "crustaces": "Schaaldieren",
+      "soja": "Soja",
+      "sesame": "Sesam",
+      "fruits-a-coque": "Noten",
+      "miel": "Honing"
+    },
+    "onboarding": {
+      "skip": "Overslaan",
+      "step": "Stap {{n}} van {{total}}",
+      "next": "Volgende",
+      "finish": "Mijn week samenstellen",
+      "later": "Later",
+      "s1Title": "Voor wie kookt u?",
+      "s1Text": "Geef uw huishouden en budget door, wij passen de hoeveelheden aan.",
+      "s2Title": "Welke maaltijden plannen?",
+      "s2Text": "Selecteer de maaltijden die u deze week wilt plannen.",
+      "s3Title": "Uw voorkeuren en beperkingen",
+      "s3Text": "Diëten, allergieën en beschikbare tijd. Alles blijft aanpasbaar in de instellingen."
+    },
+    "settings": {
+      "title": "Menu-instellingen",
+      "intro": "Uw keuzes gelden voor de volgende samengestelde weken.",
+      "household": "Mijn huishouden",
+      "meals": "Mijn maaltijden",
+      "mealsHint": "Selecteer een maaltijd om te activeren of te verwijderen.",
+      "diet": "Mijn voorkeuren en beperkingen",
+      "reset": "Alles terugzetten",
+      "resetTitle": "Alles terugzetten?",
+      "resetText": "Uw week, favorieten, notities en geschiedenis worden van dit apparaat verwijderd.",
+      "resetAction": "Terugzetten"
+    },
+    "swap": {
+      "title": "Dit gerecht wijzigen",
+      "sub": "Drie ideeën afgestemd op uw huishouden",
+      "noneTitle": "Meer ideeën voor deze maaltijd",
+      "noneText": "Probeer uw beperkingen te versoepelen in de instellingen.",
+      "surprise": "Verras mij"
+    },
+    "added": {
+      "ok": "{{count}} producten toegevoegd",
+      "already": "Reeds aan uw lijst toegevoegd",
+      "okText": "Uw lijst « {{name}} » is bijgewerkt.",
+      "deltaText": "Alleen het verschil is toegevoegd aan « {{name}} ».",
+      "alreadyText": "Alles staat al in « {{name}} ».",
+      "seeList": "Mijn lijst bekijken",
+      "compare": "Prijzen vergelijken",
+      "compareHint": "Vergelijk de echte prijzen van de Pearl Streets-winkels.",
+      "err": {
+        "error": "Er is een fout opgetreden, probeer het alstublieft opnieuw.",
+        "refused_shared": "Deze lijst is met u gedeeld, kies een van uw eigen lijsten.",
+        "unknown_list": "Deze lijst bestaat niet meer.",
+        "corrupt": "Uw lijst is onleesbaar, er is niets gewijzigd.",
+        "empty": "Er is niets toe te voegen."
+      }
+    },
+    "week": {
+      "title": "Mijn week",
+      "thisWeek": "Deze week",
+      "weekOf": "Week van {{date}}",
+      "composing": "Uw week wordt samengesteld...",
+      "emptyTitle": "Uw week wacht op u",
+      "emptyText": "We stellen gevarieerde maaltijden samen volgens uw gezin, budget en smaak.",
+      "compose": "Mijn week samenstellen",
+      "error": "Het is momenteel niet mogelijk de week samen te stellen.",
+      "regenerate": "Alles opnieuw samenstellen",
+      "estimated": "Geschat budget",
+      "budget": "van {{amount}}",
+      "noBudget": "Geen budget ingesteld",
+      "overBudget": "{{amount}} boven het budget",
+      "underBudget": "{{amount}} onder het budget",
+      "estimateNote": "Richtschatting, winkelprijzen kunnen variëren.",
+      "dirty": "U heeft de week aangepast sinds de laatste toevoeging aan uw lijst.",
+      "dirtyAction": "Boodschappen herzien",
+      "warn": {
+        "no_eligible": "Geen enkele recept voldoet aan uw voorwaarden. Maak deze soepeler in de instellingen.",
+        "few_recipes": "Weinig recepten voldoen aan uw voorwaarden, sommige gerechten worden herhaald.",
+        "over_budget": "De week overschrijdt uw budget.",
+        "no_slots": "Er zijn geen maaltijden gepland. Activeer maaltijden in de instellingen.",
+        "no_recipes": "De recepten zijn momenteel niet beschikbaar.",
+        "lock_invalid": "Sommige bewaarde maaltijden voldoen niet meer aan uw voorwaarden.",
+        "error": "Het is momenteel niet mogelijk de week samen te stellen."
+      },
+      "noMeal": "Geen maaltijd gepland",
+      "validate": "Bevestigen en aan mijn lijst toevoegen",
+      "reviewShopping": "Boodschappen bekijken",
+      "freeTitle": "Vrije maaltijd",
+      "freeText": "Niets gepland, u improviseert.",
+      "takeRecipe": "Een recept kiezen",
+      "change": "Wijzigen",
+      "lock": "Bewaren",
+      "unlock": "Niet meer bewaren",
+      "free": "Vrij",
+      "leftover": "Restje",
+      "cookDouble": "Dubbele portie koken",
+      "locked": "Bewaard",
+      "persons": "{{count}} pers.",
+      "alreadyCooked": "Al gekookt",
+      "perPerson": "{{price}} per persoon",
+      "composeNext": "Volgende week plannen",
+      "nextBanner": "Het weekend komt eraan. Bereid alvast voor: {{date}}."
+    },
+    "recipe": {
+      "minutes": "{{n}} min",
+      "difficulty": {
+        "1": "Eenvoudig",
+        "2": "Gemiddeld",
+        "3": "Meer techniek"
+      },
+      "servings": "Personen",
+      "costNote": "Ongeveer {{total}} in totaal, oftewel {{per}} per persoon",
+      "ingredients": "Ingrediënten",
+      "optional": "optioneel",
+      "nutrition": "Geschatte waarden per persoon",
+      "protein": "g eiwitten",
+      "nutritionNote": "Richtschatting, exclusief bijgerechten.",
+      "steps": "Bereiding",
+      "note": "Mijn notitie",
+      "notePlaceholder": "Uw tips, aanpassingen...",
+      "cook": "Stap voor stap koken",
+      "share": "Delen",
+      "favorite": "Favoriet",
+      "missingTitle": "Recept niet gevonden",
+      "missingText": "Dit recept is niet meer beschikbaar.",
+      "cookedTimes": "{{count}} keer bereid",
+      "addToList": "Toevoegen aan mijn lijst"
+    },
+    "course": {
+      "plat": "Hoofdgerecht",
+      "entree": "Voorgerecht",
+      "dessert": "Dessert",
+      "petit-dejeuner": "Ontbijt"
+    },
+    "share": {
+      "for": "Voor {{count}} personen",
+      "signature": "Samengesteld met Pearl Liste"
+    },
+    "units": {
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "u": "",
+      "cs": "el",
+      "cc": "tl"
+    },
+    "cook": {
+      "none": "Geen stappen voor dit recept.",
+      "quit": "Afsluiten",
+      "stepOf": "Stap {{n}} van {{total}}",
+      "stepShort": "Stap {{n}}",
+      "timer": "Timer",
+      "timerDone": "Timer klaar",
+      "pause": "Pauzeren",
+      "resume": "Hervatten",
+      "start": "Starten",
+      "reset": "Resetten",
+      "prev": "Vorige",
+      "next": "Volgende",
+      "done": "Klaar, smakelijk eten"
+    },
+    "shop": {
+      "title": "Mijn boodschappen",
+      "summary": "{{count}} artikelen, ongeveer {{total}}",
+      "estimateNote": "Indicatieve schatting (~). De echte prijs is die van de winkel, u kunt die daarna vergelijken.",
+      "targetList": "Toevoegen aan lijst",
+      "defaultList": "Mijn lijst",
+      "activeList": "actief",
+      "showBasics": "Basisproducten tonen",
+      "have": "Al in huis",
+      "haveHint": "Tik op een artikel dat u al heeft om het te verwijderen.",
+      "packs": "{{count}} x {{size}}",
+      "usedIn": "In {{count}} recepten",
+      "emptyTitle": "Nog geen boodschappen",
+      "emptyText": "Stel eerst uw week samen.",
+      "goPlan": "Bekijk mijn week",
+      "noneTitle": "Alles is al in huis",
+      "noneText": "Niets te kopen voor deze week.",
+      "alreadyAdded": "Al toegevoegd",
+      "addDelta": "Verschil toevoegen ({{count}})",
+      "add": "Toevoegen aan mijn lijst",
+      "noun_clove_one": "{{amount}} teentje",
+      "noun_clove_other": "{{amount}} teentjes",
+      "noun_cube_one": "{{amount}} blokje",
+      "noun_cube_other": "{{amount}} blokjes",
+      "pack_head_one": "{{count}} bol",
+      "pack_head_other": "{{count}} bollen",
+      "pack_box_one": "{{count}} doos van {{size}}",
+      "pack_box_other": "{{count}} dozen van {{size}}",
+      "pack_lot_one": "{{count}} pak van {{size}}",
+      "pack_lot_other": "{{count}} pakken van {{size}}",
+      "pack_roll_one": "{{count}} rol",
+      "pack_roll_other": "{{count}} rollen",
+      "pack_slices_one": "{{count}} pak plakken",
+      "pack_slices_other": "{{count}} pakken plakken",
+      "pack_cubes_one": "{{count}} doos blokjes",
+      "pack_cubes_other": "{{count}} dozen blokjes"
+    },
+    "aisles": {
+      "fruits-legumes": "Groente en fruit",
+      "viandes-poissons": "Vlees en vis",
+      "cremerie": "Zuivel",
+      "epicerie": "Kruidenierswaren",
+      "surgeles": "Diepvries",
+      "boulangerie": "Bakkerij",
+      "boissons": "Dranken"
+    },
+    "discover": {
+      "title": "Ontdekken",
+      "searchPlaceholder": "Een gerecht, een ingrediënt...",
+      "modes": {
+        "ideas": "Ideeën",
+        "favorites": "Favorieten",
+        "season": "Seizoensgebonden",
+        "fridge": "In mijn koelkast",
+        "history": "Geschiedenis"
+      },
+      "mine": "Aangepast aan mijn profiel",
+      "seasonNote": "Recepten die goed passen bij het seizoen.",
+      "favEmptyTitle": "Nog geen favorieten",
+      "favEmptyText": "Tik op het hartje van een recept om het hier terug te vinden.",
+      "noResultsTitle": "Geen resultaat",
+      "noResultsText": "Probeer een ander woord of verwijder een filter."
+    },
+    "fridge": {
+      "intro": "Geef aan wat u nog heeft, wij zoeken recepten die het gebruiken.",
+      "mine": "In mijn koelkast",
+      "starTip": "Tik op een ingrediënt om het als eerste te gebruiken.",
+      "clear": "Alles leegmaken",
+      "add": "Ingrediënt toevoegen",
+      "search": "Ingrediënt zoeken",
+      "results": "Mogelijke recepten",
+      "coverage": "{{pct}}% al in huis",
+      "allThere": "U heeft alles.",
+      "missing": "Ontbreekt: {{list}}",
+      "usesUp": "Gebruikt {{count}} restjes op.",
+      "noneTitle": "Geen recepten gevonden",
+      "noneText": "Voeg meer ingrediënten toe."
+    },
+    "history": {
+      "intro": "De weken die u heeft bevestigd.",
+      "emptyTitle": "Nog geen geschiedenis",
+      "emptyText": "Uw bevestigde weken verschijnen hier.",
+      "week": "Afgelopen week",
+      "meals": "{{count}} maaltijden",
+      "redo": "Opnieuw doen"
+    },
+    "pearl": {
+      "line_one": "{{count}} winkel, vanaf {{price}}",
+      "line_other": "{{count}} winkels, vanaf {{price}}",
+      "summary_one": "Beste echte prijs bij Pearl Streets: {{total}} (gevonden artikelen: {{count}})",
+      "summary_other": "Beste echte prijs bij Pearl Streets: {{total}} (gevonden artikelen: {{count}})",
+      "realNote": "Dit zijn de echte prijzen van de winkels, niet de schatting.",
+      "coverTitle": "De winkels die het grootste deel van uw lijst dekken",
+      "coverItem": "Artikelen {{count}}/{{total}}: {{price}}",
+      "recipeTitle": "Ingrediënten beschikbaar bij Pearl Streets",
+      "freeCta": "Bestellen of reserveren bij Pearl Streets"
+    }
   }
 }

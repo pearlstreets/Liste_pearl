@@ -5,7 +5,8 @@
     "favorites": "Favorites",
     "cart": "Cart",
     "profile": "Profile",
-    "shops": "Shops"
+    "shops": "Shops",
+    "menus": "Menus"
   },
   "listScreen": {
     "scan": "Scan",
@@ -1036,5 +1037,352 @@
     "alternative_therapies": "Alternative therapies",
     "yoga": "Yoga",
     "pilates": "Pilates"
+  },
+  "menus": {
+    "nav": {
+      "week": "My week",
+      "shop": "Shopping",
+      "discover": "Discover"
+    },
+    "common": {
+      "back": "Back",
+      "close": "Close",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "clear": "Clear"
+    },
+    "days": {
+      "short": {
+        "0": "Mon",
+        "1": "Tue",
+        "2": "Wed",
+        "3": "Thu",
+        "4": "Fri",
+        "5": "Sat",
+        "6": "Sun"
+      },
+      "long": {
+        "0": "Monday",
+        "1": "Tuesday",
+        "2": "Wednesday",
+        "3": "Thursday",
+        "4": "Friday",
+        "5": "Saturday",
+        "6": "Sunday"
+      }
+    },
+    "slot": {
+      "midi": "Lunch",
+      "soir": "Dinner"
+    },
+    "profile": {
+      "adults": "Adults",
+      "adultsHint": "People at the table",
+      "children": "Children",
+      "childrenHint": "Counted as small portions",
+      "budget": "Weekly budget",
+      "budgetHint": "Approximate estimate, can be changed at any time",
+      "noBudget": "No budget"
+    },
+    "meals": {
+      "all": "All meals",
+      "soirOnly": "Evenings only",
+      "weekdays": "Weekdays only",
+      "cantine": "Canteen or meals eaten out",
+      "cantineHint": "Weekday lunches not planned",
+      "leftovers": "Use leftovers",
+      "leftoversHint": "A dish cooked as a double portion serves for a second meal"
+    },
+    "diet": {
+      "diets": "Diets",
+      "allergies": "Allergies",
+      "dislikes": "Ingredients to avoid",
+      "dislikesPlaceholder": "Search for an ingredient",
+      "maxTime": "Preparation time",
+      "upTo": "Up to {{n}} min",
+      "noLimit": "No limit"
+    },
+    "tags": {
+      "vegetarien": "Vegetarian",
+      "vegan": "Vegan",
+      "sans-gluten": "Gluten-free",
+      "sans-lactose": "Lactose-free",
+      "sans-porc": "Pork-free",
+      "halal-possible": "Halal possible",
+      "sans-fruits-a-coque": "Nut-free",
+      "sans-cuisson": "No-cook",
+      "four": "Oven",
+      "rapide": "Quick",
+      "batch": "Make ahead",
+      "economique": "Economical",
+      "leger": "Light",
+      "enfants": "For children",
+      "hiver": "Winter",
+      "printemps": "Spring",
+      "ete": "Summer",
+      "automne": "Autumn"
+    },
+    "allergens": {
+      "gluten": "Gluten",
+      "lait": "Milk",
+      "oeuf": "Egg",
+      "poisson": "Fish",
+      "crustaces": "Shellfish",
+      "soja": "Soy",
+      "sesame": "Sesame",
+      "fruits-a-coque": "Nuts",
+      "miel": "Honey"
+    },
+    "onboarding": {
+      "skip": "Skip",
+      "step": "Step {{n}} of {{total}}",
+      "next": "Next",
+      "finish": "Plan my week",
+      "later": "Later",
+      "s1Title": "Who are you cooking for?",
+      "s1Text": "Specify your household and budget, we adjust the quantities.",
+      "s2Title": "Which meals to plan?",
+      "s2Text": "Tap the meals to plan this week.",
+      "s3Title": "Your tastes and requirements",
+      "s3Text": "Diets, allergies and available time. Everything can be updated in settings."
+    },
+    "settings": {
+      "title": "Menu settings",
+      "intro": "Your choices apply to the next planned weeks.",
+      "household": "My household",
+      "meals": "My meals",
+      "mealsHint": "Tap a meal to activate or remove it.",
+      "diet": "My preferences and requirements",
+      "reset": "Reset all",
+      "resetTitle": "Reset all?",
+      "resetText": "Your week, favorites, notes and history will be erased from this device.",
+      "resetAction": "Reset"
+    },
+    "swap": {
+      "title": "Change this dish",
+      "sub": "Three ideas tailored for your household",
+      "noneTitle": "No more ideas for this meal",
+      "noneText": "Try relaxing your requirements in the settings.",
+      "surprise": "Surprise me"
+    },
+    "added": {
+      "ok": "{{count}} products added",
+      "already": "Already added to your list",
+      "okText": "Your \"{{name}}\" list is up to date.",
+      "deltaText": "Only the difference has been added to \"{{name}}\".",
+      "alreadyText": "Everything is already in \"{{name}}\".",
+      "seeList": "View my list",
+      "compare": "Compare prices",
+      "compareHint": "Compare the real prices of Pearl Streets shops.",
+      "err": {
+        "error": "An error has occurred, please try again.",
+        "refused_shared": "This list is shared with you. Please choose one of your lists.",
+        "unknown_list": "This list no longer exists.",
+        "corrupt": "Your list is unreadable. Nothing has been changed.",
+        "empty": "There is nothing to add."
+      }
+    },
+    "week": {
+      "title": "My week",
+      "thisWeek": "This week",
+      "weekOf": "Week of {{date}}",
+      "composing": "Composing your week...",
+      "emptyTitle": "Your week awaits",
+      "emptyText": "We create varied meals according to your household, budget, and preferences.",
+      "compose": "Compose my week",
+      "error": "Cannot compose the week at the moment.",
+      "regenerate": "Recompose everything",
+      "estimated": "Estimated budget",
+      "budget": "of {{amount}}",
+      "noBudget": "No budget set",
+      "overBudget": "{{amount}} over the budget",
+      "underBudget": "{{amount}} under the budget",
+      "estimateNote": "Indicative estimate, store prices may vary.",
+      "dirty": "You have modified the week since your last addition to the list.",
+      "dirtyAction": "Review shopping",
+      "warn": {
+        "no_eligible": "No recipes match your requirements. Please relax them in settings.",
+        "few_recipes": "Few recipes match your requirements. Some dishes are repeated.",
+        "over_budget": "The week exceeds your budget.",
+        "no_slots": "No meals planned. Enable meals in settings.",
+        "no_recipes": "Recipes are not available at the moment.",
+        "lock_invalid": "Some kept meals no longer meet your requirements.",
+        "error": "Cannot compose the week at the moment."
+      },
+      "noMeal": "No meal planned",
+      "validate": "Validate and add to my list",
+      "reviewShopping": "View shopping",
+      "freeTitle": "Free meal",
+      "freeText": "Nothing is planned. You improvise.",
+      "takeRecipe": "Choose a recipe",
+      "change": "Change",
+      "lock": "Keep",
+      "unlock": "Do not keep",
+      "free": "Free",
+      "leftover": "Leftover",
+      "cookDouble": "Cook double",
+      "locked": "Kept",
+      "persons": "{{count}} pers.",
+      "alreadyCooked": "Already cooked",
+      "perPerson": "{{price}} per person",
+      "composeNext": "Plan next week",
+      "nextBanner": "The weekend is coming. Get ahead: {{date}}."
+    },
+    "recipe": {
+      "minutes": "{{n}} min",
+      "difficulty": {
+        "1": "Easy",
+        "2": "Medium",
+        "3": "More technical"
+      },
+      "servings": "Persons",
+      "costNote": "Around {{total}} total, or {{per}} per person",
+      "ingredients": "Ingredients",
+      "optional": "optional",
+      "nutrition": "Estimated values per person",
+      "protein": "g protein",
+      "nutritionNote": "Indicative estimate, not including sides.",
+      "steps": "Preparation",
+      "note": "My note",
+      "notePlaceholder": "Your tips, your adjustments...",
+      "cook": "Cook step by step",
+      "share": "Share",
+      "favorite": "Favorite",
+      "missingTitle": "Recipe not found",
+      "missingText": "This recipe is no longer available.",
+      "cookedTimes": "Cooked {{count}} times",
+      "addToList": "Add to my list"
+    },
+    "course": {
+      "plat": "Main course",
+      "entree": "Starter",
+      "dessert": "Dessert",
+      "petit-dejeuner": "Breakfast"
+    },
+    "share": {
+      "for": "For {{count}} people",
+      "signature": "Composed with Pearl Liste"
+    },
+    "units": {
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "u": "",
+      "cs": "tbsp",
+      "cc": "tsp"
+    },
+    "cook": {
+      "none": "No steps for this recipe.",
+      "quit": "Quit",
+      "stepOf": "Step {{n}} of {{total}}",
+      "stepShort": "Step {{n}}",
+      "timer": "Timer",
+      "timerDone": "Timer done",
+      "pause": "Pause",
+      "resume": "Resume",
+      "start": "Start",
+      "reset": "Reset",
+      "prev": "Previous",
+      "next": "Next",
+      "done": "Done, enjoy your meal"
+    },
+    "shop": {
+      "title": "My shopping",
+      "summary": "{{count}} items, about {{total}}",
+      "estimateNote": "Indicative estimate (~). The real price is the shop's, compare it next.",
+      "targetList": "Add to list",
+      "defaultList": "My list",
+      "activeList": "active",
+      "showBasics": "Show pantry basics",
+      "have": "Already at home",
+      "haveHint": "Tap an item you already have to remove it.",
+      "packs": "{{count}} x {{size}}",
+      "usedIn": "In {{count}} recipes",
+      "emptyTitle": "No shopping yet",
+      "emptyText": "Set up your week first.",
+      "goPlan": "View my week",
+      "noneTitle": "You already have everything",
+      "noneText": "Nothing to buy for this week.",
+      "alreadyAdded": "Already added",
+      "addDelta": "Add the difference ({{count}})",
+      "add": "Add to my list",
+      "noun_clove_one": "{{amount}} clove",
+      "noun_clove_other": "{{amount}} cloves",
+      "noun_cube_one": "{{amount}} cube",
+      "noun_cube_other": "{{amount}} cubes",
+      "pack_head_one": "{{count}} head",
+      "pack_head_other": "{{count}} heads",
+      "pack_box_one": "{{count}} box of {{size}}",
+      "pack_box_other": "{{count}} boxes of {{size}}",
+      "pack_lot_one": "{{count}} pack of {{size}}",
+      "pack_lot_other": "{{count}} packs of {{size}}",
+      "pack_roll_one": "{{count}} roll",
+      "pack_roll_other": "{{count}} rolls",
+      "pack_slices_one": "{{count}} pack of slices",
+      "pack_slices_other": "{{count}} packs of slices",
+      "pack_cubes_one": "{{count}} box of cubes",
+      "pack_cubes_other": "{{count}} boxes of cubes"
+    },
+    "aisles": {
+      "fruits-legumes": "Fruit and vegetables",
+      "viandes-poissons": "Meat and fish",
+      "cremerie": "Dairy",
+      "epicerie": "Grocery",
+      "surgeles": "Frozen food",
+      "boulangerie": "Bakery",
+      "boissons": "Drinks"
+    },
+    "discover": {
+      "title": "Discover",
+      "searchPlaceholder": "A dish, an ingredient...",
+      "modes": {
+        "ideas": "Ideas",
+        "favorites": "Favorites",
+        "season": "Seasonal",
+        "fridge": "In my fridge",
+        "history": "History"
+      },
+      "mine": "Tailored to my profile",
+      "seasonNote": "Recipes that match the season.",
+      "favEmptyTitle": "No favorites yet",
+      "favEmptyText": "Tap the heart on a recipe to find it here.",
+      "noResultsTitle": "No results",
+      "noResultsText": "Try another word or remove a filter."
+    },
+    "fridge": {
+      "intro": "Indicate what you have left, we will find recipes that use it.",
+      "mine": "In my fridge",
+      "starTip": "Tap an ingredient to mark it as a priority to use.",
+      "clear": "Clear all",
+      "add": "Add an ingredient",
+      "search": "Search for an ingredient",
+      "results": "Possible recipes",
+      "coverage": "{{pct}}% already at home",
+      "allThere": "You have everything.",
+      "missing": "Missing: {{list}}",
+      "usesUp": "Uses up {{count}} leftovers.",
+      "noneTitle": "No recipes found",
+      "noneText": "Add more ingredients."
+    },
+    "history": {
+      "intro": "Weeks you have confirmed.",
+      "emptyTitle": "No history yet",
+      "emptyText": "Your confirmed weeks will appear here.",
+      "week": "Past week",
+      "meals": "{{count}} meals",
+      "redo": "Redo"
+    },
+    "pearl": {
+      "line_one": "{{count}} shop, from {{price}}",
+      "line_other": "{{count}} shops, from {{price}}",
+      "summary_one": "Best real price at Pearl Streets: {{total}} (items found: {{count}})",
+      "summary_other": "Best real price at Pearl Streets: {{total}} (items found: {{count}})",
+      "realNote": "These are the shops' real prices, not the estimate.",
+      "coverTitle": "Shops covering most of your list",
+      "coverItem": "Items {{count}}/{{total}}: {{price}}",
+      "recipeTitle": "Ingredients available at Pearl Streets",
+      "freeCta": "Order or book at Pearl Streets"
+    }
   }
 }

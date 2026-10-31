@@ -5,7 +5,8 @@
     "favorites": "Favoriter",
     "cart": "Kundvagn",
     "profile": "Profil",
-    "shops": "Butiker"
+    "shops": "Butiker",
+    "menus": "Meny"
   },
   "listScreen": {
     "scan": "Skanna",
@@ -1036,5 +1037,352 @@
     "alternative_therapies": "Alternativa terapier",
     "yoga": "Yoga",
     "pilates": "Pilates"
+  },
+  "menus": {
+    "nav": {
+      "week": "Min vecka",
+      "shop": "Inköp",
+      "discover": "Upptäck"
+    },
+    "common": {
+      "back": "Tillbaka",
+      "close": "Stäng",
+      "cancel": "Avbryt",
+      "retry": "Försök igen",
+      "clear": "Rensa"
+    },
+    "days": {
+      "short": {
+        "0": "Mån",
+        "1": "Tis",
+        "2": "Ons",
+        "3": "Tors",
+        "4": "Fre",
+        "5": "Lör",
+        "6": "Sön"
+      },
+      "long": {
+        "0": "Måndag",
+        "1": "Tisdag",
+        "2": "Onsdag",
+        "3": "Torsdag",
+        "4": "Fredag",
+        "5": "Lördag",
+        "6": "Söndag"
+      }
+    },
+    "slot": {
+      "midi": "Lunch",
+      "soir": "Middag"
+    },
+    "profile": {
+      "adults": "Vuxna",
+      "adultsHint": "Personer vid bordet",
+      "children": "Barn",
+      "childrenHint": "Räknas som små portioner",
+      "budget": "Veckobudget",
+      "budgetHint": "Ungefärlig uppskattning, kan ändras när som helst",
+      "noBudget": "Ingen budget"
+    },
+    "meals": {
+      "all": "Alla måltider",
+      "soirOnly": "Endast middagar",
+      "weekdays": "Bara vardagar",
+      "cantine": "Skolmat eller äta ute",
+      "cantineHint": "Vardagsluncher planeras inte",
+      "leftovers": "Använd rester",
+      "leftoversHint": "En rätt lagad dubbelt räcker till en måltid till"
+    },
+    "diet": {
+      "diets": "Kost",
+      "allergies": "Allergier",
+      "dislikes": "Ingredienser att undvika",
+      "dislikesPlaceholder": "Sök en ingrediens",
+      "maxTime": "Tillagningstid",
+      "upTo": "Upp till {{n}} min",
+      "noLimit": "Ingen gräns"
+    },
+    "tags": {
+      "vegetarien": "Vegetarisk",
+      "vegan": "Vegan",
+      "sans-gluten": "Glutenfritt",
+      "sans-lactose": "Laktosfritt",
+      "sans-porc": "Utan fläsk",
+      "halal-possible": "Halal möjligt",
+      "sans-fruits-a-coque": "Nötfritt",
+      "sans-cuisson": "Ingen tillagning",
+      "four": "Ugn",
+      "rapide": "Snabbt",
+      "batch": "Förbered i förväg",
+      "economique": "Billigt",
+      "leger": "Lätt",
+      "enfants": "För barn",
+      "hiver": "Vinter",
+      "printemps": "Vår",
+      "ete": "Sommar",
+      "automne": "Höst"
+    },
+    "allergens": {
+      "gluten": "Gluten",
+      "lait": "Mjölk",
+      "oeuf": "Ägg",
+      "poisson": "Fisk",
+      "crustaces": "Skaldjur",
+      "soja": "Soja",
+      "sesame": "Sesam",
+      "fruits-a-coque": "Nötter",
+      "miel": "Honung"
+    },
+    "onboarding": {
+      "skip": "Hoppa över",
+      "step": "Steg {{n}} av {{total}}",
+      "next": "Nästa",
+      "finish": "Skapa min vecka",
+      "later": "Senare",
+      "s1Title": "Vem lagar du till?",
+      "s1Text": "Ange hushåll och budget, vi anpassar mängderna.",
+      "s2Title": "Vilka måltider vill du planera?",
+      "s2Text": "Välj vilka måltider du vill planera denna vecka.",
+      "s3Title": "Dina preferenser och begränsningar",
+      "s3Text": "Kost, allergier och hur mycket tid du har. Du kan ändra allt i inställningar."
+    },
+    "settings": {
+      "title": "Menyinställningar",
+      "intro": "Dina val gäller för kommande veckor.",
+      "household": "Mitt hushåll",
+      "meals": "Mina måltider",
+      "mealsHint": "Tryck på en måltid för att aktivera eller ta bort den.",
+      "diet": "Mina preferenser och begränsningar",
+      "reset": "Återställ allt",
+      "resetTitle": "Återställ allt?",
+      "resetText": "Din vecka, dina favoriter, anteckningar och historik tas bort från denna enhet.",
+      "resetAction": "Återställ"
+    },
+    "swap": {
+      "title": "Byt ut den här rätten",
+      "sub": "Tre förslag som passar ditt hushåll",
+      "noneTitle": "Fler idéer för denna måltid",
+      "noneText": "Testa att lätta på begränsningarna i inställningarna.",
+      "surprise": "Överraska mig"
+    },
+    "added": {
+      "ok": "{{count}} produkter har lagts till",
+      "already": "Redan tillagd i din lista",
+      "okText": "Din lista \"{{name}}\" är uppdaterad.",
+      "deltaText": "Bara skillnaden har lagts till i \"{{name}}\".",
+      "alreadyText": "Allt finns redan i \"{{name}}\".",
+      "seeList": "Visa min lista",
+      "compare": "Jämför priser",
+      "compareHint": "Jämför de verkliga priserna i Pearl Streets butiker.",
+      "err": {
+        "error": "Ett fel uppstod, försök igen.",
+        "refused_shared": "Den här listan delas med dig, välj en av dina egna listor.",
+        "unknown_list": "Den här listan finns inte längre.",
+        "corrupt": "Din lista kan inte läsas, ingenting har ändrats.",
+        "empty": "Det finns inget att lägga till."
+      }
+    },
+    "week": {
+      "title": "Min vecka",
+      "thisWeek": "Denna vecka",
+      "weekOf": "Vecka från {{date}}",
+      "composing": "Sätter ihop din vecka...",
+      "emptyTitle": "Din vecka väntar",
+      "emptyText": "Vi sätter ihop varierade måltider utifrån ditt hushåll, budget och smak.",
+      "compose": "Sätt ihop min vecka",
+      "error": "Kan inte skapa veckan just nu.",
+      "regenerate": "Gör om allt",
+      "estimated": "Uppskattad budget",
+      "budget": "av {{amount}}",
+      "noBudget": "Ingen satt budget",
+      "overBudget": "{{amount}} över budget",
+      "underBudget": "{{amount}} under budget",
+      "estimateNote": "Ungefärlig uppskattning, butikspriser kan variera.",
+      "dirty": "Du har ändrat veckan sedan senaste gången du la till i listan.",
+      "dirtyAction": "Se över inköp",
+      "warn": {
+        "no_eligible": "Inga recept matchar dina inställningar. Minska kraven i inställningarna.",
+        "few_recipes": "Få recept matchar dina inställningar, vissa rätter upprepas.",
+        "over_budget": "Veckan överskrider din budget.",
+        "no_slots": "Inga måltider är planerade. Aktivera måltider i inställningarna.",
+        "no_recipes": "Recepten är inte tillgängliga just nu.",
+        "lock_invalid": "Vissa sparade måltider passar inte längre dina inställningar.",
+        "error": "Kan inte skapa veckan just nu."
+      },
+      "noMeal": "Ingen måltid planerad",
+      "validate": "Godkänn och lägg till i min lista",
+      "reviewShopping": "Visa inköp",
+      "freeTitle": "Fri måltid",
+      "freeText": "Inget planerat, du improviserar.",
+      "takeRecipe": "Välj ett recept",
+      "change": "Byt",
+      "lock": "Spara",
+      "unlock": "Ta bort sparad",
+      "free": "Fri",
+      "leftover": "Rest",
+      "cookDouble": "Laga dubbel sats",
+      "locked": "Sparad",
+      "persons": "{{count}} pers.",
+      "alreadyCooked": "Redan lagad",
+      "perPerson": "{{price}} per person",
+      "composeNext": "Planera nästa vecka",
+      "nextBanner": "Helgen närmar sig. Förbered nästa vecka: {{date}}."
+    },
+    "recipe": {
+      "minutes": "{{n}} min",
+      "difficulty": {
+        "1": "Lätt",
+        "2": "Medel",
+        "3": "Mer avancerad"
+      },
+      "servings": "Personer",
+      "costNote": "Cirka {{total}} totalt, alltså {{per}} per person",
+      "ingredients": "Ingredienser",
+      "optional": "valfritt",
+      "nutrition": "Uppskattade värden per person",
+      "protein": "g protein",
+      "nutritionNote": "Ungefärlig uppskattning, utan tillbehör.",
+      "steps": "Tillagning",
+      "note": "Mitt tips",
+      "notePlaceholder": "Dina tips, dina ändringar...",
+      "cook": "Laga steg för steg",
+      "share": "Dela",
+      "favorite": "Favorit",
+      "missingTitle": "Receptet kunde inte hittas",
+      "missingText": "Detta recept finns inte längre.",
+      "cookedTimes": "Tillagad {{count}} gånger",
+      "addToList": "Lägg till i min lista"
+    },
+    "course": {
+      "plat": "Varmrätt",
+      "entree": "Förrätt",
+      "dessert": "Efterrätt",
+      "petit-dejeuner": "Frukost"
+    },
+    "share": {
+      "for": "För {{count}} personer",
+      "signature": "Skapat med Pearl Liste"
+    },
+    "units": {
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "u": "",
+      "cs": "msk",
+      "cc": "tsk"
+    },
+    "cook": {
+      "none": "Inget steg för det här receptet.",
+      "quit": "Avsluta",
+      "stepOf": "Steg {{n}} av {{total}}",
+      "stepShort": "Steg {{n}}",
+      "timer": "Timer",
+      "timerDone": "Tiden är ute",
+      "pause": "Paus",
+      "resume": "Fortsätt",
+      "start": "Starta",
+      "reset": "Återställ",
+      "prev": "Föregående",
+      "next": "Nästa",
+      "done": "Klart, smaklig måltid"
+    },
+    "shop": {
+      "title": "Mina inköp",
+      "summary": "{{count}} varor, cirka {{total}}",
+      "estimateNote": "Ungefärlig uppskattning (~). Det verkliga priset är butikens, jämför det efteråt.",
+      "targetList": "Lägg till på lista",
+      "defaultList": "Min lista",
+      "activeList": "aktiv",
+      "showBasics": "Visa baskamrar",
+      "have": "Redan hemma",
+      "haveHint": "Tryck på en vara du redan har för att ta bort den.",
+      "packs": "{{count}} x {{size}}",
+      "usedIn": "I {{count}} recept",
+      "emptyTitle": "Inga inköp än",
+      "emptyText": "Planera din vecka först.",
+      "goPlan": "Se min vecka",
+      "noneTitle": "Du har redan allt hemma",
+      "noneText": "Inget att köpa den här veckan.",
+      "alreadyAdded": "Redan tillagd",
+      "addDelta": "Lägg till skillnaden ({{count}})",
+      "add": "Lägg till på min lista",
+      "noun_clove_one": "{{amount}} klyfta",
+      "noun_clove_other": "{{amount}} klyftor",
+      "noun_cube_one": "{{amount}} kub",
+      "noun_cube_other": "{{amount}} kuber",
+      "pack_head_one": "{{count}} huvud",
+      "pack_head_other": "{{count}} huvuden",
+      "pack_box_one": "{{count}} ask med {{size}}",
+      "pack_box_other": "{{count}} askar med {{size}}",
+      "pack_lot_one": "{{count}} förpackning med {{size}}",
+      "pack_lot_other": "{{count}} förpackningar med {{size}}",
+      "pack_roll_one": "{{count}} rulle",
+      "pack_roll_other": "{{count}} rullar",
+      "pack_slices_one": "{{count}} paket skivor",
+      "pack_slices_other": "{{count}} paket skivor",
+      "pack_cubes_one": "{{count}} ask kuber",
+      "pack_cubes_other": "{{count}} askar kuber"
+    },
+    "aisles": {
+      "fruits-legumes": "Frukt och grönsaker",
+      "viandes-poissons": "Kött och fisk",
+      "cremerie": "Mejeri",
+      "epicerie": "Skafferi",
+      "surgeles": "Frysvaror",
+      "boulangerie": "Bageri",
+      "boissons": "Drycker"
+    },
+    "discover": {
+      "title": "Upptäck",
+      "searchPlaceholder": "En maträtt, en ingrediens...",
+      "modes": {
+        "ideas": "Idéer",
+        "favorites": "Favoriter",
+        "season": "I säsong",
+        "fridge": "I mitt kylskåp",
+        "history": "Historik"
+      },
+      "mine": "Anpassat för mig",
+      "seasonNote": "Recept som passar säsongen.",
+      "favEmptyTitle": "Inga favoriter än",
+      "favEmptyText": "Tryck hjärtat på ett recept för att hitta det här.",
+      "noResultsTitle": "Inget resultat",
+      "noResultsText": "Prova ett annat ord eller ta bort ett filter."
+    },
+    "fridge": {
+      "intro": "Berätta vad du har kvar, så hittar vi recept som använder det.",
+      "mine": "I mitt kylskåp",
+      "starTip": "Tryck på en ingrediens för att markera den som prio att använda.",
+      "clear": "Töm allt",
+      "add": "Lägg till en ingrediens",
+      "search": "Sök ingrediens",
+      "results": "Möjliga recept",
+      "coverage": "{{pct}} % har du redan hemma",
+      "allThere": "Du har allt.",
+      "missing": "Saknas: {{list}}",
+      "usesUp": "Får slut på {{count}} rester.",
+      "noneTitle": "Inga recept hittades",
+      "noneText": "Lägg till fler ingredienser."
+    },
+    "history": {
+      "intro": "Veckor du har bekräftat.",
+      "emptyTitle": "Ingen historik än",
+      "emptyText": "Dina bekräftade veckor visas här.",
+      "week": "Tidigare vecka",
+      "meals": "{{count}} måltider",
+      "redo": "Gör om"
+    },
+    "pearl": {
+      "line_one": "{{count}} butik, från {{price}}",
+      "line_other": "{{count}} butiker, från {{price}}",
+      "summary_one": "Bästa verkliga pris hos Pearl Streets: {{total}} (hittade varor: {{count}})",
+      "summary_other": "Bästa verkliga pris hos Pearl Streets: {{total}} (hittade varor: {{count}})",
+      "realNote": "Det här är butikernas verkliga priser, inte uppskattningen.",
+      "coverTitle": "Butikerna som täcker mest av din lista",
+      "coverItem": "Varor {{count}}/{{total}}: {{price}}",
+      "recipeTitle": "Ingredienser som finns hos Pearl Streets",
+      "freeCta": "Beställ eller boka hos Pearl Streets"
+    }
   }
 }

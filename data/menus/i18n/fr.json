@@ -1,0 +1,1286 @@
+{
+ "recipes": {
+  "poulet-roti-citron-pommes-de-terre": {
+   "title": "Poulet rôti au citron et pommes de terre dorées",
+   "steps": [
+    "Préchauffer le four à 200 °C.",
+    "Disposer les cuisses et les pommes de terre coupées en quartiers dans un plat, avec l'ail écrasé.",
+    "Arroser du jus de citron et d'huile, saupoudrer d'herbes, saler, poivrer et mélanger.",
+    "Enfourner 50 minutes en retournant à mi-cuisson, jusqu'à ce que la peau soit dorée."
+   ]
+  },
+  "poulet-curry-coco": {
+   "title": "Poulet crémeux au curry et lait de coco",
+   "steps": [
+    "Cuire le riz selon les indications du paquet.",
+    "Faire dorer l'oignon émincé dans l'huile, puis ajouter l'ail, le gingembre râpé et le curry.",
+    "Ajouter le poulet coupé en dés et le faire colorer 5 minutes.",
+    "Verser le lait de coco, saler et laisser mijoter 15 minutes. Servir sur le riz."
+   ]
+  },
+  "poulet-moutarde-champignons": {
+   "title": "Poulet à la moutarde et aux champignons",
+   "steps": [
+    "Cuire le riz selon les indications du paquet.",
+    "Faire dorer le poulet en morceaux dans l'huile pendant 6 minutes, puis le réserver.",
+    "Faire revenir l'échalote et les champignons émincés 5 minutes.",
+    "Remettre le poulet, ajouter la crème et la moutarde, et laisser mijoter 8 minutes."
+   ]
+  },
+  "poulet-tikka-yaourt-riz": {
+   "title": "Poulet mariné au yaourt et aux épices, riz parfumé",
+   "steps": [
+    "Mélanger le yaourt, le jus de citron, l'ail écrasé, le curry, le paprika et le sel.",
+    "Enrober les dés de poulet de cette marinade et laisser reposer 15 minutes.",
+    "Cuire le riz selon les indications du paquet.",
+    "Saisir le poulet à la poêle 10 minutes en le retournant et servir sur le riz."
+   ]
+  },
+  "escalope-dinde-creme-champignons": {
+   "title": "Escalopes de dinde à la crème de champignons",
+   "steps": [
+    "Éplucher les pommes de terre, les couper en morceaux et les cuire 20 minutes à l'eau salée.",
+    "Faire dorer les escalopes au beurre 4 minutes de chaque côté, puis les réserver.",
+    "Faire revenir l'oignon et les champignons, ajouter la crème et laisser épaissir 5 minutes.",
+    "Napper les escalopes de sauce et servir avec les pommes de terre."
+   ]
+  },
+  "poulet-basquaise": {
+   "title": "Poulet basquaise aux poivrons",
+   "steps": [
+    "Faire dorer les cuisses dans l'huile dans une cocotte, puis les réserver.",
+    "Faire revenir l'oignon et les poivrons en lanières 8 minutes avec l'ail et le paprika.",
+    "Ajouter les tomates et le poulet, saler, couvrir et laisser mijoter 35 minutes.",
+    "Cuire le riz et servir avec le poulet nappé de sauce."
+   ]
+  },
+  "wraps-poulet-croquants": {
+   "title": "Wraps de poulet croquants à la sauce yaourt",
+   "steps": [
+    "Couper le poulet en lamelles et le faire dorer 8 minutes dans l'huile avec le paprika et le sel.",
+    "Mélanger le yaourt avec le jus de citron.",
+    "Garnir chaque galette de salade, de tomate en dés, de poulet et de sauce.",
+    "Rouler fermement les wraps et les couper en deux."
+   ]
+  },
+  "nuggets-poulet-maison-frites-four": {
+   "title": "Nuggets de poulet maison et frites au four",
+   "steps": [
+    "Préchauffer le four à 210 °C. Couper les pommes de terre en bâtonnets, les huiler, saler et les enfourner 35 minutes.",
+    "Couper le poulet en morceaux.",
+    "Les passer successivement dans la farine, les œufs battus, puis la chapelure mélangée au paprika.",
+    "Déposer les nuggets sur une plaque et les cuire 15 minutes en les retournant à mi-cuisson."
+   ]
+  },
+  "brochettes-poulet-poivrons-yaourt": {
+   "title": "Brochettes de poulet et poivrons, riz au yaourt",
+   "steps": [
+    "Couper le poulet, les poivrons et l'oignon en gros cubes.",
+    "Les mariner avec le yaourt, le paprika, l'huile et le sel pendant 10 minutes.",
+    "Enfiler en alternance sur des piques et cuire 12 minutes à la poêle ou au four en retournant.",
+    "Servir sur le riz cuit."
+   ]
+  },
+  "poulet-teriyaki-maison": {
+   "title": "Poulet laqué miel et soja, riz et brocoli",
+   "steps": [
+    "Mélanger la sauce soja, le miel, le gingembre râpé et l'ail écrasé.",
+    "Cuire le riz et les fleurettes de brocoli à la vapeur.",
+    "Dorer le poulet en morceaux 6 minutes dans l'huile.",
+    "Verser la sauce et laisser caraméliser 4 minutes en remuant. Servir avec le riz et le brocoli."
+   ]
+  },
+  "chili-con-carne-riz": {
+   "title": "Chili con carne généreux",
+   "steps": [
+    "Faire revenir l'oignon et le poivron en dés dans l'huile pendant 5 minutes.",
+    "Ajouter le bœuf haché et le faire dorer en l'émiettant.",
+    "Verser les tomates, les haricots rouges égouttés, le maïs et les épices, saler.",
+    "Laisser mijoter 25 minutes à feu doux, cuire le riz et servir ensemble."
+   ]
+  },
+  "pates-bolognaise-maison": {
+   "title": "Spaghettis à la bolognaise du dimanche",
+   "steps": [
+    "Faire revenir l'oignon et la carotte râpée dans l'huile avec l'ail.",
+    "Ajouter le bœuf haché, le faire dorer, puis ajouter le concentré, les tomates, les herbes et le sel.",
+    "Laisser mijoter 25 minutes à feu doux.",
+    "Cuire les pâtes et les servir nappées de sauce."
+   ]
+  },
+  "boeuf-bourguignon-facile": {
+   "title": "Bœuf mijoté aux carottes et aux champignons",
+   "steps": [
+    "Faire dorer les morceaux de bœuf et les lardons dans une cocotte avec l'huile.",
+    "Saupoudrer de farine, ajouter l'oignon, les carottes et le bouillon dilué dans un grand verre d'eau.",
+    "Couvrir et laisser mijoter 2 heures à feu très doux.",
+    "Ajouter les champignons et les pommes de terre pour les 30 dernières minutes."
+   ]
+  },
+  "hachis-parmentier-classique": {
+   "title": "Hachis parmentier doré au four",
+   "steps": [
+    "Cuire les pommes de terre épluchées 20 minutes à l'eau salée, puis les écraser avec le beurre et le lait.",
+    "Faire revenir l'oignon, ajouter le bœuf haché, saler, poivrer et cuire 8 minutes.",
+    "Étaler la viande dans un plat, couvrir de purée et saupoudrer de fromage.",
+    "Gratiner 25 minutes à 200 °C."
+   ]
+  },
+  "burgers-maison-frites-four": {
+   "title": "Burgers maison et frites du four",
+   "steps": [
+    "Enfourner 35 minutes à 210 °C les pommes de terre en bâtonnets huilés et salés.",
+    "Former 4 steaks avec le bœuf haché, saler et poivrer.",
+    "Les cuire 4 minutes de chaque côté, ajouter le fromage en fin de cuisson.",
+    "Garnir les pains toastés de salade, tomate, oignon et steak."
+   ]
+  },
+  "boulettes-sauce-tomate-pates": {
+   "title": "Boulettes tendres en sauce tomate",
+   "steps": [
+    "Mélanger le bœuf, l'œuf, la chapelure, l'ail écrasé et le sel, puis former des boulettes.",
+    "Les dorer 6 minutes dans l'huile avec l'oignon haché.",
+    "Ajouter les tomates et les herbes, couvrir et laisser mijoter 15 minutes.",
+    "Cuire les pâtes et les servir avec les boulettes."
+   ]
+  },
+  "boeuf-saute-nouilles-legumes": {
+   "title": "Nouilles sautées au bœuf et aux légumes",
+   "steps": [
+    "Cuire les nouilles selon le paquet et les égoutter.",
+    "Faire dorer le bœuf haché dans l'huile avec l'ail et le gingembre.",
+    "Ajouter la poêlée de légumes et cuire 7 minutes.",
+    "Incorporer les nouilles et la sauce soja, mélanger et servir."
+   ]
+  },
+  "lasagnes-bolognaise": {
+   "title": "Lasagnes gratinées de grand-mère",
+   "steps": [
+    "Faire revenir l'oignon, ajouter le bœuf, puis les tomates, saler et laisser mijoter 15 minutes.",
+    "Préparer la béchamel : fondre le beurre, ajouter la farine, puis le lait en fouettant jusqu'à épaississement.",
+    "Alterner dans un plat les feuilles, la viande et la béchamel, terminer par le fromage.",
+    "Cuire 35 minutes à 190 °C."
+   ]
+  },
+  "poivrons-farcis-boeuf-riz": {
+   "title": "Poivrons farcis au bœuf et au riz",
+   "steps": [
+    "Préchauffer le four à 190 °C et cuire le riz.",
+    "Faire revenir l'oignon et le bœuf, ajouter le riz, les tomates, les herbes et le sel.",
+    "Évider les poivrons, les garnir de farce et saupoudrer de fromage.",
+    "Cuire 35 minutes dans un plat."
+   ]
+  },
+  "tacos-mexicains-maison": {
+   "title": "Tacos mexicains à garnir soi-même",
+   "steps": [
+    "Faire dorer le bœuf dans l'huile avec le cumin, le paprika et le sel.",
+    "Ajouter les haricots rouges et le maïs égouttés et chauffer 5 minutes.",
+    "Réchauffer les galettes et préparer salade, tomates en dés et fromage.",
+    "Chacun garnit sa galette et la replie."
+   ]
+  },
+  "porc-miel-soja-haricots-verts": {
+   "title": "Porc au miel et au soja, haricots verts croquants",
+   "steps": [
+    "Cuire le riz. Couper le filet de porc en tranches.",
+    "Les faire dorer dans l'huile avec l'ail pendant 6 minutes.",
+    "Ajouter le miel et la sauce soja, laisser caraméliser 3 minutes.",
+    "Cuire les haricots verts 8 minutes à l'eau bouillante et servir avec le riz."
+   ]
+  },
+  "saucisses-lentilles-carottes": {
+   "title": "Saucisses aux lentilles et aux carottes",
+   "steps": [
+    "Faire dorer les saucisses 8 minutes dans une cocotte avec l'huile.",
+    "Ajouter l'oignon et les carottes en dés, puis les lentilles rincées.",
+    "Couvrir d'eau avec le bouillon, saler et laisser mijoter 30 minutes.",
+    "Servir avec une pointe de moutarde."
+   ]
+  },
+  "gratin-pommes-de-terre-jambon": {
+   "title": "Gratin de pommes de terre au jambon",
+   "steps": [
+    "Éplucher les pommes de terre et les couper en fines rondelles.",
+    "Les disposer dans un plat frotté d'ail, avec le jambon en lanières.",
+    "Mélanger crème, lait, sel et poivre, verser sur le gratin et couvrir de fromage.",
+    "Cuire 50 minutes à 180 °C."
+   ]
+  },
+  "quiche-lorraine": {
+   "title": "Quiche lorraine dorée",
+   "steps": [
+    "Préchauffer le four à 180 °C et garnir un moule de pâte.",
+    "Faire revenir les lardons à sec 4 minutes et les répartir sur la pâte.",
+    "Battre les œufs avec la crème, le lait et le poivre, puis verser sur les lardons.",
+    "Parsemer de fromage et cuire 35 minutes."
+   ]
+  },
+  "filet-mignon-pommes-oignons": {
+   "title": "Filet mignon aux pommes et aux oignons",
+   "steps": [
+    "Cuire les pommes de terre épluchées 20 minutes à l'eau salée.",
+    "Dorer le filet mignon entier au beurre 10 minutes sur toutes les faces.",
+    "Ajouter l'oignon et les pommes en quartiers, cuire 10 minutes.",
+    "Verser la crème, chauffer 3 minutes, trancher le filet et servir."
+   ]
+  },
+  "croque-monsieur-maison": {
+   "title": "Croque-monsieur fondants et salade",
+   "steps": [
+    "Préchauffer le four à 200 °C. Beurrer légèrement le pain de mie.",
+    "Garnir 4 tranches de jambon et de fromage, refermer avec les autres tranches.",
+    "Arroser d'un peu de lait et parsemer de fromage.",
+    "Enfourner 12 minutes jusqu'à ce qu'ils soient dorés, servir avec la salade."
+   ]
+  },
+  "saumon-citron-riz-brocoli": {
+   "title": "Pavés de saumon au citron, riz et brocoli",
+   "steps": [
+    "Cuire le riz et les fleurettes de brocoli à la vapeur.",
+    "Saler et poivrer les pavés, les arroser d'huile et de citron.",
+    "Les cuire à la poêle 4 minutes de chaque côté.",
+    "Servir avec le riz et le brocoli."
+   ]
+  },
+  "papillote-cabillaud-legumes": {
+   "title": "Papillotes de cabillaud et légumes du soleil",
+   "steps": [
+    "Préchauffer le four à 200 °C. Couper les légumes en fines rondelles.",
+    "Déposer sur 4 feuilles de papier cuisson légumes, poisson, citron et herbes.",
+    "Arroser d'huile, saler, puis refermer les papillotes.",
+    "Cuire 20 minutes au four."
+   ]
+  },
+  "colin-creme-poireaux-pommes-de-terre": {
+   "title": "Colin à la crème de poireaux",
+   "steps": [
+    "Cuire les pommes de terre à l'eau salée 20 minutes.",
+    "Faire fondre les poireaux émincés au beurre 10 minutes.",
+    "Ajouter la crème, poser le poisson dessus, couvrir et cuire 10 minutes.",
+    "Servir avec les pommes de terre."
+   ]
+  },
+  "gratin-poisson-epinards": {
+   "title": "Gratin de poisson et d'épinards",
+   "steps": [
+    "Cuire le riz et préchauffer le four à 200 °C.",
+    "Étaler les épinards dans un plat et poser le poisson dessus.",
+    "Mélanger crème, sel et poivre, verser et couvrir de fromage.",
+    "Cuire 25 minutes et servir avec le riz."
+   ]
+  },
+  "pates-thon-tomate-olives": {
+   "title": "Pâtes express au thon, tomates et olives",
+   "steps": [
+    "Cuire les pâtes.",
+    "Faire revenir l'oignon dans l'huile, ajouter les tomates et les herbes.",
+    "Émietter le thon, ajouter les olives et chauffer 8 minutes.",
+    "Mélanger avec les pâtes égouttées."
+   ]
+  },
+  "crevettes-ail-citron-pates": {
+   "title": "Pâtes aux crevettes, ail et citron",
+   "steps": [
+    "Cuire les pâtes.",
+    "Faire revenir l'ail émincé dans l'huile 1 minute.",
+    "Ajouter les crevettes et cuire 4 minutes avec le jus de citron.",
+    "Mélanger avec les pâtes et le persil haché."
+   ]
+  },
+  "curry-cabillaud-coco-riz": {
+   "title": "Curry de cabillaud au lait de coco",
+   "steps": [
+    "Cuire le riz. Faire revenir le poivron en lanières avec le gingembre et le curry.",
+    "Verser le lait de coco et laisser frémir 5 minutes.",
+    "Ajouter le poisson en gros morceaux et cuire 8 minutes à feu doux.",
+    "Servir sur le riz avec la coriandre."
+   ]
+  },
+  "saumon-laque-miel-soja": {
+   "title": "Saumon laqué au miel et au soja",
+   "steps": [
+    "Cuire le riz et les haricots verts.",
+    "Mélanger le miel et la sauce soja.",
+    "Saisir les pavés à l'huile 3 minutes de chaque côté.",
+    "Verser la sauce, laisser caraméliser 2 minutes et servir."
+   ]
+  },
+  "spaghettis-sardines-citron": {
+   "title": "Spaghettis aux sardines, citron et tomates cerises",
+   "steps": [
+    "Cuire les pâtes.",
+    "Faire revenir l'ail et les tomates cerises coupées dans l'huile.",
+    "Ajouter les sardines émiettées, le zeste et le jus du citron.",
+    "Mélanger avec les pâtes et le persil."
+   ]
+  },
+  "fish-and-chips-four": {
+   "title": "Poisson pané et frites du four, petits pois",
+   "steps": [
+    "Cuire 35 minutes à 210 °C les frites huilées et salées.",
+    "Fariner le poisson, le tremper dans l'œuf battu, puis dans la chapelure.",
+    "Le déposer sur une plaque huilée et cuire 15 minutes.",
+    "Cuire les petits pois 5 minutes et servir."
+   ]
+  },
+  "risotto-saumon-fume-epinards": {
+   "title": "Risotto crémeux au saumon fumé et aux épinards",
+   "steps": [
+    "Dissoudre les cubes dans 1 litre d'eau chaude. Faire revenir l'oignon dans l'huile.",
+    "Ajouter le riz, le nacrer 2 minutes, puis verser le bouillon louche par louche pendant 18 minutes.",
+    "Incorporer les épinards, la crème et le parmesan.",
+    "Ajouter le saumon fumé en lanières juste avant de servir."
+   ]
+  },
+  "curry-pois-chiches-epinards": {
+   "title": "Curry végétal de pois chiches et d'épinards",
+   "steps": [
+    "Cuire le riz. Faire revenir l'oignon, l'ail et le gingembre dans l'huile.",
+    "Ajouter le curry, les tomates, les pois chiches égouttés et le lait de coco.",
+    "Laisser mijoter 15 minutes, saler.",
+    "Ajouter les épinards 2 minutes avant la fin et servir sur le riz."
+   ]
+  },
+  "dahl-lentilles-carottes": {
+   "title": "Dahl de lentilles aux carottes",
+   "steps": [
+    "Faire revenir l'oignon et les carottes en dés dans l'huile avec les épices.",
+    "Ajouter les lentilles rincées, les tomates et 600 ml d'eau.",
+    "Laisser mijoter 25 minutes, puis verser le lait de coco et saler.",
+    "Cuire le riz et servir avec le dahl."
+   ]
+  },
+  "chili-sin-carne-riz": {
+   "title": "Chili végétal aux haricots rouges",
+   "steps": [
+    "Faire revenir l'oignon et le poivron en dés dans l'huile.",
+    "Ajouter les épices, les tomates, les haricots égouttés et le maïs.",
+    "Laisser mijoter 25 minutes à feu doux.",
+    "Cuire le riz et servir."
+   ]
+  },
+  "ratatouille-provencale-riz": {
+   "title": "Ratatouille provençale",
+   "steps": [
+    "Couper tous les légumes en dés.",
+    "Les faire revenir séparément dans l'huile, en commençant par l'aubergine.",
+    "Les réunir dans une cocotte avec l'ail, les herbes et le sel.",
+    "Mijoter 30 minutes à couvert, cuire le riz et servir."
+   ]
+  },
+  "gratin-courgettes-chevre": {
+   "title": "Gratin de courgettes au chèvre",
+   "steps": [
+    "Préchauffer le four à 190 °C. Couper les courgettes en rondelles.",
+    "Les disposer dans un plat avec le chèvre émietté.",
+    "Battre œufs, crème, herbes, sel et poivre et verser sur les légumes.",
+    "Parsemer de fromage et cuire 35 minutes."
+   ]
+  },
+  "lasagnes-legumes-ricotta": {
+   "title": "Lasagnes aux légumes et à la ricotta",
+   "steps": [
+    "Faire revenir courgettes et aubergines en dés dans l'huile 10 minutes.",
+    "Ajouter les tomates et le sel, mijoter 10 minutes.",
+    "Alterner dans un plat les feuilles, les légumes et la ricotta, terminer par la mozzarella.",
+    "Cuire 35 minutes à 190 °C et parsemer de basilic."
+   ]
+  },
+  "omelette-champignons-pommes-de-terre": {
+   "title": "Omelette aux champignons et pommes de terre sautées",
+   "steps": [
+    "Cuire les pommes de terre en dés 12 minutes à l'eau, puis les égoutter.",
+    "Les faire dorer au beurre avec les champignons émincés.",
+    "Verser les œufs battus, salés et poivrés, cuire 6 minutes à feu doux.",
+    "Servir avec la ciboulette et la salade."
+   ]
+  },
+  "tarte-fine-tomates-chevre": {
+   "title": "Tarte fine aux tomates et au chèvre",
+   "steps": [
+    "Préchauffer le four à 200 °C et étaler la pâte sur une plaque.",
+    "La badigeonner de moutarde.",
+    "Couvrir de rondelles de tomates et de chèvre, parsemer d'herbes.",
+    "Cuire 25 minutes et servir avec la salade."
+   ]
+  },
+  "saute-tofu-legumes-sesame": {
+   "title": "Tofu sauté aux légumes et au gingembre",
+   "steps": [
+    "Cuire le riz. Couper le tofu en cubes et les faire dorer dans l'huile 8 minutes.",
+    "Ajouter l'ail, le gingembre et la poêlée de légumes.",
+    "Cuire 7 minutes, puis verser la sauce soja.",
+    "Servir sur le riz."
+   ]
+  },
+  "falafels-four-houmous": {
+   "title": "Falafels au four, sauce au sésame et pitas",
+   "steps": [
+    "Préchauffer le four à 200 °C. Mixer pois chiches, oignon, persil, cumin, farine et sel.",
+    "Former des boulettes et les cuire 25 minutes en les retournant.",
+    "Mélanger le tahini, le jus de citron et un peu d'eau.",
+    "Garnir les pitas de falafels, tomate, concombre et sauce."
+   ]
+  },
+  "gnocchi-poeles-tomates-mozzarella": {
+   "title": "Gnocchi poêlés aux tomates cerises et à la mozzarella",
+   "steps": [
+    "Faire dorer les gnocchi dans l'huile 8 minutes.",
+    "Ajouter l'ail et les tomates cerises coupées en deux.",
+    "Cuire 5 minutes, puis ajouter la mozzarella en morceaux.",
+    "Servir avec le basilic."
+   ]
+  },
+  "pates-pesto-courgettes": {
+   "title": "Pâtes au pesto, courgettes et tomates cerises",
+   "steps": [
+    "Cuire les pâtes.",
+    "Faire sauter les courgettes en dés dans l'huile 6 minutes.",
+    "Ajouter les tomates cerises et cuire 3 minutes.",
+    "Mélanger avec les pâtes et le pesto."
+   ]
+  },
+  "risotto-champignons-parmesan": {
+   "title": "Risotto aux champignons et au parmesan",
+   "steps": [
+    "Dissoudre les cubes dans 1 litre d'eau chaude. Faire revenir l'oignon et les champignons au beurre.",
+    "Ajouter le riz, le nacrer 2 minutes, puis verser le bouillon louche par louche.",
+    "Cuire 18 minutes en remuant.",
+    "Terminer avec le parmesan."
+   ]
+  },
+  "veloute-courge-chevre-croutons": {
+   "title": "Velouté de courge, croûtons et chèvre",
+   "steps": [
+    "Faire revenir l'oignon, puis ajouter la courge et les pommes de terre en dés.",
+    "Couvrir d'eau, ajouter le bouillon et cuire 25 minutes.",
+    "Mixer avec la crème et saler.",
+    "Servir avec des tranches de baguette grillées et du chèvre."
+   ]
+  },
+  "pizza-maison-margherita": {
+   "title": "Pizza margherita faite maison",
+   "steps": [
+    "Mélanger farine, levure, sel, huile et 180 ml d'eau tiède, pétrir 5 minutes.",
+    "Laisser reposer 20 minutes, puis étaler la pâte.",
+    "Garnir de tomates et de mozzarella.",
+    "Cuire 15 minutes à 230 °C et parsemer de basilic."
+   ]
+  },
+  "galettes-pommes-de-terre-fromage": {
+   "title": "Galettes croustillantes de pommes de terre au fromage",
+   "steps": [
+    "Râper les pommes de terre et l'oignon, bien presser.",
+    "Mélanger avec œufs, farine, fromage et sel.",
+    "Former des galettes et les dorer à l'huile 5 minutes de chaque côté.",
+    "Servir avec la salade."
+   ]
+  },
+  "curry-patate-douce-pois-chiches": {
+   "title": "Curry de patate douce et pois chiches",
+   "steps": [
+    "Faire revenir l'oignon et le curry dans l'huile.",
+    "Ajouter la patate douce en cubes et le lait de coco, mijoter 20 minutes.",
+    "Ajouter les pois chiches et les épinards 3 minutes.",
+    "Cuire le riz et servir."
+   ]
+  },
+  "shakshuka-oeufs-tomates": {
+   "title": "Shakshuka, œufs pochés dans la sauce tomate",
+   "steps": [
+    "Faire revenir l'oignon et le poivron en lanières dans l'huile.",
+    "Ajouter épices, tomates et sel, mijoter 12 minutes.",
+    "Creuser des puits, y casser les œufs et couvrir 7 minutes.",
+    "Servir avec la baguette."
+   ]
+  },
+  "buddha-bowl-quinoa-patate-douce": {
+   "title": "Buddha bowl au quinoa et à la patate douce rôtie",
+   "steps": [
+    "Rôtir la patate douce en dés 25 minutes à 200 °C avec l'huile.",
+    "Cuire le quinoa 12 minutes.",
+    "Mélanger tahini, citron, sel et un peu d'eau.",
+    "Composer les bols avec quinoa, patate douce, pois chiches, épinards, avocat et sauce."
+   ]
+  },
+  "boulgour-legumes-roties-feta": {
+   "title": "Boulgour aux légumes rôtis et à la feta",
+   "steps": [
+    "Rôtir courgettes et poivrons en dés 25 minutes à 200 °C avec l'huile.",
+    "Cuire le boulgour 12 minutes à l'eau salée.",
+    "Mélanger avec les légumes, le jus de citron et la menthe.",
+    "Parsemer de feta émiettée."
+   ]
+  },
+  "quesadillas-haricots-fromage": {
+   "title": "Quesadillas aux haricots et au fromage",
+   "steps": [
+    "Écraser grossièrement les haricots avec le cumin.",
+    "Étaler sur 4 galettes, ajouter maïs, tomate en dés et fromage.",
+    "Refermer avec les 4 autres galettes.",
+    "Dorer 3 minutes de chaque côté à la poêle et couper en parts."
+   ]
+  },
+  "spaghettis-ail-huile-persil": {
+   "title": "Spaghettis à l'ail, à l'huile d'olive et au persil",
+   "steps": [
+    "Cuire les pâtes dans une grande eau salée.",
+    "Faire chauffer doucement l'huile avec l'ail émincé et le piment.",
+    "Ajouter les pâtes égouttées et un peu d'eau de cuisson.",
+    "Mélanger avec le persil haché."
+   ]
+  },
+  "gratin-chou-fleur-fromage": {
+   "title": "Gratin de chou-fleur à la béchamel",
+   "steps": [
+    "Cuire les fleurettes 10 minutes à l'eau.",
+    "Préparer la béchamel : beurre, farine, puis lait en fouettant.",
+    "Disposer le chou-fleur dans un plat, napper de sauce et de fromage.",
+    "Gratiner 25 minutes à 200 °C."
+   ]
+  },
+  "pates-petits-pois-fromage": {
+   "title": "Pâtes crémeuses aux petits pois",
+   "steps": [
+    "Cuire les pâtes, ajouter les petits pois 4 minutes avant la fin.",
+    "Égoutter en gardant un peu d'eau.",
+    "Remettre dans la casserole avec la crème et chauffer 2 minutes.",
+    "Ajouter le fromage et mélanger."
+   ]
+  },
+  "pommes-de-terre-farcies-fromage-blanc": {
+   "title": "Pommes de terre au four farcies au fromage blanc",
+   "steps": [
+    "Cuire les pommes de terre entières 45 minutes à 200 °C.",
+    "Les ouvrir et écraser la chair avec le fromage blanc, la ciboulette et le sel.",
+    "Remplir les pelures et parsemer de fromage.",
+    "Gratiner 10 minutes et servir avec la salade."
+   ]
+  },
+  "soupe-lentilles-carottes": {
+   "title": "Soupe épaisse de lentilles et de carottes",
+   "steps": [
+    "Faire revenir l'oignon et les carottes en rondelles dans l'huile.",
+    "Ajouter les lentilles rincées, le cumin, le bouillon et 1,2 litre d'eau.",
+    "Cuire 30 minutes.",
+    "Mixer en partie et servir avec le pain."
+   ]
+  },
+  "nouilles-sautees-legumes-oeuf": {
+   "title": "Nouilles de riz sautées à l'œuf et aux légumes",
+   "steps": [
+    "Faire tremper les nouilles dans l'eau chaude 5 minutes.",
+    "Faire sauter les légumes dans l'huile 6 minutes, pousser sur le côté et brouiller les œufs.",
+    "Ajouter les nouilles et la sauce soja.",
+    "Servir avec les cacahuètes concassées et le citron."
+   ]
+  },
+  "couscous-poulet-legumes": {
+   "title": "Couscous au poulet et aux légumes",
+   "steps": [
+    "Dorer le poulet avec l'oignon dans l'huile.",
+    "Ajouter épices, concentré, carottes et 1 litre d'eau, mijoter 30 minutes.",
+    "Ajouter courgettes et pois chiches, cuire 15 minutes.",
+    "Gonfler la semoule avec de l'eau chaude et servir avec le bouillon."
+   ]
+  },
+  "tajine-agneau-patate-douce": {
+   "title": "Tajine d'agneau à la patate douce",
+   "steps": [
+    "Dorer l'agneau en morceaux avec l'oignon dans l'huile.",
+    "Ajouter les épices et couvrir d'eau à hauteur.",
+    "Mijoter 1 heure, puis ajouter la patate douce et les pois chiches pendant 30 minutes.",
+    "Gonfler la semoule et servir."
+   ]
+  },
+  "boulettes-kefta-semoule": {
+   "title": "Boulettes kefta en sauce tomate, semoule",
+   "steps": [
+    "Mélanger le bœuf, l'oignon haché, le persil, les épices et le sel.",
+    "Former des boulettes et les dorer à l'huile.",
+    "Ajouter les tomates et mijoter 15 minutes.",
+    "Gonfler la semoule et servir."
+   ]
+  },
+  "paella-poulet-chorizo": {
+   "title": "Paella au poulet et au chorizo",
+   "steps": [
+    "Dorer le poulet et le chorizo en rondelles dans l'huile, puis les réserver.",
+    "Faire revenir l'oignon et le poivron, ajouter le riz et les tomates.",
+    "Verser 700 ml de bouillon chaud, remettre la viande, cuire 20 minutes.",
+    "Ajouter les petits pois en fin de cuisson."
+   ]
+  },
+  "riz-cantonais-maison": {
+   "title": "Riz cantonais maison",
+   "steps": [
+    "Cuire le riz et le laisser tiédir.",
+    "Faire sauter la carotte en dés et les petits pois dans l'huile 5 minutes.",
+    "Pousser sur le côté, brouiller les œufs, ajouter le jambon en dés.",
+    "Ajouter le riz et la sauce soja, sauter 5 minutes."
+   ]
+  },
+  "bol-vietnamien-boeuf-nouilles": {
+   "title": "Bol vietnamien de bœuf et nouilles de riz",
+   "steps": [
+    "Cuire les nouilles et les rafraîchir.",
+    "Faire dorer le bœuf avec la sauce soja dans l'huile.",
+    "Préparer salade, carotte râpée, concombre et menthe.",
+    "Composer les bols et ajouter les cacahuètes et le citron."
+   ]
+  },
+  "poulet-yassa-oignons-citron": {
+   "title": "Poulet yassa aux oignons confits et au citron",
+   "steps": [
+    "Mariner le poulet avec le jus de citron, la moutarde et le sel pendant 15 minutes.",
+    "Dorer le poulet à l'huile et le réserver.",
+    "Faire fondre les oignons émincés 20 minutes à feu doux.",
+    "Remettre le poulet, mijoter 10 minutes et servir avec le riz."
+   ]
+  },
+  "fajitas-poulet-poivrons": {
+   "title": "Fajitas de poulet et poivrons",
+   "steps": [
+    "Émincer poulet, poivrons et oignon en lanières.",
+    "Les faire sauter dans l'huile avec les épices 10 minutes.",
+    "Réchauffer les galettes.",
+    "Garnir de poulet, de légumes et d'une cuillerée de yaourt."
+   ]
+  },
+  "gyros-poulet-pita-tzatziki": {
+   "title": "Pitas de poulet grillé, sauce tzatziki",
+   "steps": [
+    "Mélanger yaourt, concombre râpé, ail et menthe pour la sauce.",
+    "Faire dorer le poulet en lamelles avec le paprika dans l'huile.",
+    "Réchauffer les pitas.",
+    "Garnir de poulet, de tomate et de sauce."
+   ]
+  },
+  "moussaka-simplifiee": {
+   "title": "Moussaka simplifiée",
+   "steps": [
+    "Rôtir les aubergines en tranches 15 minutes à 200 °C avec l'huile.",
+    "Faire revenir l'oignon et le bœuf, ajouter les tomates.",
+    "Préparer une béchamel avec beurre, farine et lait.",
+    "Alterner aubergines et viande, napper de béchamel et de fromage, cuire 30 minutes."
+   ]
+  },
+  "tartiflette-gourmande": {
+   "title": "Tartiflette gourmande",
+   "steps": [
+    "Cuire les pommes de terre en rondelles 15 minutes à l'eau.",
+    "Faire revenir lardons et oignon.",
+    "Disposer le tout dans un plat avec la crème et le poivre, couvrir de fromage.",
+    "Gratiner 25 minutes à 200 °C."
+   ]
+  },
+  "pot-au-feu-familial": {
+   "title": "Pot-au-feu familial",
+   "steps": [
+    "Couvrir le bœuf d'eau froide dans une grande marmite avec le bouillon et l'oignon.",
+    "Porter à frémissement et cuire 2 heures en écumant.",
+    "Ajouter carottes, poireaux et pommes de terre pour les 35 dernières minutes.",
+    "Servir avec de la moutarde."
+   ]
+  },
+  "blanquette-dinde-riz": {
+   "title": "Blanquette de dinde et riz",
+   "steps": [
+    "Faire revenir l'oignon, les carottes et la dinde en morceaux au beurre.",
+    "Saupoudrer de farine, couvrir d'eau avec le bouillon et cuire 30 minutes.",
+    "Ajouter les champignons et cuire 10 minutes.",
+    "Lier avec la crème et servir sur le riz."
+   ]
+  },
+  "gratin-macaronis-jambon": {
+   "title": "Gratin de macaronis au jambon",
+   "steps": [
+    "Cuire les pâtes 2 minutes de moins qu'indiqué.",
+    "Les mélanger avec jambon en dés, crème, lait et la moitié du fromage.",
+    "Verser dans un plat et couvrir du reste de fromage.",
+    "Gratiner 20 minutes à 200 °C."
+   ]
+  },
+  "bol-riz-saumon-fume-avocat": {
+   "title": "Bol de riz, saumon fumé et avocat",
+   "steps": [
+    "Cuire le riz et le laisser tiédir.",
+    "Couper avocats et concombre en tranches.",
+    "Disposer le riz dans les bols avec le saumon fumé.",
+    "Assaisonner de sauce soja et de jus de citron."
+   ]
+  },
+  "salade-cesar-poulet": {
+   "title": "Salade César au poulet et croûtons maison",
+   "steps": [
+    "Couper la baguette en dés et les dorer à la poêle avec l'huile.",
+    "Cuire le poulet en lamelles 8 minutes.",
+    "Mélanger yaourt, citron, moutarde et sel.",
+    "Assembler salade, poulet, croûtons, parmesan et sauce."
+   ]
+  },
+  "salade-chevre-chaud-noix": {
+   "title": "Salade de chèvre chaud, pomme et noix",
+   "steps": [
+    "Couper la baguette en tranches et poser un morceau de chèvre dessus.",
+    "Arroser de miel et gratiner 8 minutes à 200 °C.",
+    "Préparer la salade avec la pomme en dés et les noix.",
+    "Assaisonner d'huile et de vinaigre et poser les tartines."
+   ]
+  },
+  "salade-lentilles-lardons": {
+   "title": "Salade tiède de lentilles et de lardons",
+   "steps": [
+    "Cuire les lentilles 20 minutes dans l'eau.",
+    "Faire revenir les lardons.",
+    "Mélanger moutarde, vinaigre, huile et sel.",
+    "Assembler lentilles, lardons, carotte râpée et échalote émincée."
+   ]
+  },
+  "spaghettis-carbonara": {
+   "title": "Spaghettis carbonara",
+   "steps": [
+    "Cuire les pâtes.",
+    "Faire dorer les lardons à sec.",
+    "Battre les œufs avec le parmesan et le poivre.",
+    "Mélanger hors du feu pâtes, lardons et sauce, ajouter un peu d'eau de cuisson."
+   ]
+  },
+  "tagliatelles-saumon-creme": {
+   "title": "Tagliatelles au saumon et au citron",
+   "steps": [
+    "Cuire les pâtes.",
+    "Cuire le saumon en dés 4 minutes à la poêle.",
+    "Ajouter la crème et le jus de citron, chauffer 2 minutes.",
+    "Mélanger avec les pâtes et la ciboulette."
+   ]
+  },
+  "tortilla-espagnole": {
+   "title": "Tortilla espagnole aux pommes de terre",
+   "steps": [
+    "Faire cuire doucement pommes de terre et oignon en tranches dans l'huile 15 minutes.",
+    "Les mélanger aux œufs battus et salés.",
+    "Cuire dans la poêle 6 minutes, retourner à l'aide d'une assiette.",
+    "Cuire encore 4 minutes et servir avec la salade."
+   ]
+  },
+  "soupe-nouilles-poulet": {
+   "title": "Soupe de nouilles au poulet et au gingembre",
+   "steps": [
+    "Dissoudre les cubes dans 1,2 litre d'eau chaude avec le gingembre.",
+    "Ajouter poulet en lamelles, carotte et champignons, cuire 8 minutes.",
+    "Ajouter les nouilles 3 minutes.",
+    "Servir avec la sauce soja et la coriandre."
+   ]
+  },
+  "rougail-saucisses": {
+   "title": "Rougail saucisses",
+   "steps": [
+    "Piquer et dorer les saucisses dans l'huile.",
+    "Ajouter l'oignon, l'ail et le gingembre.",
+    "Ajouter les tomates et le piment, mijoter 25 minutes.",
+    "Cuire le riz et servir."
+   ]
+  },
+  "mini-pizzas-pita": {
+   "title": "Mini-pizzas sur pain pita",
+   "steps": [
+    "Préchauffer le four à 210 °C.",
+    "Étaler la sauce tomate et les herbes sur les pitas.",
+    "Ajouter le jambon coupé et la mozzarella.",
+    "Cuire 10 minutes jusqu'à ce que le fromage soit doré."
+   ]
+  },
+  "veloute-carottes-cumin": {
+   "title": "Velouté de carottes au cumin",
+   "steps": [
+    "Faire revenir l'oignon dans l'huile.",
+    "Ajouter carottes, pomme de terre, cumin, bouillon et 800 ml d'eau.",
+    "Cuire 25 minutes.",
+    "Mixer jusqu'à obtenir une texture lisse."
+   ]
+  },
+  "soupe-poireaux-pommes-de-terre": {
+   "title": "Soupe de poireaux et pommes de terre",
+   "steps": [
+    "Faire fondre les poireaux émincés au beurre 5 minutes.",
+    "Ajouter les pommes de terre en dés, le bouillon et 800 ml d'eau.",
+    "Cuire 25 minutes.",
+    "Mixer avec la crème et parsemer de ciboulette."
+   ]
+  },
+  "gaspacho-tomate-concombre": {
+   "title": "Gaspacho frais de tomates et concombre",
+   "steps": [
+    "Couper tous les légumes grossièrement.",
+    "Les mixer avec le pain de mie, l'ail, l'huile, le vinaigre et le sel.",
+    "Laisser reposer au frais au moins 1 heure.",
+    "Servir bien froid."
+   ]
+  },
+  "salade-tomate-mozzarella-basilic": {
+   "title": "Salade de tomates, mozzarella et basilic",
+   "steps": [
+    "Couper les tomates et la mozzarella en tranches.",
+    "Les alterner dans un plat.",
+    "Ajouter les feuilles de basilic.",
+    "Assaisonner d'huile, de sel et de poivre."
+   ]
+  },
+  "salade-betterave-pomme-feta": {
+   "title": "Salade de betterave, pomme et feta",
+   "steps": [
+    "Couper la betterave et la pomme en dés.",
+    "Émietter la feta et concasser les noix.",
+    "Mélanger le tout.",
+    "Assaisonner d'huile et de vinaigre."
+   ]
+  },
+  "oeufs-mimosa-yaourt": {
+   "title": "Œufs mimosa légers",
+   "steps": [
+    "Cuire les œufs 10 minutes à l'eau bouillante, puis les refroidir.",
+    "Les couper en deux et écraser les jaunes.",
+    "Mélanger aux jaunes le yaourt, la moutarde et le sel.",
+    "Garnir les blancs et parsemer de ciboulette."
+   ]
+  },
+  "houmous-crudites-pita": {
+   "title": "Houmous maison, crudités et pita",
+   "steps": [
+    "Mixer les pois chiches, le tahini, le jus de citron, l'ail, le sel et un peu d'eau.",
+    "Couper carotte et concombre en bâtonnets.",
+    "Réchauffer les pitas et les couper.",
+    "Servir pour tremper."
+   ]
+  },
+  "taboule-frais-menthe": {
+   "title": "Taboulé frais à la menthe",
+   "steps": [
+    "Verser sur la semoule la même quantité d'eau chaude et laisser gonfler 5 minutes.",
+    "Couper tomates et concombre en petits dés.",
+    "Mélanger avec les herbes ciselées.",
+    "Ajouter jus de citron, huile et sel."
+   ]
+  },
+  "carottes-rapees-orange": {
+   "title": "Carottes râpées à l'orange",
+   "steps": [
+    "Râper les carottes.",
+    "Presser l'orange pour obtenir son jus.",
+    "Mélanger avec l'huile et le sel.",
+    "Parsemer de persil."
+   ]
+  },
+  "avocats-farcis-thon": {
+   "title": "Avocats farcis au thon",
+   "steps": [
+    "Couper les avocats en deux et retirer le noyau.",
+    "Mélanger le thon émietté, le yaourt, le citron, le sel et le poivre.",
+    "Remplir les avocats avec la préparation.",
+    "Servir frais."
+   ]
+  },
+  "feuilletes-chevre-miel": {
+   "title": "Feuilletés au chèvre et au miel",
+   "steps": [
+    "Préchauffer le four à 200 °C. Découper la pâte en 8 carrés.",
+    "Poser une rondelle de chèvre sur chaque carré.",
+    "Arroser de miel et saupoudrer d'herbes.",
+    "Cuire 15 minutes."
+   ]
+  },
+  "concombre-yaourt-menthe": {
+   "title": "Concombre frais au yaourt et à la menthe",
+   "steps": [
+    "Couper les concombres en fines rondelles.",
+    "Mélanger le yaourt, l'ail écrasé, la menthe et le sel.",
+    "Ajouter les concombres.",
+    "Servir bien frais."
+   ]
+  },
+  "soupe-tomate-basilic": {
+   "title": "Soupe de tomate au basilic",
+   "steps": [
+    "Faire revenir l'oignon dans l'huile.",
+    "Ajouter les tomates, le bouillon et 300 ml d'eau, cuire 15 minutes.",
+    "Mixer avec le basilic.",
+    "Ajouter la crème et chauffer."
+   ]
+  },
+  "salade-pois-chiches-feta": {
+   "title": "Salade de pois chiches, concombre et feta",
+   "steps": [
+    "Égoutter les pois chiches.",
+    "Couper le concombre et les tomates cerises.",
+    "Émietter la feta par-dessus.",
+    "Assaisonner de citron et d'huile."
+   ]
+  },
+  "veloute-champignons": {
+   "title": "Velouté de champignons",
+   "steps": [
+    "Faire revenir oignon et champignons émincés au beurre.",
+    "Ajouter la pomme de terre en dés, le bouillon et 600 ml d'eau.",
+    "Cuire 20 minutes.",
+    "Mixer avec la crème."
+   ]
+  },
+  "bruschettas-tomate-basilic": {
+   "title": "Bruschettas tomate et basilic",
+   "steps": [
+    "Trancher la baguette et la griller.",
+    "Frotter les tranches avec l'ail.",
+    "Mélanger tomates en dés, basilic, huile et sel.",
+    "Garnir les tartines."
+   ]
+  },
+  "salade-chou-carotte-yaourt": {
+   "title": "Salade croquante de chou et de carotte",
+   "steps": [
+    "Émincer finement le chou et râper la carotte.",
+    "Mélanger yaourt, moutarde, vinaigre et sel.",
+    "Assaisonner les légumes.",
+    "Laisser reposer 10 minutes avant de servir."
+   ]
+  },
+  "mousse-chocolat-noir": {
+   "title": "Mousse au chocolat intense",
+   "steps": [
+    "Faire fondre le chocolat au bain-marie.",
+    "Séparer les blancs des jaunes et incorporer les jaunes au chocolat tiédi.",
+    "Monter les blancs en neige avec le sucre.",
+    "Incorporer délicatement et réserver 3 heures au frais."
+   ]
+  },
+  "crumble-pommes-cannelle": {
+   "title": "Crumble aux pommes et à la cannelle",
+   "steps": [
+    "Préchauffer le four à 180 °C. Éplucher les pommes en dés et les mettre dans un plat avec la cannelle.",
+    "Sabler du bout des doigts farine, beurre froid et sucre.",
+    "Répandre sur les pommes.",
+    "Cuire 35 minutes."
+   ]
+  },
+  "tarte-pommes-feuilletee": {
+   "title": "Tarte fine aux pommes",
+   "steps": [
+    "Préchauffer le four à 190 °C et étaler la pâte.",
+    "Disposer les pommes en lamelles.",
+    "Saupoudrer de sucre et de cannelle, parsemer de beurre.",
+    "Cuire 35 minutes."
+   ]
+  },
+  "gateau-au-yaourt-classique": {
+   "title": "Gâteau au yaourt moelleux",
+   "steps": [
+    "Préchauffer le four à 180 °C.",
+    "Mélanger yaourt, sucre, œufs et huile.",
+    "Ajouter farine et levure.",
+    "Verser dans un moule et cuire 35 minutes."
+   ]
+  },
+  "riz-au-lait-vanille": {
+   "title": "Riz au lait à la vanille",
+   "steps": [
+    "Rincer le riz.",
+    "Le faire cuire dans le lait avec la vanille à feu doux.",
+    "Remuer souvent pendant 40 minutes.",
+    "Ajouter le sucre en fin de cuisson et laisser tiédir."
+   ]
+  },
+  "fondant-chocolat-coeur-coulant": {
+   "title": "Fondant au chocolat",
+   "steps": [
+    "Préchauffer le four à 180 °C.",
+    "Faire fondre chocolat et beurre.",
+    "Ajouter sucre, œufs puis farine.",
+    "Verser dans des moules et cuire 10 à 12 minutes."
+   ]
+  },
+  "salade-fruits-frais-menthe": {
+   "title": "Salade de fruits frais à la menthe",
+   "steps": [
+    "Éplucher et couper tous les fruits en dés.",
+    "Arroser du jus de citron.",
+    "Ajouter la menthe ciselée.",
+    "Réserver 30 minutes au frais."
+   ]
+  },
+  "fromage-blanc-miel-noix": {
+   "title": "Fromage blanc au miel et aux noix",
+   "steps": [
+    "Répartir le fromage blanc dans 4 bols.",
+    "Arroser de miel.",
+    "Parsemer de noix concassées.",
+    "Servir frais."
+   ]
+  },
+  "crepes-faciles": {
+   "title": "Crêpes fines et moelleuses",
+   "steps": [
+    "Mélanger farine, sucre et œufs, puis ajouter le lait peu à peu.",
+    "Ajouter le beurre fondu.",
+    "Laisser reposer 20 minutes.",
+    "Cuire dans une poêle chaude, 1 minute par face."
+   ]
+  },
+  "compote-pommes-maison": {
+   "title": "Compote de pommes maison",
+   "steps": [
+    "Éplucher et couper les pommes.",
+    "Les cuire à couvert avec 5 cl d'eau et la cannelle.",
+    "Écraser à la fourchette après 20 minutes.",
+    "Ajouter le sucre et laisser refroidir."
+   ]
+  },
+  "tiramisu-fraises-speculoos": {
+   "title": "Tiramisu aux fraises et aux sablés",
+   "steps": [
+    "Séparer les blancs des jaunes.",
+    "Fouetter jaunes et sucre, puis ajouter le mascarpone.",
+    "Incorporer les blancs montés en neige.",
+    "Monter en verrines avec sablés et fraises, réserver 4 heures au frais."
+   ]
+  },
+  "gateau-banane-moelleux": {
+   "title": "Gâteau moelleux à la banane",
+   "steps": [
+    "Préchauffer le four à 180 °C.",
+    "Écraser les bananes et ajouter sucre, œufs et beurre fondu.",
+    "Incorporer farine et levure.",
+    "Cuire 40 minutes dans un moule."
+   ]
+  },
+  "poires-chocolat-chaud": {
+   "title": "Poires pochées et sauce chocolat",
+   "steps": [
+    "Éplucher les poires et les cuire 15 minutes à l'eau frémissante.",
+    "Faire fondre le chocolat avec la crème.",
+    "Égoutter les poires.",
+    "Servir nappées de sauce chaude."
+   ]
+  },
+  "cookies-pepites-chocolat": {
+   "title": "Cookies aux pépites de chocolat",
+   "steps": [
+    "Préchauffer le four à 180 °C.",
+    "Mélanger beurre mou, sucre et œuf.",
+    "Ajouter farine, levure et chocolat en morceaux.",
+    "Former des boules sur une plaque et cuire 12 minutes."
+   ]
+  },
+  "porridge-pomme-cannelle": {
+   "title": "Porridge chaud pomme et cannelle",
+   "steps": [
+    "Chauffer le lait avec les flocons à feu doux.",
+    "Remuer 5 minutes jusqu'à épaississement.",
+    "Ajouter la pomme râpée et la cannelle.",
+    "Servir avec un filet de miel."
+   ]
+  },
+  "pancakes-moelleux-banane": {
+   "title": "Pancakes moelleux à la banane",
+   "steps": [
+    "Mélanger farine, levure, sucre, œufs, lait et beurre fondu.",
+    "Laisser reposer 5 minutes.",
+    "Cuire de petites louches 2 minutes par face.",
+    "Servir avec la banane en rondelles."
+   ]
+  },
+  "tartines-avocat-oeuf": {
+   "title": "Tartines d'avocat et œuf poché",
+   "steps": [
+    "Griller le pain.",
+    "Écraser l'avocat avec le citron, le sel et le poivre.",
+    "Cuire les œufs au plat ou pochés.",
+    "Tartiner le pain d'avocat et poser les œufs."
+   ]
+  },
+  "granola-maison-miel": {
+   "title": "Granola croustillant maison",
+   "steps": [
+    "Préchauffer le four à 160 °C.",
+    "Mélanger flocons, noix concassées, huile, miel et cannelle.",
+    "Étaler sur une plaque.",
+    "Cuire 20 minutes en remuant à mi-cuisson."
+   ]
+  },
+  "oeufs-brouilles-toasts": {
+   "title": "Œufs brouillés crémeux et toasts",
+   "steps": [
+    "Griller les tranches de pain.",
+    "Battre les œufs avec le sel.",
+    "Les cuire doucement au beurre en remuant.",
+    "Servir avec la tomate et la ciboulette."
+   ]
+  },
+  "bol-yaourt-fruits-granola": {
+   "title": "Bol de yaourt, fruits rouges et flocons",
+   "steps": [
+    "Répartir le yaourt dans 4 bols.",
+    "Ajouter la banane en rondelles et les fruits rouges.",
+    "Parsemer de flocons.",
+    "Arroser de miel."
+   ]
+  },
+  "pain-perdu-cannelle": {
+   "title": "Pain perdu à la cannelle",
+   "steps": [
+    "Battre œufs, lait, sucre et cannelle.",
+    "Tremper les tranches de pain quelques secondes.",
+    "Les dorer au beurre 3 minutes par face.",
+    "Servir tiède."
+   ]
+  },
+  "smoothie-banane-fraise": {
+   "title": "Smoothie onctueux banane et fraise",
+   "steps": [
+    "Couper la banane en rondelles.",
+    "Mettre tous les ingrédients dans un blender.",
+    "Mixer 1 minute.",
+    "Servir immédiatement."
+   ]
+  },
+  "overnight-oats-fruits-rouges": {
+   "title": "Flocons d'avoine du matin aux fruits rouges",
+   "steps": [
+    "La veille, mélanger flocons, yaourt, lait et miel.",
+    "Répartir dans 4 pots et ajouter les fruits rouges.",
+    "Fermer et réserver une nuit au frais.",
+    "Déguster froid."
+   ]
+  }
+ },
+ "ingredients": {
+  "oignon": "Oignon",
+  "ail": "Ail (gousse)",
+  "echalote": "Échalote",
+  "carotte": "Carotte",
+  "pomme-de-terre": "Pomme de terre",
+  "patate-douce": "Patate douce",
+  "courgette": "Courgette",
+  "aubergine": "Aubergine",
+  "poivron": "Poivron",
+  "tomate": "Tomate",
+  "tomate-cerise": "Tomate cerise",
+  "concombre": "Concombre",
+  "champignon": "Champignon de Paris",
+  "epinard": "Épinard frais",
+  "salade": "Salade verte",
+  "brocoli": "Brocoli",
+  "chou-fleur": "Chou-fleur",
+  "chou": "Chou blanc",
+  "poireau": "Poireau",
+  "haricot-vert": "Haricot vert",
+  "courge": "Courge butternut",
+  "betterave": "Betterave cuite",
+  "radis": "Radis",
+  "citron": "Citron",
+  "avocat": "Avocat",
+  "pomme": "Pomme",
+  "poire": "Poire",
+  "banane": "Banane",
+  "orange": "Orange",
+  "fraise": "Fraise",
+  "mangue": "Mangue",
+  "persil": "Persil",
+  "coriandre": "Coriandre fraîche",
+  "basilic": "Basilic",
+  "menthe": "Menthe",
+  "ciboulette": "Ciboulette",
+  "gingembre": "Gingembre frais",
+  "poulet-filet": "Filet de poulet",
+  "cuisse-poulet": "Cuisse de poulet",
+  "boeuf-hache": "Bœuf haché",
+  "boeuf-paleron": "Bœuf à braiser",
+  "porc-filet": "Filet mignon de porc",
+  "saucisse": "Saucisse de porc",
+  "lardons": "Lardons",
+  "jambon-blanc": "Jambon blanc",
+  "chorizo": "Chorizo",
+  "dinde-escalope": "Escalope de dinde",
+  "agneau": "Épaule d'agneau",
+  "saumon": "Pavé de saumon",
+  "saumon-fume": "Saumon fumé",
+  "cabillaud": "Dos de cabillaud",
+  "colin": "Filet de colin",
+  "thon-conserve": "Thon en conserve",
+  "sardine": "Sardines en conserve",
+  "oeuf": "Œuf",
+  "lait": "Lait",
+  "creme": "Crème liquide",
+  "creme-fraiche": "Crème fraîche épaisse",
+  "beurre": "Beurre",
+  "fromage-rape": "Fromage râpé",
+  "mozzarella": "Mozzarella",
+  "feta": "Feta",
+  "parmesan": "Parmesan",
+  "chevre": "Fromage de chèvre",
+  "yaourt": "Yaourt nature",
+  "fromage-blanc": "Fromage blanc",
+  "mascarpone": "Mascarpone",
+  "ricotta": "Ricotta",
+  "tofu": "Tofu ferme",
+  "pate-feuilletee": "Pâte feuilletée",
+  "pate-brisee": "Pâte brisée",
+  "riz": "Riz",
+  "pates": "Pâtes",
+  "pates-lasagne": "Feuilles de lasagne",
+  "semoule": "Semoule",
+  "boulgour": "Boulgour",
+  "quinoa": "Quinoa",
+  "lentilles": "Lentilles",
+  "pois-chiches": "Pois chiches",
+  "haricots-rouges": "Haricots rouges",
+  "mais": "Maïs en conserve",
+  "farine": "Farine",
+  "sucre": "Sucre",
+  "chocolat-noir": "Chocolat noir",
+  "cacao": "Cacao en poudre",
+  "flocons-avoine": "Flocons d'avoine",
+  "miel": "Miel",
+  "tomate-concassee": "Tomates concassées",
+  "concentre-tomate": "Concentré de tomate",
+  "lait-coco": "Lait de coco",
+  "noix": "Noix",
+  "cacahuete": "Cacahuètes",
+  "nouilles": "Nouilles chinoises",
+  "nouilles-riz": "Vermicelles de riz",
+  "gnocchi": "Gnocchi",
+  "chapelure": "Chapelure",
+  "tahini": "Purée de sésame",
+  "olives": "Olives",
+  "pesto": "Pesto",
+  "speculoos": "Biscuits sablés",
+  "sauce-soja": "Sauce soja",
+  "huile-olive": "Huile d'olive",
+  "vinaigre": "Vinaigre",
+  "moutarde": "Moutarde",
+  "bouillon": "Bouillon (cube)",
+  "sel": "Sel",
+  "poivre": "Poivre",
+  "paprika": "Paprika",
+  "cumin": "Cumin",
+  "curry": "Curry",
+  "cannelle": "Cannelle",
+  "piment": "Piment",
+  "curcuma": "Curcuma",
+  "herbes": "Herbes de Provence",
+  "harissa": "Harissa",
+  "levure": "Levure chimique",
+  "vanille": "Extrait de vanille",
+  "baguette": "Baguette",
+  "tortilla": "Galette tortilla",
+  "pain-burger": "Pain à burger",
+  "pain-mie": "Pain de mie (tranche)",
+  "pain-pita": "Pain pita",
+  "petits-pois": "Petits pois surgelés",
+  "epinard-surgele": "Épinards surgelés",
+  "poelee-legumes": "Poêlée de légumes surgelée",
+  "framboise-surgelee": "Fruits rouges surgelés",
+  "crevette": "Crevettes décortiquées",
+  "jus-orange": "Jus d'orange"
+ }
+}

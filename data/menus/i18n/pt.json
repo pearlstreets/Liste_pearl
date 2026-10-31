@@ -1,0 +1,1286 @@
+{
+  "recipes": {
+    "poulet-roti-citron-pommes-de-terre": {
+      "title": "Frango assado com limão e batatas douradas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C.",
+        "Dispor as coxas e as batatas cortadas em quartos num tabuleiro, juntamente com o alho esmagado.",
+        "Regar com o sumo de limão e azeite, polvilhar com ervas, salgar, apimentar e misturar.",
+        "Levar ao forno durante 50 minutos, virando a meio, até a pele ficar dourada."
+      ]
+    },
+    "poulet-curry-coco": {
+      "title": "Frango cremoso com caril e leite de coco",
+      "steps": [
+        "Cozinhar o arroz conforme as indicações da embalagem.",
+        "Alourar a cebola picada no azeite, depois juntar o alho, o gengibre ralado e o caril.",
+        "Adicionar o frango cortado em cubos e dourar durante 5 minutos.",
+        "Juntar o leite de coco, salgar e deixar cozinhar em lume brando 15 minutos. Servir sobre o arroz."
+      ]
+    },
+    "poulet-moutarde-champignons": {
+      "title": "Frango com mostarda e cogumelos",
+      "steps": [
+        "Cozinhar o arroz conforme as instruções da embalagem.",
+        "Alourar o frango em pedaços no azeite durante 6 minutos e reservar.",
+        "Refogar a chalota e os cogumelos fatiados durante 5 minutos.",
+        "Colocar novamente o frango, juntar as natas e a mostarda, deixando cozinhar em lume brando 8 minutos."
+      ]
+    },
+    "poulet-tikka-yaourt-riz": {
+      "title": "Frango marinado com iogurte e especiarias, arroz aromático",
+      "steps": [
+        "Misturar o iogurte, o sumo de limão, o alho esmagado, o caril, o colorau e o sal.",
+        "Envolver os cubos de frango nesta marinada e deixar repousar 15 minutos.",
+        "Cozinhar o arroz conforme as instruções da embalagem.",
+        "Saltear o frango na frigideira durante 10 minutos, virando, e servir sobre o arroz."
+      ]
+    },
+    "escalope-dinde-creme-champignons": {
+      "title": "Bifes de peru com molho de cogumelos",
+      "steps": [
+        "Descascar as batatas, cortar em pedaços e cozer 20 minutos em água com sal.",
+        "Alourar os bifes na manteiga 4 minutos de cada lado e reservar.",
+        "Refogar a cebola e os cogumelos, juntar as natas e deixar engrossar 5 minutos.",
+        "Regar os bifes com o molho e servir com as batatas."
+      ]
+    },
+    "poulet-basquaise": {
+      "title": "Frango à basca com pimentos",
+      "steps": [
+        "Dourar as coxas no azeite numa caçarola e reservar.",
+        "Refogar a cebola e os pimentos em tiras durante 8 minutos com o alho e o colorau.",
+        "Juntar os tomates e o frango, salgar, tapar e cozinhar em lume brando 35 minutos.",
+        "Cozinhar o arroz e servir com o frango coberto com o molho."
+      ]
+    },
+    "wraps-poulet-croquants": {
+      "title": "Wraps de frango crocante com molho de iogurte",
+      "steps": [
+        "Cortar o frango em tiras e dourar 8 minutos no azeite com colorau e sal.",
+        "Misturar o iogurte com o sumo de limão.",
+        "Rechear cada wrap com alface, tomate em cubos, frango e molho.",
+        "Enrolar firmemente e cortar ao meio."
+      ]
+    },
+    "nuggets-poulet-maison-frites-four": {
+      "title": "Nuggets de frango caseiros e batatas fritas no forno",
+      "steps": [
+        "Pré-aquecer o forno a 210 °C. Cortar as batatas em palitos, envolver em azeite, salgar e levar ao forno 35 minutos.",
+        "Cortar o frango em pedaços.",
+        "Passar sucessivamente pela farinha, ovos batidos e pão ralado misturado com colorau.",
+        "Colocar os nuggets numa assadeira e cozinhar 15 minutos, virando a meio do tempo."
+      ]
+    },
+    "brochettes-poulet-poivrons-yaourt": {
+      "title": "Espetadas de frango e pimentos, arroz com iogurte",
+      "steps": [
+        "Cortar o frango, os pimentos e a cebola em cubos grandes.",
+        "Marinar com iogurte, colorau, azeite e sal durante 10 minutos.",
+        "Enfiar alternadamente nos espetos e cozinhar 12 minutos na frigideira ou forno, virando.",
+        "Servir sobre o arroz cozido."
+      ]
+    },
+    "poulet-teriyaki-maison": {
+      "title": "Frango laqueado com mel e soja, arroz e brócolos",
+      "steps": [
+        "Misturar o molho de soja, o mel, o gengibre ralado e o alho esmagado.",
+        "Cozinhar o arroz e os raminhos de brócolos a vapor.",
+        "Dourar o frango em pedaços durante 6 minutos no azeite.",
+        "Juntar o molho e deixar caramelizar 4 minutos, mexendo. Servir com o arroz e os brócolos."
+      ]
+    },
+    "chili-con-carne-riz": {
+      "title": "Chili com carne generoso",
+      "steps": [
+        "Refogar a cebola e o pimento em cubos no azeite durante 5 minutos.",
+        "Adicionar a carne picada de vaca e dourar, desfazendo-a.",
+        "Juntar os tomates, o feijão vermelho escorrido, o milho e as especiarias, salgar.",
+        "Deixar cozinhar 25 minutos em lume brando, cozinhar o arroz e servir tudo junto."
+      ]
+    },
+    "pates-bolognaise-maison": {
+      "title": "Esparguete à bolonhesa de domingo",
+      "steps": [
+        "Refogar a cebola e a cenoura ralada no azeite com o alho.",
+        "Adicionar a carne picada de vaca, dourar e depois juntar o concentrado, os tomates, as ervas e o sal.",
+        "Cozinhar em lume brando durante 25 minutos.",
+        "Cozinhar a massa e servir coberta com o molho."
+      ]
+    },
+    "boeuf-bourguignon-facile": {
+      "title": "Carne de vaca estufada com cenouras e cogumelos",
+      "steps": [
+        "Alourar os pedaços de carne e o bacon numa panela com o óleo.",
+        "Polvilhar com farinha, juntar a cebola, as cenouras e o caldo diluído num copo grande de água.",
+        "Tapar e deixar estufar durante 2 horas em lume muito brando.",
+        "Adicionar os cogumelos e as batatas nos últimos 30 minutos."
+      ]
+    },
+    "hachis-parmentier-classique": {
+      "title": "Hachis parmentier gratinado no forno",
+      "steps": [
+        "Cozer as batatas descascadas durante 20 minutos em água com sal, depois esmagar com manteiga e leite.",
+        "Refogar a cebola, acrescentar a carne picada, temperar com sal e pimenta e cozinhar 8 minutos.",
+        "Dispor a carne num tabuleiro, cobrir com o puré e polvilhar com queijo.",
+        "Gratinar 25 minutos a 200 °C."
+      ]
+    },
+    "burgers-maison-frites-four": {
+      "title": "Hambúrgueres caseiros com batatas no forno",
+      "steps": [
+        "Levar ao forno as batatas cortadas em palitos, untadas e salgadas, durante 35 minutos a 210 °C.",
+        "Formar 4 hambúrgueres com a carne picada, temperar com sal e pimenta.",
+        "Cozinhar 4 minutos de cada lado, colocar o queijo no fim.",
+        "Rechear o pão tostado com alface, tomate, cebola e o hambúrguer."
+      ]
+    },
+    "boulettes-sauce-tomate-pates": {
+      "title": "Almôndegas macias em molho de tomate",
+      "steps": [
+        "Misturar a carne, o ovo, o pão ralado, o alho esmagado e o sal, depois formar bolas.",
+        "Dourar 6 minutos no óleo com a cebola picada.",
+        "Adicionar os tomates e as ervas, tapar e deixar estufar 15 minutos.",
+        "Cozer a massa e servir com as almôndegas."
+      ]
+    },
+    "boeuf-saute-nouilles-legumes": {
+      "title": "Massa salteada com carne de vaca e legumes",
+      "steps": [
+        "Cozer a massa conforme as instruções e escorrer.",
+        "Dourar a carne picada no óleo com o alho e o gengibre.",
+        "Adicionar a mistura de legumes e deixar cozinhar 7 minutos.",
+        "Juntar a massa e o molho de soja, envolver e servir."
+      ]
+    },
+    "lasagnes-bolognaise": {
+      "title": "Lasanha gratinada à moda antiga",
+      "steps": [
+        "Refogar a cebola, juntar a carne, depois os tomates, temperar com sal e deixar estufar 15 minutos.",
+        "Preparar o molho bechamel: derreter a manteiga, juntar a farinha e depois o leite, mexendo até engrossar.",
+        "Alternar num tabuleiro folhas, a carne e o bechamel, terminar com queijo.",
+        "Cozinhar 35 minutos a 190 °C."
+      ]
+    },
+    "poivrons-farcis-boeuf-riz": {
+      "title": "Pimentos recheados com carne de vaca e arroz",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C e cozer o arroz.",
+        "Refogar a cebola e a carne, adicionar o arroz, os tomates, as ervas e o sal.",
+        "Esvaziar os pimentos e rechear com o preparado, polvilhar com queijo.",
+        "Levar ao forno 35 minutos num tabuleiro."
+      ]
+    },
+    "tacos-mexicains-maison": {
+      "title": "Tacos mexicanos para rechear ao gosto",
+      "steps": [
+        "Dourar a carne no óleo com cominhos, paprika e sal.",
+        "Juntar o feijão vermelho e o milho escorridos e aquecer 5 minutos.",
+        "Aquecer as tortilhas e preparar salada, tomate em cubos e queijo.",
+        "Cada pessoa recheia a sua tortilha e dobra-a."
+      ]
+    },
+    "porc-miel-soja-haricots-verts": {
+      "title": "Porco com mel e soja, feijão-verde crocante",
+      "steps": [
+        "Cozer o arroz. Fatiar o lombo de porco.",
+        "Dourar as fatias no óleo com o alho durante 6 minutos.",
+        "Adicionar o mel e o molho de soja, deixar caramelizar 3 minutos.",
+        "Cozer o feijão-verde 8 minutos em água a ferver e servir com o arroz."
+      ]
+    },
+    "saucisses-lentilles-carottes": {
+      "title": "Salsichas com lentilhas e cenouras",
+      "steps": [
+        "Alourar as salsichas 8 minutos numa panela com óleo.",
+        "Adicionar a cebola e as cenouras em cubos, depois as lentilhas lavadas.",
+        "Cobrir com água e o caldo, temperar com sal e deixar estufar 30 minutos.",
+        "Servir com um pouco de mostarda."
+      ]
+    },
+    "gratin-pommes-de-terre-jambon": {
+      "title": "Gratinado de batata com fiambre",
+      "steps": [
+        "Descascar as batatas e cortá-las em rodelas finas.",
+        "Dispor num tabuleiro esfregado com alho, juntamente com tiras de fiambre.",
+        "Misturar natas, leite, sal e pimenta, verter sobre as batatas e cobrir com queijo.",
+        "Cozinhar 50 minutos a 180 °C."
+      ]
+    },
+    "quiche-lorraine": {
+      "title": "Quiche lorraine dourada",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C e forrar uma forma com a massa.",
+        "Saltear o bacon 4 minutos sem gordura e distribuir sobre a massa.",
+        "Bater os ovos com as natas, o leite e pimenta, depois verter sobre o bacon.",
+        "Polvilhar com queijo e cozer 35 minutos."
+      ]
+    },
+    "filet-mignon-pommes-oignons": {
+      "title": "Lombo de porco com maçã e cebola",
+      "steps": [
+        "Cozer as batatas descascadas durante 20 minutos em água com sal.",
+        "Alourar o lombo de porco inteiro na manteiga durante 10 minutos, virando todos os lados.",
+        "Adicionar a cebola e as maçãs em quartos, cozinhar por 10 minutos.",
+        "Juntar as natas, aquecer 3 minutos, fatiar o lombo e servir."
+      ]
+    },
+    "croque-monsieur-maison": {
+      "title": "Croque-monsieur cremosos com salada",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Barrar ligeiramente o pão de forma com manteiga.",
+        "Rechear 4 fatias com fiambre e queijo, cobrir com as outras fatias.",
+        "Regar com um pouco de leite e polvilhar com queijo.",
+        "Levar ao forno 12 minutos até dourar, servir com a salada."
+      ]
+    },
+    "saumon-citron-riz-brocoli": {
+      "title": "Postas de salmão com limão, arroz e brócolos",
+      "steps": [
+        "Cozer o arroz e os ramos de brócolos a vapor.",
+        "Temperar as postas com sal e pimenta, regar com azeite e limão.",
+        "Cozinhar numa frigideira 4 minutos de cada lado.",
+        "Servir com o arroz e os brócolos."
+      ]
+    },
+    "papillote-cabillaud-legumes": {
+      "title": "Papillote de bacalhau e legumes mediterrânicos",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar os legumes em rodelas finas.",
+        "Dispor em 4 folhas de papel vegetal os legumes, o peixe, limão e ervas.",
+        "Regar com azeite, salgar e fechar as papillotes.",
+        "Levar ao forno 20 minutos."
+      ]
+    },
+    "colin-creme-poireaux-pommes-de-terre": {
+      "title": "Pescada com creme de alho-francês",
+      "steps": [
+        "Cozer as batatas em água com sal durante 20 minutos.",
+        "Refogar o alho-francês cortado em manteiga por 10 minutos.",
+        "Adicionar as natas, colocar o peixe por cima, tapar e cozinhar 10 minutos.",
+        "Servir com as batatas."
+      ]
+    },
+    "gratin-poisson-epinards": {
+      "title": "Gratinado de peixe com espinafres",
+      "steps": [
+        "Cozer o arroz e pré-aquecer o forno a 200 °C.",
+        "Espalhar os espinafres num tabuleiro e dispor o peixe por cima.",
+        "Misturar as natas com sal e pimenta, verter e cobrir com queijo.",
+        "Cozer 25 minutos e servir com o arroz."
+      ]
+    },
+    "pates-thon-tomate-olives": {
+      "title": "Massa rápida com atum, tomate e azeitonas",
+      "steps": [
+        "Cozer a massa.",
+        "Refogar a cebola no azeite, juntar os tomates e as ervas.",
+        "Esmigalhar o atum, adicionar as azeitonas e cozinhar 8 minutos.",
+        "Misturar com a massa escorrida."
+      ]
+    },
+    "crevettes-ail-citron-pates": {
+      "title": "Massa com camarão, alho e limão",
+      "steps": [
+        "Cozer a massa.",
+        "Saltear o alho picado no azeite durante 1 minuto.",
+        "Juntar os camarões e cozinhar 4 minutos com sumo de limão.",
+        "Misturar com a massa e salsa picada."
+      ]
+    },
+    "curry-cabillaud-coco-riz": {
+      "title": "Caril de bacalhau com leite de coco",
+      "steps": [
+        "Cozer o arroz. Refogar o pimento em tiras com gengibre e caril.",
+        "Juntar o leite de coco e deixar ferver suavemente 5 minutos.",
+        "Adicionar o peixe em pedaços grandes e cozinhar 8 minutos em lume brando.",
+        "Servir sobre o arroz com coentros."
+      ]
+    },
+    "saumon-laque-miel-soja": {
+      "title": "Salmão laqueado com mel e soja",
+      "steps": [
+        "Cozer o arroz e os feijões-verdes.",
+        "Misturar o mel com o molho de soja.",
+        "Selar as postas no azeite 3 minutos de cada lado.",
+        "Verter o molho, deixar caramelizar 2 minutos e servir."
+      ]
+    },
+    "spaghettis-sardines-citron": {
+      "title": "Esparguete com sardinha, limão e tomate-cereja",
+      "steps": [
+        "Cozer a massa.",
+        "Saltear o alho e os tomates-cereja cortados em azeite.",
+        "Adicionar as sardinhas esmagadas, a raspa e o sumo de limão.",
+        "Misturar com a massa e a salsa."
+      ]
+    },
+    "fish-and-chips-four": {
+      "title": "Peixe panado e batatas no forno, ervilhas",
+      "steps": [
+        "Cozer as batatas fritas com azeite e sal durante 35 minutos a 210 °C.",
+        "Passar o peixe por farinha, depois por ovo batido e por pão ralado.",
+        "Colocar numa travessa untada e levar ao forno 15 minutos.",
+        "Cozer as ervilhas 5 minutos e servir."
+      ]
+    },
+    "risotto-saumon-fume-epinards": {
+      "title": "Risotto cremoso com salmão fumado e espinafres",
+      "steps": [
+        "Dissolver os cubos em 1 litro de água quente. Refogar a cebola no azeite.",
+        "Adicionar o arroz, deixar brilhar 2 minutos e depois juntar o caldo, concha a concha, durante 18 minutos.",
+        "Incorporar os espinafres, as natas e o parmesão.",
+        "Acrescentar o salmão fumado em tiras mesmo antes de servir."
+      ]
+    },
+    "curry-pois-chiches-epinards": {
+      "title": "Caril vegetal de grão-de-bico e espinafres",
+      "steps": [
+        "Cozinhar o arroz. Refogar a cebola, o alho e o gengibre no azeite.",
+        "Adicionar o caril, os tomates, o grão escorrido e o leite de coco.",
+        "Deixar cozinhar em lume brando 15 minutos, temperar com sal.",
+        "Juntar os espinafres 2 minutos antes do fim e servir sobre o arroz."
+      ]
+    },
+    "dahl-lentilles-carottes": {
+      "title": "Dahl de lentilhas com cenoura",
+      "steps": [
+        "Refogar a cebola e as cenouras em cubos no azeite com as especiarias.",
+        "Adicionar as lentilhas lavadas, os tomates e 600 ml de água.",
+        "Cozinhar em lume brando durante 25 minutos, deitar o leite de coco e temperar com sal.",
+        "Cozinhar o arroz e servir com o dahl."
+      ]
+    },
+    "chili-sin-carne-riz": {
+      "title": "Chili vegetal com feijão vermelho",
+      "steps": [
+        "Refogar a cebola e o pimento aos cubos no azeite.",
+        "Adicionar as especiarias, os tomates, o feijão escorrido e o milho.",
+        "Cozinhar em lume brando durante 25 minutos.",
+        "Cozinhar o arroz e servir."
+      ]
+    },
+    "ratatouille-provencale-riz": {
+      "title": "Ratatouille provençal",
+      "steps": [
+        "Cortar todos os legumes em cubos.",
+        "Saltear separadamente no azeite, começando pela beringela.",
+        "Juntar tudo num tacho com o alho, as ervas e o sal.",
+        "Cozinhar tapado durante 30 minutos, fazer o arroz e servir."
+      ]
+    },
+    "gratin-courgettes-chevre": {
+      "title": "Gratinado de curgete com queijo de cabra",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C. Cortar as curgetes em rodelas.",
+        "Dispor num tabuleiro com o queijo de cabra esfarelado.",
+        "Bater ovos, natas, ervas, sal e pimenta, deitar sobre os legumes.",
+        "Polvilhar com queijo e cozer durante 35 minutos."
+      ]
+    },
+    "lasagnes-legumes-ricotta": {
+      "title": "Lasanha de legumes com ricotta",
+      "steps": [
+        "Saltear curgete e beringela em cubos no azeite durante 10 minutos.",
+        "Adicionar os tomates e o sal, cozinhar mais 10 minutos.",
+        "Alternar numa travessa as folhas, os legumes e a ricotta, terminar com mozzarella.",
+        "Cozinhar 35 minutos a 190 °C e polvilhar com manjericão."
+      ]
+    },
+    "omelette-champignons-pommes-de-terre": {
+      "title": "Omelete com cogumelos e batata salteada",
+      "steps": [
+        "Cozinhar as batatas em cubos 12 minutos, escorrer.",
+        "Dourar na manteiga com os cogumelos fatiados.",
+        "Deitar os ovos batidos, temperados de sal e pimenta, cozinhar 6 minutos em lume brando.",
+        "Servir com cebolinho e salada."
+      ]
+    },
+    "tarte-fine-tomates-chevre": {
+      "title": "Tarte fina de tomate e queijo de cabra",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C e estender a massa num tabuleiro.",
+        "Pincelar com mostarda.",
+        "Cobrir com rodelas de tomate e queijo de cabra, polvilhar com ervas.",
+        "Cozinhar 25 minutos e servir com salada."
+      ]
+    },
+    "saute-tofu-legumes-sesame": {
+      "title": "Tofu salteado com legumes e gengibre",
+      "steps": [
+        "Cozinhar o arroz. Cortar o tofu em cubos e dourar no azeite 8 minutos.",
+        "Adicionar o alho, o gengibre e os legumes salteados.",
+        "Cozinhar 7 minutos, adicionar o molho de soja.",
+        "Servir sobre o arroz."
+      ]
+    },
+    "falafels-four-houmous": {
+      "title": "Falafel no forno, molho de sésamo e pitas",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Triturar grão, cebola, salsa, cominhos, farinha e sal.",
+        "Formar bolinhas e cozinhar 25 minutos, virando a meio.",
+        "Misturar tahini, sumo de limão e um pouco de água.",
+        "Rechear as pitas com falafel, tomate, pepino e molho."
+      ]
+    },
+    "gnocchi-poeles-tomates-mozzarella": {
+      "title": "Nhoque salteado com tomate-cereja e mozzarella",
+      "steps": [
+        "Dourar o nhoque no azeite durante 8 minutos.",
+        "Adicionar o alho e os tomates-cereja cortados ao meio.",
+        "Cozinhar 5 minutos, acrescentar a mozzarella em pedaços.",
+        "Servir com o manjericão."
+      ]
+    },
+    "pates-pesto-courgettes": {
+      "title": "Massa com pesto, courgette e tomate-cereja",
+      "steps": [
+        "Cozer a massa.",
+        "Saltear as courgettes em cubos no azeite durante 6 minutos.",
+        "Juntar os tomates-cereja e cozinhar mais 3 minutos.",
+        "Envolver com a massa e o pesto."
+      ]
+    },
+    "risotto-champignons-parmesan": {
+      "title": "Risotto de cogumelos e parmesão",
+      "steps": [
+        "Dissolver os caldos em 1 litro de água quente. Refogar a cebola e os cogumelos na manteiga.",
+        "Adicionar o arroz, deixar fritar 2 minutos e juntar o caldo aos poucos.",
+        "Cozinhar 18 minutos mexendo sempre.",
+        "Finalizar com o parmesão."
+      ]
+    },
+    "veloute-courge-chevre-croutons": {
+      "title": "Creme de abóbora, croutons e queijo de cabra",
+      "steps": [
+        "Refogar a cebola, depois juntar a abóbora e as batatas em cubos.",
+        "Cobrir com água, adicionar o caldo e cozinhar 25 minutos.",
+        "Triturar com as natas e temperar com sal.",
+        "Servir com fatias de baguete torrada e queijo de cabra."
+      ]
+    },
+    "pizza-maison-margherita": {
+      "title": "Pizza margherita caseira",
+      "steps": [
+        "Misturar farinha, fermento, sal, azeite e 180 ml de água morna, amassar durante 5 minutos.",
+        "Deixar repousar 20 minutos e estender a massa.",
+        "Cobrir com tomate e mozzarella.",
+        "Cozer 15 minutos a 230 °C e salpicar com manjericão."
+      ]
+    },
+    "galettes-pommes-de-terre-fromage": {
+      "title": "Panquecas crocantes de batata com queijo",
+      "steps": [
+        "Ralar as batatas e a cebola e espremer bem.",
+        "Misturar com ovos, farinha, queijo e sal.",
+        "Formar panquecas e dourar em azeite 5 minutos de cada lado.",
+        "Servir com salada."
+      ]
+    },
+    "curry-patate-douce-pois-chiches": {
+      "title": "Caril de batata-doce e grão-de-bico",
+      "steps": [
+        "Refogar a cebola e caril no azeite.",
+        "Adicionar a batata-doce em cubos e leite de coco, cozinhar 20 minutos.",
+        "Juntar o grão-de-bico e os espinafres 3 minutos.",
+        "Cozer o arroz e servir."
+      ]
+    },
+    "shakshuka-oeufs-tomates": {
+      "title": "Shakshuka: ovos escalfados em molho de tomate",
+      "steps": [
+        "Refogar a cebola e o pimento em tiras no azeite.",
+        "Adicionar especiarias, tomate e sal, cozinhar 12 minutos.",
+        "Fazer cavidades, partir os ovos nelas e tapar 7 minutos.",
+        "Servir com baguete."
+      ]
+    },
+    "buddha-bowl-quinoa-patate-douce": {
+      "title": "Buddha bowl com quinoa e batata-doce assada",
+      "steps": [
+        "Assar a batata-doce em cubos 25 minutos a 200 °C com azeite.",
+        "Cozer a quinoa 12 minutos.",
+        "Misturar tahini, limão, sal e um pouco de água.",
+        "Compor as tigelas com quinoa, batata-doce, grão-de-bico, espinafre, abacate e molho."
+      ]
+    },
+    "boulgour-legumes-roties-feta": {
+      "title": "Bulgur com legumes assados e feta",
+      "steps": [
+        "Assar courgette e pimento em cubos 25 minutos a 200 °C com azeite.",
+        "Cozer o bulgur 12 minutos em água salgada.",
+        "Misturar com os legumes, sumo de limão e hortelã.",
+        "Polvilhar com feta esfarelada."
+      ]
+    },
+    "quesadillas-haricots-fromage": {
+      "title": "Quesadillas de feijão e queijo",
+      "steps": [
+        "Esmagar o feijão grosseiramente com o cominho.",
+        "Espalhar por 4 tortilhas, juntar milho, tomate em cubos e queijo.",
+        "Fechar com as outras 4 tortilhas.",
+        "Dourar 3 minutos de cada lado na frigideira e cortar em porções."
+      ]
+    },
+    "spaghettis-ail-huile-persil": {
+      "title": "Esparguete com alho, azeite e salsa",
+      "steps": [
+        "Cozer a massa em bastante água salgada.",
+        "Aquecer suavemente o azeite com o alho laminado e a malagueta.",
+        "Juntar o esparguete escorrido e um pouco da água de cozedura.",
+        "Misturar com a salsa picada."
+      ]
+    },
+    "gratin-chou-fleur-fromage": {
+      "title": "Gratinado de couve-flor com béchamel",
+      "steps": [
+        "Cozer os raminhos 10 minutos em água.",
+        "Preparar o béchamel: manteiga, farinha e depois leite, mexendo com vara de arames.",
+        "Dispor a couve-flor numa travessa, cobrir com o molho e queijo.",
+        "Gratinar 25 minutos a 200 °C."
+      ]
+    },
+    "pates-petits-pois-fromage": {
+      "title": "Massa cremosa com ervilhas",
+      "steps": [
+        "Cozer a massa, adicionar as ervilhas 4 minutos antes de terminar.",
+        "Escorrer, reservando um pouco da água.",
+        "Voltar ao tacho com as natas e aquecer 2 minutos.",
+        "Juntar o queijo e misturar."
+      ]
+    },
+    "pommes-de-terre-farcies-fromage-blanc": {
+      "title": "Batatas assadas recheadas com queijo fresco",
+      "steps": [
+        "Assar as batatas inteiras durante 45 minutos a 200 °C.",
+        "Abrir e esmagar a polpa com o queijo fresco, cebolinhas e sal.",
+        "Rechear as cascas e polvilhar com queijo.",
+        "Gratinar 10 minutos e servir com a salada."
+      ]
+    },
+    "soupe-lentilles-carottes": {
+      "title": "Sopa espessa de lentilhas e cenoura",
+      "steps": [
+        "Refogar a cebola e a cenoura às rodelas no azeite.",
+        "Adicionar as lentilhas lavadas, o cominho, o caldo e 1,2 litro de água.",
+        "Cozinhar 30 minutos.",
+        "Triturar parcialmente e servir com pão."
+      ]
+    },
+    "nouilles-sautees-legumes-oeuf": {
+      "title": "Massa de arroz salteada com legumes e ovo",
+      "steps": [
+        "Demolhar a massa em água quente 5 minutos.",
+        "Saltear os legumes no azeite 6 minutos, colocar de lado e mexer os ovos.",
+        "Juntar a massa e o molho de soja.",
+        "Servir com amendoim picado e limão."
+      ]
+    },
+    "couscous-poulet-legumes": {
+      "title": "Cuscuz com frango e legumes",
+      "steps": [
+        "Alourar o frango com a cebola no azeite.",
+        "Adicionar especiarias, polpa, cenouras e 1 litro de água, cozinhar 30 minutos.",
+        "Juntar curgetes e grão, cozinhar 15 minutos.",
+        "Hidratar o cuscuz com água quente e servir com o caldo."
+      ]
+    },
+    "tajine-agneau-patate-douce": {
+      "title": "Tajine de borrego com batata-doce",
+      "steps": [
+        "Dourar o borrego em pedaços com cebola no azeite.",
+        "Adicionar as especiarias e cobrir com água até ao nível da carne.",
+        "Cozinhar 1 hora, depois juntar a batata-doce e o grão durante 30 minutos.",
+        "Hidratar o cuscuz e servir."
+      ]
+    },
+    "boulettes-kefta-semoule": {
+      "title": "Almôndegas kefta em molho de tomate, cuscuz",
+      "steps": [
+        "Misturar a carne de vaca, cebola picada, salsa, especiarias e sal.",
+        "Formar almôndegas e dourar no azeite.",
+        "Adicionar tomates e cozinhar 15 minutos.",
+        "Hidratar o cuscuz e servir."
+      ]
+    },
+    "paella-poulet-chorizo": {
+      "title": "Paelha de frango e chouriço",
+      "steps": [
+        "Dourar o frango e o chouriço às rodelas no azeite, reservar.",
+        "Refogar a cebola e o pimento, juntar o arroz e o tomate.",
+        "Deitar 700 ml de caldo quente, colocar a carne, cozinhar 20 minutos.",
+        "Juntar as ervilhas no final da cozedura."
+      ]
+    },
+    "riz-cantonais-maison": {
+      "title": "Arroz chau-chau caseiro",
+      "steps": [
+        "Cozer o arroz e deixar arrefecer um pouco.",
+        "Saltear a cenoura em cubos e as ervilhas no azeite 5 minutos.",
+        "Colocar de lado, mexer os ovos e juntar o fiambre em cubos.",
+        "Adicionar o arroz e o molho de soja, saltear 5 minutos."
+      ]
+    },
+    "bol-vietnamien-boeuf-nouilles": {
+      "title": "Tigela vietnamita de carne com massa de arroz",
+      "steps": [
+        "Cozer a massa e passar por água fria.",
+        "Dourar a carne com o molho de soja no azeite.",
+        "Preparar salada, cenoura ralada, pepino e hortelã.",
+        "Compor as tigelas e adicionar amendoim e limão."
+      ]
+    },
+    "poulet-yassa-oignons-citron": {
+      "title": "Frango yassa com cebolas caramelizadas e limão",
+      "steps": [
+        "Marinar o frango com sumo de limão, mostarda e sal durante 15 minutos.",
+        "Dourar o frango no azeite e reservar.",
+        "Cozinhar as cebolas laminadas 20 minutos em lume brando.",
+        "Voltar a colocar o frango, cozinhar 10 minutos e servir com arroz."
+      ]
+    },
+    "fajitas-poulet-poivrons": {
+      "title": "Fajitas de frango e pimentos",
+      "steps": [
+        "Cortar frango, pimentos e cebola em tiras.",
+        "Saltear no azeite com especiarias durante 10 minutos.",
+        "Aquecer as tortilhas.",
+        "Rechear com frango, legumes e uma colher de iogurte."
+      ]
+    },
+    "gyros-poulet-pita-tzatziki": {
+      "title": "Pitas de frango grelhado, molho tzatziki",
+      "steps": [
+        "Misturar o iogurte, o pepino ralado, o alho e a hortelã para o molho.",
+        "Dourar o frango em tiras com o colorau no azeite.",
+        "Aquecer as pitas.",
+        "Rechear com frango, tomate e molho."
+      ]
+    },
+    "moussaka-simplifiee": {
+      "title": "Moussaka simplificada",
+      "steps": [
+        "Assar as beringelas cortadas em rodelas durante 15 minutos a 200 °C com o azeite.",
+        "Refogar a cebola e a carne de vaca, juntar os tomates.",
+        "Preparar um molho bechamel com manteiga, farinha e leite.",
+        "Alternar as beringelas e a carne, cobrir com bechamel e queijo, levar ao forno 30 minutos."
+      ]
+    },
+    "tartiflette-gourmande": {
+      "title": "Tartiflette rica",
+      "steps": [
+        "Cozer as batatas cortadas em rodelas durante 15 minutos em água.",
+        "Refogar o bacon e a cebola.",
+        "Colocar tudo numa travessa com as natas e pimenta, cobrir com queijo.",
+        "Gratinar durante 25 minutos a 200 °C."
+      ]
+    },
+    "pot-au-feu-familial": {
+      "title": "Cozido de carne tradicional",
+      "steps": [
+        "Cobrir a carne de vaca com água fria numa panela grande com o caldo e a cebola.",
+        "Levar a ferver ligeiramente e cozinhar 2 horas, retirando a espuma.",
+        "Juntar as cenouras, os alhos-franceses e as batatas nos últimos 35 minutos.",
+        "Servir com mostarda."
+      ]
+    },
+    "blanquette-dinde-riz": {
+      "title": "Blanquette de peru com arroz",
+      "steps": [
+        "Refogar a cebola, as cenouras e o peru em pedaços na manteiga.",
+        "Polvilhar com farinha, cobrir com água e caldo, cozinhar 30 minutos.",
+        "Juntar os cogumelos e cozinhar mais 10 minutos.",
+        "Ligar com as natas e servir sobre arroz."
+      ]
+    },
+    "gratin-macaronis-jambon": {
+      "title": "Gratinado de macarrão com fiambre",
+      "steps": [
+        "Cozer a massa menos 2 minutos do que o indicado.",
+        "Misturar com o fiambre em cubos, natas, leite e metade do queijo.",
+        "Colocar numa travessa e cobrir com o resto do queijo.",
+        "Gratinar durante 20 minutos a 200 °C."
+      ]
+    },
+    "bol-riz-saumon-fume-avocat": {
+      "title": "Tigela de arroz com salmão fumado e abacate",
+      "steps": [
+        "Cozer o arroz e deixar arrefecer um pouco.",
+        "Cortar o abacate e o pepino em fatias.",
+        "Dispor o arroz nas tigelas com o salmão fumado.",
+        "Temperar com molho de soja e sumo de limão."
+      ]
+    },
+    "salade-cesar-poulet": {
+      "title": "Salada César com frango e croutons caseiros",
+      "steps": [
+        "Cortar a baguete em cubos e dourar numa frigideira com azeite.",
+        "Cozinhar o frango em tiras durante 8 minutos.",
+        "Misturar iogurte, limão, mostarda e sal.",
+        "Juntar a salada, o frango, os croutons, o parmesão e o molho."
+      ]
+    },
+    "salade-chevre-chaud-noix": {
+      "title": "Salada de queijo de cabra quente, maçã e nozes",
+      "steps": [
+        "Cortar a baguete em fatias e colocar um pedaço de queijo de cabra em cima.",
+        "Regar com mel e gratinar durante 8 minutos a 200 °C.",
+        "Preparar a salada com a maçã em cubos e as nozes.",
+        "Temperar com azeite e vinagre e dispor as tostas."
+      ]
+    },
+    "salade-lentilles-lardons": {
+      "title": "Salada morna de lentilhas e bacon",
+      "steps": [
+        "Cozer as lentilhas durante 20 minutos em água.",
+        "Refogar o bacon.",
+        "Misturar mostarda, vinagre, azeite e sal.",
+        "Juntar as lentilhas, o bacon, a cenoura ralada e a chalota picada."
+      ]
+    },
+    "spaghettis-carbonara": {
+      "title": "Esparguete à carbonara",
+      "steps": [
+        "Cozer a massa.",
+        "Dourar o bacon sem gordura.",
+        "Bater os ovos com parmesão e pimenta.",
+        "Fora do lume, juntar a massa, o bacon e o molho, acrescentando um pouco da água da cozedura."
+      ]
+    },
+    "tagliatelles-saumon-creme": {
+      "title": "Tagliatelle com salmão e limão",
+      "steps": [
+        "Cozer a massa.",
+        "Cozinhar o salmão em cubos durante 4 minutos numa frigideira.",
+        "Juntar as natas e o sumo de limão, aquecer 2 minutos.",
+        "Misturar com a massa e a cebolinho."
+      ]
+    },
+    "tortilla-espagnole": {
+      "title": "Tortilha espanhola com batata",
+      "steps": [
+        "Cozinhar lentamente a batata e a cebola fatiadas no azeite durante 15 minutos.",
+        "Misturar com os ovos batidos e salgados.",
+        "Cozinhar na frigideira durante 6 minutos, virar com a ajuda de um prato.",
+        "Cozinhar mais 4 minutos e servir com salada."
+      ]
+    },
+    "soupe-nouilles-poulet": {
+      "title": "Sopa de massa com frango e gengibre",
+      "steps": [
+        "Dissolver os cubos em 1,2 litro de água quente com o gengibre.",
+        "Adicionar o frango em tiras, a cenoura e os cogumelos, cozinhar 8 minutos.",
+        "Juntar a massa durante 3 minutos.",
+        "Servir com molho de soja e coentros."
+      ]
+    },
+    "rougail-saucisses": {
+      "title": "Rougail de salsichas",
+      "steps": [
+        "Picar e dourar as salsichas no azeite.",
+        "Adicionar a cebola, o alho e o gengibre.",
+        "Juntar os tomates e o piri-piri, deixar estufar 25 minutos.",
+        "Cozinhar o arroz e servir."
+      ]
+    },
+    "mini-pizzas-pita": {
+      "title": "Mini-pizzas em pão pita",
+      "steps": [
+        "Pré-aquecer o forno a 210 °C.",
+        "Barrar o pão pita com molho de tomate e ervas.",
+        "Adicionar o fiambre fatiado e a mozzarella.",
+        "Cozinhar 10 minutos até o queijo dourar."
+      ]
+    },
+    "veloute-carottes-cumin": {
+      "title": "Creme de cenoura com cominhos",
+      "steps": [
+        "Refogar a cebola no azeite.",
+        "Adicionar as cenouras, batata, cominhos, caldo e 800 ml de água.",
+        "Cozinhar 25 minutos.",
+        "Triturar até obter uma textura cremosa."
+      ]
+    },
+    "soupe-poireaux-pommes-de-terre": {
+      "title": "Sopa de alho-francês e batata",
+      "steps": [
+        "Estufar o alho-francês fatiado na manteiga por 5 minutos.",
+        "Adicionar as batatas em cubos, o caldo e 800 ml de água.",
+        "Cozinhar 25 minutos.",
+        "Triturar com as natas e polvilhar com cebolinho."
+      ]
+    },
+    "gaspacho-tomate-concombre": {
+      "title": "Gaspacho fresco de tomate e pepino",
+      "steps": [
+        "Cortar todos os legumes grosseiramente.",
+        "Triturar com o pão de forma, alho, azeite, vinagre e sal.",
+        "Deixar repousar no frio pelo menos 1 hora.",
+        "Servir bem fresco."
+      ]
+    },
+    "salade-tomate-mozzarella-basilic": {
+      "title": "Salada de tomate, mozzarella e manjericão",
+      "steps": [
+        "Cortar o tomate e a mozzarella em fatias.",
+        "Dispor alternadamente num prato.",
+        "Adicionar as folhas de manjericão.",
+        "Temperar com azeite, sal e pimenta."
+      ]
+    },
+    "salade-betterave-pomme-feta": {
+      "title": "Salada de beterraba, maçã e feta",
+      "steps": [
+        "Cortar a beterraba e a maçã em cubos.",
+        "Esfarelar a feta e partir as nozes.",
+        "Misturar tudo.",
+        "Temperar com azeite e vinagre."
+      ]
+    },
+    "oeufs-mimosa-yaourt": {
+      "title": "Ovos mimosa leves",
+      "steps": [
+        "Cozinhar os ovos 10 minutos em água a ferver, depois arrefecer.",
+        "Cortar ao meio e esmagar as gemas.",
+        "Misturar o iogurte, a mostarda e o sal com as gemas.",
+        "Rechear as claras e polvilhar com cebolinho."
+      ]
+    },
+    "houmous-crudites-pita": {
+      "title": "Húmus caseiro, crudités e pita",
+      "steps": [
+        "Triturar o grão-de-bico, tahini, sumo de limão, alho, sal e um pouco de água.",
+        "Cortar a cenoura e o pepino em palitos.",
+        "Aquecer as pitas e cortar.",
+        "Servir para mergulhar."
+      ]
+    },
+    "taboule-frais-menthe": {
+      "title": "Tabule fresco com hortelã",
+      "steps": [
+        "Deitar a mesma quantidade de água quente sobre a sêmola e deixar hidratar 5 minutos.",
+        "Cortar o tomate e o pepino em pequenos cubos.",
+        "Misturar com as ervas picadas.",
+        "Adicionar sumo de limão, azeite e sal."
+      ]
+    },
+    "carottes-rapees-orange": {
+      "title": "Cenouras raladas com laranja",
+      "steps": [
+        "Ralar as cenouras.",
+        "Espremer a laranja para obter o sumo.",
+        "Misturar com o azeite e o sal.",
+        "Polvilhar com salsa."
+      ]
+    },
+    "avocats-farcis-thon": {
+      "title": "Abacates recheados com atum",
+      "steps": [
+        "Cortar os abacates ao meio e retirar o caroço.",
+        "Misturar o atum desfiado, o iogurte, o limão, o sal e a pimenta.",
+        "Rechear os abacates com a preparação.",
+        "Servir fresco."
+      ]
+    },
+    "feuilletes-chevre-miel": {
+      "title": "Folhados de queijo de cabra com mel",
+      "steps": [
+        "Pré-aquecer o forno a 200 °C. Cortar a massa em 8 quadrados.",
+        "Colocar uma rodela de queijo de cabra em cada quadrado.",
+        "Regar com mel e polvilhar com ervas aromáticas.",
+        "Cozinhar durante 15 minutos."
+      ]
+    },
+    "concombre-yaourt-menthe": {
+      "title": "Pepino fresco com iogurte e hortelã",
+      "steps": [
+        "Cortar os pepinos em rodelas finas.",
+        "Misturar o iogurte, o alho esmagado, a hortelã e o sal.",
+        "Juntar os pepinos.",
+        "Servir bem fresco."
+      ]
+    },
+    "soupe-tomate-basilic": {
+      "title": "Sopa de tomate com manjericão",
+      "steps": [
+        "Alourar a cebola no azeite.",
+        "Adicionar os tomates, o caldo e 300 ml de água, cozinhar durante 15 minutos.",
+        "Triturar com o manjericão.",
+        "Adicionar as natas e aquecer."
+      ]
+    },
+    "salade-pois-chiches-feta": {
+      "title": "Salada de grão-de-bico, pepino e feta",
+      "steps": [
+        "Escorrer o grão-de-bico.",
+        "Cortar o pepino e os tomates cereja.",
+        "Esmigalhar a feta por cima.",
+        "Temperar com limão e azeite."
+      ]
+    },
+    "veloute-champignons": {
+      "title": "Creme de cogumelos",
+      "steps": [
+        "Alourar cebola e cogumelos laminados na manteiga.",
+        "Adicionar a batata em cubos, o caldo e 600 ml de água.",
+        "Cozinhar durante 20 minutos.",
+        "Triturar com as natas."
+      ]
+    },
+    "bruschettas-tomate-basilic": {
+      "title": "Bruschettas de tomate e manjericão",
+      "steps": [
+        "Cortar a baguete em fatias e torrar.",
+        "Esfregar o alho nas fatias.",
+        "Misturar tomate em cubos, manjericão, azeite e sal.",
+        "Cobrir as torradas."
+      ]
+    },
+    "salade-chou-carotte-yaourt": {
+      "title": "Salada crocante de couve e cenoura",
+      "steps": [
+        "Cortar finamente a couve e ralar a cenoura.",
+        "Misturar o iogurte, a mostarda, o vinagre e o sal.",
+        "Temperar os legumes.",
+        "Deixar repousar 10 minutos antes de servir."
+      ]
+    },
+    "mousse-chocolat-noir": {
+      "title": "Mousse de chocolate intenso",
+      "steps": [
+        "Derreter o chocolate em banho-maria.",
+        "Separar as claras das gemas e acrescentar as gemas ao chocolate morno.",
+        "Bater as claras em castelo com o açúcar.",
+        "Envolver delicadamente e reservar 3 horas no frio."
+      ]
+    },
+    "crumble-pommes-cannelle": {
+      "title": "Crumble de maçã com canela",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C. Descascar as maçãs, cortar em cubos e colocar num prato com a canela.",
+        "Misturar com a ponta dos dedos a farinha, a manteiga fria e o açúcar até ficar areado.",
+        "Espalhar sobre as maçãs.",
+        "Cozinhar durante 35 minutos."
+      ]
+    },
+    "tarte-pommes-feuilletee": {
+      "title": "Tarte fina de maçã",
+      "steps": [
+        "Pré-aquecer o forno a 190 °C e estender a massa.",
+        "Dispor as maçãs em fatias finas.",
+        "Polvilhar com açúcar e canela, espalhar pedaços de manteiga.",
+        "Cozinhar durante 35 minutos."
+      ]
+    },
+    "gateau-au-yaourt-classique": {
+      "title": "Bolo de iogurte fofo",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C.",
+        "Misturar iogurte, açúcar, ovos e óleo.",
+        "Adicionar farinha e fermento.",
+        "Verter numa forma e cozer durante 35 minutos."
+      ]
+    },
+    "riz-au-lait-vanille": {
+      "title": "Arroz doce com baunilha",
+      "steps": [
+        "Passar o arroz por água.",
+        "Cozer no leite com baunilha em lume brando.",
+        "Mexer regularmente durante 40 minutos.",
+        "Adicionar o açúcar no final da cozedura e deixar arrefecer um pouco."
+      ]
+    },
+    "fondant-chocolat-coeur-coulant": {
+      "title": "Fondant de chocolate",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C.",
+        "Derreter o chocolate com a manteiga.",
+        "Adicionar açúcar, ovos e, de seguida, farinha.",
+        "Verter em formas e cozer 10 a 12 minutos."
+      ]
+    },
+    "salade-fruits-frais-menthe": {
+      "title": "Salada de fruta fresca com hortelã",
+      "steps": [
+        "Descascar e cortar todas as frutas em cubos.",
+        "Regar com sumo de limão.",
+        "Adicionar hortelã picada.",
+        "Reservar no frio durante 30 minutos."
+      ]
+    },
+    "fromage-blanc-miel-noix": {
+      "title": "Queijo fresco com mel e nozes",
+      "steps": [
+        "Distribuir o queijo fresco por 4 taças.",
+        "Regar com mel.",
+        "Polvilhar com nozes picadas.",
+        "Servir fresco."
+      ]
+    },
+    "crepes-faciles": {
+      "title": "Crepes finas e fofas",
+      "steps": [
+        "Misturar farinha, açúcar e ovos, depois adicionar leite aos poucos.",
+        "Juntar a manteiga derretida.",
+        "Deixar repousar 20 minutos.",
+        "Cozinhar numa frigideira quente, 1 minuto de cada lado."
+      ]
+    },
+    "compote-pommes-maison": {
+      "title": "Compota de maçã caseira",
+      "steps": [
+        "Descascar e cortar as maçãs.",
+        "Cozer tapado com 5 cl de água e canela.",
+        "Esmagar com um garfo após 20 minutos.",
+        "Adicionar o açúcar e deixar arrefecer."
+      ]
+    },
+    "tiramisu-fraises-speculoos": {
+      "title": "Tiramisù de morangos e bolachas",
+      "steps": [
+        "Separar as claras das gemas.",
+        "Bater as gemas com açúcar, depois juntar o mascarpone.",
+        "Envolver as claras em castelo.",
+        "Montar em copos com bolachas e morangos, reservar 4 horas no frio."
+      ]
+    },
+    "gateau-banane-moelleux": {
+      "title": "Bolo fofo de banana",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C.",
+        "Esmagar as bananas e juntar açúcar, ovos e manteiga derretida.",
+        "Adicionar farinha e fermento.",
+        "Cozer 40 minutos numa forma."
+      ]
+    },
+    "poires-chocolat-chaud": {
+      "title": "Peras em calda com molho de chocolate",
+      "steps": [
+        "Descascar as peras e cozer 15 minutos em água a ferver.",
+        "Derreter o chocolate com as natas.",
+        "Escorrer as peras.",
+        "Servir cobertas com o molho quente."
+      ]
+    },
+    "cookies-pepites-chocolat": {
+      "title": "Cookies com pepitas de chocolate",
+      "steps": [
+        "Pré-aquecer o forno a 180 °C.",
+        "Misturar manteiga amolecida, açúcar e ovo.",
+        "Adicionar farinha, fermento e chocolate em pedaços.",
+        "Fazer bolas num tabuleiro e cozer 12 minutos."
+      ]
+    },
+    "porridge-pomme-cannelle": {
+      "title": "Papas de aveia quentes com maçã e canela",
+      "steps": [
+        "Aquecer o leite com os flocos em lume brando.",
+        "Mexer 5 minutos até engrossar.",
+        "Adicionar maçã ralada e canela.",
+        "Servir com um fio de mel."
+      ]
+    },
+    "pancakes-moelleux-banane": {
+      "title": "Panquecas fofas de banana",
+      "steps": [
+        "Misturar farinha, fermento, açúcar, ovos, leite e manteiga derretida.",
+        "Deixar repousar 5 minutos.",
+        "Cozinhar pequenas porções durante 2 minutos de cada lado.",
+        "Servir com a banana às rodelas."
+      ]
+    },
+    "tartines-avocat-oeuf": {
+      "title": "Tostas de abacate e ovo escalfado",
+      "steps": [
+        "Torrar o pão.",
+        "Esmagar o abacate com limão, sal e pimenta.",
+        "Cozinhar os ovos estrelados ou escalfados.",
+        "Barrar o pão com o abacate e colocar os ovos por cima."
+      ]
+    },
+    "granola-maison-miel": {
+      "title": "Granola crocante caseiro",
+      "steps": [
+        "Pré-aquecer o forno a 160 °C.",
+        "Misturar flocos, frutos secos picados, óleo, mel e canela.",
+        "Espalhar num tabuleiro.",
+        "Cozer 20 minutos, mexendo a meio do tempo."
+      ]
+    },
+    "oeufs-brouilles-toasts": {
+      "title": "Ovos mexidos cremosos com tostas",
+      "steps": [
+        "Torrar as fatias de pão.",
+        "Bater os ovos com sal.",
+        "Cozinhar lentamente na manteiga, mexendo sempre.",
+        "Servir com tomate e cebolinho."
+      ]
+    },
+    "bol-yaourt-fruits-granola": {
+      "title": "Taça de iogurte, frutos vermelhos e flocos",
+      "steps": [
+        "Distribuir o iogurte por 4 taças.",
+        "Adicionar a banana às rodelas e os frutos vermelhos.",
+        "Polvilhar com flocos.",
+        "Regar com mel."
+      ]
+    },
+    "pain-perdu-cannelle": {
+      "title": "Rabanadas com canela",
+      "steps": [
+        "Bater ovos, leite, açúcar e canela.",
+        "Mergulhar as fatias de pão durante alguns segundos.",
+        "Dourar na manteiga durante 3 minutos de cada lado.",
+        "Servir morno."
+      ]
+    },
+    "smoothie-banane-fraise": {
+      "title": "Batido cremoso de banana e morango",
+      "steps": [
+        "Cortar a banana às rodelas.",
+        "Colocar todos os ingredientes no liquidificador.",
+        "Triturar durante 1 minuto.",
+        "Servir de imediato."
+      ]
+    },
+    "overnight-oats-fruits-rouges": {
+      "title": "Flocos de aveia de véspera com frutos vermelhos",
+      "steps": [
+        "Na véspera, misturar flocos, iogurte, leite e mel.",
+        "Distribuir por 4 frascos e adicionar os frutos vermelhos.",
+        "Fechar e reservar no frio durante a noite.",
+        "Consumir frio."
+      ]
+    }
+  },
+  "ingredients": {
+    "oignon": "Cebola",
+    "ail": "Alho (dente)",
+    "echalote": "Chalota",
+    "carotte": "Cenoura",
+    "pomme-de-terre": "Batata",
+    "patate-douce": "Batata-doce",
+    "courgette": "Curgete",
+    "aubergine": "Beringela",
+    "poivron": "Pimento",
+    "tomate": "Tomate",
+    "tomate-cerise": "Tomate cereja",
+    "concombre": "Pepino",
+    "champignon": "Cogumelo de Paris",
+    "epinard": "Espinafre fresco",
+    "salade": "Alface",
+    "brocoli": "Brócolo",
+    "chou-fleur": "Couve-flor",
+    "chou": "Repolho branco",
+    "poireau": "Alho-francês",
+    "haricot-vert": "Feijão-verde",
+    "courge": "Abóbora butternut",
+    "betterave": "Beterraba cozida",
+    "radis": "Rabanete",
+    "citron": "Limão",
+    "avocat": "Abacate",
+    "pomme": "Maçã",
+    "poire": "Pêra",
+    "banane": "Banana",
+    "orange": "Laranja",
+    "fraise": "Morango",
+    "mangue": "Manga",
+    "persil": "Salsa",
+    "coriandre": "Coentros frescos",
+    "basilic": "Manjericão",
+    "menthe": "Hortelã",
+    "ciboulette": "Cebolinho",
+    "gingembre": "Gengibre fresco",
+    "poulet-filet": "Peito de frango",
+    "cuisse-poulet": "Perna de frango",
+    "boeuf-hache": "Carne de vaca picada",
+    "boeuf-paleron": "Carne de vaca para estufar",
+    "porc-filet": "Lombo de porco",
+    "saucisse": "Salsicha de porco",
+    "lardons": "Bacon em cubos",
+    "jambon-blanc": "Fiambre",
+    "chorizo": "Chouriço",
+    "dinde-escalope": "Bife de peru",
+    "agneau": "Pá de borrego",
+    "saumon": "Lombo de salmão",
+    "saumon-fume": "Salmão fumado",
+    "cabillaud": "Lombo de bacalhau fresco",
+    "colin": "Filete de pescada",
+    "thon-conserve": "Atum em conserva",
+    "sardine": "Sardinhas em conserva",
+    "oeuf": "Ovo",
+    "lait": "Leite",
+    "creme": "Natas líquidas",
+    "creme-fraiche": "Natas espessas",
+    "beurre": "Manteiga",
+    "fromage-rape": "Queijo ralado",
+    "mozzarella": "Mozzarella",
+    "feta": "Feta",
+    "parmesan": "Parmesão",
+    "chevre": "Queijo de cabra",
+    "yaourt": "Iogurte natural",
+    "fromage-blanc": "Queijo fresco batido",
+    "mascarpone": "Mascarpone",
+    "ricotta": "Ricotta",
+    "tofu": "Tofu firme",
+    "pate-feuilletee": "Massa folhada",
+    "pate-brisee": "Massa quebrada",
+    "riz": "Arroz",
+    "pates": "Massa",
+    "pates-lasagne": "Placas de lasanha",
+    "semoule": "Sêmola",
+    "boulgour": "Bulgur",
+    "quinoa": "Quinoa",
+    "lentilles": "Lentilhas",
+    "pois-chiches": "Grão-de-bico",
+    "haricots-rouges": "Feijão encarnado",
+    "mais": "Milho enlatado",
+    "farine": "Farinha",
+    "sucre": "Açúcar",
+    "chocolat-noir": "Chocolate preto",
+    "cacao": "Cacau em pó",
+    "flocons-avoine": "Flocos de aveia",
+    "miel": "Mel",
+    "tomate-concassee": "Tomate pelado picado",
+    "concentre-tomate": "Concentrado de tomate",
+    "lait-coco": "Leite de coco",
+    "noix": "Nozes",
+    "cacahuete": "Amendoins",
+    "nouilles": "Massa chinesa",
+    "nouilles-riz": "Massa de arroz",
+    "gnocchi": "Gnocchi",
+    "chapelure": "Pão ralado",
+    "tahini": "Tahini",
+    "olives": "Azeitonas",
+    "pesto": "Pesto",
+    "speculoos": "Biscoitos de manteiga",
+    "sauce-soja": "Molho de soja",
+    "huile-olive": "Azeite",
+    "vinaigre": "Vinagre",
+    "moutarde": "Mostarda",
+    "bouillon": "Caldo (cubo)",
+    "sel": "Sal",
+    "poivre": "Pimenta",
+    "paprika": "Pimentão doce",
+    "cumin": "Cominhos",
+    "curry": "Caril",
+    "cannelle": "Canela",
+    "piment": "Malagueta",
+    "curcuma": "Açafrão-da-Índia",
+    "herbes": "Ervas da Provença",
+    "harissa": "Harissa",
+    "levure": "Fermento em pó",
+    "vanille": "Extrato de baunilha",
+    "baguette": "Baguete",
+    "tortilla": "Tortilha",
+    "pain-burger": "Pão de hambúrguer",
+    "pain-mie": "Pão de forma",
+    "pain-pita": "Pão pita",
+    "petits-pois": "Ervilhas congeladas",
+    "epinard-surgele": "Espinafres congelados",
+    "poelee-legumes": "Legumes salteados congelados",
+    "framboise-surgelee": "Frutos vermelhos congelados",
+    "crevette": "Camarões descascados",
+    "jus-orange": "Sumo de laranja"
+  }
+}

@@ -1,0 +1,1286 @@
+{
+  "recipes": {
+    "poulet-roti-citron-pommes-de-terre": {
+      "title": "Geroosterde kip met citroen en goudbruine aardappelen",
+      "steps": [
+        "Verwarm de oven voor op 200 °C.",
+        "Leg de kippendijen en de in parten gesneden aardappelen in een ovenschaal met de geperste knoflook.",
+        "Besprenkel met citroensap en olie, bestrooi met kruiden, zout en peper en meng.",
+        "Bak 50 minuten in de oven en draai halverwege om tot het vel goudbruin is."
+      ]
+    },
+    "poulet-curry-coco": {
+      "title": "Romige kip met kerrie en kokosmelk",
+      "steps": [
+        "Kook de rijst volgens de aanwijzingen op de verpakking.",
+        "Fruit de gesnipperde ui in de olie, voeg vervolgens de knoflook, geraspte gember en kerriepoeder toe.",
+        "Voeg de in blokjes gesneden kip toe en bak deze 5 minuten aan.",
+        "Schenk de kokosmelk erbij, voeg zout toe en laat 15 minuten sudderen. Serveer met de rijst."
+      ]
+    },
+    "poulet-moutarde-champignons": {
+      "title": "Kip met mosterd en champignons",
+      "steps": [
+        "Kook de rijst volgens de aanwijzingen op de verpakking.",
+        "Bak de kip in stukken 6 minuten goudbruin in olie en zet apart.",
+        "Fruit de gesnipperde sjalot en champignons 5 minuten.",
+        "Voeg de kip weer toe, voeg de room en mosterd toe en laat 8 minuten sudderen."
+      ]
+    },
+    "poulet-tikka-yaourt-riz": {
+      "title": "Kip gemarineerd in yoghurt en specerijen, geurige rijst",
+      "steps": [
+        "Meng de yoghurt, citroensap, geperste knoflook, kerriepoeder, paprikapoeder en zout.",
+        "Bedek de kipblokjes met deze marinade en laat 15 minuten rusten.",
+        "Kook de rijst volgens de aanwijzingen op de verpakking.",
+        "Bak de kip 10 minuten in de pan en keer regelmatig. Serveer met de rijst."
+      ]
+    },
+    "escalope-dinde-creme-champignons": {
+      "title": "Kalkoenschnitzels met champignonroomsaus",
+      "steps": [
+        "Schil de aardappelen, snijd in stukken en kook 20 minuten in gezouten water.",
+        "Bak de schnitzels 4 minuten per kant in boter en zet apart.",
+        "Bak de ui en champignons, voeg de room toe en laat 5 minuten indikken.",
+        "Lepel de saus over de schnitzels en serveer met de aardappelen."
+      ]
+    },
+    "poulet-basquaise": {
+      "title": "Kip basquaise met paprika",
+      "steps": [
+        "Bak de kippendijen goudbruin in olie in een braadpan en zet apart.",
+        "Bak de ui en paprika in reepjes 8 minuten met knoflook en paprikapoeder.",
+        "Voeg de tomaten en kip toe, zout, dek af en laat 35 minuten sudderen.",
+        "Kook de rijst en serveer de kip met de saus."
+      ]
+    },
+    "wraps-poulet-croquants": {
+      "title": "Krokante kipwraps met yoghurtsaus",
+      "steps": [
+        "Snijd de kip in reepjes en bak 8 minuten in olie met paprikapoeder en zout.",
+        "Meng de yoghurt met het citroensap.",
+        "Beleg elke wrap met sla, tomatenblokjes, kip en saus.",
+        "Rol de wraps stevig op en snijd doormidden."
+      ]
+    },
+    "nuggets-poulet-maison-frites-four": {
+      "title": "Zelfgemaakte kipnuggets en ovenfriet",
+      "steps": [
+        "Verwarm de oven voor op 210 °C. Snijd de aardappelen in frieten, meng met olie en zout en bak 35 minuten in de oven.",
+        "Snijd de kip in stukken.",
+        "Wentel de stukken kip achtereenvolgens door bloem, losgeklopt ei en dan door paneermeel gemengd met paprikapoeder.",
+        "Leg de nuggets op een bakplaat en bak 15 minuten, keer halverwege."
+      ]
+    },
+    "brochettes-poulet-poivrons-yaourt": {
+      "title": "Kipspiesjes met paprika, rijst met yoghurt",
+      "steps": [
+        "Snijd de kip, paprika en ui in grove stukken.",
+        "Marineer met yoghurt, paprikapoeder, olie en zout gedurende 10 minuten.",
+        "Rijg om en om aan spiesjes en bak 12 minuten in de pan of oven; keer regelmatig.",
+        "Serveer met gekookte rijst."
+      ]
+    },
+    "poulet-teriyaki-maison": {
+      "title": "Kip gelakt met honing en sojasaus, rijst en broccoli",
+      "steps": [
+        "Meng de sojasaus, honing, geraspte gember en geperste knoflook.",
+        "Kook de rijst en stoom de broccoliroosjes.",
+        "Bak de kipstukken 6 minuten goudbruin in olie.",
+        "Giet de saus erbij en laat 4 minuten karamelliseren al roerend. Serveer met rijst en broccoli."
+      ]
+    },
+    "chili-con-carne-riz": {
+      "title": "Rijkgevulde chili con carne",
+      "steps": [
+        "Fruit de ui en de paprika in blokjes 5 minuten in olie.",
+        "Voeg het gehakt toe en bak rul.",
+        "Voeg de tomaten, uitgelekte rode bonen, mais en de specerijen toe, zout.",
+        "Laat 25 minuten zachtjes sudderen, kook de rijst en serveer samen."
+      ]
+    },
+    "pates-bolognaise-maison": {
+      "title": "Spaghetti met zondagse bolognesesaus",
+      "steps": [
+        "Fruit de ui en geraspte wortel in olie met knoflook.",
+        "Voeg het gehakt toe, bak bruin, voeg dan de tomatenpuree, tomaten, kruiden en zout toe.",
+        "Laat 25 minuten zachtjes sudderen.",
+        "Kook de pasta en serveer met de saus."
+      ]
+    },
+    "boeuf-bourguignon-facile": {
+      "title": "Gestooft rundvlees met wortelen en champignons",
+      "steps": [
+        "Bak de stukken rundvlees en de spekblokjes goudbruin in een braadpan met de olie.",
+        "Bestrooi met bloem, voeg de ui, wortelen en de bouillon opgelost in een groot glas water toe.",
+        "Dek af en laat 2 uur sudderen op zeer laag vuur.",
+        "Voeg de champignons en aardappelen toe voor de laatste 30 minuten."
+      ]
+    },
+    "hachis-parmentier-classique": {
+      "title": "Ovenschotel hachis Parmentier met krokante korst",
+      "steps": [
+        "Kook de geschilde aardappelen 20 minuten in gezouten water, en pureer ze met de boter en de melk.",
+        "Fruit de ui, voeg het gehakt toe, zout en peper en bak 8 minuten.",
+        "Verdeel het vlees in een ovenschaal, bedek met puree en bestrooi met kaas.",
+        "Gratineer 25 minuten op 200 °C."
+      ]
+    },
+    "burgers-maison-frites-four": {
+      "title": "Zelfgemaakte burgers en ovenfrietjes",
+      "steps": [
+        "Bak de met olie en zout bestreken aardappelstaafjes 35 minuten in de oven op 210 °C.",
+        "Vorm 4 hamburgers van het gehakt, zout en peper.",
+        "Bak ze 4 minuten aan elke kant, voeg op het einde kaas toe.",
+        "Beleg de geroosterde broodjes met sla, tomaat, ui en hamburger."
+      ]
+    },
+    "boulettes-sauce-tomate-pates": {
+      "title": "Malse gehaktballetjes in tomatensaus",
+      "steps": [
+        "Meng het gehakt met het ei, paneermeel, geperste knoflook en zout en vorm balletjes.",
+        "Bak ze 6 minuten goudbruin in olie met de gesnipperde ui.",
+        "Voeg de tomaten en de kruiden toe, dek af en laat 15 minuten sudderen.",
+        "Kook de pasta en serveer met de gehaktballetjes."
+      ]
+    },
+    "boeuf-saute-nouilles-legumes": {
+      "title": "Gebakken noedels met rundvlees en groenten",
+      "steps": [
+        "Kook de noedels volgens de aanwijzingen en giet ze af.",
+        "Bak het gehakt bruin in olie met de knoflook en de gember.",
+        "Voeg de groenten toe en bak 7 minuten.",
+        "Meng de noedels en sojasaus erdoor, roer en serveer."
+      ]
+    },
+    "lasagnes-bolognaise": {
+      "title": "Oma's gegratineerde lasagne",
+      "steps": [
+        "Fruit de ui, voeg het gehakt toe, dan de tomaten, zout, en laat 15 minuten sudderen.",
+        "Maak de bechamelsaus: smelt de boter, voeg de bloem toe, dan de melk al roerend tot het indikt.",
+        "Leg om en om de bladen, het vlees en de bechamel in een schaal, eindig met kaas.",
+        "Bak 35 minuten op 190 °C."
+      ]
+    },
+    "poivrons-farcis-boeuf-riz": {
+      "title": "Gevulde paprika's met rundvlees en rijst",
+      "steps": [
+        "Verwarm de oven voor op 190 °C en kook de rijst.",
+        "Fruit de ui met het gehakt, voeg de rijst, de tomaten, kruiden en zout toe.",
+        "Hol de paprika's uit, vul ze met het mengsel en bestrooi met kaas.",
+        "Bak 35 minuten in een ovenschaal."
+      ]
+    },
+    "tacos-mexicains-maison": {
+      "title": "Mexicaanse taco's om zelf te vullen",
+      "steps": [
+        "Bak het gehakt in olie met komijn, paprikapoeder en zout.",
+        "Voeg de uitgelekte kidneybonen en maïs toe en verwarm 5 minuten.",
+        "Verwarm de wraps en bereid sla, tomatenblokjes en kaas.",
+        "Iedereen vult zijn wrap en vouwt deze dicht."
+      ]
+    },
+    "porc-miel-soja-haricots-verts": {
+      "title": "Varkensvlees met honing en soja, krokante sperziebonen",
+      "steps": [
+        "Kook de rijst. Snijd het varkenshaasje in plakjes.",
+        "Bak ze in olie met de knoflook 6 minuten goudbruin.",
+        "Voeg de honing en sojasaus toe, laat 3 minuten karamelliseren.",
+        "Kook de sperziebonen 8 minuten in kokend water en serveer met de rijst."
+      ]
+    },
+    "saucisses-lentilles-carottes": {
+      "title": "Worst met linzen en wortelen",
+      "steps": [
+        "Bak de worsten 8 minuten bruin in een pan met olie.",
+        "Voeg de ui en in blokjes gesneden wortelen en de afgespoelde linzen toe.",
+        "Bedek met water met bouillon, zout, en laat 30 minuten sudderen.",
+        "Serveer met een beetje mosterd."
+      ]
+    },
+    "gratin-pommes-de-terre-jambon": {
+      "title": "Aardappelgratin met ham",
+      "steps": [
+        "Schil de aardappelen en snijd ze in dunne schijfjes.",
+        "Leg ze in een ovenschaal ingewreven met knoflook, met reepjes ham erbij.",
+        "Meng room, melk, zout en peper, giet over de gratin en bestrooi met kaas.",
+        "Bak 50 minuten op 180 °C."
+      ]
+    },
+    "quiche-lorraine": {
+      "title": "Goudbruine quiche Lorraine",
+      "steps": [
+        "Verwarm de oven voor op 180 °C en bekleed een vorm met deeg.",
+        "Bak de spekblokjes 4 minuten zonder vet en verdeel ze over het deeg.",
+        "Klop de eieren met de room, de melk en peper, giet over de spekblokjes.",
+        "Bestrooi met kaas en bak 35 minuten."
+      ]
+    },
+    "filet-mignon-pommes-oignons": {
+      "title": "Varkenshaas met appels en uien",
+      "steps": [
+        "Kook de geschilde aardappelen 20 minuten in gezouten water.",
+        "Bak de hele varkenshaas rondom 10 minuten in boter.",
+        "Voeg de ui en de appels in parten toe, bak 10 minuten.",
+        "Schenk de room erbij, verwarm 3 minuten, snijd het vlees en serveer."
+      ]
+    },
+    "croque-monsieur-maison": {
+      "title": "Krokante croque-monsieur en salade",
+      "steps": [
+        "Verwarm de oven voor op 200 °C. Besmeer het casinobrood licht met boter.",
+        "Beleg 4 sneetjes met ham en kaas, dek af met de overige sneetjes.",
+        "Besprenkel met wat melk en strooi er kaas over.",
+        "Bak 12 minuten tot ze goudbruin zijn, serveer met de salade."
+      ]
+    },
+    "saumon-citron-riz-brocoli": {
+      "title": "Zalmfilets met citroen, rijst en broccoli",
+      "steps": [
+        "Stoom de rijst en de broccoliroosjes.",
+        "Zout en peper de zalmfilets, besprenkel met olie en citroen.",
+        "Bak ze 4 minuten per kant in de pan.",
+        "Serveer met de rijst en de broccoli."
+      ]
+    },
+    "papillote-cabillaud-legumes": {
+      "title": "Kabeljauw en mediterrane groenten in papillot",
+      "steps": [
+        "Verwarm de oven voor op 200 °C. Snijd de groenten in dunne plakjes.",
+        "Leg op 4 vellen bakpapier groenten, vis, citroen en kruiden.",
+        "Sprenkel er olie over, zout, en vouw de pakketjes dicht.",
+        "Bak 20 minuten in de oven."
+      ]
+    },
+    "colin-creme-poireaux-pommes-de-terre": {
+      "title": "Koolvis met preiroom",
+      "steps": [
+        "Kook de aardappelen 20 minuten in gezouten water.",
+        "Stoof de fijngesneden prei 10 minuten in boter.",
+        "Voeg de room toe, leg de vis erbovenop, dek af en kook 10 minuten.",
+        "Serveer met de aardappelen."
+      ]
+    },
+    "gratin-poisson-epinards": {
+      "title": "Vis-spinaziegratin",
+      "steps": [
+        "Kook de rijst en verwarm de oven voor op 200 °C.",
+        "Verdeel de spinazie in een ovenschaal en leg de vis erbovenop.",
+        "Meng room, zout en peper, schenk erover en bestrooi met kaas.",
+        "Bak 25 minuten en serveer met de rijst."
+      ]
+    },
+    "pates-thon-tomate-olives": {
+      "title": "Snelle pasta met tonijn, tomaat en olijven",
+      "steps": [
+        "Kook de pasta.",
+        "Fruit de ui in olie, voeg de tomaten en kruiden toe.",
+        "Verkruimel de tonijn, voeg de olijven toe en warm 8 minuten door.",
+        "Meng met de uitgelekte pasta."
+      ]
+    },
+    "crevettes-ail-citron-pates": {
+      "title": "Pasta met garnalen, knoflook en citroen",
+      "steps": [
+        "Kook de pasta.",
+        "Fruit de fijngehakte knoflook 1 minuut in olie.",
+        "Voeg de garnalen toe en bak 4 minuten met het citroensap.",
+        "Meng met de pasta en gehakte peterselie."
+      ]
+    },
+    "curry-cabillaud-coco-riz": {
+      "title": "Kabeljauwcurry met kokosmelk",
+      "steps": [
+        "Kook de rijst. Fruit de paprika in reepjes met de gember en curry.",
+        "Voeg de kokosmelk toe en laat 5 minuten sudderen.",
+        "Voeg de vis in grote stukken toe en kook 8 minuten op laag vuur.",
+        "Serveer op de rijst met koriander."
+      ]
+    },
+    "saumon-laque-miel-soja": {
+      "title": "Gelakte zalm met honing en sojasaus",
+      "steps": [
+        "Kook de rijst en sperziebonen.",
+        "Meng de honing met de sojasaus.",
+        "Bak de zalmfilets 3 minuten per kant in olie.",
+        "Voeg de saus toe, laat 2 minuten karameliseren en serveer."
+      ]
+    },
+    "spaghettis-sardines-citron": {
+      "title": "Spaghetti met sardines, citroen en cherrytomaten",
+      "steps": [
+        "Kook de pasta.",
+        "Fruit de knoflook en de gehalveerde cherrytomaten in olie.",
+        "Voeg de verkruimelde sardines, de rasp en het sap van de citroen toe.",
+        "Meng met de pasta en peterselie."
+      ]
+    },
+    "fish-and-chips-four": {
+      "title": "Gebakken vis, ovenfriet en doperwtjes",
+      "steps": [
+        "Bak de met olie en zout gemengde frieten 35 minuten op 210 °C.",
+        "Haal de vis door bloem, dan door losgeklopt ei en daarna door paneermeel.",
+        "Leg hem op een ingevette bakplaat en bak 15 minuten.",
+        "Kook de doperwten 5 minuten en serveer."
+      ]
+    },
+    "risotto-saumon-fume-epinards": {
+      "title": "Romige risotto met gerookte zalm en spinazie",
+      "steps": [
+        "Los de bouillonblokjes op in 1 liter heet water. Fruit de ui in de olie.",
+        "Voeg de rijst toe, bak 2 minuten glazig en schenk de bouillon er in porties bij gedurende 18 minuten.",
+        "Roer de spinazie, room en Parmezaanse kaas erdoor.",
+        "Voeg vlak voor het serveren de gerookte zalm in reepjes toe."
+      ]
+    },
+    "curry-pois-chiches-epinards": {
+      "title": "Vegetarische curry met kikkererwten en spinazie",
+      "steps": [
+        "Kook de rijst. Fruit de ui, knoflook en gember in de olie.",
+        "Voeg de kerrie, tomaten, uitgelekte kikkererwten en kokosmelk toe.",
+        "Laat 15 minuten sudderen, zout toevoegen.",
+        "Doe de spinazie er 2 minuten voor het einde bij en serveer met de rijst."
+      ]
+    },
+    "dahl-lentilles-carottes": {
+      "title": "Linzen-dahl met worteltjes",
+      "steps": [
+        "Fruit de ui en de wortelblokjes in de olie met de specerijen.",
+        "Voeg de afgespoelde linzen, de tomaten en 600 ml water toe.",
+        "Laat 25 minuten sudderen, schenk dan de kokosmelk erbij en voeg zout toe.",
+        "Kook de rijst en serveer met de dahl."
+      ]
+    },
+    "chili-sin-carne-riz": {
+      "title": "Vegetarische chili met rode bonen",
+      "steps": [
+        "Fruit de ui en de paprika in blokjes in de olie.",
+        "Voeg de specerijen, tomaten, uitgelekte bonen en maïs toe.",
+        "Laat 25 minuten op laag vuur sudderen.",
+        "Kook de rijst en serveer."
+      ]
+    },
+    "ratatouille-provencale-riz": {
+      "title": "Provençaalse ratatouille",
+      "steps": [
+        "Snijd alle groenten in blokjes.",
+        "Bak ze apart in de olie, beginnend met de aubergine.",
+        "Doe alles samen in een pan met de knoflook, kruiden en zout.",
+        "Laat 30 minuten met deksel sudderen, kook de rijst en serveer."
+      ]
+    },
+    "gratin-courgettes-chevre": {
+      "title": "Courgettegratin met geitenkaas",
+      "steps": [
+        "Verwarm de oven voor op 190 °C. Snijd de courgettes in plakjes.",
+        "Leg ze in een schaal met de verkruimelde geitenkaas.",
+        "Klop de eieren, room, kruiden, zout en peper los en giet over de groenten.",
+        "Bestrooi met kaas en bak 35 minuten."
+      ]
+    },
+    "lasagnes-legumes-ricotta": {
+      "title": "Lasagne met groenten en ricotta",
+      "steps": [
+        "Bak de courgette- en aubergineblokjes 10 minuten in de olie.",
+        "Voeg de tomaten en zout toe, laat 10 minuten sudderen.",
+        "Leg in een schaal afwisselend lasagnevellen, groenten en ricotta, eindig met mozzarella.",
+        "Bak 35 minuten op 190 °C en strooi er basilicum over."
+      ]
+    },
+    "omelette-champignons-pommes-de-terre": {
+      "title": "Omelet met champignons en gebakken aardappelen",
+      "steps": [
+        "Kook de aardappelblokjes 12 minuten, giet ze af.",
+        "Bak ze goudbruin in boter met de gesneden champignons.",
+        "Giet de losgeklopte, gezouten en gepeperde eieren erbij en bak 6 minuten op laag vuur.",
+        "Serveer met bieslook en salade."
+      ]
+    },
+    "tarte-fine-tomates-chevre": {
+      "title": "Dunne taart met tomaten en geitenkaas",
+      "steps": [
+        "Verwarm de oven voor op 200 °C en rol het deeg uit op een bakplaat.",
+        "Bestrijk met mosterd.",
+        "Bedek met plakjes tomaat en geitenkaas, bestrooi met kruiden.",
+        "Bak 25 minuten en serveer met salade."
+      ]
+    },
+    "saute-tofu-legumes-sesame": {
+      "title": "Gebakken tofu met groenten en gember",
+      "steps": [
+        "Kook de rijst. Snijd de tofu in blokjes en bak deze 8 minuten goudbruin in de olie.",
+        "Voeg de knoflook, gember en roerbakgroenten toe.",
+        "Bak 7 minuten, voeg de sojasaus toe.",
+        "Serveer op de rijst."
+      ]
+    },
+    "falafels-four-houmous": {
+      "title": "Ovenfalafel met sesamsaus en pita",
+      "steps": [
+        "Verwarm de oven voor op 200 °C. Mix kikkererwten, ui, peterselie, komijn, bloem en zout.",
+        "Maak balletjes en bak 25 minuten, draai halverwege om.",
+        "Meng de tahini, citroensap en wat water.",
+        "Vul de pita's met falafel, tomaat, komkommer en saus."
+      ]
+    },
+    "gnocchi-poeles-tomates-mozzarella": {
+      "title": "Geroerbakte gnocchi met cherrytomaten en mozzarella",
+      "steps": [
+        "Bak de gnocchi 8 minuten goudbruin in de olie.",
+        "Voeg de knoflook en gehalveerde cherrytomaten toe.",
+        "Bak 5 minuten, voeg de mozzarella in stukjes toe.",
+        "Serveer met basilicum."
+      ]
+    },
+    "pates-pesto-courgettes": {
+      "title": "Pasta met pesto, courgette en cherrytomaten",
+      "steps": [
+        "Kook de pasta.",
+        "Bak de blokjes courgette 6 minuten in de olie.",
+        "Voeg de cherrytomaten toe en bak 3 minuten.",
+        "Meng met de pasta en de pesto."
+      ]
+    },
+    "risotto-champignons-parmesan": {
+      "title": "Risotto met champignons en Parmezaan",
+      "steps": [
+        "Los de bouillonblokjes op in 1 liter heet water. Fruit de ui en de champignons in boter.",
+        "Voeg de rijst toe, laat 2 minuten glazig worden, voeg dan beetje bij beetje de bouillon toe.",
+        "Kook 18 minuten al roerend.",
+        "Werk af met Parmezaan."
+      ]
+    },
+    "veloute-courge-chevre-croutons": {
+      "title": "Pompoensoep met croutons en geitenkaas",
+      "steps": [
+        "Fruit de ui, voeg de blokjes pompoen en aardappel toe.",
+        "Bedek met water, voeg de bouillon toe en kook 25 minuten.",
+        "Mix met de room en voeg zout toe.",
+        "Serveer met gegrilde baguetteschijfjes en geitenkaas."
+      ]
+    },
+    "pizza-maison-margherita": {
+      "title": "Zelfgemaakte pizza margherita",
+      "steps": [
+        "Meng bloem, gist, zout, olie en 180 ml lauw water, kneed 5 minuten.",
+        "Laat 20 minuten rijzen en rol daarna het deeg uit.",
+        "Beleg met tomaten en mozzarella.",
+        "Bak 15 minuten op 230 °C en bestrooi met basilicum."
+      ]
+    },
+    "galettes-pommes-de-terre-fromage": {
+      "title": "Krokante aardappelkoekjes met kaas",
+      "steps": [
+        "Rasp de aardappels en de ui, goed uitknijpen.",
+        "Meng met eieren, bloem, kaas en zout.",
+        "Vorm koekjes en bak ze 5 minuten per kant goudbruin in olie.",
+        "Serveer met de salade."
+      ]
+    },
+    "curry-patate-douce-pois-chiches": {
+      "title": "Curry van zoete aardappel en kikkererwten",
+      "steps": [
+        "Fruit de ui en de currypoeder in olie.",
+        "Voeg de blokjes zoete aardappel en kokosmelk toe, laat 20 minuten sudderen.",
+        "Voeg de kikkererwten en spinazie toe, 3 minuten laten garen.",
+        "Kook de rijst en serveer."
+      ]
+    },
+    "shakshuka-oeufs-tomates": {
+      "title": "Shakshuka, gepocheerde eieren in tomatensaus",
+      "steps": [
+        "Fruit de ui en de reepjes paprika in olie.",
+        "Voeg kruiden, tomaten en zout toe, laat 12 minuten pruttelen.",
+        "Maak kuiltjes, breek de eieren erin en dek 7 minuten af.",
+        "Serveer met baguette."
+      ]
+    },
+    "buddha-bowl-quinoa-patate-douce": {
+      "title": "Buddha bowl met quinoa en geroosterde zoete aardappel",
+      "steps": [
+        "Rooster de blokjes zoete aardappel 25 minuten op 200 °C met olie.",
+        "Kook de quinoa 12 minuten.",
+        "Meng tahin, citroen, zout en een beetje water.",
+        "Maak de kommen op met quinoa, zoete aardappel, kikkererwten, spinazie, avocado en de saus."
+      ]
+    },
+    "boulgour-legumes-roties-feta": {
+      "title": "Bulgur met geroosterde groenten en feta",
+      "steps": [
+        "Rooster blokjes courgette en paprika 25 minuten op 200 °C met olie.",
+        "Kook de bulgur 12 minuten in gezouten water.",
+        "Meng met de groenten, het citroensap en de munt.",
+        "Bestrooi met verkruimelde feta."
+      ]
+    },
+    "quesadillas-haricots-fromage": {
+      "title": "Quesadilla's met bonen en kaas",
+      "steps": [
+        "Prak de bonen grof met het komijnpoeder.",
+        "Smeer uit over 4 tortilla's, voeg maïs, tomatenblokjes en kaas toe.",
+        "Sluit af met de 4 andere tortilla's.",
+        "Bak 3 minuten per kant in de pan en snijd in stukken."
+      ]
+    },
+    "spaghettis-ail-huile-persil": {
+      "title": "Spaghetti met knoflook, olijfolie en peterselie",
+      "steps": [
+        "Kook de pasta in ruim gezouten water.",
+        "Verwarm de olie zacht met de fijngesneden knoflook en peper.",
+        "Voeg de uitgelekte pasta en wat kookvocht toe.",
+        "Meng met de gehakte peterselie."
+      ]
+    },
+    "gratin-chou-fleur-fromage": {
+      "title": "Bloemkoolgratin met bechamelsaus",
+      "steps": [
+        "Kook de bloemkoolroosjes 10 minuten in water.",
+        "Maak de bechamel: boter, bloem, dan al kloppend de melk toevoegen.",
+        "Leg de bloemkool in een schaal, overgiet met saus en kaas.",
+        "Gratineer 25 minuten op 200 °C."
+      ]
+    },
+    "pates-petits-pois-fromage": {
+      "title": "Romige pasta met erwtjes",
+      "steps": [
+        "Kook de pasta, voeg de erwtjes toe 4 minuten voor het einde.",
+        "Giet af en houd een beetje kookvocht apart.",
+        "Doe alles terug in de pan met de room en verwarm 2 minuten.",
+        "Voeg de kaas toe en meng."
+      ]
+    },
+    "pommes-de-terre-farcies-fromage-blanc": {
+      "title": "Gepofte aardappelen gevuld met plattekaas",
+      "steps": [
+        "Bak de hele aardappelen 45 minuten op 200 °C.",
+        "Snijd ze open en plet het vruchtvlees met de plattekaas, bieslook en zout.",
+        "Vul de schil en strooi er kaas over.",
+        "Gratineer 10 minuten en serveer met de salade."
+      ]
+    },
+    "soupe-lentilles-carottes": {
+      "title": "Dikke linzen-wortelsoep",
+      "steps": [
+        "Fruit de ui en wortel in plakjes in de olie.",
+        "Voeg de afgespoelde linzen, komijn, bouillon en 1,2 liter water toe.",
+        "Laat 30 minuten koken.",
+        "Pureer deels en serveer met brood."
+      ]
+    },
+    "nouilles-sautees-legumes-oeuf": {
+      "title": "Gebakken rijstnoedels met ei en groenten",
+      "steps": [
+        "Week de noedels 5 minuten in heet water.",
+        "Bak de groenten 6 minuten in olie, duw aan de kant en roerbak het ei.",
+        "Voeg de noedels en sojasaus toe.",
+        "Serveer met gehakte pinda's en citroen."
+      ]
+    },
+    "couscous-poulet-legumes": {
+      "title": "Couscous met kip en groenten",
+      "steps": [
+        "Bak de kip met de ui in de olie.",
+        "Voeg de kruiden, tomatenpuree, wortels en 1 liter water toe, laat 30 minuten sudderen.",
+        "Voeg courgette en kikkererwten toe, kook nog 15 minuten.",
+        "Laat de couscous wellen in heet water en serveer met de bouillon."
+      ]
+    },
+    "tajine-agneau-patate-douce": {
+      "title": "Tajine van lam met zoete aardappel",
+      "steps": [
+        "Bak het lamsvlees in stukjes met de ui in olie.",
+        "Voeg de kruiden toe en voeg water toe tot het vlees net onderstaat.",
+        "Laat 1 uur sudderen, voeg dan de zoete aardappel en kikkererwten toe en kook 30 minuten.",
+        "Laat de couscous wellen en serveer."
+      ]
+    },
+    "boulettes-kefta-semoule": {
+      "title": "Keftaballetjes in tomatensaus, griesmeel",
+      "steps": [
+        "Meng het rundvlees, gehakte ui, peterselie, kruiden en zout.",
+        "Vorm balletjes en bak ze bruin in olie.",
+        "Voeg de tomaten toe en laat 15 minuten sudderen.",
+        "Laat de griesmeel wellen en serveer."
+      ]
+    },
+    "paella-poulet-chorizo": {
+      "title": "Paella met kip en chorizo",
+      "steps": [
+        "Bak de kip en chorizo in plakjes in olie, zet apart.",
+        "Fruit de ui en paprika, voeg de rijst en tomaten toe.",
+        "Giet 700 ml warme bouillon erbij, doe het vlees terug, kook 20 minuten.",
+        "Voeg de erwtjes aan het einde toe."
+      ]
+    },
+    "riz-cantonais-maison": {
+      "title": "Zelfgemaakte Chinese rijst",
+      "steps": [
+        "Kook de rijst en laat afkoelen.",
+        "Bak de wortelblokjes en erwtjes 5 minuten in olie.",
+        "Duw aan de kant, roerbak het ei, voeg de hamblokjes toe.",
+        "Voeg de rijst en sojasaus toe, bak nog 5 minuten."
+      ]
+    },
+    "bol-vietnamien-boeuf-nouilles": {
+      "title": "Vietnamese bowl met rund en rijstnoedels",
+      "steps": [
+        "Kook de noedels en spoel koud af.",
+        "Bak het rundvlees met sojasaus in olie bruin.",
+        "Maak de salade, geraspte wortel, komkommer en munt klaar.",
+        "Stel de bowls samen en voeg de pinda's en citroen toe."
+      ]
+    },
+    "poulet-yassa-oignons-citron": {
+      "title": "Yassa-kip met gekonfijte uien en citroen",
+      "steps": [
+        "Marineer de kip met citroensap, mosterd en zout gedurende 15 minuten.",
+        "Bak de kip in olie en zet apart.",
+        "Laat de gesneden uien 20 minuten zacht worden op laag vuur.",
+        "Doe de kip terug, stoof 10 minuten en serveer met rijst."
+      ]
+    },
+    "fajitas-poulet-poivrons": {
+      "title": "Fajita's met kip en paprika",
+      "steps": [
+        "Snijd kip, paprika's en ui in reepjes.",
+        "Bak ze 10 minuten in olie met de kruiden.",
+        "Verwarm de wraps.",
+        "Vul met kip, groenten en een lepel yoghurt."
+      ]
+    },
+    "gyros-poulet-pita-tzatziki": {
+      "title": "Pita's met gegrilde kip, tzatzikisaus",
+      "steps": [
+        "Yoghurt, geraspte komkommer, knoflook en munt mengen voor de saus.",
+        "Kip in reepjes met paprikapoeder aanbakken in de olie.",
+        "De pita's opwarmen.",
+        "Beleggen met kip, tomaat en saus."
+      ]
+    },
+    "moussaka-simplifiee": {
+      "title": "Vereenvoudigde moussaka",
+      "steps": [
+        "Aubergines in plakken 15 minuten roosteren op 200 °C met olie.",
+        "Ui en rundergehakt bakken, tomaten toevoegen.",
+        "Een bechamelsaus maken met boter, bloem en melk.",
+        "Aubergine en vlees afwisselen, bedekken met bechamel en kaas, 30 minuten in de oven."
+      ]
+    },
+    "tartiflette-gourmande": {
+      "title": "Luxe tartiflette",
+      "steps": [
+        "Aardappelschijfjes 15 minuten koken in water.",
+        "Spekblokjes en ui bakken.",
+        "Alles in een ovenschaal doen met room en peper, bedekken met kaas.",
+        "25 minuten gratineren op 200 °C."
+      ]
+    },
+    "pot-au-feu-familial": {
+      "title": "Familiepot-au-feu",
+      "steps": [
+        "Bedek het rundvlees met koud water in een grote pan met bouillon en ui.",
+        "Aan de kook brengen en 2 uur zacht laten koken, schuim verwijderen.",
+        "Voeg wortels, prei en aardappelen toe voor de laatste 35 minuten.",
+        "Serveren met mosterd."
+      ]
+    },
+    "blanquette-dinde-riz": {
+      "title": "Kalkoenragout met rijst",
+      "steps": [
+        "Ui, wortel en stukjes kalkoen aanbakken in boter.",
+        "Bestrooien met bloem, overgieten met water en bouillon, 30 minuten laten koken.",
+        "Champignons toevoegen en 10 minuten laten garen.",
+        "Binden met room en serveren op de rijst."
+      ]
+    },
+    "gratin-macaronis-jambon": {
+      "title": "Macaronigratin met ham",
+      "steps": [
+        "Kook de pasta 2 minuten korter dan op de verpakking.",
+        "Mengen met hamblokjes, room, melk en de helft van de kaas.",
+        "In een ovenschaal doen en afdekken met de rest van de kaas.",
+        "20 minuten gratineren op 200 °C."
+      ]
+    },
+    "bol-riz-saumon-fume-avocat": {
+      "title": "Rijstbowl met gerookte zalm en avocado",
+      "steps": [
+        "Kook de rijst en laat afkoelen tot lauwwarm.",
+        "Avocado’s en komkommer in plakken snijden.",
+        "Verdeel de rijst over de kommen met de gerookte zalm.",
+        "Op smaak brengen met sojasaus en citroensap."
+      ]
+    },
+    "salade-cesar-poulet": {
+      "title": "Caesarsalade met kip en zelfgemaakte croutons",
+      "steps": [
+        "Snijd het stokbrood in blokjes en bak goudbruin in de olie.",
+        "Kip in reepjes 8 minuten bakken.",
+        "Yoghurt, citroen, mosterd en zout mengen.",
+        "Salade, kip, croutons, Parmezaan en saus samenvoegen."
+      ]
+    },
+    "salade-chevre-chaud-noix": {
+      "title": "Salade met warme geitenkaas, appel en walnoten",
+      "steps": [
+        "Stokbrood in plakken snijden en geitenkaas erop leggen.",
+        "Besprenkelen met honing en 8 minuten gratineren op 200 °C.",
+        "Salade maken met appelblokjes en walnoten.",
+        "Op smaak brengen met olie en azijn en de toast erop leggen."
+      ]
+    },
+    "salade-lentilles-lardons": {
+      "title": "Lauwwarme linzensalade met spekjes",
+      "steps": [
+        "Linzen 20 minuten koken in water.",
+        "Spekjes bakken.",
+        "Mosterd, azijn, olie en zout mengen.",
+        "Linzen, spekjes, geraspte wortel en fijngehakte sjalot samenvoegen."
+      ]
+    },
+    "spaghettis-carbonara": {
+      "title": "Spaghetti carbonara",
+      "steps": [
+        "Kook de pasta.",
+        "Spekjes zonder vet bakken.",
+        "Eieren loskloppen met Parmezaan en peper.",
+        "Pasta, spekjes en saus van het vuur mengen, eventueel wat kookwater toevoegen."
+      ]
+    },
+    "tagliatelles-saumon-creme": {
+      "title": "Tagliatelle met zalm en citroen",
+      "steps": [
+        "Kook de pasta.",
+        "Zalmsnippers 4 minuten bakken in de pan.",
+        "Room en citroensap toevoegen, 2 minuten verwarmen.",
+        "Mengen met pasta en bieslook."
+      ]
+    },
+    "tortilla-espagnole": {
+      "title": "Spaanse tortilla met aardappelen",
+      "steps": [
+        "Bak de aardappel- en uienplakjes zachtjes in de olie gedurende 15 minuten.",
+        "Meng ze met de losgeklopte, gezouten eieren.",
+        "Bak in de pan 6 minuten, keer om met behulp van een bord.",
+        "Bak nog 4 minuten en serveer met de salade."
+      ]
+    },
+    "soupe-nouilles-poulet": {
+      "title": "Kippensoep met noedels en gember",
+      "steps": [
+        "Los de blokjes op in 1,2 liter heet water met de gember.",
+        "Voeg in reepjes gesneden kip, wortel en champignons toe, kook 8 minuten.",
+        "Voeg de noedels toe en kook 3 minuten.",
+        "Serveer met sojasaus en koriander."
+      ]
+    },
+    "rougail-saucisses": {
+      "title": "Rougail met worstjes",
+      "steps": [
+        "Prik in de worstjes en bak ze bruin in de olie.",
+        "Voeg de ui, knoflook en gember toe.",
+        "Voeg de tomaten en de peper toe, laat 25 minuten sudderen.",
+        "Kook de rijst en serveer."
+      ]
+    },
+    "mini-pizzas-pita": {
+      "title": "Mini-pizza's op pitabrood",
+      "steps": [
+        "Verwarm de oven voor op 210 °C.",
+        "Smeer de tomatensaus en kruiden uit over de pita's.",
+        "Voeg de gesneden ham en mozzarella toe.",
+        "Bak 10 minuten tot de kaas goudbruin is."
+      ]
+    },
+    "veloute-carottes-cumin": {
+      "title": "Wortelsoep met komijn",
+      "steps": [
+        "Fruit de ui in de olie.",
+        "Voeg wortels, aardappel, komijn, bouillon en 800 ml water toe.",
+        "Kook 25 minuten.",
+        "Pureer tot een gladde soep."
+      ]
+    },
+    "soupe-poireaux-pommes-de-terre": {
+      "title": "Prei-aardappelsoep",
+      "steps": [
+        "Laat de gesneden prei 5 minuten smelten in de boter.",
+        "Voeg de aardappelblokjes, de bouillon en 800 ml water toe.",
+        "Kook 25 minuten.",
+        "Pureer met de room en bestrooi met bieslook."
+      ]
+    },
+    "gaspacho-tomate-concombre": {
+      "title": "Frisse gazpacho van tomaat en komkommer",
+      "steps": [
+        "Snijd alle groenten grof.",
+        "Pureer ze met het brood, de knoflook, olie, azijn en zout.",
+        "Zet minstens 1 uur koel weg.",
+        "Serveer goed koud."
+      ]
+    },
+    "salade-tomate-mozzarella-basilic": {
+      "title": "Salade van tomaat, mozzarella en basilicum",
+      "steps": [
+        "Snijd de tomaten en de mozzarella in plakken.",
+        "Leg ze om en om in een schaal.",
+        "Voeg de basilicumblaadjes toe.",
+        "Breng op smaak met olie, zout en peper."
+      ]
+    },
+    "salade-betterave-pomme-feta": {
+      "title": "Salade met rode biet, appel en feta",
+      "steps": [
+        "Snijd de rode biet en appel in blokjes.",
+        "Verkruimel de feta en hak de noten grof.",
+        "Meng alles door elkaar.",
+        "Breng op smaak met olie en azijn."
+      ]
+    },
+    "oeufs-mimosa-yaourt": {
+      "title": "Lichte mimosa-eieren",
+      "steps": [
+        "Kook de eieren 10 minuten in kokend water, laat ze vervolgens afkoelen.",
+        "Halveer ze en prak de dooiers.",
+        "Meng de dooiers met de yoghurt, mosterd en het zout.",
+        "Vul de eiwitten en bestrooi met bieslook."
+      ]
+    },
+    "houmous-crudites-pita": {
+      "title": "Zelfgemaakte hummus, rauwkost en pita",
+      "steps": [
+        "Pureer de kikkererwten, tahin, citroensap, knoflook, zout en wat water.",
+        "Snijd wortel en komkommer in reepjes.",
+        "Verwarm de pita's en snijd ze.",
+        "Serveer om te dippen."
+      ]
+    },
+    "taboule-frais-menthe": {
+      "title": "Frisse tabouleh met munt",
+      "steps": [
+        "Giet evenveel heet water over de couscous als couscous, laat 5 minuten wellen.",
+        "Snijd de tomaten en komkommer fijn.",
+        "Meng met de fijngesneden kruiden.",
+        "Voeg citroensap, olie en zout toe."
+      ]
+    },
+    "carottes-rapees-orange": {
+      "title": "Geraspte wortels met sinaasappel",
+      "steps": [
+        "Rasp de wortels.",
+        "Pers de sinaasappel voor het sap.",
+        "Meng met de olie en het zout.",
+        "Bestrooi met peterselie."
+      ]
+    },
+    "avocats-farcis-thon": {
+      "title": "Gevulde avocado's met tonijn",
+      "steps": [
+        "Halveer de avocado's en verwijder de pit.",
+        "Meng de verkruimelde tonijn, de yoghurt, de citroen, het zout en de peper.",
+        "Vul de avocado's met het mengsel.",
+        "Serveer koel."
+      ]
+    },
+    "feuilletes-chevre-miel": {
+      "title": "Bladerdeeghapjes met geitenkaas en honing",
+      "steps": [
+        "Verwarm de oven voor op 200 °C. Snijd het deeg in 8 vierkanten.",
+        "Leg een plak geitenkaas op elk vierkant.",
+        "Besprenkel met honing en bestrooi met kruiden.",
+        "Bak 15 minuten."
+      ]
+    },
+    "concombre-yaourt-menthe": {
+      "title": "Frisse komkommer met yoghurt en munt",
+      "steps": [
+        "Snijd de komkommers in dunne plakjes.",
+        "Meng de yoghurt, geperste knoflook, munt en zout.",
+        "Voeg de komkommers toe.",
+        "Zeer koel serveren."
+      ]
+    },
+    "soupe-tomate-basilic": {
+      "title": "Tomatensoep met basilicum",
+      "steps": [
+        "Fruit de ui in de olie.",
+        "Voeg de tomaten, bouillon en 300 ml water toe, kook 15 minuten.",
+        "Pureer met de basilicum.",
+        "Voeg de room toe en verwarm."
+      ]
+    },
+    "salade-pois-chiches-feta": {
+      "title": "Salade van kikkererwten, komkommer en feta",
+      "steps": [
+        "Laat de kikkererwten uitlekken.",
+        "Snijd de komkommer en cherrytomaatjes.",
+        "Verkruimel de feta erover.",
+        "Op smaak brengen met citroen en olie."
+      ]
+    },
+    "veloute-champignons": {
+      "title": "Romige champignonsoep",
+      "steps": [
+        "Fruit ui en gesneden champignons in boter.",
+        "Voeg de aardappel in blokjes, bouillon en 600 ml water toe.",
+        "Kook 20 minuten.",
+        "Pureer met de room."
+      ]
+    },
+    "bruschettas-tomate-basilic": {
+      "title": "Bruschetta met tomaat en basilicum",
+      "steps": [
+        "Snijd de stokbrood in plakken en rooster ze.",
+        "Wrijf de plakken in met knoflook.",
+        "Meng blokjes tomaat, basilicum, olie en zout.",
+        "Beleg de broodjes."
+      ]
+    },
+    "salade-chou-carotte-yaourt": {
+      "title": "Knapperige salade van kool en wortel",
+      "steps": [
+        "Snijd de kool fijn en rasp de wortel.",
+        "Meng yoghurt, mosterd, azijn en zout.",
+        "Breng de groenten op smaak.",
+        "10 minuten laten rusten voor serveren."
+      ]
+    },
+    "mousse-chocolat-noir": {
+      "title": "Intense chocolademousse",
+      "steps": [
+        "Smelt de chocolade au bain-marie.",
+        "Splits de eieren en meng de dooiers met de afgekoelde chocolade.",
+        "Klop het eiwit stijf met de suiker.",
+        "Voorzichtig mengen en 3 uur koel laten staan."
+      ]
+    },
+    "crumble-pommes-cannelle": {
+      "title": "Appelcrumble met kaneel",
+      "steps": [
+        "Verwarm de oven voor op 180 °C. Schil de appels, snijd in blokjes en doe ze met de kaneel in een schaal.",
+        "Wrijf bloem, koude boter en suiker met de vingers tot kruimels.",
+        "Strooi over de appels.",
+        "Bak 35 minuten."
+      ]
+    },
+    "tarte-pommes-feuilletee": {
+      "title": "Dunne appeltaart",
+      "steps": [
+        "Verwarm de oven voor op 190 °C en rol het deeg uit.",
+        "Leg de plakjes appel erop.",
+        "Bestrooi met suiker en kaneel, verdeel de boter.",
+        "Bak 35 minuten."
+      ]
+    },
+    "gateau-au-yaourt-classique": {
+      "title": "Luchtige yoghurtcake",
+      "steps": [
+        "Verwarm de oven voor op 180 °C.",
+        "Meng yoghurt, suiker, eieren en olie.",
+        "Voeg bloem en bakpoeder toe.",
+        "Giet in een vorm en bak 35 minuten."
+      ]
+    },
+    "riz-au-lait-vanille": {
+      "title": "Rijstepap met vanille",
+      "steps": [
+        "Spoel de rijst.",
+        "Kook hem op laag vuur in melk met de vanille.",
+        "Roer regelmatig gedurende 40 minuten.",
+        "Voeg de suiker toe aan het einde van het koken en laat afkoelen."
+      ]
+    },
+    "fondant-chocolat-coeur-coulant": {
+      "title": "Chocoladefondant",
+      "steps": [
+        "Verwarm de oven voor op 180 °C.",
+        "Smelt chocolade en boter.",
+        "Voeg suiker, eieren en daarna bloem toe.",
+        "Giet in vormpjes en bak 10 tot 12 minuten."
+      ]
+    },
+    "salade-fruits-frais-menthe": {
+      "title": "Verse fruitsalade met munt",
+      "steps": [
+        "Schil en snijd al het fruit in blokjes.",
+        "Besprenkel met citroensap.",
+        "Voeg de fijngesneden munt toe.",
+        "30 minuten koel bewaren."
+      ]
+    },
+    "fromage-blanc-miel-noix": {
+      "title": "Kwark met honing en noten",
+      "steps": [
+        "Verdeel de kwark over 4 kommen.",
+        "Besprenkel met honing.",
+        "Bestrooi met gehakte noten.",
+        "Koel serveren."
+      ]
+    },
+    "crepes-faciles": {
+      "title": "Dunne, luchtige pannenkoeken",
+      "steps": [
+        "Meng bloem, suiker en eieren, voeg dan geleidelijk de melk toe.",
+        "Voeg de gesmolten boter toe.",
+        "20 minuten laten rusten.",
+        "Bak in een hete pan, 1 minuut per kant."
+      ]
+    },
+    "compote-pommes-maison": {
+      "title": "Zelfgemaakte appelmoes",
+      "steps": [
+        "Schil en snijd de appels.",
+        "Kook ze afgedekt met 5 cl water en kaneel.",
+        "Prak na 20 minuten met een vork.",
+        "Voeg de suiker toe en laat afkoelen."
+      ]
+    },
+    "tiramisu-fraises-speculoos": {
+      "title": "Tiramisu met aardbeien en koekjes",
+      "steps": [
+        "Scheidt de eiwitten en dooiers.",
+        "Klop dooiers en suiker, voeg daarna de mascarpone toe.",
+        "Spatel de opgeklopte eiwitten erdoor.",
+        "Schik in glaasjes met koekjes en aardbeien, laat 4 uur koelen."
+      ]
+    },
+    "gateau-banane-moelleux": {
+      "title": "Luchtige bananencake",
+      "steps": [
+        "Verwarm de oven voor op 180 °C.",
+        "Prak de bananen en voeg suiker, eieren en gesmolten boter toe.",
+        "Voeg bloem en bakpoeder toe.",
+        "Bak 40 minuten in een vorm."
+      ]
+    },
+    "poires-chocolat-chaud": {
+      "title": "Gepocheerde peren met chocoladesaus",
+      "steps": [
+        "Schil de peren en kook ze 15 minuten in zacht kokend water.",
+        "Smelt de chocolade met de room.",
+        "Laat de peren uitlekken.",
+        "Serveer met warme saus."
+      ]
+    },
+    "cookies-pepites-chocolat": {
+      "title": "Koekjes met chocoladestukjes",
+      "steps": [
+        "Verwarm de oven voor op 180 °C.",
+        "Meng zachte boter, suiker en ei.",
+        "Voeg bloem, bakpoeder en stukjes chocolade toe.",
+        "Vorm bolletjes op een bakplaat en bak 12 minuten."
+      ]
+    },
+    "porridge-pomme-cannelle": {
+      "title": "Warme havermout met appel en kaneel",
+      "steps": [
+        "Verwarm de melk met de havervlokken op laag vuur.",
+        "Roer 5 minuten tot het dik wordt.",
+        "Voeg de geraspte appel en de kaneel toe.",
+        "Serveer met een beetje honing."
+      ]
+    },
+    "pancakes-moelleux-banane": {
+      "title": "Luchtige bananenpannenkoeken",
+      "steps": [
+        "Bloem, bakpoeder, suiker, eieren, melk en gesmolten boter mengen.",
+        "5 minuten laten rusten.",
+        "Kleine porties 2 minuten per kant bakken.",
+        "Serveren met banaan in plakjes."
+      ]
+    },
+    "tartines-avocat-oeuf": {
+      "title": "Toast met avocado en gepocheerd ei",
+      "steps": [
+        "Het brood roosteren.",
+        "De avocado prakken met citroen, zout en peper.",
+        "De eieren bakken of pocheren.",
+        "Het brood met avocado besmeren en de eieren erop leggen."
+      ]
+    },
+    "granola-maison-miel": {
+      "title": "Krokante huisgemaakte granola",
+      "steps": [
+        "De oven voorverwarmen op 160 °C.",
+        "Havervlokken, gehakte noten, olie, honing en kaneel mengen.",
+        "Verspreiden op een bakplaat.",
+        "20 minuten bakken en halverwege omscheppen."
+      ]
+    },
+    "oeufs-brouilles-toasts": {
+      "title": "Romige roerei met toast",
+      "steps": [
+        "Brood roosteren.",
+        "Eieren loskloppen met zout.",
+        "Ze langzaam met boter al roerend bakken.",
+        "Serveren met tomaat en bieslook."
+      ]
+    },
+    "bol-yaourt-fruits-granola": {
+      "title": "Kommen yoghurt met rood fruit en havervlokken",
+      "steps": [
+        "De yoghurt over 4 kommen verdelen.",
+        "Banaan in plakjes en het rode fruit toevoegen.",
+        "Bestrooien met havervlokken.",
+        "Besprenkelen met honing."
+      ]
+    },
+    "pain-perdu-cannelle": {
+      "title": "Wentelteefjes met kaneel",
+      "steps": [
+        "Eieren, melk, suiker en kaneel kloppen.",
+        "De sneetjes brood een paar seconden onderdompelen.",
+        "Goudbruin bakken in boter, 3 minuten per kant.",
+        "Lauw serveren."
+      ]
+    },
+    "smoothie-banane-fraise": {
+      "title": "Romige banaan-aardbei smoothie",
+      "steps": [
+        "Banaan in plakjes snijden.",
+        "Alle ingrediënten in een blender doen.",
+        "1 minuut mixen.",
+        "Onmiddellijk serveren."
+      ]
+    },
+    "overnight-oats-fruits-rouges": {
+      "title": "Overnight oats met rood fruit",
+      "steps": [
+        "De avond ervoor havervlokken, yoghurt, melk en honing mengen.",
+        "Over 4 potjes verdelen en rood fruit toevoegen.",
+        "Afdekken en een nacht koel wegzetten.",
+        "Koud eten."
+      ]
+    }
+  },
+  "ingredients": {
+    "oignon": "Ui",
+    "ail": "Knoflook (teen)",
+    "echalote": "Sjalot",
+    "carotte": "Wortel",
+    "pomme-de-terre": "Aardappel",
+    "patate-douce": "Zoete aardappel",
+    "courgette": "Courgette",
+    "aubergine": "Aubergine",
+    "poivron": "Paprika",
+    "tomate": "Tomaat",
+    "tomate-cerise": "Kerstomaat",
+    "concombre": "Komkommer",
+    "champignon": "Witte champignon",
+    "epinard": "Verse spinazie",
+    "salade": "Groene salade",
+    "brocoli": "Broccoli",
+    "chou-fleur": "Bloemkool",
+    "chou": "Witte kool",
+    "poireau": "Prei",
+    "haricot-vert": "Prinsessenboon",
+    "courge": "Flespompoen",
+    "betterave": "Gekookte biet",
+    "radis": "Radijs",
+    "citron": "Citroen",
+    "avocat": "Avocado",
+    "pomme": "Appel",
+    "poire": "Peer",
+    "banane": "Banaan",
+    "orange": "Sinaasappel",
+    "fraise": "Aardbei",
+    "mangue": "Mango",
+    "persil": "Peterselie",
+    "coriandre": "Verse koriander",
+    "basilic": "Basilicum",
+    "menthe": "Munt",
+    "ciboulette": "Bieslook",
+    "gingembre": "Verse gember",
+    "poulet-filet": "Kipfilet",
+    "cuisse-poulet": "Kippenbout",
+    "boeuf-hache": "Gehakt rundvlees",
+    "boeuf-paleron": "Rundvlees om te stoven",
+    "porc-filet": "Varkenshaas",
+    "saucisse": "Varkensworst",
+    "lardons": "Spekblokjes",
+    "jambon-blanc": "Witte ham",
+    "chorizo": "Chorizo",
+    "dinde-escalope": "Kalkoenschnitzel",
+    "agneau": "Lamschouder",
+    "saumon": "Zalmfilet",
+    "saumon-fume": "Gerookte zalm",
+    "cabillaud": "Kabeljauwhaasje",
+    "colin": "Heekfilet",
+    "thon-conserve": "Tonijn in blik",
+    "sardine": "Sardines in blik",
+    "oeuf": "Ei",
+    "lait": "Melk",
+    "creme": "Vloeibare room",
+    "creme-fraiche": "Dikke crème fraîche",
+    "beurre": "Boter",
+    "fromage-rape": "Geraspte kaas",
+    "mozzarella": "Mozzarella",
+    "feta": "Feta",
+    "parmesan": "Parmezaanse kaas",
+    "chevre": "Geitenkaas",
+    "yaourt": "Natuuryoghurt",
+    "fromage-blanc": "Kwark",
+    "mascarpone": "Mascarpone",
+    "ricotta": "Ricotta",
+    "tofu": "Stevige tofu",
+    "pate-feuilletee": "Bladerdeeg",
+    "pate-brisee": "Deeg voor quiche",
+    "riz": "Rijst",
+    "pates": "Pasta",
+    "pates-lasagne": "Lasagnebladen",
+    "semoule": "Griesmeel",
+    "boulgour": "Bulgur",
+    "quinoa": "Quinoa",
+    "lentilles": "Linzen",
+    "pois-chiches": "Kikkererwten",
+    "haricots-rouges": "Rode bonen",
+    "mais": "Maïs in blik",
+    "farine": "Bloem",
+    "sucre": "Suiker",
+    "chocolat-noir": "Pure chocolade",
+    "cacao": "Cacaopoeder",
+    "flocons-avoine": "Havervlokken",
+    "miel": "Honing",
+    "tomate-concassee": "Tomatenblokjes",
+    "concentre-tomate": "Tomatenpuree",
+    "lait-coco": "Kokosmelk",
+    "noix": "Noten",
+    "cacahuete": "Pinda's",
+    "nouilles": "Chinese noedels",
+    "nouilles-riz": "Rijstvermicelli",
+    "gnocchi": "Gnocchi",
+    "chapelure": "Paneermeel",
+    "tahini": "Sesampasta",
+    "olives": "Olijven",
+    "pesto": "Pesto",
+    "speculoos": "Knapperige koekjes",
+    "sauce-soja": "Sojasaus",
+    "huile-olive": "Olijfolie",
+    "vinaigre": "Azijn",
+    "moutarde": "Mosterd",
+    "bouillon": "Bouillon (blokje)",
+    "sel": "Zout",
+    "poivre": "Peper",
+    "paprika": "Paprikapoeder",
+    "cumin": "Komijn",
+    "curry": "Kerrie",
+    "cannelle": "Kaneel",
+    "piment": "Peper",
+    "curcuma": "Kurkuma",
+    "herbes": "Provençaalse kruiden",
+    "harissa": "Harissa",
+    "levure": "Bakpoeder",
+    "vanille": "Vanille-extract",
+    "baguette": "Stokbrood",
+    "tortilla": "Tortillawrap",
+    "pain-burger": "Hamburgerbroodje",
+    "pain-mie": "Witbrood (plak)",
+    "pain-pita": "Pitabroodje",
+    "petits-pois": "Diepvrieserwten",
+    "epinard-surgele": "Diepvries spinazie",
+    "poelee-legumes": "Diepvries groentemix",
+    "framboise-surgelee": "Diepvries rood fruit",
+    "crevette": "Gepelde garnalen",
+    "jus-orange": "Sinaasappelsap"
+  }
+}

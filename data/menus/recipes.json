@@ -1,0 +1,7696 @@
+[
+ {
+  "id": "poulet-roti-citron-pommes-de-terre",
+  "image": true,
+  "course": "plat",
+  "timeMin": 75,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 42,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "cuisse-poulet",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "ail",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "herbes",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 3000
+  }
+ },
+ {
+  "id": "poulet-curry-coco",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 620,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "lait-coco",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "gingembre",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 900
+  }
+ },
+ {
+  "id": "poulet-moutarde-champignons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 610,
+  "protein": 41,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "moutarde",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "echalote",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "poulet-tikka-yaourt-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "economique"
+  ],
+  "kcal": 580,
+  "protein": 42,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "yaourt",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 900
+  }
+ },
+ {
+  "id": "escalope-dinde-creme-champignons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "dinde-escalope",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 150,
+    "unit": "ml"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "poulet-basquaise",
+  "image": true,
+  "course": "plat",
+  "timeMin": 60,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "ete",
+   "automne",
+   "economique"
+  ],
+  "kcal": 540,
+  "protein": 38,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "cuisse-poulet",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 2100
+  }
+ },
+ {
+  "id": "wraps-poulet-croquants",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "ete",
+   "economique"
+  ],
+  "kcal": 520,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "tortilla",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "nuggets-poulet-maison-frites-four",
+  "image": true,
+  "course": "plat",
+  "timeMin": 50,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 38,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "chapelure",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "farine",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 2100
+  }
+ },
+ {
+  "id": "brochettes-poulet-poivrons-yaourt",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "economique"
+  ],
+  "kcal": 520,
+  "protein": 40,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "poulet-teriyaki-maison",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 580,
+  "protein": 41,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "miel",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "brocoli",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "chili-con-carne-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 50,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne"
+  ],
+  "kcal": 620,
+  "protein": 38,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "haricots-rouges",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "mais",
+    "qty": 140,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "piment",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "pates-bolognaise-maison",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 650,
+  "protein": 36,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "concentre-tomate",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "boeuf-bourguignon-facile",
+  "image": true,
+  "course": "plat",
+  "timeMin": 150,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver"
+  ],
+  "kcal": 640,
+  "protein": 45,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "boeuf-paleron",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "lardons",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "farine",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 7200
+  }
+ },
+ {
+  "id": "hachis-parmentier-classique",
+  "image": true,
+  "course": "plat",
+  "timeMin": 70,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "enfants",
+   "four",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 32,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 900,
+    "unit": "g"
+   },
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "beurre",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "burgers-maison-frites-four",
+  "image": true,
+  "course": "plat",
+  "timeMin": 50,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four"
+  ],
+  "kcal": 720,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 480,
+    "unit": "g"
+   },
+   {
+    "key": "pain-burger",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "oignon",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 2100
+  }
+ },
+ {
+  "id": "boulettes-sauce-tomate-pates",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "batch",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 34,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "chapelure",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "pates",
+    "qty": 350,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "boeuf-saute-nouilles-legumes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "nouilles",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "poelee-legumes",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "lasagnes-bolognaise",
+  "image": true,
+  "course": "plat",
+  "timeMin": 80,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "enfants",
+   "four",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 720,
+  "protein": 38,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates-lasagne",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 500,
+    "unit": "ml"
+   },
+   {
+    "key": "beurre",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "poivrons-farcis-boeuf-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 70,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "batch",
+   "ete",
+   "economique"
+  ],
+  "kcal": 520,
+  "protein": 30,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poivron",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "boeuf-hache",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "tacos-mexicains-maison",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
+  ],
+  "kcal": 660,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 450,
+    "unit": "g"
+   },
+   {
+    "key": "tortilla",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "haricots-rouges",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "mais",
+    "qty": 140,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "porc-miel-soja-haricots-verts",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 38,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "porc-filet",
+    "qty": 550,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "haricot-vert",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "saucisses-lentilles-carottes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "batch",
+   "economique"
+  ],
+  "kcal": 680,
+  "protein": 34,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "saucisse",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "lentilles",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1800
+  }
+ },
+ {
+  "id": "gratin-pommes-de-terre-jambon",
+  "image": true,
+  "course": "plat",
+  "timeMin": 70,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-fruits-a-coque",
+   "hiver",
+   "four",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 24,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "jambon-blanc",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 300,
+    "unit": "ml"
+   },
+   {
+    "key": "lait",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 3000
+  }
+ },
+ {
+  "id": "quiche-lorraine",
+  "image": true,
+  "course": "plat",
+  "timeMin": 60,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-fruits-a-coque",
+   "four",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pate-brisee",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "lardons",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "lait",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "filet-mignon-pommes-oignons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-fruits-a-coque",
+   "automne",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "porc-filet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "pomme",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "croque-monsieur-maison",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 26,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pain-mie",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "jambon-blanc",
+    "qty": 160,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 720
+  }
+ },
+ {
+  "id": "saumon-citron-riz-brocoli",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque"
+  ],
+  "kcal": 560,
+  "protein": 36,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "saumon",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "brocoli",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "papillote-cabillaud-legumes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "leger"
+  ],
+  "kcal": 330,
+  "protein": 32,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "cabillaud",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1200
+  }
+ },
+ {
+  "id": "colin-creme-poireaux-pommes-de-terre",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver"
+  ],
+  "kcal": 520,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "colin",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "poireau",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 150,
+    "unit": "ml"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "gratin-poisson-epinards",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four"
+  ],
+  "kcal": 560,
+  "protein": 36,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "colin",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "epinard-surgele",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "pates-thon-tomate-olives",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 580,
+  "protein": 28,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "thon-conserve",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "olives",
+    "qty": 50,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "crevettes-ail-citron-pates",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "economique"
+  ],
+  "kcal": 570,
+  "protein": 32,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "crevette",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "pates",
+    "qty": 350,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "persil",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "curry-cabillaud-coco-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque"
+  ],
+  "kcal": 600,
+  "protein": 34,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "cabillaud",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "lait-coco",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "coriandre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "saumon-laque-miel-soja",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
+  ],
+  "kcal": 600,
+  "protein": 36,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "saumon",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "haricot-vert",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "spaghettis-sardines-citron",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 26,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "sardine",
+    "qty": 270,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "persil",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "tomate-cerise",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "fish-and-chips-four",
+  "image": true,
+  "course": "plat",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four"
+  ],
+  "kcal": 680,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "colin",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "chapelure",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "farine",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 900,
+    "unit": "g"
+   },
+   {
+    "key": "petits-pois",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 2100
+  }
+ },
+ {
+  "id": "risotto-saumon-fume-epinards",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 26,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "riz",
+    "qty": 320,
+    "unit": "g"
+   },
+   {
+    "key": "saumon-fume",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "epinard",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "parmesan",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "1": 1100
+  }
+ },
+ {
+  "id": "curry-pois-chiches-epinards",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 610,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pois-chiches",
+    "qty": 530,
+    "unit": "g"
+   },
+   {
+    "key": "epinard",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "lait-coco",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "dahl-lentilles-carottes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 24,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "lentilles",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "lait-coco",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "carotte",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "curcuma",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "chili-sin-carne-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "haricots-rouges",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "mais",
+    "qty": 140,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "piment",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "ratatouille-provencale-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 60,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "ete",
+   "economique",
+   "leger"
+  ],
+  "kcal": 430,
+  "protein": 12,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "aubergine",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "tomate",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1800
+  }
+ },
+ {
+  "id": "gratin-courgettes-chevre",
+  "image": true,
+  "course": "plat",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "economique"
+  ],
+  "kcal": 460,
+  "protein": 20,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "courgette",
+    "qty": 900,
+    "unit": "g"
+   },
+   {
+    "key": "chevre",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 150,
+    "unit": "ml"
+   },
+   {
+    "key": "oeuf",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "lasagnes-legumes-ricotta",
+  "image": true,
+  "course": "plat",
+  "timeMin": 75,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "four",
+   "printemps",
+   "economique"
+  ],
+  "kcal": 620,
+  "protein": 26,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates-lasagne",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "aubergine",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "ricotta",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "mozzarella",
+    "qty": 125,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "omelette-champignons-pommes-de-terre",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 460,
+  "protein": 24,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "oeuf",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "champignon",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "tarte-fine-tomates-chevre",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "economique"
+  ],
+  "kcal": 540,
+  "protein": 16,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pate-feuilletee",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "chevre",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "saute-tofu-legumes-sesame",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 26,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "tofu",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "poelee-legumes",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "falafels-four-houmous",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 24,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pois-chiches",
+    "qty": 530,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "persil",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "farine",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "tahini",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "pain-pita",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 1500
+  }
+ },
+ {
+  "id": "gnocchi-poeles-tomates-mozzarella",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 20,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "gnocchi",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-cerise",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "mozzarella",
+    "qty": 125,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "pates-pesto-courgettes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "pesto",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-cerise",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "risotto-champignons-parmesan",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 19,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "riz",
+    "qty": 320,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "parmesan",
+    "qty": 50,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 1100
+  }
+ },
+ {
+  "id": "veloute-courge-chevre-croutons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "economique",
+   "leger"
+  ],
+  "kcal": 450,
+  "protein": 13,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "courge",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "chevre",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 1500
+  }
+ },
+ {
+  "id": "pizza-maison-margherita",
+  "image": true,
+  "course": "plat",
+  "timeMin": 50,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 620,
+  "protein": 24,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "farine",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "levure",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "mozzarella",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 900
+  }
+ },
+ {
+  "id": "galettes-pommes-de-terre-fromage",
+  "image": true,
+  "course": "plat",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 19,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "curry-patate-douce-pois-chiches",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "hiver",
+   "automne",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 18,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "patate-douce",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "lait-coco",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "epinard",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "curry",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1200
+  }
+ },
+ {
+  "id": "shakshuka-oeufs-tomates",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "leger"
+  ],
+  "kcal": 420,
+  "protein": 22,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "oeuf",
+    "qty": 6,
+    "unit": "u"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "harissa",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "buddha-bowl-quinoa-patate-douce",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 570,
+  "protein": 20,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "quinoa",
+    "qty": 240,
+    "unit": "g"
+   },
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "patate-douce",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "avocat",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "epinard",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "tahini",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 1500
+  }
+ },
+ {
+  "id": "boulgour-legumes-roties-feta",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "economique"
+  ],
+  "kcal": 550,
+  "protein": 19,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "boulgour",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "feta",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "menthe",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 1500
+  }
+ },
+ {
+  "id": "quesadillas-haricots-fromage",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 23,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "tortilla",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "haricots-rouges",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "mais",
+    "qty": 140,
+    "unit": "g"
+   },
+   {
+    "key": "tomate",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "spaghettis-ail-huile-persil",
+  "image": true,
+  "course": "plat",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 15,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 5,
+    "unit": "u"
+   },
+   {
+    "key": "piment",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "persil",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 4,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "gratin-chou-fleur-fromage",
+  "image": true,
+  "course": "plat",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "four",
+   "economique",
+   "leger"
+  ],
+  "kcal": 440,
+  "protein": 20,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "chou-fleur",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "beurre",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "pates-petits-pois-fromage",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 570,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "petits-pois",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 150,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "pommes-de-terre-farcies-fromage-blanc",
+  "image": true,
+  "course": "plat",
+  "timeMin": 65,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "economique",
+   "leger"
+  ],
+  "kcal": 430,
+  "protein": 18,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-blanc",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 2700
+  }
+ },
+ {
+  "id": "soupe-lentilles-carottes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "batch",
+   "economique"
+  ],
+  "kcal": 500,
+  "protein": 23,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "lentilles",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1800
+  }
+ },
+ {
+  "id": "nouilles-sautees-legumes-oeuf",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "economique"
+  ],
+  "kcal": 620,
+  "protein": 23,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "nouilles-riz",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "poelee-legumes",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "cacahuete",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "couscous-poulet-legumes",
+  "image": true,
+  "course": "plat",
+  "timeMin": 75,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "batch",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "semoule",
+    "qty": 320,
+    "unit": "g"
+   },
+   {
+    "key": "cuisse-poulet",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "courgette",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "concentre-tomate",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "curcuma",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 1800
+  }
+ },
+ {
+  "id": "tajine-agneau-patate-douce",
+  "image": true,
+  "course": "plat",
+  "timeMin": 110,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "batch"
+  ],
+  "kcal": 690,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "agneau",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "patate-douce",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "semoule",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 3600
+  }
+ },
+ {
+  "id": "boulettes-kefta-semoule",
+  "image": true,
+  "course": "plat",
+  "timeMin": 40,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 650,
+  "protein": 34,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "persil",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "semoule",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "paella-poulet-chorizo",
+  "image": true,
+  "course": "plat",
+  "timeMin": 55,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "ete",
+   "economique"
+  ],
+  "kcal": 690,
+  "protein": 38,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "riz",
+    "qty": 350,
+    "unit": "g"
+   },
+   {
+    "key": "cuisse-poulet",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "chorizo",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "petits-pois",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "2": 1200
+  }
+ },
+ {
+  "id": "riz-cantonais-maison",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 22,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "jambon-blanc",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "petits-pois",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "carotte",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "bol-vietnamien-boeuf-nouilles",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "ete",
+   "economique"
+  ],
+  "kcal": 620,
+  "protein": 32,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "boeuf-hache",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "nouilles-riz",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "carotte",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "menthe",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "cacahuete",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "poulet-yassa-oignons-citron",
+  "image": true,
+  "course": "plat",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 580,
+  "protein": 41,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1200
+  }
+ },
+ {
+  "id": "fajitas-poulet-poivrons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
+  ],
+  "kcal": 570,
+  "protein": 36,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "poivron",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "tortilla",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "gyros-poulet-pita-tzatziki",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "economique"
+  ],
+  "kcal": 580,
+  "protein": 38,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "pain-pita",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "menthe",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "paprika",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "moussaka-simplifiee",
+  "image": true,
+  "course": "plat",
+  "timeMin": 80,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "batch",
+   "four",
+   "ete",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 32,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "aubergine",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "boeuf-hache",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 300,
+    "unit": "ml"
+   },
+   {
+    "key": "farine",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1800
+  }
+ },
+ {
+  "id": "tartiflette-gourmande",
+  "image": true,
+  "course": "plat",
+  "timeMin": 60,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-fruits-a-coque",
+   "hiver",
+   "four",
+   "economique"
+  ],
+  "kcal": 780,
+  "protein": 30,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "lardons",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1500
+  }
+ },
+ {
+  "id": "pot-au-feu-familial",
+  "image": true,
+  "course": "plat",
+  "timeMin": 170,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "batch"
+  ],
+  "kcal": 580,
+  "protein": 45,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "boeuf-paleron",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "poireau",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "moutarde",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 7200
+  }
+ },
+ {
+  "id": "blanquette-dinde-riz",
+  "image": true,
+  "course": "plat",
+  "timeMin": 60,
+  "difficulty": 2,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 600,
+  "protein": 40,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "dinde-escalope",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   }
+  ],
+  "stepTimers": {
+   "2": 1800
+  }
+ },
+ {
+  "id": "gratin-macaronis-jambon",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-fruits-a-coque",
+   "enfants",
+   "batch",
+   "four",
+   "economique"
+  ],
+  "kcal": 640,
+  "protein": 28,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 350,
+    "unit": "g"
+   },
+   {
+    "key": "jambon-blanc",
+    "qty": 160,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "lait",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "fromage-rape",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1200
+  }
+ },
+ {
+  "id": "bol-riz-saumon-fume-avocat",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 22,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "riz",
+    "qty": 280,
+    "unit": "g"
+   },
+   {
+    "key": "saumon-fume",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "avocat",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   }
+  ]
+ },
+ {
+  "id": "salade-cesar-poulet",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "economique"
+  ],
+  "kcal": 510,
+  "protein": 38,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "parmesan",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "salade-chevre-chaud-noix",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "four",
+   "economique"
+  ],
+  "kcal": 560,
+  "protein": 18,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "salade",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "chevre",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "noix",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "pomme",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "vinaigre",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "1": 480
+  }
+ },
+ {
+  "id": "salade-lentilles-lardons",
+  "image": true,
+  "course": "plat",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "batch",
+   "economique"
+  ],
+  "kcal": 570,
+  "protein": 26,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "lentilles",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "lardons",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "echalote",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "vinaigre",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 1200
+  }
+ },
+ {
+  "id": "spaghettis-carbonara",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 700,
+  "protein": 28,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "lardons",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "parmesan",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "tagliatelles-saumon-creme",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 700,
+  "protein": 30,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pates",
+    "qty": 350,
+    "unit": "g"
+   },
+   {
+    "key": "saumon",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 200,
+    "unit": "ml"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "tortilla-espagnole",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 470,
+  "protein": 19,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme-de-terre",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 6,
+    "unit": "u"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "salade",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 4,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "soupe-nouilles-poulet",
+  "image": true,
+  "course": "plat",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique",
+   "leger"
+  ],
+  "kcal": 400,
+  "protein": 26,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poulet-filet",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "nouilles-riz",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "champignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "sauce-soja",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "gingembre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "coriandre",
+    "qty": 10,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "rougail-saucisses",
+  "image": true,
+  "course": "plat",
+  "timeMin": 45,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-lactose",
+   "sans-fruits-a-coque",
+   "batch",
+   "economique"
+  ],
+  "kcal": 690,
+  "protein": 28,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "saucisse",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "tomate",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "gingembre",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "riz",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "piment",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "mini-pizzas-pita",
+  "image": true,
+  "course": "plat",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 470,
+  "protein": 22,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pain-pita",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "tomate-concassee",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "mozzarella",
+    "qty": 125,
+    "unit": "g"
+   },
+   {
+    "key": "jambon-blanc",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 600
+  }
+ },
+ {
+  "id": "veloute-carottes-cumin",
+  "image": true,
+  "course": "entree",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "economique",
+   "leger"
+  ],
+  "kcal": 160,
+  "protein": 3,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "carotte",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "cumin",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "soupe-poireaux-pommes-de-terre",
+  "image": true,
+  "course": "entree",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "automne",
+   "economique",
+   "leger"
+  ],
+  "kcal": 190,
+  "protein": 4,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "poireau",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 5,
+    "unit": "g"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "beurre",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 1500
+  }
+ },
+ {
+  "id": "gaspacho-tomate-concombre",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 150,
+  "protein": 3,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "tomate",
+    "qty": 900,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "poivron",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "vinaigre",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "pain-mie",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "salade-tomate-mozzarella-basilic",
+  "image": true,
+  "course": "entree",
+  "timeMin": 10,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 230,
+  "protein": 12,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "tomate",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "mozzarella",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "salade-betterave-pomme-feta",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "rapide",
+   "automne",
+   "hiver",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 240,
+  "protein": 8,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "betterave",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "pomme",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "feta",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "noix",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "vinaigre",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "oeufs-mimosa-yaourt",
+  "image": true,
+  "course": "entree",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "economique",
+   "leger"
+  ],
+  "kcal": 180,
+  "protein": 10,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "oeuf",
+    "qty": 6,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 5,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "0": 600
+  }
+ },
+ {
+  "id": "houmous-crudites-pita",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "economique"
+  ],
+  "kcal": 300,
+  "protein": 10,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "tahini",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "carotte",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "pain-pita",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "taboule-frais-menthe",
+  "image": true,
+  "course": "entree",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "economique"
+  ],
+  "kcal": 280,
+  "protein": 7,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "semoule",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "tomate",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "menthe",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "persil",
+    "qty": 15,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 3,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "carottes-rapees-orange",
+  "image": true,
+  "course": "entree",
+  "timeMin": 10,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 110,
+  "protein": 2,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "carotte",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "orange",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "persil",
+    "qty": 5,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "avocats-farcis-thon",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "ete",
+   "economique"
+  ],
+  "kcal": 270,
+  "protein": 12,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "avocat",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "thon-conserve",
+    "qty": 140,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "feuilletes-chevre-miel",
+  "image": true,
+  "course": "entree",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "economique"
+  ],
+  "kcal": 330,
+  "protein": 10,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pate-feuilletee",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "chevre",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "herbes",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 900
+  }
+ },
+ {
+  "id": "concombre-yaourt-menthe",
+  "image": true,
+  "course": "entree",
+  "timeMin": 10,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 90,
+  "protein": 5,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "concombre",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "yaourt",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "menthe",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "soupe-tomate-basilic",
+  "image": true,
+  "course": "entree",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "economique",
+   "leger"
+  ],
+  "kcal": 160,
+  "protein": 4,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "tomate-concassee",
+    "qty": 800,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 80,
+    "unit": "ml"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 1,
+    "unit": "cs"
+   }
+  ],
+  "stepTimers": {
+   "1": 900
+  }
+ },
+ {
+  "id": "salade-pois-chiches-feta",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "economique"
+  ],
+  "kcal": 280,
+  "protein": 10,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pois-chiches",
+    "qty": 265,
+    "unit": "g"
+   },
+   {
+    "key": "concombre",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "feta",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "tomate-cerise",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   }
+  ]
+ },
+ {
+  "id": "veloute-champignons",
+  "image": true,
+  "course": "entree",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "economique",
+   "leger"
+  ],
+  "kcal": 200,
+  "protein": 5,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "champignon",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "pomme-de-terre",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oignon",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   },
+   {
+    "key": "bouillon",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "beurre",
+    "qty": 10,
+    "unit": "g"
+   }
+  ],
+  "stepTimers": {
+   "2": 1200
+  }
+ },
+ {
+  "id": "bruschettas-tomate-basilic",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "economique",
+   "leger"
+  ],
+  "kcal": 220,
+  "protein": 6,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "baguette",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "tomate",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "basilic",
+    "qty": 10,
+    "unit": "g"
+   },
+   {
+    "key": "ail",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "salade-chou-carotte-yaourt",
+  "image": true,
+  "course": "entree",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "hiver",
+   "economique",
+   "leger"
+  ],
+  "kcal": 120,
+  "protein": 4,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "chou",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "carotte",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "vinaigre",
+    "qty": 1,
+    "unit": "cs"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "mousse-chocolat-noir",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique"
+  ],
+  "kcal": 290,
+  "protein": 7,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "chocolat-noir",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 6,
+    "unit": "u"
+   },
+   {
+    "key": "sucre",
+    "qty": 20,
+    "unit": "g"
+   }
+  ],
+  "stepTimers": {
+   "3": 10800
+  }
+ },
+ {
+  "id": "crumble-pommes-cannelle",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "automne",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 360,
+  "protein": 4,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme",
+    "qty": 900,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "tarte-pommes-feuilletee",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 50,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "automne",
+   "economique"
+  ],
+  "kcal": 340,
+  "protein": 4,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pate-feuilletee",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "pomme",
+    "qty": 700,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "gateau-au-yaourt-classique",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 50,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 320,
+  "protein": 6,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "yaourt",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "farine",
+    "qty": 190,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 4,
+    "unit": "cs"
+   },
+   {
+    "key": "levure",
+    "qty": 3,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2100
+  }
+ },
+ {
+  "id": "riz-au-lait-vanille",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "enfants",
+   "economique",
+   "leger"
+  ],
+  "kcal": 250,
+  "protein": 7,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "lait",
+    "qty": 1000,
+    "unit": "ml"
+   },
+   {
+    "key": "riz",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "vanille",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "2": 2400
+  }
+ },
+ {
+  "id": "fondant-chocolat-coeur-coulant",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 430,
+  "protein": 8,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "chocolat-noir",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "sucre",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 40,
+    "unit": "g"
+   }
+  ],
+  "stepTimers": {
+   "3": 660
+  }
+ },
+ {
+  "id": "salade-fruits-frais-menthe",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete",
+   "sans-cuisson",
+   "leger"
+  ],
+  "kcal": 150,
+  "protein": 2,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "orange",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "pomme",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "banane",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "fraise",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "mangue",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "menthe",
+    "qty": 5,
+    "unit": "g"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   }
+  ]
+ },
+ {
+  "id": "fromage-blanc-miel-noix",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 5,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "rapide",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 220,
+  "protein": 12,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "fromage-blanc",
+    "qty": 500,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 40,
+    "unit": "g"
+   },
+   {
+    "key": "noix",
+    "qty": 40,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "crepes-faciles",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 330,
+  "protein": 8,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "farine",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "lait",
+    "qty": 500,
+    "unit": "ml"
+   },
+   {
+    "key": "beurre",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 30,
+    "unit": "g"
+   }
+  ],
+  "stepTimers": {
+   "2": 1200
+  }
+ },
+ {
+  "id": "compote-pommes-maison",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "vegan",
+   "sans-gluten",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "sans-cuisson",
+   "economique",
+   "leger"
+  ],
+  "kcal": 100,
+  "protein": 0,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "pomme",
+    "qty": 1000,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "1": 1200
+  }
+ },
+ {
+  "id": "tiramisu-fraises-speculoos",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "ete",
+   "sans-cuisson"
+  ],
+  "kcal": 450,
+  "protein": 8,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "mascarpone",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "sucre",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "speculoos",
+    "qty": 150,
+    "unit": "g"
+   },
+   {
+    "key": "fraise",
+    "qty": 250,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "gateau-banane-moelleux",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 55,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 340,
+  "protein": 5,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "banane",
+    "qty": 450,
+    "unit": "g"
+   },
+   {
+    "key": "farine",
+    "qty": 180,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "beurre",
+    "qty": 80,
+    "unit": "g"
+   },
+   {
+    "key": "levure",
+    "qty": 2,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 2400
+  }
+ },
+ {
+  "id": "poires-chocolat-chaud",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 280,
+  "protein": 3,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "poire",
+    "qty": 600,
+    "unit": "g"
+   },
+   {
+    "key": "chocolat-noir",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "creme",
+    "qty": 100,
+    "unit": "ml"
+   }
+  ],
+  "stepTimers": {
+   "0": 900
+  }
+ },
+ {
+  "id": "cookies-pepites-chocolat",
+  "image": true,
+  "course": "dessert",
+  "timeMin": 30,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
+  ],
+  "kcal": 390,
+  "protein": 5,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "farine",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "beurre",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "sucre",
+    "qty": 100,
+    "unit": "g"
+   },
+   {
+    "key": "chocolat-noir",
+    "qty": 120,
+    "unit": "g"
+   },
+   {
+    "key": "oeuf",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "levure",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 720
+  }
+ },
+ {
+  "id": "porridge-pomme-cannelle",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "automne",
+   "hiver",
+   "economique"
+  ],
+  "kcal": 330,
+  "protein": 10,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "flocons-avoine",
+    "qty": 160,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 600,
+    "unit": "ml"
+   },
+   {
+    "key": "pomme",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "miel",
+    "qty": 20,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "pancakes-moelleux-banane",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 25,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 360,
+  "protein": 9,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "farine",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 250,
+    "unit": "ml"
+   },
+   {
+    "key": "oeuf",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "sucre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "levure",
+    "qty": 2,
+    "unit": "cc"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "banane",
+    "qty": 200,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "tartines-avocat-oeuf",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
+  ],
+  "kcal": 380,
+  "protein": 15,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pain-mie",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "avocat",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "oeuf",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "citron",
+    "qty": 1,
+    "unit": "u"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "granola-maison-miel",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 35,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-lactose",
+   "sans-porc",
+   "halal-possible",
+   "four",
+   "batch",
+   "economique"
+  ],
+  "kcal": 330,
+  "protein": 8,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "flocons-avoine",
+    "qty": 250,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "noix",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "huile-olive",
+    "qty": 2,
+    "unit": "cs"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ],
+  "stepTimers": {
+   "3": 1200
+  }
+ },
+ {
+  "id": "oeufs-brouilles-toasts",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 15,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
+  ],
+  "kcal": 340,
+  "protein": 19,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "oeuf",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   },
+   {
+    "key": "pain-mie",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "ciboulette",
+    "qty": 5,
+    "unit": "g"
+   },
+   {
+    "key": "tomate",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
+   }
+  ]
+ },
+ {
+  "id": "bol-yaourt-fruits-granola",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 10,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "economique"
+  ],
+  "kcal": 300,
+  "protein": 10,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "yaourt",
+    "qty": 4,
+    "unit": "u"
+   },
+   {
+    "key": "framboise-surgelee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "banane",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "flocons-avoine",
+    "qty": 60,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 30,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "pain-perdu-cannelle",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 20,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
+  ],
+  "kcal": 320,
+  "protein": 10,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "pain-mie",
+    "qty": 8,
+    "unit": "u"
+   },
+   {
+    "key": "oeuf",
+    "qty": 3,
+    "unit": "u"
+   },
+   {
+    "key": "lait",
+    "qty": 300,
+    "unit": "ml"
+   },
+   {
+    "key": "sucre",
+    "qty": 30,
+    "unit": "g"
+   },
+   {
+    "key": "cannelle",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "beurre",
+    "qty": 20,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "smoothie-banane-fraise",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 5,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-gluten",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "ete",
+   "economique",
+   "leger"
+  ],
+  "kcal": 210,
+  "protein": 6,
+  "leftoverOk": false,
+  "ingredients": [
+   {
+    "key": "banane",
+    "qty": 400,
+    "unit": "g"
+   },
+   {
+    "key": "fraise",
+    "qty": 300,
+    "unit": "g"
+   },
+   {
+    "key": "lait",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "miel",
+    "qty": 20,
+    "unit": "g"
+   }
+  ]
+ },
+ {
+  "id": "overnight-oats-fruits-rouges",
+  "image": true,
+  "course": "petit-dejeuner",
+  "timeMin": 10,
+  "difficulty": 1,
+  "servings": 4,
+  "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "economique"
+  ],
+  "kcal": 340,
+  "protein": 11,
+  "leftoverOk": true,
+  "ingredients": [
+   {
+    "key": "flocons-avoine",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "yaourt",
+    "qty": 2,
+    "unit": "u"
+   },
+   {
+    "key": "lait",
+    "qty": 400,
+    "unit": "ml"
+   },
+   {
+    "key": "framboise-surgelee",
+    "qty": 200,
+    "unit": "g"
+   },
+   {
+    "key": "miel",
+    "qty": 30,
+    "unit": "g"
+   }
+  ]
+ }
+]
