@@ -6,12 +6,17 @@ import RECIPE_IMAGES from '../../lib/menus/recipeImages';
 import { photoSources } from '../../services/recipePhotos';
 import { COURSE_TINT, T } from './theme';
 
+const CACHE_MAX = 400; // les recettes générées sont des milliers : le cache reste borné
 const cache = new Map();
 
 function emojisOf(recipe, ingredients) {
   if (!recipe) return ['🍽️'];
   const hit = !recipe.custom && cache.get(recipe.id); // une recette personnelle peut changer
-  if (hit) return hit;
+  if (hit) {
+    cache.delete(recipe.id); // plus récemment vue : reste en fin de file
+    cache.set(recipe.id, hit);
+    return hit;
+  }
   const list = (recipe.ingredients || [])
     .map((i) => ({ i, ing: ingredients && ingredients[i.key] }))
     .filter((x) => x.ing && x.ing.emoji && !x.ing.pantry && !x.i.optional);
@@ -24,7 +29,10 @@ function emojisOf(recipe, ingredients) {
   const out = [];
   for (const x of list) if (!out.includes(x.ing.emoji)) out.push(x.ing.emoji);
   const res = out.length ? out.slice(0, 3) : ['🍽️'];
-  if (!recipe.custom) cache.set(recipe.id, res);
+  if (!recipe.custom) {
+    cache.set(recipe.id, res);
+    if (cache.size > CACHE_MAX) cache.delete(cache.keys().next().value);
+  }
   return res;
 }
 

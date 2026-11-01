@@ -80,14 +80,14 @@ function Header({ title, onClose, t }) {
 function Chooser({ onClose }) {
   const t = useT();
   const m = useMenus();
-  const { plan, recipes, ingredients, profile, recipeById, texts } = m;
+  const { plan, ingredients, profile, recipeById, texts } = m;
   const fromWeek = useMemo(() => planBatchMeals(plan, recipeById), [plan, recipeById]);
   const proposed = useMemo(() => {
     const week = new Set(fromWeek.map((x) => x.recipeId));
-    return proposeBatch({ recipes, ingredients, profile, count: MAX_RECIPES }).filter(
+    return proposeBatch({ recipes: recipeById, ingredients, profile, count: MAX_RECIPES }).filter(
       (id) => !week.has(id)
     );
-  }, [fromWeek, recipes, ingredients, profile]);
+  }, [fromWeek, recipeById, ingredients, profile]);
   const basePersons = Math.max(1, Math.ceil(Number(m.persons(0, 'soir')) || 1));
   const [picked, setPicked] = useState({});
   const [saving, setSaving] = useState(false);
@@ -164,19 +164,19 @@ function Chooser({ onClose }) {
 function Session({ onClose, onOpenRecipe }) {
   const t = useT();
   const m = useMenus();
-  const { batch, plan, recipes, ingredients, profile, texts, lang } = m;
+  const { batch, plan, recipeById, ingredients, profile, texts, lang } = m;
   const today = toISO(new Date());
   const view = useMemo(
     () =>
       buildSession({
         session: batch,
-        recipes,
+        recipes: recipeById,
         ingredients,
         profile,
         stepsOf: (id) => texts.recipeSteps(id),
         today,
       }),
-    [batch, recipes, ingredients, profile, texts, today]
+    [batch, recipeById, ingredients, profile, texts, today]
   );
   const progress = sessionProgress(view, batch);
   const [following, setFollowing] = useState(null);

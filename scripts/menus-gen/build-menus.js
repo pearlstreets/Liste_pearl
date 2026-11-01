@@ -3,9 +3,20 @@
 // Deterministe : aucun aleatoire, aucune date. Echoue (code 1, message clair) sur toute anomalie.
 //
 // Usage : node scripts/menus-gen/build-menus.js [--check] [--a-traduire <dossier>] [--fixture-dir <dossier>]
+//         [--traductions <dossier>] [--langues <liste>] [--toutes-les-langues] [--corriger-apostrophes] [--racine <dossier>]
 //   (sans option)   ecrit data/menus/gen, data/menus/gen-fixture, registres, ingredients.json, fr.json, fichiers a traduire
 //   --check         refait le calcul et compare avec les fichiers du depot, n'ecrit rien
 //   --a-traduire    dossier des fichiers a traduire (titres.json, phrases.json, ingredients.json, fixture-50.json)
+//   --traductions   dossier des traductions : <langue>/ingredients.json, <langue>/phrases-*.json et <langue>/titres-*.json
+//                   (listes [{i, t}] ; ingredients : [{cle, t}] ou {cle: nom}). Produit data/menus/gen/lang/<langue>-*.js, regenere
+//                   loaders.js avec toutes les langues disponibles et ajoute les noms des nouveaux ingredients dans
+//                   data/menus/i18n/<langue>.json (cle « ingredients » seulement, format du fichier conserve).
+//                   Une langue presente dans le dossier doit etre COMPLETE, sinon le build echoue. Une langue deja integree
+//                   (gen/lang/<langue>-*.js) et absente du dossier est conservee telle quelle si elle est complete.
+//   --langues       restreint --traductions a ces langues (ex. en,de)
+//   --toutes-les-langues   exige les 13 langues
+//   --corriger-apostrophes remplace l'apostrophe typographique par l'apostrophe droite dans les langues latines
+//   --racine        racine de travail a la place du depot (data/menus et scripts/menus-gen y sont lus et ecrits) : sert aux essais
 //
 // Regles de calcul : REGLES-TAGS.md. Format des fichiers : CONCEPTION.md sections 2.1 a 2.7
 // (ecarts documentes en tete de chaque bloc de code concerne).
@@ -15,10 +26,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const GEN = __dirname;
-const ROOT = path.resolve(GEN, '..', '..');
-const DATA = path.join(ROOT, 'data', 'menus');
-const SOURCES = path.join(GEN, 'sources');
+const GEN_SCRIPTS = __dirname;
+const SOURCES = path.join(GEN_SCRIPTS, 'sources');
 
 /* --------------------------------- arguments -------------------------------- */
 
@@ -28,7 +37,14 @@ const argVal = (name, def) => {
   const i = argv.indexOf(name);
   return i >= 0 && argv[i + 1] ? argv[i + 1] : def;
 };
+const ROOT = path.resolve(argVal('--racine', path.resolve(GEN_SCRIPTS, '..', '..')));
+const DATA = path.join(ROOT, 'data', 'menus');
+const GEN = path.join(ROOT, 'scripts', 'menus-gen'); // registres
 const OUT_GEN = path.join(DATA, 'gen');
+const TRADUCTIONS = argVal('--traductions', null) ? path.resolve(argVal('--traductions', null)) : null;
+const LANGUES_DEMANDEES = argVal('--langues', null);
+const TOUTES_LANGUES = argv.includes('--toutes-les-langues');
+const CORRIGER_APOSTROPHES = argv.includes('--corriger-apostrophes');
 const OUT_FIXTURE = path.resolve(argVal('--fixture-dir', path.join(DATA, 'gen-fixture')));
 const OUT_TRAD = path.resolve(argVal('--a-traduire', path.join(os.tmpdir(), 'pearl-menus-a-traduire')));
 
@@ -56,7 +72,7 @@ const SUBS = [
   'vegetarien', 'salades', 'bowls', 'sandwichs', 'pizzas', 'sauces', 'desserts', 'boissons', 'gateaux', 'petit_dejeuner',
 ];
 const COURSE_DE_SUB = {
-  soupes: 'entree', aperitif: 'entree', desserts: 'dessert', gateaux: 'dessert', petit_dejeuner: 'petit-dejeuner',
+  soupes: 'entree', aperitif: 'entree', accompagnements: 'entree', desserts: 'dessert', gateaux: 'dessert', petit_dejeuner: 'petit-dejeuner',
   boissons: 'petit-dejeuner',
 };
 const TAGS = [
@@ -211,7 +227,7 @@ const LEX_EXPR = { crustaces: ['fruits de mer', 'saint jacques'] };
 // Expressions qui contiennent un mot du lexique sans l'allergene (retirees avant lecture d'un texte d'etape).
 const FAUX_AMIS = [
   'lait de coco', 'lait d amande', 'lait d avoine', 'noix de coco', 'noix de muscade', 'beurre de cacahuete', 'pate de curry',
-  'pate a tartiner', 'noix de saint jacques', 'creme de coco', 'eau de coco',
+  'pate a tartiner', 'noix de saint jacques', 'creme de coco', 'eau de coco', 'noix de beurre', 'nouilles de riz',
 ];
 function lexique(texte) {
   let t = ` ${norm(texte)} `;
@@ -700,8 +716,11 @@ for (const r of retenues) {
     cout += f.pricePerUnit !== undefined ? f.pricePerUnit * l.qty : (f.pricePerKgOrL * l.qty) / 1000;
   }
   const coutPortion = cout / 4;
-  const kcal = Math.round(conv.kcalTotal / 4 / 10) * 10;
-  const prot = Math.round(conv.protTotal / 4);
+  // portions d'origine du generateur : quantites gardees entieres (scale 1) = pers portions (desserts, gateaux, quiches, aperitifs de 6 a 20) ;
+  // quantites doublees (scale 2, pers 2) = 4 portions
+  const portions = Math.max(1, (Number(r.pers) || 4) * scale);
+  const kcal = Math.round(conv.kcalTotal / portions / 10) * 10;
+  const prot = Math.round(conv.protTotal / portions);
   if (!(kcal > 0) || kcal > 2500) echec('nutrition', `${titre} : kcal ${kcal}`);
 
   // enfants
@@ -924,8 +943,10 @@ function metaPhrase(texte) {
 const js = (s) => `module.exports = ${JSON.stringify(s)};\n`;
 const jsObj = (o) => `module.exports = ${JSON.stringify(o)};\n`;
 
-function fichiersDuJeu(dir, jeu, phrasesTextes, titres, versionNote) {
+// packs : Map langue -> { titres: string[] (un par case), phrases: string[] (un par identifiant de phrase) }, 'fr' en tete.
+function fichiersDuJeu(dir, jeu, packs) {
   const sorties = new Map();
+  const phrasesTextes = packs.get('fr').phrases;
   const meta = {
     VERSION: 1,
     N: jeu.n,
@@ -952,14 +973,15 @@ function fichiersDuJeu(dir, jeu, phrasesTextes, titres, versionNote) {
     sorties.set(path.join(dir, `lines-${b}.js`), js(jeu.lignesBlocs[b].join('')));
     sorties.set(path.join(dir, `steps-${b}.js`), js(jeu.etapesBlocs[b].join('')));
     const debut = b * SHARD;
-    sorties.set(path.join(dir, 'lang', `fr-titles-${b}.js`), js(titres.slice(debut, debut + SHARD).join('\n')));
+    for (const [lang, pack] of packs) sorties.set(path.join(dir, 'lang', `${lang}-titles-${b}.js`), js(pack.titres.slice(debut, debut + SHARD).join('\n')));
   }
-  sorties.set(path.join(dir, 'lang', 'fr-steps.js'), js(phrasesTextes.join('\n')));
+  for (const [lang, pack] of packs) sorties.set(path.join(dir, 'lang', `${lang}-steps.js`), js(pack.phrases.join('\n')));
   // table statique des require (Metro)
+  const langs = [...packs.keys()];
   const L = [];
   L.push(entete.trim());
   L.push("/* eslint-disable global-require */");
-  L.push('const LANGS = [' + "'fr'" + '];');
+  L.push('const LANGS = [' + langs.map((l) => `'${l}'`).join(', ') + '];');
   L.push('const NB_BLOCS = ' + jeu.nbBlocs + ';');
   const sw = (nom, args, corps) => {
     L.push(`function ${nom}(${args}) {`);
@@ -970,8 +992,11 @@ function fichiersDuJeu(dir, jeu, phrasesTextes, titres, versionNote) {
   const range = Array.from({ length: jeu.nbBlocs }, (_, i) => i);
   sw('lines', 'k', `  switch (k) {\n${range.map((b) => cas('./lines-', b)).join('\n')}\n    default:\n      return null;\n  }`);
   sw('steps', 'k', `  switch (k) {\n${range.map((b) => cas('./steps-', b)).join('\n')}\n    default:\n      return null;\n  }`);
-  sw('titles', 'lang, k', `  switch (lang) {\n    case 'fr':\n      switch (k) {\n${range.map((b) => `        case ${b}:\n          return require('./lang/fr-titles-${b}');`).join('\n')}\n        default:\n          return null;\n      }\n    default:\n      return null;\n  }`);
-  sw('phrases', 'lang', `  switch (lang) {\n    case 'fr':\n      return require('./lang/fr-steps');\n    default:\n      return null;\n  }`);
+  const titresCas = langs
+    .map((l) => `    case '${l}':\n      switch (k) {\n${range.map((b) => `        case ${b}:\n          return require('./lang/${l}-titles-${b}');`).join('\n')}\n        default:\n          return null;\n      }`)
+    .join('\n');
+  sw('titles', 'lang, k', `  switch (lang) {\n${titresCas}\n    default:\n      return null;\n  }`);
+  sw('phrases', 'lang', `  switch (lang) {\n${langs.map((l) => `    case '${l}':\n      return require('./lang/${l}-steps');`).join('\n')}\n    default:\n      return null;\n  }`);
   L.push('module.exports = { LANGS, NB_BLOCS, lines, steps, titles, phrases };');
   sorties.set(path.join(dir, 'loaders.js'), L.join('\n') + '\n');
   return sorties;
@@ -981,7 +1006,189 @@ function fichiersDuJeu(dir, jeu, phrasesTextes, titres, versionNote) {
 const titresParCase = lignesParCase.map((r) => (r ? r.titre : '-'));
 const jeuComplet = construireJeu(lignesParCase, phrasesTexte, (x) => x);
 finirSiProblemes();
-const sorties = fichiersDuJeu(OUT_GEN, jeuComplet, phrasesTexte, titresParCase);
+
+/* ---------------------------- traductions : packs de langue ---------------------------- */
+
+const LANGUES = ['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ar', 'sv', 'th']; // MENU_LANGS de lib/menus/recipes.js
+const ALIAS_LANGUE = { cn: 'zh', jp: 'ja', se: 'sv', us: 'en', gb: 'en', sa: 'ar' };
+const normaliserLangue = (nom) => {
+  const l = String(nom).toLowerCase().replace('_', '-').split('-')[0];
+  return ALIAS_LANGUE[l] || l;
+};
+const LANGUES_LATINES = new Set(['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'sv']);
+const ECRITURE = {
+  ru: /[Ѐ-ӿ]/,
+  ar: /[؀-ۿ]/,
+  th: /[฀-๿]/,
+  zh: /[一-鿿]/,
+  ja: /[぀-ヿ一-鿿]/,
+};
+const TIRET_TRAD = /[—–‒―→←↔⇒⇔➔➜➡⟶]/;
+const avertissements = {}; // categorie -> { n, exemples }
+function avertir(categorie, message) {
+  const a = avertissements[categorie] || (avertissements[categorie] = { n: 0, exemples: [] });
+  a.n++;
+  if (a.exemples.length < 5) a.exemples.push(message);
+}
+const { chiffresDe, memesChiffres } = require('./chiffres');
+// Controle commun d'un texte traduit. Renvoie le texte nettoye (espaces de bord retirees) ou null (erreur deja signalee).
+// nature : 'phrase' (chiffres et ecriture obligatoires), 'titre' et 'ingredient' (avertissements pour ces deux controles).
+function controlerTexte(lang, nature, id, brut, fr) {
+  const ctx = `${lang} ${nature} ${id}`;
+  if (typeof brut !== 'string') { echec('traduction', `${ctx} : texte absent ou non textuel`); return null; }
+  let t = brut.trim();
+  if (!t) { echec('traduction', `${ctx} : texte vide`); return null; }
+  if (/[\r\n]/.test(t)) { echec('traduction', `${ctx} : saut de ligne dans le texte`); return null; }
+  if (TIRET_TRAD.test(t)) { echec('traduction', `${ctx} : tiret cadratin, demi-cadratin ou fleche`); return null; }
+  if (/\{\d+\}/.test(t)) { echec('traduction', `${ctx} : gabarit {n} residuel`); return null; }
+  if (LANGUES_LATINES.has(lang) && t.includes('’')) {
+    if (CORRIGER_APOSTROPHES) t = t.replace(/’/g, "'");
+    else { echec('traduction', `${ctx} : apostrophe typographique (utiliser ' ou --corriger-apostrophes)`); return null; }
+  }
+  if (ECRITURE[lang] && !ECRITURE[lang].test(t)) {
+    if (nature === 'phrase') { echec('traduction', `${ctx} : aucun caractere de l'ecriture attendue (non traduit ?)`); return null; }
+    avertir(`ecriture-${nature}`, `${ctx} « ${t.slice(0, 40)} »`);
+  }
+  if (fr !== undefined && !memesChiffres(fr, t)) {
+    if (nature === 'phrase') { echec('traduction', `${ctx} : chiffres differents du francais (« ${chiffresDe(fr)} » contre « ${chiffresDe(t)} »)`); return null; }
+    if (nature === 'titre') avertir('chiffres-titre', `${ctx} « ${t.slice(0, 40)} » (fr : ${chiffresDe(fr)})`);
+  }
+  return t;
+}
+
+const trier = (a, b) => a.localeCompare(b, 'en', { numeric: true });
+function lireListeJson(lang, fichier, dir) {
+  try { return JSON.parse(lire(path.join(dir, fichier))); } catch (e) { echec('traduction', `${lang}/${fichier} illisible : ${e.message}`); return null; }
+}
+// [{i, t}] ou {indice: texte} -> Map
+function fusionnerIndexes(lang, fichier, data, cible) {
+  const entrees = Array.isArray(data)
+    ? data.map((e) => [e && e.i, e && e.t])
+    : data && typeof data === 'object' ? Object.entries(data).map(([k, v]) => [/^\d+$/.test(k) ? Number(k) : NaN, v]) : null;
+  if (!entrees) { echec('traduction', `${lang}/${fichier} : une liste [{i, t}] est attendue`); return; }
+  for (const [i, t] of entrees) {
+    if (!Number.isInteger(i) || i < 0) { echec('traduction', `${lang}/${fichier} : indice invalide ${JSON.stringify(i)}`); continue; }
+    if (typeof t !== 'string') { echec('traduction', `${lang}/${fichier} : texte absent a l'indice ${i}`); continue; }
+    if (cible.has(i) && cible.get(i) !== t) { echec('traduction', `${lang}/${fichier} : indice ${i} traduit deux fois differemment`); continue; }
+    cible.set(i, t);
+  }
+}
+function lireTraductions(dir) {
+  const out = new Map();
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) { echec('traduction', `dossier de traductions introuvable : ${dir}`); return out; }
+  const demandees = LANGUES_DEMANDEES ? new Set(LANGUES_DEMANDEES.split(',').map((x) => normaliserLangue(x.trim()))) : null;
+  for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!d.isDirectory()) continue;
+    const lang = normaliserLangue(d.name);
+    if (!LANGUES.includes(lang)) { echec('traduction', `dossier de langue inconnu : ${d.name}`); continue; }
+    if (lang === 'fr') { avertir('fr-ignore', 'le francais est genere par le build : dossier fr ignore'); continue; }
+    if (demandees && !demandees.has(lang)) continue;
+    if (out.has(lang)) { echec('traduction', `${lang} : deux dossiers pour la meme langue`); continue; }
+    const base = path.join(dir, d.name);
+    const fichiers = fs.readdirSync(base).sort(trier);
+    const t = { lang, titres: new Map(), phrases: new Map(), ingredients: new Map(), fichiers: fichiers.length };
+    for (const f of fichiers) {
+      if (/^titres(-[^.]*)?\.json$/.test(f)) fusionnerIndexes(lang, f, lireListeJson(lang, f, base), t.titres);
+      else if (/^phrases(-[^.]*)?\.json$/.test(f)) fusionnerIndexes(lang, f, lireListeJson(lang, f, base), t.phrases);
+      else if (f === 'ingredients.json') {
+        const data = lireListeJson(lang, f, base);
+        const entrees = Array.isArray(data) ? data.map((e) => [e && e.cle, e && e.t]) : data && typeof data === 'object' ? Object.entries(data) : null;
+        if (!entrees) { echec('traduction', `${lang}/${f} : une liste [{cle, t}] ou un objet {cle: nom} est attendu`); continue; }
+        for (const [cle, nom] of entrees) {
+          if (typeof cle !== 'string' || typeof nom !== 'string') { echec('traduction', `${lang}/${f} : entree invalide ${JSON.stringify(cle)}`); continue; }
+          if (t.ingredients.has(cle) && t.ingredients.get(cle) !== nom) { echec('traduction', `${lang}/${f} : ${cle} traduit deux fois differemment`); continue; }
+          t.ingredients.set(cle, nom);
+        }
+      } else avertir('fichier-ignore', `${lang}/${f}`);
+    }
+    out.set(lang, t);
+  }
+  if (demandees) for (const l of demandees) if (!out.has(l)) echec('traduction', `${l} : demandee par --langues mais absente du dossier`);
+  return out;
+}
+
+const exemples = (a) => a.slice(0, 6).join(', ') + (a.length > 6 ? ', ...' : '');
+// Construit le pack complet (titres par case, phrases par identifiant) d'une langue traduite ; signale chaque trou.
+function construirePack(lang, trad) {
+  const titres = new Array(N);
+  const manquantsT = [];
+  for (let c = 0; c < N; c++) {
+    if (titresParCase[c] === '-') { titres[c] = '-'; continue; }
+    if (!trad.titres.has(c)) { manquantsT.push(c); titres[c] = ''; continue; }
+    const t = controlerTexte(lang, 'titre', c, trad.titres.get(c), titresParCase[c]);
+    titres[c] = t === null ? '' : t;
+  }
+  if (manquantsT.length) echec('traduction', `${lang} : ${manquantsT.length} titre(s) manquant(s) sur ${N} (cases ${exemples(manquantsT)})`);
+  const horsT = [...trad.titres.keys()].filter((i) => i >= N || titresParCase[i] === '-');
+  if (horsT.length) echec('traduction', `${lang} : ${horsT.length} titre(s) pour des cases inexistantes ou retirees (${exemples(horsT)})`);
+  const P = phrasesTexte.length;
+  const phrases = new Array(P);
+  const manquantsP = [];
+  for (let i = 0; i < P; i++) {
+    if (!trad.phrases.has(i)) { manquantsP.push(i); phrases[i] = ''; continue; }
+    const t = controlerTexte(lang, 'phrase', i, trad.phrases.get(i), phrasesTexte[i]);
+    phrases[i] = t === null ? '' : t;
+  }
+  if (manquantsP.length) echec('traduction', `${lang} : ${manquantsP.length} phrase(s) manquante(s) sur ${P} (identifiants ${exemples(manquantsP)})`);
+  const horsP = [...trad.phrases.keys()].filter((i) => i >= P);
+  if (horsP.length) echec('traduction', `${lang} : ${horsP.length} phrase(s) hors dictionnaire (${exemples(horsP)})`);
+  // noms des nouveaux ingredients
+  const noms = new Map();
+  const attendus = [...NOUVELLES_FICHES.keys()];
+  const manquantsI = attendus.filter((k) => !trad.ingredients.has(k));
+  if (manquantsI.length) echec('traduction', `${lang} : ${manquantsI.length} nom(s) d'ingredient manquant(s) sur ${attendus.length} (${exemples(manquantsI)})`);
+  const inconnusI = [...trad.ingredients.keys()].filter((k) => !NOUVELLES_FICHES.has(k));
+  if (inconnusI.length) echec('traduction', `${lang} : ${inconnusI.length} ingredient(s) inconnu(s) ou deja traduit(s) (${exemples(inconnusI)})`);
+  for (const k of attendus) {
+    if (!trad.ingredients.has(k)) continue;
+    const t = controlerTexte(lang, 'ingredient', k, trad.ingredients.get(k), undefined);
+    if (t !== null) noms.set(k, t);
+  }
+  return { titres, phrases, noms };
+}
+
+// Pack deja integre (gen/lang/<langue>-*.js) conserve quand la langue n'est pas retraduite ; null s'il n'y en a pas.
+function lirePackExistant(lang, nbBlocs) {
+  const f = (n) => path.join(OUT_GEN, 'lang', n);
+  if (!fs.existsSync(f(`${lang}-steps.js`))) return null;
+  const charge = (n) => {
+    try { const v = require(f(n)); return typeof v === 'string' ? v : null; } catch (_e) { return null; }
+  };
+  const titres = [];
+  for (let b = 0; b < nbBlocs; b++) {
+    const txt = charge(`${lang}-titles-${b}.js`);
+    if (txt === null) { echec('pack', `${lang} : bloc de titres ${b} absent ou illisible`); return null; }
+    titres.push(...txt.split('\n'));
+  }
+  const txtP = charge(`${lang}-steps.js`);
+  if (txtP === null) { echec('pack', `${lang} : phrases illisibles`); return null; }
+  const phrases = txtP.split('\n');
+  if (titres.length !== N) { echec('pack', `${lang} : ${titres.length} titre(s) au lieu de ${N} (pack incomplet : fournir --traductions)`); return null; }
+  if (phrases.length !== phrasesTexte.length) { echec('pack', `${lang} : ${phrases.length} phrase(s) au lieu de ${phrasesTexte.length} (pack incomplet : fournir --traductions)`); return null; }
+  return { titres, phrases };
+}
+
+const tradLues = TRADUCTIONS ? lireTraductions(TRADUCTIONS) : new Map();
+const packsComplets = new Map([['fr', { titres: titresParCase, phrases: phrasesTexte }]]);
+const nomsIngredientsParLangue = new Map();
+for (const lang of LANGUES) {
+  if (lang === 'fr') continue;
+  if (tradLues.has(lang)) {
+    const p = construirePack(lang, tradLues.get(lang));
+    packsComplets.set(lang, { titres: p.titres, phrases: p.phrases });
+    nomsIngredientsParLangue.set(lang, p.noms);
+  } else {
+    const p = lirePackExistant(lang, Math.max(1, Math.ceil(N / SHARD)));
+    if (p) packsComplets.set(lang, p);
+  }
+}
+if (TOUTES_LANGUES) {
+  const absentes = LANGUES.filter((l) => !packsComplets.has(l));
+  if (absentes.length) echec('traduction', `langue(s) absente(s) : ${absentes.join(', ')}`);
+}
+finirSiProblemes();
+
+const sorties = fichiersDuJeu(OUT_GEN, jeuComplet, packsComplets);
 
 /* ---------------------------------------- fixture de 50 recettes ---------------------------------------- */
 
@@ -1021,7 +1228,10 @@ const remapFixture = new Map();
 for (const r of fixtureRows) for (const id of r.ids) if (!remapFixture.has(id)) { remapFixture.set(id, phrasesFixtureIds.length); phrasesFixtureIds.push(id); }
 const jeuFixture = construireJeu(fixtureRows, null, (id) => remapFixture.get(id));
 const phrasesFixture = phrasesFixtureIds.map((id) => phrasesTexte[id]);
-const sortiesFixture = fichiersDuJeu(OUT_FIXTURE, jeuFixture, phrasesFixture, fixtureRows.map((r) => r.titre));
+const packsFixture = new Map(
+  [...packsComplets].map(([lang, p]) => [lang, { titres: fixtureCases.map((c) => p.titres[c]), phrases: phrasesFixtureIds.map((id) => p.phrases[id]) }])
+);
+const sortiesFixture = fichiersDuJeu(OUT_FIXTURE, jeuFixture, packsFixture);
 finirSiProblemes();
 
 /* -------------------------------- ingredients.json et fr.json -------------------------------- */
@@ -1035,6 +1245,28 @@ const frTexte = aCRLF(JSON.stringify(frFinal, null, 2));
 // les recettes de fr.json ne bougent pas
 if (JSON.stringify(frFinal.recipes) !== JSON.stringify(FR_ACTUEL.recipes)) echec('fr', 'les recettes de fr.json ont change');
 for (const cle of Object.keys(INGS)) if (!frFinal.ingredients[cle]) echec('fr', `nom francais manquant pour ${cle}`);
+// Noms des nouveaux ingredients dans data/menus/i18n/<langue>.json : cle « ingredients » seulement, ordre des cles et format
+// (indentation, fins de ligne, saut de ligne final) conserves ; les cles deja presentes gardent leur place.
+const i18nSorties = new Map();
+for (const [lang, noms] of nomsIngredientsParLangue) {
+  const f = path.join(DATA, 'i18n', `${lang}.json`);
+  if (!fs.existsSync(f)) { echec('i18n', `${lang}.json absent`); continue; }
+  const brut = lire(f);
+  const crlf = brut.includes('\r\n');
+  const finLigne = /\n$/.test(brut);
+  const mise = (o) => {
+    let t = JSON.stringify(o, null, 2);
+    if (crlf) t = t.replace(/\n/g, '\r\n');
+    return t + (finLigne ? (crlf ? '\r\n' : '\n') : '');
+  };
+  let o;
+  try { o = JSON.parse(brut); } catch (e) { echec('i18n', `${lang}.json illisible : ${e.message}`); continue; }
+  if (mise(o) !== brut) { echec('i18n', `${lang}.json : format non reproductible (indentation, fins de ligne ou echappements), fichier non modifie`); continue; }
+  if (!o.ingredients || typeof o.ingredients !== 'object') { echec('i18n', `${lang}.json : cle ingredients absente`); continue; }
+  const ingredients = { ...o.ingredients };
+  for (const k of NOUVELLES_FICHES.keys()) if (noms.has(k)) ingredients[k] = noms.get(k);
+  i18nSorties.set(f, mise({ ...o, ingredients }));
+}
 const ecritIngs = INGS_ACTUELS_BRUT !== ingsFinal;
 const ecritFr = FR_ACTUEL_BRUT !== frTexte;
 
@@ -1056,6 +1288,7 @@ tous.set(REGISTRE_FICHIER, registreTexte);
 tous.set(REGISTRE_PHRASES_FICHIER, registrePhrasesTexte);
 tous.set(path.join(DATA, 'ingredients.json'), ingsFinal);
 tous.set(path.join(DATA, 'i18n', 'fr.json'), frTexte);
+for (const [f, contenu] of i18nSorties) tous.set(f, contenu);
 
 let ecarts = 0;
 let ecrits = 0;
@@ -1112,6 +1345,9 @@ const rapport = {
   nouvellesFiches: NOUVELLES_FICHES.size,
   ingredientsTotal: ING_KEYS.length,
   fixture: fixtureCases.length,
+  langues: [...packsComplets.keys()],
+  languesTraduitesCeTour: [...tradLues.keys()],
+  avertissements,
   recettesNonQuatrePersonnes: pers,
   tags: tagsCompte,
   recettesAvecDouteTexte: douteN,
