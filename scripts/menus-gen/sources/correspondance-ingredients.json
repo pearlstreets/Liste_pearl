@@ -1524,7 +1524,7 @@
   "cle": "confiture",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🍓",
+   "emoji": "🫙",
    "aisle": "epicerie",
    "pricePerKgOrL": 6,
    "pack": {
@@ -2331,6 +2331,22 @@
   }
  },
  {
+  "nom": "filets d'anchois",
+  "cle": "anchois",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 210,
+   "prot_100": 29,
+   "g_par_u": null
+  }
+ },
+ {
   "nom": "filets de bar",
   "cle": "filet-bar",
   "nouvelle": true,
@@ -2781,7 +2797,7 @@
   "nouvelle": true,
   "nom_fr": "Gingembre en poudre",
   "fiche": {
-   "emoji": "🫚",
+   "emoji": "🟡",
    "aisle": "epicerie",
    "pricePerKgOrL": 83,
    "pack": {
@@ -3616,7 +3632,7 @@
   "nouvelle": true,
   "fiche": {
    "id": "mayonnaise",
-   "emoji": "🧴",
+   "emoji": "🫙",
    "aisle": "epicerie",
    "pricePerKgOrL": 9,
    "pack": {
@@ -6362,7 +6378,7 @@
   "cle": "tofu-fume",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🌱",
+   "emoji": "🍢",
    "aisle": "cremerie",
    "pricePerKgOrL": 14,
    "pack": {
@@ -6528,7 +6544,7 @@
   "cle": "vinaigre-balsamique",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🧴",
+   "emoji": "🫗",
    "aisle": "epicerie",
    "pricePerKgOrL": 9,
    "pack": {
@@ -6558,7 +6574,7 @@
   "nouvelle": true,
   "nom_fr": "Vinaigre de cidre",
   "fiche": {
-   "emoji": "🍎",
+   "emoji": "🫗",
    "aisle": "epicerie",
    "pricePerKgOrL": 3.5,
    "pack": {

@@ -785,8 +785,7 @@ export default function SearchPopup({
                     }}
                   >
                     <Text style={{ fontSize: 14, fontWeight: '700', color: '#374151' }}>
-                      {selList.reduce((s, a) => s + a.qty, 0)}{' '}
-                      {t('productsScreen.quantity') || 'produits'}
+                      {t('counts.items', { count: selList.reduce((s, a) => s + a.qty, 0) })}
                     </Text>
                     <Text style={{ fontSize: 15, fontWeight: '800', color: BRAND }}>
                       {formatPrice(selList.reduce((s, a) => s + a.item.price * a.qty, 0))}

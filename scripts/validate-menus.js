@@ -171,7 +171,7 @@ for (const f of files) {
 /* ======================================================================================================== */
 
 // Contrat attendu des colonnes (CONCEPTION.md 2.2, avec nPhr). Le validateur ne se fie pas a meta.FIELDS : il le compare.
-const FIELDS_ATTENDUS = [['course', 1], ['sub', 1], ['family', 1], ['tags', 3], ['time', 2], ['diff', 1], ['kcal', 2], ['prot', 2], ['keep', 1], ['flags', 1], ['cost', 2], ['alg', 3], ['nIng', 1], ['nStep', 1], ['nPhr', 1], ['main1', 2], ['main2', 2]];
+const FIELDS_ATTENDUS = [['course', 1], ['sub', 1], ['family', 1], ['tags', 3], ['time', 2], ['diff', 1], ['kcal', 2], ['prot', 2], ['keep', 1], ['flags', 1], ['cost', 2], ['alg', 3], ['nIng', 1], ['nStep', 1], ['nPhr', 1], ['main1', 2], ['main2', 2], ['serv', 1]];
 const ALG_ATTENDUS = ['gluten', 'lait', 'oeuf', 'poisson', 'crustaces', 'soja', 'sesame', 'fruits-a-coque', 'miel', 'porc'];
 const LANGUES_13 = ['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ar', 'sv', 'th'];
 const LATINES = new Set(['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'sv']);
@@ -403,8 +403,10 @@ function validerCatalogue() {
     let algAttendu = 0;
     for (const a of al) { const k = ALG_ATTENDUS.indexOf(a); if (k < 0) agg('allergenes : allergene d\'ingredient hors de la liste des 10', `${ctx} : ${a}`); else algAttendu |= 1 << k; }
     ok(v.alg === algAttendu, 'allergenes : colonne alg differente de l\'union des ingredients', `${ctx} : ${v.alg} contre ${algAttendu}`);
-    // cout recalcule (meme formule que le build)
-    const coutAttendu = Math.min(4095, Math.round((cout / 4) * 10));
+    // portions d'origine (colonne serv : 4 par defaut, 6 a 20 pour quiches, cakes, aperitifs, desserts et gateaux)
+    ok(v.serv >= 1 && v.serv <= 20, 'portions : colonne serv hors de 1 a 20', `${ctx} : ${v.serv}`);
+    // cout recalcule (meme formule que le build) : cout total divise par les portions d'origine de la recette
+    const coutAttendu = Math.min(4095, Math.round((cout / Math.max(1, v.serv)) * 10));
     ok(Math.abs(coutAttendu - v.cost) <= 1, 'cout : colonne cost differente du calcul sur les ingredients', `${ctx} : ${v.cost} contre ${coutAttendu}`);
     // principaux
     for (const [nom, val] of [['main1', v.main1], ['main2', v.main2]]) {

@@ -12,7 +12,7 @@ import {
 import { buildShoppingList, toListItems, planFingerprint } from '../lib/menus/shopping';
 import { normalizeProfile, personsFor } from '../lib/menus/profile';
 import { dayNutrition } from '../lib/menus/nutrition';
-import { scaleQty, formatQty, formatQtyText } from '../lib/menus/scaling';
+import { scaleQty, formatQty, formatQtyText, scaleIngredients } from '../lib/menus/scaling';
 import { searchRecipes, recipesByPantry, inSeason } from '../lib/menus/search';
 import { estimateRecipeCost, formatEur } from '../lib/menus/pricing';
 import { createRng, seasonOf } from '../lib/menus/util';
@@ -501,6 +501,38 @@ describe('nutrition, échelle, recherche', () => {
     expect(formatQtyText(2, 'u')).toBe('2');
     expect(formatQtyText(1200, 'ml')).toBe('1,2 l');
     expect(formatQty(NaN, 'g').amount).toBe('0');
+    expect(formatQty(0.2, 'g').amount).toBe('1'); // jamais « 0 g »
+    expect(formatQty(0.05, 'cc').amount).toBe('⅛');
+  });
+  test('portions réelles, pièces entières, « selon votre goût »', () => {
+    const quiche = {
+      servings: 4,
+      ingredients: [
+        { key: 'pate-brisee', qty: 1, unit: 'u' },
+        { key: 'oeuf', qty: 3, unit: 'u' },
+        { key: 'citron', qty: 1, unit: 'u' },
+        { key: 'poivre', qty: 1, unit: 'g' },
+        { key: 'beurre', qty: 1, unit: 'g' },
+      ],
+    };
+    const by = (l) => Object.fromEntries(l.map((x) => [x.key, x]));
+    const six = by(scaleIngredients(quiche, 6, { lang: 'fr' }));
+    expect(six['pate-brisee'].amount).toBe('2');
+    expect(six.oeuf.amount).toBe('5');
+    expect(six.oeuf.plural).toBe(true);
+    expect(six.citron.amount).toBe('1 ½');
+    const un = by(scaleIngredients(quiche, 1, { lang: 'fr' }));
+    expect(un['pate-brisee'].amount).toBe('1');
+    expect(un['pate-brisee'].plural).toBe(false);
+    expect(un.oeuf.amount).toBe('1');
+    expect(un.poivre.toTaste).toBe(true);
+    expect(un.poivre.amount).toBe('');
+    expect(un.beurre.toTaste).toBe(false);
+    expect(un.beurre.amount).toBe('1');
+    // la base est le vrai nombre de portions de la recette (colonne serv d'une recette générée)
+    const huit = by(scaleIngredients({ ...quiche, servings: 8 }, 8, { lang: 'fr' }));
+    expect(huit.oeuf.amount).toBe('3');
+    expect(huit['pate-brisee'].amount).toBe('1');
   });
   test('recherche sans accents ni casse', () => {
     const titles = { 'poulet-riz': 'Poulet rôti au riz', 'saumon-riz': 'Saumon et riz' };

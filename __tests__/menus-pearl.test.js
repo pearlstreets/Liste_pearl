@@ -15,7 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import { getShopsByCategory } from '../services/products';
 import { matchProduct, matchProducts, nameMatches, norm } from '../lib/matchProduct';
-import { ingredientQueries, matchLines, nearbyShops, cleanName } from '../lib/menus/pearl';
+import { ingredientQueries, matchLines, nearbyShops, cleanName, plausibleOffer } from '../lib/menus/pearl';
 import { loadShops, peekShops, resetShopsCache, subscribeShops, TTL_MS } from '../lib/shopsCache';
 import { requestOpenShop, takePendingShop, onOpenShop } from '../lib/openShop';
 import { toListItems } from '../lib/menus/shopping';
@@ -153,6 +153,28 @@ describe('matchLines : prix réels, jamais inventés', () => {
   test('la langue d\'affichage ne change rien : on part toujours du nom français', () => {
     const viaEn = matchLines(lines, shops, (k) => fr(k));
     expect(viaEn.covered).toEqual(r.covered);
+  });
+});
+
+describe('matchLines : correspondances incohérentes écartées', () => {
+  const fr = (k) => getTexts('fr').ingredientName(k);
+  test('prix aberrant (poireau à 280 €) ou produit non alimentaire : jamais affiché', () => {
+    const shops = [
+      shop(1, 'Atelier', [P(11, 'Poireau', 280)]),
+      shop(2, 'Bijoux', [P(21, 'Poireau', 3, { subcategory: 'Bijoux' })]),
+      shop(3, 'Primeur', [P(31, 'Poireau', 2.4)]),
+    ];
+    const e = matchLines([{ key: 'poireau', packs: 1 }], shops, fr);
+    expect(e.byKey.poireau.count).toBe(1);
+    expect(e.byKey.poireau.min).toBe(2.4);
+    const seul = matchLines([{ key: 'poireau', packs: 1 }], [shops[0], shops[1]], fr);
+    expect(seul.covered).toEqual([]);
+  });
+  test('bornes larges : bio, gros paquet ou producteur restent affichés', () => {
+    expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 9)).toBe(true);
+    expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 0.1)).toBe(false);
+    expect(plausibleOffer({}, null, 25)).toBe(true);
+    expect(plausibleOffer({}, null, 280)).toBe(false);
   });
 });
 

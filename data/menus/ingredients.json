@@ -209,7 +209,7 @@
   "pantry": false
  },
  "haricot-vert": {
-  "emoji": "🫛",
+  "emoji": "🌿",
   "aisle": "fruits-legumes",
   "pricePerKgOrL": 5.5,
   "pack": {
@@ -396,7 +396,7 @@
   "pantry": false
  },
  "gingembre": {
-  "emoji": "🫚",
+  "emoji": "🌱",
   "aisle": "fruits-legumes",
   "pricePerKgOrL": 8,
   "pack": {
@@ -507,7 +507,7 @@
   ]
  },
  "chorizo": {
-  "emoji": "🥩",
+  "emoji": "🥓",
   "aisle": "viandes-poissons",
   "pricePerKgOrL": 14,
   "pack": {
@@ -823,7 +823,7 @@
   ]
  },
  "tofu": {
-  "emoji": "🥡",
+  "emoji": "🍢",
   "aisle": "cremerie",
   "pricePerKgOrL": 8,
   "pack": {
@@ -1181,7 +1181,7 @@
   ]
  },
  "tahini": {
-  "emoji": "🥜",
+  "emoji": "🫙",
   "aisle": "epicerie",
   "pricePerKgOrL": 14,
   "pack": {
@@ -1236,7 +1236,7 @@
   ]
  },
  "sauce-soja": {
-  "emoji": "🧂",
+  "emoji": "🍶",
   "aisle": "epicerie",
   "pricePerKgOrL": 8,
   "pack": {
@@ -1262,7 +1262,7 @@
   "pantry": true
  },
  "vinaigre": {
-  "emoji": "🧴",
+  "emoji": "🫗",
   "aisle": "epicerie",
   "pricePerKgOrL": 3,
   "pack": {
@@ -1273,7 +1273,7 @@
   "pantry": true
  },
  "moutarde": {
-  "emoji": "🧴",
+  "emoji": "🫙",
   "aisle": "epicerie",
   "pricePerKgOrL": 5,
   "pack": {
@@ -1284,7 +1284,7 @@
   "pantry": true
  },
  "bouillon": {
-  "emoji": "🧊",
+  "emoji": "🍲",
   "aisle": "epicerie",
   "pricePerUnit": 0.15,
   "pack": {
@@ -1730,7 +1730,7 @@
   ]
  },
  "galette-riz": {
-  "emoji": "🍚",
+  "emoji": "🍘",
   "aisle": "epicerie",
   "pricePerUnit": 0.12,
   "pack": {
@@ -1868,7 +1868,7 @@
   ]
  },
  "huile-sesame": {
-  "emoji": "🫒",
+  "emoji": "🫗",
   "aisle": "epicerie",
   "pricePerKgOrL": 20,
   "pack": {
@@ -2001,7 +2001,7 @@
   "pantry": true
  },
  "vin-blanc": {
-  "emoji": "🍾",
+  "emoji": "🥂",
   "aisle": "boissons",
   "pricePerKgOrL": 6,
   "pack": {
@@ -2397,7 +2397,7 @@
   "pantry": true
  },
  "muscade": {
-  "emoji": "🌰",
+  "emoji": "🟤",
   "aisle": "epicerie",
   "pricePerKgOrL": 50,
   "pack": {
@@ -2742,7 +2742,7 @@
   "pantry": false
  },
  "confiture": {
-  "emoji": "🍓",
+  "emoji": "🫙",
   "aisle": "epicerie",
   "pricePerKgOrL": 6,
   "pack": {
@@ -3025,7 +3025,7 @@
   "pantry": false
  },
  "gingembre-poudre": {
-  "emoji": "🫚",
+  "emoji": "🟡",
   "aisle": "epicerie",
   "pricePerKgOrL": 83,
   "pack": {
@@ -3204,7 +3204,7 @@
   "pantry": false
  },
  "mayonnaise": {
-  "emoji": "🧴",
+  "emoji": "🫙",
   "aisle": "epicerie",
   "pricePerKgOrL": 9,
   "pack": {
@@ -3837,7 +3837,7 @@
   "pantry": false
  },
  "tofu-fume": {
-  "emoji": "🌱",
+  "emoji": "🍢",
   "aisle": "cremerie",
   "pricePerKgOrL": 14,
   "pack": {
@@ -3862,7 +3862,7 @@
   "pantry": false
  },
  "vinaigre-balsamique": {
-  "emoji": "🧴",
+  "emoji": "🫗",
   "aisle": "epicerie",
   "pricePerKgOrL": 9,
   "pack": {
@@ -3873,7 +3873,7 @@
   "pantry": true
  },
  "vinaigre-cidre": {
-  "emoji": "🍎",
+  "emoji": "🫗",
   "aisle": "epicerie",
   "pricePerKgOrL": 3.5,
   "pack": {

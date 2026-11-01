@@ -99,7 +99,7 @@ describe('aller-retour champ par champ', () => {
       expect(r.generated).toBe(true);
       expect(r.course).toBe(m.COURSES[col.course[i]]);
       expect(r.sub).toBe(m.SUBS[col.sub[i]]);
-      expect(r.servings).toBe(4);
+      expect(r.servings).toBe(col.serv ? col.serv[i] : 4);
       expect(r.timeMin).toBe(col.time[i] * 5);
       expect(r.difficulty).toBe(col.diff[i] + 1);
       expect(r.kcal).toBe(col.kcal[i] * 10);

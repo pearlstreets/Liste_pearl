@@ -29,6 +29,7 @@ import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
+import { isolerPrix } from './MealCard';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 
 const Dots = ({ n }) => (
@@ -80,8 +81,9 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   );
   const pearlShops = usePearlShops('product_purchase');
   const lines = useMemo(
-    () => (recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang) }) : []),
-    [recipe, persons, lang]
+    () =>
+      recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang), ingredients }) : [],
+    [recipe, persons, lang, ingredients]
   );
   const pearlRows = useMemo(() => {
     const fr = getTexts('fr');
@@ -130,9 +132,18 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   };
 
   const qtyText = (l) => {
+    if (l.toTaste) return t('recipe.toTaste');
     if (!l.amount) return '';
     const u = labels[l.displayUnit] !== undefined ? labels[l.displayUnit] : l.displayUnit;
     return u ? `${l.amount} ${u}` : `${l.amount}`;
+  };
+
+  // Nom au pluriel quand plus d'une pièce (« Œufs » pour 5), si la langue en a un ; sinon le nom habituel.
+  const nameOf = (l) => {
+    const name = texts.ingredientName(l.key);
+    if (!l.plural) return name;
+    const pl = t(`recipe.plural.${l.key}`, { defaultValue: '' });
+    return pl && !pl.includes('recipe.plural.') ? pl : name;
   };
 
   const askDelete = () =>
@@ -158,7 +169,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
         .filter((l) => !l.optional)
         .map((l) => {
           const q = qtyText(l);
-          return `- ${texts.ingredientName(l.key)}${q ? ` : ${q}` : ''}`;
+          return `- ${nameOf(l)}${q ? ` : ${q}` : ''}`;
         }),
       '',
       t('recipe.steps') + ' :',
@@ -294,19 +305,25 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
               {cost && mine ? (
                 cost.unpriced > 0 ? null : (
                   <Text style={s.portionHint}>
-                    {t('recipe.costNote', {
-                      total: formatEur(cost.total, lang),
-                      per: formatEur(cost.perPerson, lang),
-                    })}
+                    {isolerPrix(
+                      t('recipe.costNote', {
+                        total: formatEur(cost.total, lang),
+                        per: formatEur(cost.perPerson, lang),
+                      }),
+                      lang
+                    )}
                   </Text>
                 )
               ) : null}
               {cost && !mine ? (
                 <Text style={s.portionHint}>
-                  {t('recipe.costNote', {
-                    total: formatEur(cost.total, lang),
-                    per: formatEur(cost.perPerson, lang),
-                  })}
+                  {isolerPrix(
+                    t('recipe.costNote', {
+                      total: formatEur(cost.total, lang),
+                      per: formatEur(cost.perPerson, lang),
+                    }),
+                    lang
+                  )}
                 </Text>
               ) : null}
             </View>
@@ -340,7 +357,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                   style={[s.ingName, on && { opacity: 0.45, textDecorationLine: 'line-through' }]}
                   numberOfLines={2}
                 >
-                  {texts.ingredientName(l.key)}
+                  {nameOf(l)}
                   {l.optional ? ` (${t('recipe.optional')})` : ''}
                 </Text>
                 <Text style={[s.ingQty, on && { opacity: 0.45 }]}>{qtyText(l)}</Text>
@@ -363,7 +380,10 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                     {texts.ingredientName(r.key)}
                   </Text>
                   <Text style={s.pearlVal} numberOfLines={1}>
-                    {t('pearl.line', { count: r.count, price: formatEur(r.min, lang) })}
+                    {isolerPrix(
+                      t('pearl.line', { count: r.count, price: formatEur(r.min, lang) }),
+                      lang
+                    )}
                   </Text>
                 </TouchableOpacity>
               ))}

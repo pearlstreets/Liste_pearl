@@ -618,6 +618,7 @@ function ListScreen() {
   const onShareInputChange = (text) => {
     setShareInput(text);
     if (shareDebounce.current) clearTimeout(shareDebounce.current);
+    if (!isLoggedIn) { setShareSuggestions([]); return; } // sans compte : aucune suggestion
     const raw = (text || '').trim();
     const q = (raw.startsWith('@') ? raw.slice(1) : raw).toLowerCase();
     if (q.includes('@')) { setShareSuggestions([]); return; } // email : pas de suggestion
@@ -721,7 +722,7 @@ function ListScreen() {
         style={[lstyles.unitChip, (item.unit && item.unit !== 'u') && lstyles.unitChipOn, isCrossed && { opacity: 0.5 }]}
       >
         <Text style={[lstyles.unitChipTxt, (item.unit && item.unit !== 'u') && lstyles.unitChipTxtOn]} numberOfLines={1}>
-          {item.unit && item.unit !== 'u' ? item.unit : 'u'}
+          {item.unit && item.unit !== 'u' ? item.unit : t('listScreen.unitPiece', 'u')}
         </Text>
       </TouchableOpacity>
 
@@ -774,14 +775,19 @@ function ListScreen() {
       <View style={lstyles.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={lstyles.title} numberOfLines={1}>{readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}</Text>
-          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : `${items.length} ${t('listScreen.deleteItem', { count: items.length })}`}</Text>
+          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.filter(it => it && it.selected && !it.crossed).length })}</Text>
         </View>
         {!readOnly && (
           <TouchableOpacity onPress={() => {
               setShareInput(''); setShareInputKey((k) => k + 1); setShareModalOpen(true);
-              // Liste de TOUS les utilisateurs affichée d'emblée (cache -> instantané).
-              setShareSuggestions(shareCache.current.get('') || []);
-              fetchShareUsers('');
+              // Connecté : liste des utilisateurs affichée d'emblée (cache -> instantané).
+              // Sans compte : aucune suggestion d'autres utilisateurs (vie privée).
+              setShareSuggestions(isLoggedIn ? (shareCache.current.get('') || []) : []);
+              getTokens().then((tok) => {
+                setIsLoggedIn(!!tok);
+                if (tok) fetchShareUsers('');
+                else { shareReqId.current++; shareCache.current.clear(); setShareSuggestions([]); }
+              }).catch(() => {});
             }} activeOpacity={0.8} style={lstyles.scanBtn}>
             <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
             <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
@@ -849,7 +855,7 @@ function ListScreen() {
         {items.some(it => it.selected) && (
           <TouchableOpacity onPress={() => {
             const count = items.filter(it => it.selected).length;
-            Alert.alert(t('listScreen.deleteTitle'), `${t('listScreen.deleteConfirm')} ${count} ${t('listScreen.deleteItem', {count})}`, [
+            Alert.alert(t('listScreen.deleteTitle'), `${t('listScreen.deleteConfirm')} ${t('counts.listSelected', { count })}`, [
               { text: t('listScreen.cancel'), style: 'cancel' },
               { text: t('listScreen.delete'), style: 'destructive', onPress: () => {
                 setItems(prev => prev.filter(it => !it.selected));
@@ -1157,7 +1163,7 @@ function ListScreen() {
               style={[lstyles.input, { flex: 0 }]}
             />
             ) : null}
-            {shareSuggestions.length > 0 && (
+            {isLoggedIn && shareSuggestions.length > 0 && (
               <View style={lstyles.suggestBox}>
                 {shareSuggestions.map((u, i) => (
                   <TouchableOpacity key={String(u.id ?? i)} onPress={() => pickShareUser(u)} activeOpacity={0.7}
@@ -1201,7 +1207,7 @@ function ListScreen() {
                     onPress={() => { setUnit(unitPickerId, u); setUnitPickerId(null); }}
                     style={[lstyles.unitOpt, active && lstyles.unitOptOn]}
                   >
-                    <Text style={[lstyles.unitOptTxt, active && lstyles.unitOptTxtOn]}>{u}</Text>
+                    <Text style={[lstyles.unitOptTxt, active && lstyles.unitOptTxtOn]}>{u === 'u' ? t('listScreen.unitPiece', 'u') : u}</Text>
                   </Pressable>
                 );
               })}
@@ -1924,7 +1930,7 @@ const ProductsScreen = () => {
               <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, paddingHorizontal:10, paddingVertical:5, borderRadius:999 }}>
                 <Ionicons name="storefront" size={15} color={THEME.brand} />
                 <Text style={{ marginLeft:6, fontSize:15, fontWeight:'800', color:THEME.ink }}>{n}</Text>
-                <Text style={{ marginLeft:4, fontSize:12, fontWeight:'700', color:THEME.muted }}>{n > 1 ? t('productsScreen.shopUnitPlural', 'boutiques') : t('productsScreen.shopUnit', 'boutique')}</Text>
+                <Text style={{ marginLeft:4, fontSize:12, fontWeight:'700', color:THEME.muted }}>{t('counts.shopUnit', { count: n })}</Text>
               </View>
             );
           })()}
@@ -2049,7 +2055,7 @@ const ProductsScreen = () => {
         <View style={[prodStyles.infoBanner, { backgroundColor: THEME.dangerSoft }]}>
           <Ionicons name="alert-circle" size={18} color={THEME.danger} />
           <Text style={[prodStyles.infoTxt, { color: THEME.danger }]}>
-            {unmatchedNames.length} {t('productsScreen.notFound', 'non trouvé(s) en boutique')} : {unmatchedNames.slice(0,6).join(', ')}{unmatchedNames.length > 6 ? '…' : ''}
+            {t('counts.notFound', { count: unmatchedNames.length })} : {unmatchedNames.slice(0,6).join(', ')}{unmatchedNames.length > 6 ? '…' : ''}
           </Text>
         </View>
       )}
@@ -2086,7 +2092,7 @@ const ProductsScreen = () => {
                           géoloc/ETA côté app ; le vrai frais est calculé à la commande). */}
                       <View style={prodStyles.metaChip}>
                         <Ionicons name="pricetags-outline" size={12} color={THEME.muted} />
-                        <Text style={prodStyles.metaTxt}>{(item?.products || item?.__renderItems || []).length} {t('productsScreen.quantity', 'articles')}</Text>
+                        <Text style={prodStyles.metaTxt}>{t('counts.products', { count: (item?.products || item?.__renderItems || []).length })}</Text>
                       </View>
                     </View>
                   </View>
@@ -2237,7 +2243,7 @@ const ProductsScreen = () => {
                     <View style={prodStyles.totalsBox}>
                       <View style={prodStyles.totalRow}>
                         <Text style={prodStyles.totalLabel}>{t('productsScreen.productsTotal')}</Text>
-                        <Text style={prodStyles.totalValue}>{shopSelected.length} ({liveQty} {t('productsScreen.quantity', 'quantité')})</Text>
+                        <Text style={prodStyles.totalValue}>{shopSelected.length} ({t('counts.items', { count: liveQty })})</Text>
                       </View>
                       <View style={[prodStyles.totalRow, {marginTop:6}]}>
                         <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
@@ -2306,7 +2312,7 @@ const ProductsScreen = () => {
           {/* Nombre de produits sélectionnés + total */}
           <View style={prodStyles.bottomSummary}>
             <Text style={prodStyles.bottomCount}>
-              {popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)} {t('productsScreen.quantity', 'produits')}
+              {t('counts.items', { count: popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0) })}
             </Text>
             <Text style={prodStyles.bottomTotal}>
               {fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}
@@ -2400,7 +2406,7 @@ const ProductsScreen = () => {
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:20, borderBottomWidth:1, borderBottomColor:'#F3F4F6'}}>
               <View>
                 <Text style={{fontSize:18, fontWeight:'800', color:'#111'}}>{t('cart.duplicateProducts')}</Text>
-                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{dupItems.length} {t('cart.duplicateCount')}</Text>
+                <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>{t('counts.duplicates', { count: dupItems.length })}</Text>
               </View>
               <TouchableOpacity onPress={() => setDupModalVisible(false)} style={{padding:6}}>
                 <Ionicons name="close" size={24} color="#666" />
@@ -2525,7 +2531,7 @@ const ProductsScreen = () => {
                   const shopCount = new Set(active.map(si => si.shop)).size;
                   const totalQty = active.reduce((s, si) => s + (si.qty || 1), 0);
                   return <Text style={{fontSize:13, color:'#6B7280', marginTop:4}}>
-                    {shopCount} {shopCount > 1 ? t('productsScreen.shopUnitPlural', 'shops') : t('productsScreen.shopUnit', 'shop')} • {totalQty} {t('productsScreen.quantity', 'quantité')}
+                    {t('counts.shops', { count: shopCount })} • {t('counts.items', { count: totalQty })}
                   </Text>;
                 })()}
               </View>
@@ -2684,7 +2690,7 @@ const ProductsScreen = () => {
               <Ionicons name="checkmark-circle" size={40} color={BRAND} />
             </View>
             <Text style={{fontSize:20, fontWeight:'800', color:'#111', textAlign:'center'}}>{t('cart.addedToCart')}</Text>
-            <Text style={{fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center'}}>{cartSuccessCount} {t('productsScreen.quantity', 'produits')} {t('cart.addedToCartSub', 'ajoutés au panier')}</Text>
+            <Text style={{fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center'}}>{t('counts.addedToCart', { count: cartSuccessCount })}</Text>
             <TouchableOpacity
               onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart'); }}
               style={{marginTop:20, width:'100%', height:50, borderRadius:14, backgroundColor:BRAND, alignItems:'center', justifyContent:'center'}}
@@ -2806,8 +2812,8 @@ const FavoritesScreen = ({ onClose }) => {
           <Text style={favStyles.title}>{t('tabs.favorites')}</Text>
           <Text style={favStyles.subtitle}>
             {tab === 'shops'
-              ? `${shopDetails.length} ${t('favorites.shops', 'Boutiques')}`
-              : `${favProducts.length} ${t('favorites.products', 'Produits')}`}
+              ? t('counts.shops', { count: shopDetails.length })
+              : t('counts.products', { count: favProducts.length })}
           </Text>
         </View>
       </View>
@@ -3799,7 +3805,7 @@ const CartScreen = ({ isAuth }) => {
         <SafeAreaView style={cartStyles.screen} edges={['top']}>
           <View style={cartStyles.header}>
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
-            <Text style={cartStyles.subtitle}>0 {t('productsScreen.quantity')}</Text>
+            <Text style={cartStyles.subtitle}>{t('counts.items', { count: 0 })}</Text>
           </View>
           <View style={cartStyles.empty}>
             <Text style={cartStyles.emptyTitle}>{t('cart.emptyCart')}</Text>
@@ -3818,7 +3824,7 @@ const CartScreen = ({ isAuth }) => {
         <View style={cartStyles.headerRow}>
           <View style={{ flex: 1 }}>
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
-            <Text style={cartStyles.subtitle}>{cartItems.reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
+            <Text style={cartStyles.subtitle}>{t('counts.items', { count: cartItems.reduce((s, it) => s + Number(it.qty || 1), 0) })}</Text>
           </View>
           <TouchableOpacity onPress={clearCart} activeOpacity={0.8} style={cartStyles.clearBtn}>
             <Ionicons name="trash-outline" size={19} color={THEME.danger} />
@@ -3849,7 +3855,7 @@ const CartScreen = ({ isAuth }) => {
               <View style={{flex:1}}>
                 <Text style={cartStyles.shopName}>{group.shop}</Text>
                 <Text style={cartStyles.shopMeta}>
-                  {group.items.reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')} • {fmtPrice(group.items.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}
+                  {t('counts.items', { count: group.items.reduce((s, it) => s + Number(it.qty || 1), 0) })} • {fmtPrice(group.items.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -3907,7 +3913,7 @@ const CartScreen = ({ isAuth }) => {
 
             {/* Shop subtotal */}
             <View style={cartStyles.subtotalRow}>
-              <Text style={cartStyles.subtotalLabel}>{group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.qty || 1), 0)} {t('productsScreen.quantity')}</Text>
+              <Text style={cartStyles.subtotalLabel}>{t('counts.items', { count: group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.qty || 1), 0) })}</Text>
               <Text style={cartStyles.subtotalValue}>{fmtPrice(group.items.filter(it => selectedCart[it._originalIndex]).reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0))}</Text>
             </View>
           </View>
@@ -4223,7 +4229,7 @@ const CartScreen = ({ isAuth }) => {
 
               {/* Nombre articles */}
               <Text style={cartStyles.itemsCaption}>
-                {cartItems.filter((_, i) => selectedCart[i]).length} {t('cart.itemsSelected', {count: cartItems.filter((_, i) => selectedCart[i]).length})}
+                {t('counts.itemsSelected', { count: cartItems.filter((_, i) => selectedCart[i]).length })}
               </Text>
             </ScrollView>
 
@@ -4452,7 +4458,7 @@ const CartScreen = ({ isAuth }) => {
                   if (added.length === 0) return null;
                   return (
                     <View style={cartStyles.addedSummary}>
-                      <Text style={cartStyles.addedSummaryTitle}>{added.length} {t('cart.productsSelected', {count: added.length})}</Text>
+                      <Text style={cartStyles.addedSummaryTitle}>{t('counts.productsSelected', { count: added.length })}</Text>
                       {added.map((it, i) => (
                         <Text key={i} style={cartStyles.addedSummaryLine}>• {it.name || it.title} x{it._addQty}</Text>
                       ))}
@@ -4551,7 +4557,7 @@ const CartScreen = ({ isAuth }) => {
             <View style={cartStyles.sheetHeader}>
               <View style={{flex:1}}>
                 <Text style={[cartStyles.sheetTitle, { fontSize: 18 }]} numberOfLines={1}>{shopProductsName}</Text>
-                <Text style={cartStyles.subtitle}>{shopProductsList.length} {t('productsScreen.quantity', 'produits')}</Text>
+                <Text style={cartStyles.subtitle}>{t('counts.products', { count: shopProductsList.length })}</Text>
               </View>
               <TouchableOpacity onPress={() => setShopProductsVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
                 <Ionicons name="close" size={20} color={THEME.muted} />
@@ -4884,7 +4890,7 @@ const ShopsScreen = () => {
         <Text style={shopStyles.shopName} numberOfLines={1}>{item.name}</Text>
         {item.address ? <Text style={shopStyles.shopAddr} numberOfLines={1}>{item.address}</Text> : null}
         <View style={shopStyles.badgeRow}>
-          <View style={shopStyles.badge}><Text style={shopStyles.badgeTxt}>{item.products.length} {t('shops.products', 'produits')}</Text></View>
+          <View style={shopStyles.badge}><Text style={shopStyles.badgeTxt}>{t('counts.products', { count: item.products.length })}</Text></View>
           <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
         </View>
       </View>
@@ -7515,7 +7521,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               </View>
               <View style={profStyles.settingBody}>
                 <Text style={profStyles.settingLabel}>{t('profile.listShares', 'Partage de listes')}</Text>
-                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? `${shareRequests.length} ${t('profile.pendingRequests', 'demande(s) en attente')}` : (t('profile.manageShares', 'Demandes reçues · utilisateurs bloqués'))}</Text>
+                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? t('counts.pendingRequests', { count: shareRequests.length }) : (t('profile.manageShares', 'Demandes reçues · utilisateurs bloqués'))}</Text>
               </View>
               {shareRequests.length > 0 && (
                 <View style={{ backgroundColor: THEME.danger, borderRadius:11, minWidth:22, height:22, alignItems:'center', justifyContent:'center', paddingHorizontal:6, marginRight:6 }}>

@@ -143,10 +143,10 @@ const SAUCES_PATES = [
     'Coupez les tomates cerises en deux et le jambon cru en lanières.',
     'Mélangez les pâtes chaudes avec l\'huile d\'olive, les tomates, le jambon, la roquette et le parmesan en copeaux.',
   ] },
-  { nom: 'aux brocolis et à l\'anchoïade', temps: 20, ings: [['brocoli', 500, 'g'], ['ail', 2, 'gousse'], ['piments', 1, 'u'], ['huile d\'olive', 5, 'cs'], ['chapelure', 4, 'cs']], etapes: [
+  { nom: 'aux brocolis et à l\'anchoïade', temps: 20, ings: [['brocoli', 500, 'g'], ['filets d\'anchois', 50, 'g'], ['ail', 2, 'gousse'], ['piments', 1, 'u'], ['huile d\'olive', 5, 'cs'], ['chapelure', 4, 'cs']], etapes: [
     'Faites cuire les bouquets de brocoli 5 min avec les pâtes.',
     'Faites dorer la chapelure 2 min dans 1 c. à soupe d\'huile d\'olive. Réservez.',
-    'Faites revenir l\'ail et le piment dans le reste de l\'huile, ajoutez pâtes et brocoli, puis parsemez de chapelure dorée.',
+    'Faites fondre les anchois avec l\'ail et le piment dans le reste de l\'huile, ajoutez pâtes et brocoli, puis parsemez de chapelure dorée.',
   ] },
   { nom: 'à la crème de parmesan et aux noix', temps: 15, ings: [['parmesan', 100, 'g'], ['crème liquide', 25, 'cL'], ['noix', 60, 'g'], ['beurre', 20, 'g']], etapes: [
     'Faites fondre le parmesan dans la crème chaude en fouettant.',

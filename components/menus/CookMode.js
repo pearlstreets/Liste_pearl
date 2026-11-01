@@ -86,8 +86,8 @@ export default function CookMode({ id, persons, onClose, guided }) {
   };
 
   const lines = useMemo(
-    () => (recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang) }) : []),
-    [recipe, persons, lang]
+    () => (recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang), ingredients }) : []),
+    [recipe, persons, lang, ingredients]
   );
   const labels = useMemo(
     () => ({
@@ -186,11 +186,18 @@ export default function CookMode({ id, persons, onClose, guided }) {
           <View style={s.ingBox}>
             {lines.map((l, i) => {
               const u = labels[l.displayUnit] !== undefined ? labels[l.displayUnit] : l.displayUnit;
+              // nom au pluriel au-dela d'une piece (comme la fiche recette), sinon le nom habituel
+              const pl = l.plural ? t(`recipe.plural.${l.key}`, { defaultValue: '' }) : '';
+              const nom = pl && !pl.includes('recipe.plural.') ? pl : texts.ingredientName(l.key);
               return (
                 <Text key={`${l.key}-${i}`} style={s.ingTxt}>
                   {(ingredients[l.key] && ingredients[l.key].emoji) || '•'}{' '}
-                  {texts.ingredientName(l.key)}
-                  {l.amount ? ` : ${u ? `${l.amount} ${u}` : l.amount}` : ''}
+                  {nom}
+                  {l.toTaste
+                    ? ` : ${t('recipe.toTaste')}`
+                    : l.amount
+                      ? ` : ${u ? `${l.amount} ${u}` : l.amount}`
+                      : ''}
                 </Text>
               );
             })}
