@@ -19,12 +19,14 @@ import {
   recipeNutrition,
   normalizeLang,
   readMyLists,
+  headsFor,
+  portionsForHeads,
 } from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
 import RecipeVisual from './RecipeVisual';
 import { AddedSheet, PlanPickSheet, warningList } from './Sheets';
-import { useMenus } from './MenusContext';
+import { useMenus, conflictList } from './MenusContext';
 import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
@@ -49,11 +51,16 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const { recipeById, texts, ingredients, lang, profile, plan, favorites, notes, cooked } = m;
   const recipe = recipeById.get(id);
   const meal = mealKey && plan ? plan.meals.find((x) => x.key === mealKey) : null;
-  const initial = Math.max(
-    1,
-    Math.round(meal && meal.persons ? meal.persons : profile.adults + profile.children * 0.6)
+  // Personnes affichées en têtes (comme la carte du repas) ; les quantités comptent les enfants 0,6.
+  const mDay = meal ? meal.day : null;
+  const mSlot = meal ? meal.slot : null;
+  const foyer = headsFor(profile, mDay, mSlot);
+  const [heads, setHeads] = useState(foyer.heads);
+  const persons = useMemo(
+    () => portionsForHeads(profile, mDay, mSlot, heads),
+    [profile, mDay, mSlot, heads]
   );
-  const [persons, setPersons] = useState(initial);
+  const kidsShown = Math.min(foyer.children, Math.max(0, heads - foyer.adults));
   const [have, setHave] = useState({});
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
@@ -162,7 +169,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
     if (!recipe) return;
     const text = [
       texts.recipeTitle(id),
-      t('share.for', { count: persons }),
+      t('share.for', { count: heads }),
       '',
       t('recipe.ingredients') + ' :',
       ...lines
@@ -180,7 +187,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
     try {
       await Share.share({ message: text, title: texts.recipeTitle(id) });
     } catch {}
-  }, [recipe, texts, id, persons, lines, steps, t]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [recipe, texts, id, heads, lines, steps, t]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!recipe) {
     return (
@@ -196,7 +203,8 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const fav = favorites.includes(id);
   const mine = !!recipe.custom;
   const nut = mine ? null : recipeNutrition(recipe);
-  const warning = mine ? m.warningOf(recipe) : null;
+  // Allergie, régime ou ingrédient écarté : signalé sur toutes les recettes, pas seulement les recettes perso.
+  const warning = mine ? m.warningOf(recipe) : m.conflictOf(recipe);
   const times = cooked[id] ? cooked[id].count : 0;
   const shownTags = (recipe.tags || [])
     .filter((x) => !['hiver', 'printemps', 'ete', 'automne'].includes(x))
@@ -283,9 +291,11 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                 color={warning.found ? T.danger : T.muted}
               />
               <Text style={s.warnTxt}>
-                {warning.found
-                  ? t('myRecipes.warnFound', { list: warningList(warning, t) })
-                  : t('myRecipes.warnUnknown')}
+                {!mine
+                  ? t('recipe.unsuitable', { list: conflictList(warning, t) })
+                  : warning.found
+                    ? t('myRecipes.warnFound', { list: warningList(warning, t) })
+                    : t('myRecipes.warnUnknown')}
               </Text>
             </View>
           ) : null}
@@ -302,6 +312,9 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           <View style={s.portion}>
             <View style={{ flex: 1 }}>
               <Text style={s.portionTitle}>{t('recipe.servings')}</Text>
+              {kidsShown > 0 ? (
+                <Text style={s.portionHint}>{t('recipe.servingsKids', { count: kidsShown })}</Text>
+              ) : null}
               {cost && mine ? (
                 cost.unpriced > 0 ? null : (
                   <Text style={s.portionHint}>
@@ -328,10 +341,10 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
               ) : null}
             </View>
             <Stepper
-              value={persons}
+              value={heads}
               min={1}
               max={24}
-              onChange={setPersons}
+              onChange={setHeads}
               label={t('recipe.servings')}
             />
           </View>

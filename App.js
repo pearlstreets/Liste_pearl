@@ -13,6 +13,7 @@ import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemo
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "./services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
+import { LEGAL_URLS } from "./services/config";
 import { getSecureItem, setSecureItem } from "./services/secureStorage";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
@@ -51,7 +52,7 @@ import SearchPopup from './components/SearchPopup';
 // liste a gauche, page ouverte a droite (voir le fichier).
 import Modal, { DeuxEcrans, AuMilieu } from './components/DeuxEcrans';
 import * as Location from 'expo-location';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl, Linking } from "react-native";
 import { SafeAreaView, initialWindowMetrics } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -69,8 +70,9 @@ import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect, creat
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "./components/ui/IoniconsSens";
 import { loadListItems, persistActiveItems, listItemsKey as listItemsKeyLib } from "./lib/listStore";
+import { listItemPack } from "./lib/menus/shopping";
 import MenusScreen from "./components/menus/MenusScreen";
-import { startMenusSync } from "./services/menusSync";
+import { startMenusSync, flushMenusSync } from "./services/menusSync";
 import { startMenuReminders, onMenuReminderOpen, hasPendingMenuReminder } from "./services/menuReminders";
 import TabLabel from "./components/menus/TabLabel";
 import * as ImagePicker from 'expo-image-picker';
@@ -276,6 +278,7 @@ const lstyles = StyleSheet.create({
   check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
   checkOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   itemName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
+  itemPack: { fontSize: 12.5, color: THEME.muted, marginTop: 1 },
   itemNameCrossed: { textDecorationLine: 'line-through', color: THEME.faint, fontWeight: '600' },
   stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 10, height: 30, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border },
   stepBtn: { width: 24, height: 24, borderRadius: 7, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
@@ -318,7 +321,14 @@ const lstyles = StyleSheet.create({
 });
 
 function ListScreen() {
-  const { t } = useTranslation();
+  const { t, i18n: i18nListe } = useTranslation();
+  // Conditionnement des articles venus de Menus (« 1 tête », « 1 kg »), dans la langue de l'application.
+  const langueListe = i18nListe.language;
+  const optsPaquet = useMemo(() => ({
+    lang: langueListe,
+    labels: { g: t('menus.units.g'), kg: t('menus.units.kg'), ml: t('menus.units.ml'), l: t('menus.units.l'), u: t('menus.units.u') },
+  }), [t, langueListe]);
+  const tMenus = React.useCallback((k, o) => t('menus.' + k, o), [t]);
   const navigation = useNavigation();
   const [text, setText] = useState("");
   const [items, setItems] = useState([]);
@@ -671,6 +681,7 @@ function ListScreen() {
   // liste déplaçable ; les barrés sont rendus sans lui (pied de liste fixe).
   const renderRow = (item, drag) => {
     const isCrossed = !!item.crossed;
+    const paquet = listItemPack(item, tMenus, optsPaquet);
     if (readOnly) {
       // Vue lecture seule d'une liste partagée par quelqu'un d'autre.
       return (
@@ -678,7 +689,10 @@ function ListScreen() {
           <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
             {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color="#fff" /> : null}
           </View>
-          <Text numberOfLines={1} style={[lstyles.itemName, { flex: 1, marginLeft: 12 }, isCrossed && lstyles.itemNameCrossed]}>{item.name}</Text>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{paquet.name}</Text>
+            {paquet.detail ? <Text numberOfLines={1} style={lstyles.itemPack}>{paquet.detail}</Text> : null}
+          </View>
           <Text style={lstyles.stepQty}>{(item.qty || 1)}{item.unit && item.unit !== 'u' ? ' ' + item.unit : ''}</Text>
         </View>
       );
@@ -699,7 +713,8 @@ function ListScreen() {
 
       {/* Name — tap to edit, appui long pour déplacer la ligne */}
       <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} onLongPress={drag} delayLongPress={220} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
-        <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{item.name}</Text>
+        <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{paquet.name}</Text>
+        {paquet.detail ? <Text numberOfLines={1} style={lstyles.itemPack}>{paquet.detail}</Text> : null}
       </TouchableOpacity>
 
       {/* Quantity stepper */}
@@ -3699,12 +3714,18 @@ const CartScreen = ({ isAuth }) => {
     // Tunnel carte uniquement si TOUS les items sélectionnés sont de vraies fiches
     // boutique : sinon on débiterait une partie et on enregistrerait le reste non payé.
     if (eligible.length === 0 || eligible.length !== selectedItems.length) return 'local';
-    // category_id NUMÉRIQUE requis dans l'URL order/create (résolu depuis le slug).
-    const categoryId = await resolveCategoryId(eligible[0].category || 'product_purchase');
-    if (categoryId == null) return 'local';
     // Une commande Marketplace par boutique (invariant serveur mono-vendeur).
     const byCompany = {};
     eligible.forEach(it => { const k = String(it.companyId); (byCompany[k] = byCompany[k] || []).push(it); });
+    // category_id NUMÉRIQUE requis dans l'URL order/create (résolu depuis le slug),
+    // propre à CHAQUE boutique (un restaurant food_drink et une boutique product_purchase
+    // dans la même commande groupée). Tout est résolu avant le moindre ajout au panier.
+    const categoryOf = {};
+    for (const k of Object.keys(byCompany)) {
+      const cid = await resolveCategoryId(byCompany[k][0].category || 'product_purchase');
+      if (cid == null) return 'local';
+      categoryOf[k] = cid;
+    }
     const otKeyInt = orderMode === 'delivery' ? 3 : 2;   // cart/add : INT
     const otKeyStr = orderMode === 'delivery' ? '3' : '2'; // update-meta : CLÉ STRING
     const orders = [];
@@ -3723,7 +3744,7 @@ const CartScreen = ({ isAuth }) => {
         }
         const body = {};
         if (orderMode === 'delivery' && selectedAddressId) body.address_id = selectedAddressId;
-        const oc = await createOrderApi(companyId, categoryId, body);
+        const oc = await createOrderApi(companyId, categoryOf[k], body);
         const orderId = (oc && (oc.order_id || (oc.data && oc.data.order_id))) || null;
         if (!oc || oc.status === false || !orderId) throw Object.assign(new Error((oc && oc.message) || 'order/create'), { refus: oc });
         orders.push({ orderId, shopName: group[0].shop || '' });
@@ -6522,6 +6543,37 @@ function cleanPickupDate(label, t) {
   return s;
 }
 
+// Pages légales publiques (politique de confidentialité, conditions d'utilisation), visibles avec ou sans compte.
+function LegalLinks() {
+  const { t } = useTranslation();
+  const ouvrir = (url) => { Linking.openURL(url).catch(() => {}); };
+  return (
+    <View style={profStyles.section}>
+      <Text style={profStyles.guestPrefTitle}>{t('profile.legalTitle', 'Informations légales')}</Text>
+      <View style={profStyles.settingsCard}>
+        <TouchableOpacity activeOpacity={0.8} accessibilityRole="link" onPress={() => ouvrir(LEGAL_URLS.privacy)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+          <View style={profStyles.settingIcon}>
+            <Ionicons name="shield-checkmark-outline" size={19} color="#fff" />
+          </View>
+          <View style={profStyles.settingBody}>
+            <Text style={profStyles.settingLabel}>{t('profile.privacyPolicy', 'Politique de confidentialité')}</Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={THEME.faint} />
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} accessibilityRole="link" onPress={() => ouvrir(LEGAL_URLS.terms)} style={profStyles.settingRow}>
+          <View style={profStyles.settingIcon}>
+            <Ionicons name="document-text-outline" size={19} color="#fff" />
+          </View>
+          <View style={profStyles.settingBody}>
+            <Text style={profStyles.settingLabel}>{t('profile.termsOfUse', "Conditions d'utilisation")}</Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={THEME.faint} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
 function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
   const { currency, setCurrency, fmtPrice } = useCurrency();
@@ -6536,6 +6588,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
   // Suppression du compte en cours : bloque un second envoi pendant l'appel.
   const [deletingAccount, setDeletingAccount] = React.useState(false);
   const deletingAccountRef = React.useRef(false);
+  const loggingOutRef = React.useRef(false);
   const [oldPassword, setOldPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -7220,6 +7273,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               </TouchableOpacity>
             </View>
           </View>
+
+          <LegalLinks />
         </ScrollView>
 
         {/* Sélecteur de langue (dispo sans connexion) */}
@@ -7403,7 +7458,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             {docStatuses && (
               <View style={profStyles.docCard}>
                 {[
-                  { key: 'kbiss_status', label: t('auth.docKbiss', 'KBISS') },
+                  { key: 'kbiss_status', label: t('auth.docKbiss', 'Kbis') },
                   { key: 'iban_status', label: t('auth.docIban', 'IBAN / RIB') },
                   { key: 'identityCardFront_status', label: t('auth.docIdFront', 'Carte d\'identité (recto)') },
                   { key: 'identityCardBack_status', label: t('auth.docIdBack', 'Carte d\'identité (verso)') },
@@ -7571,6 +7626,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
           </View>
         </View>
 
+        <LegalLinks />
+
         {/* Become a driver */}
         <View style={profStyles.section}>
           <TouchableOpacity activeOpacity={0.85} onPress={() => setDriverInfoVisible(true)} style={profStyles.driverCard}>
@@ -7591,16 +7648,35 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
               { text: t('profile.cancel'), style: 'cancel' },
               { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
-                // Logout from Marketplace API first (needs tokens)
-                try { await logoutUser(); } catch(e) {}
-                // Effacer TOUTES les données du compte gardées sur l'appareil
-                // (jetons, profil, listes, panier, favoris, commandes).
-                try {
-                  await clearLocalUserData();
-                  DeviceEventEmitter.emit('USER_DATA_CLEARED');
-                  DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-                } catch(e) {}
-                if (onLogout) onLogout();
+                if (loggingOutRef.current) return;
+                loggingOutRef.current = true;
+                // Les menus en attente partent d'abord (jetons encore valables) ; s'ils n'ont pas pu
+                // partir (hors ligne, trop volumineux, délai), rien n'est effacé sans votre accord.
+                let menusOk = false;
+                try { menusOk = await flushMenusSync(); } catch (e) { menusOk = false; }
+                const terminer = async () => {
+                  // Logout from Marketplace API first (needs tokens)
+                  try { await logoutUser({ menusFlushed: true }); } catch(e) {}
+                  // Effacer TOUTES les données du compte gardées sur l'appareil
+                  // (jetons, profil, listes, panier, favoris, commandes).
+                  try {
+                    await clearLocalUserData({ menusFlushed: true });
+                    DeviceEventEmitter.emit('USER_DATA_CLEARED');
+                    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+                  } catch(e) {}
+                  loggingOutRef.current = false;
+                  if (onLogout) onLogout();
+                };
+                if (menusOk) { await terminer(); return; }
+                Alert.alert(
+                  t('profile.menusUnsavedTitle', 'Menus non sauvegardés'),
+                  t('profile.menusUnsavedMsg', "Vos menus n'ont pas pu être sauvegardés sur votre compte. Les effacer de cet appareil ?"),
+                  [
+                    { text: t('profile.cancel', 'Annuler'), style: 'cancel', onPress: () => { loggingOutRef.current = false; } },
+                    { text: t('profile.menusUnsavedErase', 'Effacer et me déconnecter'), style: 'destructive', onPress: terminer },
+                  ],
+                  { cancelable: false }
+                );
               }}
             ]);
           }} style={profStyles.logoutBtn}>
@@ -7703,7 +7779,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <Text style={profStyles.driverTypeTitle}>{t('profile.driverPro', 'Livreur Pro')}</Text>
               </View>
               <Text style={profStyles.driverTypeTxt}>
-                {t('profile.driverProInfo', 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, KBISS.')}
+                {t('profile.driverProInfo', 'Vous avez un statut professionnel (auto-entrepreneur, société). Pas de limite de revenus. Documents requis : carte d\'identité, IBAN, Kbis.')}
               </Text>
             </View>
 
@@ -7758,7 +7834,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     t('profile.downloadDeliveryApp') || "L'app Pearl Delivery n'est pas installée. Téléchargez-la pour devenir livreur.",
                     [
                       { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
-                      { text: 'App Store', onPress: () => Linking.openURL('https://apps.apple.com/app/pearl-delivery/id000000000') },
+                      { text: 'App Store', onPress: () => Linking.openURL('https://apps.apple.com/app/pearl-delivery/id6749835609') },
                       Platform.OS === 'android' ? { text: 'Google Play', onPress: () => Linking.openURL('https://play.google.com/store/apps/details?id=com.pearlstreets.delivery') } : null,
                     ].filter(Boolean)
                   );

@@ -77,8 +77,15 @@ import {
   buildNameIndex,
   withMyTexts,
   recipeWarnings,
+  replaceMeals,
   MAX_MY_RECIPES,
 } from '../../lib/menus';
+import {
+  prepareElig,
+  restrictionSig,
+  recipeConflicts,
+  unsuitableMeals,
+} from '../../lib/menus/pool';
 
 import { mondayISO, weekTarget, isPastWeek, toISO } from '../../lib/menus/weeks';
 import { recipeListLines } from '../../lib/menus/recipeList';
@@ -108,6 +115,22 @@ export const linesFingerprint = (lines) =>
     .join('|');
 
 const hasRecipes = (p) => !!p && Array.isArray(p.meals) && p.meals.some((m) => m && m.recipeId);
+
+const MOTS_PROPRES = ['porc', 'viande', 'alcool'];
+/**
+ * Ce qui ne convient pas dans une recette (conflictOf ou warningOf), en une liste lisible : allergènes,
+ * régimes non respectés, ingrédients écartés. t = useT().
+ */
+export function conflictList(w, t) {
+  if (!w) return '';
+  return [
+    ...(w.allergens || []).map((a) =>
+      t(MOTS_PROPRES.includes(a) ? `myRecipes.allergen.${a}` : `allergens.${a}`, { defaultValue: a })
+    ),
+    ...(w.diets || []).map((d) => t(`tags.${d}`, { defaultValue: d })),
+    ...(w.ingredients || []),
+  ].join(', ');
+}
 
 export function MenusProvider({ children }) {
   const { i18n } = useTranslation();
@@ -428,11 +451,48 @@ export function MenusProvider({ children }) {
         ingredients,
         profile: planProfile(),
         seed: Math.floor(Math.random() * 1e9),
+        // recette personnelle confirmée pour ces restrictions : pas signalée tant qu'elles ne changent pas
+        ...(opts.manual ? { okFor: restrictionSig(profileRef.current) } : {}),
       });
       await persist(next);
     },
     [recipeIndex, ingredients, planProfile, persist]
   );
+
+  /**
+   * Repas de la semaine qui ne conviennent plus aux allergies, régimes ou exclusions du profil
+   * (profil modifié après la composition) : [{ key, recipeId, reason }].
+   */
+  const unsuitable = useMemo(
+    () =>
+      plan
+        ? unsuitableMeals(plan, { recipes: recipeIndex, ingredients, profile, texts })
+        : [],
+    [plan, recipeIndex, ingredients, profile, texts]
+  );
+
+  /** Remplace seulement les repas qui ne conviennent plus ; les autres repas restent. */
+  const replaceUnsuitable = useCallback(async () => {
+    const cur = planRef.current;
+    if (!cur) return 0;
+    const bad = unsuitableMeals(cur, {
+      recipes: recipeIndex,
+      ingredients,
+      profile: profileRef.current,
+      texts,
+    });
+    if (bad.length === 0) return 0;
+    const next = replaceMeals({
+      plan: cur,
+      keys: bad.map((b) => b.key),
+      recipes: recipeIndex,
+      ingredients,
+      profile: planProfile(),
+      seed: Math.floor(Math.random() * 1e9),
+    });
+    await persist(next);
+    return bad.length;
+  }, [recipeIndex, ingredients, texts, planProfile, persist]);
 
   const toggleLock = useCallback(
     async (mealKey) => {
@@ -584,6 +644,32 @@ export function MenusProvider({ children }) {
   const warningOf = useCallback(
     (recipe) => recipeWarnings({ recipe, profile, ingredients, texts }),
     [profile, ingredients, texts]
+  );
+
+  /**
+   * Ce qui ne convient pas au profil dans une recette, quelle qu'elle soit : recette du catalogue (même verdict
+   * que l'éligibilité des plans) ou recette personnelle (mots repérés). null si rien n'est à signaler.
+   * -> { allergens, diets, ingredients (noms), found }
+   */
+  const prepared = useMemo(() => prepareElig(profile), [profile]);
+  const conflictOf = useCallback(
+    (recipe) => {
+      if (!recipe) return null;
+      if (recipe.custom) return recipeWarnings({ recipe, profile, ingredients, texts });
+      const c = recipeConflicts(recipe, ingredients, prepared);
+      if (!c) return null;
+      return {
+        ...c,
+        ingredients: c.ingredients.map((k) => {
+          try {
+            return texts.ingredientName(k) || k;
+          } catch {
+            return k;
+          }
+        }),
+      };
+    },
+    [profile, prepared, ingredients, texts]
   );
 
   const forget = useCallback(() => {
@@ -845,6 +931,9 @@ export function MenusProvider({ children }) {
       saveMyRecipe,
       removeMyRecipe,
       warningOf,
+      conflictOf,
+      unsuitable,
+      replaceUnsuitable,
       profile,
       updateProfile,
       reminders,
@@ -906,6 +995,9 @@ export function MenusProvider({ children }) {
       saveMyRecipe,
       removeMyRecipe,
       warningOf,
+      conflictOf,
+      unsuitable,
+      replaceUnsuitable,
       profile,
       updateProfile,
       reminders,

@@ -9,6 +9,7 @@ import {
   DeviceEventEmitter,
   InteractionManager,
   useWindowDimensions,
+  Alert,
 } from 'react-native';
 import { prefillProducts, readMyLists } from '../../lib/menus/listBridge';
 import { Ionicons } from '@expo/vector-icons';
@@ -68,7 +69,7 @@ export function headcountFor(profile, day, slot) {
   return Math.max(1, adults + (cantine ? 0 : children));
 }
 
-const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress, label, a11y }) {
+const DayPill = React.memo(function DayPill({ d, selected, count, today, alert, onPress, label, a11y }) {
   return (
     <TouchableOpacity
       activeOpacity={0.85}
@@ -92,6 +93,7 @@ const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress
         ))}
       </View>
       {today ? <View style={[s.today, selected && { backgroundColor: '#fff' }]} /> : null}
+      {alert ? <View style={s.pillAlert} /> : null}
     </TouchableOpacity>
   );
 });
@@ -127,6 +129,15 @@ export default function WeekScreen({
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [sending, setSending] = useState(false);
+  const [replacing, setReplacing] = useState(false);
+  // Repas qui ne conviennent plus au profil (allergie ou régime ajouté après la composition).
+  const unsuitable = useMemo(() => m.unsuitable || [], [m.unsuitable]);
+  const badKeys = useMemo(() => new Set(unsuitable.map((x) => x.key)), [unsuitable]);
+  const badDays = useMemo(() => {
+    const out = new Set();
+    for (const k of badKeys) out.add(Number(String(k).split('-')[0]));
+    return out;
+  }, [badKeys]);
 
   const days = useMemo(() => (plan ? mealsByDay(plan) : []), [plan]);
   const costs = useMemo(() => {
@@ -184,7 +195,17 @@ export default function WeekScreen({
 
   const changedSinceSent = useMemo(() => changedSinceLastSend(plan, m.history), [plan, m.history]);
 
-  const onValidate = useCallback(async () => {
+  const onReplace = useCallback(async () => {
+    if (replacing) return;
+    setReplacing(true);
+    try {
+      await m.replaceUnsuitable();
+    } finally {
+      setReplacing(false);
+    }
+  }, [m, replacing]);
+
+  const send = useCallback(async () => {
     if (sending) return;
     setSending(true);
     const r = await m.sendToList(null, m.activeLines);
@@ -194,6 +215,21 @@ export default function WeekScreen({
     setSending(false);
     setAdded(r);
   }, [m, sending, t]);
+
+  // Repas qui ne conviennent plus : jamais envoyés à la liste sans accord explicite.
+  const onValidate = useCallback(() => {
+    if (sending) return;
+    const n = unsuitable.length;
+    if (n === 0) {
+      send();
+      return;
+    }
+    Alert.alert(t('myRecipes.confirmTitle'), t('week.unsuitableConfirm', { count: n }), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('week.unsuitableAction', { count: n }), onPress: onReplace },
+      { text: t('myRecipes.confirmAdd'), style: 'destructive', onPress: send },
+    ]);
+  }, [sending, unsuitable.length, send, onReplace, t]);
 
   const goList = async (screen) => {
     setAdded(null);
@@ -259,7 +295,7 @@ export default function WeekScreen({
     if (!meal) return null;
     const recipe = meal.recipeId ? recipeById.get(meal.recipeId) : null;
     const price = costs[meal.key];
-    return (
+    const card = (
       <MealCard
         key={meal.key}
         meal={meal}
@@ -275,6 +311,16 @@ export default function WeekScreen({
         nearby={meal.free ? nearby : undefined}
         onOpenShop={(sh) => openShopFromMenus(navigation, sh)}
       />
+    );
+    if (!badKeys.has(meal.key)) return card;
+    return (
+      <View key={meal.key} style={s.badCard}>
+        <View style={s.badHead}>
+          <Ionicons name="warning" size={16} color={T.danger} />
+          <Text style={s.badHeadTxt}>{t('week.unsuitableBadge')}</Text>
+        </View>
+        {card}
+      </View>
     );
   };
 
@@ -319,6 +365,22 @@ export default function WeekScreen({
           <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
             <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
           </TouchableOpacity>
+        ) : null}
+
+        {unsuitable.length > 0 ? (
+          <View style={s.alert} accessibilityRole="alert">
+            <View style={s.alertRow}>
+              <Ionicons name="warning" size={20} color={T.danger} />
+              <Text style={s.alertTxt}>{t('week.unsuitable', { count: unsuitable.length })}</Text>
+            </View>
+            <PrimaryButton
+              icon="swap-horizontal"
+              label={t('week.unsuitableAction', { count: unsuitable.length })}
+              loading={replacing || busy}
+              onPress={onReplace}
+              style={{ alignSelf: 'stretch' }}
+            />
+          </View>
         ) : null}
 
         {target0.proposeNext && plan.weekStart !== target0.next ? (
@@ -429,6 +491,7 @@ export default function WeekScreen({
                 selected={dd.day === day}
                 count={count}
                 today={dd.day === todayIdx}
+                alert={badDays.has(dd.day)}
                 onPress={setDay}
                 label={t(`days.short.${dd.day}`)}
                 a11y={t(`days.long.${dd.day}`)}
@@ -565,6 +628,35 @@ const s = StyleSheet.create({
     height: 6,
     borderRadius: 3,
     backgroundColor: T.brand,
+  },
+  alert: {
+    backgroundColor: T.dangerSoft,
+    borderRadius: 16,
+    padding: 14,
+    marginTop: 12,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: T.danger,
+  },
+  alertRow: { flexDirection: 'row', alignItems: 'center' },
+  alertTxt: { flex: 1, marginLeft: 8, fontSize: 14, lineHeight: 20, color: T.ink, fontWeight: '700' },
+  badCard: {
+    borderWidth: 2,
+    borderColor: T.danger,
+    borderRadius: 22,
+    padding: 4,
+    marginBottom: 12,
+  },
+  badHead: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, paddingTop: 4, paddingBottom: 6 },
+  badHeadTxt: { flex: 1, marginLeft: 6, fontSize: 13, fontWeight: '800', color: T.danger },
+  pillAlert: {
+    position: 'absolute',
+    top: 5,
+    left: 6,
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: T.danger,
   },
   dayTitle: { fontSize: 22, fontWeight: '900', color: T.ink, marginTop: 20, marginBottom: 12 },
   dayTitleCompact: { fontSize: 18, marginTop: 10, marginBottom: 8 },

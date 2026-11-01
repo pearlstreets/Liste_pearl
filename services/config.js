@@ -46,4 +46,10 @@ export const STRIPE_PUBLISHABLE_KEY =
   (Constants?.expoConfig?.extra?.stripePublishableKey) ||
   'pk_live_51R8hqCArfIzMjUBjIDVUlchS37nktlFM2cdugW3ocvqBwdi8GxPuKkaKTlnGdX2Qb0yVbAK9JivZlUOAvgygP8Pe00JEBclh24';
 
+// Pages légales publiques de Pearl Streets (vérifiées : réponse 200), ouvertes depuis le Profil et les Réglages.
+export const LEGAL_URLS = {
+  privacy: 'https://pearlstreets.com/privacy-policy',
+  terms: 'https://pearlstreets.com/term-conditions',
+};
+
 export default CONFIG;

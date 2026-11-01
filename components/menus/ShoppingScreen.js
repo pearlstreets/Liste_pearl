@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   DeviceEventEmitter,
+  Alert,
 } from 'react-native';
 import { prefillProducts } from '../../lib/menus/listBridge';
 import { Ionicons } from '../ui/IoniconsSens';
@@ -129,13 +130,27 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
     };
   }, [activeLines, listId, added, focused, texts]);
 
-  const send = useCallback(async () => {
+  const doSend = useCallback(async () => {
     if (sending) return;
     setSending(true);
     const r = await m.sendToList(listId, activeLines);
     setSending(false);
     setAdded(r);
   }, [m, listId, activeLines, sending]);
+
+  // Repas qui ne conviennent plus aux allergies ou régimes : jamais envoyés à la liste sans accord explicite.
+  const nBad = (m.unsuitable || []).length;
+  const send = useCallback(() => {
+    if (sending) return;
+    if (nBad === 0) {
+      doSend();
+      return;
+    }
+    Alert.alert(t('myRecipes.confirmTitle'), t('week.unsuitableConfirm', { count: nBad }), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('myRecipes.confirmAdd'), style: 'destructive', onPress: doSend },
+    ]);
+  }, [sending, nBad, doSend, t]);
 
   const goList = async (screen) => {
     setAdded(null);

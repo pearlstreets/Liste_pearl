@@ -18,7 +18,7 @@ import { matchProduct, matchProducts, nameMatches, norm } from '../lib/matchProd
 import { ingredientQueries, matchLines, nearbyShops, cleanName, plausibleOffer } from '../lib/menus/pearl';
 import { loadShops, peekShops, resetShopsCache, subscribeShops, TTL_MS } from '../lib/shopsCache';
 import { requestOpenShop, takePendingShop, onOpenShop } from '../lib/openShop';
-import { toListItems } from '../lib/menus/shopping';
+import { toListItems, listItemPack } from '../lib/menus/shopping';
 import { getTexts } from '../lib/menus/recipes';
 
 const P = (id, name, price, extra = {}) => ({ id, name, price, ...extra });
@@ -49,9 +49,21 @@ describe('matchProduct : même règle que App.js', () => {
     P(7, 'Oignons jaunes'),
     P(8, 'Œufs frais'),
   ];
-  const noms = ['eau', 'pain', 'baguette', 'Baguette', 'pates', 'poulet filet', 'filet de poulet', 'oignons', 'oignon', 'oeufs', 'Eau', '', '  ', 'tradition baguette', 'torsades'];
+  const noms = ['eau', 'pain', 'baguette', 'Baguette', 'pates', 'poulet filet', 'filet de poulet', 'oignons', 'oignon', 'oeufs', 'Eau', '', '  ', 'tradition baguette'];
   test.each(noms)('identique à l\'ancienne règle pour %p', (n) => {
     expect(matchProduct(n, prods)).toBe(ancienne(n, prods));
+  });
+  test('mot seul : nom principal du produit, jamais un mot au milieu (citron et granola)', () => {
+    expect(matchProduct('torsades', prods)).toBeUndefined(); // « Pâtes torsades bio » : les pâtes passent devant
+    expect(nameMatches('citron', 'Granola bio Citron & Cranberries')).toBe(false);
+    expect(nameMatches('citron', 'Citron jaune bio')).toBe(true);
+    expect(nameMatches('citrons', 'Bio citrons de Menton')).toBe(true);
+    expect(nameMatches('carottes', 'Lot de 3 kg carottes')).toBe(true);
+    expect(nameMatches('poulet', 'Filet de poulet fermier')).toBe(true);
+    expect(nameMatches('poulet', 'Sauce pour poulet')).toBe(false);
+    expect(nameMatches('citron', 'Citron')).toBe(true);
+    expect(nameMatches('chocolat', 'Tablette chocolat noir')).toBe(true); // conditionnement devant le nom
+    expect(nameMatches('citron', 'Jus de citron')).toBe(false); // un autre produit passe devant
   });
   test('mot court : seulement en égalité exacte', () => {
     expect(matchProduct('eau', prods).id).toBe(6);
@@ -170,11 +182,51 @@ describe('matchLines : correspondances incohérentes écartées', () => {
     const seul = matchLines([{ key: 'poireau', packs: 1 }], [shops[0], shops[1]], fr);
     expect(seul.covered).toEqual([]);
   });
-  test('bornes larges : bio, gros paquet ou producteur restent affichés', () => {
-    expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 9)).toBe(true);
+  test('bornes : 4 fois la référence ou référence + 6 €', () => {
+    // référence 1,50 € : plafond max(6 ; 7,50) = 7,50 €
+    expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 7.5)).toBe(true);
+    expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 9)).toBe(false);
+    // référence 10 € : plafond 40 €
+    expect(plausibleOffer({}, { pricePerKgOrL: 20, pack: { qty: 500, unit: 'g' } }, 39)).toBe(true);
+    expect(plausibleOffer({}, { pricePerKgOrL: 20, pack: { qty: 500, unit: 'g' } }, 41)).toBe(false);
     expect(plausibleOffer({}, { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } }, 0.1)).toBe(false);
     expect(plausibleOffer({}, null, 25)).toBe(true);
     expect(plausibleOffer({}, null, 280)).toBe(false);
+  });
+});
+
+describe('citron : ni granola ni boutique non alimentaire', () => {
+  const fr = (k) => getTexts('fr').ingredientName(k);
+  test('« Granola bio Citron & Cranberries » à 8,50 € n\'est jamais le prix du citron', () => {
+    const shops = [
+      shop(1, 'Épicerie', [P(11, 'Granola bio Citron & Cranberries', 8.5, { subcategory: 'Grocery', subcategorySlug: 'grocery' })]),
+    ];
+    expect(matchLines([{ key: 'citron', packs: 1 }], shops, fr).covered).toEqual([]);
+  });
+  test('sous-catégories servies par Pearl Streets : artisan, vêtements, galeries exclus ; épicerie gardée', () => {
+    const ing = { pricePerKgOrL: 3, pack: { qty: 500, unit: 'g' } };
+    const exclues = [
+      ['Artisan', 'artisan'],
+      ['Clothing', 'clothing'],
+      ['Art galleries', 'art_galleries'],
+      ['Bookstores', 'bookstores'],
+      ['Perfumery', 'perfumery'],
+      ['Sports & fitness', 'fitness_equipment'],
+      ['Jewellery', 'jewellery'],
+      ['Decoration', 'decoration'],
+      ['Cosmetics', 'cosmetics'],
+    ];
+    for (const [sub, slug] of exclues) expect(plausibleOffer({ subcategory: sub, subcategorySlug: slug }, ing, 2)).toBe(false);
+    expect(plausibleOffer({ subcategory: 'Grocery', subcategorySlug: 'grocery' }, ing, 2)).toBe(true);
+    expect(plausibleOffer({ subcategory: 'Local product', subcategorySlug: 'local_product' }, ing, 2)).toBe(true);
+    expect(plausibleOffer({ subcategory: 'Restaurants', subcategorySlug: 'food-drink-restaurant' }, ing, 2)).toBe(true);
+    // tous les slugs alimentaires servis par Pearl Streets restent gardés
+    for (const slug of ['grocery', 'supermarket', 'organics', 'local_product', 'bakeries_pastries', 'coffee_shop', 'tea_house', 'caterers', 'fast_food', 'brunches', 'gourmet_restaurants', 'hotel_dining', 'food-drink-bar', 'meal_preparation'])
+      expect(plausibleOffer({ subcategory: '', subcategorySlug: slug }, ing, 2)).toBe(true);
+    // sous-catégorie connue mais ni alimentaire ni exclue : dans le doute, ignorée
+    expect(plausibleOffer({ subcategory: 'Informatique', subcategorySlug: 'informatique' }, ing, 2)).toBe(false);
+    // sans sous-catégorie : seules les bornes de prix jouent
+    expect(plausibleOffer({}, ing, 2)).toBe(true);
   });
 });
 
@@ -306,6 +358,47 @@ describe('articles ajoutés : pris en compte dans l\'onglet Produits', () => {
   test('App.js ne transmet les noms français que si le nom n\'a pas changé', () => {
     const app = fs.readFileSync(path.join(__dirname, '..', 'App.js'), 'utf8');
     expect(app).toMatch(/it\.matchFor === it\.name/);
+  });
+});
+
+describe('Ma Liste : conditionnement des articles venus de Menus', () => {
+  const tFr = (k, o = {}) => {
+    const d = { 'shop.pack_head': ['tête', 'têtes'], 'shop.pack_box': ['boîte de {{size}}', 'boîtes de {{size}}'] }[k];
+    if (!d) return k;
+    const c = Number(o.count) || 0;
+    return c + ' ' + (c > 1 ? d[1] : d[0]).replace('{{size}}', o.size);
+  };
+  const opts = { lang: 'fr', labels: { g: 'g', kg: 'kg', ml: 'ml', l: 'l', u: '' } };
+  const ail = { key: 'ail', qty: 7, unit: 'u', packs: 1, packQty: 10, packUnit: 'u', packLabel: 'tête' };
+  const carotte = { key: 'carotte', qty: 800, unit: 'g', packs: 1, packQty: 1000, packUnit: 'g', packLabel: 'sachet' };
+  test('ail : « Ail » et « 1 tête », jamais « Ail (gousse) 1 u »', () => {
+    const r = toListItems([ail], () => 'Ail (gousse)', [], { force: true, idGen: () => 'a' });
+    const it = r.items[0];
+    expect(it).toMatchObject({ name: 'Ail (gousse)', qty: 1, unit: 'u', menusPackFor: 'Ail (gousse)' });
+    expect(listItemPack(it, tFr, opts)).toEqual({ name: 'Ail', detail: '1 tête' });
+    expect(listItemPack({ ...it, qty: 2 }, tFr, opts).detail).toBe('2 têtes');
+  });
+  test('poids : « Carotte » et « 1 kg » ; deux sachets : « 2 kg »', () => {
+    const r = toListItems([carotte], () => 'Carotte', [], { force: true, idGen: () => 'c' });
+    expect(listItemPack(r.items[0], tFr, opts)).toEqual({ name: 'Carotte', detail: '1 kg' });
+    const again = toListItems([carotte], () => 'Carotte', r.items, { force: true });
+    expect(again.items).toHaveLength(1);
+    expect(listItemPack(again.items[0], tFr, opts).detail).toBe('2 kg');
+  });
+  test('compatible : article saisi à la main, renommé ou passé à une autre unité : rien d\'ajouté', () => {
+    const main = [{ id: 'm', name: 'Ail (gousse)', qty: 3, unit: 'u' }];
+    const r = toListItems([ail], () => 'Ail (gousse)', main, { force: true });
+    expect(r.items[0].qty).toBe(4);
+    expect(r.items[0].menusPack).toBeUndefined();
+    expect(listItemPack(r.items[0], tFr, opts)).toEqual({ name: 'Ail (gousse)', detail: '' });
+    const venu = toListItems([ail], () => 'Ail (gousse)', [], { force: true, idGen: () => 'a' }).items[0];
+    expect(listItemPack({ ...venu, name: 'Ail rose' }, tFr, opts)).toEqual({ name: 'Ail rose', detail: '' });
+    expect(listItemPack({ ...venu, unit: 'kg' }, tFr, opts).detail).toBe('');
+    expect(listItemPack(null, tFr, opts)).toEqual({ name: '', detail: '' });
+  });
+  test('ligne libre ou sans paquet : aucun conditionnement', () => {
+    const r = toListItems([{ key: 'x', qty: 2, unit: 'u', packs: 2, free: true }], () => 'Truc', [], { force: true });
+    expect(r.items[0].menusPack).toBeUndefined();
   });
 });
 

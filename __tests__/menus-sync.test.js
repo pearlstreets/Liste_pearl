@@ -610,6 +610,18 @@ describe('envoi différé, retour au premier plan, déconnexion', () => {
     expect(Date.now() - debut).toBeLessThan(1000);
     libere({ ok: false, status: 500, data: null });
   });
+  test('déconnexion : flushMenusSync dit si tout est sur le compte (sinon pas d effacement silencieux)', async () => {
+    mockAuth = { id: 1 };
+    await requestMenusSync();
+    await toggleFavorite('a');
+    expect(await flushMenusSync()).toBe(true);
+    await toggleFavorite('b');
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    mockServer.onPut = () => ({ ok: false, status: 413, data: null });
+    expect(await flushMenusSync()).toBe(false);
+    warn.mockRestore();
+    mockServer.onPut = null;
+  });
   test('rien à envoyer : aucun appel à la déconnexion', async () => {
     mockAuth = { id: 1 };
     await requestMenusSync();

@@ -2,7 +2,7 @@
 import React, { memo, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { norm } from '../../lib/menus';
+import { norm, ALLERGEN_CHOICES } from '../../lib/menus';
 import { T } from './theme';
 import { Chip, Stepper, Field } from './ui';
 import useT from './useT';
@@ -16,17 +16,8 @@ export const DIETS = [
   'halal-possible',
   'sans-fruits-a-coque',
 ];
-export const ALLERGENS = [
-  'gluten',
-  'lait',
-  'oeuf',
-  'poisson',
-  'crustaces',
-  'soja',
-  'sesame',
-  'fruits-a-coque',
-  'miel',
-];
+// Allergies proposées : les 14 allergènes de l'Union européenne et le miel (lib/menus/allergens.js).
+export const ALLERGENS = ALLERGEN_CHOICES;
 export const TIMES = [null, 20, 30, 45, 60];
 
 const Card = ({ children, style }) => <View style={[s.card, style]}>{children}</View>;

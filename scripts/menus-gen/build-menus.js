@@ -79,7 +79,8 @@ const TAGS = [
   'vegetarien', 'vegan', 'sans-gluten', 'sans-lactose', 'sans-porc', 'halal-possible', 'sans-fruits-a-coque', 'enfants', 'rapide',
   'batch', 'economique', 'leger', 'hiver', 'printemps', 'ete', 'automne', 'four', 'sans-cuisson',
 ];
-const ALG_KEYS = ['gluten', 'lait', 'oeuf', 'poisson', 'crustaces', 'soja', 'sesame', 'fruits-a-coque', 'miel', 'porc'];
+const { ingredientsCites } = require('./cites');
+const { ALG_KEYS, ALLERGENES_MINIMUM, lexique, derivesAllergene, doutesDeCle, CLES_VIANDE_DOUTE } = require('./regimes');
 const UNITS = ['g', 'ml', 'u', 'cs', 'cc'];
 const AISLES = ['fruits-legumes', 'viandes-poissons', 'cremerie', 'epicerie', 'surgeles', 'boulangerie', 'boissons'];
 const SHARD = 2048;
@@ -153,6 +154,8 @@ const CORRECTIONS_ALLERGENES = {
   palourde: ['crustaces'],
   calamar: ['crustaces'],
 };
+// Minimum de regimes.js (celeri, moutarde, lupin, sulfites...), ajoute apres les corrections ci-dessus.
+for (const [cle, al] of Object.entries(ALLERGENES_MINIMUM)) CORRECTIONS_ALLERGENES[cle] = uniq([...(CORRECTIONS_ALLERGENES[cle] || []), ...al]);
 
 // Etiquettes de paquet comptees a la piece reconnues par lib/menus/lineText.js (packKind) ; les autres sont
 // ramenees a « piece » (1 unite) ou « lot de N » pour que l'affichage des courses ne retombe pas sur « N x taille ».
@@ -205,43 +208,11 @@ for (const [k, i] of Object.entries(INGS)) {
   if (!i.emoji) echec('fiche', `${k} : emoji vide`);
   if (TIRET.test(JSON.stringify(i))) echec('fiche', `${k} : tiret long ou fleche`);
   for (const a of i.allergens || []) if (!ALG_KEYS.includes(a)) echec('fiche', `${k} : allergene inconnu ${a}`);
+  for (const a of ALLERGENES_MINIMUM[k] || []) if (!(i.allergens || []).includes(a)) echec('fiche', `${k} : doit declarer l'allergene ${a} (regimes.js)`);
 }
 
-// Lexique francais des allergenes (extrait de lib/menus/allergens.js, partie francaise, plus quelques mots).
-const LEX = {
-  gluten: 'ble farine farines pain pate pates semoule couscous boulgour orge seigle epeautre chapelure biscuit brioche crepe nouille nouilles raviolis lasagne lasagnes spaghetti tagliatelle tagliatelles macaroni gnocchi avoine seitan malt',
-  lait: 'lait beurre creme fromage yaourt yogourt lactose mozzarella parmesan gruyere emmental comte chevre feta mascarpone ricotta lactoserum ghee bechamel cheddar burrata chantilly reblochon roquefort gorgonzola pecorino halloumi brie raclette',
-  oeuf: 'oeuf oeufs mayonnaise meringue',
-  poisson: 'poisson saumon thon cabillaud morue truite sardine sardines maquereau anchois colin merlu dorade hareng lotte surimi haddock sole nuoc',
-  crustaces: 'crevette crevettes crabe homard langouste langoustine gambas ecrevisse crustace crustaces moule moules huitre huitres palourde palourdes bulot calamar calamars encornet seiche poulpe',
-  soja: 'soja tofu tempeh miso edamame tamari',
-  sesame: 'sesame tahini tahin gomasio',
-  'fruits-a-coque': 'noix noisette noisettes amande amandes pistache pistaches cajou pecan macadamia pignon pignons praline arachide cacahuete cacahuetes nougat frangipane',
-  miel: 'miel',
-  porc: 'porc lardon lardons lard jambon bacon saucisse saucisses saucisson chorizo pancetta coppa rillettes andouille boudin chipolata chipolatas prosciutto gelatine guanciale',
-  viande: 'viande boeuf veau agneau poulet dinde canard mouton lapin steak volaille merguez bavette magret gigot cuisse cuisses escalope escalopes cotelette cotelettes rumsteck paleron',
-  alcool: 'vin biere rhum cognac whisky vodka alcool cidre calvados porto marsala kirsch liqueur',
-};
-const LEX_MOTS = Object.fromEntries(Object.entries(LEX).map(([k, v]) => [k, new Set(v.split(' '))]));
-const LEX_EXPR = { crustaces: ['fruits de mer', 'saint jacques'] };
-// Expressions qui contiennent un mot du lexique sans l'allergene (retirees avant lecture d'un texte d'etape).
-const FAUX_AMIS = [
-  'lait de coco', 'lait d amande', 'lait d avoine', 'noix de coco', 'noix de muscade', 'beurre de cacahuete', 'pate de curry',
-  'pate a tartiner', 'noix de saint jacques', 'creme de coco', 'eau de coco', 'noix de beurre', 'nouilles de riz',
-];
-function lexique(texte) {
-  let t = ` ${norm(texte)} `;
-  for (const f of FAUX_AMIS) t = t.split(` ${f} `).join(' ');
-  const mots = t.split(' ').filter(Boolean);
-  const trouve = new Set();
-  for (const [k, set] of Object.entries(LEX_MOTS)) {
-    for (const m of mots) {
-      if (set.has(m) || set.has(m.replace(/(es|s|x)$/, '')) || set.has(m.replace(/[sx]$/, ''))) { trouve.add(k); break; }
-    }
-    for (const e of LEX_EXPR[k] || []) if (t.includes(` ${e} `)) trouve.add(k);
-  }
-  return trouve;
-}
+// Lexique francais des allergenes et doutes par cle : scripts/menus-gen/regimes.js (commun avec validate-menus.js).
+const DERIVES = derivesAllergene(path.resolve(GEN_SCRIPTS, '..', '..')); // table du code de l'application (pas de --racine)
 // Derogations du controle lexical des NOMS d'ingredients : le nom contient un mot du lexique sans l'allergene.
 const DEROGATIONS_LEXICALES = {
   'beurre de cacahuète': ['lait'], // cacahuetes seules, aucun lait
@@ -301,13 +272,15 @@ for (const e of CORRESP) {
     if (a === 'viande' || a === 'alcool') continue;
     if (!declares.has(a) && !derog.has(a)) echec('lexique', `${e.nom} (${e.cle}) : le nom evoque « ${a} » mais la fiche ne le declare pas`);
   }
-  const doute = new Set(DOUTE_PAR_NOM[e.nom] || []);
-  const eff = new Set([...declares, ...doute]);
+  // doutes par nom et par cle (table des derives de lib/menus/allergens.js et DOUTES_CLES de regimes.js)
+  const doute = new Set([...(DOUTE_PAR_NOM[e.nom] || []), ...doutesDeCle(e.cle, DERIVES)]);
   const alcool = ALCOOL_NOMS.has(e.nom) || lex.has('alcool') || doute.has('alcool');
+  doute.delete('alcool');
+  const eff = new Set([...declares, ...doute]);
   const viande =
     fiche.aisle === 'viandes-poissons' || declares.has('poisson') || declares.has('crustaces') || declares.has('porc') ||
     lex.has('viande') || lex.has('poisson') || lex.has('crustaces') || lex.has('porc') || DOUTE_VIANDE_NOM.has(e.nom) ||
-    eff.has('crustaces') || eff.has('porc');
+    CLES_VIANDE_DOUTE.has(e.cle) || eff.has('crustaces') || eff.has('porc');
   ATTR.set(e.nom, { cle: e.cle, fiche, declares, eff, alcool, viande, nom: e.nom });
 }
 
@@ -600,10 +573,11 @@ const analyser = (t) => {
 };
 const lexPhrase = new Map();
 const lexDe = (t) => {
-  if (!lexPhrase.has(t)) lexPhrase.set(t, lexique(t));
+  if (!lexPhrase.has(t)) lexPhrase.set(t, lexique(t, { etape: true }));
   return lexPhrase.get(t);
 };
 const ajoutsFinaux = { chaud: 0, frais: 0, deja: 0, verres: 0, paille: 0 };
+const ajoutsCites = {}; // ingredient ajoute -> nombre de recettes
 const hist = { etapes: {}, phrases: {} };
 
 for (const r of retenues) {
@@ -615,10 +589,6 @@ for (const r of retenues) {
   const sub = r.cat;
   const course = COURSE_DE_SUB[sub] || 'plat';
   const scale = (sub === 'boissons' || sub === 'petit_dejeuner') && r.pers === 2 ? 2 : 1;
-  const conv = convertirIngredients(r, scale);
-  if (conv.lignes.length < 2) echec('ingredients', `${titre} : moins de 2 ingredients`);
-  if (conv.lignes.length > 63) echec('ingredients', `${titre} : plus de 63 ingredients`);
-
   // phrases
   let textes = [];
   for (const e of r.etapes) {
@@ -640,6 +610,13 @@ for (const r of retenues) {
     textes = [...textes, PHRASE_FINALE[choix]];
   }
   if (textes.length < 3 && textes.length > 0) echec('etapes', `${titre} : ${textes.length} phrase(s) seulement`);
+  // ingredients cites dans les etapes mais absents de la liste (beurre de cuisson, huile, ail...) : ajoutes (cites.js)
+  const cites = ingredientsCites(textes, r.ings.map(([n]) => (parNom.get(n) || {}).cle).filter(Boolean), INGS);
+  for (const id of cites.manquants) echec('cites', `${titre} : « ${id} » cite dans les etapes sans ingredient correspondant`);
+  for (const a of cites.ajouts) ajoutsCites[a[0]] = (ajoutsCites[a[0]] || 0) + 1;
+  const conv = convertirIngredients(cites.ajouts.length ? { ...r, ings: [...r.ings, ...cites.ajouts] } : r, scale);
+  if (conv.lignes.length < 2) echec('ingredients', `${titre} : moins de 2 ingredients`);
+  if (conv.lignes.length > 63) echec('ingredients', `${titre} : plus de 63 ingredients`);
   const infos = textes.map(analyser);
   const groupes = regrouper(textes, infos);
   if (groupes.length < 3 || groupes.length > 6) echec('etapes', `${titre} : ${groupes.length} etapes`);
@@ -1345,6 +1322,7 @@ const rapport = {
   etapes: hist.etapes,
   phrasesDuDictionnaire: phrasesTexte.length,
   phrasesFinalesAjoutees: ajoutsFinaux,
+  ingredientsCitesAjoutes: ajoutsCites,
   couplesQuantiteUnite: jeuComplet.pairesListe.length,
   largeurLigne: jeuComplet.LINE_W,
   cases: N,

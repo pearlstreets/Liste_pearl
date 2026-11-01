@@ -19,6 +19,9 @@ const COURSES = ['plat', 'entree', 'dessert', 'petit-dejeuner'];
 const AISLES = ['fruits-legumes', 'viandes-poissons', 'cremerie', 'epicerie', 'surgeles', 'boulangerie', 'boissons'];
 const UNITS = ['g', 'ml', 'u', 'cs', 'cc'];
 const TAGS = ['vegetarien', 'vegan', 'sans-gluten', 'sans-lactose', 'sans-porc', 'halal-possible', 'sans-fruits-a-coque', 'enfants', 'rapide', 'batch', 'economique', 'leger', 'hiver', 'printemps', 'ete', 'automne', 'four', 'sans-cuisson'];
+const { ALG_KEYS, ALLERGENES_MINIMUM, REGIMES, lexique, regimesDe, derivesAllergene } = require('./menus-gen/regimes');
+const { ingredientsCites } = require('./menus-gen/cites');
+const DERIVES = derivesAllergene(path.join(__dirname, '..')); // table de lib/menus/allergens.js (code de l'application)
 const errors = [];
 let errTotal = 0;
 let masquees = 0;
@@ -50,6 +53,16 @@ const dash = (s) => typeof s === 'string' && DASH.test(s);
 const recipes = load(path.join(DIR, 'recipes.json')) || [];
 const ings = load(path.join(DIR, 'ingredients.json')) || {};
 if (!Array.isArray(recipes)) { err('recipes.json doit etre un tableau'); }
+const frRecettes = ((load(path.join(DIR, 'i18n', 'fr.json')) || {}).recipes) || {};
+// Noms francais des ingredients : un nom qui evoque celeri, moutarde, lupin, sulfites, mollusques ou arachide doit le declarer.
+{
+  const frIng = ((load(path.join(DIR, 'i18n', 'fr.json')) || {}).ingredients) || {};
+  const CONTROLES = ['celeri', 'moutarde', 'lupin', 'sulfites', 'crustaces', 'fruits-a-coque'];
+  for (const [k, i] of Object.entries(ings)) {
+    const lex = lexique(frIng[k] || k.replace(/-/g, ' '));
+    for (const a of CONTROLES) if (lex.has(a) && !(i.allergens || []).includes(a)) err(`ingredient ${k} : le nom evoque « ${a} » mais la fiche ne le declare pas`);
+  }
+}
 
 // Ingredients
 for (const [k, i] of Object.entries(ings)) {
@@ -62,6 +75,10 @@ for (const [k, i] of Object.entries(ings)) {
   if (unitPrice && !(i.pricePerUnit > 0)) err(`ingredient ${k} : pricePerUnit manquant`);
   if (!unitPrice && !(i.pricePerKgOrL > 0)) err(`ingredient ${k} : pricePerKgOrL manquant`);
   if (dash(JSON.stringify(i))) err(`ingredient ${k} : tiret cadratin ou fleche`);
+  const al = Array.isArray(i.allergens) ? i.allergens : [];
+  if (i.allergens !== undefined && !Array.isArray(i.allergens)) err(`ingredient ${k} : allergens doit etre une liste`);
+  for (const a of al) if (!ALG_KEYS.includes(a)) err(`ingredient ${k} : allergene inconnu ${a}`);
+  for (const a of ALLERGENES_MINIMUM[k] || []) if (!al.includes(a)) err(`ingredient ${k} : doit declarer l'allergene ${a} (scripts/menus-gen/regimes.js)`);
 }
 
 // Recettes
@@ -133,6 +150,17 @@ const counts = {};
   if (has('sans-lactose') && al.has('lait')) err(`${id} : tag sans-lactose incoherent`);
   if ((has('sans-porc') || has('halal-possible')) && al.has('porc')) err(`${id} : tag sans-porc incoherent`);
   if (has('sans-fruits-a-coque') && al.has('fruits-a-coque')) err(`${id} : tag sans-fruits-a-coque incoherent`);
+  // Tags de regime : exactement ceux des regles communes (scripts/menus-gen/regimes.js : allergenes, doutes, etapes)
+  const etapesFr = (((frRecettes || {})[id] || {}).steps || []).filter((x) => typeof x === 'string');
+  const attendus = regimesDe({ cles: r.ingredients.map((x) => x.key), ings, derives: DERIVES, textes: etapesFr }).tags;
+  for (const t of REGIMES) {
+    if (has(t) && !attendus.has(t)) err(`${id} : tag ${t} trop permissif (allergenes, doutes ou etapes)`);
+    if (!has(t) && attendus.has(t)) err(`${id} : tag ${t} manquant (regles de regimes.js)`);
+  }
+  // Ingredients cites dans les etapes (beurre, huile, ail, sel, poivre, moutarde, porc...) : presents dans la liste
+  const cites = ingredientsCites(etapesFr, r.ingredients.map((x) => x.key), ings);
+  for (const a of cites.ajouts) err(`${id} : « ${a[0]} » cite dans les etapes mais absent des ingredients`);
+  for (const m of cites.manquants) err(`${id} : « ${m} » cite dans les etapes sans ingredient correspondant`);
   costSum += c / 4; costN++;
 });
 
@@ -172,7 +200,7 @@ for (const f of files) {
 
 // Contrat attendu des colonnes (CONCEPTION.md 2.2, avec nPhr). Le validateur ne se fie pas a meta.FIELDS : il le compare.
 const FIELDS_ATTENDUS = [['course', 1], ['sub', 1], ['family', 1], ['tags', 3], ['time', 2], ['diff', 1], ['kcal', 2], ['prot', 2], ['keep', 1], ['flags', 1], ['cost', 2], ['alg', 3], ['nIng', 1], ['nStep', 1], ['nPhr', 1], ['main1', 2], ['main2', 2], ['serv', 1]];
-const ALG_ATTENDUS = ['gluten', 'lait', 'oeuf', 'poisson', 'crustaces', 'soja', 'sesame', 'fruits-a-coque', 'miel', 'porc'];
+const ALG_ATTENDUS = ALG_KEYS; // ordre fige des bits de la colonne alg (scripts/menus-gen/regimes.js)
 const LANGUES_13 = ['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ar', 'sv', 'th'];
 const LATINES = new Set(['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'sv']);
 const ECRITURE = {
@@ -426,6 +454,10 @@ function validerCatalogue() {
     ok(!(has('sans-lactose') && al.has('lait')), 'tags : sans-lactose avec du lait', ctx);
     ok(!((has('sans-porc') || has('halal-possible')) && al.has('porc')), 'tags : sans-porc ou halal-possible avec du porc', ctx);
     ok(!(has('sans-fruits-a-coque') && al.has('fruits-a-coque')), 'tags : sans-fruits-a-coque avec des fruits a coque', ctx);
+    {
+      const permis = regimesDe({ cles, ings, derives: DERIVES }).tags; // allergenes et doutes des ingredients
+      for (const x of REGIMES) ok(!(has(x) && !permis.has(x)), `tags : ${x} trop permissif (doutes de regimes.js)`, ctx);
+    }
     ok(!(alcool && (has('halal-possible') || has('vegan') || has('enfants'))), 'tags : halal-possible, vegan ou enfants avec de l\'alcool', ctx);
     ok(!(has('rapide') && temps > 30), 'tags : rapide au-dessus de 30 min', `${ctx} : ${temps} min`);
     ok(!(has('four') && has('sans-cuisson')), 'tags : four et sans-cuisson ensemble', ctx);
