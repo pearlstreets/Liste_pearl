@@ -28,6 +28,7 @@ import { useMenus } from './MenusContext';
 import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
+import { isolerUnitesLatines } from '../../lib/texteBidi';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 
 const Dots = ({ n }) => (
@@ -392,7 +393,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
               <View style={s.stepNum}>
                 <Text style={s.stepNumTxt}>{i + 1}</Text>
               </View>
-              <Text style={s.stepTxt}>{st}</Text>
+              <Text style={s.stepTxt}>{isolerUnitesLatines(st, lang)}</Text>
             </View>
           ))}
 

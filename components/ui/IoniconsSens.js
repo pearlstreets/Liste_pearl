@@ -1,11 +1,13 @@
 // Ionicons qui suit le sens d'écriture : en droite à gauche (arabe), les icônes
-// directionnelles (chevron, flèche, caret « forward »/« back ») sont retournées
+// directionnelles (chevron, flèche, caret « forward »/« back », entrée et
+// sortie log-in/log-out/enter/exit, envoi, retour à la ligne) sont retournées
 // en miroir. En gauche à droite, rendu strictement identique à Ionicons.
 import React from 'react';
 import { I18nManager } from 'react-native';
 import { Ionicons as IoniconsBase } from '@expo/vector-icons';
 
-const DIRECTIONNELLE = /^(chevron|arrow|caret)-(forward|back)(-|$)/;
+const DIRECTIONNELLE =
+  /^((chevron|arrow|caret)-(forward|back)|log-in|log-out|enter|exit|send|return-(down|up)-(forward|back))(-|$)/;
 const MIROIR = { transform: [{ scaleX: -1 }] };
 
 export function estIconeDirectionnelle(name) {

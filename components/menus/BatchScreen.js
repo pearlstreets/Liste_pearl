@@ -20,6 +20,7 @@ import { Empty, PrimaryButton, GhostButton, Stepper } from './ui';
 import { useMenus } from './MenusContext';
 import CookMode from './CookMode';
 import useT from './useT';
+import { isolerUnitesLatines } from '../../lib/texteBidi';
 
 const KIND_ICON = { four: 'flame', feu: 'bonfire-outline', repos: 'hourglass-outline' };
 
@@ -205,8 +206,12 @@ function Session({ onClose, onOpenRecipe }) {
     [texts, lang, labels]
   );
   const stepText = useCallback(
-    (x) => texts.recipeSteps(x.recipeId)[x.stepIndex] || texts.recipeTitle(x.recipeId),
-    [texts]
+    (x) =>
+      isolerUnitesLatines(
+        texts.recipeSteps(x.recipeId)[x.stepIndex] || texts.recipeTitle(x.recipeId),
+        lang
+      ),
+    [texts, lang]
   );
   const seq = useMemo(
     () => [

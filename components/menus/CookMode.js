@@ -7,6 +7,7 @@ import { T } from './theme';
 import { PrimaryButton } from './ui';
 import { useMenus } from './MenusContext';
 import useT from './useT';
+import { isolerUnitesLatines } from '../../lib/texteBidi';
 
 const fmt = (sec) => {
   const x = Math.max(0, sec);
@@ -195,7 +196,7 @@ export default function CookMode({ id, persons, onClose, guided }) {
             })}
           </View>
         ) : null}
-        <Text style={s.stepTxt}>{steps[cur]}</Text>
+        <Text style={s.stepTxt}>{isolerUnitesLatines(steps[cur], lang)}</Text>
         {tm ? (
           <View style={[s.timer, tm.left === 0 && !tm.endAt && { backgroundColor: T.accentSoft }]}>
             <Text style={s.timerLabel}>
