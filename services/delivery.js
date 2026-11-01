@@ -128,7 +128,8 @@ export async function trackDelivery(orderId) {
   return deliveryFetch(`/track/${orderId}/`);
 }
 
-// Get delivery status for an order
+// Get delivery status for an order. Le champ « itineraire » ([[lat, lng], ...]
+// ou null) part tel quel jusqu'à la carte (components/LiveDeliveryMap.js).
 export async function getDeliveryStatus(orderId) {
   return deliveryFetch(`/status/${orderId}/`);
 }

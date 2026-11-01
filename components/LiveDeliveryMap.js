@@ -7,6 +7,7 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
+import { cheminRestant } from '../lib/cheminRestant';
 
 const BRAND = '#00C29B';
 
@@ -41,6 +42,10 @@ export default function LiveDeliveryMap({ status, t }) {
   const hasDriver = driver.latitude != null && driver.longitude != null;
   const hasPickup = pickup.latitude != null && pickup.longitude != null;
   const hasDropoff = dropoff.latitude != null && dropoff.longitude != null;
+
+  // Trait : seulement ce qui reste à parcourir, par les rues (champ
+  // « itineraire » du statut). Sans itinéraire ou course finie : aucun trait.
+  const chemin = cheminRestant(status, hasDriver ? driver : null);
 
   const points = [];
   if (hasDriver) points.push(driver);
@@ -93,9 +98,9 @@ export default function LiveDeliveryMap({ status, t }) {
             </View>
           </Marker>
         )}
-        {hasDriver && hasDropoff && (
+        {chemin && (
           <Polyline
-            coordinates={[driver, dropoff]}
+            coordinates={chemin}
             strokeColor={BRAND}
             strokeWidth={4}
             lineDashPattern={Platform.OS === 'ios' ? [0] : undefined}
