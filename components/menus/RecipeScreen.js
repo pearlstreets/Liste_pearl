@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { prefillProducts } from '../../lib/menus/listBridge';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import {
   scaleIngredients,
   formatEur,
@@ -280,7 +280,9 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           <View style={s.tags}>
             {shownTags.map((x) => (
               <View key={x} style={s.tag}>
-                <Text style={s.tagTxt}>{t(`tags.${x}`)}</Text>
+                <Text style={s.tagTxt} textBreakStrategy="simple">
+                  {t(`tags.${x}`)}
+                </Text>
               </View>
             ))}
           </View>
@@ -373,7 +375,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <View style={s.nutriBox}>
                 <Text style={s.nutriVal}>{nut.kcal}</Text>
-                <Text style={s.nutriLab}>kcal</Text>
+                <Text style={s.nutriLab}>{t('kcal')}</Text>
               </View>
               <View style={s.nutriBox}>
                 <Text style={s.nutriVal}>{nut.protein}</Text>
@@ -499,8 +501,9 @@ const s = StyleSheet.create({
     paddingVertical: 5,
     marginRight: 6,
     marginBottom: 6,
+    maxWidth: '100%',
   },
-  tagTxt: { fontSize: 12, fontWeight: '700', color: T.ink },
+  tagTxt: { fontSize: 12, fontWeight: '700', color: T.ink, flexShrink: 1 },
   portion: {
     flexDirection: 'row',
     alignItems: 'center',

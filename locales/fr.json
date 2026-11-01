@@ -1039,6 +1039,7 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "kcal": "kcal",
     "reminders": {
       "title": "Rappels",
       "hint": "Désactivés par défaut. Activez seulement ceux qui vous sont utiles.",

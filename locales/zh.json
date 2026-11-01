@@ -1037,6 +1037,7 @@
     "pilates": "普拉提"
   },
   "menus": {
+    "kcal": "千卡",
     "reminders": {
       "title": "提醒",
       "hint": "默认关闭。请只开启对您有用的提醒。",

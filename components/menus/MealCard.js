@@ -1,7 +1,7 @@
 // Carte d'un repas de la semaine : visuel, badges, infos, et les gestes (changer, verrouiller, libre).
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 import RecipeVisual from './RecipeVisual';
 import useT from './useT';
@@ -28,6 +28,7 @@ const Badge = ({ icon, label, tone }) => (
         tone === 'accent' && { color: '#B45309' },
         tone === 'info' && { color: '#1D4ED8' },
       ]}
+      textBreakStrategy="simple"
     >
       {label}
     </Text>
@@ -163,7 +164,7 @@ function MealCard({
             {!recipe.custom ? (
               <View style={s.meta}>
                 <Ionicons name="flame-outline" size={14} color={T.muted} />
-                <Text style={s.metaTxt}>{recipe.kcal} kcal</Text>
+                <Text style={s.metaTxt}>{recipe.kcal} {t('kcal')}</Text>
               </View>
             ) : null}
           </View>
@@ -206,7 +207,14 @@ const s = StyleSheet.create({
   },
   freeTitle: { fontSize: 18, fontWeight: '800', color: T.ink, marginTop: 2 },
   freeText: { fontSize: 13, color: T.muted, marginTop: 2, lineHeight: 18 },
-  badges: { position: 'absolute', left: 12, top: 12, flexDirection: 'row', flexWrap: 'wrap' },
+  badges: {
+    position: 'absolute',
+    left: 12,
+    right: 12,
+    top: 12,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -217,7 +225,7 @@ const s = StyleSheet.create({
     marginRight: 6,
     marginBottom: 4,
   },
-  badgeTxt: { fontSize: 12, fontWeight: '800', color: T.ink },
+  badgeTxt: { fontSize: 12, fontWeight: '800', color: T.ink, flexShrink: 1 },
   body: { padding: 16, paddingBottom: 12 },
   slot: {
     fontSize: 12,

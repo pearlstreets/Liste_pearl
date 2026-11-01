@@ -67,7 +67,7 @@ const DragWrap = ({ enabled, children }) => {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation, useFocusEffect, createNavigationContainerRef } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "./components/ui/IoniconsSens";
 import { loadListItems, persistActiveItems, listItemsKey as listItemsKeyLib } from "./lib/listStore";
 import MenusScreen from "./components/menus/MenusScreen";
 import { startMenusSync } from "./services/menusSync";

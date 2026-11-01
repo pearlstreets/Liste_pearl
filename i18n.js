@@ -2,6 +2,8 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { I18nManager, DevSettings } from 'react-native';
+import { appliquerSensEcriture } from './lib/sensEcriture';
 import en from './locales/en.json';
 import fr from './locales/fr.json';
 import es from './locales/es.json';
@@ -49,11 +51,38 @@ i18n
     },
   });
 
-// Restore saved language preference
-AsyncStorage.getItem('APP_LANGUAGE').then(lang => {
-  if (lang && resources[lang]) {
-    i18n.changeLanguage(lang);
+// Recharge le JS pour appliquer le sens d'écriture (droite à gauche en arabe).
+function rechargerApp() {
+  if (__DEV__) {
+    DevSettings.reload();
+    return Promise.resolve();
   }
+  return require('expo-updates').reloadAsync();
+}
+
+function appliquerSens(lang, sauverLangue) {
+  return appliquerSensEcriture(lang, {
+    I18nManager,
+    storage: AsyncStorage,
+    recharger: async () => {
+      // La langue choisie doit être enregistrée avant le rechargement,
+      // sinon l'ancienne revient au redémarrage.
+      if (sauverLangue) await AsyncStorage.setItem('APP_LANGUAGE', lang);
+      await rechargerApp();
+    },
+  });
+}
+
+// Restore saved language preference
+AsyncStorage.getItem('APP_LANGUAGE').then(async lang => {
+  if (lang && resources[lang]) {
+    await i18n.changeLanguage(lang);
+  }
+}).catch(() => {}).then(() => {
+  // Sens de la langue effective au démarrage, puis à chaque changement de langue
+  // (premier lancement, Profil > Langue).
+  appliquerSens(i18n.language, false);
+  i18n.on('languageChanged', (lng) => { appliquerSens(lng, true); });
 });
 
 export default i18n;
