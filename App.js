@@ -43,7 +43,7 @@ function itemsToRenderForShop(allUserItems, assignedForThisShop, optimized){
   return opt ? B : A;
 }
 
-import i18nApi from './i18n';
+import i18nApi, { CLE_ONGLET_APRES_RECHARGEMENT, definirOngletApresRechargement } from './i18n';
 import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter, AppState } from 'react-native';
 import SearchPopup from './components/SearchPopup';
@@ -188,6 +188,19 @@ const Tab = createBottomTabNavigator();
 const navRef = createNavigationContainerRef();
 const ouvrirMenusDepuisRappel = () => {
   if (navRef.isReady() && hasPendingMenuReminder()) navRef.navigate('menus');
+};
+// Onglet mémorisé avant un rechargement dû au changement de langue : lu une
+// seule fois au démarrage, effacé aussitôt, ouvert quand la navigation est prête.
+let ongletApresRechargement = AsyncStorage.getItem(CLE_ONGLET_APRES_RECHARGEMENT)
+  .then((nom) => {
+    if (nom) AsyncStorage.removeItem(CLE_ONGLET_APRES_RECHARGEMENT).catch(() => {});
+    return nom;
+  })
+  .catch(() => null);
+const ouvrirOngletApresRechargement = () => {
+  const lecture = ongletApresRechargement;
+  ongletApresRechargement = null;
+  if (lecture) lecture.then((nom) => { if (nom && navRef.isReady()) navRef.navigate(nom); });
 };
 const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: BRAND, background: "#fff" } };
 
@@ -6135,7 +6148,7 @@ export default function App() {
     <StatusBar style="dark" />
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <DeuxEcrans>
-      <NavigationContainer ref={navRef} onReady={ouvrirMenusDepuisRappel} theme={navTheme}>
+      <NavigationContainer ref={navRef} onReady={() => { ouvrirOngletApresRechargement(); ouvrirMenusDepuisRappel(); }} theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
       <Modal visible={authVisible} animationType="slide" onRequestClose={() => {
@@ -7272,6 +7285,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <View style={profStyles.sheetFooter}>
                 <TouchableOpacity activeOpacity={0.85} onPress={async () => {
                   const lang = pendingLang || i18nInstance.language;
+                  definirOngletApresRechargement('profile');
                   i18nInstance.changeLanguage(lang);
                   await AsyncStorage.setItem('APP_LANGUAGE', lang);
                   setPendingLang(null);
@@ -7930,6 +7944,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
             <View style={profStyles.sheetFooter}>
               <TouchableOpacity activeOpacity={0.85} onPress={async () => {
                 const lang = pendingLang || i18nInstance.language;
+                definirOngletApresRechargement('profile');
                 i18nInstance.changeLanguage(lang);
                 await AsyncStorage.setItem('APP_LANGUAGE', lang);
                 setPendingLang(null);

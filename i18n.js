@@ -60,6 +60,14 @@ function rechargerApp() {
   return require('expo-updates').reloadAsync();
 }
 
+// Onglet à rouvrir après le rechargement dû au changement de sens d'écriture
+// (Profil > Langue) : sinon l'app repart sur « Ma Liste ».
+export const CLE_ONGLET_APRES_RECHARGEMENT = 'APP_TAB_AFTER_RELOAD';
+let ongletApresRechargement = null;
+export function definirOngletApresRechargement(nom) {
+  ongletApresRechargement = nom || null;
+}
+
 function appliquerSens(lang, sauverLangue) {
   return appliquerSensEcriture(lang, {
     I18nManager,
@@ -68,6 +76,9 @@ function appliquerSens(lang, sauverLangue) {
       // La langue choisie doit être enregistrée avant le rechargement,
       // sinon l'ancienne revient au redémarrage.
       if (sauverLangue) await AsyncStorage.setItem('APP_LANGUAGE', lang);
+      if (ongletApresRechargement) {
+        try { await AsyncStorage.setItem(CLE_ONGLET_APRES_RECHARGEMENT, ongletApresRechargement); } catch (_) {}
+      }
       await rechargerApp();
     },
   });
@@ -82,7 +93,9 @@ AsyncStorage.getItem('APP_LANGUAGE').then(async lang => {
   // Sens de la langue effective au démarrage, puis à chaque changement de langue
   // (premier lancement, Profil > Langue).
   appliquerSens(i18n.language, false);
-  i18n.on('languageChanged', (lng) => { appliquerSens(lng, true); });
+  i18n.on('languageChanged', (lng) => {
+    appliquerSens(lng, true).finally(() => { ongletApresRechargement = null; });
+  });
 });
 
 export default i18n;
