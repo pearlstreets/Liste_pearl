@@ -1201,6 +1201,8 @@
     },
     "added": {
       "ok": "{{count}} produkter har lagts till",
+      "ok_one": "{{count}} produkt har lagts till",
+      "ok_other": "{{count}} produkter har lagts till",
       "already": "Redan tillagd i din lista",
       "okText": "Din lista \"{{name}}\" är uppdaterad.",
       "deltaText": "Bara skillnaden har lagts till i \"{{name}}\".",
@@ -1238,6 +1240,7 @@
         "no_eligible": "Inga recept matchar dina inställningar. Minska kraven i inställningarna.",
         "few_recipes": "Få recept matchar dina inställningar, vissa rätter upprepas.",
         "over_budget": "Veckan överskrider din budget.",
+        "budget_unreachable": "Budgeten är för snäv för ditt hushåll. Här är den billigaste möjliga menyn, cirka {{minimum}}.",
         "no_slots": "Inga måltider är planerade. Aktivera måltider i inställningarna.",
         "no_recipes": "Recepten är inte tillgängliga just nu.",
         "lock_invalid": "Vissa sparade måltider passar inte längre dina inställningar.",
@@ -1288,6 +1291,8 @@
       "missingTitle": "Receptet kunde inte hittas",
       "missingText": "Detta recept finns inte längre.",
       "cookedTimes": "Tillagad {{count}} gånger",
+      "cookedTimes_one": "Tillagad {{count}} gång",
+      "cookedTimes_other": "Tillagad {{count}} gånger",
       "addToList": "Lägg till i min lista"
     },
     "course": {
@@ -1298,6 +1303,8 @@
     },
     "share": {
       "for": "För {{count}} personer",
+      "for_one": "För {{count}} person",
+      "for_other": "För {{count}} personer",
       "signature": "Skapat med Pearl List"
     },
     "units": {
@@ -1327,6 +1334,8 @@
     "shop": {
       "title": "Mina inköp",
       "summary": "{{count}} varor, cirka {{total}}",
+      "summary_one": "{{count}} vara, cirka {{total}}",
+      "summary_other": "{{count}} varor, cirka {{total}}",
       "estimateNote": "Ungefärlig uppskattning (~). Det verkliga priset är butikens, jämför det efteråt.",
       "targetList": "Lägg till på lista",
       "defaultList": "Min lista",
@@ -1403,6 +1412,8 @@
       "allThere": "Du har allt.",
       "missing": "Saknas: {{list}}",
       "usesUp": "Får slut på {{count}} rester.",
+      "usesUp_one": "Får slut på {{count}} rest.",
+      "usesUp_other": "Får slut på {{count}} rester.",
       "noneTitle": "Inga recept hittades",
       "noneText": "Lägg till fler ingredienser."
     },
@@ -1412,6 +1423,8 @@
       "emptyText": "Dina bekräftade veckor visas här.",
       "week": "Tidigare vecka",
       "meals": "{{count}} måltider",
+      "meals_one": "{{count}} måltid",
+      "meals_other": "{{count}} måltider",
       "redo": "Gör om"
     },
     "pearl": {
@@ -1546,5 +1559,40 @@
       "addedShop": "Tillagt i dina inköp",
       "addedWeek": "Tillagt i din vecka"
     }
+  },
+  "counts": {
+    "products": "{{count}} produkter",
+    "products_one": "{{count}} produkt",
+    "products_other": "{{count}} produkter",
+    "items": "{{count}} varor",
+    "items_one": "{{count}} vara",
+    "items_other": "{{count}} varor",
+    "shops": "{{count}} butiker",
+    "shops_one": "{{count}} butik",
+    "shops_other": "{{count}} butiker",
+    "shopUnit": "butiker",
+    "shopUnit_one": "butik",
+    "shopUnit_other": "butiker",
+    "productsSelected": "{{count}} produkter valda",
+    "productsSelected_one": "{{count}} produkt vald",
+    "productsSelected_other": "{{count}} produkter valda",
+    "itemsSelected": "{{count}} varor valda",
+    "itemsSelected_one": "{{count}} vara vald",
+    "itemsSelected_other": "{{count}} varor valda",
+    "listSelected": "{{count}} valda varor",
+    "listSelected_one": "{{count}} vald vara",
+    "listSelected_other": "{{count}} valda varor",
+    "notFound": "{{count}} produkter hittades inte i butik",
+    "notFound_one": "{{count}} produkt hittades inte i butik",
+    "notFound_other": "{{count}} produkter hittades inte i butik",
+    "duplicates": "{{count}} dubblettprodukter",
+    "duplicates_one": "{{count}} dubblettprodukt",
+    "duplicates_other": "{{count}} dubblettprodukter",
+    "addedToCart": "{{count}} produkter tillagda i varukorgen",
+    "addedToCart_one": "{{count}} produkt tillagd i varukorgen",
+    "addedToCart_other": "{{count}} produkter tillagda i varukorgen",
+    "pendingRequests": "{{count}} väntande förfrågningar",
+    "pendingRequests_one": "{{count}} väntande förfrågan",
+    "pendingRequests_other": "{{count}} väntande förfrågningar"
   }
 }

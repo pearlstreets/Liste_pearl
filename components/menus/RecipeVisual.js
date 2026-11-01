@@ -20,11 +20,18 @@ function emojisOf(recipe, ingredients) {
   const list = (recipe.ingredients || [])
     .map((i) => ({ i, ing: ingredients && ingredients[i.key] }))
     .filter((x) => x.ing && x.ing.emoji && !x.ing.pantry && !x.i.optional);
-  // La viande ou le poisson d'abord, puis les plus grosses quantités.
+  // Recette générée : ses ingrédients principaux d'abord (calculés au build, quelles que soient les unités :
+  // une omelette montre l'œuf avant 350 g de poireaux). Puis la viande ou le poisson, puis les plus grosses quantités.
+  const mains =
+    recipe.generated && recipe.dp && Array.isArray(recipe.dp.mains) ? recipe.dp.mains : [];
+  const rank = (x) => {
+    const k = mains.indexOf(x.i.key);
+    return k < 0 ? mains.length : k;
+  };
   list.sort((a, b) => {
     const pa = a.ing.aisle === 'viandes-poissons' ? 1 : 0;
     const pb = b.ing.aisle === 'viandes-poissons' ? 1 : 0;
-    return pb - pa || (Number(b.i.qty) || 0) - (Number(a.i.qty) || 0);
+    return rank(a) - rank(b) || pb - pa || (Number(b.i.qty) || 0) - (Number(a.i.qty) || 0);
   });
   const out = [];
   for (const x of list) if (!out.includes(x.ing.emoji)) out.push(x.ing.emoji);

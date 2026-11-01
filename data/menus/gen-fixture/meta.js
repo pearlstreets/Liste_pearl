@@ -6,7 +6,7 @@ module.exports = {
   "LINE_W": 3,
   "PAIR_BITS": 8,
   "PHRASE_CONT": 2048,
-  "FIELDS": [["course",1],["sub",1],["family",1],["tags",3],["time",2],["diff",1],["kcal",2],["prot",2],["keep",1],["flags",1],["cost",2],["alg",3],["nIng",1],["nStep",1],["nPhr",1],["main1",2],["main2",2]],
+  "FIELDS": [["course",1],["sub",1],["family",1],["tags",3],["time",2],["diff",1],["kcal",2],["prot",2],["keep",1],["flags",1],["cost",2],["alg",3],["nIng",1],["nStep",1],["nPhr",1],["main1",2],["main2",2],["serv",1]],
   "COURSES": [
     "plat",
     "entree",

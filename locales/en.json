@@ -1201,6 +1201,8 @@
     },
     "added": {
       "ok": "{{count}} products added",
+      "ok_one": "{{count}} product added",
+      "ok_other": "{{count}} products added",
       "already": "Already added to your list",
       "okText": "Your \"{{name}}\" list is up to date.",
       "deltaText": "Only the difference has been added to \"{{name}}\".",
@@ -1238,6 +1240,7 @@
         "no_eligible": "No recipes match your requirements. Please relax them in settings.",
         "few_recipes": "Few recipes match your requirements. Some dishes are repeated.",
         "over_budget": "The week exceeds your budget.",
+        "budget_unreachable": "Budget too tight for your household. Here is the cheapest possible menu, about {{minimum}}.",
         "no_slots": "No meals planned. Enable meals in settings.",
         "no_recipes": "Recipes are not available at the moment.",
         "lock_invalid": "Some kept meals no longer meet your requirements.",
@@ -1288,6 +1291,8 @@
       "missingTitle": "Recipe not found",
       "missingText": "This recipe is no longer available.",
       "cookedTimes": "Cooked {{count}} times",
+      "cookedTimes_one": "Cooked {{count}} time",
+      "cookedTimes_other": "Cooked {{count}} times",
       "addToList": "Add to my list"
     },
     "course": {
@@ -1298,6 +1303,8 @@
     },
     "share": {
       "for": "For {{count}} people",
+      "for_one": "For {{count}} person",
+      "for_other": "For {{count}} people",
       "signature": "Composed with Pearl List"
     },
     "units": {
@@ -1327,6 +1334,8 @@
     "shop": {
       "title": "My shopping",
       "summary": "{{count}} items, about {{total}}",
+      "summary_one": "{{count}} item, about {{total}}",
+      "summary_other": "{{count}} items, about {{total}}",
       "estimateNote": "Indicative estimate (~). The real price is the shop's, compare it next.",
       "targetList": "Add to list",
       "defaultList": "My list",
@@ -1336,6 +1345,8 @@
       "haveHint": "Tap an item you already have to remove it.",
       "packs": "{{count}} x {{size}}",
       "usedIn": "In {{count}} recipes",
+      "usedIn_one": "In {{count}} recipe",
+      "usedIn_other": "In {{count}} recipes",
       "emptyTitle": "No shopping yet",
       "emptyText": "Set up your week first.",
       "goPlan": "View my week",
@@ -1403,6 +1414,8 @@
       "allThere": "You have everything.",
       "missing": "Missing: {{list}}",
       "usesUp": "Uses up {{count}} leftovers.",
+      "usesUp_one": "Uses up {{count}} leftover.",
+      "usesUp_other": "Uses up {{count}} leftovers.",
       "noneTitle": "No recipes found",
       "noneText": "Add more ingredients."
     },
@@ -1412,6 +1425,8 @@
       "emptyText": "Your confirmed weeks will appear here.",
       "week": "Past week",
       "meals": "{{count}} meals",
+      "meals_one": "{{count}} meal",
+      "meals_other": "{{count}} meals",
       "redo": "Redo"
     },
     "pearl": {
@@ -1499,6 +1514,8 @@
       "follow": "Follow step by step",
       "resume": "Pick up where I left off",
       "total": "for {{count}} recipes, oven and hob included",
+      "total_one": "for {{count}} recipe, oven and hob included",
+      "total_other": "for {{count}} recipes, oven and hob included",
       "saved": "{{time}} saved compared with one recipe after another",
       "rest": "Then {{time}} resting in the fridge",
       "missing": "Deleted recipes removed from the session: {{count}}",
@@ -1546,5 +1563,40 @@
       "addedShop": "Added to your shopping",
       "addedWeek": "Added to your week"
     }
+  },
+  "counts": {
+    "products": "{{count}} products",
+    "products_one": "{{count}} product",
+    "products_other": "{{count}} products",
+    "items": "{{count}} items",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "shops": "{{count}} shops",
+    "shops_one": "{{count}} shop",
+    "shops_other": "{{count}} shops",
+    "shopUnit": "shops",
+    "shopUnit_one": "shop",
+    "shopUnit_other": "shops",
+    "productsSelected": "{{count}} products selected",
+    "productsSelected_one": "{{count}} product selected",
+    "productsSelected_other": "{{count}} products selected",
+    "itemsSelected": "{{count}} items selected",
+    "itemsSelected_one": "{{count}} item selected",
+    "itemsSelected_other": "{{count}} items selected",
+    "listSelected": "{{count}} selected items",
+    "listSelected_one": "{{count}} selected item",
+    "listSelected_other": "{{count}} selected items",
+    "notFound": "{{count}} products not found in shops",
+    "notFound_one": "{{count}} product not found in shops",
+    "notFound_other": "{{count}} products not found in shops",
+    "duplicates": "{{count}} duplicate products",
+    "duplicates_one": "{{count}} duplicate product",
+    "duplicates_other": "{{count}} duplicate products",
+    "addedToCart": "{{count}} products added to cart",
+    "addedToCart_one": "{{count}} product added to cart",
+    "addedToCart_other": "{{count}} products added to cart",
+    "pendingRequests": "{{count}} pending requests",
+    "pendingRequests_one": "{{count}} pending request",
+    "pendingRequests_other": "{{count}} pending requests"
   }
 }

@@ -1201,6 +1201,8 @@
     },
     "added": {
       "ok": "{{count}} Produkte hinzugefügt",
+      "ok_one": "{{count}} Produkt hinzugefügt",
+      "ok_other": "{{count}} Produkte hinzugefügt",
       "already": "Bereits auf Ihrer Liste",
       "okText": "Ihre Liste „{{name}}“ ist aktuell.",
       "deltaText": "Nur die Differenz wurde zu „{{name}}“ hinzugefügt.",
@@ -1238,6 +1240,7 @@
         "no_eligible": "Kein Rezept entspricht Ihren Vorgaben. Passen Sie diese in den Einstellungen an.",
         "few_recipes": "Wenige Rezepte passen zu Ihren Vorgaben, manche Gerichte wiederholen sich.",
         "over_budget": "Die Woche überschreitet Ihr Budget.",
+        "budget_unreachable": "Budget zu knapp für Ihren Haushalt. Hier ist das günstigste mögliche Menü, etwa {{minimum}}.",
         "no_slots": "Keine Mahlzeiten geplant. Aktivieren Sie Mahlzeiten in den Einstellungen.",
         "no_recipes": "Rezepte sind derzeit nicht verfügbar.",
         "lock_invalid": "Einige gehaltene Mahlzeiten passen nicht mehr zu Ihren Vorgaben.",
@@ -1298,6 +1301,8 @@
     },
     "share": {
       "for": "Für {{count}} Personen",
+      "for_one": "Für {{count}} Person",
+      "for_other": "Für {{count}} Personen",
       "signature": "Zusammengestellt mit Pearl List"
     },
     "units": {
@@ -1336,6 +1341,8 @@
       "haveHint": "Tippen Sie auf einen Artikel, den Sie schon haben, um ihn zu entfernen.",
       "packs": "{{count}} x {{size}}",
       "usedIn": "In {{count}} Rezepten",
+      "usedIn_one": "In {{count}} Rezept",
+      "usedIn_other": "In {{count}} Rezepten",
       "emptyTitle": "Noch keine Einkäufe",
       "emptyText": "Stellen Sie zuerst Ihre Woche zusammen.",
       "goPlan": "Woche ansehen",
@@ -1403,6 +1410,8 @@
       "allThere": "Sie haben alles.",
       "missing": "Fehlt: {{list}}",
       "usesUp": "Verbraucht {{count}} Reste.",
+      "usesUp_one": "Verbraucht {{count}} Rest.",
+      "usesUp_other": "Verbraucht {{count}} Reste.",
       "noneTitle": "Keine Rezepte gefunden",
       "noneText": "Fügen Sie weitere Zutaten hinzu."
     },
@@ -1412,6 +1421,8 @@
       "emptyText": "Ihre bestätigten Wochen werden hier angezeigt.",
       "week": "Vergangene Woche",
       "meals": "{{count}} Mahlzeiten",
+      "meals_one": "{{count}} Mahlzeit",
+      "meals_other": "{{count}} Mahlzeiten",
       "redo": "Wiederholen"
     },
     "pearl": {
@@ -1499,6 +1510,8 @@
       "follow": "Schritt für Schritt folgen",
       "resume": "Dort weitermachen, wo ich war",
       "total": "für {{count}} Rezepte, Ofen und Herd eingerechnet",
+      "total_one": "für {{count}} Rezept, Ofen und Herd eingerechnet",
+      "total_other": "für {{count}} Rezepte, Ofen und Herd eingerechnet",
       "saved": "{{time}} gespart gegenüber einem Rezept nach dem anderen",
       "rest": "Danach {{time}} Ruhezeit im Kühlschrank",
       "missing": "Gelöschte Rezepte aus der Sitzung entfernt: {{count}}",
@@ -1546,5 +1559,40 @@
       "addedShop": "Zu Ihren Einkäufen hinzugefügt",
       "addedWeek": "Zu Ihrer Woche hinzugefügt"
     }
+  },
+  "counts": {
+    "products": "{{count}} Produkte",
+    "products_one": "{{count}} Produkt",
+    "products_other": "{{count}} Produkte",
+    "items": "{{count}} Artikel",
+    "items_one": "{{count}} Artikel",
+    "items_other": "{{count}} Artikel",
+    "shops": "{{count}} Shops",
+    "shops_one": "{{count}} Shop",
+    "shops_other": "{{count}} Shops",
+    "shopUnit": "Shops",
+    "shopUnit_one": "Shop",
+    "shopUnit_other": "Shops",
+    "productsSelected": "{{count}} Produkte ausgewählt",
+    "productsSelected_one": "{{count}} Produkt ausgewählt",
+    "productsSelected_other": "{{count}} Produkte ausgewählt",
+    "itemsSelected": "{{count}} Artikel ausgewählt",
+    "itemsSelected_one": "{{count}} Artikel ausgewählt",
+    "itemsSelected_other": "{{count}} Artikel ausgewählt",
+    "listSelected": "{{count}} ausgewählte Artikel",
+    "listSelected_one": "{{count}} ausgewählter Artikel",
+    "listSelected_other": "{{count}} ausgewählte Artikel",
+    "notFound": "{{count}} Produkte nicht im Shop gefunden",
+    "notFound_one": "{{count}} Produkt nicht im Shop gefunden",
+    "notFound_other": "{{count}} Produkte nicht im Shop gefunden",
+    "duplicates": "{{count}} doppelte Produkte",
+    "duplicates_one": "{{count}} doppeltes Produkt",
+    "duplicates_other": "{{count}} doppelte Produkte",
+    "addedToCart": "{{count}} Produkte zum Warenkorb hinzugefügt",
+    "addedToCart_one": "{{count}} Produkt zum Warenkorb hinzugefügt",
+    "addedToCart_other": "{{count}} Produkte zum Warenkorb hinzugefügt",
+    "pendingRequests": "{{count}} ausstehende Anfragen",
+    "pendingRequests_one": "{{count}} ausstehende Anfrage",
+    "pendingRequests_other": "{{count}} ausstehende Anfragen"
   }
 }

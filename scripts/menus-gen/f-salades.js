@@ -82,7 +82,7 @@ const PROT_BOWL = [
 const LEG_BOWL = [
   { mots: 'avocat, concombre et radis', prep: 'Coupez les avocats en lamelles, le concombre en demi-rondelles et les radis en fines tranches.', ings: [['avocats', 2, 'u'], ['concombre', 1, 'u'], ['radis', 1, 'botte']] },
   { mots: 'patate douce rôtie et chou rouge', prep: 'Émincez finement le chou rouge.', rot: 'la patate douce', ings: [['patates douces', 2, 'u'], ['chou rouge', 200, 'g']] },
-  { mots: 'carottes, edamame et mangue', prep: 'Râpez les carottes, égouttez les fèves et coupez la mangue en dés.', ings: [['carottes', 2, 'u'], ['fèves', 150, 'g'], ['mangues', 1, 'u']] },
+  { mots: 'carottes, fèves et mangue', prep: 'Râpez les carottes, égouttez les fèves et coupez la mangue en dés.', ings: [['carottes', 2, 'u'], ['fèves', 150, 'g'], ['mangues', 1, 'u']] },
   { mots: 'brocoli, épinards et avocat', prep: 'Détaillez le brocoli en bouquets et faites-le cuire 4 min à la vapeur, lavez les épinards et coupez l\'avocat en lamelles.', ings: [['brocoli', 300, 'g'], ['pousses d\'épinards', 100, 'g'], ['avocats', 1, 'u']] },
   { mots: 'tomates cerises, concombre et feta', prep: 'Coupez les tomates cerises en deux, le concombre en dés et émiettez la feta.', ings: [['tomates cerises', 250, 'g'], ['concombre', 1, 'u'], ['feta', 150, 'g']] },
   { mots: 'maïs, haricots rouges et avocat', prep: 'Égouttez et rincez le maïs et les haricots rouges, puis coupez l\'avocat en dés.', ings: [['maïs', 150, 'g'], ['haricots rouges', 1, 'boite'], ['avocats', 1, 'u']] },

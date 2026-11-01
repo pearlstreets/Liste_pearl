@@ -110,3 +110,60 @@ describe('relecture adverse', () => {
     expect(JSON.stringify(w)).toContain('crustaces');
   });
 });
+
+describe('derives des exclusions (table unique, recettes ecrites a la main et generees)', () => {
+  const {
+    expandExclusions,
+    DERIVES_ALLERGENE,
+    DERIVES_ALIMENT,
+    ALIMENT_ALLERGENE,
+  } = require('../lib/menus/allergens');
+  const { rejectReason } = require('../lib/menus/planner');
+  const ings = require('../data/menus/ingredients.json');
+  const recette = (keys, extra = {}) => ({
+    id: 'r-test',
+    servings: 4,
+    tags: [],
+    ingredients: keys.map((key) => ({ key, qty: 100, unit: 'g' })),
+    ...extra,
+  });
+  test('toutes les cles de la table existent', () => {
+    const toutes = [
+      ...Object.values(DERIVES_ALLERGENE).flat(),
+      ...Object.keys(DERIVES_ALIMENT),
+      ...Object.values(DERIVES_ALIMENT).flat(),
+      ...Object.keys(ALIMENT_ALLERGENE),
+    ];
+    expect(toutes.filter((k) => !ings[k])).toEqual([]);
+  });
+  test.each([
+    ['lait', 'parmesan'],
+    ['lait', 'mozzarella'],
+    ['lait', 'beurre'],
+    ['oeuf', 'mayonnaise'],
+    ['oeuf', 'pates-lasagne'],
+    ['gluten', 'chapelure'],
+    ['gluten', 'semoule'],
+    ['gluten', 'moutarde'],
+    ['porc', 'lardons'],
+    ['porc', 'merguez'],
+    ['porc-filet', 'chorizo'],
+    ['moutarde', 'mayonnaise'],
+    ['celeri-branche', 'celeri-rave'],
+    ['tomate', 'ketchup'],
+    ['fruits-a-coque', 'lait-coco'],
+  ])('exclure %s exclut une recette avec %s (474 et generees)', (x, key) => {
+    const profile = { excludedIngredients: [x] };
+    expect(rejectReason(recette(['oignon', key]), ings, profile)).toBe('excluded');
+    expect(rejectReason(recette(['oignon', key], { generated: true }), ings, profile)).toBe(
+      'excluded'
+    );
+  });
+  test('sans exclusion liee, la recette reste admise', () => {
+    expect(
+      rejectReason(recette(['oignon', 'parmesan']), ings, { excludedIngredients: ['oeuf'] })
+    ).toBeNull();
+    expect(expandExclusions(['tomate']).keys.has('ketchup')).toBe(true);
+    expect(expandExclusions(['porc-filet']).allergens.has('porc')).toBe(true);
+  });
+});

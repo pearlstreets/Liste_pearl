@@ -1236,6 +1236,7 @@
         "no_eligible": "没有符合您要求的食谱。请在设置中放宽条件。",
         "few_recipes": "符合条件的食谱较少，部分餐食会重复。",
         "over_budget": "本周超出您的预算。",
+        "budget_unreachable": "预算对您的家庭来说过紧。这是最便宜的菜单，约 {{minimum}}。",
         "no_slots": "未安排任何餐食。请在设置中开启餐食。",
         "no_recipes": "食谱暂时不可用。",
         "lock_invalid": "部分已保留餐食已不再符合您的条件。",
@@ -1534,5 +1535,29 @@
       "addedShop": "已添加到您的购物清单",
       "addedWeek": "已添加到您的一周"
     }
+  },
+  "counts": {
+    "products": "{{count}} 件商品",
+    "products_other": "{{count}} 件商品",
+    "items": "{{count}} 件",
+    "items_other": "{{count}} 件",
+    "shops": "{{count}} 家商店",
+    "shops_other": "{{count}} 家商店",
+    "shopUnit": "商店",
+    "shopUnit_other": "商店",
+    "productsSelected": "已选择 {{count}} 件产品",
+    "productsSelected_other": "已选择 {{count}} 件产品",
+    "itemsSelected": "已选择 {{count}} 项",
+    "itemsSelected_other": "已选择 {{count}} 项",
+    "listSelected": "{{count}} 个所选项目",
+    "listSelected_other": "{{count}} 个所选项目",
+    "notFound": "{{count}} 件商品在店铺中未找到",
+    "notFound_other": "{{count}} 件商品在店铺中未找到",
+    "duplicates": "{{count}} 件重复产品",
+    "duplicates_other": "{{count}} 件重复产品",
+    "addedToCart": "已将 {{count}} 件商品添加到购物车",
+    "addedToCart_other": "已将 {{count}} 件商品添加到购物车",
+    "pendingRequests": "{{count}} 个待处理请求",
+    "pendingRequests_other": "{{count}} 个待处理请求"
   }
 }

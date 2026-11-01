@@ -19,6 +19,17 @@ function S(gabarit, ...mots) {
   return [gabarit, ...mots.map(String)];
 }
 
+// Titres sans mot répété quand deux briques se suivent (« tomates cerises et aux tomates séchées »).
+// Ne change que le texte affiché : l'identifiant de la recette vient du registre (registry.json).
+const SANS_REPETITION = [
+  [/(pois chiches) rôtis, (patate douce|butternut) rôtie et ([^,]+),/, '$1 et $2 rôtis, $3,'],
+  [/tomates cerises et aux tomates séchées/, 'tomates cerises et séchées'],
+  [/poivrons rouges et (de )?poivrons jaunes/, 'poivrons rouges et jaunes'],
+];
+function sansRepetition(nom) {
+  return SANS_REPETITION.reduce((t, [re, par]) => t.replace(re, par), nom);
+}
+
 // cat : clé de catégorie · temps : minutes · diff : 1 facile, 2 moyen, 3 élaboré
 // ings : [[nom, quantité, unité], ...] · etapes : [S(...), ...]
 function recette({ nom, cat, temps, diff = 1, pers = 4, ings, etapes }) {
@@ -35,7 +46,7 @@ function recette({ nom, cat, temps, diff = 1, pers = 4, ings, etapes }) {
     if (fusion[k][2] === 'qs' && fusion.some((f) => f[0] === fusion[k][0] && f[2] !== 'qs')) fusion.splice(k, 1);
   }
   TOUTES.push({
-    nom: majuscule(nom.replace(/\s+/g, ' ').trim()),
+    nom: majuscule(sansRepetition(nom.replace(/\s+/g, ' ').trim())),
     cat,
     temps,
     diff,

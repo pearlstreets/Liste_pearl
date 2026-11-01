@@ -1201,6 +1201,8 @@
     },
     "added": {
       "ok": "{{count}} producten toegevoegd",
+      "ok_one": "{{count}} product toegevoegd",
+      "ok_other": "{{count}} producten toegevoegd",
       "already": "Reeds aan uw lijst toegevoegd",
       "okText": "Uw lijst « {{name}} » is bijgewerkt.",
       "deltaText": "Alleen het verschil is toegevoegd aan « {{name}} ».",
@@ -1238,6 +1240,7 @@
         "no_eligible": "Geen enkele recept voldoet aan uw voorwaarden. Maak deze soepeler in de instellingen.",
         "few_recipes": "Weinig recepten voldoen aan uw voorwaarden, sommige gerechten worden herhaald.",
         "over_budget": "De week overschrijdt uw budget.",
+        "budget_unreachable": "Budget te krap voor uw huishouden. Dit is het goedkoopst mogelijke menu, ongeveer {{minimum}}.",
         "no_slots": "Er zijn geen maaltijden gepland. Activeer maaltijden in de instellingen.",
         "no_recipes": "De recepten zijn momenteel niet beschikbaar.",
         "lock_invalid": "Sommige bewaarde maaltijden voldoen niet meer aan uw voorwaarden.",
@@ -1298,6 +1301,8 @@
     },
     "share": {
       "for": "Voor {{count}} personen",
+      "for_one": "Voor {{count}} persoon",
+      "for_other": "Voor {{count}} personen",
       "signature": "Samengesteld met Pearl List"
     },
     "units": {
@@ -1327,6 +1332,8 @@
     "shop": {
       "title": "Mijn boodschappen",
       "summary": "{{count}} artikelen, ongeveer {{total}}",
+      "summary_one": "{{count}} artikel, ongeveer {{total}}",
+      "summary_other": "{{count}} artikelen, ongeveer {{total}}",
       "estimateNote": "Indicatieve schatting (~). De echte prijs is die van de winkel, u kunt die daarna vergelijken.",
       "targetList": "Toevoegen aan lijst",
       "defaultList": "Mijn lijst",
@@ -1336,6 +1343,8 @@
       "haveHint": "Tik op een artikel dat u al heeft om het te verwijderen.",
       "packs": "{{count}} x {{size}}",
       "usedIn": "In {{count}} recepten",
+      "usedIn_one": "In {{count}} recept",
+      "usedIn_other": "In {{count}} recepten",
       "emptyTitle": "Nog geen boodschappen",
       "emptyText": "Stel eerst uw week samen.",
       "goPlan": "Bekijk mijn week",
@@ -1403,6 +1412,8 @@
       "allThere": "U heeft alles.",
       "missing": "Ontbreekt: {{list}}",
       "usesUp": "Gebruikt {{count}} restjes op.",
+      "usesUp_one": "Gebruikt {{count}} restje op.",
+      "usesUp_other": "Gebruikt {{count}} restjes op.",
       "noneTitle": "Geen recepten gevonden",
       "noneText": "Voeg meer ingrediënten toe."
     },
@@ -1412,6 +1423,8 @@
       "emptyText": "Uw bevestigde weken verschijnen hier.",
       "week": "Afgelopen week",
       "meals": "{{count}} maaltijden",
+      "meals_one": "{{count}} maaltijd",
+      "meals_other": "{{count}} maaltijden",
       "redo": "Opnieuw doen"
     },
     "pearl": {
@@ -1499,6 +1512,8 @@
       "follow": "Stap voor stap volgen",
       "resume": "Verdergaan waar ik was",
       "total": "voor {{count}} recepten, oven en kookplaat inbegrepen",
+      "total_one": "voor {{count}} recept, oven en kookplaat inbegrepen",
+      "total_other": "voor {{count}} recepten, oven en kookplaat inbegrepen",
       "saved": "{{time}} bespaard tegenover recept na recept",
       "rest": "Daarna {{time}} rusten in de koelkast",
       "missing": "Verwijderde recepten uit de sessie gehaald: {{count}}",
@@ -1546,5 +1561,40 @@
       "addedShop": "Toegevoegd aan uw boodschappen",
       "addedWeek": "Toegevoegd aan uw week"
     }
+  },
+  "counts": {
+    "products": "{{count}} producten",
+    "products_one": "{{count}} product",
+    "products_other": "{{count}} producten",
+    "items": "{{count}} artikelen",
+    "items_one": "{{count}} artikel",
+    "items_other": "{{count}} artikelen",
+    "shops": "{{count}} winkels",
+    "shops_one": "{{count}} winkel",
+    "shops_other": "{{count}} winkels",
+    "shopUnit": "winkels",
+    "shopUnit_one": "winkel",
+    "shopUnit_other": "winkels",
+    "productsSelected": "{{count}} producten geselecteerd",
+    "productsSelected_one": "{{count}} product geselecteerd",
+    "productsSelected_other": "{{count}} producten geselecteerd",
+    "itemsSelected": "{{count}} items geselecteerd",
+    "itemsSelected_one": "{{count}} item geselecteerd",
+    "itemsSelected_other": "{{count}} items geselecteerd",
+    "listSelected": "{{count}} geselecteerde items",
+    "listSelected_one": "{{count}} geselecteerd item",
+    "listSelected_other": "{{count}} geselecteerde items",
+    "notFound": "{{count}} producten niet in winkels gevonden",
+    "notFound_one": "{{count}} product niet in winkels gevonden",
+    "notFound_other": "{{count}} producten niet in winkels gevonden",
+    "duplicates": "{{count}} dubbele producten",
+    "duplicates_one": "{{count}} dubbel product",
+    "duplicates_other": "{{count}} dubbele producten",
+    "addedToCart": "{{count}} producten toegevoegd aan winkelwagen",
+    "addedToCart_one": "{{count}} product toegevoegd aan winkelwagen",
+    "addedToCart_other": "{{count}} producten toegevoegd aan winkelwagen",
+    "pendingRequests": "{{count}} openstaande verzoeken",
+    "pendingRequests_one": "{{count}} openstaand verzoek",
+    "pendingRequests_other": "{{count}} openstaande verzoeken"
   }
 }

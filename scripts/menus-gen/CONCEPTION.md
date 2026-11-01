@@ -72,11 +72,12 @@ Alphabet `A-Za-z0-9+/`, 6 bits par caractere, lu par `charCodeAt` et une table d
 | prot | 2 | proteines g par portion |
 | keep | 1 | keepDays |
 | flags | 1 | bit0 leftoverOk, bit1 freezable, bit2 retiree, bit3 four |
-| cost | 2 | cout par personne en dixiemes d'euro, hors placard, precalcule au build |
+| cost | 2 | cout par portion (colonne serv) en dixiemes d'euro, hors placard, precalcule au build |
 | alg | 3 | masque d'allergenes (14) |
 | nIng | 1 | nombre de lignes d'ingredients (borne a 63) |
 | nStep | 1 | nombre d'etapes (borne a 63) |
 | main1, main2 | 2 + 2 | index des 2 ingredients principaux (precalcules, remplacent `mainIngredients`) |
+| serv | 1 | portions d'origine de la recette (4 ; 6 a 20 pour quiches, cakes, aperitifs, desserts, gateaux) : `servings` de la recette, base du cout, des kcal et des proteines par portion. Absente (anciennes donnees) : 4 |
 
 `FIELDS` dans `meta.js` decrit largeur et ordre ; le script d'ecriture et le lecteur sont pilotes par cette meme table (aucun decalage code en dur). Un test d'aller-retour sur 500 recettes verifie l'ensemble.
 

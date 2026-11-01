@@ -29,6 +29,7 @@ import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
+import { isolerPrix } from './MealCard';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 
 const Dots = ({ n }) => (
@@ -294,19 +295,25 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
               {cost && mine ? (
                 cost.unpriced > 0 ? null : (
                   <Text style={s.portionHint}>
-                    {t('recipe.costNote', {
-                      total: formatEur(cost.total, lang),
-                      per: formatEur(cost.perPerson, lang),
-                    })}
+                    {isolerPrix(
+                      t('recipe.costNote', {
+                        total: formatEur(cost.total, lang),
+                        per: formatEur(cost.perPerson, lang),
+                      }),
+                      lang
+                    )}
                   </Text>
                 )
               ) : null}
               {cost && !mine ? (
                 <Text style={s.portionHint}>
-                  {t('recipe.costNote', {
-                    total: formatEur(cost.total, lang),
-                    per: formatEur(cost.perPerson, lang),
-                  })}
+                  {isolerPrix(
+                    t('recipe.costNote', {
+                      total: formatEur(cost.total, lang),
+                      per: formatEur(cost.perPerson, lang),
+                    }),
+                    lang
+                  )}
                 </Text>
               ) : null}
             </View>
@@ -363,7 +370,10 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                     {texts.ingredientName(r.key)}
                   </Text>
                   <Text style={s.pearlVal} numberOfLines={1}>
-                    {t('pearl.line', { count: r.count, price: formatEur(r.min, lang) })}
+                    {isolerPrix(
+                      t('pearl.line', { count: r.count, price: formatEur(r.min, lang) }),
+                      lang
+                    )}
                   </Text>
                 </TouchableOpacity>
               ))}

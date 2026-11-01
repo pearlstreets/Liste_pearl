@@ -1,10 +1,26 @@
 // Carte d'un repas de la semaine : visuel, badges, infos, et les gestes (changer, verrouiller, libre).
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 import RecipeVisual from './RecipeVisual';
 import useT from './useT';
+import { langueEstRTL } from '../../lib/sensEcriture';
+
+const LRI = '⁦';
+const PDI = '⁩';
+// Montant en euros tel que formatEur l'ecrit (3,24 €, €3.24, 3.24 €), avec ~ facultatif devant.
+const PRIX = /~?(?:€\s?\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s?€)/g;
+
+/**
+ * En arabe, isole chaque montant en gauche a droite (LRI ... PDI) : sans cela, l'algorithme bidi retourne
+ * « 3.24 € » en « € 3.24 » au milieu du texte. Aucun changement pour les langues ecrites de gauche a droite.
+ */
+export function isolerPrix(texte, lang) {
+  if (typeof texte !== 'string' || !texte || !langueEstRTL(lang)) return texte;
+  return texte.replace(PRIX, (x) => `${LRI}${x}${PDI}`);
+}
 
 const Badge = ({ icon, label, tone }) => (
   <View
@@ -68,6 +84,7 @@ function MealCard({
   onOpenShop,
 }) {
   const t = useT();
+  const { i18n } = useTranslation();
   const slotLabel = t(`slot.${meal.slot}`);
 
   if (meal.free) {
@@ -156,9 +173,11 @@ function MealCard({
               <Text style={s.metaTxt}>{t('recipe.minutes', { n: recipe.timeMin })}</Text>
             </View>
             {!recipe.custom || left ? (
-              <View style={s.meta}>
+              <View style={[s.meta, s.metaPrix]}>
                 <Ionicons name="pricetag-outline" size={14} color={T.muted} />
-                <Text style={s.metaTxt}>{left ? t('week.alreadyCooked') : priceText}</Text>
+                <Text style={[s.metaTxt, s.metaPrixTxt]} numberOfLines={1}>
+                  {left ? t('week.alreadyCooked') : isolerPrix(priceText, i18n && i18n.language)}
+                </Text>
               </View>
             ) : null}
             {!recipe.custom ? (
@@ -238,6 +257,9 @@ const s = StyleSheet.create({
   metaRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
   meta: { flexDirection: 'row', alignItems: 'center', marginRight: 14, marginBottom: 2 },
   metaTxt: { fontSize: 13, color: T.muted, fontWeight: '600', marginLeft: 4 },
+  // prix : une seule ligne, qui se resserre au lieu de se couper en deux (arabe : montant + للشخص)
+  metaPrix: { flexShrink: 1, maxWidth: '100%' },
+  metaPrixTxt: { flexShrink: 1 },
   nearby: { paddingHorizontal: 12, paddingTop: 10 },
   nearbyTitle: { fontSize: 13, fontWeight: '800', color: T.ink, marginBottom: 4 },
   nearbyRow: {

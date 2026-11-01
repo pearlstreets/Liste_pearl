@@ -398,3 +398,27 @@ describe('planificateur avec le catalogue', () => {
     expect(new Set(cuisines.map((m) => m.recipeId)).size).toBe(cuisines.length);
   });
 });
+
+describe('derives des exclusions dans le catalogue genere', () => {
+  test('aucune recette admise ne contient un derive exclu (sans lait : parmesan ; sans moutarde : mayonnaise)', () => {
+    const { getCatalog, getIngredients } = require('../lib/menus/recipes');
+    const { eligibleCatalog } = require('../lib/menus/pool');
+    const cat = getCatalog();
+    const ings = getIngredients();
+    for (const [x, key] of [
+      ['lait', 'parmesan'],
+      ['moutarde', 'mayonnaise'],
+      ['porc-filet', 'lardons'],
+    ]) {
+      const el = eligibleCatalog(cat, ings, { excludedIngredients: [x] });
+      let vus = 0;
+      for (let en = 0; en < el.M; en++) {
+        const r = el.objOfEntry(en);
+        if (!r) continue;
+        vus++;
+        expect(r.ingredients.some((i) => i.key === key)).toBe(false);
+      }
+      expect(vus).toBeGreaterThan(100);
+    }
+  }, 300000);
+});

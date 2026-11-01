@@ -29,6 +29,8 @@ import { warningList } from './Sheets';
 import RecipeVisual from './RecipeVisual';
 import { useMenus } from './MenusContext';
 import useT from './useT';
+import { isolerPrix } from './MealCard';
+import { isolerUnitesLatines } from '../../lib/texteBidi';
 
 const MODES = ['ideas', 'myRecipes', 'favorites', 'season', 'fridge', 'batch', 'history'];
 const MODE_ICON = {
@@ -44,6 +46,7 @@ const COURSES = ['plat', 'entree', 'dessert', 'petit-dejeuner'];
 const QUICK_TAGS = ['rapide', 'leger', 'economique', 'enfants', 'batch', 'sans-cuisson'];
 const PAGE = 30; // recettes ajoutées à chaque fin de liste
 const FRIDGE_LIMIT = 40;
+const DEBOUNCE_MS = 130; // attente apres la derniere frappe avant de relancer la recherche
 
 // Ordre sans recherche : les recettes relues d'abord, puis les générées dans un ordre mélangé stable pour la journée.
 const feedSeed = () => {
@@ -110,7 +113,19 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const useCat = catalogActive(catalog);
   const [mode, setMode] = useState('ideas');
   const [q, setQ] = useState('');
-  const dq = useDeferredValue(q);
+  // Recherche relancee 130 ms apres la derniere frappe (pas a chaque lettre), puis calcul differe ;
+  // champ vide : liste complete tout de suite, sans attendre.
+  const [qStable, setQStable] = useState('');
+  useEffect(() => {
+    if (!q) {
+      setQStable('');
+      return undefined;
+    }
+    const id = setTimeout(() => setQStable(q), DEBOUNCE_MS);
+    return () => clearTimeout(id);
+  }, [q]);
+  const qDiff = useDeferredValue(qStable);
+  const dq = q ? qDiff : '';
   const [course, setCourse] = useState(null);
   const [tags, setTags] = useState([]);
   // Recherche ou filtre changé : la liste repart tout en haut, sur les premiers résultats.
@@ -179,6 +194,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           legacyList: base.legacy,
           allowedRows: base.allowed,
           shuffleSeed: seed,
+          diversify: true,
         });
         return { total: r.total, refs: Array.from(r.refs), legacy: r.legacy };
       } catch {
@@ -253,14 +269,26 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     [m, fridge]
   );
 
-  const metaOf = useCallback(
-    (r) => {
-      if (r.custom) return t('recipe.minutes', { n: r.timeMin });
-      const c = m.costOf(r, Math.max(1, profile.adults + profile.children * 0.6));
-      return `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} ${t('kcal')} · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
-    },
-    [m, profile, t, lang]
-  );
+  // Ligne d'infos d'une recette, calculee une fois par recette tant que foyer, langue et prix ne changent pas
+  // (le defilement et un coeur coche ne refont pas le calcul du cout de chaque ligne visible).
+  const { costOf } = m;
+  const metaOf = useMemo(() => {
+    const cache = new Map();
+    return (r) => {
+      const hit = cache.get(r.id);
+      if (hit !== undefined && hit.r === r) return hit.v;
+      let v;
+      if (r.custom) v = t('recipe.minutes', { n: r.timeMin });
+      else {
+        const c = costOf(r, Math.max(1, profile.adults + profile.children * 0.6));
+        v = `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} ${t('kcal')} · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
+        v = isolerPrix(isolerUnitesLatines(v, lang), lang);
+      }
+      cache.set(r.id, { r, v });
+      return v;
+    };
+  }, [costOf, profile, t, lang]);
+  const favSet = useMemo(() => new Set(favorites), [favorites]);
 
   const renderRecipe = useCallback(
     ({ item: entry }) => {
@@ -292,19 +320,23 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
               : metaOf(r)
           }
           extra={extra}
-          fav={favorites.includes(r.id)}
+          fav={favSet.has(r.id)}
           onPress={onOpenRecipe}
           onFav={m.toggleFav}
         />
       );
     },
-    [texts, ingredients, favorites, onOpenRecipe, m, metaOf, t, results, catalog]
+    [texts, ingredients, favSet, onOpenRecipe, m, metaOf, t, results, catalog]
   );
 
-  const keyOf = (i) => {
-    if (typeof i === 'number') return results ? idOfRef(results, i) : String(i);
-    return i.recipe ? i.recipe.id : i.id;
-  };
+  // Cle stable : l'id de la recette (jamais la position), meme fonction tant que les resultats ne changent pas.
+  const keyOf = useCallback(
+    (i) => {
+      if (typeof i === 'number') return results ? idOfRef(results, i) : String(i);
+      return i.recipe ? i.recipe.id : i.id;
+    },
+    [results]
+  );
 
   const modeBar = (
     <ScrollView
@@ -506,7 +538,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
                   <Text style={s.rowMeta}>
                     {t('history.meals', { count: rs.length })}
                     {item.budget && item.budget.estimated
-                      ? ` · ${formatEur(item.budget.estimated, lang)}`
+                      ? ` · ${isolerPrix(formatEur(item.budget.estimated, lang), lang)}`
                       : ''}
                   </Text>
                   <Text style={{ fontSize: 20, marginTop: 6 }}>{ems.join(' ')}</Text>

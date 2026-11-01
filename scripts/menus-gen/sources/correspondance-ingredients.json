@@ -1524,7 +1524,7 @@
   "cle": "confiture",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🍓",
+   "emoji": "🫙",
    "aisle": "epicerie",
    "pricePerKgOrL": 6,
    "pack": {
@@ -3616,7 +3616,7 @@
   "nouvelle": true,
   "fiche": {
    "id": "mayonnaise",
-   "emoji": "🧴",
+   "emoji": "🫙",
    "aisle": "epicerie",
    "pricePerKgOrL": 9,
    "pack": {
@@ -6362,7 +6362,7 @@
   "cle": "tofu-fume",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🌱",
+   "emoji": "🟫",
    "aisle": "cremerie",
    "pricePerKgOrL": 14,
    "pack": {
@@ -6528,7 +6528,7 @@
   "cle": "vinaigre-balsamique",
   "nouvelle": true,
   "fiche": {
-   "emoji": "🧴",
+   "emoji": "🫗",
    "aisle": "epicerie",
    "pricePerKgOrL": 9,
    "pack": {
@@ -6558,7 +6558,7 @@
   "nouvelle": true,
   "nom_fr": "Vinaigre de cidre",
   "fiche": {
-   "emoji": "🍎",
+   "emoji": "🫗",
    "aisle": "epicerie",
    "pricePerKgOrL": 3.5,
    "pack": {

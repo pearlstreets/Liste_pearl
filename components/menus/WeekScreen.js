@@ -14,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { mealsByDay, formatEur } from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
-import MealCard from './MealCard';
+import MealCard, { isolerPrix } from './MealCard';
 import { SwapSheet, AddedSheet } from './Sheets';
 import { useMenus } from './MenusContext';
 import useT from './useT';
@@ -294,6 +294,14 @@ export default function WeekScreen({
                       amount: formatEur(Math.max(0, target - (b.estimated || 0)), lang),
                     })}
               </Text>
+              {over && b.unreachable && b.minimum > 0 ? (
+                <Text style={[s.gaugeNote, { color: '#B45309' }]}>
+                  {isolerPrix(
+                    t('week.warn.budget_unreachable', { minimum: formatEur(b.minimum, lang) }),
+                    lang
+                  )}
+                </Text>
+              ) : null}
             </>
           ) : null}
           {!compact ? <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text> : null}

@@ -88,7 +88,7 @@ const MAX_PHRASES = 2048; // 11 bits d'identifiant de phrase
 const GENRE_NOM = ['', 'four', 'feu', 'repos'];
 const FIELDS = [
   ['course', 1], ['sub', 1], ['family', 1], ['tags', 3], ['time', 2], ['diff', 1], ['kcal', 2], ['prot', 2], ['keep', 1],
-  ['flags', 1], ['cost', 2], ['alg', 3], ['nIng', 1], ['nStep', 1], ['nPhr', 1], ['main1', 2], ['main2', 2],
+  ['flags', 1], ['cost', 2], ['alg', 3], ['nIng', 1], ['nStep', 1], ['nPhr', 1], ['main1', 2], ['main2', 2], ['serv', 1],
 ];
 const TIRET = /[—–→←⇒⇔↔]/;
 
@@ -385,6 +385,8 @@ function analysePhrase(texte) {
       // « au four » juste apres la duree l'emporte sur le verbe de cuisson qui precede
       const suite = s.slice(fin, fin + 14);
       if (/^\s*(au four|à \d+ ?°C)/.test(suite)) genre = 1;
+      // « laisser prendre 4 h au frais » : « au frais » juste apres la duree l'emporte sur « prendre » (repos, pas cuisson)
+      if (/^\s*(au frais|au r[ée]frig[ée]rateur|au cong[ée]lateur)/i.test(s.slice(fin, fin + 20))) genre = 3;
       if (genre === 2 && phraseFour && !STOVE.test(s)) genre = 1;
       parGenre[genre] += sec;
     }
@@ -547,9 +549,13 @@ function ranger(titre, sub) {
   };
 }
 
-function difficulteDe(titre, timeMin, sub) {
+// Difficulte 3 (elabore), regle simple et explicable : une technique delicate nommee dans le titre (creme patissiere
+// cuite puis dressee sur une pate, coeur coulant cuit a la minute pres, souffle...), ou une longue cuisson d'un seul
+// tenant (au moins 1 h 30 de feu ou de four dans une meme etape, repos exclus) dans une recette d'au moins 5 etapes.
+function difficulteDe(titre, timeMin, sub, cuissonMin, nEtapes) {
   const t = norm(titre);
-  if (/\b(souffle|pastilla|iles flottantes|chou farci|feuilletage)\b/.test(t)) return 3;
+  if (/\b(souffle|pastilla|iles flottantes|chou farci|feuilletage|creme patissiere|coeur coulant)\b/.test(t)) return 3;
+  if (cuissonMin >= 90 && nEtapes >= 5) return 3;
   if (timeMin >= 75) return 2;
   if (/\b(farci|farcie|farcis|farcies|risotto|lasagnes?|cassoulet|bourguignon|daube|blanquette|navarin|coq au vin|carbonade|tajine|couscous|paella|moussaka|pizza maison|pate maison|osso|choucroute|cannellonis)\b/.test(t)) return 2;
   return 1;
@@ -715,10 +721,10 @@ for (const r of retenues) {
     if (f.pantry || l.optional) continue;
     cout += f.pricePerUnit !== undefined ? f.pricePerUnit * l.qty : (f.pricePerKgOrL * l.qty) / 1000;
   }
-  const coutPortion = cout / 4;
   // portions d'origine du generateur : quantites gardees entieres (scale 1) = pers portions (desserts, gateaux, quiches, aperitifs de 6 a 20) ;
-  // quantites doublees (scale 2, pers 2) = 4 portions
+  // quantites doublees (scale 2, pers 2) = 4 portions. Cout, kcal et proteines sont tous ramenes a UNE de ces portions.
   const portions = Math.max(1, (Number(r.pers) || 4) * scale);
+  const coutPortion = cout / portions;
   const kcal = Math.round(conv.kcalTotal / portions / 10) * 10;
   const prot = Math.round(conv.protTotal / portions);
   if (!(kcal > 0) || kcal > 2500) echec('nutrition', `${titre} : kcal ${kcal}`);
@@ -786,12 +792,13 @@ for (const r of retenues) {
   const batch = course === 'plat' && freezable && keepDays >= 3 && minutes(feuFour) >= 20;
   if (batch) tags.add('batch');
 
-  const difficulty = difficulteDe(titre, timeMin, sub);
+  const cuissonMax = Math.max(0, ...Object.keys(stepTimers).filter((k) => stepKinds[k] !== 'repos').map((k) => minutes(stepTimers[k])));
+  const difficulty = difficulteDe(titre, timeMin, sub, cuissonMax, groupes.length);
   const [m1, m2] = principaux(conv.lignes);
 
   recettes.push({
     titre, cle, sub, course, famille: familleDe(titre), tags: TAGS.filter((t) => tags.has(t)), timeMin, difficulty, kcal, prot,
-    keepDays, leftoverOk, freezable, four, retiree: false, coutPortion, alg, lignes: conv.lignes, ids, groupes, stepTimers, stepKinds,
+    keepDays, leftoverOk, freezable, four, retiree: false, coutPortion, portions, alg, lignes: conv.lignes, ids, groupes, stepTimers, stepKinds,
     ovenTempC, m1, m2, effTags: [...effTags], douteTexte, nonVegetarien: viande || poissonOuCrustace, scale, pers: r.pers,
   });
 }
@@ -917,7 +924,7 @@ function construireJeu(rows, phrasesTextes, remapPhrase) {
       course: COURSES.indexOf(r.course), sub: SUBS.indexOf(r.sub), family: r.famille, tags: tagsMask, time: r.timeMin / 5,
       diff: r.difficulty - 1, kcal: r.kcal / 10, prot: r.prot, keep: r.keepDays, flags,
       cost: Math.min(4095, Math.round(r.coutPortion * 10)), alg: r.alg, nIng: r.lignes.length, nStep: r.groupes.length,
-      nPhr: r.ids.length, main1: r.m1, main2: r.m2,
+      nPhr: r.ids.length, main1: r.m1, main2: r.m2, serv: Math.min(63, r.portions),
     };
     for (const [nom, w] of FIELDS) champs[nom][c] = enc(vals[nom], w, `${ctx} ${nom}`);
     for (const l of r.lignes) {
