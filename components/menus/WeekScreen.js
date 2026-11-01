@@ -7,11 +7,18 @@ import {
   TouchableOpacity,
   StyleSheet,
   DeviceEventEmitter,
+  InteractionManager,
   useWindowDimensions,
 } from 'react-native';
 import { prefillProducts, readMyLists } from '../../lib/menus/listBridge';
 import { Ionicons } from '@expo/vector-icons';
-import { mealsByDay, formatEur } from '../../lib/menus';
+import {
+  mealsByDay,
+  formatEur,
+  budgetStatus,
+  refineCheapest,
+  normalizeProfile,
+} from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
 import MealCard, { isolerPrix } from './MealCard';
@@ -31,6 +38,34 @@ export function weekLabel(weekStart, lang, t) {
     txt = date.toLocaleDateString(lang || undefined, { day: 'numeric', month: 'long' });
   } catch {}
   return t('week.weekOf', { date: txt });
+}
+
+// Empreinte des repas d'une semaine (plat, repas libre, convives par case).
+const mealsSignature = (p) =>
+  (p && Array.isArray(p.meals) ? p.meals : [])
+    .filter((x) => x && x.key)
+    .map((x) => `${x.key}:${x.recipeId || ''}:${x.free ? 1 : 0}:${Math.round((Number(x.persons) || 0) * 10)}`)
+    .sort()
+    .join('|');
+
+/**
+ * Semaine modifiee depuis son dernier ajout a la liste ? L'historique ne garde la semaine en cours que lorsqu'elle
+ * a ete envoyee a une liste (sendToList) : sans envoi pour cette semaine, rien a signaler.
+ */
+export function changedSinceLastSend(plan, history) {
+  if (!plan || !plan.weekStart || !Array.isArray(history)) return false;
+  let sent = null;
+  for (const h of history) if (h && h.weekStart === plan.weekStart) sent = h;
+  return !!sent && mealsSignature(sent) !== mealsSignature(plan);
+}
+
+/** Nombre entier de convives d'un repas pour le foyer actuel (adultes + enfants, enfants a la cantine le midi en semaine). */
+export function headcountFor(profile, day, slot) {
+  const p = normalizeProfile(profile);
+  const adults = Math.max(0, Math.floor(Number(p.adults) || 0));
+  const children = Math.max(0, Math.floor(Number(p.children) || 0));
+  const cantine = !!p.kidsCantine && slot === 'midi' && day >= 0 && day <= 4;
+  return Math.max(1, adults + (cantine ? 0 : children));
 }
 
 const DayPill = React.memo(function DayPill({ d, selected, count, today, onPress, label, a11y }) {
@@ -72,7 +107,7 @@ export default function WeekScreen({
   // Petit écran : en-tête et pied resserrés, le premier repas reste visible sans défiler.
   const compact = useWindowDimensions().height < 700;
   const m = useMenus();
-  const { plan, busy, genError, dirty, texts, recipeById, ingredients, lang } = m;
+  const { plan, busy, genError, texts, recipeById, ingredients, lang } = m;
   const todayIdx = plan ? dayIndexIn(plan.weekStart) : -1;
   const [day, setDay] = useState(Math.max(0, todayIdx));
   const weekKey = plan ? plan.weekStart : null;
@@ -105,6 +140,49 @@ export default function WeekScreen({
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plan, recipeById, m.costOf]);
+
+  // Jauge : budget et foyer actuels appliques au plan courant (les repas ne sont pas recomposes).
+  const [searchTick, setSearchTick] = useState(0);
+  const budgetArgs = useMemo(
+    () =>
+      plan
+        ? {
+            plan,
+            recipes: recipeById,
+            ingredients,
+            profile: { ...m.profile, month: new Date().getMonth() },
+          }
+        : null,
+    [plan, recipeById, ingredients, m.profile]
+  );
+  const status = useMemo(
+    () => (budgetArgs ? budgetStatus(budgetArgs) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [budgetArgs, searchTick]
+  );
+  // Recherche du plan le moins cher pas finie : poursuivie par morceaux quand l'ecran est au repos.
+  const searching = !!(status && status.searching);
+  useEffect(() => {
+    if (!searching || !budgetArgs) return undefined;
+    let alive = true;
+    let timer = null;
+    let task = null;
+    const step = () => {
+      task = InteractionManager.runAfterInteractions(() => {
+        if (!alive) return;
+        refineCheapest(budgetArgs);
+        if (alive) setSearchTick((x) => x + 1);
+      });
+    };
+    timer = setTimeout(step, 250);
+    return () => {
+      alive = false;
+      if (timer) clearTimeout(timer);
+      if (task && task.cancel) task.cancel();
+    };
+  }, [searching, budgetArgs, searchTick]);
+
+  const changedSinceSent = useMemo(() => changedSinceLastSend(plan, m.history), [plan, m.history]);
 
   const onValidate = useCallback(async () => {
     if (sending) return;
@@ -167,10 +245,10 @@ export default function WeekScreen({
     );
   }
 
-  const b = plan.budget || {};
+  const b = status || {};
   const target = b.target;
   const ratio = target ? Math.min(1, (b.estimated || 0) / target) : 0;
-  const over = target && b.estimated > target;
+  const over = !!(target && b.over);
   const cur = days[day] || { midi: null, soir: null };
   const warn = (plan.warnings || []).find((w) =>
     ['no_eligible', 'few_recipes', 'over_budget', 'no_slots', 'no_recipes'].includes(w.code)
@@ -189,6 +267,7 @@ export default function WeekScreen({
         title={recipe ? texts.recipeTitle(recipe.id) : ''}
         ingredients={ingredients}
         priceText={t('week.perPerson', { price: formatEur(price || 0, lang) })}
+        people={headcountFor(m.profile, meal.day, meal.slot)}
         onOpen={() => onOpenRecipe(meal.recipeId, meal.key)}
         onChange={() => setSwapKey(meal.key)}
         onLock={() => m.toggleLock(meal.key)}
@@ -297,7 +376,12 @@ export default function WeekScreen({
               {over && b.unreachable && b.minimum > 0 ? (
                 <Text style={[s.gaugeNote, { color: '#B45309' }]}>
                   {isolerPrix(
-                    t('week.warn.budget_unreachable', { minimum: formatEur(b.minimum, lang) }),
+                    b.cheaper
+                      ? t('week.warn.budget_unreachable_recompose', {
+                          minimum: formatEur(b.minimum, lang),
+                          action: t('week.regenerate'),
+                        })
+                      : t('week.warn.budget_unreachable', { minimum: formatEur(b.minimum, lang) }),
                     lang
                   )}
                 </Text>
@@ -312,10 +396,10 @@ export default function WeekScreen({
           ) : null}
         </View>
 
-        {dirty ? (
+        {changedSinceSent ? (
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => m.generate()}
+            onPress={onOpenShop}
             style={s.banner}
             accessibilityRole="button"
           >

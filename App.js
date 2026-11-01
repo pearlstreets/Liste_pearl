@@ -618,6 +618,7 @@ function ListScreen() {
   const onShareInputChange = (text) => {
     setShareInput(text);
     if (shareDebounce.current) clearTimeout(shareDebounce.current);
+    if (!isLoggedIn) { setShareSuggestions([]); return; } // sans compte : aucune suggestion
     const raw = (text || '').trim();
     const q = (raw.startsWith('@') ? raw.slice(1) : raw).toLowerCase();
     if (q.includes('@')) { setShareSuggestions([]); return; } // email : pas de suggestion
@@ -721,7 +722,7 @@ function ListScreen() {
         style={[lstyles.unitChip, (item.unit && item.unit !== 'u') && lstyles.unitChipOn, isCrossed && { opacity: 0.5 }]}
       >
         <Text style={[lstyles.unitChipTxt, (item.unit && item.unit !== 'u') && lstyles.unitChipTxtOn]} numberOfLines={1}>
-          {item.unit && item.unit !== 'u' ? item.unit : 'u'}
+          {item.unit && item.unit !== 'u' ? item.unit : t('listScreen.unitPiece', 'u')}
         </Text>
       </TouchableOpacity>
 
@@ -774,14 +775,19 @@ function ListScreen() {
       <View style={lstyles.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={lstyles.title} numberOfLines={1}>{readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}</Text>
-          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.length })}</Text>
+          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.filter(it => it && it.selected && !it.crossed).length })}</Text>
         </View>
         {!readOnly && (
           <TouchableOpacity onPress={() => {
               setShareInput(''); setShareInputKey((k) => k + 1); setShareModalOpen(true);
-              // Liste de TOUS les utilisateurs affichée d'emblée (cache -> instantané).
-              setShareSuggestions(shareCache.current.get('') || []);
-              fetchShareUsers('');
+              // Connecté : liste des utilisateurs affichée d'emblée (cache -> instantané).
+              // Sans compte : aucune suggestion d'autres utilisateurs (vie privée).
+              setShareSuggestions(isLoggedIn ? (shareCache.current.get('') || []) : []);
+              getTokens().then((tok) => {
+                setIsLoggedIn(!!tok);
+                if (tok) fetchShareUsers('');
+                else { shareReqId.current++; shareCache.current.clear(); setShareSuggestions([]); }
+              }).catch(() => {});
             }} activeOpacity={0.8} style={lstyles.scanBtn}>
             <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
             <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
@@ -1157,7 +1163,7 @@ function ListScreen() {
               style={[lstyles.input, { flex: 0 }]}
             />
             ) : null}
-            {shareSuggestions.length > 0 && (
+            {isLoggedIn && shareSuggestions.length > 0 && (
               <View style={lstyles.suggestBox}>
                 {shareSuggestions.map((u, i) => (
                   <TouchableOpacity key={String(u.id ?? i)} onPress={() => pickShareUser(u)} activeOpacity={0.7}
@@ -1201,7 +1207,7 @@ function ListScreen() {
                     onPress={() => { setUnit(unitPickerId, u); setUnitPickerId(null); }}
                     style={[lstyles.unitOpt, active && lstyles.unitOptOn]}
                   >
-                    <Text style={[lstyles.unitOptTxt, active && lstyles.unitOptTxtOn]}>{u}</Text>
+                    <Text style={[lstyles.unitOptTxt, active && lstyles.unitOptTxtOn]}>{u === 'u' ? t('listScreen.unitPiece', 'u') : u}</Text>
                   </Pressable>
                 );
               })}

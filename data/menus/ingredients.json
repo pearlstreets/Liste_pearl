@@ -209,7 +209,7 @@
   "pantry": false
  },
  "haricot-vert": {
-  "emoji": "🫛",
+  "emoji": "🌿",
   "aisle": "fruits-legumes",
   "pricePerKgOrL": 5.5,
   "pack": {
@@ -396,7 +396,7 @@
   "pantry": false
  },
  "gingembre": {
-  "emoji": "🫚",
+  "emoji": "🌱",
   "aisle": "fruits-legumes",
   "pricePerKgOrL": 8,
   "pack": {
@@ -507,7 +507,7 @@
   ]
  },
  "chorizo": {
-  "emoji": "🌭",
+  "emoji": "🥓",
   "aisle": "viandes-poissons",
   "pricePerKgOrL": 14,
   "pack": {
@@ -823,7 +823,7 @@
   ]
  },
  "tofu": {
-  "emoji": "⬜",
+  "emoji": "🍢",
   "aisle": "cremerie",
   "pricePerKgOrL": 8,
   "pack": {
@@ -1503,7 +1503,7 @@
   ]
  },
  "petits-pois": {
-  "emoji": "🫛",
+  "emoji": "🟢",
   "aisle": "surgeles",
   "pricePerKgOrL": 3.5,
   "pack": {
@@ -3025,7 +3025,7 @@
   "pantry": false
  },
  "gingembre-poudre": {
-  "emoji": "🫚",
+  "emoji": "🟡",
   "aisle": "epicerie",
   "pricePerKgOrL": 83,
   "pack": {
@@ -3837,7 +3837,7 @@
   "pantry": false
  },
  "tofu-fume": {
-  "emoji": "🟫",
+  "emoji": "🍢",
   "aisle": "cremerie",
   "pricePerKgOrL": 14,
   "pack": {

@@ -123,7 +123,10 @@ describe('recherche diversifiee', () => {
       );
       expect(ap.doublons).toBeLessThanOrEqual(av.doublons);
       expect(ap.voisins).toBeLessThanOrEqual(av.voisins);
-      expect(ap.maxModele).toBeLessThanOrEqual(av.maxModele);
+      // plus grand modele : au plus sa part dans tous les resultats (etalement regulier), ou ce qu'il etait avant
+      const tous = gen(searchCatalog({ ...base(), query: q }));
+      const part = mesureFamilles(tous, tous.length).maxModele / tous.length;
+      expect(ap.maxModele).toBeLessThanOrEqual(Math.max(av.maxModele, Math.ceil(30 * part) + 2));
     }
     console.log(
       'avant / apres\n' +
@@ -140,6 +143,44 @@ describe('recherche diversifiee', () => {
     // les 12 premieres cases n'ont pas deux fois de suite le meme modele de titre
     for (let i = 1; i < titres.length; i++)
       expect(norm(titres[i]).split(' ')[0]).not.toBe(norm(titres[i - 1]).split(' ')[0]);
+  });
+
+  test("variantes d'un meme modele jamais voisines sur toute la liste (curry, omelette, saumon)", () => {
+    // meme debut (cinq premiers mots) ou meme fin (deux derniers mots) : blancs, cuisses... au curry, puree maison ;
+    // omelette aux lardons et au chevre, a la feta... Mesure sur tous les resultats, pas seulement le premier ecran.
+    const mots = (row) => norm(t.recipeTitle(cat.getRow(row).id)).split(' ');
+    const voisinsModele = (rows) => {
+      let k = 0;
+      for (let i = 1; i < rows.length; i++) {
+        const a = mots(rows[i - 1]);
+        const b = mots(rows[i]);
+        if (
+          a.slice(0, 5).join(' ') === b.slice(0, 5).join(' ') ||
+          a.slice(-2).join(' ') === b.slice(-2).join(' ')
+        )
+          k++;
+      }
+      return k;
+    };
+    for (const q of ['curry', 'omelette', 'saumon']) {
+      const av = gen(searchCatalog({ ...base(), query: q }));
+      const ap = gen(searchCatalog({ ...base(), query: q, diversify: true }));
+      expect(ap.length).toBe(av.length);
+      expect([...ap].sort((x, y) => x - y)).toEqual([...av].sort((x, y) => x - y));
+      const nAv = voisinsModele(av);
+      const nAp = voisinsModele(ap);
+      console.log(`${q} : ${ap.length} resultats, variantes voisines ${nAv} / ${nAp}`);
+      expect(nAp).toBeLessThanOrEqual(Math.max(2, ap.length / 100));
+      // ingredient principal : jamais plus de quelques cases de suite (etalement sur toute la liste ; omelette :
+      // les deux tiers sont aux oeufs seuls, quelques paires voisines sont inevitables)
+      let run = 1;
+      let maxRun = 1;
+      for (let i = 1; i < ap.length; i++) {
+        run = principal(ap[i]) && principal(ap[i]) === principal(ap[i - 1]) ? run + 1 : 1;
+        if (run > maxRun) maxRun = run;
+      }
+      expect(maxRun).toBeLessThanOrEqual(q === 'omelette' ? 12 : 8);
+    }
   });
 
   test('cout par frappe : diversifier reste negligeable', () => {

@@ -19,7 +19,8 @@ const PRIX = /~?(?:€\s?\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s?€)/g;
  */
 export function isolerPrix(texte, lang) {
   if (typeof texte !== 'string' || !texte || !langueEstRTL(lang)) return texte;
-  return texte.replace(PRIX, (x) => `${LRI}${x}${PDI}`);
+  // espaces insecables : le montant et sa devise ne sont jamais coupes en fin de ligne
+  return texte.replace(PRIX, (x) => `${LRI}${x.replace(/\s/g, '\u00A0')}${PDI}`);
 }
 
 const Badge = ({ icon, label, tone }) => (
@@ -82,6 +83,7 @@ function MealCard({
   onFree,
   nearby,
   onOpenShop,
+  people,
 }) {
   const t = useT();
   const { i18n } = useTranslation();
@@ -162,7 +164,10 @@ function MealCard({
         </View>
         <View style={s.body}>
           <Text style={s.slot}>
-            {slotLabel} · {t('week.persons', { count: Math.round(meal.persons * 10) / 10 })}
+            {slotLabel} ·{' '}
+            {t('week.persons', {
+              count: people > 0 ? people : Math.max(1, Math.round(Number(meal.persons) || 1)),
+            })}
           </Text>
           <Text style={s.title} numberOfLines={2}>
             {title}

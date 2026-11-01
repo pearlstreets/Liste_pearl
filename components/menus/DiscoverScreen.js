@@ -8,7 +8,15 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { View, Text, FlatList, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {
   searchRecipes,
@@ -58,6 +66,9 @@ const feedSeed = () => {
 const recipeOf = (res, v, catalog) => (v < 0 ? res.legacy[-v - 1] : catalog.getRow(v));
 const idOfRef = (res, v) => (v < 0 ? res.legacy[-v - 1].id : idFromRow(v));
 
+// Objets constants : aucune nouvelle valeur par ligne a chaque rendu.
+const HIT = { top: 10, bottom: 10, left: 10, right: 10 };
+
 const RecipeRow = memo(function RecipeRow({
   recipe,
   title,
@@ -77,7 +88,7 @@ const RecipeRow = memo(function RecipeRow({
       accessibilityLabel={title}
     >
       <RecipeVisual recipe={recipe} ingredients={ingredients} height={76} round />
-      <View style={{ flex: 1, marginHorizontal: 14 }}>
+      <View style={s.rowBody}>
         <Text style={s.rowTitle} numberOfLines={2}>
           {title}
         </Text>
@@ -90,11 +101,7 @@ const RecipeRow = memo(function RecipeRow({
           </Text>
         ) : null}
       </View>
-      <TouchableOpacity
-        onPress={() => onFav(recipe.id)}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        accessibilityRole="button"
-      >
+      <TouchableOpacity onPress={() => onFav(recipe.id)} hitSlop={HIT} accessibilityRole="button">
         <Ionicons
           name={fav ? 'heart' : 'heart-outline'}
           size={24}
@@ -129,10 +136,19 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const [course, setCourse] = useState(null);
   const [tags, setTags] = useState([]);
   // Recherche ou filtre changé : la liste repart tout en haut, sur les premiers résultats.
+  // Deja en haut : pas de defilement force (un defilement a chaque recherche, espace de plus d'une demi-seconde,
+  // fait croire a la liste qu'elle est lente a se mettre a jour).
   const listRef = useRef(null);
+  const offsetRef = useRef(0);
   useEffect(() => {
-    if (listRef.current) listRef.current.scrollToOffset({ offset: 0, animated: false });
+    if (listRef.current && offsetRef.current > 0) {
+      listRef.current.scrollToOffset({ offset: 0, animated: false });
+      offsetRef.current = 0;
+    }
   }, [mode, dq, course, tags]);
+  const onScrollEnd = useCallback((e) => {
+    offsetRef.current = e.nativeEvent.contentOffset.y;
+  }, []);
   const [mine, setMine] = useState(true);
   const [fq, setFq] = useState('');
   const [useUp, setUseUp] = useState([]);
@@ -271,7 +287,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 
   // Ligne d'infos d'une recette, calculee une fois par recette tant que foyer, langue et prix ne changent pas
   // (le defilement et un coeur coche ne refont pas le calcul du cout de chaque ligne visible).
-  const { costOf } = m;
+  const { costOf, warningOf, toggleFav } = m;
   const metaOf = useMemo(() => {
     const cache = new Map();
     return (r) => {
@@ -305,7 +321,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         if (item.uses.length)
           extra = `${t('fridge.usesUp', { count: item.uses.length })}  ${extra}`;
       }
-      const w = r.custom ? m.warningOf(r) : null;
+      const w = r.custom ? warningOf(r) : null;
       if (w && w.found) extra = t('myRecipes.rowWarning', { list: warningList(w, t) });
       return (
         <RecipeRow
@@ -322,11 +338,11 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           extra={extra}
           fav={favSet.has(r.id)}
           onPress={onOpenRecipe}
-          onFav={m.toggleFav}
+          onFav={toggleFav}
         />
       );
     },
-    [texts, ingredients, favSet, onOpenRecipe, m, metaOf, t, results, catalog]
+    [texts, ingredients, favSet, onOpenRecipe, warningOf, toggleFav, metaOf, t, results, catalog]
   );
 
   // Cle stable : l'id de la recette (jamais la position), meme fonction tant que les resultats ne changent pas.
@@ -600,10 +616,13 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         ListEmptyComponent={empty}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
-        initialNumToRender={10}
-        maxToRenderPerBatch={8}
+        onScrollEndDrag={onScrollEnd}
+        onMomentumScrollEnd={onScrollEnd}
+        initialNumToRender={8}
+        maxToRenderPerBatch={6}
+        updateCellsBatchingPeriod={40}
         windowSize={7}
-        removeClippedSubviews
+        removeClippedSubviews={Platform.OS === 'android'}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -643,6 +662,7 @@ const s = StyleSheet.create({
     borderColor: T.border,
     ...T.shadowSm,
   },
+  rowBody: { flex: 1, marginHorizontal: 14 },
   rowTitle: { fontSize: 16, fontWeight: '800', color: T.ink, lineHeight: 21 },
   rowMeta: { fontSize: 13, color: T.muted, marginTop: 3, fontWeight: '600' },
   rowExtra: { fontSize: 12, color: T.brandDark, marginTop: 3, fontWeight: '700' },

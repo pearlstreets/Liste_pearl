@@ -14,7 +14,8 @@ jest.mock('../components/menus/theme', () => ({ T: {} }));
 const { isolerPrix } = require('../components/menus/MealCard');
 const { formatEur } = require('../lib/menus/pricing');
 
-const iso = (x) => `\u2066${x}\u2069`;
+// montant isole, espaces insecables (le montant et sa devise restent sur la meme ligne)
+const iso = (x) => `\u2066${x.replace(/\s/g, '\u00a0')}\u2069`;
 
 describe('isolerPrix', () => {
   test('arabe : montant isole, texte arabe intact', () => {
@@ -23,6 +24,10 @@ describe('isolerPrix', () => {
     expect(isolerPrix('25 دقيقة · 3.24 € للشخص', 'ar')).toBe(`25 دقيقة · ${iso('3.24 €')} للشخص`);
     expect(isolerPrix('~12.50 € و €3.00', 'ar')).toBe(`${iso('~12.50 €')} و ${iso('€3.00')}`);
     expect(isolerPrix('7 € x', 'ar-SA')).toBe(`${iso('7 €')} x`);
+    // fin de phrase : « 20.98 € » garde sa devise, aucune espace secable dans le montant isole
+    const fin = isolerPrix('نحو 20.98 €.', 'ar');
+    expect(fin).toBe(`نحو ${iso('20.98 €')}.`);
+    expect(fin).toContain('20.98 €');
   });
 
   test('langues de gauche a droite : texte inchange (francais compris)', () => {
