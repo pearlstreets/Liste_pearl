@@ -84,7 +84,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "batch",
    "hiver",
    "automne",
@@ -157,7 +156,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -1084,6 +1082,11 @@
     "key": "sel",
     "qty": 1,
     "unit": "cc"
+   },
+   {
+    "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
    }
   ],
   "stepTimers": {
@@ -1587,7 +1590,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-fruits-a-coque",
    "hiver",
    "four",
@@ -2214,8 +2216,7 @@
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "halal-possible",
-   "sans-fruits-a-coque"
+   "halal-possible"
   ],
   "kcal": 600,
   "protein": 34,
@@ -2526,7 +2527,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "batch",
    "hiver",
    "automne",
@@ -2609,7 +2609,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "batch",
    "hiver",
    "automne",
@@ -3671,7 +3670,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "batch",
    "hiver",
    "automne",
@@ -4691,7 +4689,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-lactose",
    "sans-fruits-a-coque",
    "enfants",
    "economique"
@@ -4819,7 +4816,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-lactose",
    "sans-porc",
    "halal-possible",
@@ -5098,7 +5094,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-fruits-a-coque",
    "hiver",
    "four",
@@ -5546,8 +5541,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
-   "sans-lactose",
    "sans-fruits-a-coque",
    "batch",
    "economique"
@@ -5828,8 +5821,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
-   "sans-lactose",
    "sans-fruits-a-coque",
    "batch",
    "economique"
@@ -6263,7 +6254,6 @@
   "servings": 4,
   "tags": [
    "vegetarien",
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -6897,7 +6887,6 @@
   "servings": 4,
   "tags": [
    "vegetarien",
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -7174,7 +7163,6 @@
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "halal-possible",
    "sans-fruits-a-coque",
    "hiver",
    "enfants",
@@ -8979,7 +8967,6 @@
   "difficulty": 2,
   "servings": 4,
   "tags": [
-   "sans-lactose",
    "sans-fruits-a-coque",
    "batch",
    "hiver",
@@ -9147,7 +9134,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -9386,7 +9372,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -9670,7 +9655,6 @@
   "difficulty": 2,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-porc",
    "sans-fruits-a-coque",
    "hiver",
@@ -10115,6 +10099,11 @@
     "key": "poivre",
     "qty": 1,
     "unit": "cc"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
    }
   ],
   "stepTimers": {
@@ -10211,8 +10200,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
-   "sans-lactose",
    "sans-fruits-a-coque",
    "batch",
    "hiver",
@@ -10256,6 +10243,11 @@
    },
    {
     "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
     "qty": 1,
     "unit": "cc"
    }
@@ -12050,7 +12042,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-lactose",
    "sans-porc",
    "halal-possible",
@@ -12763,7 +12754,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-fruits-a-coque",
    "enfants",
    "hiver",
@@ -13215,7 +13205,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-porc",
    "halal-possible",
    "sans-fruits-a-coque",
@@ -13457,7 +13446,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
    "sans-lactose",
    "sans-porc",
    "halal-possible",
@@ -16782,8 +16770,6 @@
   "difficulty": 1,
   "servings": 4,
   "tags": [
-   "sans-gluten",
-   "sans-lactose",
    "sans-fruits-a-coque",
    "batch",
    "economique",
@@ -16833,6 +16819,11 @@
    },
    {
     "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
     "qty": 1,
     "unit": "cc"
    }
@@ -16912,6 +16903,11 @@
    },
    {
     "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
     "qty": 1,
     "unit": "cc"
    }
@@ -17023,7 +17019,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "batch",
    "economique",
    "leger",
@@ -17385,6 +17380,11 @@
     "key": "poivre",
     "qty": 1,
     "unit": "cc"
+   },
+   {
+    "key": "sel",
+    "qty": 1,
+    "unit": "cc"
    }
   ],
   "stepTimers": {
@@ -17531,6 +17531,11 @@
    },
    {
     "key": "poivre",
+    "qty": 1,
+    "unit": "cc"
+   },
+   {
+    "key": "sel",
     "qty": 1,
     "unit": "cc"
    }
@@ -19139,7 +19144,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "hiver",
    "automne",
    "economique"
@@ -19595,7 +19599,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "automne"
   ],
   "kcal": 580,
@@ -20222,7 +20225,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "hiver",
    "automne",
    "batch"
@@ -22271,7 +22273,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "hiver",
    "automne",
    "economique"
@@ -23053,7 +23054,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "enfants",
    "four",
    "economique"
@@ -23252,7 +23252,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "ete",
    "economique"
   ],
@@ -23311,7 +23310,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "hiver",
    "rapide",
    "economique"
@@ -23597,7 +23595,6 @@
    "vegetarien",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "ete",
    "economique"
   ],
@@ -24563,7 +24560,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "ete",
    "sans-cuisson",
    "economique"
@@ -24683,7 +24679,6 @@
    "sans-lactose",
    "sans-porc",
    "halal-possible",
-   "sans-fruits-a-coque",
    "ete",
    "sans-cuisson",
    "enfants",
@@ -24779,9 +24774,8 @@
   "timeMin": 40,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 520,
   "protein": 28,
@@ -24864,8 +24858,8 @@
   "timeMin": 50,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 560,
   "protein": 28,
@@ -24963,9 +24957,8 @@
   "timeMin": 35,
   "difficulty": 1,
   "tags": [
-   "leger",
-   "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "leger"
   ],
   "kcal": 310,
   "protein": 25,
@@ -25036,8 +25029,8 @@
   "timeMin": 50,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 720,
   "protein": 28,
@@ -25105,11 +25098,12 @@
   "timeMin": 70,
   "difficulty": 2,
   "tags": [
-   "hiver",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 690,
   "protein": 42,
@@ -25172,8 +25166,8 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 330,
   "protein": 38,
@@ -25239,9 +25233,9 @@
   "timeMin": 150,
   "difficulty": 2,
   "tags": [
-   "hiver",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 480,
   "protein": 42,
@@ -25334,9 +25328,9 @@
   "timeMin": 90,
   "difficulty": 2,
   "tags": [
+   "sans-fruits-a-coque",
    "batch",
-   "enfants",
-   "sans-fruits-a-coque"
+   "enfants"
   ],
   "kcal": 560,
   "protein": 26,
@@ -25424,10 +25418,11 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
-   "four",
-   "enfants",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "enfants"
   ],
   "kcal": 480,
   "protein": 42,
@@ -25516,11 +25511,11 @@
   "timeMin": 50,
   "difficulty": 1,
   "tags": [
-   "economique",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "economique"
   ],
   "kcal": 480,
   "protein": 42,
@@ -25593,10 +25588,11 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 330,
   "protein": 28,
@@ -25657,8 +25653,8 @@
   "timeMin": 75,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
   "kcal": 620,
   "protein": 32,
@@ -25808,10 +25804,10 @@
   "timeMin": 170,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver"
   ],
-  "kcal": 650,
+  "kcal": 660,
   "protein": 40,
   "leftoverOk": true,
   "keepDays": 3,
@@ -25871,6 +25867,11 @@
     "key": "laurier",
     "qty": 1,
     "unit": "u"
+   },
+   {
+    "key": "moutarde",
+    "qty": 2,
+    "unit": "cs"
    }
   ],
   "stepTimers": {
@@ -25892,14 +25893,15 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
-   "ete",
-   "economique",
-   "leger",
    "vegetarien",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "economique",
+   "leger"
   ],
   "kcal": 300,
   "protein": 16,
@@ -25974,8 +25976,8 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "economique"
   ],
   "kcal": 480,
   "protein": 20,
@@ -26045,10 +26047,11 @@
   "timeMin": 80,
   "difficulty": 2,
   "tags": [
-   "four",
-   "batch",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "batch"
   ],
   "kcal": 520,
   "protein": 24,
@@ -26122,12 +26125,12 @@
   "timeMin": 230,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "four",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "hiver",
+   "four"
   ],
   "kcal": 610,
   "protein": 44,
@@ -26199,10 +26202,10 @@
   "timeMin": 105,
   "difficulty": 1,
   "tags": [
-   "four",
    "sans-gluten",
    "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "four"
   ],
   "kcal": 480,
   "protein": 42,
@@ -26274,6 +26277,7 @@
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
+   "halal-possible",
    "sans-fruits-a-coque"
   ],
   "kcal": 420,
@@ -26337,9 +26341,9 @@
   "timeMin": 70,
   "difficulty": 2,
   "tags": [
+   "sans-fruits-a-coque",
    "four",
-   "economique",
-   "sans-fruits-a-coque"
+   "economique"
   ],
   "kcal": 610,
   "protein": 26,
@@ -26420,10 +26424,11 @@
   "timeMin": 75,
   "difficulty": 2,
   "tags": [
-   "batch",
-   "four",
    "sans-lactose",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "batch",
+   "four"
   ],
   "kcal": 480,
   "protein": 28,
@@ -26497,11 +26502,12 @@
   "timeMin": 90,
   "difficulty": 3,
   "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "batch",
    "automne",
-   "hiver",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "hiver"
   ],
   "kcal": 610,
   "protein": 40,
@@ -26601,9 +26607,10 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
+   "sans-porc",
+   "halal-possible",
    "enfants",
-   "economique",
-   "sans-porc"
+   "economique"
   ],
   "kcal": 520,
   "protein": 32,
@@ -26688,9 +26695,10 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
+   "sans-porc",
+   "halal-possible",
    "four",
-   "enfants",
-   "sans-porc"
+   "enfants"
   ],
   "kcal": 430,
   "protein": 24,
@@ -26782,9 +26790,10 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "enfants",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 540,
   "protein": 44,
@@ -26885,12 +26894,13 @@
   "timeMin": 90,
   "difficulty": 1,
   "tags": [
-   "four",
-   "enfants",
-   "batch",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "enfants",
+   "batch"
   ],
   "kcal": 520,
   "protein": 38,
@@ -26979,11 +26989,12 @@
   "timeMin": 50,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "batch",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "batch"
   ],
   "kcal": 610,
   "protein": 40,
@@ -27073,10 +27084,11 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "enfants",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 560,
   "protein": 36,
@@ -27171,9 +27183,10 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "enfants",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 640,
   "protein": 36,
@@ -27238,10 +27251,11 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
-   "enfants",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 540,
   "protein": 38,
@@ -27329,9 +27343,9 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "enfants",
    "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 610,
   "protein": 40,
@@ -27410,11 +27424,12 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
   ],
   "kcal": 310,
   "protein": 22,
@@ -27499,10 +27514,11 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "hiver",
-   "economique",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
   ],
   "kcal": 420,
   "protein": 32,
@@ -27600,9 +27616,10 @@
   "timeMin": 75,
   "difficulty": 2,
   "tags": [
+   "sans-porc",
+   "halal-possible",
    "hiver",
-   "economique",
-   "sans-porc"
+   "economique"
   ],
   "kcal": 620,
   "protein": 42,
@@ -27712,10 +27729,10 @@
   "timeMin": 210,
   "difficulty": 2,
   "tags": [
-   "four",
-   "batch",
    "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "four",
+   "batch"
   ],
   "kcal": 540,
   "protein": 40,
@@ -27819,10 +27836,10 @@
   "timeMin": 115,
   "difficulty": 2,
   "tags": [
+   "sans-fruits-a-coque",
    "hiver",
    "economique",
-   "batch",
-   "sans-fruits-a-coque"
+   "batch"
   ],
   "kcal": 480,
   "protein": 36,
@@ -27930,13 +27947,14 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "enfants",
-   "batch",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "enfants",
+   "batch"
   ],
   "kcal": 640,
   "protein": 38,
@@ -28038,11 +28056,12 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
-   "four",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "economique"
   ],
   "kcal": 480,
   "protein": 20,
@@ -28124,14 +28143,15 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "four",
-   "leger",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "leger"
   ],
   "kcal": 380,
   "protein": 16,
@@ -28208,12 +28228,13 @@
   "timeMin": 50,
   "difficulty": 1,
   "tags": [
-   "four",
-   "leger",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "leger"
   ],
   "kcal": 310,
   "protein": 14,
@@ -28295,12 +28316,13 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "four",
-   "hiver",
-   "enfants",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "hiver",
+   "enfants"
   ],
   "kcal": 620,
   "protein": 22,
@@ -28371,13 +28393,14 @@
   "timeMin": 30,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "rapide",
    "enfants",
    "printemps",
-   "ete",
-   "vegetarien",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "ete"
   ],
   "kcal": 540,
   "protein": 22,
@@ -28453,11 +28476,12 @@
   "timeMin": 40,
   "difficulty": 2,
   "tags": [
-   "four",
-   "printemps",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "printemps"
   ],
   "kcal": 380,
   "protein": 16,
@@ -28534,12 +28558,13 @@
   "timeMin": 50,
   "difficulty": 2,
   "tags": [
-   "economique",
-   "enfants",
-   "batch",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "enfants",
+   "batch"
   ],
   "kcal": 340,
   "protein": 16,
@@ -28637,11 +28662,12 @@
   "timeMin": 55,
   "difficulty": 1,
   "tags": [
-   "hiver",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
   ],
   "kcal": 360,
   "protein": 9,
@@ -28722,13 +28748,14 @@
   "timeMin": 40,
   "difficulty": 2,
   "tags": [
-   "economique",
-   "ete",
    "vegetarien",
    "vegan",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "ete"
   ],
   "kcal": 520,
   "protein": 22,
@@ -28839,15 +28866,16 @@
   "timeMin": 55,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "four",
-   "ete",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "four",
+   "ete"
   ],
   "kcal": 430,
   "protein": 18,
@@ -28936,11 +28964,12 @@
   "timeMin": 30,
   "difficulty": 2,
   "tags": [
-   "rapide",
-   "hiver",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "hiver"
   ],
   "kcal": 470,
   "protein": 22,
@@ -29023,13 +29052,14 @@
   "timeMin": 45,
   "difficulty": 2,
   "tags": [
-   "printemps",
-   "economique",
    "vegetarien",
    "vegan",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "economique"
   ],
   "kcal": 540,
   "protein": 24,
@@ -29124,14 +29154,15 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "enfants",
-   "batch",
    "vegetarien",
    "vegan",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "enfants",
+   "batch"
   ],
   "kcal": 520,
   "protein": 22,
@@ -29219,13 +29250,14 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "four",
-   "leger",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "four",
+   "leger"
   ],
   "kcal": 280,
   "protein": 32,
@@ -29292,12 +29324,12 @@
   "timeMin": 100,
   "difficulty": 2,
   "tags": [
-   "batch",
-   "economique",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "batch",
+   "economique"
   ],
   "kcal": 420,
   "protein": 28,
@@ -29377,10 +29409,11 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "economique",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
   ],
   "kcal": 520,
   "protein": 22,
@@ -29453,10 +29486,11 @@
   "timeMin": 30,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "four",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "four"
   ],
   "kcal": 360,
   "protein": 40,
@@ -29530,6 +29564,7 @@
   "tags": [
    "sans-lactose",
    "sans-porc",
+   "halal-possible",
    "sans-fruits-a-coque"
   ],
   "kcal": 430,
@@ -29608,9 +29643,10 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "enfants",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 560,
   "protein": 38,
@@ -29701,11 +29737,12 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "rapide",
    "sans-cuisson",
-   "enfants",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "enfants"
   ],
   "kcal": 340,
   "protein": 20,
@@ -29763,10 +29800,11 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-cuisson",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson"
   ],
   "kcal": 380,
   "protein": 30,
@@ -29829,9 +29867,10 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "rapide",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 560,
   "protein": 28,
@@ -29914,9 +29953,8 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 420,
   "protein": 36,
@@ -29994,10 +30032,11 @@
   "timeMin": 30,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "rapide",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "rapide"
   ],
   "kcal": 510,
   "protein": 38,
@@ -30089,11 +30128,12 @@
   "timeMin": 50,
   "difficulty": 1,
   "tags": [
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "economique",
    "hiver",
-   "enfants",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "enfants"
   ],
   "kcal": 650,
   "protein": 38,
@@ -30191,11 +30231,11 @@
   "timeMin": 120,
   "difficulty": 2,
   "tags": [
+   "sans-porc",
+   "sans-fruits-a-coque",
    "economique",
    "hiver",
-   "batch",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "batch"
   ],
   "kcal": 600,
   "protein": 42,
@@ -30293,10 +30333,11 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "rapide",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 480,
   "protein": 26,
@@ -30365,10 +30406,11 @@
   "timeMin": 30,
   "difficulty": 2,
   "tags": [
-   "rapide",
    "sans-gluten",
    "sans-lactose",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "rapide"
   ],
   "kcal": 520,
   "protein": 36,
@@ -30449,9 +30491,8 @@
   "timeMin": 40,
   "difficulty": 2,
   "tags": [
-   "economique",
-   "sans-lactose",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "economique"
   ],
   "kcal": 560,
   "protein": 22,
@@ -30529,10 +30570,11 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "batch",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "batch"
   ],
   "kcal": 590,
   "protein": 34,
@@ -30701,11 +30743,12 @@
   "timeMin": 25,
   "difficulty": 2,
   "tags": [
-   "rapide",
-   "ete",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "ete"
   ],
   "kcal": 440,
   "protein": 40,
@@ -30787,7 +30830,7 @@
   "difficulty": 2,
   "tags": [
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible"
   ],
   "kcal": 520,
   "protein": 32,
@@ -30885,9 +30928,9 @@
   "timeMin": 45,
   "difficulty": 2,
   "tags": [
+   "sans-fruits-a-coque",
    "hiver",
-   "economique",
-   "sans-fruits-a-coque"
+   "economique"
   ],
   "kcal": 560,
   "protein": 28,
@@ -30985,10 +31028,11 @@
   "timeMin": 40,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "economique",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique"
   ],
   "kcal": 380,
   "protein": 34,
@@ -31082,9 +31126,10 @@
   "timeMin": 45,
   "difficulty": 2,
   "tags": [
-   "enfants",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants"
   ],
   "kcal": 540,
   "protein": 38,
@@ -31189,10 +31234,11 @@
   "timeMin": 30,
   "difficulty": 2,
   "tags": [
-   "rapide",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide"
   ],
   "kcal": 480,
   "protein": 24,
@@ -31281,10 +31327,11 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "ete",
    "vegetarien",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "rapide",
+   "ete"
   ],
   "kcal": 470,
   "protein": 16,
@@ -31372,11 +31419,12 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "printemps",
-   "leger",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "leger"
   ],
   "kcal": 130,
   "protein": 6,
@@ -31444,13 +31492,14 @@
   "timeMin": 10,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "printemps",
    "rapide",
    "sans-cuisson",
-   "economique",
-   "vegetarien",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "economique"
   ],
   "kcal": 260,
   "protein": 6,
@@ -31498,15 +31547,16 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
-   "ete",
-   "four",
-   "batch",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "batch"
   ],
   "kcal": 120,
   "protein": 2,
@@ -31568,13 +31618,14 @@
   "timeMin": 25,
   "difficulty": 1,
   "tags": [
-   "ete",
-   "rapide",
-   "leger",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "rapide",
+   "leger"
   ],
   "kcal": 150,
   "protein": 7,
@@ -31635,12 +31686,13 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "ete",
-   "four",
-   "enfants",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "four",
+   "enfants"
   ],
   "kcal": 290,
   "protein": 10,
@@ -31705,12 +31757,13 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
    "automne",
    "rapide",
    "sans-cuisson",
-   "leger",
-   "vegetarien",
-   "sans-porc"
+   "leger"
   ],
   "kcal": 280,
   "protein": 9,
@@ -31773,12 +31826,13 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "automne",
-   "rapide",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "automne",
+   "rapide",
+   "economique"
   ],
   "kcal": 170,
   "protein": 5,
@@ -31844,14 +31898,15 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "automne",
-   "hiver",
-   "four",
-   "leger",
    "vegetarien",
    "sans-gluten",
    "sans-lactose",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "automne",
+   "hiver",
+   "four",
+   "leger"
   ],
   "kcal": 190,
   "protein": 6,
@@ -31908,12 +31963,13 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "hiver",
-   "economique",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
   ],
   "kcal": 120,
   "protein": 2,
@@ -31976,12 +32032,13 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "hiver",
-   "economique",
    "vegetarien",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
   ],
   "kcal": 150,
   "protein": 8,
@@ -32044,15 +32101,16 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "printemps",
-   "rapide",
-   "economique",
-   "leger",
    "vegetarien",
    "vegan",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "rapide",
+   "economique",
+   "leger"
   ],
   "kcal": 230,
   "protein": 11,
@@ -32116,12 +32174,13 @@
   "timeMin": 55,
   "difficulty": 2,
   "tags": [
-   "printemps",
-   "four",
-   "enfants",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "four",
+   "enfants"
   ],
   "kcal": 340,
   "protein": 11,
@@ -32193,12 +32252,13 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-cuisson",
-   "leger",
    "vegetarien",
    "sans-gluten",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "rapide",
+   "sans-cuisson",
+   "leger"
   ],
   "kcal": 160,
   "protein": 7,
@@ -32256,16 +32316,17 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-cuisson",
-   "economique",
-   "leger",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "economique",
+   "leger"
   ],
   "kcal": 150,
   "protein": 8,
@@ -32323,11 +32384,12 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "sans-cuisson",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "sans-cuisson"
   ],
   "kcal": 230,
   "protein": 14,
@@ -32381,10 +32443,10 @@
   "timeMin": 35,
   "difficulty": 1,
   "tags": [
+   "sans-fruits-a-coque",
    "enfants",
    "four",
-   "batch",
-   "sans-fruits-a-coque"
+   "batch"
   ],
   "kcal": 210,
   "protein": 9,
@@ -32439,12 +32501,13 @@
   "timeMin": 10,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "sans-cuisson",
-   "leger",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "sans-cuisson",
+   "leger"
   ],
   "kcal": 170,
   "protein": 16,
@@ -32487,11 +32550,12 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
-   "economique",
-   "batch",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "batch"
   ],
   "kcal": 220,
   "protein": 8,
@@ -32554,12 +32618,13 @@
   "timeMin": 30,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "ete",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "ete",
+   "economique"
   ],
   "kcal": 230,
   "protein": 12,
@@ -32630,11 +32695,12 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "four",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "four"
   ],
   "kcal": 150,
   "protein": 4,
@@ -32694,12 +32760,13 @@
   "timeMin": 50,
   "difficulty": 2,
   "tags": [
-   "four",
-   "leger",
-   "batch",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "leger",
+   "batch"
   ],
   "kcal": 330,
   "protein": 12,
@@ -32771,15 +32838,16 @@
   "timeMin": 55,
   "difficulty": 1,
   "tags": [
-   "four",
-   "leger",
-   "economique",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "leger",
+   "economique"
   ],
   "kcal": 150,
   "protein": 4,
@@ -32844,10 +32912,10 @@
   "timeMin": 25,
   "difficulty": 2,
   "tags": [
-   "ete",
-   "rapide",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "ete",
+   "rapide"
   ],
   "kcal": 260,
   "protein": 18,
@@ -32921,14 +32989,15 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "rapide",
-   "printemps",
    "vegetarien",
    "vegan",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "rapide",
+   "printemps"
   ],
   "kcal": 190,
   "protein": 9,
@@ -32997,11 +33066,12 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
    "four",
    "enfants",
-   "automne",
-   "vegetarien",
-   "sans-porc"
+   "automne"
   ],
   "kcal": 260,
   "protein": 6,
@@ -33066,13 +33136,14 @@
   "timeMin": 60,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "four",
    "enfants",
    "hiver",
-   "economique",
-   "vegetarien",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "economique"
   ],
   "kcal": 310,
   "protein": 7,
@@ -33132,12 +33203,13 @@
   "timeMin": 90,
   "difficulty": 2,
   "tags": [
-   "printemps",
-   "batch",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "printemps",
+   "batch"
   ],
   "kcal": 360,
   "protein": 6,
@@ -33188,13 +33260,14 @@
   "timeMin": 50,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
+   "sans-fruits-a-coque",
    "four",
    "enfants",
    "automne",
-   "economique",
-   "vegetarien",
-   "sans-porc",
-   "sans-fruits-a-coque"
+   "economique"
   ],
   "kcal": 280,
   "protein": 2,
@@ -33244,12 +33317,13 @@
   "timeMin": 50,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
    "four",
    "enfants",
    "batch",
-   "hiver",
-   "vegetarien",
-   "sans-porc"
+   "hiver"
   ],
   "kcal": 420,
   "protein": 7,
@@ -33309,12 +33383,13 @@
   "timeMin": 75,
   "difficulty": 1,
   "tags": [
-   "economique",
-   "batch",
-   "enfants",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "batch",
+   "enfants"
   ],
   "kcal": 300,
   "protein": 9,
@@ -33370,12 +33445,13 @@
   "timeMin": 60,
   "difficulty": 3,
   "tags": [
-   "enfants",
-   "printemps",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "printemps"
   ],
   "kcal": 260,
   "protein": 9,
@@ -33423,13 +33499,13 @@
   "timeMin": 140,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
-   "enfants",
-   "batch",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-cuisson",
+   "enfants",
+   "batch"
   ],
   "kcal": 380,
   "protein": 5,
@@ -33483,12 +33559,13 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "economique",
-   "automne",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "economique",
+   "automne"
   ],
   "kcal": 380,
   "protein": 6,
@@ -33554,12 +33631,13 @@
   "timeMin": 60,
   "difficulty": 2,
   "tags": [
-   "four",
-   "automne",
-   "hiver",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "four",
+   "automne",
+   "hiver"
   ],
   "kcal": 380,
   "protein": 7,
@@ -33614,14 +33692,15 @@
   "timeMin": 270,
   "difficulty": 1,
   "tags": [
-   "enfants",
-   "ete",
-   "sans-cuisson",
-   "batch",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "ete",
+   "sans-cuisson",
+   "batch"
   ],
   "kcal": 300,
   "protein": 5,
@@ -33672,13 +33751,14 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "enfants",
-   "economique",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "enfants",
+   "economique"
   ],
   "kcal": 420,
   "protein": 5,
@@ -33727,12 +33807,13 @@
   "timeMin": 80,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
-   "economique",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "sans-cuisson",
+   "economique"
   ],
   "kcal": 430,
   "protein": 6,
@@ -33778,10 +33859,11 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
-   "enfants",
    "vegetarien",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "sans-cuisson",
+   "enfants"
   ],
   "kcal": 530,
   "protein": 14,
@@ -33830,10 +33912,11 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
    "vegetarien",
    "sans-gluten",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "sans-cuisson"
   ],
   "kcal": 340,
   "protein": 16,
@@ -33882,15 +33965,16 @@
   "timeMin": 40,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
-   "leger",
-   "ete",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "sans-cuisson",
+   "leger",
+   "ete"
   ],
   "kcal": 150,
   "protein": 3,
@@ -33934,15 +34018,14 @@
   "timeMin": 105,
   "difficulty": 1,
   "tags": [
-   "ete",
-   "sans-cuisson",
-   "leger",
    "vegetarien",
-   "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "ete",
+   "sans-cuisson",
+   "leger"
   ],
   "kcal": 175,
   "protein": 2,
@@ -33990,13 +34073,14 @@
   "timeMin": 370,
   "difficulty": 2,
   "tags": [
-   "ete",
-   "sans-cuisson",
-   "enfants",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "sans-cuisson",
+   "enfants"
   ],
   "kcal": 480,
   "protein": 5,
@@ -34045,15 +34129,16 @@
   "timeMin": 250,
   "difficulty": 1,
   "tags": [
-   "ete",
-   "sans-cuisson",
-   "enfants",
    "vegetarien",
    "vegan",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "ete",
+   "sans-cuisson",
+   "enfants"
   ],
   "kcal": 225,
   "protein": 3,
@@ -34097,12 +34182,13 @@
   "timeMin": 135,
   "difficulty": 1,
   "tags": [
+   "vegetarien",
+   "sans-porc",
+   "halal-possible",
    "enfants",
    "sans-cuisson",
    "economique",
-   "batch",
-   "vegetarien",
-   "sans-porc"
+   "batch"
   ],
   "kcal": 740,
   "protein": 10,
@@ -34148,12 +34234,13 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "sans-cuisson",
-   "batch",
-   "enfants",
    "vegetarien",
    "sans-gluten",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "sans-cuisson",
+   "batch",
+   "enfants"
   ],
   "kcal": 535,
   "protein": 9,
@@ -34204,11 +34291,12 @@
   "timeMin": 255,
   "difficulty": 2,
   "tags": [
-   "sans-cuisson",
-   "enfants",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "sans-cuisson",
+   "enfants"
   ],
   "kcal": 720,
   "protein": 11,
@@ -34274,13 +34362,14 @@
   "timeMin": 130,
   "difficulty": 1,
   "tags": [
-   "enfants",
-   "sans-cuisson",
-   "economique",
    "vegetarien",
    "sans-gluten",
    "sans-lactose",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "enfants",
+   "sans-cuisson",
+   "economique"
   ],
   "kcal": 350,
   "protein": 8,
@@ -34329,12 +34418,13 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "hiver",
-   "economique",
    "vegetarien",
    "sans-gluten",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "hiver",
+   "economique"
   ],
   "kcal": 420,
   "protein": 11,
@@ -34395,12 +34485,13 @@
   "timeMin": 45,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "four",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "enfants",
+   "four",
+   "economique"
   ],
   "kcal": 360,
   "protein": 7,
@@ -34459,11 +34550,12 @@
   "timeMin": 15,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "economique",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "economique"
   ],
   "kcal": 375,
   "protein": 18,
@@ -34526,12 +34618,13 @@
   "timeMin": 45,
   "difficulty": 1,
   "tags": [
-   "batch",
-   "enfants",
-   "four",
    "vegetarien",
    "sans-lactose",
-   "sans-porc"
+   "sans-porc",
+   "halal-possible",
+   "batch",
+   "enfants",
+   "four"
   ],
   "kcal": 490,
   "protein": 10,
@@ -34596,11 +34689,12 @@
   "timeMin": 20,
   "difficulty": 1,
   "tags": [
-   "rapide",
-   "leger",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "rapide",
+   "leger"
   ],
   "kcal": 410,
   "protein": 19,
@@ -34659,11 +34753,11 @@
   "timeMin": 35,
   "difficulty": 2,
   "tags": [
-   "enfants",
-   "printemps",
    "vegetarien",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "sans-fruits-a-coque",
+   "enfants",
+   "printemps"
   ],
   "kcal": 540,
   "protein": 16,
@@ -34734,13 +34828,14 @@
   "timeMin": 25,
   "difficulty": 2,
   "tags": [
-   "economique",
-   "automne",
    "vegetarien",
    "sans-gluten",
    "sans-lactose",
    "sans-porc",
-   "sans-fruits-a-coque"
+   "halal-possible",
+   "sans-fruits-a-coque",
+   "economique",
+   "automne"
   ],
   "kcal": 300,
   "protein": 9,

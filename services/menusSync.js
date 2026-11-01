@@ -203,16 +203,36 @@ function schedulePush() {
 
 setMenusSyncListener(schedulePush);
 
-/** Dernier envoi avant la déconnexion, borné dans le temps. Ne lève jamais. */
+/**
+ * Vrai si rien ne serait perdu en effaçant les menus de l'appareil : tout est déjà sur le compte
+ * (rattaché au compte, rien en attente), ou il n'y a aucune donnée de menus. Ne lève jamais (doute : faux).
+ */
+export async function menusSavedOnAccount() {
+  try {
+    const owner = await currentOwner();
+    const st = await readSyncState();
+    const pending = Object.keys((st && st.dirty) || {}).length > 0;
+    if (st && st.owner && !pending && (!owner || st.owner === owner)) return true;
+    const snap = await readSyncSnapshot();
+    return !Object.values(snap.entries || {}).some((e) => e && e.v !== null && e.v !== undefined);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Dernier envoi avant la déconnexion, borné dans le temps. Ne lève jamais.
+ * Rend menusSavedOnAccount() une fois l'envoi fini ou le délai écoulé : faux = des menus n'ont pas pu partir.
+ */
 export async function flushMenusSync(timeoutMs = FLUSH_TIMEOUT_MS) {
   if (timer) {
     clearTimeout(timer);
     timer = null;
   }
   try {
-    if (!(await currentOwner())) return;
+    if (!(await currentOwner())) return menusSavedOnAccount();
     const st = await readSyncState();
-    if (st.owner && Object.keys(st.dirty).length === 0) return;
+    if (st.owner && Object.keys(st.dirty).length === 0) return menusSavedOnAccount();
     let limite;
     await Promise.race([
       (async () => {
@@ -225,6 +245,7 @@ export async function flushMenusSync(timeoutMs = FLUSH_TIMEOUT_MS) {
     ]);
     clearTimeout(limite);
   } catch {}
+  return menusSavedOnAccount();
 }
 
 /** Déconnexion : abandonne tout échange en cours, il ne doit plus rien écrire sur l'appareil. */

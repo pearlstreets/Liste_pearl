@@ -1149,10 +1149,14 @@
       "lait": "乳",
       "oeuf": "卵",
       "poisson": "魚",
-      "crustaces": "甲殻類",
+      "crustaces": "甲殻類と軟体動物",
       "soja": "大豆",
       "sesame": "ごま",
-      "fruits-a-coque": "ナッツ類",
+      "fruits-a-coque": "ナッツ類と落花生",
+      "celeri": "セロリ",
+      "moutarde": "からし",
+      "lupin": "ルピナス",
+      "sulfites": "亜硫酸塩",
       "miel": "はちみつ"
     },
     "onboarding": {
@@ -1170,7 +1174,7 @@
     },
     "settings": {
       "title": "メニュー設定",
-      "intro": "選択内容は今後の週に適用されます。",
+      "intro": "選択内容は今後の週に適用されます。すでに予定している食事が合わなくなった場合は、「私の今週」でお知らせします。",
       "household": "私の家庭",
       "meals": "私の食事",
       "mealsHint": "食事をタップしてオン・オフを切り替えてください。",
@@ -1233,6 +1237,10 @@
       "estimateNote": "おおよその見積もりであり、店頭の価格と異なる場合があります。",
       "dirty": "前回リストに追加してから内容が変更されています。",
       "dirtyAction": "買い物リストを見直す",
+      "unsuitable": "{{count}}食がアレルギーや食事制限に合わなくなりました。",
+      "unsuitableAction": "これらの食事を入れ替える",
+      "unsuitableBadge": "アレルギーや食事制限に合わなくなりました",
+      "unsuitableConfirm": "{{count}}食がアレルギーや食事制限に合わなくなりました。その材料がリストに追加されます。",
       "warn": {
         "no_eligible": "ご希望の条件に合うレシピがありません。設定を調整してください。",
         "few_recipes": "該当するレシピが少ないため、同じ料理が重複しています。",
@@ -1274,6 +1282,8 @@
         "3": "やや難しい"
       },
       "servings": "人数",
+      "unsuitable": "このレシピはアレルギーや食事制限に合いません：{{list}}。",
+      "servingsKids": "うち子ども{{count}}人",
       "costNote": "合計約{{total}}、1人あたり{{per}}です",
       "ingredients": "材料",
       "optional": "任意",

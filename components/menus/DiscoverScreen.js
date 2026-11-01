@@ -35,7 +35,7 @@ import { T } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
 import RecipeVisual from './RecipeVisual';
-import { useMenus } from './MenusContext';
+import { useMenus, conflictList } from './MenusContext';
 import useT from './useT';
 import { isolerPrix } from './MealCard';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
@@ -287,7 +287,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 
   // Ligne d'infos d'une recette, calculee une fois par recette tant que foyer, langue et prix ne changent pas
   // (le defilement et un coeur coche ne refont pas le calcul du cout de chaque ligne visible).
-  const { costOf, warningOf, toggleFav } = m;
+  const { costOf, warningOf, conflictOf, toggleFav } = m;
   const metaOf = useMemo(() => {
     const cache = new Map();
     return (r) => {
@@ -321,8 +321,10 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         if (item.uses.length)
           extra = `${t('fridge.usesUp', { count: item.uses.length })}  ${extra}`;
       }
-      const w = r.custom ? warningOf(r) : null;
-      if (w && w.found) extra = t('myRecipes.rowWarning', { list: warningList(w, t) });
+      // allergie, régime ou ingrédient écarté : signalé aussi sur les recettes du catalogue
+      const w = r.custom ? warningOf(r) : conflictOf(r);
+      if (w && w.found)
+        extra = t('myRecipes.rowWarning', { list: r.custom ? warningList(w, t) : conflictList(w, t) });
       return (
         <RecipeRow
           recipe={r}
@@ -342,7 +344,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         />
       );
     },
-    [texts, ingredients, favSet, onOpenRecipe, warningOf, toggleFav, metaOf, t, results, catalog]
+    [texts, ingredients, favSet, onOpenRecipe, warningOf, conflictOf, toggleFav, metaOf, t, results, catalog]
   );
 
   // Cle stable : l'id de la recette (jamais la position), meme fonction tant que les resultats ne changent pas.

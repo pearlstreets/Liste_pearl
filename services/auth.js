@@ -132,9 +132,10 @@ export async function loginUser(identifier, password) {
 }
 
 // Logout
-export async function logoutUser() {
+// opts.menusFlushed : l'appelant vient de faire partir les menus (flushMenusSync), inutile d'attendre encore.
+export async function logoutUser(opts = {}) {
   // Les menus en attente partent tant que les jetons sont valables.
-  await flushMenusSync();
+  if (!(opts && opts.menusFlushed)) await flushMenusSync();
   try {
     const tokens = await getTokens();
     if (tokens?.refresh) {
@@ -186,8 +187,8 @@ const isUserScopedKey = (k) =>
     (k.startsWith('USER_') && k.endsWith('_DATA')) || // anciennes copies par compte
     k.startsWith('__SECURE__'));
 
-export async function clearLocalUserData() {
-  await flushMenusSync();
+export async function clearLocalUserData(opts = {}) {
+  if (!(opts && opts.menusFlushed)) await flushMenusSync();
   resetMenusSyncSession();
   // Jetons, compte et profil : stockage chiffré ET ancienne copie AsyncStorage.
   await removeSecureItems(SECURE_KEYS);

@@ -237,6 +237,11 @@ function surReponse(reponse) {
     if (traitees.has(trace)) return; // lancement à froid : l'écouteur et la dernière réponse se recoupent
     traitees.add(trace);
     enAttente = cible;
+    // Réponse traitée : oubliée par le système, pour ne pas rouvrir Menus au prochain démarrage.
+    try {
+      if (nat && typeof nat.clearLastNotificationResponseAsync === 'function')
+        Promise.resolve(nat.clearLastNotificationResponseAsync()).catch(() => {});
+    } catch {}
     for (const fn of [...ouvertures]) {
       try {
         fn(cible);

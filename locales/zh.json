@@ -1149,10 +1149,14 @@
       "lait": "牛奶",
       "oeuf": "鸡蛋",
       "poisson": "鱼",
-      "crustaces": "甲壳类",
+      "crustaces": "甲壳类和软体动物",
       "soja": "大豆",
       "sesame": "芝麻",
-      "fruits-a-coque": "坚果",
+      "fruits-a-coque": "坚果和花生",
+      "celeri": "芹菜",
+      "moutarde": "芥末",
+      "lupin": "羽扇豆",
+      "sulfites": "亚硫酸盐",
       "miel": "蜂蜜"
     },
     "onboarding": {
@@ -1170,7 +1174,7 @@
     },
     "settings": {
       "title": "菜单设置",
-      "intro": "您的选择会应用于接下来制定的每周菜单。",
+      "intro": "您的选择会应用于接下来制定的每周菜单。已安排但不再符合的餐食会在“我的一周”中提示。",
       "household": "我的家庭",
       "meals": "我的餐食",
       "mealsHint": "点击餐食可开启或移除。",
@@ -1233,6 +1237,10 @@
       "estimateNote": "价格为预估，门店价格可能有所不同。",
       "dirty": "自上次添加到清单后，您已修改本周内容。",
       "dirtyAction": "查看购物清单",
+      "unsuitable": "{{count}} 顿餐食已不再符合您的过敏或饮食要求。",
+      "unsuitableAction": "替换这些餐食",
+      "unsuitableBadge": "已不再符合您的过敏或饮食要求",
+      "unsuitableConfirm": "{{count}} 顿餐食已不再符合您的过敏或饮食要求。其食材将被添加到您的清单。",
       "warn": {
         "no_eligible": "没有符合您要求的食谱。请在设置中放宽条件。",
         "few_recipes": "符合条件的食谱较少，部分餐食会重复。",
@@ -1274,6 +1282,8 @@
         "3": "较难"
       },
       "servings": "人数",
+      "unsuitable": "此食谱不符合您的过敏或饮食要求：{{list}}。",
+      "servingsKids": "其中 {{count}} 名儿童",
       "costNote": "总计约 {{total}}，每人约 {{per}}",
       "ingredients": "食材",
       "optional": "可选",
