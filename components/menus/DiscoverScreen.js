@@ -1,8 +1,20 @@
 // Découvrir : recherche, filtres, favoris, de saison, "Dans mon frigo" (anti-gaspi), historique.
-import React, { memo, useMemo, useState, useDeferredValue, useCallback } from 'react';
+import React, { memo, useMemo, useState, useDeferredValue, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { searchRecipes, recipesByPantry, eligibleRecipes, norm, formatEur } from '../../lib/menus';
+import {
+  searchRecipes,
+  recipesByPantry,
+  eligibleRecipes,
+  searchCatalog,
+  pantryCatalog,
+  buildSearchIndex,
+  eligibleCatalog,
+  catalogActive,
+  idFromRow,
+  norm,
+  formatEur,
+} from '../../lib/menus';
 import { T } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
@@ -22,6 +34,18 @@ const MODE_ICON = {
 };
 const COURSES = ['plat', 'entree', 'dessert', 'petit-dejeuner'];
 const QUICK_TAGS = ['rapide', 'leger', 'economique', 'enfants', 'batch', 'sans-cuisson'];
+const PAGE = 30; // recettes ajoutées à chaque fin de liste
+const FRIDGE_LIMIT = 40;
+
+// Ordre sans recherche : les recettes relues d'abord, puis les générées dans un ordre mélangé stable pour la journée.
+const feedSeed = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+};
+
+// Une entrée de liste est un numéro : >= 0 case générée, < 0 recette de result.legacy[-v - 1].
+const recipeOf = (res, v, catalog) => (v < 0 ? res.legacy[-v - 1] : catalog.getRow(v));
+const idOfRef = (res, v) => (v < 0 ? res.legacy[-v - 1].id : idFromRow(v));
 
 const RecipeRow = memo(function RecipeRow({
   recipe,
@@ -74,6 +98,8 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const t = useT();
   const m = useMenus();
   const { recipes, myRecipes, texts, ingredients, favorites, profile, fridge, history, lang } = m;
+  const catalog = m.recipeById;
+  const useCat = catalogActive(catalog);
   const [mode, setMode] = useState('ideas');
   const [q, setQ] = useState('');
   const dq = useDeferredValue(q);
@@ -84,18 +110,42 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const [useUp, setUseUp] = useState([]);
 
   // Ses propres recettes restent toujours visibles : leurs tags sont inconnus, l'écran avertit.
+  // Catalogue complet : la partie écrite à la main (objets) et les cases admises (masque), jamais 12 000 objets.
   const base = useMemo(() => {
-    if (mode === 'myRecipes') return myRecipes;
-    if (!mine) return recipes;
+    if (mode === 'myRecipes') return { legacy: myRecipes, allowed: null };
+    if (useCat) {
+      if (!mine) return { legacy: undefined, allowed: null };
+      const el = eligibleCatalog(catalog, ingredients, profile);
+      return {
+        legacy: [...el.legacyAll, ...myRecipes.filter((r) => !el.legacyAllIds.has(r.id))],
+        allowed: el.gen.all,
+      };
+    }
+    if (!mine) return { legacy: recipes, allowed: null };
     const all = eligibleRecipes({ recipes, ingredients, profile }).all;
     const vus = new Set(all.map((r) => r.id));
-    return [...all, ...myRecipes.filter((r) => !vus.has(r.id))];
-  }, [mode, mine, recipes, myRecipes, ingredients, profile]);
+    return { legacy: [...all, ...myRecipes.filter((r) => !vus.has(r.id))], allowed: null };
+  }, [mode, mine, useCat, catalog, recipes, myRecipes, ingredients, profile]);
   const month = new Date().getMonth();
+  const seed = useMemo(feedSeed, []);
+  const tl = texts.lang || lang;
+
+  // Index de titres de la langue : construit par tranches à l'ouverture, pour que la première frappe soit rapide.
+  useEffect(() => {
+    if (!useCat) return undefined;
+    let off = false;
+    buildSearchIndex(tl, {
+      yieldFn: () => new Promise((r) => setTimeout(r, 0)),
+      cancelled: () => off,
+    }).catch(() => {});
+    return () => {
+      off = true;
+    };
+  }, [useCat, tl]);
 
   const results = useMemo(() => {
-    if (mode === 'fridge' || mode === 'history') return [];
-    return searchRecipes(base, {
+    if (mode === 'fridge' || mode === 'history') return null;
+    const opts = {
       query: dq,
       filters: {
         course,
@@ -106,18 +156,65 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       },
       titleOf: (r) => texts.recipeTitle(r.id),
       ingredientNameOf: (k) => texts.ingredientName(k),
-      limit: 150,
-    });
-  }, [mode, base, dq, course, tags, favorites, month, texts]);
+    };
+    if (useCat && mode !== 'myRecipes') {
+      try {
+        const r = searchCatalog({
+          ...opts,
+          catalog,
+          lang: tl,
+          legacyList: base.legacy,
+          allowedRows: base.allowed,
+          shuffleSeed: seed,
+        });
+        return { total: r.total, refs: Array.from(r.refs), legacy: r.legacy };
+      } catch {
+        /* repli : recettes écrites à la main seules */
+      }
+    }
+    const list = searchRecipes(base.legacy || recipes, opts);
+    return { total: list.length, refs: list.map((_, i) => -(i + 1)), legacy: list };
+  }, [mode, base, dq, course, tags, favorites, month, texts, useCat, catalog, tl, seed, recipes]);
+
+  // Pagination : 30 recettes d'abord, 30 de plus à chaque fin de liste ; repart à 30 quand les résultats changent.
+  // La clé de pagination ignore les favoris hors du mode favoris : cocher un cœur ne ramène pas la liste à 30.
+  const favDep = mode === 'favorites' ? favorites : null;
+  const pageKey = useMemo(
+    () => ({}),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [mode, base, dq, course, tags, month, texts, useCat, catalog, tl, seed, recipes, favDep]
+  );
+  const [page, setPage] = useState({ res: null, n: PAGE });
+  const shown = results && page.res === pageKey ? page.n : PAGE;
+  const onEnd = useCallback(() => {
+    if (results && shown < results.total) setPage({ res: pageKey, n: shown + PAGE });
+  }, [results, shown, pageKey]);
+  const pageData = useMemo(() => (results ? results.refs.slice(0, shown) : []), [results, shown]);
 
   const fridgeResults = useMemo(() => {
     if (mode !== 'fridge' || fridge.length === 0) return [];
-    return recipesByPantry(base, fridge, {
+    const toUseUp = useUp.filter((k) => fridge.includes(k));
+    if (useCat) {
+      try {
+        return pantryCatalog({
+          catalog,
+          legacyList: base.legacy,
+          allowedRows: base.allowed,
+          ingredients,
+          have: fridge,
+          toUseUp,
+          limit: FRIDGE_LIMIT,
+        }).items;
+      } catch {
+        /* repli ci-dessous */
+      }
+    }
+    return recipesByPantry(base.legacy || recipes, fridge, {
       ingredients,
-      toUseUp: useUp.filter((k) => fridge.includes(k)),
-      limit: 40,
+      toUseUp,
+      limit: FRIDGE_LIMIT,
     });
-  }, [mode, base, fridge, ingredients, useUp]);
+  }, [mode, base, fridge, ingredients, useUp, useCat, catalog, recipes]);
 
   const pickable = useMemo(() => {
     if (mode !== 'fridge') return [];
@@ -153,10 +250,12 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   );
 
   const renderRecipe = useCallback(
-    ({ item }) => {
-      const r = item.recipe || item;
+    ({ item: entry }) => {
+      const item = typeof entry === 'number' ? null : entry;
+      const r = item ? item.recipe || item : results && recipeOf(results, entry, catalog);
+      if (!r) return null;
       let extra = '';
-      if (item.recipe) {
+      if (item && item.recipe) {
         const miss = item.missing.slice(0, 3).map((k) => texts.ingredientName(k));
         extra =
           item.missing.length === 0
@@ -173,7 +272,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           title={texts.recipeTitle(r.id)}
           ingredients={ingredients}
           meta={
-            item.recipe
+            item && item.recipe
               ? t('fridge.coverage', { pct: Math.round(item.coverage * 100) }) +
                 ' · ' +
                 t('recipe.minutes', { n: r.timeMin })
@@ -186,8 +285,13 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         />
       );
     },
-    [texts, ingredients, favorites, onOpenRecipe, m, metaOf, t]
+    [texts, ingredients, favorites, onOpenRecipe, m, metaOf, t, results, catalog]
   );
+
+  const keyOf = (i) => {
+    if (typeof i === 'number') return results ? idOfRef(results, i) : String(i);
+    return i.recipe ? i.recipe.id : i.id;
+  };
 
   const modeBar = (
     <ScrollView
@@ -247,7 +351,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   );
 
   let header;
-  let data = results;
+  let data = pageData;
   let empty = null;
   if (mode === 'myRecipes') {
     header = (
@@ -442,13 +546,16 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       {modeBar}
       <FlatList
         data={data}
-        keyExtractor={(i) => (i.recipe ? i.recipe.id : i.id)}
+        keyExtractor={keyOf}
         renderItem={renderRecipe}
+        onEndReached={mode === 'fridge' ? undefined : onEnd}
+        onEndReachedThreshold={0.6}
         ListHeaderComponent={header}
         ListEmptyComponent={empty}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
         initialNumToRender={10}
+        maxToRenderPerBatch={8}
         windowSize={7}
         removeClippedSubviews
         showsVerticalScrollIndicator={false}

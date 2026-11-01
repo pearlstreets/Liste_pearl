@@ -1,0 +1,6652 @@
+[
+ {
+  "nom": "abricots",
+  "cle": "abricot",
+  "nouvelle": true,
+  "nom_fr": "Abricot",
+  "fiche": {
+   "emoji": "🍑",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 45
+   }
+  },
+  "nutrition": {
+   "kcal_100": 48,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "abricots secs",
+  "cle": "abricot-sec",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 240,
+   "prot_100": 3.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "agar-agar",
+  "cle": "agar",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ail",
+  "cle": "ail",
+  "nouvelle": false,
+  "conversions": {
+   "gousse": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 130,
+   "prot_100": 6,
+   "g_par_u": 4
+  }
+ },
+ {
+  "nom": "amandes",
+  "cle": "amande",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌰",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": [
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Amandes",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 620,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ananas",
+  "cle": "ananas",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 50,
+   "prot_100": 0.5,
+   "g_par_u": 900
+  }
+ },
+ {
+  "nom": "aneth",
+  "cle": "aneth",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 50,
+   "pack": {
+    "qty": 30,
+    "unit": "g",
+    "label": "botte"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Aneth",
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 3.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "artichauts",
+  "cle": "artichaut",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 1.2,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "pièce"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Artichaut",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 47,
+   "prot_100": 3,
+   "g_par_u": 120
+  }
+ },
+ {
+  "nom": "asperges vertes",
+  "cle": "asperge-verte",
+  "nouvelle": true,
+  "fiche": {
+   "id": "asperge-verte",
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "botte"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Asperge verte",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 22,
+   "prot_100": 2.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "aubergines",
+  "cle": "aubergine",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 250
+   }
+  },
+  "nutrition": {
+   "kcal_100": 24,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "avocats",
+  "cle": "avocat",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 160,
+   "prot_100": 2,
+   "g_par_u": 200
+  }
+ },
+ {
+  "nom": "bacon",
+  "cle": "bacon",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥓",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Bacon",
+  "conversions": {
+   "tranche": {
+    "vers": "g",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 280,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "baguette",
+  "cle": "baguette",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 9,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "bananes",
+  "cle": "banane",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 120
+   }
+  },
+  "nutrition": {
+   "kcal_100": 90,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "basilic",
+  "cle": "basilic",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 41,
+   "prot_100": 3.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "bavettes",
+  "cle": "boeuf-bavette",
+  "nouvelle": true,
+  "fiche": {
+   "id": "boeuf-bavette",
+   "emoji": "🥩",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 22,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Bavette de bœuf",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "betteraves",
+  "cle": "betterave",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 100
+   }
+  },
+  "nutrition": {
+   "kcal_100": 45,
+   "prot_100": 1.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "beurre",
+  "cle": "beurre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 745,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "beurre de cacahuète",
+  "cle": "beurre-cacahuete",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 16
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 25,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "beurre demi-sel",
+  "cle": "beurre-demi-sel",
+  "nouvelle": true,
+  "nom_fr": "Beurre demi-sel",
+  "fiche": {
+   "emoji": "🧈",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 250,
+    "unit": "g",
+    "label": "plaquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 740,
+   "prot_100": 0.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "bière",
+  "cle": "biere",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 43,
+   "prot_100": 0.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "biscuits",
+  "cle": "speculoos",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 8
+   }
+  },
+  "nutrition": {
+   "kcal_100": 450,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "blancs de poulet",
+  "cle": "poulet-filet",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   },
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 115,
+   "prot_100": 23,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "boeuf à braiser",
+  "cle": "boeuf-paleron",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 140,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "boeuf haché",
+  "cle": "boeuf-hache",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 190,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "bouillon de boeuf",
+  "cle": "bouillon",
+  "nouvelle": false,
+  "conversions": {
+   "cube": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 10,
+   "g_par_u": 10
+  }
+ },
+ {
+  "nom": "bouillon de légumes",
+  "cle": "bouillon",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cube": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 230,
+   "prot_100": 10,
+   "g_par_u": 10
+  }
+ },
+ {
+  "nom": "bouillon de volaille",
+  "cle": "bouillon",
+  "nouvelle": false,
+  "conversions": {
+   "cube": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 200,
+   "prot_100": 10,
+   "g_par_u": 10
+  }
+ },
+ {
+  "nom": "boulgour",
+  "cle": "boulgour",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "brie",
+  "cle": "brie",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 11,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "portion"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Brie",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 330,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "brocoli",
+  "cle": "brocoli",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 35,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "burrata",
+  "cle": "burrata",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "burrata",
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerUnit": 2.2,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "boule"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Burrata",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 240,
+   "prot_100": 15,
+   "g_par_u": 125
+  }
+ },
+ {
+  "nom": "butternut",
+  "cle": "courge",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 45,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cacahuètes",
+  "cle": "cacahuete",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 26,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cacao",
+  "cle": "cacao",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 8
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "café",
+  "cle": "cafe",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "g",
+    "facteur": 0.2
+   }
+  },
+  "nutrition": {
+   "kcal_100": 241,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "calamars",
+  "cle": "calamar",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🦑",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Calamar",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 85,
+   "prot_100": 16,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cannelle",
+  "cle": "cannelle",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   },
+   "pincee": {
+    "vers": "cc",
+    "facteur": 0.25
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "câpres",
+  "cle": "capres",
+  "nouvelle": true,
+  "nom_fr": "Câpres",
+  "fiche": {
+   "emoji": "🫙",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 25,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "bocal"
+   },
+   "pantry": true
+  },
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "caramel",
+  "cle": "caramel",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍮",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 10,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Sauce caramel",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 340,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "carottes",
+  "cle": "carotte",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 100
+   }
+  },
+  "nutrition": {
+   "kcal_100": 36,
+   "prot_100": 0.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "céleri branche",
+  "cle": "celeri-branche",
+  "nouvelle": true,
+  "fiche": {
+   "id": "celeri-branche",
+   "emoji": "🥬",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 3.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "pied"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Céleri branche",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 40
+   }
+  },
+  "nutrition": {
+   "kcal_100": 16,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "céleri-rave",
+  "cle": "celeri-rave",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥬",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 2.5,
+   "pack": {
+    "qty": 1000,
+    "unit": "g",
+    "label": "pièce"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Céleri-rave",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 1.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cerises",
+  "cle": "cerise",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍒",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 7,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Cerise",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 63,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "champignons",
+  "cle": "champignon",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 22,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "champignons shiitakés",
+  "cle": "shiitake",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "shiitake",
+   "emoji": "🍄",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 15,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Shiitaké",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 34,
+   "prot_100": 2.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chantilly",
+  "cle": "chantilly",
+  "nouvelle": true,
+  "fiche": {
+   "id": "chantilly",
+   "emoji": "🍦",
+   "aisle": "cremerie",
+   "pricePerUnit": 2.5,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "bombe"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Chantilly",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 2,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "chapelure",
+  "cle": "chapelure",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "cs": {
+    "vers": "g",
+    "facteur": 8
+   }
+  },
+  "nutrition": {
+   "kcal_100": 370,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cheddar",
+  "cle": "cheddar",
+  "nouvelle": true,
+  "nom_fr": "Cheddar",
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 12,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "paquet"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "tranche": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 400,
+   "prot_100": 25,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chèvre",
+  "cle": "chevre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chèvre frais",
+  "cle": "chevre-frais",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "bûche"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Chèvre frais",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 210,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chipolatas",
+  "cle": "chipolata",
+  "nouvelle": true,
+  "fiche": {
+   "id": "chipolata",
+   "emoji": "🌭",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Chipolatas",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 50
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 14,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chocolat blanc",
+  "cle": "chocolat-blanc",
+  "nouvelle": true,
+  "fiche": {
+   "id": "chocolat-blanc",
+   "emoji": "🍫",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "tablette"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait",
+    "soja"
+   ]
+  },
+  "nom_fr": "Chocolat blanc",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 550,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chocolat noir",
+  "cle": "chocolat-noir",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 540,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chorizo",
+  "cle": "chorizo",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 450,
+   "prot_100": 24,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chou chinois",
+  "cle": "chou-chinois",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥬",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 2.8,
+   "pack": {
+    "qty": 800,
+    "unit": "g",
+    "label": "pièce"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Chou chinois",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 13,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chou rouge",
+  "cle": "chou-rouge",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 28,
+   "prot_100": 1.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "chou-fleur",
+  "cle": "chou-fleur",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "choux de Bruxelles",
+  "cle": "chou-bruxelles",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 45,
+   "prot_100": 4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ciboulette",
+  "cle": "ciboulette",
+  "nouvelle": false,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cidre",
+  "cle": "cidre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "citronnelle",
+  "cle": "citronnelle",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 0.6,
+   "pack": {
+    "qty": 3,
+    "unit": "u",
+    "label": "sachet de 3"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Tige de citronnelle",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 99,
+   "prot_100": 1.8,
+   "g_par_u": 20
+  }
+ },
+ {
+  "nom": "citrons",
+  "cle": "citron",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 29,
+   "prot_100": 1.1,
+   "g_par_u": 100
+  }
+ },
+ {
+  "nom": "citrons verts",
+  "cle": "citron-vert",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 0.7,
+   "g_par_u": 60
+  }
+ },
+ {
+  "nom": "coeurs d'artichauts",
+  "cle": "coeur-artichaut",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥬",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 8,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "boîte"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Cœurs d'artichauts",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "coings",
+  "cle": "coing",
+  "nouvelle": true,
+  "fiche": {
+   "id": "coing",
+   "emoji": "🍐",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 3.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "lot"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Coing",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 300
+   }
+  },
+  "nutrition": {
+   "kcal_100": 57,
+   "prot_100": 0.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "comté",
+  "cle": "comte",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 410,
+   "prot_100": 27,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "concombre",
+  "cle": "concombre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 12,
+   "prot_100": 0.6,
+   "g_par_u": 300
+  }
+ },
+ {
+  "nom": "confiture",
+  "cle": "confiture",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍓",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 6,
+   "pack": {
+    "qty": 370,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Confiture",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "cs": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 0.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "coriandre",
+  "cle": "coriandre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 23,
+   "prot_100": 2.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cornichons",
+  "cle": "cornichon",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥒",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 6,
+   "pack": {
+    "qty": 190,
+    "unit": "g",
+    "label": "bocal"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Cornichon",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 12,
+   "prot_100": 0.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "côtelettes d'agneau",
+  "cle": "cotelette-agneau",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍖",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 28,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Côtelettes d'agneau",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 90
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "côtes de porc",
+  "cle": "cotes-porc",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥩",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 700,
+    "unit": "g",
+    "label": "barquette de 4"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Côte de porc",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 180
+   }
+  },
+  "nutrition": {
+   "kcal_100": 190,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "coulis de tomates",
+  "cle": "coulis-tomate",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍅",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 2.4,
+   "pack": {
+    "qty": 500,
+    "unit": "ml",
+    "label": "brique"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Coulis de tomates",
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 1.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "courgettes",
+  "cle": "courgette",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 17,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cream cheese",
+  "cle": "cream-cheese",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 15,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Cream cheese",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "crème fraîche",
+  "cle": "creme-fraiche",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "ml",
+    "facteur": 15
+   },
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 290,
+   "prot_100": 2.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "crème liquide",
+  "cle": "creme",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 2.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "crevettes",
+  "cle": "crevette",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 85,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cuisses de poulet",
+  "cle": "cuisse-poulet",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 200,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "cumin",
+  "cle": "cumin",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 375,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "curcuma",
+  "cle": "curcuma",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   },
+   "pincee": {
+    "vers": "cc",
+    "facteur": 0.25
+   }
+  },
+  "nutrition": {
+   "kcal_100": 354,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "curry",
+  "cle": "curry",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "dattes",
+  "cle": "datte",
+  "nouvelle": true,
+  "nom_fr": "Dattes",
+  "fiche": {
+   "emoji": "🌴",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 8,
+   "pack": {
+    "qty": 250,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 280,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "dos de cabillaud",
+  "cle": "cabillaud",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "eau de coco",
+  "cle": "eau-de-coco",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥥",
+   "aisle": "boissons",
+   "pricePerKgOrL": 4,
+   "pack": {
+    "qty": 1000,
+    "unit": "ml",
+    "label": "brique"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Eau de coco",
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 19,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "eau gazeuse",
+  "cle": "eau-gazeuse",
+  "nouvelle": true,
+  "fiche": {
+   "id": "eau-gazeuse",
+   "emoji": "💧",
+   "aisle": "boissons",
+   "pricePerKgOrL": 1.2,
+   "pack": {
+    "qty": 1000,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Eau gazeuse",
+  "conversions": {
+   "L": {
+    "vers": "ml",
+    "facteur": 1000
+   }
+  },
+  "nutrition": {
+   "kcal_100": 0,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "échalotes",
+  "cle": "echalote",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 72,
+   "prot_100": 2.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "emmental",
+  "cle": "emmental",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 10,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "bloc"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Emmental",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 380,
+   "prot_100": 28,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "endives",
+  "cle": "endive",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 17,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "épaule d'agneau",
+  "cle": "agneau",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "épinards",
+  "cle": "epinard",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 2.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "escalopes de dinde",
+  "cle": "dinde-escalope",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 110,
+   "prot_100": 24,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "escalopes de veau",
+  "cle": "escalope-veau",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥩",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 28,
+   "pack": {
+    "qty": 480,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Escalope de veau",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 120
+   }
+  },
+  "nutrition": {
+   "kcal_100": 110,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "estragon",
+  "cle": "estragon-frais",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 60,
+   "pack": {
+    "qty": 20,
+    "unit": "g",
+    "label": "botte"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Estragon frais",
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 50,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "extrait de vanille",
+  "cle": "vanille",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 290,
+   "prot_100": 0.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "farfalle",
+  "cle": "pates",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "farine",
+  "cle": "farine",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "cs": {
+    "vers": "g",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 10,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fécule de maïs",
+  "cle": "maizena",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   },
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 0.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fenouil",
+  "cle": "fenouil",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 250
+   }
+  },
+  "nutrition": {
+   "kcal_100": 31,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "feta",
+  "cle": "feta",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 15,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fèves",
+  "cle": "feves",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 70,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "figues",
+  "cle": "figue",
+  "nouvelle": true,
+  "fiche": {
+   "id": "figue",
+   "emoji": "🍑",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 12,
+   "pack": {
+    "qty": 250,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Figue",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 50
+   }
+  },
+  "nutrition": {
+   "kcal_100": 70,
+   "prot_100": 0.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filet mignon de porc",
+  "cle": "porc-filet",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 450
+   }
+  },
+  "nutrition": {
+   "kcal_100": 143,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de bar",
+  "cle": "filet-bar",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "filet-bar",
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 28,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "2 filets"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "nom_fr": "Filet de bar",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 100,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de colin",
+  "cle": "colin",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de dorade",
+  "cle": "dorade",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerUnit": 3.5,
+   "pack": {
+    "qty": 2,
+    "unit": "u",
+    "label": "2 filets"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "nom_fr": "Filet de dorade",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 20,
+   "g_par_u": 120
+  }
+ },
+ {
+  "nom": "filets de lieu noir",
+  "cle": "lieu-noir",
+  "nouvelle": true,
+  "nom_fr": "Filet de lieu noir",
+  "fiche": {
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de maquereau",
+  "cle": "maquereau",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 90
+   }
+  },
+  "nutrition": {
+   "kcal_100": 220,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de merlu",
+  "cle": "merlu",
+  "nouvelle": true,
+  "fiche": {
+   "id": "merlu",
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 18,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "filets"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "nom_fr": "Filet de merlu",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de sole",
+  "cle": "sole",
+  "nouvelle": true,
+  "nom_fr": "Filet de sole",
+  "fiche": {
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 30,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 60
+   }
+  },
+  "nutrition": {
+   "kcal_100": 85,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "filets de truite",
+  "cle": "truite",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 125
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "flocons d'avoine",
+  "cle": "flocons-avoine",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 370,
+   "prot_100": 13,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fraises",
+  "cle": "fraise",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 35,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "framboises",
+  "cle": "framboise",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "framboise",
+   "emoji": "🍓",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 24,
+   "pack": {
+    "qty": 125,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Framboise",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 52,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fromage blanc",
+  "cle": "fromage-blanc",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 75,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "fruits de la passion",
+  "cle": "fruit-passion",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥭",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 0.9,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "pièce"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Fruit de la passion",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 97,
+   "prot_100": 2.2,
+   "g_par_u": 35
+  }
+ },
+ {
+  "nom": "fusilli",
+  "cle": "pates",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gambas",
+  "cle": "gambas",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🦐",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 30,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "crustaces"
+   ]
+  },
+  "nom_fr": "Gambas",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 35
+   }
+  },
+  "nutrition": {
+   "kcal_100": 90,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gélatine",
+  "cle": "gelatine",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "gelatine",
+   "emoji": "🍮",
+   "aisle": "epicerie",
+   "pricePerUnit": 0.32,
+   "pack": {
+    "qty": 6,
+    "unit": "u",
+    "label": "sachet de 6"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Gélatine en feuilles",
+  "conversions": {
+   "feuille": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 340,
+   "prot_100": 85,
+   "g_par_u": 2
+  }
+ },
+ {
+  "nom": "gigot d'agneau",
+  "cle": "gigot-agneau",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "gigot-agneau",
+   "emoji": "🍖",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 17,
+   "pack": {
+    "qty": 1000,
+    "unit": "g",
+    "label": "gigot"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Gigot d'agneau",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 180,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gingembre",
+  "cle": "gingembre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 1.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gingembre en poudre",
+  "cle": "gingembre-poudre",
+  "nouvelle": true,
+  "nom_fr": "Gingembre en poudre",
+  "fiche": {
+   "emoji": "🫚",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 83,
+   "pack": {
+    "qty": 30,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true
+  },
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 340,
+   "prot_100": 9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "glace vanille",
+  "cle": "glace-vanille",
+  "nouvelle": true,
+  "nom_fr": "Glace à la vanille",
+  "fiche": {
+   "emoji": "🍨",
+   "aisle": "surgeles",
+   "pricePerKgOrL": 7,
+   "pack": {
+    "qty": 500,
+    "unit": "ml",
+    "label": "pot"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait",
+    "oeuf"
+   ]
+  },
+  "conversions": {
+   "u": {
+    "vers": "ml",
+    "facteur": 60
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "glaçons",
+  "cle": "glacons",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧊",
+   "aisle": "surgeles",
+   "pricePerUnit": 0.03,
+   "pack": {
+    "qty": 40,
+    "unit": "u",
+    "label": "sachet"
+   },
+   "pantry": true,
+   "allergens": []
+  },
+  "nom_fr": "Glaçons",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 0,
+   "prot_100": 0,
+   "g_par_u": 20
+  }
+ },
+ {
+  "nom": "gnocchis",
+  "cle": "gnocchi",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gorgonzola",
+  "cle": "gorgonzola",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 18,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "portion"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Gorgonzola",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gousse de vanille",
+  "cle": "gousse-vanille",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "epicerie",
+   "pricePerUnit": 2.5,
+   "pack": {
+    "qty": 2,
+    "unit": "u",
+    "label": "tube"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Gousse de vanille",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 290,
+   "prot_100": 0.1,
+   "g_par_u": 2
+  }
+ },
+ {
+  "nom": "graines de chia",
+  "cle": "chia",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 12
+   }
+  },
+  "nutrition": {
+   "kcal_100": 490,
+   "prot_100": 16,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "graines de sésame",
+  "cle": "sesame",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 590,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "gruyère",
+  "cle": "gruyere",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 18,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "bloc"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Gruyère",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 410,
+   "prot_100": 29,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "guanciale",
+  "cle": "guanciale",
+  "nouvelle": true,
+  "fiche": {
+   "id": "guanciale",
+   "emoji": "🥓",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 28,
+   "pack": {
+    "qty": 150,
+    "unit": "g",
+    "label": "morceau"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Guanciale",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 650,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "halloumi",
+  "cle": "halloumi",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 12.5,
+   "pack": {
+    "qty": 225,
+    "unit": "g",
+    "label": "bloc"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Halloumi",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 320,
+   "prot_100": 22,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "haricots blancs",
+  "cle": "haricots-blancs",
+  "nouvelle": false,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 265
+   }
+  },
+  "nutrition": {
+   "kcal_100": 100,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "haricots rouges",
+  "cle": "haricots-rouges",
+  "nouvelle": false,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 250
+   }
+  },
+  "nutrition": {
+   "kcal_100": 110,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "haricots verts",
+  "cle": "haricot-vert",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 31,
+   "prot_100": 1.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "herbes de Provence",
+  "cle": "herbes",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 10,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "huile",
+  "cle": "huile-tournesol",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 900,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "huile d'olive",
+  "cle": "huile-olive",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 820,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "huile de sésame",
+  "cle": "huile-sesame",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 900,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "jambon",
+  "cle": "jambon-blanc",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "tranche": {
+    "vers": "g",
+    "facteur": 45
+   }
+  },
+  "nutrition": {
+   "kcal_100": 110,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "jambon cru",
+  "cle": "jambon-cru",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "jambon-cru",
+   "emoji": "🥓",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 28,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "4 tranches"
+   },
+   "pantry": false,
+   "allergens": [
+    "porc"
+   ]
+  },
+  "nom_fr": "Jambon cru",
+  "conversions": {
+   "tranche": {
+    "vers": "g",
+    "facteur": 25
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 26,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "jus d'orange",
+  "cle": "jus-orange",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 45,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "jus de citron",
+  "cle": "citron",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "u",
+    "facteur": 0.33
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 0.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ketchup",
+  "cle": "ketchup",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍅",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 4.4,
+   "pack": {
+    "qty": 500,
+    "unit": "ml",
+    "label": "flacon"
+   },
+   "pantry": true,
+   "allergens": []
+  },
+  "nom_fr": "Ketchup",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "cL": {
+    "vers": "cs",
+    "facteur": 0.67
+   }
+  },
+  "nutrition": {
+   "kcal_100": 100,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "kiwis",
+  "cle": "kiwi",
+  "nouvelle": true,
+  "fiche": {
+   "id": "kiwi",
+   "emoji": "🥝",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Kiwi",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 80
+   }
+  },
+  "nutrition": {
+   "kcal_100": 55,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lait",
+  "cle": "lait",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 64,
+   "prot_100": 3.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lait d'amande",
+  "cle": "lait-amande",
+  "nouvelle": true,
+  "nom_fr": "Lait d'amande",
+  "fiche": {
+   "emoji": "🥛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 2.2,
+   "pack": {
+    "qty": 1000,
+    "unit": "ml",
+    "label": "brique"
+   },
+   "pantry": false,
+   "allergens": [
+    "fruits-a-coque"
+   ]
+  },
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 0.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lait d'avoine",
+  "cle": "boisson-avoine",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "boisson-avoine",
+   "emoji": "🥛",
+   "aisle": "boissons",
+   "pricePerKgOrL": 1.8,
+   "pack": {
+    "qty": 1000,
+    "unit": "ml",
+    "label": "brique"
+   },
+   "pantry": false,
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "nom_fr": "Boisson à l'avoine",
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 46,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lait de coco",
+  "cle": "lait-coco",
+  "nouvelle": false,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 180,
+   "prot_100": 1.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "laitue",
+  "cle": "salade",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 14,
+   "prot_100": 1.3,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "lardons",
+  "cle": "lardons",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 16,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lentilles corail",
+  "cle": "lentilles-corail",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 25,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "lentilles vertes",
+  "cle": "lentilles",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 340,
+   "prot_100": 24,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "levure chimique",
+  "cle": "levure",
+  "nouvelle": false,
+  "conversions": {
+   "sachet": {
+    "vers": "g",
+    "facteur": 11
+   },
+   "cc": {
+    "vers": "g",
+    "facteur": 4
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 0.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "linguine",
+  "cle": "pates",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "magrets de canard",
+  "cle": "magret-canard",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "magret-canard",
+   "emoji": "🦆",
+   "aisle": "viandes-poissons",
+   "pricePerUnit": 8.5,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "magret"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Magret de canard",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 240,
+   "prot_100": 19,
+   "g_par_u": 350
+  }
+ },
+ {
+  "nom": "maïs",
+  "cle": "mais",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 95,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "mangues",
+  "cle": "mangue",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 60,
+   "prot_100": 0.8,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "mayonnaise",
+  "cle": "mayonnaise",
+  "nouvelle": true,
+  "fiche": {
+   "id": "mayonnaise",
+   "emoji": "🧴",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 235,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "oeuf"
+   ]
+  },
+  "nom_fr": "Mayonnaise",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 700,
+   "prot_100": 1.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "melon",
+  "cle": "melon",
+  "nouvelle": true,
+  "fiche": {
+   "id": "melon",
+   "emoji": "🍈",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 2.2,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "pièce"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Melon",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 34,
+   "prot_100": 0.8,
+   "g_par_u": 600
+  }
+ },
+ {
+  "nom": "menthe",
+  "cle": "menthe",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 44,
+   "prot_100": 3.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "merguez",
+  "cle": "merguez",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌭",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Merguez",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 70
+   }
+  },
+  "nutrition": {
+   "kcal_100": 280,
+   "prot_100": 15,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "miel",
+  "cle": "miel",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 20
+   },
+   "cc": {
+    "vers": "g",
+    "facteur": 7
+   }
+  },
+  "nutrition": {
+   "kcal_100": 325,
+   "prot_100": 0.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "moutarde",
+  "cle": "moutarde",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 160,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "moutarde à l'ancienne",
+  "cle": "moutarde",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 160,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "mozzarella",
+  "cle": "mozzarella",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 125
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "mûres",
+  "cle": "mure",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🫐",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 20,
+   "pack": {
+    "qty": 125,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Mûre",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 43,
+   "prot_100": 1.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "muscade",
+  "cle": "muscade",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "pincee": {
+    "vers": "g",
+    "facteur": 0.3
+   }
+  },
+  "nutrition": {
+   "kcal_100": 525,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "myrtilles",
+  "cle": "myrtille",
+  "nouvelle": true,
+  "fiche": {
+   "id": "myrtille",
+   "emoji": "🫐",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 20,
+   "pack": {
+    "qty": 125,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Myrtille",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 57,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "navets",
+  "cle": "navet",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "nectarines",
+  "cle": "nectarine",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍑",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Nectarine",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 44,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "noisettes",
+  "cle": "noisette",
+  "nouvelle": true,
+  "fiche": {
+   "id": "noisette",
+   "emoji": "🌰",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 20,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": [
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Noisettes",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 650,
+   "prot_100": 15,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "noix",
+  "cle": "noix",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 650,
+   "prot_100": 15,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "noix de cajou",
+  "cle": "noix-de-cajou",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥜",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 16,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": [
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Noix de cajou",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 18,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "noix de coco râpée",
+  "cle": "noix-coco-rapee",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "cs": {
+    "vers": "g",
+    "facteur": 8
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "noix de Saint-Jacques",
+  "cle": "saint-jacques",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🐚",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 38,
+   "pack": {
+    "qty": 250,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Noix de Saint-Jacques",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "nouilles chinoises",
+  "cle": "nouilles",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "nouilles de riz",
+  "cle": "nouilles-riz",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "oeufs",
+  "cle": "oeuf",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 140,
+   "prot_100": 12.7,
+   "g_par_u": 60
+  }
+ },
+ {
+  "nom": "oignons",
+  "cle": "oignon",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 1.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "oignons rouges",
+  "cle": "oignon-rouge",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧅",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 2.8,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "filet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Oignon rouge",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 100
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "olives noires",
+  "cle": "olives",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "olives vertes",
+  "cle": "olives",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 145,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "oranges",
+  "cle": "orange",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 45,
+   "prot_100": 0.9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "orecchiette",
+  "cle": "pates",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pain",
+  "cle": "pain-campagne",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "tranche": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 250,
+   "prot_100": 8,
+   "g_par_u": 40
+  }
+ },
+ {
+  "nom": "pain de mie",
+  "cle": "pain-mie",
+  "nouvelle": false,
+  "conversions": {
+   "tranche": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 8,
+   "g_par_u": 25
+  }
+ },
+ {
+  "nom": "pains à burger",
+  "cle": "pain-burger",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 280,
+   "prot_100": 9,
+   "g_par_u": 60
+  }
+ },
+ {
+  "nom": "pak choï",
+  "cle": "pak-choi",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥬",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 5,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "pièce"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Pak choï",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 13,
+   "prot_100": 1.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "palourdes",
+  "cle": "palourde",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🐚",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 16,
+   "pack": {
+    "qty": 1000,
+    "unit": "g",
+    "label": "filet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Palourde",
+  "conversions": {
+   "kg": {
+    "vers": "g",
+    "facteur": 1000
+   }
+  },
+  "nutrition": {
+   "kcal_100": 70,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pamplemousses",
+  "cle": "pamplemousse",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍊",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 0.9,
+   "pack": {
+    "qty": 2,
+    "unit": "u",
+    "label": "lot de 2"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Pamplemousse",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 32,
+   "prot_100": 0.6,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "panais",
+  "cle": "panais",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 75,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "paprika",
+  "cle": "paprika",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 282,
+   "prot_100": 14,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "parmesan",
+  "cle": "parmesan",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 400,
+   "prot_100": 33,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pastèque",
+  "cle": "pasteque",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍉",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 1.8,
+   "pack": {
+    "qty": 1000,
+    "unit": "g",
+    "label": "morceau"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Pastèque",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 1000
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 0.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "patates douces",
+  "cle": "patate-douce",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 250
+   }
+  },
+  "nutrition": {
+   "kcal_100": 86,
+   "prot_100": 1.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte à pizza",
+  "cle": "pate-pizza",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍕",
+   "aisle": "cremerie",
+   "pricePerUnit": 1.9,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "rouleau"
+   },
+   "pantry": false,
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "nom_fr": "Pâte à pizza",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 8,
+   "g_par_u": 260
+  }
+ },
+ {
+  "nom": "pâte à tartiner",
+  "cle": "pate-a-tartiner",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍫",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 6,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "lait",
+    "fruits-a-coque",
+    "soja"
+   ]
+  },
+  "nom_fr": "Pâte à tartiner",
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 20
+   }
+  },
+  "nutrition": {
+   "kcal_100": 540,
+   "prot_100": 6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte brisée",
+  "cle": "pate-brisee",
+  "nouvelle": false,
+  "conversions": {
+   "rouleau": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 420,
+   "prot_100": 6,
+   "g_par_u": 230
+  }
+ },
+ {
+  "nom": "pâte de curry jaune",
+  "cle": "pate-curry-jaune",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 22,
+   "pack": {
+    "qty": 120,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "crustaces"
+   ]
+  },
+  "nom_fr": "Pâte de curry jaune",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 130,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte de curry korma",
+  "cle": "pate-curry-korma",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 15,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "lait",
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Pâte de curry korma",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte de curry massaman",
+  "cle": "pate-curry-massaman",
+  "nouvelle": true,
+  "nom_fr": "Pâte de curry massaman",
+  "fiche": {
+   "emoji": "🍛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 50,
+   "pack": {
+    "qty": 50,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "crustaces",
+    "poisson",
+    "fruits-a-coque"
+   ]
+  },
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 100,
+   "prot_100": 2.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte de curry rouge",
+  "cle": "pate-curry-rouge",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 25,
+   "pack": {
+    "qty": 110,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "crustaces"
+   ]
+  },
+  "nom_fr": "Pâte de curry rouge",
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte de curry vert",
+  "cle": "pate-curry-vert",
+  "nouvelle": true,
+  "fiche": {
+   "id": "pate-curry-vert",
+   "emoji": "🌶️",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 25,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "crustaces"
+   ]
+  },
+  "nom_fr": "Pâte de curry vert",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pâte feuilletée",
+  "cle": "pate-feuilletee",
+  "nouvelle": false,
+  "conversions": {
+   "rouleau": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 420,
+   "prot_100": 6,
+   "g_par_u": 230
+  }
+ },
+ {
+  "nom": "pâte sablée",
+  "cle": "pate-sablee",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥧",
+   "aisle": "cremerie",
+   "pricePerUnit": 1.9,
+   "pack": {
+    "qty": 1,
+    "unit": "u",
+    "label": "rouleau"
+   },
+   "pantry": false,
+   "allergens": [
+    "gluten",
+    "lait",
+    "oeuf"
+   ]
+  },
+  "nom_fr": "Pâte sablée",
+  "conversions": {
+   "rouleau": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 480,
+   "prot_100": 6,
+   "g_par_u": 230
+  }
+ },
+ {
+  "nom": "pâte tikka masala",
+  "cle": "pate-tikka-masala",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "pate-tikka-masala",
+   "emoji": "🍛",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 8.5,
+   "pack": {
+    "qty": 300,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Pâte tikka masala",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 150,
+   "prot_100": 2.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pavés de saumon",
+  "cle": "saumon",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 125
+   }
+  },
+  "nutrition": {
+   "kcal_100": 200,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pêches",
+  "cle": "peche",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍑",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 0.65,
+   "pack": {
+    "qty": 4,
+    "unit": "u",
+    "label": "barquette de 4"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Pêche",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 0.9,
+   "g_par_u": 150
+  }
+ },
+ {
+  "nom": "pecorino",
+  "cle": "pecorino",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 24,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "morceau"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Pecorino",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 390,
+   "prot_100": 28,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "penne",
+  "cle": "pates",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pépites de chocolat",
+  "cle": "pepites-chocolat",
+  "nouvelle": true,
+  "nom_fr": "Pépites de chocolat",
+  "fiche": {
+   "emoji": "🍫",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait",
+    "soja"
+   ]
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 500,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "persil",
+  "cle": "persil",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 35,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pesto",
+  "cle": "pesto",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 450,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pesto rosso",
+  "cle": "pesto-rosso",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍅",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 15,
+   "pack": {
+    "qty": 190,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait",
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Pesto rosso",
+  "conversions": {
+   "pot": {
+    "vers": "g",
+    "facteur": 190
+   }
+  },
+  "nutrition": {
+   "kcal_100": 380,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "petits pois",
+  "cle": "petits-pois",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 75,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pignons de pin",
+  "cle": "pignons-de-pin",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "pignons-de-pin",
+   "emoji": "🌰",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 80,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": [
+    "fruits-a-coque"
+   ]
+  },
+  "nom_fr": "Pignons de pin",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 673,
+   "prot_100": 14,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "piment d'Espelette",
+  "cle": "piment-espelette",
+  "nouvelle": true,
+  "nom_fr": "Piment d'Espelette",
+  "fiche": {
+   "emoji": "🌶️",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 100,
+   "pack": {
+    "qty": 40,
+    "unit": "g",
+    "label": "pot"
+   },
+   "pantry": true
+  },
+  "conversions": {
+   "pincee": {
+    "vers": "cc",
+    "facteur": 0.25
+   },
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 280,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "piments",
+  "cle": "piment-frais",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌶️",
+   "aisle": "fruits-legumes",
+   "pricePerUnit": 0.3,
+   "pack": {
+    "qty": 6,
+    "unit": "u",
+    "label": "sachet"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Piment frais",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 40,
+   "prot_100": 2,
+   "g_par_u": 8
+  }
+ },
+ {
+  "nom": "pistaches",
+  "cle": "pistache",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poireaux",
+  "cle": "poireau",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 1.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poires",
+  "cle": "poire",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 180
+   }
+  },
+  "nutrition": {
+   "kcal_100": 57,
+   "prot_100": 0.4,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pois chiches",
+  "cle": "pois-chiches",
+  "nouvelle": false,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 265
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poivre",
+  "cle": "poivre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "qs": {
+    "vers": "cc",
+    "facteur": 0.25
+   },
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   },
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 255,
+   "prot_100": 11,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poivrons jaunes",
+  "cle": "poivron",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poivrons rouges",
+  "cle": "poivron",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poivrons verts",
+  "cle": "poivron",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 200
+   }
+  },
+  "nutrition": {
+   "kcal_100": 22,
+   "prot_100": 0.9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "polenta",
+  "cle": "polenta",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 355,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pommes",
+  "cle": "pomme",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 52,
+   "prot_100": 0.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pommes de terre",
+  "cle": "pomme-de-terre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 80,
+   "prot_100": 2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "potiron",
+  "cle": "potiron",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🎃",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 2.2,
+   "pack": {
+    "qty": 1000,
+    "unit": "g",
+    "label": "morceau"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Potiron",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 26,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "poudre d'amande",
+  "cle": "amande-poudre",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 600,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pousses d'épinards",
+  "cle": "epinard",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pousses de soja",
+  "cle": "germes-soja",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 30,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "pruneaux",
+  "cle": "pruneau",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 240,
+   "prot_100": 2.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "prunes",
+  "cle": "prune",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍇",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Prune",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 50,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "quinoa",
+  "cle": "quinoa",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 368,
+   "prot_100": 14,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "raclette",
+  "cle": "fromage-raclette",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "fromage-raclette",
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "tranches"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Fromage à raclette",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 330,
+   "prot_100": 22,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "radis",
+  "cle": "radis",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "botte": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 15,
+   "prot_100": 0.8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "raisins",
+  "cle": "raisin",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "raisin",
+   "emoji": "🍇",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 3.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "grappe"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Raisin",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 69,
+   "prot_100": 0.7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "raisins secs",
+  "cle": "raisins-secs",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ras el hanout",
+  "cle": "ras-el-hanout",
+  "nouvelle": false,
+  "conversions": {
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 10,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "reblochon",
+  "cle": "reblochon",
+  "nouvelle": true,
+  "nom_fr": "Reblochon",
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 16,
+   "pack": {
+    "qty": 450,
+    "unit": "g",
+    "label": "pièce"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 450
+   }
+  },
+  "nutrition": {
+   "kcal_100": 330,
+   "prot_100": 20,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "rhubarbe",
+  "cle": "rhubarbe",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "rhubarbe",
+   "emoji": "🌱",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "botte"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Rhubarbe",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 21,
+   "prot_100": 0.9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "rhum",
+  "cle": "rhum",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥃",
+   "aisle": "boissons",
+   "pricePerKgOrL": 26,
+   "pack": {
+    "qty": 700,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Rhum",
+  "conversions": {
+   "cs": {
+    "vers": "ml",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 230,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "ricotta",
+  "cle": "ricotta",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 170,
+   "prot_100": 9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "rigatoni",
+  "cle": "pates",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 355,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "riz",
+  "cle": "riz",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "riz arborio",
+  "cle": "riz-arborio",
+  "nouvelle": true,
+  "nom_fr": "Riz arborio",
+  "fiche": {
+   "emoji": "🍚",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "paquet"
+   },
+   "pantry": false
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 7,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "riz basmati",
+  "cle": "riz-basmati",
+  "nouvelle": true,
+  "nom_fr": "Riz basmati",
+  "fiche": {
+   "emoji": "🍚",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 4.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "paquet"
+   },
+   "pantry": false
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 350,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "romarin",
+  "cle": "romarin",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "romarin",
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 60,
+   "pack": {
+    "qty": 30,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Romarin frais",
+  "conversions": {
+   "brin": {
+    "vers": "g",
+    "facteur": 2
+   },
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 131,
+   "prot_100": 3.3,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "roquefort",
+  "cle": "roquefort",
+  "nouvelle": true,
+  "nom_fr": "Roquefort",
+  "fiche": {
+   "emoji": "🧀",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 24,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "morceau"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 370,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "roquette",
+  "cle": "roquette",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥬",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 22,
+   "pack": {
+    "qty": 100,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Roquette",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 25,
+   "prot_100": 2.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "salade verte",
+  "cle": "salade",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 15,
+   "prot_100": 1.4,
+   "g_par_u": 250
+  }
+ },
+ {
+  "nom": "sardines en boîte",
+  "cle": "sardine",
+  "nouvelle": false,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 135
+   }
+  },
+  "nutrition": {
+   "kcal_100": 200,
+   "prot_100": 24,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sardines fraîches",
+  "cle": "sardine-fraiche",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "sardine-fraiche",
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "nom_fr": "Sardine fraîche",
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 55
+   }
+  },
+  "nutrition": {
+   "kcal_100": 135,
+   "prot_100": 19,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sauce barbecue",
+  "cle": "sauce-barbecue",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥫",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 8,
+   "pack": {
+    "qty": 250,
+    "unit": "ml",
+    "label": "flacon"
+   },
+   "pantry": true,
+   "allergens": []
+  },
+  "nom_fr": "Sauce barbecue",
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 130,
+   "prot_100": 1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sauce d'huître",
+  "cle": "sauce-huitre",
+  "nouvelle": true,
+  "nom_fr": "Sauce d'huître",
+  "fiche": {
+   "emoji": "🦪",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 12,
+   "pack": {
+    "qty": 150,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": true,
+   "allergens": [
+    "soja",
+    "gluten"
+   ]
+  },
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 50,
+   "prot_100": 1.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sauce nuoc-mâm",
+  "cle": "nuoc-mam",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 35,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sauce soja",
+  "cle": "sauce-soja",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 60,
+   "prot_100": 8,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "saucisses",
+  "cle": "saucisse",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 100
+   }
+  },
+  "nutrition": {
+   "kcal_100": 270,
+   "prot_100": 14,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "saucisses de Toulouse",
+  "cle": "saucisse",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 120
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 15,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sauge",
+  "cle": "sauge",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 60,
+   "pack": {
+    "qty": 20,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Sauge",
+  "conversions": {
+   "feuille": {
+    "vers": "g",
+    "facteur": 0.5
+   }
+  },
+  "nutrition": {
+   "kcal_100": 315,
+   "prot_100": 10,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "saumon fumé",
+  "cle": "saumon-fume",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "tranche": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 180,
+   "prot_100": 22,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sel",
+  "cle": "sel",
+  "nouvelle": false,
+  "conversions": {
+   "qs": {
+    "vers": "cc",
+    "facteur": 0.5
+   },
+   "pincee": {
+    "vers": "cc",
+    "facteur": 0.25
+   }
+  },
+  "nutrition": {
+   "kcal_100": 0,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "semoule",
+  "cle": "semoule",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sirop d'érable",
+  "cle": "sirop-erable",
+  "nouvelle": true,
+  "fiche": {
+   "id": "sirop-erable",
+   "emoji": "🍁",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 22,
+   "pack": {
+    "qty": 250,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Sirop d'érable",
+  "conversions": {
+   "cs": {
+    "vers": "ml",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 260,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "spaghetti",
+  "cle": "pates",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "steaks de boeuf",
+  "cle": "boeuf-rumsteck",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 140
+   }
+  },
+  "nutrition": {
+   "kcal_100": 130,
+   "prot_100": 21,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "steaks de thon",
+  "cle": "steak-thon",
+  "nouvelle": true,
+  "nom_fr": "Steak de thon",
+  "fiche": {
+   "emoji": "🐟",
+   "aisle": "viandes-poissons",
+   "pricePerKgOrL": 26,
+   "pack": {
+    "qty": 400,
+    "unit": "g",
+    "label": "barquette"
+   },
+   "pantry": false,
+   "allergens": [
+    "poisson"
+   ]
+  },
+  "conversions": {
+   "u": {
+    "vers": "g",
+    "facteur": 150
+   }
+  },
+  "nutrition": {
+   "kcal_100": 140,
+   "prot_100": 25,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sucre",
+  "cle": "sucre",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 12.5
+   },
+   "cc": {
+    "vers": "g",
+    "facteur": 4
+   },
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 400,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sucre roux",
+  "cle": "sucre-roux",
+  "nouvelle": true,
+  "nom_fr": "Sucre roux",
+  "fiche": {
+   "emoji": "🍬",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 3.5,
+   "pack": {
+    "qty": 500,
+    "unit": "g",
+    "label": "paquet"
+   },
+   "pantry": true
+  },
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 390,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "sucre vanillé",
+  "cle": "sucre-vanille",
+  "nouvelle": false,
+  "conversions": {
+   "sachet": {
+    "vers": "g",
+    "facteur": 7.5
+   }
+  },
+  "nutrition": {
+   "kcal_100": 400,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tagliatelles",
+  "cle": "pates",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 360,
+   "prot_100": 12.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tahini",
+  "cle": "tahini",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "g",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 620,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "thon en boîte",
+  "cle": "thon-conserve",
+  "nouvelle": false,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 140
+   }
+  },
+  "nutrition": {
+   "kcal_100": 130,
+   "prot_100": 25,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "thym",
+  "cle": "thym-frais",
+  "nouvelle": true,
+  "fiche": {
+   "cle": "thym-frais",
+   "emoji": "🌿",
+   "aisle": "fruits-legumes",
+   "pricePerKgOrL": 60,
+   "pack": {
+    "qty": 30,
+    "unit": "g",
+    "label": "sachet"
+   },
+   "pantry": false
+  },
+  "nom_fr": "Thym frais",
+  "conversions": {
+   "brin": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "botte": {
+    "vers": "g",
+    "facteur": 30
+   }
+  },
+  "nutrition": {
+   "kcal_100": 101,
+   "prot_100": 5.6,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tofu",
+  "cle": "tofu",
+  "nouvelle": false,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 120,
+   "prot_100": 12,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tofu fumé",
+  "cle": "tofu-fume",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🌱",
+   "aisle": "cremerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "bloc"
+   },
+   "pantry": false,
+   "allergens": [
+    "soja"
+   ]
+  },
+  "nom_fr": "Tofu fumé",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 190,
+   "prot_100": 17,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tomates",
+  "cle": "tomate",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   },
+   "u": {
+    "vers": "g",
+    "facteur": 120
+   }
+  },
+  "nutrition": {
+   "kcal_100": 18,
+   "prot_100": 0.9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tomates cerises",
+  "cle": "tomate-cerise",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 18,
+   "prot_100": 0.9,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tomates concassées",
+  "cle": "tomate-concassee",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "boite": {
+    "vers": "g",
+    "facteur": 400
+   }
+  },
+  "nutrition": {
+   "kcal_100": 22,
+   "prot_100": 1.2,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tomates séchées",
+  "cle": "tomate-sechee",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🍅",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 14,
+   "pack": {
+    "qty": 200,
+    "unit": "g",
+    "label": "bocal"
+   },
+   "pantry": false,
+   "allergens": []
+  },
+  "nom_fr": "Tomates séchées",
+  "conversions": {
+   "g": {
+    "vers": "g",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 230,
+   "prot_100": 5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "tortillas",
+  "cle": "tortilla",
+  "nouvelle": false,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 300,
+   "prot_100": 8,
+   "g_par_u": 60
+  }
+ },
+ {
+  "nom": "vin blanc",
+  "cle": "vin-blanc",
+  "nouvelle": false,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 70,
+   "prot_100": 0.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "vin rouge",
+  "cle": "vin-rouge",
+  "nouvelle": false,
+  "conversions": {
+   "cL": {
+    "vers": "ml",
+    "facteur": 10
+   }
+  },
+  "nutrition": {
+   "kcal_100": 70,
+   "prot_100": 0.1,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "vinaigre balsamique",
+  "cle": "vinaigre-balsamique",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🧴",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 9,
+   "pack": {
+    "qty": 250,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": true,
+   "allergens": []
+  },
+  "nom_fr": "Vinaigre balsamique",
+  "conversions": {
+   "cs": {
+    "vers": "ml",
+    "facteur": 15
+   }
+  },
+  "nutrition": {
+   "kcal_100": 90,
+   "prot_100": 0.5,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "vinaigre de cidre",
+  "cle": "vinaigre-cidre",
+  "nouvelle": true,
+  "nom_fr": "Vinaigre de cidre",
+  "fiche": {
+   "emoji": "🍎",
+   "aisle": "epicerie",
+   "pricePerKgOrL": 3.5,
+   "pack": {
+    "qty": 500,
+    "unit": "ml",
+    "label": "bouteille"
+   },
+   "pantry": true
+  },
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 20,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "vinaigre de vin",
+  "cle": "vinaigre",
+  "nouvelle": false,
+  "conversions": {
+   "cs": {
+    "vers": "cs",
+    "facteur": 1
+   },
+   "cc": {
+    "vers": "cc",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 20,
+   "prot_100": 0,
+   "g_par_u": null
+  }
+ },
+ {
+  "nom": "yaourt grec",
+  "cle": "yaourt-grec",
+  "nouvelle": true,
+  "fiche": {
+   "emoji": "🥛",
+   "aisle": "cremerie",
+   "pricePerUnit": 0.6,
+   "pack": {
+    "qty": 2,
+    "unit": "u",
+    "label": "lot de 2"
+   },
+   "pantry": false,
+   "allergens": [
+    "lait"
+   ]
+  },
+  "nom_fr": "Yaourt grec",
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 115,
+   "prot_100": 4,
+   "g_par_u": 150
+  }
+ },
+ {
+  "nom": "yaourt nature",
+  "cle": "yaourt",
+  "nouvelle": false,
+  "fiche": null,
+  "nom_fr": null,
+  "conversions": {
+   "u": {
+    "vers": "u",
+    "facteur": 1
+   }
+  },
+  "nutrition": {
+   "kcal_100": 55,
+   "prot_100": 4,
+   "g_par_u": 125
+  }
+ }
+]

@@ -38,6 +38,8 @@ module.exports = [
       'dist/',
       'coverage/',
       'scripts/archive/',
+      'data/menus/gen/',
+      'data/menus/gen-fixture/',
       'build-dicts.js',
       'tmp/',
       'web-build/',

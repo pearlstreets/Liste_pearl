@@ -7,7 +7,7 @@
 // Cet orchestrateur vit au niveau de l'application, pas dans l'onglet Menus : l'onglet n'est monté
 // qu'à sa première ouverture, or le calendrier doit être remis à jour dès le lancement.
 import { Platform } from 'react-native';
-import { getIngredients, getRecipes, getTexts, normalizeLang } from '../lib/menus/recipes';
+import { getIngredients, getRecipeIndex, getTexts, normalizeLang } from '../lib/menus/recipes';
 import { withMyTexts } from '../lib/menus/myRecipes';
 import { loadMyRecipes, loadPlan, loadReminders, onMenusLocalWrite } from '../lib/menus/storage';
 import {
@@ -134,9 +134,7 @@ async function calendrierVoulu(permission) {
   const reminders = await loadReminders();
   if (!permission.granted || !anyReminderOn(reminders)) return [];
   const [plan, myRecipes] = await Promise.all([loadPlan(), loadMyRecipes()]);
-  const recipeById = new Map();
-  for (const r of [...getRecipes(), ...(Array.isArray(myRecipes) ? myRecipes : [])])
-    if (r && r.id) recipeById.set(r.id, r);
+  const recipeById = getRecipeIndex({ extra: myRecipes });
   const lang = normalizeLang(i18nRef && i18nRef.language);
   return buildReminderSchedule({
     reminders,

@@ -13,6 +13,9 @@ import { InteractionManager, DeviceEventEmitter, AppState } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
   getRecipes,
+  getRecipeIndex,
+  preloadMenusData,
+  getCatalogStatus,
   getIngredients,
   getTexts,
   normalizeProfile,
@@ -23,6 +26,9 @@ import {
   lockMeal,
   lockedFromPlan,
   eligibleRecipes,
+  catalogActive,
+  eligibleCatalog,
+  sampleMains,
   inSeason,
   buildShoppingList,
   estimateRecipeCost,
@@ -89,6 +95,8 @@ import {
 
 const Ctx = createContext(null);
 export const useMenus = () => useContext(Ctx);
+// Durée maximale d'attente du préchargement des recettes avant d'afficher les Menus (les textes se chargent à la demande).
+const DATA_READY_MAX_MS = 1500;
 
 export { mondayISO };
 
@@ -108,15 +116,17 @@ export function MenusProvider({ children }) {
   const baseTexts = useMemo(() => getTexts(lang), [lang]);
   const texts = useMemo(() => withMyTexts(baseTexts, myRecipes), [baseTexts, myRecipes]);
   const catalog = useMemo(() => getRecipes(), []);
+  // Liste fermée (écrites à la main + personnelles) pour les écrans qui parcourent ; les recettes générées
+  // se lisent par identifiant (recipeById) et par pages.
   const recipes = useMemo(() => [...catalog, ...myRecipes], [catalog, myRecipes]);
   const ingredients = useMemo(() => getIngredients(), []);
-  const recipeById = useMemo(() => {
-    const m = new Map();
-    for (const r of recipes) m.set(r.id, r);
-    return m;
-  }, [recipes]);
+  // Facade de toutes les recettes (get, has, size) : écrites à la main, générées et personnelles.
+  const recipeIndex = useMemo(() => getRecipeIndex({ extra: myRecipes }), [myRecipes]);
+  const recipeById = recipeIndex;
 
   const [ready, setReady] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+  const [catalogStatus, setCatalogStatus] = useState(getCatalogStatus());
   const [loadError, setLoadError] = useState(false);
   const [onboarded, setOnboarded] = useState(false);
   const [profile, setProfile] = useState(defaultProfile());
@@ -214,6 +224,35 @@ export function MenusProvider({ children }) {
     load();
   }, [load]);
 
+  // Données des recettes (catalogue généré, titres de la langue) : préparées en tranches courtes une fois les
+  // interactions finies. Jamais bloquant : sans elles, les textes se chargent à la demande, et un échec
+  // laisse seules les recettes écrites à la main (catalogStatus 'degraded').
+  useEffect(() => {
+    let off = false;
+    const task = InteractionManager.runAfterInteractions(() => {
+      preloadMenusData(lang)
+        .then((r) => {
+          if (off || !mounted.current) return;
+          setCatalogStatus(r.status);
+          setDataReady(true);
+        })
+        .catch(() => {
+          if (off || !mounted.current) return;
+          setCatalogStatus('degraded');
+          setDataReady(true);
+        });
+    });
+    // Garde-fou : une interaction jamais terminee ne doit pas laisser le squelette sans fin.
+    const guard = setTimeout(() => {
+      if (!off && mounted.current) setDataReady(true);
+    }, DATA_READY_MAX_MS);
+    return () => {
+      off = true;
+      clearTimeout(guard);
+      if (task && typeof task.cancel === 'function') task.cancel();
+    };
+  }, [lang]);
+
   // Mesure d'usage anonyme : jamais bloquante, désactivable dans les réglages.
   useEffect(() => {
     if (!ready || !onboarded) return;
@@ -298,7 +337,7 @@ export function MenusProvider({ children }) {
                   ? lockedFromPlan(cur)
                   : undefined);
               const next = generatePlan({
-                recipes,
+                recipes: recipeIndex,
                 ingredients,
                 profile: planProfile(),
                 seed: opts.seed != null ? opts.seed : Math.floor(Math.random() * 1e9),
@@ -323,7 +362,7 @@ export function MenusProvider({ children }) {
           }, 40);
         });
       }),
-    [recipes, ingredients, planProfile]
+    [recipeIndex, ingredients, planProfile]
   );
 
   const finishOnboarding = useCallback(
@@ -385,14 +424,14 @@ export function MenusProvider({ children }) {
         mealKey,
         recipeId,
         manual: !!opts.manual,
-        recipes,
+        recipes: recipeIndex,
         ingredients,
         profile: planProfile(),
         seed: Math.floor(Math.random() * 1e9),
       });
       await persist(next);
     },
-    [recipes, ingredients, planProfile, persist]
+    [recipeIndex, ingredients, planProfile, persist]
   );
 
   const toggleLock = useCallback(
@@ -413,13 +452,13 @@ export function MenusProvider({ children }) {
         plan: cur,
         mealKey,
         free,
-        recipes,
+        recipes: recipeIndex,
         ingredients,
         profile: planProfile(),
       });
       await persist(next);
     },
-    [recipes, ingredients, planProfile, persist]
+    [recipeIndex, ingredients, planProfile, persist]
   );
 
   /** 3 idées pour un repas : recettes admises par le foyer, hors celles déjà au menu. */
@@ -427,8 +466,15 @@ export function MenusProvider({ children }) {
     (n = 3) => {
       const cur = planRef.current;
       const prof = planProfile();
-      const { mains } = eligibleRecipes({ recipes, ingredients, profile: prof });
       const used = new Set(((cur && cur.meals) || []).map((m) => m.recipeId).filter(Boolean));
+      // Catalogue généré : tirage par réservoir sur les colonnes, aucune copie du catalogue.
+      if (catalogActive(recipeIndex))
+        return sampleMains(eligibleCatalog(recipeIndex, ingredients, prof), {
+          n,
+          exclude: used,
+          month: prof.month,
+        });
+      const { mains } = eligibleRecipes({ recipes: recipeIndex, ingredients, profile: prof });
       let pool = mains.filter((r) => !used.has(r.id));
       const seasonal = pool.filter((r) => inSeason(r, prof.month));
       if (seasonal.length >= n) pool = seasonal;
@@ -439,7 +485,7 @@ export function MenusProvider({ children }) {
       }
       return a.slice(0, n);
     },
-    [recipes, ingredients, planProfile]
+    [recipeIndex, ingredients, planProfile]
   );
 
   const refaire = useCallback(
@@ -586,11 +632,17 @@ export function MenusProvider({ children }) {
   const shopping = useMemo(() => {
     if (!hasRecipes(plan)) return null;
     try {
-      return buildShoppingList({ plan, recipes, ingredients, profile, includePantry: pantryOn });
+      return buildShoppingList({
+        plan,
+        recipes: recipeIndex,
+        ingredients,
+        profile,
+        includePantry: pantryOn,
+      });
     } catch {
       return null;
     }
-  }, [plan, recipes, ingredients, profile, pantryOn]);
+  }, [plan, recipeIndex, ingredients, profile, pantryOn]);
 
   const removedSet = useMemo(() => new Set(removed), [removed]);
   const toggleHave = useCallback(
@@ -653,7 +705,7 @@ export function MenusProvider({ children }) {
         const { lines, fingerprint } = recipeListLines({
           recipe,
           persons,
-          recipes,
+          recipes: recipeIndex,
           ingredients,
           profile: profileRef.current,
         });
@@ -673,7 +725,7 @@ export function MenusProvider({ children }) {
         return { status: 'error', count: 0 };
       }
     },
-    [recipeById, recipes, ingredients, texts]
+    [recipeById, recipeIndex, ingredients, texts]
   );
 
   const writeBatch = useCallback(async (next) => {
@@ -730,7 +782,7 @@ export function MenusProvider({ children }) {
       if (!cur) return { status: 'empty', count: 0 };
       const all = sessionLines({
         session: cur,
-        recipes,
+        recipes: recipeIndex,
         ingredients,
         profile: profileRef.current,
       });
@@ -760,7 +812,7 @@ export function MenusProvider({ children }) {
     } catch {
       return { status: 'error', count: 0 };
     }
-  }, [recipes, ingredients, texts, setBatchPrepared]);
+  }, [recipeIndex, ingredients, texts, setBatchPrepared]);
 
   const costOf = useCallback(
     (recipe, persons) => {
@@ -777,7 +829,8 @@ export function MenusProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      ready,
+      ready: ready && dataReady,
+      catalogStatus,
       loadError,
       reload: load,
       onboarded,
@@ -837,6 +890,8 @@ export function MenusProvider({ children }) {
     }),
     [
       ready,
+      dataReady,
+      catalogStatus,
       loadError,
       load,
       onboarded,

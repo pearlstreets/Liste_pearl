@@ -6,3 +6,5 @@ scripts/archive/
 *.log
 data/*.json
 locales/*.json
+data/menus/gen/
+data/menus/gen-fixture/
