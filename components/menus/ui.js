@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 
 export const Chip = memo(function Chip({ label, on, onPress, icon, small, emoji }) {

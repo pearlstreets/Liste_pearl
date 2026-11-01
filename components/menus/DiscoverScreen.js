@@ -1,5 +1,13 @@
 // Découvrir : recherche, filtres, favoris, de saison, "Dans mon frigo" (anti-gaspi), historique.
-import React, { memo, useMemo, useState, useDeferredValue, useCallback, useEffect } from 'react';
+import React, {
+  memo,
+  useMemo,
+  useState,
+  useDeferredValue,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { View, Text, FlatList, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {
@@ -105,6 +113,11 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const dq = useDeferredValue(q);
   const [course, setCourse] = useState(null);
   const [tags, setTags] = useState([]);
+  // Recherche ou filtre changé : la liste repart tout en haut, sur les premiers résultats.
+  const listRef = useRef(null);
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollToOffset({ offset: 0, animated: false });
+  }, [mode, dq, course, tags]);
   const [mine, setMine] = useState(true);
   const [fq, setFq] = useState('');
   const [useUp, setUseUp] = useState([]);
@@ -244,7 +257,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     (r) => {
       if (r.custom) return t('recipe.minutes', { n: r.timeMin });
       const c = m.costOf(r, Math.max(1, profile.adults + profile.children * 0.6));
-      return `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} kcal · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
+      return `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} ${t('kcal')} · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
     },
     [m, profile, t, lang]
   );
@@ -545,6 +558,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       </View>
       {modeBar}
       <FlatList
+        ref={listRef}
         data={data}
         keyExtractor={keyOf}
         renderItem={renderRecipe}

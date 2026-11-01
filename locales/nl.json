@@ -1039,6 +1039,7 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "kcal": "kcal",
     "reminders": {
       "title": "Herinneringen",
       "hint": "Standaard uitgeschakeld. Schakel alleen in wat voor u nuttig is.",

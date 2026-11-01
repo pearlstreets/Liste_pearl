@@ -9,7 +9,7 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import { prefillProducts } from '../../lib/menus/listBridge';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { useIsFocused } from '@react-navigation/native';
 import { formatEur, readMyLists, pendingLines } from '../../lib/menus';
 import { T } from './theme';

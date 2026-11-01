@@ -1,7 +1,7 @@
 // Semaine d'un proche, en lecture seule : on peut en reprendre un repas, jamais la modifier.
 import React, { useCallback, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 import { Empty, GhostButton, SectionTitle } from './ui';
 import RecipeVisual from './RecipeVisual';

@@ -9,7 +9,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { formatEur } from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, GhostButton, Empty } from './ui';

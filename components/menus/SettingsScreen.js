@@ -1,7 +1,7 @@
 // Réglages des menus : foyer, repas voulus, régimes. Tout est enregistré à chaque changement.
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 import { SectionTitle, GhostButton } from './ui';
 import { HouseholdSection, MealsSection, DietSection } from './ProfileForms';

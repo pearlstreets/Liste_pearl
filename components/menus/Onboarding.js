@@ -1,7 +1,7 @@
 // Présentation de la première ouverture : 3 écrans courts, valeurs par défaut, "Passer".
 import React, { useState, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 import { PrimaryButton, GhostButton } from './ui';
 import { HouseholdSection, MealsSection, DietSection } from './ProfileForms';

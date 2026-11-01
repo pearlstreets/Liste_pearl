@@ -1039,6 +1039,7 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "kcal": "kcal",
     "reminders": {
       "title": "Påminnelser",
       "hint": "Avstängda som standard. Slå bara på dem du har nytta av.",
