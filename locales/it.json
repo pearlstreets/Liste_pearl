@@ -13,7 +13,7 @@
     "inputPlaceholder": "Aggiungere un articolo (es: \"2 mele, 5 uova\")",
     "selectAll": "Selezionare tutto",
     "deselectAll": "Deselezionare tutto",
-    "strikeAll": "Cancellare tutto",
+    "strikeAll": "Barrare tutto",
     "hideStriked": "Nascondere gli articoli cancellati",
     "noItems": "Nessun articolo",
     "findExactProducts": "Trovare i prodotti esatti",
