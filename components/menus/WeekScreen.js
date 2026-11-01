@@ -131,7 +131,7 @@ export default function WeekScreen({
   const [sending, setSending] = useState(false);
   const [replacing, setReplacing] = useState(false);
   // Repas qui ne conviennent plus au profil (allergie ou régime ajouté après la composition).
-  const unsuitable = m.unsuitable || [];
+  const unsuitable = useMemo(() => m.unsuitable || [], [m.unsuitable]);
   const badKeys = useMemo(() => new Set(unsuitable.map((x) => x.key)), [unsuitable]);
   const badDays = useMemo(() => {
     const out = new Set();

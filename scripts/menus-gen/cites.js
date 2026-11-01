@@ -16,14 +16,23 @@ const REGLES = [
     // noix de beurre ou moule beurre : 10 g ; cuisson dans le beurre : 20 g
     ajout: (t) => (/\bnoix de beurre\b|\bmoule\b[^.]*\bbeurre\b|\bbeurrer\b|\bbeurrez\b/.test(t) && !/\bdans le beurre\b/.test(t) ? ['beurre', 10, 'g'] : ['beurre', 20, 'g']),
   },
+  // huile de sesame : allergene sesame, jamais remplacee par une autre huile
+  { id: 'huile-sesame', re: /\bhuile de sesame\b/, ok: (k) => k === 'huile-sesame', ajout: () => ['huile de sésame', 1, 'cc'] },
   {
     id: 'huile',
     re: /\b(huile|huiles|huiler|huilez)\b/,
+    sauf: ['huile de sesame'],
     ok: (k) => k.startsWith('huile-'),
     ajout: (t) => (/\bhuile d olive\b/.test(t) ? ["huile d'olive", 1, 'cs'] : ['huile', 1, 'cs']),
   },
   { id: 'ail', re: /\bail\b/, ok: (k) => k === 'ail', ajout: () => ['ail', 1, 'gousse'] },
-  { id: 'citron', re: /\bcitrons?\b/, ok: (k) => k === 'citron' || k === 'citron-vert', ajout: () => ['citrons', 0.5, 'u'] },
+  // « citron vert » cite : citron vert ajoute, pas un citron jaune
+  {
+    id: 'citron',
+    re: /\bcitrons?\b/,
+    ok: (k) => k === 'citron' || k === 'citron-vert',
+    ajout: (t) => (/\bcitrons? verts?\b/.test(t) ? ['citrons verts', 1, 'u'] : ['citrons', 0.5, 'u']),
+  },
   { id: 'sel', re: /\b(sel|saler|salez)\b/, ok: (k) => k === 'sel', ajout: () => ['sel', 0, 'qs'] },
   { id: 'poivre', re: /\b(poivre|poivrer|poivrez)\b/, ok: (k) => k === 'poivre', ajout: () => ['poivre', 0, 'qs'] },
   { id: 'moutarde', re: /\bmoutarde\b/, ok: (k) => k === 'moutarde' || k === 'mayonnaise', ajout: () => ['moutarde', 1, 'cs'] },

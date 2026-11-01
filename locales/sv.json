@@ -291,7 +291,7 @@
     "driverParticulier": "Privat bud",
     "driverParticulierInfo": "Inget företagarstatus krävs. Leverera när du vill som en extra inkomst, inom ditt lands årliga gräns.",
     "driverPro": "Professionellt bud",
-    "driverProInfo": "Du har ett företagarstatus (egenföretagare, företag). Ingen inkomstgräns. Obligatoriska dokument: ID-kort, IBAN, KBISS.",
+    "driverProInfo": "Du har ett företagarstatus (egenföretagare, företag). Ingen inkomstgräns. Obligatoriska dokument: ID-kort, IBAN, Kbis.",
     "driverLimits": "Gränser per land (privatpersoner)",
     "openDeliveryApp": "Öppna appen Pearl Delivery",
     "downloadDeliveryApp": "Appen Pearl Delivery är inte installerad. Ladda ner den för att bli bud.",
@@ -311,7 +311,13 @@
     "limitEmployeeRequired": "Anställningsstatus krävs",
     "limitEmployeeSince2023": "Anställningsstatus sedan 2023",
     "limitRequalification": "Risk för omklassificering",
-    "perYear": "{{amount}}/år"
+    "perYear": "{{amount}}/år",
+    "legalTitle": "Juridisk information",
+    "privacyPolicy": "Integritetspolicy",
+    "termsOfUse": "Användarvillkor",
+    "menusUnsavedTitle": "Menyerna har inte sparats",
+    "menusUnsavedMsg": "Dina menyer kunde inte sparas på ditt konto. Radera dem från den här enheten?",
+    "menusUnsavedErase": "Radera och logga ut"
   },
   "auth": {
     "login": "Logga in",
@@ -410,11 +416,11 @@
     "proNext": "Nästa",
     "proSubmit": "Skicka ansökan",
     "proDocTitle": "Obligatoriska dokument",
-    "proDocRequired": "ID-kort, IBAN och KBISS är obligatoriska",
+    "proDocRequired": "ID-kort, IBAN och Kbis är obligatoriska",
     "proPasswordLength": "Minst 8 tecken med en versal",
     "proSuccessTitle": "Konto skapat",
     "proSuccessMsg": "Ditt yrkeskonto granskas. Du får besked när det har godkänts.",
-    "docKbiss": "KBISS",
+    "docKbiss": "Kbis",
     "docIban": "IBAN / Bankuppgifter",
     "docIdFront": "ID-kort (framsida)",
     "docIdBack": "ID-kort (baksida)",
@@ -1195,7 +1201,9 @@
       "familyShareLabel": "Dela min vecka med mina nära",
       "familyShareHint": "Personer med tillgång till din lista ser dina måltider för veckan, aldrig din profil, dina anteckningar eller din budget.",
       "usageLabel": "Anonym användningsmätning",
-      "usageHint": "Vi räknar bara, per dag och språk, skapade menyer, skickade inköp och återbesök från en vecka till nästa. Räknarna innehåller varken konto, enhets-id eller ip-adress."
+      "usageHint": "Vi räknar bara, per dag och språk, skapade menyer, skickade inköp och återbesök från en vecka till nästa. Räknarna innehåller varken konto, enhets-id eller ip-adress.",
+      "privacyNote": "Information om vilka uppgifter som används och om dina rättigheter finns i vår integritetspolicy.",
+      "privacyLink": "Integritetspolicy"
     },
     "swap": {
       "title": "Byt ut den här rätten",
@@ -1382,7 +1390,7 @@
       "summary_other": "{{count}} varor, cirka {{total}}",
       "estimateNote": "Ungefärlig uppskattning (~). Det verkliga priset är butikens, jämför det efteråt.",
       "targetList": "Lägg till på lista",
-      "defaultList": "Min lista",
+      "defaultList": "Min Lista",
       "activeList": "aktiv",
       "showBasics": "Visa baskamrar",
       "have": "Redan hemma",

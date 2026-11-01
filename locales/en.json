@@ -189,7 +189,7 @@
     "driverParticulier": "Individual Driver",
     "driverParticulierInfo": "No professional status required. Deliver whenever you want as a side income, within the annual limit of your country.",
     "driverPro": "Professional Driver",
-    "driverProInfo": "You have a professional status (self-employed, company). No income limit. Required documents: ID card, IBAN, KBISS.",
+    "driverProInfo": "You have a professional status (self-employed, company). No income limit. Required documents: ID card, IBAN, Kbis.",
     "driverLimits": "Country limits (individuals)",
     "openDeliveryApp": "Open Pearl Delivery app",
     "downloadDeliveryApp": "Pearl Delivery app is not installed. Download it to become a driver.",
@@ -311,7 +311,13 @@
     "limitEmployeeRequired": "Employee status required",
     "limitEmployeeSince2023": "Employee status since 2023",
     "limitRequalification": "Risk of reclassification",
-    "perYear": "{{amount}}/year"
+    "perYear": "{{amount}}/year",
+    "legalTitle": "Legal information",
+    "privacyPolicy": "Privacy policy",
+    "termsOfUse": "Terms of use",
+    "menusUnsavedTitle": "Menus not saved",
+    "menusUnsavedMsg": "Your menus could not be saved to your account. Erase them from this device?",
+    "menusUnsavedErase": "Erase and log out"
   },
   "auth": {
     "login": "Login",
@@ -365,11 +371,11 @@
     "proNext": "Next",
     "proSubmit": "Submit application",
     "proDocTitle": "Required documents",
-    "proDocRequired": "ID card, IBAN and KBISS are required",
+    "proDocRequired": "ID card, IBAN and Kbis are required",
     "proPasswordLength": "Minimum 8 characters with one uppercase",
     "proSuccessTitle": "Account created",
     "proSuccessMsg": "Your professional account is being reviewed. You will be notified once approved.",
-    "docKbiss": "KBISS",
+    "docKbiss": "Kbis",
     "docIban": "IBAN / Bank details",
     "docIdFront": "ID card (front)",
     "docIdBack": "ID card (back)",
@@ -1195,7 +1201,9 @@
       "familyShareLabel": "Share my week with my loved ones",
       "familyShareHint": "People who have access to your list can see your meals for the week, never your profile, notes or budget.",
       "usageLabel": "Anonymous usage statistics",
-      "usageHint": "We only count, per day and per language, the menus generated, the shopping lists sent and the returns from one week to the next. These counts contain no account, device identifier or IP address."
+      "usageHint": "We only count, per day and per language, the menus generated, the shopping lists sent and the returns from one week to the next. These counts contain no account, device identifier or IP address.",
+      "privacyNote": "Details of the data used and of your rights are given in our privacy policy.",
+      "privacyLink": "Privacy policy"
     },
     "swap": {
       "title": "Change this dish",
@@ -1382,7 +1390,7 @@
       "summary_other": "{{count}} items, about {{total}}",
       "estimateNote": "Indicative estimate (~). The real price is the shop's, compare it next.",
       "targetList": "Add to list",
-      "defaultList": "My list",
+      "defaultList": "My List",
       "activeList": "active",
       "showBasics": "Show pantry basics",
       "have": "Already at home",

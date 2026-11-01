@@ -62,6 +62,8 @@ describe('matchProduct : même règle que App.js', () => {
     expect(nameMatches('poulet', 'Filet de poulet fermier')).toBe(true);
     expect(nameMatches('poulet', 'Sauce pour poulet')).toBe(false);
     expect(nameMatches('citron', 'Citron')).toBe(true);
+    expect(nameMatches('chocolat', 'Tablette chocolat noir')).toBe(true); // conditionnement devant le nom
+    expect(nameMatches('citron', 'Jus de citron')).toBe(false); // un autre produit passe devant
   });
   test('mot court : seulement en égalité exacte', () => {
     expect(matchProduct('eau', prods).id).toBe(6);
@@ -218,6 +220,9 @@ describe('citron : ni granola ni boutique non alimentaire', () => {
     expect(plausibleOffer({ subcategory: 'Grocery', subcategorySlug: 'grocery' }, ing, 2)).toBe(true);
     expect(plausibleOffer({ subcategory: 'Local product', subcategorySlug: 'local_product' }, ing, 2)).toBe(true);
     expect(plausibleOffer({ subcategory: 'Restaurants', subcategorySlug: 'food-drink-restaurant' }, ing, 2)).toBe(true);
+    // tous les slugs alimentaires servis par Pearl Streets restent gardés
+    for (const slug of ['grocery', 'supermarket', 'organics', 'local_product', 'bakeries_pastries', 'coffee_shop', 'tea_house', 'caterers', 'fast_food', 'brunches', 'gourmet_restaurants', 'hotel_dining', 'food-drink-bar', 'meal_preparation'])
+      expect(plausibleOffer({ subcategory: '', subcategorySlug: slug }, ing, 2)).toBe(true);
     // sous-catégorie connue mais ni alimentaire ni exclue : dans le doute, ignorée
     expect(plausibleOffer({ subcategory: 'Informatique', subcategorySlug: 'informatique' }, ing, 2)).toBe(false);
     // sans sous-catégorie : seules les bornes de prix jouent

@@ -45,6 +45,8 @@ const ALLERGENES_MINIMUM = {
   'pain-campagne': ['lupin'],
   'pain-mie': ['lupin'],
   'pain-burger': ['lupin'],
+  'pain-pita': ['lupin'],
+  tortilla: ['lupin'],
   'pate-feuilletee': ['lupin'],
   'pate-brisee': ['lupin'],
   'pate-sablee': ['lupin'],
@@ -67,6 +69,7 @@ const ALLERGENES_MINIMUM = {
   merguez: ['sulfites'],
   chipolata: ['sulfites'],
   saucisse: ['sulfites'],
+  'saucisse-fumee': ['sulfites'],
   // mollusques sous « crustaces » (= crustaces et mollusques), arachide sous « fruits-a-coque » (= fruits a coque et arachide)
   calamar: ['crustaces'],
   palourde: ['crustaces'],

@@ -95,10 +95,10 @@
     "searchToPriceShop": "Suchen Sie ein Produkt, um den Preis zu sehen.",
     "shopUnit": "Shop",
     "shopUnitPlural": "Shops",
-    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Genaue Produkte finden\", um die Ergebnisse hier zu sehen.",
+    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Exakte Produkte finden\", um die Ergebnisse hier zu sehen.",
     "addProduct": "Produkt hinzufügen",
     "addFromList": "Fügen Sie Produkte zu Meine Liste hinzu",
-    "addFromListSub": "Tippen Sie dann auf \"Genaue Produkte finden\""
+    "addFromListSub": "Tippen Sie dann auf \"Exakte Produkte finden\""
   },
   "searchPopup": {
     "header": "Was brauchen Sie?",
@@ -291,7 +291,7 @@
     "driverParticulier": "Privater Fahrer",
     "driverParticulierInfo": "Kein professioneller Status erforderlich. Liefern Sie aus, wann Sie wollen, als Nebenverdienst, innerhalb der jährlichen Obergrenze Ihres Landes.",
     "driverPro": "Professioneller Fahrer",
-    "driverProInfo": "Sie haben einen professionellen Status (selbstständig, Unternehmen). Keine Einkommensgrenze. Erforderliche Dokumente: Personalausweis, IBAN, KBISS.",
+    "driverProInfo": "Sie haben einen professionellen Status (selbstständig, Unternehmen). Keine Einkommensgrenze. Erforderliche Dokumente: Personalausweis, IBAN, Kbis.",
     "driverLimits": "Obergrenzen nach Land (Privatpersonen)",
     "openDeliveryApp": "Pearl Delivery App öffnen",
     "downloadDeliveryApp": "Die App Pearl Delivery ist nicht installiert. Laden Sie sie herunter, um Fahrer zu werden.",
@@ -311,7 +311,13 @@
     "limitEmployeeRequired": "Angestelltenstatus vorgeschrieben",
     "limitEmployeeSince2023": "Angestelltenstatus seit 2023",
     "limitRequalification": "Risiko der Umqualifizierung",
-    "perYear": "{{amount}}/Jahr"
+    "perYear": "{{amount}}/Jahr",
+    "legalTitle": "Rechtliche Hinweise",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsOfUse": "Nutzungsbedingungen",
+    "menusUnsavedTitle": "Menüs nicht gespeichert",
+    "menusUnsavedMsg": "Ihre Menüs konnten nicht in Ihrem Konto gespeichert werden. Von diesem Gerät löschen?",
+    "menusUnsavedErase": "Löschen und abmelden"
   },
   "auth": {
     "login": "Anmelden",
@@ -353,7 +359,7 @@
     "newPassword": "Neues Passwort",
     "newPasswordMsg": "Ihr neues Passwort ist: ",
     "noteBeforeClosing": "Notieren Sie es, bevor Sie dieses Fenster schließen.",
-    "errorRetry": "Fehler, bitte versuche es erneut",
+    "errorRetry": "Fehler, bitte versuchen Sie es erneut",
     "errorLoginFailed": "Ungültiger Benutzername oder Passwort",
     "errorAccountNotFound": "Kein Konto mit dieser E-Mail-Adresse oder diesem Benutzernamen gefunden",
     "errorBothEmpty": "Bitte geben Sie Ihre E-Mail und Ihr Passwort ein",
@@ -410,11 +416,11 @@
     "proNext": "Weiter",
     "proSubmit": "Antrag senden",
     "proDocTitle": "Pflichtunterlagen",
-    "proDocRequired": "Personalausweis, IBAN und KBISS sind erforderlich",
+    "proDocRequired": "Personalausweis, IBAN und Kbis sind erforderlich",
     "proPasswordLength": "Mindestens 8 Zeichen mit einem Großbuchstaben",
     "proSuccessTitle": "Konto erstellt",
     "proSuccessMsg": "Ihr gewerbliches Konto wird geprüft. Sie werden benachrichtigt, sobald es freigegeben ist.",
-    "docKbiss": "KBISS",
+    "docKbiss": "Kbis",
     "docIban": "IBAN / Bankverbindung",
     "docIdFront": "Personalausweis (Vorderseite)",
     "docIdBack": "Personalausweis (Rückseite)",
@@ -1195,7 +1201,9 @@
       "familyShareLabel": "Meine Woche mit meinen Liebsten teilen",
       "familyShareHint": "Personen mit Zugriff auf Ihre Liste sehen Ihre Mahlzeiten der Woche, niemals Ihr Profil, Ihre Notizen oder Ihr Budget.",
       "usageLabel": "Anonyme Nutzungsmessung",
-      "usageHint": "Wir zählen nur pro Tag und Sprache die erstellten Menüs, die gesendeten Einkäufe und die Rückkehr von einer Woche zur nächsten. Diese Zähler enthalten weder Konto noch Gerätekennung noch IP-Adresse."
+      "usageHint": "Wir zählen nur pro Tag und Sprache die erstellten Menüs, die gesendeten Einkäufe und die Rückkehr von einer Woche zur nächsten. Diese Zähler enthalten weder Konto noch Gerätekennung noch IP-Adresse.",
+      "privacyNote": "Einzelheiten zu den verwendeten Daten und zu Ihren Rechten finden Sie in unserer Datenschutzerklärung.",
+      "privacyLink": "Datenschutzerklärung"
     },
     "swap": {
       "title": "Dieses Gericht austauschen",
