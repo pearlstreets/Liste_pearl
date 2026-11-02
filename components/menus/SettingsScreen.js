@@ -115,7 +115,7 @@ const s = StyleSheet.create({
     paddingVertical: 8,
   },
   close: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 18, fontWeight: '800', color: T.ink },
+  title: { fontSize: 18, fontWeight: '600', color: T.ink },
   body: { paddingHorizontal: 20, paddingBottom: 60 },
   intro: { fontSize: 15, color: T.muted, lineHeight: 21 },
   sync: { fontSize: 15, color: T.muted, lineHeight: 21 },

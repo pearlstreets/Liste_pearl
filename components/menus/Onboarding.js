@@ -123,13 +123,13 @@ const s = StyleSheet.create({
   },
   step: {
     fontSize: 13,
-    fontWeight: '800',
+    fontWeight: '600',
     color: T.brandDark,
     marginTop: 18,
     letterSpacing: 0.4,
     textTransform: 'uppercase',
   },
-  title: { fontSize: 30, fontWeight: '900', color: T.ink, marginTop: 6, lineHeight: 36 },
+  title: { fontSize: 30, fontWeight: '600', color: T.ink, marginTop: 6, lineHeight: 36 },
   text: { fontSize: 16, color: T.muted, marginTop: 8, lineHeight: 23 },
   later: { fontSize: 13, color: T.faint, textAlign: 'center', marginTop: 24 },
   footer: {
