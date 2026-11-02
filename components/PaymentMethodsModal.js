@@ -13,7 +13,7 @@ import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { getSavedCardsApi, saveCardApi, deleteSavedCardApi, createStripeCustomerApi } from '../services/payment';
 
-const BRAND = '#27272A';
+const BRAND = '#1C1917';
 
 function brandIcon(brand) {
   const b = String(brand || '').toLowerCase();
@@ -147,7 +147,7 @@ function PaymentMethodsInner({ t, onClose }) {
               )}
               {error ? <Text style={styles.err}>{error}</Text> : null}
               <TouchableOpacity activeOpacity={0.9} onPress={handleAdd} disabled={busy} style={[styles.saveBtn, busy && { opacity: 0.6 }]}>
-                {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveTxt}>{tr('cart.saveCard', 'Enregistrer la carte')}</Text>}
+                {busy ? <ActivityIndicator color="#1C1917" /> : <Text style={styles.saveTxt}>{tr('cart.saveCard', 'Enregistrer la carte')}</Text>}
               </TouchableOpacity>
             </View>
           ) : (
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   cardField: { width: '100%', height: 50, marginBottom: 8 },
   info: { color: '#8A94A6', fontSize: 13, textAlign: 'center', marginVertical: 8 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 6, marginBottom: 2 },
-  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: BRAND, borderRadius: 16, height: 50, marginTop: 10 },
-  saveTxt: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, height: 50, marginTop: 10 },
+  saveTxt: { color: '#1C1917', fontSize: 15, fontWeight: '600' },
   secure: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 8 },
 });

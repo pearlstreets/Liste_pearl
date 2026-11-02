@@ -21,7 +21,7 @@ import SEARCH_MAP from '../data/search-map.json';
 import { libelleDetail } from '../lib/libelleDetail';
 import { Ionicons } from '@expo/vector-icons';
 
-const BRAND = '#27272A';
+const BRAND = '#1C1917';
 
 const RptBtn = ({ onPress, onLongAction, style, children }) => {
   const ref = React.useRef(null);
@@ -328,12 +328,12 @@ const SearchItem = React.memo(
                 width: 36,
                 height: 36,
                 borderRadius: 18,
-                backgroundColor: BRAND,
+                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Text style={{ color: '#fff', fontSize: 20, lineHeight: 20 }}>+</Text>
+              <Text style={{ color: '#1C1917', fontSize: 20, lineHeight: 20 }}>+</Text>
             </RptBtn>
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -389,12 +389,12 @@ const SearchItem = React.memo(
                   width: 28,
                   height: 28,
                   borderRadius: 14,
-                  backgroundColor: BRAND,
+                  borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Ionicons name="add" size={14} color="#fff" />
+                <Ionicons name="add" size={14} color="#1C1917" />
               </RptBtn>
             </View>
           )}
@@ -762,12 +762,12 @@ export default function SearchPopup({
                                 width: 24,
                                 height: 24,
                                 borderRadius: 12,
-                                backgroundColor: BRAND,
+                                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                               }}
                             >
-                              <Ionicons name="add" size={12} color="#fff" />
+                              <Ionicons name="add" size={12} color="#1C1917" />
                             </RptBtn>
                           </View>
                         </View>
@@ -798,7 +798,7 @@ export default function SearchPopup({
                   onPress={handleFinish}
                   activeOpacity={0.9}
                   style={{
-                    backgroundColor: BRAND,
+                    borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
                     paddingVertical: 14,
                     borderRadius: 14,
                     flexDirection: 'row',
@@ -806,8 +806,8 @@ export default function SearchPopup({
                     justifyContent: 'center',
                   }}
                 >
-                  <Ionicons name="cart" size={18} color="#fff" style={{ marginRight: 8 }} />
-                  <Text style={{ color: '#fff', fontWeight: '800', fontSize: 16 }}>
+                  <Ionicons name="cart" size={18} color="#1C1917" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#1C1917', fontWeight: '800', fontSize: 16 }}>
                     {t('cart.addToCart') || 'Ajouter'} ({totalCount})
                   </Text>
                 </TouchableOpacity>
