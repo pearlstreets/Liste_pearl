@@ -275,10 +275,17 @@ export function startMenuReminders(AppState, i18n) {
   try {
     if (typeof nat.setNotificationHandler === 'function')
       nat.setNotificationHandler({
-        handleNotification: async () => ({
+        // la fin d'une cuisson du mode cuisine sonne, même application ouverte
+        handleNotification: async (n) => ({
           shouldShowBanner: true,
           shouldShowList: true,
-          shouldPlaySound: false,
+          shouldPlaySound: !!(
+            n &&
+            n.request &&
+            n.request.content &&
+            n.request.content.data &&
+            n.request.content.data.cuisine === true
+          ),
           shouldSetBadge: false,
         }),
       });
