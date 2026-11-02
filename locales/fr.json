@@ -1414,7 +1414,7 @@
         "allPaused": "Tout est en pause",
         "resumeAll": "Tout reprendre",
         "pauseAll": "Tout en pause",
-        "undo": "Défaire",
+        "undo": "Retour",
         "bonAppetit": "Bon appétit !",
         "readyAfter": "Prêt en {{min}} min",
         "ready": "Prêt",
