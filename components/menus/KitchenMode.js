@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Animated,
   AppState,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
@@ -112,6 +113,8 @@ export default function KitchenMode({ id, persons, onClose }) {
   const SRef = useRef(S);
   SRef.current = S;
   const asked = useRef(false);
+  const histRef = useRef(hist);
+  histRef.current = hist;
 
   // quantités, dans la langue et pour le nombre de personnes choisi
   const lines = useMemo(
@@ -164,8 +167,7 @@ export default function KitchenMode({ id, persons, onClose }) {
     return j >= 0 ? plan.tasks[j].cook.kind : 'cuisson';
   };
   // libellé selon la cuisson : l'eau, le four, ou une autre cuisson
-  const byKind = (k, eau, four, other) =>
-    t({ eau, four }[kindOf(k)] || other);
+  const byKind = (k, eau, four, other) => t({ eau, four }[kindOf(k)] || other);
   const alertTitle = (k) => byKind(k, 'cook.k.waterAlert', 'cook.k.ovenAlert', 'cook.k.cookAlert');
   const consumerOf = (St, k) =>
     plan.tasks.findIndex((x, i) => x.need.includes(k) && St.st[i].s !== 'done');
@@ -187,6 +189,7 @@ export default function KitchenMode({ id, persons, onClose }) {
             const dt = (Date.now() - v.at) / 1000;
             const res = advance(plan, st, dt);
             setS(res.S);
+            setHist(Array.isArray(v.H) ? v.H.map((h) => validState(plan, h)).filter(Boolean) : []);
             setResumed(true);
           }
         }
@@ -210,7 +213,13 @@ export default function KitchenMode({ id, persons, onClose }) {
         else
           AsyncStorage.setItem(
             SAVE_KEY,
-            JSON.stringify({ id, sig: planSig(plan), at: Date.now(), S: St })
+            JSON.stringify({
+              id,
+              sig: planSig(plan),
+              at: Date.now(),
+              S: St,
+              H: histRef.current.slice(-20),
+            })
           ).catch(() => {});
       } catch {}
     },
@@ -297,7 +306,11 @@ export default function KitchenMode({ id, persons, onClose }) {
   const act = (fn, sound, { history = true } = {}) => {
     const St = SRef.current;
     const next = fn(St);
-    if (history) setHist((h) => [...h.slice(-(MAX_UNDO - 1)), St]);
+    if (history) {
+      const h = [...histRef.current.slice(-(MAX_UNDO - 1)), St];
+      histRef.current = h;
+      setHist(h);
+    }
     setS(next);
     SRef.current = next;
     feedback(allDone(plan, next) ? 'bravo' : sound);
@@ -323,7 +336,9 @@ export default function KitchenMode({ id, persons, onClose }) {
   const onUndo = () => {
     if (!hist.length) return;
     const prev = hist[hist.length - 1];
-    setHist((h) => h.slice(0, -1));
+    const h = hist.slice(0, -1);
+    histRef.current = h;
+    setHist(h);
     act((St) => undoState(plan, St, prev), 'undo', { history: false });
   };
   const onRestart = () => {
@@ -348,13 +363,23 @@ export default function KitchenMode({ id, persons, onClose }) {
 
   const scroll = useRef(null);
   const nowY = useRef(0);
+  const alertY = useRef(-1);
   const anim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     if (!up) return;
-    anim.setValue(160);
-    Animated.spring(anim, { toValue: 0, useNativeDriver: true, friction: 8, tension: 60 }).start();
+    // la carte monte un peu et apparaît, sans passer sur les étapes suivantes
+    anim.setValue(1);
+    Animated.timing(anim, {
+      toValue: 0,
+      duration: 350,
+      useNativeDriver: Platform.OS !== 'web',
+    }).start();
     if (scroll.current)
-      scroll.current.scrollTo({ y: Math.max(0, nowY.current - 80), animated: true });
+      scroll.current.scrollTo({
+        // un bandeau d'alerte est en haut de la liste : il reste visible en entier
+        y: Math.max(0, alertY.current >= 0 ? alertY.current - 8 : nowY.current - 80),
+        animated: true,
+      });
   }, [up, anim]);
 
   /* ------------------------------ rendu ------------------------------ */
@@ -382,6 +407,7 @@ export default function KitchenMode({ id, persons, onClose }) {
   if (cur < 0) cur = stuck(plan, S);
   const shown = new Set();
   const body = [];
+  if (!S.cooks.some((c) => c.ok && consumerOf(S, c.k) >= 0)) alertY.current = -1;
 
   const quantity = (task) => {
     const q = qtyOf(task);
@@ -413,7 +439,14 @@ export default function KitchenMode({ id, persons, onClose }) {
       const j = consumerOf(S, c.k);
       if (j < 0) return;
       body.push(
-        <View key={`al-${c.k}`} style={s.al}>
+        <View
+          key={`al-${c.k}`}
+          style={s.al}
+          onLayout={(e) => {
+            if (alertY.current < 0 || e.nativeEvent.layout.y < alertY.current)
+              alertY.current = e.nativeEvent.layout.y;
+          }}
+        >
           <Text style={s.alTitle}>{alertTitle(c.k)}</Text>
           <Text style={s.alTxt} numberOfLines={2}>
             {t('cook.k.toDo', { what: textOf(plan.tasks[j]) })}
@@ -496,7 +529,15 @@ export default function KitchenMode({ id, persons, onClose }) {
       body.push(
         <Animated.View
           key={`now-${cur}`}
-          style={[s.nw, { transform: [{ translateY: anim }] }]}
+          style={[
+            s.nw,
+            {
+              opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+              transform: [
+                { translateY: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 24] }) },
+              ],
+            },
+          ]}
           onLayout={(e) => {
             nowY.current = e.nativeEvent.layout.y;
           }}
