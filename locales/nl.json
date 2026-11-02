@@ -1072,7 +1072,7 @@
     "nav": {
       "week": "Mijn week",
       "shop": "Boodschappen",
-      "discover": "Ontdekken"
+      "discover": "Recepten"
     },
     "common": {
       "back": "Terug",
@@ -1486,7 +1486,7 @@
       "boissons": "Dranken"
     },
     "discover": {
-      "title": "Ontdekken",
+      "title": "Recepten",
       "searchPlaceholder": "Een gerecht, een ingrediënt...",
       "modes": {
         "ideas": "Ideeën",

@@ -1072,7 +1072,7 @@
     "nav": {
       "week": "Min vecka",
       "shop": "Inköp",
-      "discover": "Upptäck"
+      "discover": "Recept"
     },
     "common": {
       "back": "Tillbaka",
@@ -1486,7 +1486,7 @@
       "boissons": "Drycker"
     },
     "discover": {
-      "title": "Upptäck",
+      "title": "Recept",
       "searchPlaceholder": "En maträtt, en ingrediens...",
       "modes": {
         "ideas": "Idéer",
