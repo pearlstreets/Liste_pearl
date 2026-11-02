@@ -180,6 +180,8 @@ function jouer(kind) {
 let ecranOuvert = false;
 /** Vrai quand l'écran de cuisine joue lui-même ses sons : la notification reste alors muette. */
 export const cookScreenPlaysSounds = () => ecranOuvert && !!audioModule();
+/** Vrai tant que l'écran de cuisine est ouvert (voir keepScreenOn). */
+export const cookScreenOpen = () => ecranOuvert;
 
 /** Son et vibration d'une action. Ne lève jamais. */
 export function feedback(kind) {

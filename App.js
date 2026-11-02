@@ -75,6 +75,7 @@ import MenusScreen from "./components/menus/MenusScreen";
 import { startMenusSync, flushMenusSync } from "./services/menusSync";
 import { startMenuReminders, onMenuReminderOpen, hasPendingMenuReminder } from "./services/menuReminders";
 import TabLabel from "./components/menus/TabLabel";
+import { demarrerOtaRapide } from "./services/otaRapide";
 import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
@@ -6136,6 +6137,9 @@ export default function App() {
   }, [liveRates]);
 
   React.useEffect(() => onMenuReminderOpen(ouvrirMenusDepuisRappel), []);
+
+  // Mises à jour OTA appliquées dès ce lancement quand c'est rapide (voir services/otaRapide.js).
+  React.useEffect(() => demarrerOtaRapide(AppState), []);
 
   React.useEffect(() => {
     (async () => {
