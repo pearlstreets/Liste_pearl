@@ -1322,6 +1322,10 @@
       "missingText": "Dit recept is niet meer beschikbaar.",
       "cookedTimes": "{{count}} keer bereid",
       "addToList": "Toevoegen aan mijn lijst",
+      "pickTitle": "Kies de producten",
+      "selectAll": "Alles selecteren",
+      "selectNone": "Alles deselecteren",
+      "addCount": "Toevoegen ({{count}})",
       "toTaste": "naar smaak",
       "plural": {
         "oeuf": "Eieren",

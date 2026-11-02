@@ -1333,6 +1333,10 @@
       "cookedTimes_many": "Cucinata {{count}} volte",
       "cookedTimes_other": "Cucinata {{count}} volte",
       "addToList": "Aggiungere alla mia lista",
+      "pickTitle": "Scelga i prodotti",
+      "selectAll": "Seleziona tutto",
+      "selectNone": "Deseleziona tutto",
+      "addCount": "Aggiungere ({{count}})",
       "toTaste": "a piacere",
       "plural": {
         "oeuf": "Uova",

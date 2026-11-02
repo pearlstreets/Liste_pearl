@@ -1342,6 +1342,10 @@
       "cookedTimes_many": "Приготовлено {{count}} раз",
       "cookedTimes_other": "Приготовлено {{count}} раза",
       "addToList": "Добавить в мой список",
+      "pickTitle": "Выберите продукты",
+      "selectAll": "Выбрать все",
+      "selectNone": "Снять выбор",
+      "addCount": "Добавить ({{count}})",
       "toTaste": "по вкусу",
       "plural": {
         "oeuf": "Яйца",

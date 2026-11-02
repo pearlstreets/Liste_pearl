@@ -1324,6 +1324,10 @@
       "cookedTimes_one": "Tillagad {{count}} gång",
       "cookedTimes_other": "Tillagad {{count}} gånger",
       "addToList": "Lägg till i min lista",
+      "pickTitle": "Välj produkter",
+      "selectAll": "Markera alla",
+      "selectNone": "Avmarkera alla",
+      "addCount": "Lägg till ({{count}})",
       "toTaste": "efter smak",
       "plural": {
         "oeuf": "Ägg",

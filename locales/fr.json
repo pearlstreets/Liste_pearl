@@ -1330,6 +1330,10 @@
       "missingText": "Cette recette n'est plus disponible.",
       "cookedTimes": "Cuisinée {{count}} fois",
       "addToList": "Ajouter à ma liste",
+      "pickTitle": "Choisir les produits",
+      "selectAll": "Tout sélectionner",
+      "selectNone": "Tout désélectionner",
+      "addCount": "Ajouter ({{count}})",
       "toTaste": "selon votre goût",
       "plural": {
         "oeuf": "Œufs",

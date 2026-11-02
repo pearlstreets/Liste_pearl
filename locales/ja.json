@@ -1308,6 +1308,10 @@
       "missingText": "このレシピはもう利用できません。",
       "cookedTimes": "{{count}}回作りました",
       "addToList": "マイリストに追加",
+      "pickTitle": "商品を選択",
+      "selectAll": "すべて選択",
+      "selectNone": "すべて選択解除",
+      "addCount": "追加 ({{count}})",
       "toTaste": "適量",
       "plural": {
         "oeuf": "卵",

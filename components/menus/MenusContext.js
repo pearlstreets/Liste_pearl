@@ -783,9 +783,22 @@ export function MenusProvider({ children }) {
     [texts]
   );
 
-  /** Ajoute UNE recette, aux portions choisies, à la liste active (fusion sans doublon). */
+  /** Produits qu'une recette enverrait dans la liste, aux portions choisies. */
+  const recipeLinesFor = useCallback(
+    (recipeId, persons) =>
+      recipeListLines({
+        recipe: recipeById.get(recipeId),
+        persons,
+        recipes: recipeIndex,
+        ingredients,
+        profile: profileRef.current,
+      }).lines,
+    [recipeById, recipeIndex, ingredients]
+  );
+
+  /** Ajoute UNE recette, aux portions choisies, à la liste active (fusion sans doublon). `keys` : seulement ces produits. */
   const sendRecipeToList = useCallback(
-    async (recipeId, persons) => {
+    async (recipeId, persons, keys) => {
       try {
         const recipe = recipeById.get(recipeId);
         const { lines, fingerprint } = recipeListLines({
@@ -794,6 +807,7 @@ export function MenusProvider({ children }) {
           recipes: recipeIndex,
           ingredients,
           profile: profileRef.current,
+          keys,
         });
         if (lines.length === 0) return { status: 'empty', count: 0 };
         const r = await addToList(null, lines, {
@@ -967,6 +981,7 @@ export function MenusProvider({ children }) {
       setPantryOn,
       sendToList,
       sendRecipeToList,
+      recipeLinesFor,
       batch,
       startBatch,
       setBatchStep,
@@ -1030,6 +1045,7 @@ export function MenusProvider({ children }) {
       pantryOn,
       sendToList,
       sendRecipeToList,
+      recipeLinesFor,
       batch,
       startBatch,
       setBatchStep,

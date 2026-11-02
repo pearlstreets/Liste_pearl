@@ -1324,6 +1324,10 @@
       "cookedTimes_one": "Cooked {{count}} time",
       "cookedTimes_other": "Cooked {{count}} times",
       "addToList": "Add to my list",
+      "pickTitle": "Choose products",
+      "selectAll": "Select all",
+      "selectNone": "Deselect all",
+      "addCount": "Add ({{count}})",
       "toTaste": "to taste",
       "plural": {
         "oeuf": "Eggs",
