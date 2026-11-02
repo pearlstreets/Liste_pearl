@@ -1074,7 +1074,7 @@
     "nav": {
       "week": "Ma semaine",
       "shop": "Courses",
-      "discover": "Découvrir"
+      "discover": "Recettes"
     },
     "common": {
       "back": "Retour",
@@ -1505,7 +1505,7 @@
       "boissons": "Boissons"
     },
     "discover": {
-      "title": "Découvrir",
+      "title": "Recettes",
       "searchPlaceholder": "Un plat, un ingrédient...",
       "modes": {
         "ideas": "Idées",

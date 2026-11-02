@@ -1070,7 +1070,7 @@
     "nav": {
       "week": "我的一周",
       "shop": "购物清单",
-      "discover": "发现"
+      "discover": "食谱"
     },
     "common": {
       "back": "返回",
@@ -1458,7 +1458,7 @@
       "boissons": "饮品"
     },
     "discover": {
-      "title": "发现",
+      "title": "食谱",
       "searchPlaceholder": "菜品、食材…",
       "modes": {
         "ideas": "灵感",
