@@ -146,6 +146,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "2": 300
   }
  },
  {
@@ -214,7 +217,12 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 360,
+   "2": 300,
+   "3": 480
+  }
  },
  {
   "id": "poulet-tikka-yaourt-riz",
@@ -283,6 +291,10 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 900,
+   "3": 600
   }
  },
  {
@@ -347,7 +359,12 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 1200,
+   "1": 240,
+   "2": 300
+  }
  },
  {
   "id": "poulet-basquaise",
@@ -424,6 +441,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 480
   }
  },
  {
@@ -493,7 +513,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 480
+  }
  },
  {
   "id": "nuggets-poulet-maison-frites-four",
@@ -564,7 +587,10 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 210
+  "ovenTempC": 210,
+  "stepDurations": {
+   "3": 900
+  }
  },
  {
   "id": "brochettes-poulet-poivrons-yaourt",
@@ -628,7 +654,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 600,
+   "2": 720
+  }
  },
  {
   "id": "poulet-teriyaki-maison",
@@ -691,7 +721,11 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 360,
+   "3": 240
+  }
  },
  {
   "id": "chili-con-carne-riz",
@@ -782,6 +816,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "0": 300
   }
  },
  {
@@ -1016,7 +1053,11 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 1200,
+   "1": 480
+  }
  },
  {
   "id": "burgers-maison-frites-four",
@@ -1095,7 +1136,10 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 210
+  "ovenTempC": 210,
+  "stepDurations": {
+   "2": 240
+  }
  },
  {
   "id": "boulettes-sauce-tomate-pates",
@@ -1169,7 +1213,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 360,
+   "2": 900
+  }
  },
  {
   "id": "boeuf-saute-nouilles-legumes",
@@ -1227,7 +1275,10 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 420
+  }
  },
  {
   "id": "lasagnes-bolognaise",
@@ -1309,7 +1360,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "0": 900
+  }
  },
  {
   "id": "poivrons-farcis-boeuf-riz",
@@ -1457,7 +1511,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300
+  }
  },
  {
   "id": "porc-miel-soja-haricots-verts",
@@ -1512,7 +1569,12 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 360,
+   "2": 180,
+   "3": 480
+  }
  },
  {
   "id": "saucisses-lentilles-carottes",
@@ -1580,6 +1642,10 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "0": 480,
+   "2": 1800
   }
  },
  {
@@ -1712,7 +1778,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "1": 240
+  }
  },
  {
   "id": "filet-mignon-pommes-oignons",
@@ -1773,7 +1842,13 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 1200,
+   "1": 600,
+   "2": 600,
+   "3": 180
+  }
  },
  {
   "id": "croque-monsieur-maison",
@@ -1893,7 +1968,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 240
+  }
  },
  {
   "id": "papillote-cabillaud-legumes",
@@ -2016,7 +2094,12 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 1200,
+   "1": 600,
+   "2": 600
+  }
  },
  {
   "id": "gratin-poisson-epinards",
@@ -2144,7 +2227,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 480
+  }
  },
  {
   "id": "crevettes-ail-citron-pates",
@@ -2203,7 +2289,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 60,
+   "2": 240
+  }
  },
  {
   "id": "curry-cabillaud-coco-riz",
@@ -2264,7 +2354,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300,
+   "2": 480
+  }
  },
  {
   "id": "saumon-laque-miel-soja",
@@ -2316,7 +2410,11 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 180,
+   "3": 120
+  }
  },
  {
   "id": "spaghettis-sardines-citron",
@@ -2444,7 +2542,11 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 210
+  "ovenTempC": 210,
+  "stepDurations": {
+   "2": 900,
+   "3": 300
+  }
  },
  {
   "id": "risotto-saumon-fume-epinards",
@@ -2593,7 +2695,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 900
+  }
  },
  {
   "id": "dahl-lentilles-carottes",
@@ -2998,7 +3103,11 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "0": 600,
+   "1": 600
+  }
  },
  {
   "id": "omelette-champignons-pommes-de-terre",
@@ -3061,7 +3170,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 720,
+   "2": 360
+  }
  },
  {
   "id": "tarte-fine-tomates-chevre",
@@ -3186,7 +3299,11 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 480,
+   "2": 420
+  }
  },
  {
   "id": "falafels-four-houmous",
@@ -3337,7 +3454,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 480,
+   "2": 300
+  }
  },
  {
   "id": "pates-pesto-courgettes",
@@ -3385,7 +3506,11 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 360,
+   "2": 180
+  }
  },
  {
   "id": "risotto-champignons-parmesan",
@@ -3449,6 +3574,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 1080
   }
  },
  {
@@ -3591,7 +3719,11 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 230
+  "ovenTempC": 230,
+  "stepDurations": {
+   "0": 300,
+   "1": 1200
+  }
  },
  {
   "id": "galettes-pommes-de-terre-fromage",
@@ -3654,7 +3786,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 300
+  }
  },
  {
   "id": "curry-patate-douce-pois-chiches",
@@ -3732,6 +3867,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 1200
   }
  },
  {
@@ -3806,7 +3944,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 720,
+   "2": 420
+  }
  },
  {
   "id": "buddha-bowl-quinoa-patate-douce",
@@ -3883,7 +4025,10 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 720
+  }
  },
  {
   "id": "boulgour-legumes-roties-feta",
@@ -3954,7 +4099,10 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 720
+  }
  },
  {
   "id": "quesadillas-haricots-fromage",
@@ -4008,7 +4156,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 180
+  }
  },
  {
   "id": "spaghettis-ail-huile-persil",
@@ -4131,7 +4282,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 600
+  }
  },
  {
   "id": "pates-petits-pois-fromage",
@@ -4180,7 +4334,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 120
+  }
  },
  {
   "id": "pommes-de-terre-farcies-fromage-blanc",
@@ -4242,7 +4399,10 @@
   "stepKinds": {
    "0": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "3": 600
+  }
  },
  {
   "id": "soupe-lentilles-carottes",
@@ -4369,7 +4529,11 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 300,
+   "1": 360
+  }
  },
  {
   "id": "couscous-poulet-legumes",
@@ -4460,6 +4624,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 900
   }
  },
  {
@@ -4603,7 +4770,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 900
+  }
  },
  {
   "id": "paella-poulet-chorizo",
@@ -4734,7 +4904,11 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300,
+   "3": 300
+  }
  },
  {
   "id": "bol-vietnamien-boeuf-nouilles",
@@ -4870,6 +5044,10 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "0": 900,
+   "3": 600
   }
  },
  {
@@ -4936,7 +5114,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "gyros-poulet-pita-tzatziki",
@@ -5084,7 +5265,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 900
+  }
  },
  {
   "id": "tartiflette-gourmande",
@@ -5142,7 +5326,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 900
+  }
  },
  {
   "id": "pot-au-feu-familial",
@@ -5283,6 +5470,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 1800
   }
  },
  {
@@ -5342,7 +5532,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 120
+  }
  },
  {
   "id": "bol-riz-saumon-fume-avocat",
@@ -5462,7 +5655,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 480
+  }
  },
  {
   "id": "salade-chevre-chaud-noix",
@@ -5694,7 +5890,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 240,
+   "2": 120
+  }
  },
  {
   "id": "tortilla-espagnole",
@@ -5748,7 +5948,12 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 900,
+   "2": 360,
+   "3": 240
+  }
  },
  {
   "id": "soupe-nouilles-poulet",
@@ -5811,7 +6016,11 @@
     "qty": 10,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 480,
+   "2": 180
+  }
  },
  {
   "id": "rougail-saucisses",
@@ -6063,6 +6272,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "0": 300
   }
  },
  {
@@ -6129,7 +6341,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 3600
+  }
  },
  {
   "id": "salade-tomate-mozzarella-basilic",
@@ -6431,7 +6646,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 300
+  }
  },
  {
   "id": "carottes-rapees-orange",
@@ -6932,7 +7150,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 600
+  }
  },
  {
   "id": "mousse-chocolat-noir",
@@ -7320,7 +7541,10 @@
     "qty": 1,
     "unit": "u"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 1800
+  }
  },
  {
   "id": "fromage-blanc-miel-noix",
@@ -7414,6 +7638,9 @@
   },
   "stepKinds": {
    "2": "repos"
+  },
+  "stepDurations": {
+   "3": 60
   }
  },
  {
@@ -7464,6 +7691,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 1200
   }
  },
  {
@@ -7513,7 +7743,10 @@
     "qty": 250,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 14400
+  }
  },
  {
   "id": "gateau-banane-moelleux",
@@ -7731,7 +7964,10 @@
     "qty": 20,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300
+  }
  },
  {
   "id": "pancakes-moelleux-banane",
@@ -7789,7 +8025,11 @@
     "qty": 200,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300,
+   "2": 120
+  }
  },
  {
   "id": "tartines-avocat-oeuf",
@@ -8052,7 +8292,10 @@
     "qty": 20,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 180
+  }
  },
  {
   "id": "smoothie-banane-fraise",
@@ -8099,7 +8342,10 @@
     "qty": 20,
     "unit": "g"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 60
+  }
  },
  {
   "id": "overnight-oats-fruits-rouges",
@@ -8323,6 +8569,9 @@
   },
   "stepKinds": {
    "4": "feu"
+  },
+  "stepDurations": {
+   "1": 600
   }
  },
  {
@@ -8418,6 +8667,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "2": 300
   }
  },
  {
@@ -8691,6 +8943,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "4": 300
   }
  },
  {
@@ -8957,6 +9212,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "2": 180
   }
  },
  {
@@ -9124,6 +9382,10 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 600,
+   "4": 180
   }
  },
  {
@@ -9362,6 +9624,10 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "0": 600,
+   "1": 180
   }
  },
  {
@@ -9431,6 +9697,10 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 600,
+   "3": 300
   }
  },
  {
@@ -9512,6 +9782,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -9585,6 +9858,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 180
   }
  },
  {
@@ -9645,7 +9921,12 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 480,
+   "1": 240,
+   "2": 300
+  }
  },
  {
   "id": "lapin-moutarde",
@@ -9718,6 +9999,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -9868,6 +10152,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "0": 600
   }
  },
  {
@@ -9941,6 +10228,9 @@
   "stepKinds": {
    "2": "feu",
    "3": "feu"
+  },
+  "stepDurations": {
+   "0": 600
   }
  },
  {
@@ -10335,6 +10625,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -10570,7 +10863,10 @@
   "stepKinds": {
    "4": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "0": 300
+  }
  },
  {
   "id": "saucisses-puree-oignons",
@@ -10640,6 +10936,9 @@
   "stepKinds": {
    "0": "feu",
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 900
   }
  },
  {
@@ -10702,6 +11001,10 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "1": 600,
+   "2": 300
   }
  },
  {
@@ -10943,7 +11246,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "pain-viande-tomate",
@@ -11030,7 +11336,10 @@
   "stepKinds": {
    "2": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "3": 600
+  }
  },
  {
   "id": "boulettes-creme-champignons",
@@ -11109,6 +11418,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 600
   }
  },
  {
@@ -11189,6 +11501,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 240
   }
  },
  {
@@ -11274,6 +11589,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "3": 180
   }
  },
  {
@@ -11444,7 +11762,10 @@
    "0": "feu",
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "pates-saucisse-brocoli",
@@ -11506,7 +11827,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 480
+  }
  },
  {
   "id": "tarte-jambon-comte",
@@ -11745,7 +12069,10 @@
    "0": "feu",
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 360
+  }
  },
  {
   "id": "cabillaud-sauce-vierge",
@@ -11816,6 +12143,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 240
   }
  },
  {
@@ -11896,6 +12226,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 240
   }
  },
  {
@@ -11965,7 +12298,10 @@
    "0": "four",
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 300
+  }
  },
  {
   "id": "truite-amandes-haricots-verts",
@@ -12032,6 +12368,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "1": 180
   }
  },
  {
@@ -12169,7 +12508,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 600,
+   "2": 180
+  }
  },
  {
   "id": "colin-sauce-tomate-olives",
@@ -12561,7 +12904,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "blanquette-poisson-riz",
@@ -12899,7 +13245,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 600
+  }
  },
  {
   "id": "haddock-poche-epinards",
@@ -12966,6 +13315,9 @@
   "stepKinds": {
    "0": "feu",
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 480
   }
  },
  {
@@ -13040,7 +13392,10 @@
    "0": "feu",
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 480
+  }
  },
  {
   "id": "crumble-cabillaud-parmesan",
@@ -13116,7 +13471,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 600
+  }
  },
  {
   "id": "tian-sardines-pommes-de-terre",
@@ -13264,6 +13622,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 240
   }
  },
  {
@@ -13436,7 +13797,11 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 220
+  "ovenTempC": 220,
+  "stepDurations": {
+   "0": 1200,
+   "1": 1800
+  }
  },
  {
   "id": "salade-nicoise-chaude-thon",
@@ -14154,7 +14519,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 540
+  }
  },
  {
   "id": "gratin-panais-carottes",
@@ -14229,7 +14597,10 @@
   "stepKinds": {
    "2": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "0": 600
+  }
  },
  {
   "id": "gratin-pommes-de-terre-champignons",
@@ -14386,7 +14757,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "tarte-oignons-alsacienne",
@@ -14532,7 +14906,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "1": 480
+  }
  },
  {
   "id": "flamiche-poireaux",
@@ -14599,7 +14976,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "0": 900
+  }
  },
  {
   "id": "tourte-epinards-ricotta",
@@ -14752,6 +15132,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 360
   }
  },
  {
@@ -15149,7 +15532,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "2": 300
+  }
  },
  {
   "id": "galettes-sarrasin-champignons-oeuf",
@@ -15216,6 +15602,9 @@
   },
   "stepKinds": {
    "0": "repos"
+  },
+  "stepDurations": {
+   "2": 180
   }
  },
  {
@@ -15453,6 +15842,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 240
   }
  },
  {
@@ -15605,7 +15997,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 480,
+   "2": 120
+  }
  },
  {
   "id": "polenta-champignons-comte",
@@ -15675,7 +16071,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 600,
+   "1": 300
+  }
  },
  {
   "id": "polenta-gratinee-tomate",
@@ -15829,6 +16229,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 300
   }
  },
  {
@@ -16191,6 +16594,9 @@
   "stepKinds": {
    "1": "feu",
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -16269,7 +16675,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 180
+  "ovenTempC": 180,
+  "stepDurations": {
+   "0": 480
+  }
  },
  {
   "id": "chou-rouge-pommes-pommes-de-terre",
@@ -16420,7 +16829,10 @@
   "stepKinds": {
    "2": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 600
+  }
  },
  {
   "id": "fenouil-gratine-parmesan-riz",
@@ -17003,6 +17415,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -17163,6 +17578,10 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "1": 180,
+   "2": 360
   }
  },
  {
@@ -17617,6 +18036,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 180
   }
  },
  {
@@ -17702,6 +18124,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 300
   }
  },
  {
@@ -17778,6 +18203,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "3": 180
   }
  },
  {
@@ -17861,6 +18289,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "2": 180
   }
  },
  {
@@ -18025,6 +18456,9 @@
   "stepKinds": {
    "2": "feu",
    "3": "feu"
+  },
+  "stepDurations": {
+   "1": 600
   }
  },
  {
@@ -18102,7 +18536,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "0": 720
+  }
  },
  {
   "id": "gratin-riz-courgettes-tomates",
@@ -18189,7 +18626,10 @@
    "0": "four",
    "3": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "1": 600
+  }
  },
  {
   "id": "tajine-poulet-citron-olives",
@@ -18364,6 +18804,9 @@
   "stepKinds": {
    "1": "feu",
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -18468,6 +18911,9 @@
   "stepKinds": {
    "1": "feu",
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 120
   }
  },
  {
@@ -19039,7 +19485,10 @@
   "stepKinds": {
    "1": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "3": 300
+  }
  },
  {
   "id": "maghmour-aubergines-pois-chiches",
@@ -19215,6 +19664,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -19408,6 +19860,9 @@
    "0": "feu",
    "1": "feu",
    "4": "feu"
+  },
+  "stepDurations": {
+   "2": 360
   }
  },
  {
@@ -19497,6 +19952,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 300
   }
  },
  {
@@ -19585,6 +20043,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -19673,6 +20134,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -19755,7 +20219,10 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 180
+  }
  },
  {
   "id": "bibimbap-boeuf-legumes",
@@ -19838,7 +20305,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 120
+  }
  },
  {
   "id": "porc-caramel-vietnamien-oeufs",
@@ -20003,7 +20473,11 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 300,
+   "3": 180
+  }
  },
  {
   "id": "mapo-tofu-boeuf",
@@ -20077,7 +20551,10 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 300
+  }
  },
  {
   "id": "riz-saute-ananas-crevettes",
@@ -20150,7 +20627,11 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 300,
+   "3": 180
+  }
  },
  {
   "id": "okonomiyaki-chou",
@@ -20211,7 +20692,10 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 360
+  }
  },
  {
   "id": "rendang-boeuf-coco",
@@ -20306,6 +20790,9 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "1": 300
   }
  },
  {
@@ -20374,7 +20861,12 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 180,
+   "2": 120,
+   "3": 120
+  }
  },
  {
   "id": "tinga-poulet-tostadas",
@@ -20461,7 +20953,11 @@
    "0": "feu",
    "2": "feu"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 360,
+   "3": 180
+  }
  },
  {
   "id": "enchiladas-haricots-rouges-four",
@@ -20635,7 +21131,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300
+  }
  },
  {
   "id": "arroz-rojo-poulet",
@@ -20722,6 +21221,10 @@
   },
   "stepKinds": {
    "3": "feu"
+  },
+  "stepDurations": {
+   "1": 180,
+   "4": 300
   }
  },
  {
@@ -20871,6 +21374,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "3": 120
   }
  },
  {
@@ -21010,7 +21516,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 240,
+   "3": 60
+  }
  },
  {
   "id": "penne-arrabbiata",
@@ -21264,6 +21774,9 @@
    "2": "feu",
    "3": "feu",
    "4": "feu"
+  },
+  "stepDurations": {
+   "1": 300
   }
  },
  {
@@ -21355,6 +21868,9 @@
   "stepKinds": {
    "0": "feu",
    "2": "feu"
+  },
+  "stepDurations": {
+   "1": 120
   }
  },
  {
@@ -21449,6 +21965,9 @@
   "stepKinds": {
    "2": "feu",
    "3": "feu"
+  },
+  "stepDurations": {
+   "4": 300
   }
  },
  {
@@ -21508,7 +22027,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 120
+  }
  },
  {
   "id": "salade-mechouia-poivrons-tomates",
@@ -22118,7 +22640,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "3": 180
+  }
  },
  {
   "id": "rouleaux-printemps-crevettes",
@@ -22194,7 +22719,10 @@
     "qty": 2,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 180
+  }
  },
  {
   "id": "salade-mangue-crevettes-citron-vert",
@@ -22259,7 +22787,10 @@
     "qty": 0.5,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 180
+  }
  },
  {
   "id": "soupe-coco-poulet-citron-vert",
@@ -22475,7 +23006,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 360
+  }
  },
  {
   "id": "caponata-aubergines-olives",
@@ -22854,7 +23388,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 300
+  }
  },
  {
   "id": "soupe-arachide-patate-douce",
@@ -22931,6 +23468,9 @@
   },
   "stepKinds": {
    "1": "feu"
+  },
+  "stepDurations": {
+   "3": 120
   }
  },
  {
@@ -22986,6 +23526,9 @@
   },
   "stepKinds": {
    "3": "repos"
+  },
+  "stepDurations": {
+   "1": 180
   }
  },
  {
@@ -23345,7 +23888,11 @@
     "qty": 1,
     "unit": "cs"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300,
+   "2": 60
+  }
  },
  {
   "id": "churros-four-cannelle",
@@ -23407,7 +23954,10 @@
   "stepKinds": {
    "3": "four"
   },
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 60
+  }
  },
  {
   "id": "flan-caramel-oeufs",
@@ -23522,6 +24072,10 @@
   },
   "stepKinds": {
    "2": "repos"
+  },
+  "stepDurations": {
+   "1": 120,
+   "3": 300
   }
  },
  {
@@ -23650,6 +24204,9 @@
   },
   "stepKinds": {
    "2": "feu"
+  },
+  "stepDurations": {
+   "0": 300
   }
  },
  {
@@ -23900,6 +24457,9 @@
   },
   "stepKinds": {
    "1": "repos"
+  },
+  "stepDurations": {
+   "0": 60
   }
  },
  {
@@ -24032,7 +24592,10 @@
     "unit": "cs"
    }
   ],
-  "ovenTempC": 200
+  "ovenTempC": 200,
+  "stepDurations": {
+   "1": 360
+  }
  },
  {
   "id": "upma-semoule-legumes",
@@ -24107,7 +24670,11 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "0": 180,
+   "3": 120
+  }
  },
  {
   "id": "omelette-masala-tomate",
@@ -24377,6 +24944,9 @@
   },
   "stepKinds": {
    "0": "feu"
+  },
+  "stepDurations": {
+   "2": 300
   }
  },
  {
@@ -24446,7 +25016,10 @@
   "stepKinds": {
    "1": "four"
   },
-  "ovenTempC": 190
+  "ovenTempC": 190,
+  "stepDurations": {
+   "3": 120
+  }
  },
  {
   "id": "tartines-ricotta-miel-fraises",
@@ -24544,7 +25117,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "1": 300
+  }
  },
  {
   "id": "chia-coco-mangue",
@@ -24663,7 +25239,10 @@
     "qty": 1,
     "unit": "cc"
    }
-  ]
+  ],
+  "stepDurations": {
+   "2": 360
+  }
  },
  {
   "id": "smoothie-mangue-banane-coco",
@@ -24767,6 +25346,9 @@
   },
   "stepKinds": {
    "1": "repos"
+  },
+  "stepDurations": {
+   "3": 300
   }
  },
  {
@@ -25411,7 +25993,10 @@
   },
   "course": "plat",
   "servings": 4,
-  "image": false
+  "image": false,
+  "stepDurations": {
+   "0": 120
+  }
  },
  {
   "id": "cannelloni-poulet-poivrons",
@@ -29243,7 +29828,10 @@
   },
   "course": "plat",
   "servings": 4,
-  "image": false
+  "image": false,
+  "stepDurations": {
+   "1": 60
+  }
  },
  {
   "id": "brochettes-crevettes-harissa",
@@ -31750,7 +32338,10 @@
   "ovenTempC": 200,
   "course": "entree",
   "servings": 4,
-  "image": false
+  "image": false,
+  "stepDurations": {
+   "3": 300
+  }
  },
  {
   "id": "carpaccio-betterave-poire-chevre",
@@ -33129,7 +33720,10 @@
   "ovenTempC": 180,
   "course": "dessert",
   "servings": 4,
-  "image": false
+  "image": false,
+  "stepDurations": {
+   "3": 600
+  }
  },
  {
   "id": "far-breton-pruneaux",
@@ -33800,7 +34394,10 @@
   },
   "course": "dessert",
   "servings": 4,
-  "image": false
+  "image": false,
+  "stepDurations": {
+   "3": 120
+  }
  },
  {
   "id": "truffes-chocolat-cacao",

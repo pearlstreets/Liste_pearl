@@ -60,7 +60,11 @@ export default function CookMode({ id, persons, onClose, guided }) {
     (i) => {
       const secs = seq
         ? seq[i] && Number(seq[i].timerSec)
-        : recipe && recipe.stepTimers && Number(recipe.stepTimers[String(i)]);
+        : recipe &&
+          Number(
+            (recipe.stepTimers && recipe.stepTimers[String(i)]) ||
+              (recipe.stepDurations && recipe.stepDurations[String(i)])
+          );
       if (!secs || !(secs > 0)) return null;
       const cur = timers[i] || { total: secs, left: secs, endAt: null };
       const left = cur.endAt ? Math.max(0, Math.ceil((cur.endAt - now) / 1000)) : cur.left;
