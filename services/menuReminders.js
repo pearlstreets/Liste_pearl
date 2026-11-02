@@ -275,7 +275,8 @@ export function startMenuReminders(AppState, i18n) {
   try {
     if (typeof nat.setNotificationHandler === 'function')
       nat.setNotificationHandler({
-        // la fin d'une cuisson du mode cuisine sonne, même application ouverte
+        // la fin d'une cuisson du mode cuisine sonne, même application ouverte, sauf si l'écran de
+        // cuisine joue déjà son propre son
         handleNotification: async (n) => ({
           shouldShowBanner: true,
           shouldShowList: true,
@@ -284,7 +285,8 @@ export function startMenuReminders(AppState, i18n) {
             n.request &&
             n.request.content &&
             n.request.content.data &&
-            n.request.content.data.cuisine === true
+            n.request.content.data.cuisine === true &&
+            !require('./cookAlerts').cookScreenPlaysSounds()
           ),
           shouldSetBadge: false,
         }),

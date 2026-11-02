@@ -7,6 +7,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/backup/', '/scripts/archive/'],
   modulePathIgnorePatterns: ['<rootDir>/backup/'],
   moduleFileExtensions: ['js', 'jsx', 'json'],
+  moduleNameMapper: { '\\.(wav|mp3)$': '<rootDir>/__mocks__/fichierSon.js' },
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|expo|expo-.*|@expo|@expo/.*|react-native-.*)',
   ],
