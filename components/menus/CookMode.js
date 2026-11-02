@@ -286,7 +286,7 @@ const s = StyleSheet.create({
   x: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   counter: {
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: '600',
     color: T.brandDark,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -310,10 +310,10 @@ const s = StyleSheet.create({
     paddingVertical: 6,
     marginRight: 8,
   },
-  runTxt: { fontSize: 13, fontWeight: '800', color: T.brandDark, marginLeft: 5 },
+  runTxt: { fontSize: 13, fontWeight: '600', color: T.brandDark, marginLeft: 5 },
   body: { padding: 22, paddingBottom: 30 },
-  stepTxt: { fontSize: 27, lineHeight: 38, fontWeight: '700', color: T.ink },
-  ingBox: { backgroundColor: T.subtle, borderRadius: 18, padding: 16, marginBottom: 20 },
+  stepTxt: { fontSize: 27, lineHeight: 38, fontWeight: '600', color: T.ink },
+  ingBox: { backgroundColor: T.subtle, borderRadius: 16, padding: 16, marginBottom: 20 },
   ingTxt: { fontSize: 16, color: T.ink, fontWeight: '600', lineHeight: 28 },
   timer: {
     backgroundColor: T.brandSoft,
@@ -324,13 +324,13 @@ const s = StyleSheet.create({
   },
   timerLabel: {
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: '600',
     color: T.muted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     textAlign: 'center',
   },
-  timerVal: { fontSize: 56, fontWeight: '900', color: T.ink, textAlign: 'center', marginTop: 4 },
+  timerVal: { fontSize: 56, fontWeight: '600', color: T.ink, textAlign: 'center', marginTop: 4 },
   nav: {
     flexDirection: 'row',
     paddingHorizontal: 18,

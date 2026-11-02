@@ -633,7 +633,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 
 const s = StyleSheet.create({
   head: { paddingHorizontal: 18, paddingTop: 6 },
-  big: { fontSize: 34, fontWeight: '900', color: T.ink, letterSpacing: -0.5 },
+  big: { fontSize: 34, fontWeight: '600', color: T.ink, letterSpacing: -0.5 },
   search: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -650,7 +650,7 @@ const s = StyleSheet.create({
   filters: { paddingTop: 6, paddingBottom: 0 },
   mineRow: { flexDirection: 'row', marginBottom: 4 },
   modeNote: { fontSize: 14, color: T.muted, lineHeight: 20, marginVertical: 8 },
-  label: { fontSize: 15, fontWeight: '800', color: T.ink, marginTop: 14, marginBottom: 10 },
+  label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 14, marginBottom: 10 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap' },
   tip: { fontSize: 12, color: T.faint },
   row: {
@@ -665,7 +665,7 @@ const s = StyleSheet.create({
     ...T.shadowSm,
   },
   rowBody: { flex: 1, marginHorizontal: 14 },
-  rowTitle: { fontSize: 16, fontWeight: '800', color: T.ink, lineHeight: 21 },
+  rowTitle: { fontSize: 16, fontWeight: '600', color: T.ink, lineHeight: 21 },
   rowMeta: { fontSize: 13, color: T.muted, marginTop: 3, fontWeight: '600' },
   rowExtra: { fontSize: 12, color: T.brandDark, marginTop: 3, fontWeight: '700' },
   hist: {

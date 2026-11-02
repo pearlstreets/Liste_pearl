@@ -305,11 +305,11 @@ export default function RecipeEditScreen({ id, onClose }) {
 
 const s = StyleSheet.create({
   head: { flexDirection: 'row', alignItems: 'center', padding: 14 },
-  title: { flex: 1, marginLeft: 12, fontSize: 20, fontWeight: '900', color: T.ink },
+  title: { flex: 1, marginLeft: 12, fontSize: 20, fontWeight: '600', color: T.ink },
   body: { paddingHorizontal: 18, paddingBottom: 30 },
   box: { backgroundColor: T.subtle, borderRadius: 16, padding: 14 },
-  label: { fontSize: 15, fontWeight: '800', color: T.ink, marginTop: 20, marginBottom: 8 },
-  inlineLabel: { flex: 1, fontSize: 15, fontWeight: '800', color: T.ink },
+  label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 20, marginBottom: 8 },
+  inlineLabel: { flex: 1, fontSize: 15, fontWeight: '600', color: T.ink },
   line: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   msg: { fontSize: 14, lineHeight: 20, color: T.brandDark, marginTop: 10, fontWeight: '600' },
   err: { fontSize: 14, color: T.danger, marginTop: 6, marginBottom: 6, fontWeight: '600' },

@@ -21,7 +21,7 @@ import SEARCH_MAP from '../data/search-map.json';
 import { libelleDetail } from '../lib/libelleDetail';
 import { Ionicons } from '@expo/vector-icons';
 
-const BRAND = '#00C29B';
+const BRAND = '#27272A';
 
 const RptBtn = ({ onPress, onLongAction, style, children }) => {
   const ref = React.useRef(null);

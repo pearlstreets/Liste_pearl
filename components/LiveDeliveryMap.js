@@ -9,7 +9,7 @@ import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { cheminRestant } from '../lib/cheminRestant';
 
-const BRAND = '#00C29B';
+const BRAND = '#27272A';
 
 function num(v) {
   return typeof v === 'number' && !Number.isNaN(v) ? v : null;
@@ -129,7 +129,7 @@ const s = StyleSheet.create({
   pin: {
     width: 30, height: 30, borderRadius: 15, borderWidth: 2,
     alignItems: 'center', justifyContent: 'center',
-    shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 3, shadowOffset: { width: 0, height: 1 }, elevation: 3,
+    shadowColor: '#000', shadowOpacity: 0, shadowRadius: 3, shadowOffset: { width: 0, height: 1 }, elevation: 0,
   },
   driverPin: { backgroundColor: BRAND, borderColor: '#fff', width: 34, height: 34, borderRadius: 17 },
   banner: {
@@ -137,7 +137,7 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: 8,
     backgroundColor: 'rgba(255,255,255,0.96)', borderRadius: 12,
     paddingHorizontal: 14, paddingVertical: 10,
-    shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 4,
+    shadowColor: '#000', shadowOpacity: 0, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 0,
   },
-  bannerTxt: { fontWeight: '800', fontSize: 14, color: '#111', flex: 1 },
+  bannerTxt: { fontWeight: '600', fontSize: 14, color: '#111', flex: 1 },
 });

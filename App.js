@@ -83,7 +83,7 @@ import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } 
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
 import { parseMulti } from "./lib/parseMulti";
-const BRAND = "#09d7aa";
+const BRAND = "#27272A";
 
 // Design system tokens — "modern delivery marketplace" look.
 // Barre de gestes / navigation Android : marge sous la derniere carte des pages.
@@ -98,13 +98,14 @@ const sousCategorie = (p) => {
 };
 
 const THEME = {
-  brand: '#09d7aa', brandDark: '#07b896', brandSoft: '#E0FAF3',
-  bg: '#FFFFFF', card: '#FFFFFF', subtle: '#F1F3F5',
-  ink: '#0F172A', muted: '#64748B', faint: '#94A3B8',
-  border: '#ECEEF1', danger: '#EF4444', dangerSoft: '#FEE2E2',
+  brand: '#27272A', brandDark: '#18181B', brandSoft: '#F4F4F5',
+  bg: '#FAFAF9', card: '#FFFFFF', subtle: '#F5F5F4',
+  ink: '#1C1917', muted: '#78716C', faint: '#A8A29E',
+  border: '#E7E5E4', borderInput: '#D6D3D1', danger: '#EF4444', dangerSoft: '#FEE2E2',
   accent: '#FFB547', accentSoft: '#FFF3E0', info: '#3B82F6', infoSoft: '#DBEAFE',
-  shadow: { shadowColor: '#0F172A', shadowOpacity: 0.06, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
-  shadowSm: { shadowColor: '#0F172A', shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
+  // Cartes à contour fin, sans ombre.
+  shadow: { shadowOpacity: 0, elevation: 0 },
+  shadowSm: { shadowOpacity: 0, elevation: 0 },
 };
 
 
@@ -112,8 +113,8 @@ const ProductThumb = ({ name, size = 44 }) => {
   const img = getProductImage(name);
   return (
     <View style={{
-      width: size, height: size, borderRadius: size / 2,
-      backgroundColor: img.bg, alignItems: 'center', justifyContent: 'center'
+      width: size, height: size, borderRadius: Math.round(size * 0.3),
+      backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center'
     }}>
       <Text style={{ fontSize: size * 0.5 }}>{img.emoji}</Text>
     </View>
@@ -259,21 +260,21 @@ const lstyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 2 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 14, height: 38, borderRadius: 12, marginLeft: 10 },
+  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 14, height: 38, borderRadius: 16, marginLeft: 10 },
   scanTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
   inputWrap: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
-  input: { flex: 1, height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  input: { flex: 1, height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.borderInput, ...THEME.shadowSm },
   addBtn: { width: 52, height: 52, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginLeft: 10, ...THEME.shadow },
   toolRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
-  pill: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, marginRight: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pill: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 16, marginRight: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   pillOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   pillOnDark: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   pillTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
   pillTxtOn: { color: '#fff' },
-  delPill: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, backgroundColor: THEME.dangerSoft },
-  delTxt: { color: THEME.danger, fontWeight: '800', fontSize: 12.5, marginLeft: 4 },
+  delPill: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 16, backgroundColor: THEME.dangerSoft },
+  delTxt: { color: THEME.danger, fontWeight: '600', fontSize: 12.5, marginLeft: 4 },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 12, paddingHorizontal: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
   checkOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
@@ -282,42 +283,42 @@ const lstyles = StyleSheet.create({
   itemNameCrossed: { textDecorationLine: 'line-through', color: THEME.faint, fontWeight: '600' },
   stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 10, height: 30, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border },
   stepBtn: { width: 24, height: 24, borderRadius: 7, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
-  stepQty: { minWidth: 26, textAlign: 'center', fontSize: 13, fontWeight: '800', color: THEME.ink, marginHorizontal: 2 },
+  stepQty: { minWidth: 26, textAlign: 'center', fontSize: 13, fontWeight: '600', color: THEME.ink, marginHorizontal: 2 },
   unitChip: { marginLeft: 6, minWidth: 30, height: 30, paddingHorizontal: 7, borderRadius: 9, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
   unitChipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitChipTxt: { fontSize: 12, fontWeight: '700', color: THEME.faint },
   unitChipTxtOn: { color: '#fff' },
   unitGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 14, marginHorizontal: -4 },
-  unitOpt: { minWidth: 64, height: 44, paddingHorizontal: 14, margin: 4, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
+  unitOpt: { minWidth: 64, height: 44, paddingHorizontal: 14, margin: 4, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
   unitOptOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   unitOptTxtOn: { color: '#fff' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
   doneBtnOn: { backgroundColor: THEME.ink, borderColor: THEME.ink },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(9,215,170,0.95)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
-  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(39,39,42,0.95)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   // zIndex/elevation : garantit que cette barre reste au-dessus de la liste
   // réordonnable, qui crée son propre plan (gesture-handler).
-  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10, elevation: 10, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10, elevation: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
   hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
   hideTxt: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
   cta: { height: 54, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  ctaTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'center', paddingHorizontal: 28 },
   modalBox: { backgroundColor: THEME.card, borderRadius: 22, padding: 22 },
   // Dropdown de suggestions de pseudo (partage)
-  suggestBox: { marginTop: 8, backgroundColor: THEME.card, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
+  suggestBox: { marginTop: 8, backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
   suggestRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 },
   suggestAvatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: THEME.subtle },
-  modalTitle: { fontSize: 18, fontWeight: '800', color: THEME.ink, marginBottom: 14 },
-  modalInput: { height: 50, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
+  modalTitle: { fontSize: 18, fontWeight: '600', color: THEME.ink, marginBottom: 14 },
+  modalInput: { height: 50, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   modalRow: { flexDirection: 'row', marginTop: 16 },
-  modalCancel: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle, marginRight: 8 },
-  modalSave: { flex: 1, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand, marginLeft: 8 },
+  modalCancel: { flex: 1, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle, marginRight: 8 },
+  modalSave: { flex: 1, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand, marginLeft: 8 },
   modalCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
-  modalSaveTxt: { color: '#fff', fontWeight: '800', fontSize: 15 },
+  modalSaveTxt: { color: '#fff', fontWeight: '600', fontSize: 15 },
 });
 
 function ListScreen() {
@@ -1301,18 +1302,18 @@ const prodStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  clearBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+  clearBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
 
-  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 16, padding: 4 },
   segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
-  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm, borderWidth: 1, borderColor: THEME.border },
   segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
   segTxtOn: { color: THEME.ink },
 
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 12 },
-  chip: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, marginRight: 8, marginBottom: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  chip: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 16, marginRight: 8, marginBottom: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   chipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   chipTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
   chipTxtOn: { color: '#fff' },
@@ -1321,7 +1322,7 @@ const prodStyles = StyleSheet.create({
   summaryTitle: { fontSize: 13, fontWeight: '700', color: THEME.muted },
   summaryStats: { flexDirection: 'row', marginTop: 10 },
   statBox: { flex: 1 },
-  statValue: { fontSize: 18, fontWeight: '800', color: THEME.ink },
+  statValue: { fontSize: 18, fontWeight: '600', color: THEME.ink },
   statLabel: { fontSize: 11.5, fontWeight: '600', color: THEME.faint, marginTop: 1 },
   statDivider: { width: 1, backgroundColor: THEME.border, marginHorizontal: 4 },
 
@@ -1332,12 +1333,12 @@ const prodStyles = StyleSheet.create({
   cardOn: { borderColor: THEME.brand, borderWidth: 2 },
   cardHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   cardHeadLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  shopIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  shopIcon: { width: 44, height: 44, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   metaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4, flexWrap: 'wrap' },
   metaChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, marginRight: 6, marginTop: 2 },
   metaTxt: { fontSize: 12, color: THEME.muted, marginLeft: 4, fontWeight: '600' },
-  shopFavBtn: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
+  shopFavBtn: { width: 38, height: 38, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
 
   feeRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
   feeTxt: { fontSize: 12.5, color: THEME.muted, fontWeight: '600', marginLeft: 4 },
@@ -1345,40 +1346,40 @@ const prodStyles = StyleSheet.create({
   productRow: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: THEME.border },
   productLine: { flexDirection: 'row', alignItems: 'center' },
   qtyBadge: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8, marginRight: 8 },
-  qtyBadgeTxt: { fontSize: 12.5, fontWeight: '800' },
+  qtyBadgeTxt: { fontSize: 12.5, fontWeight: '600' },
   productTitle: { flex: 1, fontSize: 15, fontWeight: '700', color: THEME.ink, marginRight: 10 },
   addedTag: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
   addedTagTxt: { color: THEME.brand, fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
   searchBtn: { backgroundColor: THEME.brand, paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10, flexDirection: 'row', alignItems: 'center' },
   searchBtnTxt: { color: '#fff', fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
 
-  picked: { marginTop: 10, padding: 12, backgroundColor: THEME.subtle, borderRadius: 14 },
+  picked: { marginTop: 10, padding: 12, backgroundColor: THEME.subtle, borderRadius: 16 },
   pickedRow: { flexDirection: 'row', alignItems: 'center' },
   pickedBody: { flex: 1, marginLeft: 10 },
   pickedName: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   pickedDetail: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
   pickedPriceRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4 },
-  pickedPrice: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  pickedPrice: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   pickedUnit: { fontSize: 11, color: THEME.faint, marginLeft: 6, fontWeight: '600' },
   pickedFav: { marginLeft: 8 },
-  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 12, height: 34, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border, marginLeft: 'auto' },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, height: 34, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border, marginLeft: 'auto' },
   stepBtn: { width: 28, height: 28, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   stepBtnAdd: { width: 28, height: 28, borderRadius: 9, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
   stepBtnDel: { width: 28, height: 28, borderRadius: 9, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
   stepQty: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginHorizontal: 6, minWidth: 18, textAlign: 'center' },
 
-  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 12, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
+  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 16, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
   addMoreTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13.5, marginLeft: 6 },
   totalsBox: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: THEME.border },
   totalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   totalLabel: { fontSize: 13.5, fontWeight: '700', color: THEME.muted },
   totalValue: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
-  grandLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
-  grandValue: { fontSize: 15, fontWeight: '800', color: THEME.brand },
+  grandLabel: { fontSize: 15, fontWeight: '600', color: THEME.ink },
+  grandValue: { fontSize: 15, fontWeight: '600', color: THEME.brand },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
-  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
   bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, paddingBottom: Platform.OS === 'ios' ? 12 : 10, ...THEME.shadow },
@@ -1388,12 +1389,12 @@ const prodStyles = StyleSheet.create({
   bottomItemName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
   bottomItemShop: { fontSize: 11.5, color: THEME.muted, fontWeight: '600', marginTop: 1 },
   bottomItemQty: { fontSize: 12.5, fontWeight: '700', color: THEME.muted, marginRight: 10 },
-  bottomItemPrice: { fontSize: 13.5, fontWeight: '800', color: THEME.brand },
+  bottomItemPrice: { fontSize: 13.5, fontWeight: '600', color: THEME.brand },
   bottomSummary: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 8 },
   bottomCount: { fontSize: 14, fontWeight: '700', color: THEME.muted },
-  bottomTotal: { fontSize: 18, fontWeight: '800', color: THEME.brand },
+  bottomTotal: { fontSize: 18, fontWeight: '600', color: THEME.brand },
   cta: { marginHorizontal: 20, height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  ctaTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
 });
 
 const ProductsScreen = () => {
@@ -1446,7 +1447,7 @@ const ProductsScreen = () => {
   const [__activeShopIndex, __setActiveShopIndex] = React.useState(null);
   const [__activeShopProducts, __setActiveShopProducts] = React.useState([]); // vrais produits de la boutique active (recherche)
 
-  const BRAND="#00C29B";
+  const BRAND="#27272A";
   const [mode,setMode]=React.useState("collect");
   const [favShops,setFavShops]=React.useState([]);
   const loadFavShops = React.useCallback(async()=>{ try{ const raw=await AsyncStorage.getItem(KEY_FAV_SHOPS); const arr=raw?JSON.parse(raw):[]; setFavShops(Array.isArray(arr)?arr:[]); }catch(e){ setFavShops([]);} },[]);
@@ -2730,18 +2731,18 @@ const ProductsScreen = () => {
 const favStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segment: { flexDirection: 'row', marginTop: 16, backgroundColor: THEME.subtle, borderRadius: 16, padding: 4 },
   segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
-  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm, borderWidth: 1, borderColor: THEME.border },
   segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
   segTxtOn: { color: THEME.ink },
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, height: 48, marginTop: 12, borderWidth: 1, borderColor: THEME.border },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 14, height: 48, marginTop: 12, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, padding: 0 },
   card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   cardRow: { flexDirection: 'row', alignItems: 'center' },
-  shopIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  shopIcon: { width: 44, height: 44, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
   cardBody: { flex: 1, marginLeft: 12, marginRight: 8 },
   cardTitle: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   cardSub: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
@@ -2749,12 +2750,12 @@ const favStyles = StyleSheet.create({
   metaChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, marginRight: 6 },
   metaTxt: { fontSize: 12, color: THEME.muted, marginLeft: 4, fontWeight: '600' },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 4 },
-  price: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  price: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   unitPrice: { fontSize: 11, color: THEME.faint, marginLeft: 6, fontWeight: '600' },
-  favBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+  favBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
-  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 });
 
@@ -2766,7 +2767,7 @@ const FavoritesScreen = ({ onClose }) => {
   const [shopDetails, setShopDetails] = React.useState([]);
   const [favProducts, setFavProducts] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
-  const BRAND = "#09d7aa";
+  const BRAND = "#27272A";
 
   // Load favorite shops
   const loadFavShops = React.useCallback(async () => {
@@ -2954,19 +2955,19 @@ const cartStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  clearBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
+  clearBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
-  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
   card: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   cardOn: { borderColor: THEME.brand, borderWidth: 2 },
   shopHead: { flexDirection: 'row', alignItems: 'center', paddingBottom: 12, marginBottom: 2, borderBottomWidth: 1, borderBottomColor: THEME.border },
-  shopIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginLeft: 10, marginRight: 10 },
+  shopIcon: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginLeft: 10, marginRight: 10 },
   shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   shopMeta: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
@@ -2979,44 +2980,44 @@ const cartStyles = StyleSheet.create({
   productName: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   productDetail: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
   productSide: { alignItems: 'flex-end' },
-  productPrice: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  productPrice: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   productUnit: { fontSize: 11, color: THEME.faint, marginTop: 2, fontWeight: '600' },
   productDelBtn: { width: 30, height: 30, borderRadius: 10, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center', marginTop: 6 },
 
-  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, height: 34, paddingHorizontal: 3, marginTop: 8, alignSelf: 'flex-start' },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 16, height: 34, paddingHorizontal: 3, marginTop: 8, alignSelf: 'flex-start' },
   stepBtn: { width: 28, height: 28, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   stepQty: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginHorizontal: 8, minWidth: 18, textAlign: 'center' },
 
-  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 12, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
+  addMoreBtn: { marginTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 44, borderRadius: 16, borderWidth: 1, borderColor: THEME.brand, borderStyle: 'dashed', backgroundColor: THEME.brandSoft },
   addMoreTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13.5, marginLeft: 6 },
 
   subtotalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 4, borderTopWidth: 1, borderTopColor: THEME.border },
   subtotalLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
-  subtotalValue: { fontSize: 15, fontWeight: '800', color: THEME.brand },
+  subtotalValue: { fontSize: 15, fontWeight: '600', color: THEME.brand },
 
   bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 14, paddingBottom: Platform.OS === 'ios' ? 28 : 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
   bottomRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   bottomCount: { fontSize: 13.5, fontWeight: '700', color: THEME.muted },
   bottomCountVal: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
-  bottomTotalLabel: { fontSize: 16, fontWeight: '800', color: THEME.ink },
-  bottomTotalVal: { fontSize: 20, fontWeight: '900', color: THEME.brand },
+  bottomTotalLabel: { fontSize: 16, fontWeight: '600', color: THEME.ink },
+  bottomTotalVal: { fontSize: 20, fontWeight: '600', color: THEME.brand },
   cta: { marginTop: 12, height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  ctaTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  ctaTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   ctaDisabled: { backgroundColor: THEME.faint },
 
   // Bottom sheet modals
   sheetBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, ...THEME.shadow },
+  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, ...THEME.shadow, borderWidth: 1, borderColor: THEME.border },
   sheetGrabber: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 2 },
   sheetHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 14 },
-  sheetTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  sheetTitle: { fontSize: 20, fontWeight: '600', color: THEME.ink, letterSpacing: -0.4 },
   sheetTitleRow: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  closeBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  closeBtn: { width: 36, height: 36, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
 
   // Segmented control (delivery / collect)
-  segment: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: THEME.subtle, borderRadius: 14, padding: 4 },
+  segment: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: THEME.subtle, borderRadius: 16, padding: 4 },
   segBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 40, borderRadius: 11 },
-  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm },
+  segBtnOn: { backgroundColor: THEME.card, ...THEME.shadowSm, borderWidth: 1, borderColor: THEME.border },
   segTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.muted, marginLeft: 6 },
   segTxtOn: { color: THEME.ink },
 
@@ -3030,22 +3031,22 @@ const cartStyles = StyleSheet.create({
   miniStepper: { flexDirection: 'row', alignItems: 'center', width: 96, justifyContent: 'space-between' },
   miniStepBtn: { width: 30, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle },
   miniStepBtnDel: { width: 30, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.dangerSoft },
-  miniStepQty: { fontSize: 14, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  miniStepQty: { fontSize: 14, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   blockAddBtn: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', marginTop: 8, marginBottom: 4, paddingHorizontal: 12, height: 34, borderRadius: 10, backgroundColor: THEME.subtle },
   blockAddTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.ink, marginLeft: 6 },
   blockSubtotal: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, marginTop: 4, borderTopWidth: 1, borderTopColor: THEME.border },
   blockSubLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
-  blockSubVal: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
+  blockSubVal: { fontSize: 13.5, fontWeight: '600', color: THEME.ink },
 
   feeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingHorizontal: 2 },
   feeLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
-  feeValue: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
-  feeValueFree: { fontSize: 13.5, fontWeight: '800', color: THEME.brand },
+  feeValue: { fontSize: 13.5, fontWeight: '600', color: THEME.ink },
+  feeValueFree: { fontSize: 13.5, fontWeight: '600', color: THEME.brand },
 
   // Info card (collect / address)
   infoCard: { marginTop: 16, padding: 14, borderRadius: 16, backgroundColor: THEME.subtle },
   infoCardHead: { flexDirection: 'row', alignItems: 'center' },
-  infoIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  infoIcon: { width: 36, height: 36, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
   infoTitle: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   infoSub: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
   infoNote: { fontSize: 12.5, color: THEME.faint, marginTop: 10, marginLeft: 48, fontWeight: '600' },
@@ -3056,15 +3057,15 @@ const cartStyles = StyleSheet.create({
   addrTitle: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
   addrEditTxt: { fontSize: 13, fontWeight: '700', color: THEME.brand },
   addrFieldLabel: { fontSize: 12, fontWeight: '700', color: THEME.muted, marginBottom: 6 },
-  addrInput: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 12, paddingHorizontal: 14, height: 46, fontSize: 14, color: THEME.ink },
-  addrSuggestBox: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 12, marginTop: 6, overflow: 'hidden' },
+  addrInput: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 16, paddingHorizontal: 14, height: 46, fontSize: 14, color: THEME.ink },
+  addrSuggestBox: { backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, borderRadius: 16, marginTop: 6, overflow: 'hidden' },
   addrSuggestRow: { paddingHorizontal: 14, paddingVertical: 11, flexDirection: 'row', alignItems: 'center' },
   addrSuggestTxt: { fontSize: 13, color: THEME.ink, marginLeft: 8, fontWeight: '600' },
   addrBtnRow: { flexDirection: 'row', marginTop: 14, gap: 10 },
-  addrCancelBtn: { flex: 1, height: 44, borderRadius: 12, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
+  addrCancelBtn: { flex: 1, height: 44, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
   addrCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 14 },
-  addrSaveBtn: { flex: 1, height: 44, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
-  addrSaveTxt: { color: '#fff', fontWeight: '800', fontSize: 14 },
+  addrSaveBtn: { flex: 1, height: 44, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  addrSaveTxt: { color: '#fff', fontWeight: '600', fontSize: 14 },
   addrDisplay: { marginTop: 10, marginLeft: 28 },
   addrDisplayRow: { flexDirection: 'row', alignItems: 'center' },
   addrDisplayTxt: { fontSize: 13, color: THEME.ink, marginLeft: 6, flex: 1, fontWeight: '600' },
@@ -3074,15 +3075,15 @@ const cartStyles = StyleSheet.create({
   slotSection: { marginTop: 18 },
   slotSectionHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   slotSectionTitle: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
-  dayPill: { paddingHorizontal: 14, height: 38, borderRadius: 12, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  dayPill: { paddingHorizontal: 14, height: 38, borderRadius: 16, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
   dayPillOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   dayPillTxt: { fontSize: 13, fontWeight: '700', color: THEME.muted },
   dayPillTxtOn: { color: '#fff' },
   periodGroup: { marginBottom: 14 },
   periodHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  periodLabel: { fontSize: 11.5, fontWeight: '800', color: THEME.muted, marginLeft: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
+  periodLabel: { fontSize: 11.5, fontWeight: '600', color: THEME.muted, marginLeft: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
   slotGrid: { flexDirection: 'row', flexWrap: 'wrap' },
-  slotChip: { width: '31.5%', marginBottom: 8, paddingVertical: 9, borderRadius: 12, alignItems: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  slotChip: { width: '31.5%', marginBottom: 8, paddingVertical: 9, borderRadius: 16, alignItems: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
   slotChipOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
   slotChipTxt: { fontSize: 11, fontWeight: '700', color: THEME.muted },
   slotChipTxtOn: { color: '#fff' },
@@ -3099,54 +3100,54 @@ const cartStyles = StyleSheet.create({
   totalValue: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
   totalValueFree: { fontSize: 13.5, fontWeight: '700', color: THEME.brand },
   grandRow: { borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  grandLabel: { fontSize: 17, fontWeight: '900', color: THEME.ink },
-  grandValue: { fontSize: 17, fontWeight: '900', color: THEME.brand },
+  grandLabel: { fontSize: 17, fontWeight: '600', color: THEME.ink },
+  grandValue: { fontSize: 17, fontWeight: '600', color: THEME.brand },
   itemsCaption: { fontSize: 12, color: THEME.faint, textAlign: 'center', marginTop: 12, fontWeight: '600' },
 
   sheetFooter: { paddingHorizontal: 20, paddingTop: 12, gap: 10 },
   primaryBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint },
-  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
-  ghostBtn: { height: 46, borderRadius: 14, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  primaryBtnTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
+  ghostBtn: { height: 46, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   ghostBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
 
   // Search field inside modals
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, height: 46, borderWidth: 1, borderColor: THEME.border },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 14, height: 46, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: THEME.ink, padding: 0 },
 
   // Picker product row (shop products / add products lists)
-  pickerRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 10, marginBottom: 8, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pickerRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 10, marginBottom: 8, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   pickerRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand },
   pickerBody: { flex: 1, marginLeft: 12, marginRight: 10 },
   pickerName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   pickerDetail: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
   pickerPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 3 },
-  pickerPrice: { fontSize: 14, fontWeight: '800', color: THEME.ink },
+  pickerPrice: { fontSize: 14, fontWeight: '600', color: THEME.ink },
   pickerUnit: { fontSize: 10.5, color: THEME.faint, marginLeft: 4, fontWeight: '600' },
-  pickerAddBtn: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand },
-  pickerAddPill: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brand, paddingHorizontal: 12, height: 36, borderRadius: 12 },
+  pickerAddBtn: { width: 36, height: 36, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.brand },
+  pickerAddPill: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brand, paddingHorizontal: 12, height: 36, borderRadius: 16 },
   pickerAddPillTxt: { fontSize: 13, fontWeight: '700', color: '#fff', marginLeft: 4 },
   pickerInCart: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, paddingHorizontal: 10, height: 32, borderRadius: 10 },
   pickerInCartTxt: { fontSize: 12, fontWeight: '700', color: THEME.muted, marginLeft: 4 },
-  pickerStepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 12, paddingHorizontal: 3, height: 36 },
+  pickerStepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 16, paddingHorizontal: 3, height: 36 },
   pickerStepBtn: { width: 30, height: 30, borderRadius: 9, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card },
-  pickerStepQty: { fontSize: 14, fontWeight: '800', color: THEME.ink, marginHorizontal: 12 },
+  pickerStepQty: { fontSize: 14, fontWeight: '600', color: THEME.ink, marginHorizontal: 12 },
   pickerEmpty: { alignItems: 'center', paddingVertical: 34 },
   pickerEmptyTxt: { fontSize: 14, color: THEME.muted, fontWeight: '600' },
   addrPickBadge: { marginLeft: 8, paddingHorizontal: 7, height: 18, borderRadius: 6, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
-  addrPickBadgeTxt: { fontSize: 9.5, fontWeight: '800', color: THEME.brandDark, letterSpacing: 0.3 },
+  addrPickBadgeTxt: { fontSize: 9.5, fontWeight: '600', color: THEME.brandDark, letterSpacing: 0.3 },
   addedSummary: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 },
-  addedSummaryTitle: { fontSize: 13, fontWeight: '800', color: THEME.ink, marginBottom: 4 },
+  addedSummaryTitle: { fontSize: 13, fontWeight: '600', color: THEME.ink, marginBottom: 4 },
   addedSummaryLine: { fontSize: 12, color: THEME.muted, fontWeight: '600' },
 
   // OrderTracker
   trackerHeader: { paddingHorizontal: 20, paddingTop: 56, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: THEME.border },
   trackerHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  trackerTitle: { fontSize: 24, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  trackerTitle: { fontSize: 24, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   trackerOrderNo: { fontSize: 13, color: THEME.muted, marginTop: 3, fontWeight: '600' },
   etaWrap: { alignItems: 'center', paddingVertical: 26 },
   etaCircle: { width: 108, height: 108, borderRadius: 54, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: THEME.brand },
-  etaValue: { fontSize: 19, fontWeight: '900', color: THEME.brandDark, marginTop: 2 },
+  etaValue: { fontSize: 19, fontWeight: '600', color: THEME.brandDark, marginTop: 2 },
   etaCaption: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginTop: 14 },
   stepsWrap: { paddingHorizontal: 24 },
   stepItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
@@ -3160,15 +3161,15 @@ const cartStyles = StyleSheet.create({
   stepLabelOff: { fontWeight: '600', color: THEME.faint },
   trackerSummaryScroll: { marginTop: 14, marginHorizontal: 20, maxHeight: 240 },
   trackerSummaryCard: { padding: 14, backgroundColor: THEME.subtle, borderRadius: 16 },
-  trackerSummaryTitle: { fontSize: 13, fontWeight: '800', color: THEME.muted, marginBottom: 10 },
+  trackerSummaryTitle: { fontSize: 13, fontWeight: '600', color: THEME.muted, marginBottom: 10 },
   trackerShopRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
   trackerShopName: { fontSize: 13, fontWeight: '700', color: THEME.brandDark, marginLeft: 6 },
   trackerLineRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3, paddingLeft: 20 },
   trackerLineName: { color: THEME.ink, fontSize: 13, flex: 1, fontWeight: '600' },
   trackerLinePrice: { color: THEME.ink, fontSize: 13, fontWeight: '600' },
   trackerTotalRow: { borderTopWidth: 1, borderTopColor: THEME.border, marginTop: 6, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' },
-  trackerTotalLabel: { fontSize: 15, fontWeight: '900', color: THEME.ink },
-  trackerTotalValue: { fontSize: 15, fontWeight: '900', color: THEME.brand },
+  trackerTotalLabel: { fontSize: 15, fontWeight: '600', color: THEME.ink },
+  trackerTotalValue: { fontSize: 15, fontWeight: '600', color: THEME.brand },
   trackerFooter: { paddingHorizontal: 20, paddingTop: 18, paddingBottom: Platform.OS === 'ios' ? 34 : 16 },
 });
 
@@ -5164,71 +5165,71 @@ const ShopsScreen = () => {
 const shopStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
   header: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
   emptyTxt: { fontSize: 14, color: THEME.muted, marginTop: 12, fontWeight: '600', textAlign: 'center' },
-  retryBtn: { marginTop: 16, backgroundColor: BRAND, paddingHorizontal: 22, paddingVertical: 11, borderRadius: 12 },
-  retryTxt: { color: '#fff', fontWeight: '800' },
+  retryBtn: { marginTop: 16, backgroundColor: BRAND, paddingHorizontal: 22, paddingVertical: 11, borderRadius: 16 },
+  retryTxt: { color: '#fff', fontWeight: '600' },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   cover: { marginRight: 12 },
-  coverImg: { width: 64, height: 64, borderRadius: 14, backgroundColor: THEME.subtle },
+  coverImg: { width: 64, height: 64, borderRadius: 16, backgroundColor: THEME.subtle },
   coverPlaceholder: { alignItems: 'center', justifyContent: 'center' },
-  shopName: { fontSize: 16, fontWeight: '800', color: THEME.ink },
+  shopName: { fontSize: 16, fontWeight: '600', color: THEME.ink },
   shopAddr: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '500' },
   badgeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
   badge: { backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  badgeTxt: { color: THEME.brandDark, fontSize: 12, fontWeight: '800' },
+  badgeTxt: { color: THEME.brandDark, fontSize: 12, fontWeight: '600' },
   detailHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingTop: 56, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: THEME.border },
-  backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
-  detailTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink },
-  prodRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: THEME.border },
+  backBtn: { width: 40, height: 40, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  detailTitle: { fontSize: 18, fontWeight: '600', color: THEME.ink },
+  prodRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: THEME.border },
   prodMain: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  prodImg: { width: 56, height: 56, borderRadius: 12, backgroundColor: THEME.subtle, marginRight: 12 },
+  prodImg: { width: 56, height: 56, borderRadius: 16, backgroundColor: THEME.subtle, marginRight: 12 },
   prodName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   prodSub: { fontSize: 11, color: THEME.faint, marginTop: 1, fontWeight: '600' },
-  prodPrice: { fontSize: 15, fontWeight: '900', color: THEME.brandDark, marginTop: 3 },
+  prodPrice: { fontSize: 15, fontWeight: '600', color: THEME.brandDark, marginTop: 3 },
   prodBase: { fontSize: 12, color: THEME.faint, marginLeft: 8, marginTop: 4, textDecorationLine: 'line-through' },
-  addBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
-  toast: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: THEME.ink, borderRadius: 14, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
+  addBtn: { width: 40, height: 40, borderRadius: 16, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
+  toast: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: THEME.ink, borderRadius: 16, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
   toastTxt: { color: '#fff', fontWeight: '700', marginLeft: 8, flex: 1 },
   // Barre de recherche (boutiques + produits)
-  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 12, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
+  searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: THEME.ink, paddingVertical: 0 },
   // Pop-up détail produit
   pdOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
   pdSheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28, maxHeight: '86%' },
   pdClose: { alignSelf: 'flex-end', width: 34, height: 34, borderRadius: 17, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  pdImg: { width: '100%', height: 230, borderRadius: 18, backgroundColor: THEME.subtle, marginBottom: 16 },
-  pdName: { fontSize: 22, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  pdImg: { width: '100%', height: 230, borderRadius: 16, backgroundColor: THEME.subtle, marginBottom: 16 },
+  pdName: { fontSize: 22, fontWeight: '600', color: THEME.ink, letterSpacing: -0.4 },
   pdSub: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
-  pdPrice: { fontSize: 24, fontWeight: '900', color: THEME.brandDark, marginTop: 10 },
+  pdPrice: { fontSize: 24, fontWeight: '600', color: THEME.brandDark, marginTop: 10 },
   pdBase: { fontSize: 15, color: THEME.faint, marginLeft: 10, marginBottom: 3, textDecorationLine: 'line-through' },
   pdDesc: { fontSize: 14, color: THEME.muted, marginTop: 14, lineHeight: 21, fontWeight: '500' },
   pdShopRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   pdShopTxt: { fontSize: 13, color: THEME.muted, fontWeight: '700', marginLeft: 6, flex: 1 },
-  pdAddBtn: { marginTop: 18, backgroundColor: BRAND, borderRadius: 14, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
-  pdAddTxt: { color: '#fff', fontSize: 16, fontWeight: '800', marginLeft: 8 },
+  pdAddBtn: { marginTop: 18, backgroundColor: BRAND, borderRadius: 16, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  pdAddTxt: { color: '#fff', fontSize: 16, fontWeight: '600', marginLeft: 8 },
   // Page détail produit plein écran (façon AppUser)
   pdFull: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: THEME.bg },
   pdHeroWrap: { width: '100%', height: 300, backgroundColor: THEME.subtle },
   pdHero: { width: '100%', height: '100%' },
   // top: 56 → sous la barre d'état (encoche/Dynamic Island), jamais dessous.
-  pdCloseFloat: { position: 'absolute', top: 56, left: 16, width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', ...THEME.shadowSm },
+  pdCloseFloat: { position: 'absolute', top: 56, left: 16, width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', ...THEME.shadowSm, borderWidth: 1, borderColor: THEME.border },
   pdBody: { paddingHorizontal: 20, paddingTop: 18 },
-  pdStore: { fontSize: 16, fontWeight: '800', color: THEME.ink, marginTop: 12 },
+  pdStore: { fontSize: 16, fontWeight: '600', color: THEME.ink, marginTop: 12 },
   pdLocRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
   pdLocTxt: { fontSize: 13, color: THEME.muted, fontWeight: '600', flex: 1, marginLeft: 6 },
-  pdSectionTitle: { fontSize: 16, fontWeight: '800', color: THEME.ink, marginTop: 22, marginBottom: 8 },
-  pdNoteInput: { minHeight: 96, borderWidth: 1, borderColor: THEME.border, borderRadius: 14, padding: 12, fontSize: 14, color: THEME.ink, textAlignVertical: 'top', backgroundColor: THEME.card },
+  pdSectionTitle: { fontSize: 16, fontWeight: '600', color: THEME.ink, marginTop: 22, marginBottom: 8 },
+  pdNoteInput: { minHeight: 96, borderWidth: 1, borderColor: THEME.border, borderRadius: 16, padding: 12, fontSize: 14, color: THEME.ink, textAlignVertical: 'top', backgroundColor: THEME.card },
   pdFooter: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 12, paddingBottom: 28, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
   pdQtyBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   pdAddBig: { flex: 1, marginHorizontal: 10, backgroundColor: THEME.brand, borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
-  pdAddBigTxt: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  pdAddBigTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
   pdAddBigOff: { opacity: 0.45 },
   // Pastilles d'options (fiche à plusieurs options)
   optWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  optChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, maxWidth: '100%' },
+  optChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, maxWidth: '100%' },
   optChipOn: { borderColor: THEME.brand, backgroundColor: THEME.brand },
   optChipOff: { backgroundColor: THEME.subtle, borderColor: THEME.border, opacity: 0.5 },
   optChipTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink },
@@ -5290,11 +5291,12 @@ function MainNavigator({ onLogout, isAuth }) {
         headerTitle: getTabName(route.name),
         tabBarLabel: ({ color }) => <TabLabel label={getTabName(route.name)} color={color} />,
         tabBarActiveTintColor: BRAND,
-        tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28 },
+        tabBarInactiveTintColor: THEME.faint,
+        tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28, backgroundColor: THEME.card, borderTopColor: THEME.border, borderTopWidth: 1 },
         tabBarIcon: ({ focused, color, size }) => {
           const iconSet = ICONS[route.name] || { focused:"ellipse", unfocused:"ellipse-outline" };
           const name = focused ? iconSet.focused : iconSet.unfocused;
-          return <Ionicons name={name} size={size} color={color} />;
+          return <Ionicons name={name} size={22} color={color} />;
         },
       })}
     >
@@ -5313,7 +5315,7 @@ const authStyles = StyleSheet.create({
 
   // Top bar (back / close)
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingTop: 60, paddingBottom: 4, minHeight: 46 },
-  topBtn: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  topBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
 
   // Scroll body
   // Pas de justifyContent:'center' : dès que le formulaire dépasse la hauteur
@@ -5328,42 +5330,42 @@ const authStyles = StyleSheet.create({
   // Inscription : en-tete plus compact pour que « Continuer » tienne a l'ecran.
   scrollBodySignup: { paddingTop: 8 },
   brandHeaderSignup: { marginBottom: 16 },
-  brandLogoSignup: { width: 52, height: 52, borderRadius: 18, marginBottom: 10 },
+  brandLogoSignup: { width: 52, height: 52, borderRadius: 16, marginBottom: 10 },
   brandLogo: { width: 72, height: 72, borderRadius: 24, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', marginBottom: 16, ...THEME.shadow },
-  brandTitle: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  brandTitle: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   brandSubtitle: { fontSize: 13, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 19, fontWeight: '600' },
 
   // Error banner
-  errorBanner: { backgroundColor: THEME.dangerSoft, borderRadius: 14, padding: 14, marginBottom: 18, flexDirection: 'row', alignItems: 'center' },
+  errorBanner: { backgroundColor: THEME.dangerSoft, borderRadius: 16, padding: 14, marginBottom: 18, flexDirection: 'row', alignItems: 'center' },
   errorTxt: { color: THEME.danger, fontSize: 13, marginLeft: 8, flex: 1, fontWeight: '600' },
 
   // Form fields
   fieldGroup: { marginBottom: 14 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: THEME.muted, marginBottom: 6 },
-  field: { height: 52, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
+  field: { height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   // Erreur affichée SOUS le champ concerné + bordure rouge sur le champ.
   fieldError: { color: THEME.danger, fontSize: 12.5, fontWeight: '600', marginTop: 6, lineHeight: 17 },
   fieldInvalid: { borderWidth: 1, borderColor: THEME.danger },
-  pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.card, borderRadius: 14, borderWidth: 1, borderColor: THEME.border },
+  pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border },
   pwdInput: { flex: 1, height: 52, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
   pwdEye: { paddingHorizontal: 14, height: 52, alignItems: 'center', justifyContent: 'center' },
 
   // Primary button
   primaryBtn: { height: 54, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 4, ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint, shadowOpacity: 0, elevation: 0 },
-  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16 },
+  primaryBtnTxt: { color: '#fff', fontWeight: '600', fontSize: 16 },
 
   // Toggle-mode link
   toggleLink: { alignItems: 'center', paddingVertical: 18 },
   toggleTxt: { color: THEME.muted, fontSize: 14.5, fontWeight: '600' },
-  toggleTxtBrand: { color: THEME.brand, fontWeight: '800', fontSize: 14.5 },
+  toggleTxtBrand: { color: THEME.brand, fontWeight: '600', fontSize: 14.5 },
 
   // Progress steps (inscription 2 étapes)
   stepRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', marginHorizontal: 24, marginBottom: 22, marginTop: 4 },
   stepItem: { alignItems: 'center', width: 120 },
   stepDot: { width: 30, height: 30, borderRadius: 15, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: THEME.border },
   stepDotActive: { backgroundColor: THEME.brand, borderColor: THEME.brand },
-  stepDotTxt: { fontSize: 14, fontWeight: '800', color: THEME.muted },
+  stepDotTxt: { fontSize: 14, fontWeight: '600', color: THEME.muted },
   stepDotTxtActive: { color: '#fff' },
   stepLabel: { fontSize: 12, fontWeight: '700', color: THEME.faint, marginTop: 6, textAlign: 'center' },
   stepLabelActive: { color: THEME.ink },
@@ -5371,27 +5373,27 @@ const authStyles = StyleSheet.create({
 
   // Genre (segmented)
   genderRow: { flexDirection: 'row', gap: 8 },
-  genderChip: { flex: 1, height: 48, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
-  genderChipActive: { backgroundColor: 'rgba(0,194,155,0.12)', borderColor: THEME.brand },
+  genderChip: { flex: 1, height: 48, borderRadius: 16, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
+  genderChipActive: { backgroundColor: 'rgba(39,39,42,0.12)', borderColor: THEME.brand },
   genderChipTxt: { fontSize: 14.5, fontWeight: '700', color: THEME.muted },
   genderChipTxtActive: { color: THEME.brand },
 
   // Téléphone + indicatif
   phoneRow: { flexDirection: 'row', alignItems: 'center' },
-  dialBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 12, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, gap: 6 },
+  dialBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 12, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, gap: 6 },
   dialFlag: { fontSize: 18 },
   dialTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
 
   // Pays (adresse)
-  countryBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 14, borderRadius: 14, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, gap: 8 },
+  countryBtn: { flexDirection: 'row', alignItems: 'center', height: 52, paddingHorizontal: 14, borderRadius: 16, backgroundColor: THEME.subtle, borderWidth: 1, borderColor: THEME.border, gap: 8 },
   countryBtnTxt: { flex: 1, fontSize: 15, fontWeight: '600', color: THEME.ink },
 
   // Dropdown de suggestions d'adresse (autocomplétion Photon)
-  suggestBox: { marginTop: 6, backgroundColor: THEME.card, borderRadius: 12, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
+  suggestBox: { marginTop: 6, backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, overflow: 'hidden' },
   suggestRow: { flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 12, paddingVertical: 11 },
 
   // Language picker button
-  langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginTop: 16, marginBottom: 24, height: 48, borderRadius: 14, backgroundColor: THEME.subtle },
+  langBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginTop: 16, marginBottom: 24, height: 48, borderRadius: 16, backgroundColor: THEME.subtle },
   langBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 8 },
   // Android (pliable plie) : marges reduites pour que « Continuer » ne soit pas coupe
   // au-dessus de la barre de langue ; la SafeAreaView du bas ajoute deja la barre de navigation.
@@ -5402,13 +5404,13 @@ const authStyles = StyleSheet.create({
   langSheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '62%', paddingBottom: 36 },
   langHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 4 },
   langHeadRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: THEME.border },
-  langHeadTitle: { fontSize: 18, fontWeight: '900', color: THEME.ink, letterSpacing: -0.3 },
+  langHeadTitle: { fontSize: 18, fontWeight: '600', color: THEME.ink, letterSpacing: -0.3 },
   langClose: { width: 34, height: 34, borderRadius: 11, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
-  langRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 14, borderRadius: 14, marginBottom: 4 },
+  langRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 14, borderRadius: 16, marginBottom: 4 },
   langRowActive: { backgroundColor: THEME.brandSoft },
   langFlag: { fontSize: 24, marginRight: 14 },
   langLabel: { flex: 1, fontSize: 15.5, fontWeight: '600', color: THEME.ink },
-  langLabelActive: { fontWeight: '800', color: THEME.brandDark },
+  langLabelActive: { fontWeight: '600', color: THEME.brandDark },
 });
 
 // ---- Roulette de date (JS pur, sans module natif) ----
@@ -6046,7 +6048,7 @@ function FirstLaunchLanguage({ onDone }) {
           <TouchableOpacity
             onPress={() => choose(item.code)}
             activeOpacity={0.7}
-            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 16, borderRadius: 14, marginTop: 8, backgroundColor: selected === item.code ? 'rgba(0,194,155,0.12)' : '#F5F6F8' }}
+            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 16, borderRadius: 14, marginTop: 8, backgroundColor: selected === item.code ? 'rgba(39,39,42,0.12)' : '#F5F6F8' }}
           >
             <Text style={{ fontSize: 22, marginRight: 12 }}>{item.flag}</Text>
             <Text style={{ flex: 1, fontSize: 16, fontWeight: '600', color: THEME.ink }}>{item.label}</Text>
@@ -6200,7 +6202,7 @@ const styles = StyleSheet.create({
   screen:{ flex:1, backgroundColor:"#fff" },
 
   sectionHeader:{ flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingHorizontal:GUTTER, paddingTop:6, paddingBottom:4 },
-  sectionTitle:{ fontSize:20, fontWeight:"700", color:"#111" },
+  sectionTitle:{ fontSize:20, fontWeight:'600', color:"#111" },
 
   inputRow:{ flexDirection:"row", alignItems:"center", paddingHorizontal:GUTTER, marginTop:8 },
   input:{ flex:1, height:44, borderWidth:1, borderColor:"#E5E7EB", borderRadius:10, paddingHorizontal:12, fontSize:15, color:"#111" },
@@ -6217,7 +6219,7 @@ const styles = StyleSheet.create({
   row:{ flexDirection:"row", alignItems:"center", paddingVertical:10, paddingLeft:GUTTER, paddingRight:12 },
   qtyInline:{ flexDirection:"row", alignItems:"center", marginLeft:12 },
   qtyBtn:{ width:28, height:28, borderRadius:8, borderWidth:1, borderColor:"#E5E7EB", alignItems:"center", justifyContent:"center" },
-  qtyInput:{ minWidth:26, height:24, textAlign:"center", fontSize:13, fontWeight:'800', color:THEME.ink, marginHorizontal:2, paddingVertical:0 },
+  qtyInput:{ minWidth:26, height:24, textAlign:"center", fontSize:13, fontWeight:'600', color:THEME.ink, marginHorizontal:2, paddingVertical:0 },
 
   itemLabel:{ fontSize:16, color:"#111", marginLeft:12 },
   crossed:{ textDecorationLine:"line-through", color:"#999" },
@@ -6229,7 +6231,7 @@ const styles = StyleSheet.create({
   radioOuter:{ width:CTRL, height:CTRL, borderRadius:10, borderWidth:1, borderColor:"#CBD5E1", backgroundColor:"#fff", alignItems:"center", justifyContent:"center" },
   radioInner:{ width:10, height:10, borderRadius:5, backgroundColor:BRAND },
 
-  h1:{ fontSize:20, fontWeight:"700", color:"#111", marginTop:6, marginBottom:6 },
+  h1:{ fontSize:20, fontWeight:'600', color:"#111", marginTop:6, marginBottom:6 },
   muted:{ color:"#9AA", fontSize:15 },
   empty:{ color:"#9AA", fontSize:15 },
 
@@ -6237,11 +6239,11 @@ const styles = StyleSheet.create({
   switchCenterRow:{ flexDirection:"row", alignItems:"center", justifyContent:"center", marginBottom:12 },
   switchLabel:{ fontSize:15, color:"#333", marginLeft:10 },
 
-  bottomBtn:{ height:48, borderRadius:14, backgroundColor:BRAND, alignItems:"center", justifyContent:"center" },
+  bottomBtn:{ height:48, borderRadius:16, backgroundColor:BRAND, alignItems:"center", justifyContent:"center" },
   bottomBtnText:{ color:"#fff", fontSize:16, fontWeight:"700" },
 
   modalBackdrop:{ flex:1, backgroundColor:"rgba(0,0,0,0.4)", justifyContent:"center", alignItems:"center" },
-  modalBox:{ width:"80%", backgroundColor:"#fff", borderRadius:12, padding:20 },
+  modalBox:{ width:"80%", backgroundColor:"#fff", borderRadius:16, padding:20 },
   modalTitle:{ fontSize:18, fontWeight:"700", marginBottom:12, textAlign:"center" },
   modalInput:{ borderWidth:1, borderColor:"#DDD", borderRadius:8, padding:10, fontSize:16, marginBottom:16 },
   modalRow:{ flexDirection:"row", justifyContent:"flex-end" },
@@ -6274,7 +6276,7 @@ const profStyles = StyleSheet.create({
   // Custom in-screen header
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontWeight: '900', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
   // Profile identity card
@@ -6282,21 +6284,21 @@ const profStyles = StyleSheet.create({
   avatarWrap: { width: 60, height: 60, marginBottom: 8 },
   avatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#9ca3af', alignItems: 'center', justifyContent: 'center', borderWidth: 2.5, borderColor: '#3B82F6', overflow: 'hidden' },
   avatarImg: { width: 60, height: 60 },
-  avatarInitials: { fontSize: 24, fontWeight: '900', color: '#fff' },
+  avatarInitials: { fontSize: 24, fontWeight: '600', color: '#fff' },
   avatarBadge: { position: 'absolute', bottom: 0, right: 0, width: 24, height: 24, borderRadius: 12, backgroundColor: BRAND, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: THEME.card, zIndex: 10 },
-  profileName: { fontSize: 19, fontWeight: '900', color: THEME.ink, letterSpacing: -0.3 },
+  profileName: { fontSize: 19, fontWeight: '600', color: THEME.ink, letterSpacing: -0.3 },
   profileHandle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  editBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 16, height: 34, borderRadius: 12, marginTop: 10 },
+  editBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 16, height: 34, borderRadius: 16, marginTop: 10 },
   editBtnTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
 
   // Section
   section: { marginTop: 14, paddingHorizontal: 20 },
   sectionHeadRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
-  sectionTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, letterSpacing: -0.3 },
+  sectionTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, letterSpacing: -0.3 },
   sectionCount: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
 
   // Verification banners
-  banner: { flexDirection: 'row', alignItems: 'center', borderRadius: 14, padding: 14, marginBottom: 10 },
+  banner: { flexDirection: 'row', alignItems: 'center', borderRadius: 16, padding: 14, marginBottom: 10 },
   bannerWarn: { backgroundColor: '#FEF3C7' },
   bannerOk: { backgroundColor: THEME.brandSoft },
   bannerTxt: { flex: 1, fontSize: 13, fontWeight: '600', marginLeft: 10, lineHeight: 18 },
@@ -6308,12 +6310,12 @@ const profStyles = StyleSheet.create({
   docIcon: { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   docLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
   docStatusPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  docStatusTxt: { fontSize: 11.5, fontWeight: '800' },
+  docStatusTxt: { fontSize: 11.5, fontWeight: '600' },
 
   // Order card
   orderCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   orderRow: { flexDirection: 'row', alignItems: 'center' },
-  orderIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
+  orderIcon: { width: 44, height: 44, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center' },
   orderBody: { flex: 1, marginLeft: 12, marginRight: 8 },
   orderTitle: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   orderStatusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 3 },
@@ -6323,65 +6325,65 @@ const profStyles = StyleSheet.create({
   orderDate: { fontSize: 11.5, color: THEME.faint, marginTop: 2, fontWeight: '600' },
   orderSide: { alignItems: 'flex-end' },
   modePill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: THEME.subtle, marginBottom: 4 },
-  modePillTxt: { fontSize: 10, fontWeight: '800', color: THEME.muted },
-  orderPrice: { fontSize: 15.5, fontWeight: '900', color: THEME.ink },
+  modePillTxt: { fontSize: 10, fontWeight: '600', color: THEME.muted },
+  orderPrice: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
 
   // Settings rows
   settingsCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm, overflow: 'hidden' },
   settingRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 11, paddingHorizontal: 14 },
   settingDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
-  settingIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center' },
+  settingIcon: { width: 38, height: 38, borderRadius: 16, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center' },
   settingBody: { flex: 1, marginLeft: 12, marginRight: 8 },
   settingLabel: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   settingValue: { fontSize: 12.5, color: THEME.muted, marginTop: 1, fontWeight: '600' },
 
   // Driver CTA card
   driverCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: THEME.border },
-  driverIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  driverIcon: { width: 44, height: 44, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
   driverBody: { flex: 1, marginLeft: 12, marginRight: 8 },
-  driverTitle: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  driverTitle: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   driverSub: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
   // Logout
   logoutBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.dangerSoft, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
-  logoutTxt: { fontSize: 15.5, fontWeight: '800', color: THEME.danger, marginLeft: 8 },
-  deleteAccountBtn: { height: 46, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  logoutTxt: { fontSize: 15.5, fontWeight: '600', color: THEME.danger, marginLeft: 8 },
+  deleteAccountBtn: { height: 46, borderRadius: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   deleteAccountTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.danger, marginLeft: 6, textDecorationLine: 'underline' },
 
   // Empty state
   empty: { backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 16, paddingHorizontal: 24, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  emptyCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  emptyTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  emptyCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
   // Guest screen
   guestWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 40 },
-  guestTitle: { fontSize: 17, fontWeight: '800', color: THEME.ink, textAlign: 'center' },
+  guestTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   guestHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   guestBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
-  guestBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  guestBtnTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   // Guest hero (design soigné) + préférences accessibles sans connexion
   guestHero: { margin: 20, borderRadius: 22, backgroundColor: THEME.brand, paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
   guestHeroIcon: { width: 78, height: 78, borderRadius: 39, backgroundColor: 'rgba(255,255,255,0.18)', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
-  guestHeroTitle: { fontSize: 20, fontWeight: '900', color: '#fff', textAlign: 'center', letterSpacing: -0.3 },
+  guestHeroTitle: { fontSize: 20, fontWeight: '600', color: '#fff', textAlign: 'center', letterSpacing: -0.3 },
   guestHeroHint: { fontSize: 13, color: 'rgba(255,255,255,0.92)', textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },
-  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 14, marginTop: 18 },
-  guestHeroBtnTxt: { color: THEME.brand, fontWeight: '800', fontSize: 15, marginLeft: 8 },
-  guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.18)', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.55)', paddingHorizontal: 26, paddingVertical: 12, borderRadius: 14, marginTop: 10 },
-  guestHeroBtnAltTxt: { color: '#fff', fontWeight: '800', fontSize: 15, marginLeft: 8 },
-  guestPrefTitle: { fontSize: 12, fontWeight: '800', color: THEME.faint, marginBottom: 10, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.6 },
+  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 16, marginTop: 18 },
+  guestHeroBtnTxt: { color: THEME.brand, fontWeight: '600', fontSize: 15, marginLeft: 8 },
+  guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.18)', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.55)', paddingHorizontal: 26, paddingVertical: 12, borderRadius: 16, marginTop: 10 },
+  guestHeroBtnAltTxt: { color: '#fff', fontWeight: '600', fontSize: 15, marginLeft: 8 },
+  guestPrefTitle: { fontSize: 12, fontWeight: '600', color: THEME.faint, marginBottom: 10, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.6 },
 
   // Full-page modal header
   modalScreen: { flex: 1, backgroundColor: THEME.bg },
   modalHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 56, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: THEME.border },
-  modalBack: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
-  modalTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, flex: 1, letterSpacing: -0.4 },
+  modalBack: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  modalTitle: { fontSize: 20, fontWeight: '600', color: THEME.ink, flex: 1, letterSpacing: -0.4 },
   modalHeaderPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, backgroundColor: THEME.brandSoft },
-  modalHeaderPillTxt: { fontSize: 12, fontWeight: '800', color: THEME.brandDark },
+  modalHeaderPillTxt: { fontSize: 12, fontWeight: '600', color: THEME.brandDark },
 
   // Form fields
   fieldLabel: { fontSize: 12.5, fontWeight: '700', color: THEME.muted, marginBottom: 6 },
-  field: { height: 52, backgroundColor: THEME.card, borderRadius: 14, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
+  field: { height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   fieldGroup: { marginBottom: 16 },
   fieldRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
 
@@ -6389,16 +6391,16 @@ const profStyles = StyleSheet.create({
   modalCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
 
   // Geolocation button
-  geoBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 50, borderRadius: 14, backgroundColor: THEME.brandSoft, marginBottom: 20 },
+  geoBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 50, borderRadius: 16, backgroundColor: THEME.brandSoft, marginBottom: 20 },
   geoBtnTxt: { fontSize: 14.5, fontWeight: '700', color: THEME.brandDark, marginLeft: 8 },
 
   // Password change collapsible
-  pwdToggle: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, borderWidth: 1, borderColor: THEME.border, paddingVertical: 14, paddingHorizontal: 14, marginBottom: 22, ...THEME.shadowSm },
+  pwdToggle: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, paddingVertical: 14, paddingHorizontal: 14, marginBottom: 22, ...THEME.shadowSm },
   pwdToggleTxt: { flex: 1, fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
   pwdPanel: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, padding: 16, marginBottom: 22, ...THEME.shadowSm },
   pwdPanelHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
-  pwdPanelTitle: { flex: 1, fontSize: 15, fontWeight: '800', color: THEME.ink, marginLeft: 8 },
-  pwdAlert: { borderRadius: 12, padding: 10, marginBottom: 12, flexDirection: 'row', alignItems: 'center' },
+  pwdPanelTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: THEME.ink, marginLeft: 8 },
+  pwdAlert: { borderRadius: 16, padding: 10, marginBottom: 12, flexDirection: 'row', alignItems: 'center' },
   pwdAlertTxt: { fontSize: 12.5, fontWeight: '600', marginLeft: 6, flex: 1 },
 
   // Button row (cancel / save)
@@ -6406,19 +6408,19 @@ const profStyles = StyleSheet.create({
   cancelBtn: { flex: 1, height: 52, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   cancelBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
   saveBtn: { flex: 1, height: 52, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  saveBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 15 },
+  saveBtnTxt: { color: '#fff', fontWeight: '600', fontSize: 15 },
 
   // Primary full-width button
   primaryBtn: { height: 52, borderRadius: 16, backgroundColor: THEME.brand, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint },
-  primaryBtnTxt: { color: '#fff', fontWeight: '800', fontSize: 16, marginLeft: 8 },
+  primaryBtnTxt: { color: '#fff', fontWeight: '600', fontSize: 16, marginLeft: 8 },
 
   // Picker rows (language / currency)
-  pickerRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  pickerRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   pickerRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand, borderWidth: 2 },
   pickerFlag: { fontSize: 24, marginRight: 14 },
   pickerName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
-  pickerNameOn: { color: THEME.brandDark, fontWeight: '800' },
+  pickerNameOn: { color: THEME.brandDark, fontWeight: '600' },
   pickerSub: { fontSize: 12, color: THEME.faint, marginTop: 2, fontWeight: '600' },
 
   // Sheet footer (confirm button area)
@@ -6427,89 +6429,89 @@ const profStyles = StyleSheet.create({
   // Driver info modal hero
   driverHero: { alignItems: 'center', marginBottom: 22 },
   driverHeroIcon: { width: 72, height: 72, borderRadius: 24, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
-  driverHeroTitle: { fontSize: 22, fontWeight: '900', color: THEME.ink, textAlign: 'center', letterSpacing: -0.4 },
+  driverHeroTitle: { fontSize: 22, fontWeight: '600', color: THEME.ink, textAlign: 'center', letterSpacing: -0.4 },
   driverHeroSub: { fontSize: 14, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 20, fontWeight: '600' },
   driverTypeCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   driverTypeHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  driverTypeIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
-  driverTypeTitle: { fontSize: 15.5, fontWeight: '800', color: THEME.ink },
+  driverTypeIcon: { width: 36, height: 36, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  driverTypeTitle: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   driverTypeTxt: { fontSize: 13, color: THEME.muted, lineHeight: 20, fontWeight: '600' },
-  limitRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 14, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  limitRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   limitFlag: { fontSize: 22, marginRight: 12 },
   limitName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   limitInfo: { fontSize: 11.5, color: THEME.muted, marginTop: 1, fontWeight: '600' },
-  limitValue: { fontSize: 13, fontWeight: '800' },
+  limitValue: { fontSize: 13, fontWeight: '600' },
   legalNote: { fontSize: 11.5, color: THEME.faint, textAlign: 'center', marginTop: 10, lineHeight: 16, fontWeight: '600' },
 
   // Order detail rows
   detailInfoRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
   detailInfoLabel: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
   detailInfoValue: { fontSize: 13, fontWeight: '700', color: THEME.ink, marginLeft: 6 },
-  driverChip: { backgroundColor: THEME.brandSoft, borderRadius: 12, padding: 12, marginBottom: 10, flexDirection: 'row', alignItems: 'center' },
-  driverChipIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
-  driverChipName: { fontSize: 13.5, fontWeight: '800', color: THEME.ink },
+  driverChip: { backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 12, marginBottom: 10, flexDirection: 'row', alignItems: 'center' },
+  driverChipIcon: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  driverChipName: { fontSize: 13.5, fontWeight: '600', color: THEME.ink },
   driverChipSub: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
-  driverChipCall: { width: 38, height: 38, borderRadius: 12, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
+  driverChipCall: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.brand, alignItems: 'center', justifyContent: 'center' },
   costBlock: { borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 12, marginTop: 4 },
   costRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
   costLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
   costValue: { fontSize: 13, fontWeight: '700', color: THEME.ink },
   costValueFree: { fontSize: 13, fontWeight: '700', color: THEME.brand },
   grandRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 10, marginTop: 4 },
-  grandLabel: { fontSize: 16, fontWeight: '900', color: THEME.ink },
-  grandValue: { fontSize: 16, fontWeight: '900', color: THEME.brand },
+  grandLabel: { fontSize: 16, fontWeight: '600', color: THEME.ink },
+  grandValue: { fontSize: 16, fontWeight: '600', color: THEME.brand },
   statusCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 14, marginBottom: 12 },
   // Annulation par le client (sous le suivi de commande)
   cancelWrap: { marginTop: -4, marginBottom: 12 },
   cancelMsg: { fontSize: 13.5, lineHeight: 19, color: THEME.muted, fontWeight: '600', marginBottom: 8 },
-  cancelBtn: { height: 46, borderRadius: 14, borderWidth: 1.5, borderColor: THEME.danger, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
-  cancelBtnTxt: { color: THEME.danger, fontSize: 15, fontWeight: '800' },
-  statusCardIcon: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  cancelBtn: { height: 46, borderRadius: 16, borderWidth: 1.5, borderColor: THEME.danger, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  cancelBtnTxt: { color: THEME.danger, fontSize: 15, fontWeight: '600' },
+  statusCardIcon: { width: 44, height: 44, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   statusCardLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
-  statusCardValue: { fontSize: 16, fontWeight: '800', marginTop: 1 },
+  statusCardValue: { fontSize: 16, fontWeight: '600', marginTop: 1 },
   shopBlock: { backgroundColor: THEME.card, borderRadius: 16, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   shopBlockHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
   shopBlockIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
-  shopBlockName: { fontSize: 15, fontWeight: '800', color: THEME.ink },
+  shopBlockName: { fontSize: 15, fontWeight: '600', color: THEME.ink },
   detailItemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
   detailItemDivider: { borderTopWidth: 1, borderTopColor: THEME.border },
   detailItemBody: { flex: 1, marginLeft: 10 },
   detailItemName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   detailItemMeta: { fontSize: 12, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  detailItemPrice: { fontSize: 14, fontWeight: '800', color: THEME.ink },
+  detailItemPrice: { fontSize: 14, fontWeight: '600', color: THEME.ink },
   detailFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 34 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
 
   // Reorder bottom sheet
   sheetBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '78%', paddingBottom: Platform.OS === 'ios' ? 32 : 20, ...THEME.shadow },
+  sheet: { backgroundColor: THEME.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '78%', paddingBottom: Platform.OS === 'ios' ? 32 : 20, ...THEME.shadow, borderWidth: 1, borderColor: THEME.border },
   sheetGrabber: { width: 40, height: 4, borderRadius: 2, backgroundColor: THEME.border, alignSelf: 'center', marginTop: 10, marginBottom: 2 },
   sheetHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 14 },
-  sheetTitle: { fontSize: 20, fontWeight: '900', color: THEME.ink, letterSpacing: -0.4 },
+  sheetTitle: { fontSize: 20, fontWeight: '600', color: THEME.ink, letterSpacing: -0.4 },
   selectAllPill: { paddingHorizontal: 12, height: 32, borderRadius: 10, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginRight: 8 },
   selectAllTxt: { fontSize: 12, fontWeight: '700', color: THEME.ink },
-  closeBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
-  reorderRow: { flexDirection: 'row', alignItems: 'center', padding: 12, marginBottom: 8, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  closeBtn: { width: 36, height: 36, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
+  reorderRow: { flexDirection: 'row', alignItems: 'center', padding: 12, marginBottom: 8, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   reorderRowOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand },
   reorderBody: { flex: 1, marginLeft: 10 },
   reorderName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   reorderShop: { fontSize: 11.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
   reorderSide: { alignItems: 'flex-end' },
   reorderQty: { fontSize: 13, fontWeight: '700', color: THEME.muted },
-  reorderPrice: { fontSize: 13.5, fontWeight: '800', color: THEME.brand, marginTop: 2 },
+  reorderPrice: { fontSize: 13.5, fontWeight: '600', color: THEME.brand, marginTop: 2 },
   reorderTotalRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
-  reorderTotalLabel: { fontSize: 15, fontWeight: '800', color: THEME.ink },
-  reorderTotalValue: { fontSize: 17, fontWeight: '900', color: THEME.brand },
+  reorderTotalLabel: { fontSize: 15, fontWeight: '600', color: THEME.ink },
+  reorderTotalValue: { fontSize: 17, fontWeight: '600', color: THEME.brand },
 
   // Delivery address — list, cards & form
-  addrSectionTitle: { fontSize: 15, fontWeight: '800', color: THEME.ink, marginBottom: 12 },
+  addrSectionTitle: { fontSize: 15, fontWeight: '600', color: THEME.ink, marginBottom: 12 },
   addrCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, padding: 14, marginBottom: 12, ...THEME.shadowSm },
   addrCardOn: { borderColor: THEME.brand, borderWidth: 2, padding: 13 },
   addrCardHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  addrTypeIcon: { width: 26, height: 26, borderRadius: 9, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
-  addrType: { fontSize: 14.5, fontWeight: '800', color: THEME.ink },
-  addrBadge: { backgroundColor: 'rgba(0,194,155,0.9)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 7, marginLeft: 8 },
-  addrBadgeTxt: { fontSize: 9.5, fontWeight: '800', color: '#fff', letterSpacing: 0.4, textTransform: 'uppercase' },
-  addrCheck: { width: 24, height: 24, borderRadius: 12, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center' },
+  addrTypeIcon: { width: 26, height: 26, borderRadius: 9, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  addrType: { fontSize: 14.5, fontWeight: '600', color: THEME.ink },
+  addrBadge: { backgroundColor: 'rgba(39,39,42,0.9)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 7, marginLeft: 8 },
+  addrBadgeTxt: { fontSize: 9.5, fontWeight: '600', color: '#fff', letterSpacing: 0.4, textTransform: 'uppercase' },
+  addrCheck: { width: 24, height: 24, borderRadius: 12, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center' },
   addrName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginBottom: 3 },
   addrText: { fontSize: 13, color: THEME.muted, fontWeight: '600', lineHeight: 19 },
   addrDivider: { height: 1, backgroundColor: THEME.border, marginVertical: 12 },
@@ -6517,13 +6519,13 @@ const profStyles = StyleSheet.create({
   addrAction: { flexDirection: 'row', alignItems: 'center' },
   addrActionTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginLeft: 7 },
   addrEmpty: { alignItems: 'center', paddingVertical: 44 },
-  addrEmptyIcon: { width: 58, height: 58, borderRadius: 20, backgroundColor: 'rgba(0,194,155,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  addrEmptyIcon: { width: 58, height: 58, borderRadius: 16, backgroundColor: 'rgba(39,39,42,0.9)', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
   addrEmptyTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted },
   addrFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 30 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
-  addrTypeBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: 14, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
+  addrTypeBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
   addrTypeBtnOn: { backgroundColor: THEME.brandSoft, borderColor: THEME.brand, borderWidth: 2 },
   addrTypeBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted, marginLeft: 8 },
-  addrTypeBtnTxtOn: { color: THEME.brandDark, fontWeight: '800' },
+  addrTypeBtnTxtOn: { color: THEME.brandDark, fontWeight: '600' },
 });
 
 const EMPTY_ADDR_FORM = {
@@ -7180,14 +7182,14 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       <View style={{ marginBottom:10 }}>
         {steps.map((step, i) => (
           <View key={i} style={{ flexDirection:'row', alignItems:'center', marginBottom:6 }}>
-            <View style={{ width:24, height:24, borderRadius:12, backgroundColor:'#00C29B', alignItems:'center', justifyContent:'center' }}>
+            <View style={{ width:24, height:24, borderRadius:12, backgroundColor:'#27272A', alignItems:'center', justifyContent:'center' }}>
               <Ionicons name={step.icon} size={12} color="#fff" />
             </View>
             {i < steps.length - 1 && (
-              <View style={{ position:'absolute', left:11, top:24, width:2, height:6, backgroundColor:'#00C29B' }} />
+              <View style={{ position:'absolute', left:11, top:24, width:2, height:6, backgroundColor:'#27272A' }} />
             )}
             <Text style={{ fontSize:12, fontWeight:'600', color:'#111', marginLeft:8 }}>{step.label}</Text>
-            <Ionicons name="checkmark" size={14} color="#00C29B" style={{ marginLeft:6 }} />
+            <Ionicons name="checkmark" size={14} color="#27272A" style={{ marginLeft:6 }} />
           </View>
         ))}
       </View>

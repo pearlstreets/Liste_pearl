@@ -162,7 +162,7 @@ const s = StyleSheet.create({
   jours: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   alerte: {
     backgroundColor: T.subtle,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 12,
     marginBottom: 8,
     alignItems: 'flex-start',
