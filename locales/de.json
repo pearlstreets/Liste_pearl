@@ -1072,7 +1072,7 @@
     "nav": {
       "week": "Meine Woche",
       "shop": "Einkauf",
-      "discover": "Entdecken"
+      "discover": "Rezepte"
     },
     "common": {
       "back": "Zurück",
@@ -1484,7 +1484,7 @@
       "boissons": "Getränke"
     },
     "discover": {
-      "title": "Entdecken",
+      "title": "Rezepte",
       "searchPlaceholder": "Ein Gericht, eine Zutat...",
       "modes": {
         "ideas": "Ideen",

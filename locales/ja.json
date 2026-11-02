@@ -1070,7 +1070,7 @@
     "nav": {
       "week": "私の週間",
       "shop": "買い物",
-      "discover": "発見する"
+      "discover": "レシピ"
     },
     "common": {
       "back": "戻る",
@@ -1458,7 +1458,7 @@
       "boissons": "飲料"
     },
     "discover": {
-      "title": "発見する",
+      "title": "レシピ",
       "searchPlaceholder": "料理名、食材など",
       "modes": {
         "ideas": "アイデア",

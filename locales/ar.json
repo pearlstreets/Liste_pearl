@@ -1080,7 +1080,7 @@
     "nav": {
       "week": "أسبوعي",
       "shop": "مشتريات",
-      "discover": "اكتشفوا"
+      "discover": "وصفات"
     },
     "common": {
       "back": "عودة",
@@ -1568,7 +1568,7 @@
       "boissons": "مشروبات"
     },
     "discover": {
-      "title": "اكتشفوا",
+      "title": "وصفات",
       "searchPlaceholder": "طبق، مكون...",
       "modes": {
         "ideas": "أفكار",

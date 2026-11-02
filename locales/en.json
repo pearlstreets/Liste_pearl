@@ -1072,7 +1072,7 @@
     "nav": {
       "week": "My week",
       "shop": "Shopping",
-      "discover": "Discover"
+      "discover": "Recipes"
     },
     "common": {
       "back": "Back",
@@ -1488,7 +1488,7 @@
       "boissons": "Drinks"
     },
     "discover": {
-      "title": "Discover",
+      "title": "Recipes",
       "searchPlaceholder": "A dish, an ingredient...",
       "modes": {
         "ideas": "Ideas",

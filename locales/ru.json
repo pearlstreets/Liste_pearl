@@ -1076,7 +1076,7 @@
     "nav": {
       "week": "Моя неделя",
       "shop": "Покупки",
-      "discover": "Открыть"
+      "discover": "Рецепты"
     },
     "common": {
       "back": "Назад",
@@ -1528,7 +1528,7 @@
       "boissons": "Напитки"
     },
     "discover": {
-      "title": "Открыть",
+      "title": "Рецепты",
       "searchPlaceholder": "Блюдо, ингредиент...",
       "modes": {
         "ideas": "Идеи",
