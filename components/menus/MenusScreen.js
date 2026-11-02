@@ -193,7 +193,7 @@ const s = StyleSheet.create({
   fill: { flex: 1 },
   hidden: { display: 'none' },
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingTop: 8 },
-  seg: { flex: 1, flexDirection: 'row', backgroundColor: '#F1F5F9', borderRadius: 16, padding: 3 },
+  seg: { flex: 1, flexDirection: 'row', backgroundColor: '#fff', borderWidth: 1, borderColor: T.border, borderRadius: 16, padding: 3 },
   segBtn: {
     flex: 1,
     alignItems: 'center',

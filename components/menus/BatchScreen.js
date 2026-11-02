@@ -431,7 +431,7 @@ const s = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: T.border,
   },
-  summary: { backgroundColor: T.brandSoft, borderRadius: 16, padding: 18, marginTop: 4 },
+  summary: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.border, borderRadius: 16, padding: 18, marginTop: 4 },
   summaryVal: { fontSize: 32, fontWeight: '600', color: T.ink },
   summaryTxt: { fontSize: 14, lineHeight: 20, fontWeight: '600', color: T.ink, marginTop: 2 },
   note: { fontSize: 13, lineHeight: 19, color: T.muted, fontWeight: '600', marginTop: 8 },

@@ -222,6 +222,7 @@ function StepCook({ id, persons, onClose, guided }) {
             <Text style={s.timerVal}>{fmt(tm.left)}</Text>
             <View style={{ flexDirection: 'row', marginTop: 12 }}>
               <PrimaryButton
+                soft={!!tm.endAt}
                 style={{ flex: 1, marginRight: 8, minHeight: 48 }}
                 icon={tm.endAt ? 'pause' : 'play'}
                 label={
@@ -304,7 +305,8 @@ const s = StyleSheet.create({
   runPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: T.brandSoft,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -316,7 +318,8 @@ const s = StyleSheet.create({
   ingBox: { backgroundColor: T.subtle, borderRadius: 16, padding: 16, marginBottom: 20 },
   ingTxt: { fontSize: 16, color: T.ink, fontWeight: '600', lineHeight: 28 },
   timer: {
-    backgroundColor: T.brandSoft,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 24,
     padding: 20,
     marginTop: 28,
