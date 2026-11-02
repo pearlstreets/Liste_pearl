@@ -336,7 +336,6 @@ export default function WeekScreen({
             name="refresh"
             label={t('week.regenerate')}
             onPress={() => m.generate()}
-            bg={T.brandSoft}
             color={T.brandDark}
           />
           {compact ? (
@@ -345,7 +344,6 @@ export default function WeekScreen({
                 name="layers"
                 label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
                 onPress={onOpenBatch}
-                bg={T.brandSoft}
                 color={T.brandDark}
               />
             </View>
@@ -541,7 +539,8 @@ export default function WeekScreen({
 
 const s = StyleSheet.create({
   nextBox: {
-    backgroundColor: T.brandSoft,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 16,
     padding: 14,
     marginBottom: 14,
@@ -575,7 +574,8 @@ const s = StyleSheet.create({
   gaugeValCompact: { fontSize: 24 },
   gaugeTarget: { fontSize: 20, fontWeight: '600', color: T.ink, marginTop: 2 },
   gaugeNoBudget: {
-    backgroundColor: T.subtle,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -608,9 +608,10 @@ const s = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 16,
     alignItems: 'center',
-    backgroundColor: T.subtle,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
   },
-  pillOn: { backgroundColor: T.brand },
+  pillOn: { backgroundColor: T.brand, borderColor: T.brand },
   pillTxt: { fontSize: 13, fontWeight: '600', color: T.ink },
   pillDots: { flexDirection: 'row', marginTop: 6 },
   pillDot: {

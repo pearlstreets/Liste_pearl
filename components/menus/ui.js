@@ -59,19 +59,19 @@ export const PrimaryButton = memo(function PrimaryButton({
       style={[s.btn, soft ? s.btnSoft : s.btnOn, off && { opacity: 0.55 }, style]}
     >
       {loading ? (
-        <ActivityIndicator color={soft ? T.brandDark : '#fff'} />
+        <ActivityIndicator color={soft ? T.brand : '#fff'} />
       ) : (
         <>
           {icon ? (
             <Ionicons
               name={icon}
               size={19}
-              color={soft ? T.brandDark : '#fff'}
+              color={soft ? T.brand : '#fff'}
               style={{ marginRight: 8 }}
             />
           ) : null}
           <Text
-            style={[s.btnTxt, soft && { color: T.brandDark }]}
+            style={[s.btnTxt, soft && { color: T.ink }]}
             numberOfLines={1}
             adjustsFontSizeToFit
             minimumFontScale={0.75}
@@ -129,7 +129,8 @@ export const RoundIcon = memo(function RoundIcon({
           alignItems: 'center',
           justifyContent: 'center',
         },
-        { backgroundColor: bg || (active ? T.brand : T.subtle) },
+        { backgroundColor: bg || (active ? T.brand : '#fff') },
+        !bg && !active && { borderWidth: 1, borderColor: T.borderInput },
       ]}
     >
       <Ionicons name={name} size={size * 0.5} color={color || (active ? '#fff' : T.ink)} />
@@ -254,7 +255,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   btnOn: { backgroundColor: T.brand, ...T.shadowSm },
-  btnSoft: { backgroundColor: T.brandSoft },
+  btnSoft: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.borderInput },
   btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
   ghost: {
     minHeight: 44,
@@ -270,7 +271,8 @@ const s = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: T.subtle,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.borderInput,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -298,7 +300,8 @@ const s = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: T.brandSoft,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 18,

@@ -546,7 +546,8 @@ const s = StyleSheet.create({
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: T.border, marginRight: 3 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
   tag: {
-    backgroundColor: T.subtle,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 999,
     paddingHorizontal: 11,
     paddingVertical: 5,
@@ -558,7 +559,8 @@ const s = StyleSheet.create({
   portion: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: T.brandSoft,
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: T.border,
     borderRadius: 16,
     padding: 16,
     marginTop: 18,
