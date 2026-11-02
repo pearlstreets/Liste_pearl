@@ -9,7 +9,7 @@ import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { cheminRestant } from '../lib/cheminRestant';
 
-const BRAND = '#27272A';
+const BRAND = '#1C1917';
 
 function num(v) {
   return typeof v === 'number' && !Number.isNaN(v) ? v : null;
@@ -94,7 +94,7 @@ export default function LiveDeliveryMap({ status, t }) {
         {hasDriver && (
           <Marker coordinate={driver} title={status?.driver_name || tr('tracking.driver', 'Livreur')} anchor={{ x: 0.5, y: 0.5 }}>
             <View style={[s.pin, s.driverPin]}>
-              <Ionicons name="bicycle" size={16} color="#fff" />
+              <Ionicons name="bicycle" size={16} color="#1C1917" />
             </View>
           </Marker>
         )}
@@ -131,7 +131,7 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
     shadowColor: '#000', shadowOpacity: 0, shadowRadius: 3, shadowOffset: { width: 0, height: 1 }, elevation: 0,
   },
-  driverPin: { backgroundColor: BRAND, borderColor: '#fff', width: 34, height: 34, borderRadius: 17 },
+  driverPin: { backgroundColor: '#FFFFFF', borderColor: '#fff', width: 34, height: 34, borderRadius: 17 },
   banner: {
     position: 'absolute', left: 12, right: 12, bottom: 12,
     flexDirection: 'row', alignItems: 'center', gap: 8,
