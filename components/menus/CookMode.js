@@ -1,4 +1,5 @@
-// Mode cuisine : une étape à la fois, en grand, avec minuteurs (sans son, sans module natif).
+// Mode cuisine. Une recette : mode optimisé (KitchenMode, maquette v15). Cuisine en lot (guided) :
+// une étape à la fois, en grand, avec minuteurs, dans l'ordre calculé par la session.
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +9,7 @@ import { PrimaryButton } from './ui';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
+import KitchenMode from './KitchenMode';
 
 const fmt = (sec) => {
   const x = Math.max(0, sec);
@@ -17,8 +19,12 @@ const fmt = (sec) => {
 };
 
 // guided (cuisine en lot) : { steps:[{ text, title, timerSec }], startIdx, onAdvance(i), onFinish() }.
-// Sans lui, le mode suit une recette, comme avant.
 export default function CookMode({ id, persons, onClose, guided }) {
+  if (!guided) return <KitchenMode id={id} persons={persons} onClose={onClose} />;
+  return <StepCook id={id} persons={persons} onClose={onClose} guided={guided} />;
+}
+
+function StepCook({ id, persons, onClose, guided }) {
   const t = useT();
   const { recipeById, texts, ingredients, lang, markCooked } = useMenus();
   const recipe = recipeById.get(id);
@@ -90,7 +96,8 @@ export default function CookMode({ id, persons, onClose, guided }) {
   };
 
   const lines = useMemo(
-    () => (recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang), ingredients }) : []),
+    () =>
+      recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang), ingredients }) : [],
     [recipe, persons, lang, ingredients]
   );
   const labels = useMemo(
@@ -195,8 +202,7 @@ export default function CookMode({ id, persons, onClose, guided }) {
               const nom = pl && !pl.includes('recipe.plural.') ? pl : texts.ingredientName(l.key);
               return (
                 <Text key={`${l.key}-${i}`} style={s.ingTxt}>
-                  {(ingredients[l.key] && ingredients[l.key].emoji) || '•'}{' '}
-                  {nom}
+                  {(ingredients[l.key] && ingredients[l.key].emoji) || '•'} {nom}
                   {l.toTaste
                     ? ` : ${t('recipe.toTaste')}`
                     : l.amount
