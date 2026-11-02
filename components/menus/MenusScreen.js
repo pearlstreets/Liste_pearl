@@ -193,7 +193,7 @@ const s = StyleSheet.create({
   fill: { flex: 1 },
   hidden: { display: 'none' },
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingTop: 8 },
-  seg: { flex: 1, flexDirection: 'row', backgroundColor: '#F1F5F9', borderRadius: 14, padding: 3 },
+  seg: { flex: 1, flexDirection: 'row', backgroundColor: '#F1F5F9', borderRadius: 16, padding: 3 },
   segBtn: {
     flex: 1,
     alignItems: 'center',
@@ -203,6 +203,6 @@ const s = StyleSheet.create({
     paddingHorizontal: 4,
   },
   segOn: { backgroundColor: T.brand },
-  segTxt: { fontSize: 13, fontWeight: '800', color: T.muted },
+  segTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
   gear: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
 });

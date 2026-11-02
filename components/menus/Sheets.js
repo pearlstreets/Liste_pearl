@@ -315,12 +315,12 @@ export const PickProductsSheet = memo(function PickProductsSheet({
 });
 
 const s = StyleSheet.create({
-  mineLabel: { fontSize: 14, fontWeight: '800', color: T.ink, marginTop: 14, marginBottom: 8 },
+  mineLabel: { fontSize: 14, fontWeight: '600', color: T.ink, marginTop: 14, marginBottom: 8 },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
     zIndex: 50,
-    elevation: 50,
+    elevation: 0,
   },
   backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(15,23,42,0.45)' },
   sheet: {
@@ -330,8 +330,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 22,
     paddingTop: 10,
-    ...T.shadow,
-  },
+    ...T.shadow, borderWidth: 1, borderColor: T.border },
   grab: {
     alignSelf: 'center',
     width: 44,
@@ -340,10 +339,10 @@ const s = StyleSheet.create({
     backgroundColor: T.border,
     marginBottom: 14,
   },
-  title: { fontSize: 22, fontWeight: '900', color: T.ink },
+  title: { fontSize: 22, fontWeight: '600', color: T.ink },
   sub: { fontSize: 14, color: T.muted, marginTop: 4, marginBottom: 12, lineHeight: 20 },
   idea: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
-  ideaTitle: { fontSize: 16, fontWeight: '800', color: T.ink },
+  ideaTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
   ideaMeta: { fontSize: 13, color: T.muted, marginTop: 3 },
   badge: {
     width: 72,
@@ -355,7 +354,7 @@ const s = StyleSheet.create({
   },
   hint: { fontSize: 12, color: T.faint, textAlign: 'center', marginTop: 8 },
   pickHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  pickAll: { fontSize: 14, fontWeight: '800', color: T.brandDark, marginLeft: 10 },
+  pickAll: { fontSize: 14, fontWeight: '600', color: T.brandDark, marginLeft: 10 },
   pickRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 9 },
   pickBox: {
     width: 22,
