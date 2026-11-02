@@ -10,6 +10,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, StyleSheet
 import { Ionicons } from '@expo/vector-icons';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
 import useSecureScreen from '../lib/useSecureScreen';
+import { marquerPaiement } from '../services/otaRapide';
 // Deplie : feuille posee dans la moitie de l'ecran, comme les autres fenetres.
 import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
@@ -232,6 +233,11 @@ export default function CardPaymentModal({
   // Saisie ou liste de cartes : capture bloquée (Android). La modale ne
   // s'ouvre qu'une fois la protection posée (voir lib/useSecureScreen.js).
   const pret = useSecureScreen('paiement-carte', !!visible);
+  // Paiement ouvert : aucune mise à jour OTA ne recharge l'app (services/otaRapide.js).
+  React.useEffect(() => {
+    marquerPaiement('paiement-carte', !!visible);
+    return () => marquerPaiement('paiement-carte', false);
+  }, [visible]);
   return (
     <Modal figer visible={!!visible && pret} transparent animationType="slide" onRequestClose={() => onCancel && onCancel()}>
       <StripeProvider

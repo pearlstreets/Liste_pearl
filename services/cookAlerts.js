@@ -42,8 +42,13 @@ function awakeModule() {
 
 const AWAKE_TAG = 'pearl-mode-cuisine';
 
+let ecranOuvert = false;
+/** Vrai tant que l'écran de cuisine est ouvert (voir keepScreenOn). */
+export const cookScreenOpen = () => ecranOuvert;
+
 /** Garde l'écran allumé pendant la cuisine. Ne lève jamais. */
 export function keepScreenOn(on) {
+  ecranOuvert = !!on;
   const m = awakeModule();
   if (!m) return;
   try {
