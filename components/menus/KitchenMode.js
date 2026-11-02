@@ -913,8 +913,7 @@ const s = StyleSheet.create({
   nt: { fontSize: 18, fontWeight: '700', color: T.ink, marginTop: 6 },
   qt: {
     alignSelf: 'flex-start',
-    backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    backgroundColor: T.brandSoft,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 4,
