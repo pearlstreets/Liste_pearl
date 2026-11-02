@@ -1360,6 +1360,10 @@
       "cookedTimes_many": "تم الطهي {{count}} مرة",
       "cookedTimes_other": "تم الطهي {{count}} مرة",
       "addToList": "أضيفوا إلى قائمتي",
+      "pickTitle": "اختاروا المنتجات",
+      "selectAll": "تحديد الكل",
+      "selectNone": "إلغاء تحديد الكل",
+      "addCount": "إضافة ({{count}})",
       "toTaste": "حسب ذوقكم",
       "plural": {
         "oeuf": "بيض",

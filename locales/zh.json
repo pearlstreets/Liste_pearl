@@ -1308,6 +1308,10 @@
       "missingText": "该食谱已不可用。",
       "cookedTimes": "已做 {{count}} 次",
       "addToList": "添加到我的清单",
+      "pickTitle": "选择商品",
+      "selectAll": "全选",
+      "selectNone": "取消全选",
+      "addCount": "添加 ({{count}})",
       "toTaste": "适量",
       "plural": {
         "oeuf": "鸡蛋",

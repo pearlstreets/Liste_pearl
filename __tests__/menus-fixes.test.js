@@ -350,6 +350,37 @@ describe("8. ajout d'une recette à ma liste", () => {
     expect(get(KEY_ITEMS)).toEqual(items);
   });
 
+  test('sélection de produits : seulement ceux choisis, autre sélection pas « déjà ajouté »', async () => {
+    const full = recipeListLines({ recipe, persons: 4, recipes, ingredients, profile });
+    expect(full.lines.length).toBeGreaterThan(1);
+    const [a, b] = full.lines.map((l) => l.key);
+    const one = recipeListLines({ recipe, persons: 4, recipes, ingredients, profile, keys: [a] });
+    expect(one.lines.map((l) => l.key)).toEqual([a]);
+    expect(one.fingerprint).not.toBe(full.fingerprint);
+    // sans keys : identique à avant
+    const same = recipeListLines({
+      recipe,
+      persons: 4,
+      recipes,
+      ingredients,
+      profile,
+      keys: undefined,
+    });
+    expect(same).toEqual(full);
+    const nameOf = (l) => l.key;
+    const r1 = await addToList(null, one.lines, { nameOf, fingerprint: one.fingerprint });
+    expect(r1.status).toBe('ok');
+    expect(get(KEY_ITEMS).map((x) => x.name)).toEqual([a]);
+    const two = recipeListLines({ recipe, persons: 4, recipes, ingredients, profile, keys: [b] });
+    const r2 = await addToList(null, two.lines, { nameOf, fingerprint: two.fingerprint });
+    expect(r2.status).toBe('ok');
+    expect(
+      get(KEY_ITEMS)
+        .map((x) => x.name)
+        .sort()
+    ).toEqual([a, b].sort());
+  });
+
   test('cohérent avec la liste de courses du plan', () => {
     const one = recipeListLines({ recipe, persons: 4, recipes, ingredients, profile });
     const plan = {

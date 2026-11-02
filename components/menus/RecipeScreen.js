@@ -25,7 +25,7 @@ import {
 import { T } from './theme';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
 import RecipeVisual from './RecipeVisual';
-import { AddedSheet, PlanPickSheet, warningList } from './Sheets';
+import { AddedSheet, PlanPickSheet, PickProductsSheet, warningList } from './Sheets';
 import { useMenus, conflictList } from './MenusContext';
 import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
@@ -66,6 +66,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const [addedName, setAddedName] = useState('');
   const [adding, setAdding] = useState(false);
   const [planPick, setPlanPick] = useState(false);
+  const [pickLines, setPickLines] = useState(null);
   const [note, setNoteTxt] = useState(notes[id] || '');
   const noteFocused = useRef(false);
   useEffect(() => setNoteTxt(notes[id] || ''), [id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -110,20 +111,28 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const cost = useMemo(() => (recipe ? costOf(recipe, persons) : null), [recipe, persons, costOf]);
   const steps = useMemo(() => (recipe ? texts.recipeSteps(id) : []), [recipe, texts, id]);
 
-  const addToMyList = useCallback(async () => {
+  const openPick = useCallback(() => {
     if (adding) return;
-    setAdding(true);
-    const r = await m.sendRecipeToList(id, persons);
-    let name = t('shop.defaultList');
-    try {
-      const mine = await readMyLists();
-      const l = mine.lists.find((x) => String(x.id) === String(r.listId));
-      if (l && l.name) name = l.name;
-    } catch {}
-    setAddedName(name);
-    setAdding(false);
-    setAdded(r);
-  }, [adding, m, id, persons, t]);
+    setPickLines(m.recipeLinesFor(id, persons));
+  }, [adding, m, id, persons]);
+  const addToMyList = useCallback(
+    async (keys) => {
+      if (adding) return;
+      setPickLines(null);
+      setAdding(true);
+      const r = await m.sendRecipeToList(id, persons, keys);
+      let name = t('shop.defaultList');
+      try {
+        const mine = await readMyLists();
+        const l = mine.lists.find((x) => String(x.id) === String(r.listId));
+        if (l && l.name) name = l.name;
+      } catch {}
+      setAddedName(name);
+      setAdding(false);
+      setAdded(r);
+    },
+    [adding, m, id, persons, t]
+  );
   const goList = async (screen) => {
     setAdded(null);
     if (screen === 'products') {
@@ -462,7 +471,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           icon="cart"
           label={t('recipe.addToList')}
           loading={adding}
-          onPress={addToMyList}
+          onPress={openPick}
           style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
         />
         <PrimaryButton
@@ -474,6 +483,14 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
       </View>
       {planPick ? (
         <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />
+      ) : null}
+      {pickLines ? (
+        <PickProductsSheet
+          lines={pickLines}
+          initialOff={have}
+          onClose={() => setPickLines(null)}
+          onConfirm={addToMyList}
+        />
       ) : null}
       {added ? (
         <AddedSheet

@@ -1322,6 +1322,10 @@
       "missingText": "Dieses Rezept ist nicht mehr verfügbar.",
       "cookedTimes": "{{count}} Mal gekocht",
       "addToList": "Zu meiner Liste hinzufügen",
+      "pickTitle": "Produkte auswählen",
+      "selectAll": "Alle auswählen",
+      "selectNone": "Alle abwählen",
+      "addCount": "Hinzufügen ({{count}})",
       "toTaste": "nach Geschmack",
       "plural": {
         "oeuf": "Eier",

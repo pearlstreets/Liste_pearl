@@ -245,6 +245,75 @@ export const AddedSheet = memo(function AddedSheet({
   );
 });
 
+/** Choisir les produits d'une recette avant de les ajouter à la liste. */
+export const PickProductsSheet = memo(function PickProductsSheet({
+  lines,
+  initialOff,
+  onClose,
+  onConfirm,
+}) {
+  const t = useT();
+  const { texts, ingredients } = useMenus();
+  const [sel, setSel] = useState(() => {
+    const o = {};
+    for (const l of lines || []) o[l.key] = !(initialOff && initialOff[l.key]);
+    return o;
+  });
+  const keys = (lines || []).map((l) => l.key);
+  const chosen = keys.filter((k) => sel[k]);
+  const allOn = keys.length > 0 && chosen.length === keys.length;
+  const setAll = (on) => {
+    const o = {};
+    for (const k of keys) o[k] = on;
+    setSel(o);
+  };
+  return (
+    <Sheet onClose={onClose} label={t('common.close')}>
+      <View style={s.pickHead}>
+        <Text style={[s.title, { flex: 1 }]}>{t('recipe.pickTitle')}</Text>
+        {keys.length > 0 ? (
+          <TouchableOpacity onPress={() => setAll(!allOn)} accessibilityRole="button" hitSlop={8}>
+            <Text style={s.pickAll}>{allOn ? t('recipe.selectNone') : t('recipe.selectAll')}</Text>
+          </TouchableOpacity>
+        ) : null}
+      </View>
+      <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
+        {(lines || []).map((l) => {
+          const on = !!sel[l.key];
+          const ing = (ingredients && ingredients[l.key]) || {};
+          return (
+            <TouchableOpacity
+              key={l.key}
+              activeOpacity={0.8}
+              onPress={() => setSel((x) => ({ ...x, [l.key]: !x[l.key] }))}
+              style={s.pickRow}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: on }}
+            >
+              <View style={[s.pickBox, on && s.pickBoxOn]}>
+                {on ? <Ionicons name="checkmark" size={14} color={T.card} /> : null}
+              </View>
+              <Text style={s.pickEmoji}>{ing.emoji || '🍽️'}</Text>
+              <Text style={s.pickName} numberOfLines={2}>
+                {texts.ingredientName(l.key)}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+      <View style={{ marginTop: 14 }}>
+        <PrimaryButton
+          icon="cart"
+          label={t('recipe.addCount', { count: chosen.length })}
+          disabled={chosen.length === 0}
+          onPress={() => onConfirm(chosen)}
+        />
+        <GhostButton label={t('common.cancel')} onPress={onClose} />
+      </View>
+    </Sheet>
+  );
+});
+
 const s = StyleSheet.create({
   mineLabel: { fontSize: 14, fontWeight: '800', color: T.ink, marginTop: 14, marginBottom: 8 },
   overlay: {
@@ -285,4 +354,20 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   hint: { fontSize: 12, color: T.faint, textAlign: 'center', marginTop: 8 },
+  pickHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  pickAll: { fontSize: 14, fontWeight: '800', color: T.brandDark, marginLeft: 10 },
+  pickRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 9 },
+  pickBox: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: T.borderInput,
+    backgroundColor: T.card,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pickBoxOn: { backgroundColor: T.brand, borderColor: T.brand },
+  pickEmoji: { fontSize: 22, marginHorizontal: 10 },
+  pickName: { flex: 1, fontSize: 16, fontWeight: '700', color: T.ink },
 });
