@@ -1389,7 +1389,7 @@
         "allPaused": "全部已暂停",
         "resumeAll": "全部继续",
         "pauseAll": "全部暂停",
-        "undo": "撤销",
+        "undo": "返回",
         "bonAppetit": "请慢用！",
         "readyAfter": "用时 {{min}} 分钟",
         "ready": "好了",
