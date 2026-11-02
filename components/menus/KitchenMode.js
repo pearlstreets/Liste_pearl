@@ -363,7 +363,6 @@ export default function KitchenMode({ id, persons, onClose }) {
 
   const scroll = useRef(null);
   const nowY = useRef(0);
-  const alertY = useRef(-1);
   const anim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     if (!up) return;
@@ -377,9 +376,12 @@ export default function KitchenMode({ id, persons, onClose }) {
     if (scroll.current)
       scroll.current.scrollTo({
         // un bandeau d'alerte est en haut de la liste : il reste visible en entier
-        y: Math.max(0, alertY.current >= 0 ? alertY.current - 8 : nowY.current - 80),
+        y: SRef.current.cooks.some((c) => c.ok && consumerOf(SRef.current, c.k) >= 0)
+          ? 0
+          : Math.max(0, nowY.current - 80),
         animated: true,
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [up, anim]);
 
   /* ------------------------------ rendu ------------------------------ */
@@ -407,7 +409,6 @@ export default function KitchenMode({ id, persons, onClose }) {
   if (cur < 0) cur = stuck(plan, S);
   const shown = new Set();
   const body = [];
-  if (!S.cooks.some((c) => c.ok && consumerOf(S, c.k) >= 0)) alertY.current = -1;
 
   const quantity = (task) => {
     const q = qtyOf(task);
@@ -439,14 +440,7 @@ export default function KitchenMode({ id, persons, onClose }) {
       const j = consumerOf(S, c.k);
       if (j < 0) return;
       body.push(
-        <View
-          key={`al-${c.k}`}
-          style={s.al}
-          onLayout={(e) => {
-            if (alertY.current < 0 || e.nativeEvent.layout.y < alertY.current)
-              alertY.current = e.nativeEvent.layout.y;
-          }}
-        >
+        <View key={`al-${c.k}`} style={s.al}>
           <Text style={s.alTitle}>{alertTitle(c.k)}</Text>
           <Text style={s.alTxt} numberOfLines={2}>
             {t('cook.k.toDo', { what: textOf(plan.tasks[j]) })}
