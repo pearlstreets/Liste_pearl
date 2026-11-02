@@ -1308,6 +1308,10 @@
       "missingText": "สูตรนี้ไม่มีให้บริการแล้ว",
       "cookedTimes": "ทำไปแล้ว {{count}} ครั้ง",
       "addToList": "เพิ่มลงในรายการของฉัน",
+      "pickTitle": "เลือกสินค้า",
+      "selectAll": "เลือกทั้งหมด",
+      "selectNone": "ยกเลิกการเลือกทั้งหมด",
+      "addCount": "เพิ่ม ({{count}})",
       "toTaste": "ตามชอบ",
       "plural": {
         "oeuf": "ไข่",
