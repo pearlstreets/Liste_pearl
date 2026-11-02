@@ -2,9 +2,9 @@
 //
 // Tout est protégé, comme les rappels des menus : un binaire sans le module natif (mise à jour OTA
 // sur un ancien build, web) ne plante jamais, la fonction devient simplement sans effet.
-// - Sons : sur le web, fabriqués par le navigateur (aucun fichier). Sur téléphone, la fin d'une
-//   cuisson ou d'un minuteur sonne par sa notification (son du système), même écran verrouillé ;
-//   les autres actions vibrent.
+// - Sons : sur le web, fabriqués par le navigateur. Sur téléphone, les mêmes sons en fichiers
+//   (assets/sounds/cuisine) quand le build contient expo-audio, avec une vibration ; sans lui, seule
+//   la notification de fin de cuisson sonne (son du système), même écran verrouillé.
 // - Notifications : programmées à l'heure de fin de chaque cuisson et de chaque minuteur, refaites
 //   à chaque changement (pause, annulation, défaire), annulées à la fin du repas.
 import { Platform, Vibration } from 'react-native';
@@ -44,6 +44,7 @@ const AWAKE_TAG = 'pearl-mode-cuisine';
 
 /** Garde l'écran allumé pendant la cuisine. Ne lève jamais. */
 export function keepScreenOn(on) {
+  ecranOuvert = !!on;
   const m = awakeModule();
   if (!m) return;
   try {
@@ -131,12 +132,62 @@ const PATTERNS = {
 };
 const IOS_BUZZ = new Set(['timer', 'ready', 'bravo']);
 
-/** Son (web) et vibration (téléphone) d'une action. Ne lève jamais. */
+// Téléphone : les mêmes sons en fichiers, joués par expo-audio quand le build le contient.
+const FICHIERS = {
+  go: require('../assets/sounds/cuisine/go.wav'),
+  ok: require('../assets/sounds/cuisine/ok.wav'),
+  undo: require('../assets/sounds/cuisine/undo.wav'),
+  pause: require('../assets/sounds/cuisine/pause.wav'),
+  cancel: require('../assets/sounds/cuisine/cancel.wav'),
+  timer: require('../assets/sounds/cuisine/timer.wav'),
+  ready: require('../assets/sounds/cuisine/ready.wav'),
+  bravo: require('../assets/sounds/cuisine/bravo.wav'),
+};
+
+let lecteur; // undefined = pas encore essayé, null = indisponible
+const lecteurs = {};
+function audioModule() {
+  if (lecteur !== undefined) return lecteur;
+  lecteur = null;
+  if (Platform.OS === 'web') return lecteur;
+  try {
+    const m = require('expo-audio');
+    if (m && typeof m.createAudioPlayer === 'function') {
+      lecteur = m;
+      // respecte le mode silencieux, ne coupe pas la musique
+      if (typeof m.setAudioModeAsync === 'function')
+        Promise.resolve(
+          m.setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers' })
+        ).catch(() => {});
+    }
+  } catch {
+    lecteur = null;
+  }
+  return lecteur;
+}
+
+function jouer(kind) {
+  const m = audioModule();
+  if (!m || !FICHIERS[kind]) return;
+  try {
+    if (!lecteurs[kind]) lecteurs[kind] = m.createAudioPlayer(FICHIERS[kind]);
+    const p = lecteurs[kind];
+    Promise.resolve(p.seekTo(0)).catch(() => {});
+    p.play();
+  } catch {}
+}
+
+let ecranOuvert = false;
+/** Vrai quand l'écran de cuisine joue lui-même ses sons : la notification reste alors muette. */
+export const cookScreenPlaysSounds = () => ecranOuvert && !!audioModule();
+
+/** Son et vibration d'une action. Ne lève jamais. */
 export function feedback(kind) {
   if (Platform.OS === 'web') {
     if (TONES[kind]) TONES[kind]();
     return;
   }
+  jouer(kind);
   try {
     if (Platform.OS === 'ios') {
       if (IOS_BUZZ.has(kind)) Vibration.vibrate();
@@ -242,6 +293,9 @@ export function cancelCookAlarms() {
 export function _resetCookAlertsForTests() {
   notifications = undefined;
   keepAwake = undefined;
+  lecteur = undefined;
+  ecranOuvert = false;
+  for (const k of Object.keys(lecteurs)) delete lecteurs[k];
   canal = false;
   derniere = '';
   file = Promise.resolve();

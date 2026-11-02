@@ -160,6 +160,13 @@ describe('mode cuisine : alertes', () => {
 
   test('sans module de notifications : rien ne plante', async () => {
     jest.doMock(
+      'expo-audio',
+      () => {
+        throw new Error('absent');
+      },
+      { virtual: true }
+    );
+    jest.doMock(
       'expo-notifications',
       () => {
         throw new Error('absent');
@@ -173,6 +180,27 @@ describe('mode cuisine : alertes', () => {
     await expect(
       a.scheduleCookAlarms([{ id: 'eau', inSec: 60, title: 't', body: 'b' }])
     ).resolves.toBeUndefined();
+  });
+
+  test('sons en fichiers quand le build contient expo-audio, un lecteur par son', () => {
+    const play = jest.fn();
+    const audio = {
+      createAudioPlayer: jest.fn(() => ({ play, seekTo: jest.fn(async () => {}) })),
+      setAudioModeAsync: jest.fn(async () => {}),
+    };
+    jest.doMock('expo-audio', () => audio, { virtual: true });
+    const a = require('../services/cookAlerts');
+    a._resetCookAlertsForTests();
+    expect(a.cookScreenPlaysSounds()).toBe(false);
+    a.keepScreenOn(true);
+    expect(a.cookScreenPlaysSounds()).toBe(true);
+    a.feedback('ready');
+    a.feedback('ready');
+    a.feedback('go');
+    expect(audio.createAudioPlayer).toHaveBeenCalledTimes(2);
+    expect(play).toHaveBeenCalledTimes(3);
+    a.keepScreenOn(false);
+    expect(a.cookScreenPlaysSounds()).toBe(false);
   });
 
   test('alarmes programmées à la fin de chaque cuisson, refaites à chaque changement', async () => {
