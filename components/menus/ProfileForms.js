@@ -522,7 +522,6 @@ export const DietSection = memo(function DietSection({
               {found.map((f) => (
                 <Chip
                   key={f.key}
-                  emoji={f.emoji}
                   label={f.name}
                   on={false}
                   onPress={() => {
@@ -538,7 +537,6 @@ export const DietSection = memo(function DietSection({
               {ingExcluded.map((k) => (
                 <Chip
                   key={k}
-                  emoji={ingredients[k] && ingredients[k].emoji}
                   icon="close"
                   label={texts.ingredientName(k)}
                   on

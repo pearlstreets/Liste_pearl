@@ -24,10 +24,10 @@ import { useMenus } from './MenusContext';
 import useT from './useT';
 
 const PAGES = [
-  { emoji: '🏡', title: 'questionnaire.p1Title', text: 'questionnaire.p1Text' },
-  { emoji: '🎯', title: 'questionnaire.p2Title', text: 'questionnaire.p2Text' },
-  { emoji: '🥗', title: 'questionnaire.p3Title', text: 'questionnaire.p3Text' },
-  { emoji: '⏱️', title: 'questionnaire.p4Title', text: 'questionnaire.p4Text' },
+  { icon: 'home-outline', title: 'questionnaire.p1Title', text: 'questionnaire.p1Text' },
+  { icon: 'flag-outline', title: 'questionnaire.p2Title', text: 'questionnaire.p2Text' },
+  { icon: 'nutrition-outline', title: 'questionnaire.p3Title', text: 'questionnaire.p3Text' },
+  { icon: 'time-outline', title: 'questionnaire.p4Title', text: 'questionnaire.p4Text' },
 ];
 
 // Page 1 : « Simple » (adultes et enfants) ou « Personnalisé » (une fiche par personne).
@@ -161,7 +161,7 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
       >
         <Text style={s.kicker}>{t('onboarding.step', { n: step + 1, total: PAGES.length })}</Text>
         <View style={s.titleRow}>
-          <Text style={{ fontSize: 30, marginRight: 10 }}>{pg.emoji}</Text>
+          <Ionicons name={pg.icon} size={28} color={T.brandDark} style={{ marginRight: 10 }} />
           <Text style={[s.title, { flex: 1 }]}>{t(pg.title)}</Text>
         </View>
         <Text style={s.text}>{t(pg.text)}</Text>
