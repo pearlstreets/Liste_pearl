@@ -6162,14 +6162,14 @@ export default function App() {
     etaitConnecte.current = isAuth === true;
     if (isAuth !== true) return undefined;
     // Retour au premier plan (autorisation accordée dans les réglages, envoi
-    // précédent échoué) : nouvel enregistrement, sans effet s'il est à jour.
+    // précédent échoué, ligne révoquée par le serveur) : nouvel enregistrement.
     const sub = AppState.addEventListener('change', (etat) => {
       if (etat !== 'active') return;
       enregistrerAppareil();
       consommerDestination();
     });
     // Langue changée : le serveur l'apprend (titres des notifications).
-    const surLangue = () => { enregistrerAppareil({ force: true }); };
+    const surLangue = () => { enregistrerAppareil(); };
     i18nApp.on('languageChanged', surLangue);
     return () => { sub.remove(); i18nApp.off('languageChanged', surLangue); };
   }, [isAuth]);

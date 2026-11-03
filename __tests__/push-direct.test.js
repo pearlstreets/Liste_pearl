@@ -122,12 +122,29 @@ describe('enregistrement', () => {
     expect(mockNotif.requestPermissionsAsync).not.toHaveBeenCalled();
   });
 
-  test('jeton inchangé : pas de second envoi, langue changée avec force : renvoyé', async () => {
+  test('jeton inchangé : renvoyé à chaque passage, ligne révoquée par le serveur réactivée', async () => {
     await push.enregistrerAppareil();
+    // Le serveur a révoqué la ligne (refus Firebase ou Apple), le jeton du
+    // téléphone n'a pas changé : le retour dans l'app la renvoie quand même.
     await push.enregistrerAppareil();
-    expect(appelsPost()).toHaveLength(1);
-    await push.enregistrerAppareil({ force: true });
     expect(appelsPost()).toHaveLength(2);
+    expect(appelsPost()[1][2].push_token).toBe('JETON-A');
+    expect(appelsPost()[1][2].replaces_player_id).toBe('fcm:cle-a');
+    // Même clé rendue : rien n'est retiré.
+    expect(appelsDelete()).toHaveLength(0);
+    expect(mockStore.get(push.CLE_APPAREIL)).toBe('fcm:cle-a');
+  });
+
+  test('langue changée : la nouvelle langue part au passage suivant', async () => {
+    const i18n = require('../i18n').default;
+    await push.enregistrerAppareil();
+    i18n.language = 'zh';
+    try {
+      await push.enregistrerAppareil();
+    } finally {
+      i18n.language = 'fr';
+    }
+    expect(appelsPost()[1][2].langue).toBe('zh');
   });
 
   test('une seule promesse en vol', async () => {
@@ -196,7 +213,6 @@ describe('retrait', () => {
     expect(opts).toEqual({ timeoutMs: 4000 });
     expect(mockStore.has(push.CLE_REVOCATIONS)).toBe(false);
     expect(mockStore.has(push.CLE_APPAREIL)).toBe(false);
-    expect(mockStore.has(push.CLE_DERNIER_JETON)).toBe(false);
   });
 
   test('500 puis délai dépassé : révocation en attente, rejouée au prochain enregistrement', async () => {
@@ -221,7 +237,7 @@ describe('retrait', () => {
         ? ok({ onesignal_player_id: 'fcm:cle-a' })
         : { ok: true, status: 204, data: null }
     );
-    await push.enregistrerAppareil({ force: true });
+    await push.enregistrerAppareil();
     const ordre = mockApi.apiJsonWithStatus.mock.calls.map((c) => c[0]);
     expect(ordre).toEqual(['DELETE', 'POST']);
     expect(mockStore.has(push.CLE_REVOCATIONS)).toBe(false);
@@ -231,14 +247,6 @@ describe('retrait', () => {
     await push.retirerAppareil();
     expect(mockApi.apiJsonWithStatus).not.toHaveBeenCalled();
   });
-
-  test('oublierAppareilLocal : clé effacée sans appel réseau', async () => {
-    await avecCle();
-    await push.oublierAppareilLocal();
-    expect(mockApi.apiJsonWithStatus).not.toHaveBeenCalled();
-    expect(mockStore.has(push.CLE_APPAREIL)).toBe(false);
-    expect(mockStore.has(push.CLE_DERNIER_JETON)).toBe(false);
-  });
 });
 
 describe('sans module natif', () => {
@@ -247,7 +255,6 @@ describe('sans module natif', () => {
     await expect(push.enregistrerAppareil()).resolves.toBeUndefined();
     await expect(push.demanderPermission()).resolves.toBe(false);
     await expect(push.retirerAppareil()).resolves.toBeUndefined();
-    await expect(push.oublierAppareilLocal()).resolves.toBeUndefined();
     expect(mockApi.apiJsonWithStatus).not.toHaveBeenCalled();
   });
 
@@ -263,7 +270,6 @@ describe('sans module natif', () => {
   test('les noms de clés restent hors du ménage de la déconnexion', () => {
     for (const k of [
       push.CLE_APPAREIL,
-      push.CLE_DERNIER_JETON,
       push.CLE_REVOCATIONS,
       push.CLE_PERMISSION_DEMANDEE,
     ]) {

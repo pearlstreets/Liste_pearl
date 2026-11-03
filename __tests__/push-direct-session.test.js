@@ -1,6 +1,6 @@
 // Notifications de commande, côté session : en-tête X-Platform sur toutes les
 // requêtes (origine de la commande lue par le serveur), retrait du téléphone
-// à la déconnexion, oubli local à la suppression du compte, révocations en
+// à la déconnexion et avant la suppression du compte, révocations en
 // attente qui survivent à l'effacement des données.
 
 const mockStore = new Map();
@@ -110,27 +110,91 @@ describe('session et téléphone enregistré', () => {
     expect(JSON.parse(mockStore.get('pushDirect.revocationsEnAttente'))).toEqual(['fcm:cle-a']);
   });
 
-  test('suppression du compte réussie : clé oubliée sans appel de retrait', async () => {
+  test('suppression du compte : téléphone retiré AVANT, session encore valable', async () => {
     await api.saveTokens(jwt(3600), 'R1');
     mockStore.set('pushDirect.cleAppareil', 'fcm:cle-a');
-    global.fetch.mockResolvedValueOnce(jsonRes(200, { status: true, message: 'ok' }));
+    let jetonsAuRetrait = null;
+    global.fetch.mockImplementation(async (url) => {
+      if (String(url).includes('/notifications/device-tokens/current/')) {
+        jetonsAuRetrait = await api.getTokens();
+        return jsonRes(204, null);
+      }
+      return jsonRes(200, { status: true, message: 'ok' });
+    });
     const res = await auth.deleteAccount();
     expect(res.success).toBe(true);
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(String(global.fetch.mock.calls[0][0])).toBe(
-      'https://api.test/api/v1/users/delete-user/'
-    );
+    const urls = global.fetch.mock.calls.map((c) => String(c[0]));
+    expect(urls).toEqual([
+      'https://api.test/api/v1/notifications/device-tokens/current/?player_id=fcm%3Acle-a',
+      'https://api.test/api/v1/users/delete-user/',
+    ]);
+    expect(jetonsAuRetrait).not.toBeNull();
     expect(mockStore.has('pushDirect.cleAppareil')).toBe(false);
+    expect(mockStore.has('pushDirect.revocationsEnAttente')).toBe(false);
   });
 
-  test('suppression du compte refusée : la clé reste', async () => {
+  test('suppression du compte, retrait hors ligne : rejoué plus tard, gardé après l effacement', async () => {
     await api.saveTokens(jwt(3600), 'R1');
     mockStore.set('pushDirect.cleAppareil', 'fcm:cle-a');
-    global.fetch.mockResolvedValueOnce(
-      jsonRes(403, { status: false, message: 'Only customer accounts can delete their account.' })
-    );
+    global.fetch.mockImplementation(async (url) => {
+      if (String(url).includes('/notifications/device-tokens/current/')) {
+        throw new Error('Network request failed');
+      }
+      return jsonRes(200, { status: true, message: 'ok' });
+    });
+    const res = await auth.deleteAccount();
+    expect(res.success).toBe(true);
+    expect(JSON.parse(mockStore.get('pushDirect.revocationsEnAttente'))).toEqual(['fcm:cle-a']);
+  });
+
+  const simulerPushDirect = (ordre) => {
+    jest.doMock('../services/pushDirect', () => ({
+      retirerAppareil: jest.fn(async () => {
+        ordre.push('retrait');
+      }),
+      enregistrerAppareil: jest.fn(async () => {
+        ordre.push('enregistrement');
+      }),
+    }));
+    auth = require('../services/auth');
+  };
+
+  test.each([
+    [
+      'refusée',
+      async () =>
+        jsonRes(403, { status: false, message: 'Only customer accounts can delete their account.' }),
+    ],
+    [
+      'réseau coupé',
+      async () => {
+        throw new Error('Network request failed');
+      },
+    ],
+  ])('suppression %s : téléphone enregistré de nouveau', async (_nom, reponse) => {
+    const ordre = [];
+    simulerPushDirect(ordre);
+    await api.saveTokens(jwt(3600), 'R1');
+    global.fetch.mockImplementation(async (url) => {
+      ordre.push(String(url).replace('https://api.test/api/v1', ''));
+      return reponse();
+    });
     const res = await auth.deleteAccount();
     expect(res.success).toBe(false);
-    expect(mockStore.get('pushDirect.cleAppareil')).toBe('fcm:cle-a');
+    expect(ordre[0]).toBe('retrait');
+    expect(ordre[ordre.length - 1]).toBe('enregistrement');
+    expect(ordre.filter((x) => x === 'enregistrement')).toHaveLength(1);
+    jest.dontMock('../services/pushDirect');
+  });
+
+  test('suppression réussie : aucun nouvel enregistrement', async () => {
+    const ordre = [];
+    simulerPushDirect(ordre);
+    await api.saveTokens(jwt(3600), 'R1');
+    global.fetch.mockResolvedValue(jsonRes(200, { status: true, message: 'ok' }));
+    const res = await auth.deleteAccount();
+    expect(res.success).toBe(true);
+    expect(ordre).toEqual(['retrait']);
+    jest.dontMock('../services/pushDirect');
   });
 });

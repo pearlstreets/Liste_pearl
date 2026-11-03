@@ -26,7 +26,6 @@ export const CANAL_ANDROID = 'commandes';
 // USER_KEYS_TO_REMOVE et isUserScopedKey) : les révocations en attente
 // doivent survivre à l'effacement des données du compte.
 export const CLE_APPAREIL = 'pushDirect.cleAppareil';
-export const CLE_DERNIER_JETON = 'pushDirect.dernierJeton';
 // Clés dont le retrait côté serveur a échoué (réseau, session perdue),
 // rejouées au prochain enregistrement.
 export const CLE_REVOCATIONS = 'pushDirect.revocationsEnAttente';
@@ -216,7 +215,13 @@ async function rejouerRevocations() {
   await ecrireRevocations(restantes);
 }
 
-async function envoyerJeton(jeton, { force = false } = {}) {
+// Envoyé à CHAQUE passage, comme l'app livreur : le serveur est idempotent
+// (même ligne, `revoked_at` remis à vide). Une ligne révoquée par le serveur
+// sur un refus de Firebase ou d'Apple alors que le jeton du téléphone n'a pas
+// changé (réglage faux corrigé ensuite) est ainsi réactivée au prochain retour
+// dans l'app. Sauter l'envoi sur un jeton inchangé la laissait éteinte pour
+// toujours, et le client ne recevait plus rien.
+async function envoyerJeton(jeton) {
   if (!jeton || !jeton.data) return;
   const ios = plateforme() === 'ios';
   const corps = {
@@ -227,22 +232,12 @@ async function envoyerJeton(jeton, { force = false } = {}) {
     app_version: versionApp(),
     langue: langueCourante(),
   };
-  // Même jeton, même langue, même version : rien à renvoyer.
-  const signature = JSON.stringify([
-    corps.provider,
-    corps.push_token,
-    corps.langue,
-    corps.app_version,
-  ]);
   let ancienne = null;
-  let derniere = null;
   try {
     ancienne = await AsyncStorage.getItem(CLE_APPAREIL);
-    derniere = await AsyncStorage.getItem(CLE_DERNIER_JETON);
   } catch {
-    /* illisible : on renvoie */
+    /* illisible */
   }
-  if (!force && ancienne && derniere === signature) return;
   if (ancienne) corps.replaces_player_id = ancienne;
   const res = await apiJsonWithStatus('POST', ROUTE_ENREGISTRER, corps);
   const cle =
@@ -256,19 +251,18 @@ async function envoyerJeton(jeton, { force = false } = {}) {
   }
   try {
     await AsyncStorage.setItem(CLE_APPAREIL, cle);
-    await AsyncStorage.setItem(CLE_DERNIER_JETON, signature);
   } catch {
     /* nouvel envoi au prochain passage */
   }
 }
 
 /**
- * Enregistre ce téléphone pour le compte connecté. Idempotent : rien n'est
- * envoyé si jeton, langue et version n'ont pas changé, sauf `force` (langue
- * changée). Ne demande jamais l'autorisation (voir demanderPermission). Une
- * seule promesse en vol. Ne lève jamais.
+ * Enregistre ce téléphone pour le compte connecté. Le jeton part à chaque
+ * appel (voir envoyerJeton), la langue courante avec. Ne demande jamais
+ * l'autorisation (voir demanderPermission). Une seule promesse en vol. Ne
+ * lève jamais.
  */
-export function enregistrerAppareil({ force = false } = {}) {
+export function enregistrerAppareil() {
   if (_enCours) return _enCours;
   _enCours = (async () => {
     try {
@@ -285,11 +279,11 @@ export function enregistrerAppareil({ force = false } = {}) {
       // avant l'envoi, pour rester en place même si celui-ci échoue.
       if (!_abonnementJeton && typeof nat.addPushTokenListener === 'function') {
         _abonnementJeton = nat.addPushTokenListener((nouveau) =>
-          envoyerJeton(nouveau, { force: true }).catch(() => {})
+          envoyerJeton(nouveau).catch(() => {})
         );
       }
       const jeton = await nat.getDevicePushTokenAsync();
-      await envoyerJeton(jeton, { force });
+      await envoyerJeton(jeton);
     } catch {
       // Pas de jeton (réseau, Play Services absent) : nouvel essai au
       // prochain retour dans l'app.
@@ -313,7 +307,7 @@ function arreterAbonnement() {
 
 async function effacerLocal() {
   try {
-    await AsyncStorage.multiRemove([CLE_APPAREIL, CLE_DERNIER_JETON]);
+    await AsyncStorage.removeItem(CLE_APPAREIL);
   } catch {
     /* sans gravité */
   }
@@ -339,19 +333,6 @@ export async function retirerAppareil() {
     await effacerLocal();
   } catch {
     /* jamais bloquant */
-  }
-}
-
-/**
- * Compte supprimé : le serveur a déjà révoqué ses appareils, on oublie
- * seulement la clé locale, sans appel. Ne lève jamais.
- */
-export async function oublierAppareilLocal() {
-  try {
-    arreterAbonnement();
-    await effacerLocal();
-  } catch {
-    /* sans gravité */
   }
 }
 
