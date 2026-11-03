@@ -56,10 +56,16 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const mSlot = meal ? meal.slot : null;
   const foyer = headsFor(profile, mDay, mSlot);
   const [heads, setHeads] = useState(foyer.heads);
-  const persons = useMemo(
-    () => portionsForHeads(profile, mDay, mSlot, heads),
-    [profile, mDay, mSlot, heads]
-  );
+  // Repas cuisiné en double pour un reste prévu : on cuisine aussi les parts du reste.
+  const cookExtra =
+    meal && !meal.leftoverOf && !meal.free && meal.cookPersons > meal.persons + 0.01
+      ? meal.cookPersons - meal.persons
+      : 0;
+  const mealCook = cookExtra ? meal.cookPersons : 0;
+  const persons = useMemo(() => {
+    if (mealCook && heads === foyer.heads) return mealCook;
+    return portionsForHeads(profile, mDay, mSlot, heads) + cookExtra;
+  }, [profile, mDay, mSlot, heads, mealCook, cookExtra, foyer.heads]);
   const kidsShown = Math.min(foyer.children, Math.max(0, heads - foyer.adults));
   const [have, setHave] = useState({});
   const [added, setAdded] = useState(null);
@@ -474,12 +480,14 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           onPress={openPick}
           style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
         />
-        <PrimaryButton
-          icon="play"
-          label={t('recipe.cook')}
-          onPress={() => onCook(id, persons)}
-          style={barBtn}
-        />
+        {steps.length ? (
+          <PrimaryButton
+            icon="play"
+            label={t('recipe.cook')}
+            onPress={() => onCook(id, persons)}
+            style={barBtn}
+          />
+        ) : null}
       </View>
       {planPick ? (
         <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />

@@ -325,8 +325,8 @@ describe('fusion avec une liste existante', () => {
   test('format exact des nouveaux articles', () => {
     const r = toListItems(lignes, nom, [], { idGen });
     expect(r.items).toEqual([
-      { id: 'id1', name: 'Riz', qty: 1, unit: 'u', crossed: false, selected: true },
-      { id: 'id2', name: 'Poulet', qty: 2, unit: 'u', crossed: false, selected: true },
+      { id: 'id1', name: 'Riz', qty: 1, unit: 'u', crossed: false, selected: true, menusKey: 'riz' },
+      { id: 'id2', name: 'Poulet', qty: 2, unit: 'u', crossed: false, selected: true, menusKey: 'poulet' },
     ]);
     expect(r.added).toBe(2);
   });
@@ -339,10 +339,11 @@ describe('fusion avec une liste existante', () => {
     expect(r.items.find((i) => i.id === 'a')).toEqual({
       id: 'a',
       name: 'riz',
-      qty: 3,
+      qty: 1, // l'article barré était déjà acheté : seule la nouvelle quantité reste à acheter
       unit: 'u',
       crossed: false, // ré-ajouté depuis Menus : de nouveau à acheter, pris en compte dans Produits
       selected: true,
+      menusKey: 'riz',
     });
     expect(r.items.find((i) => i.id === 'b').qty).toBe(1); // autre unité : intact
     expect(r.items.filter((i) => i.name.toLowerCase() === 'riz')).toHaveLength(2);
@@ -578,5 +579,23 @@ describe('nutrition, échelle, recherche', () => {
     const a = createRng('x');
     const b = createRng('x');
     expect([a(), a(), a()]).toEqual([b(), b(), b()]);
+  });
+});
+
+describe('liaison Menus vers Ma Liste : corrections du 03/11', () => {
+  const idGen = (() => { let n = 0; return () => 'n' + ++n; })();
+  test('même ingrédient retrouvé par sa clé quand la langue change', () => {
+    const exist = [{ id: 'a', name: 'Tomate', qty: 2, unit: 'u', crossed: false, selected: true, menusKey: 'tomate' }];
+    const r = toListItems([{ key: 'tomate', qty: 3, unit: 'u', packs: 3 }], () => 'Tomato', exist, { idGen });
+    expect(r.items).toHaveLength(1);
+    expect(r.items[0].qty).toBe(5);
+  });
+  test('ingrédient libre pesé : la quantité est gardée en détail et additionnée', () => {
+    const l = { key: 'farine-chataigne', qty: 250, unit: 'g', packs: 1, free: true };
+    const first = toListItems([l], () => 'Farine de châtaigne', [], { idGen });
+    expect(first.items[0]).toMatchObject({ qty: 1, menusPack: { qty: 250, unit: 'g', free: true } });
+    const second = toListItems([{ ...l, qty: 300 }], () => 'Farine de châtaigne', first.items, { idGen, force: true });
+    expect(second.items).toHaveLength(1);
+    expect(second.items[0]).toMatchObject({ qty: 1, menusPack: { qty: 550, unit: 'g' } });
   });
 });

@@ -189,35 +189,47 @@ async function nosAlarmes(nat) {
 }
 
 let file = Promise.resolve();
-let derniere = '';
+let derniere = {};
 
 /**
- * Programme les alarmes voulues : [{ id, inSec, title, body }]. Les autres alarmes du mode cuisine
- * sont annulées. Appels mis en file : jamais deux mises à jour en même temps.
+ * Programme les alarmes voulues : [{ id, inSec, title, body }]. Avec `group` (une recette, un lot),
+ * seules les alarmes de ce groupe sont remplacées ; sans `group`, toutes les autres alarmes du mode
+ * cuisine sont annulées. Appels mis en file : jamais deux mises à jour en même temps.
  */
-export function scheduleCookAlarms(list, channelName) {
+export function scheduleCookAlarms(list, channelName, group) {
   const voulu = (Array.isArray(list) ? list : []).filter((x) => x && x.inSec >= 1);
+  const g = group ? `${group}:` : '';
   const sig = JSON.stringify(voulu.map((x) => [x.id, Math.round(x.inSec / 5)]));
-  if (sig === derniere) return file;
-  derniere = sig;
+  if (derniere[g] === sig) return file;
+  if (g) derniere[g] = sig;
+  else derniere = { '': sig };
   file = file
     .then(async () => {
       const nat = native();
       if (!nat) return;
       const p = await getMenuReminderPermission();
-      const anciens = await nosAlarmes(nat);
+      // Avec un groupe : aussi les alarmes de l'ancienne version, qui n'en avaient pas.
+      const anciens = (await nosAlarmes(nat)).filter(
+        (id) =>
+          id.startsWith(`${COOK_ID_PREFIX}${g}`) || (g && !id.slice(COOK_ID_PREFIX.length).includes(':'))
+      );
       for (const id of anciens) {
         try {
           await nat.cancelScheduledNotificationAsync(id);
         } catch {}
       }
-      if (!p.granted || !voulu.length) return;
+      if (!p.granted) {
+        // pas encore de permission : le prochain appel identique réessaiera
+        if (derniere[g] === sig) delete derniere[g];
+        return;
+      }
+      if (!voulu.length) return;
       await creerCanal(nat, channelName);
       const types = nat.SchedulableTriggerInputTypes || {};
       for (const a of voulu) {
         try {
           await nat.scheduleNotificationAsync({
-            identifier: `${COOK_ID_PREFIX}${a.id}`,
+            identifier: `${COOK_ID_PREFIX}${g}${a.id}`,
             content: {
               title: a.title,
               body: a.body,
@@ -238,9 +250,9 @@ export function scheduleCookAlarms(list, channelName) {
   return file;
 }
 
-/** Annule toutes les alarmes du mode cuisine (repas fini ou recommencé). */
-export function cancelCookAlarms() {
-  return scheduleCookAlarms([]);
+/** Annule les alarmes du mode cuisine d'un groupe (recette, lot), ou toutes sans `group`. */
+export function cancelCookAlarms(group) {
+  return scheduleCookAlarms([], undefined, group);
 }
 
 /** Pour les tests. */
@@ -248,6 +260,6 @@ export function _resetCookAlertsForTests() {
   notifications = undefined;
   keepAwake = undefined;
   canal = false;
-  derniere = '';
+  derniere = {};
   file = Promise.resolve();
 }

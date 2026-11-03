@@ -5,7 +5,7 @@ import { apiJsonWithStatus, apiUploadWithStatus, getTokens } from './api';
 
 const IMPORT_PATH = '/users/list-menus/import-recipe/';
 const PHOTO_PATH = '/users/list-menus/recipe-photo/';
-const IMPORT_TIMEOUT_MS = 30000; // le serveur doit aller lire la page
+const IMPORT_TIMEOUT_MS = 40000; // le serveur doit aller lire la page (ses délais : 8 + 8 + 14 s), plus une marge
 const PHOTO_TIMEOUT_MS = 60000;
 export const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 

@@ -53,7 +53,10 @@ import { useMenus } from './MenusContext';
 import useT from './useT';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
 
+// ancienne clé unique (un seul repas en cours pour toutes les recettes) : relue une fois pour migrer
 export const SAVE_KEY = 'menus.cuisineEnCours';
+// une sauvegarde par recette : cuisiner B ne fait plus perdre la progression ni les alarmes de A
+export const saveKeyOf = (id) => `${SAVE_KEY}.${id}`;
 const SAVE_MAX_MS = 12 * 3600 * 1000;
 const TICK_MS = 500;
 
@@ -102,6 +105,12 @@ export default function KitchenMode({ id, persons, onClose }) {
     }
   }, [recipe, steps, id]);
   const best = useMemo(() => (plan.tasks.length ? remaining(plan, initState(plan)) : 0), [plan]);
+  // une synchro distante recrée le plan à l'identique : seule une signature changée relance la reprise
+  const sig = useMemo(() => planSig(plan), [plan]);
+  const planRef = useRef(plan);
+  planRef.current = plan;
+  const saveKey = saveKeyOf(id);
+  const alarmGroup = String(id);
 
   const [S, setS] = useState(() => initState(plan));
   const [hist, setHist] = useState([]);
@@ -176,14 +185,25 @@ export default function KitchenMode({ id, persons, onClose }) {
 
   useEffect(() => {
     let vivant = true;
+    const plan = planRef.current;
     // plan changé (langue, recette modifiée) : l'état doit avoir une ligne par tâche
     setS((cur) => (cur.st.length === plan.tasks.length ? cur : initState(plan)));
     setHist([]);
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(SAVE_KEY);
+        let raw = await AsyncStorage.getItem(saveKeyOf(id));
+        if (!raw) {
+          // migration : l'ancienne sauvegarde unique, si elle est celle de cette recette
+          const old = await AsyncStorage.getItem(SAVE_KEY);
+          const o = old ? JSON.parse(old) : null;
+          if (o && o.id === id) {
+            raw = old;
+            await AsyncStorage.setItem(saveKeyOf(id), old);
+            await AsyncStorage.removeItem(SAVE_KEY);
+          }
+        }
         const v = raw ? JSON.parse(raw) : null;
-        if (v && v.id === id && v.sig === planSig(plan) && Date.now() - v.at < SAVE_MAX_MS) {
+        if (v && v.id === id && v.sig === sig && Date.now() - v.at < SAVE_MAX_MS) {
           const st = validState(plan, v.S);
           if (st && vivant) {
             const dt = (Date.now() - v.at) / 1000;
@@ -202,17 +222,17 @@ export default function KitchenMode({ id, persons, onClose }) {
     return () => {
       vivant = false;
     };
-  }, [id, plan]);
+  }, [id, sig]);
 
   const save = useCallback(
     (St) => {
       try {
         const fini = allDone(plan, St);
         const vide = doneCount(St) === 0 && !St.cooks.length && !St.st.some((x) => x.s === 'run');
-        if (fini || vide) AsyncStorage.removeItem(SAVE_KEY).catch(() => {});
+        if (fini || vide) AsyncStorage.removeItem(saveKey).catch(() => {});
         else
           AsyncStorage.setItem(
-            SAVE_KEY,
+            saveKey,
             JSON.stringify({
               id,
               sig: planSig(plan),
@@ -223,7 +243,7 @@ export default function KitchenMode({ id, persons, onClose }) {
           ).catch(() => {});
       } catch {}
     },
-    [id, plan]
+    [id, plan, saveKey]
   );
 
   /* ------------------------------ alarmes ------------------------------ */
@@ -231,7 +251,7 @@ export default function KitchenMode({ id, persons, onClose }) {
   const syncAlarms = useCallback(
     (St) => {
       if (St.pz || allDone(plan, St)) {
-        cancelCookAlarms();
+        cancelCookAlarms(alarmGroup);
         return;
       }
       const list = [];
@@ -254,10 +274,10 @@ export default function KitchenMode({ id, persons, onClose }) {
           body: textOf(plan.tasks[i]),
         });
       });
-      scheduleCookAlarms(list, t('cook.k.channel'));
+      scheduleCookAlarms(list, t('cook.k.channel'), alarmGroup);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [plan, textOf, t]
+    [plan, textOf, t, alarmGroup]
   );
 
   /* ------------------------------ temps ------------------------------ */
@@ -347,15 +367,15 @@ export default function KitchenMode({ id, persons, onClose }) {
     const St = initState(plan);
     setS(St);
     SRef.current = St;
-    AsyncStorage.removeItem(SAVE_KEY).catch(() => {});
-    cancelCookAlarms();
+    AsyncStorage.removeItem(saveKey).catch(() => {});
+    cancelCookAlarms(alarmGroup);
   };
   const onFinish = async () => {
     try {
       await markCooked(id);
     } catch {}
-    AsyncStorage.removeItem(SAVE_KEY).catch(() => {});
-    cancelCookAlarms();
+    AsyncStorage.removeItem(saveKey).catch(() => {});
+    cancelCookAlarms(alarmGroup);
     onClose();
   };
 

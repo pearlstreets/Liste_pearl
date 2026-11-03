@@ -218,6 +218,30 @@ describe('brouillon', () => {
     expect(d.photoUrl).toBeNull();
     expect(draftFromImport(null, emptyDraft()).title).toBe('');
   });
+  test('import : cuillères abrégées et unités anglo-saxonnes converties', () => {
+    expect(normalizeUnit('c. à soupe')).toBe('cs');
+    expect(normalizeUnit('c. à café')).toBe('cc');
+    const d = draftFromImport(
+      {
+        title: 'Cake',
+        ingredients: [
+          { name: 'Lait', qty: '1 1/2', unit: 'cups' },
+          { name: 'Beurre', qty: 4, unit: 'oz' },
+          { name: 'Farine', qty: 1, unit: 'lb' },
+          { name: 'Safran', qty: 500, unit: 'mg' },
+          { name: 'Sucre', qty: 2, unit: 'c. à soupe' },
+        ],
+      },
+      emptyDraft()
+    );
+    expect(d.ingredients).toEqual([
+      { name: 'Lait', qty: '360', unit: 'ml' },
+      { name: 'Beurre', qty: '112', unit: 'g' },
+      { name: 'Farine', qty: '454', unit: 'g' },
+      { name: 'Safran', qty: '0,5', unit: 'g' },
+      { name: 'Sucre', qty: '2', unit: 'cs' },
+    ]);
+  });
   test('textes : recette perso et catalogue', () => {
     const t = withMyTexts(textsFr, [mine()]);
     expect(t.recipeTitle('my-1')).toBe('Mon plat');
