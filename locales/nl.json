@@ -1048,7 +1048,45 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "prefs": {
+      "title": "Menuvoorkeuren",
+      "intro": "Optioneel. Uw keuzes gelden voor de volgende geplande week, de huidige week verandert niet.",
+      "balanced": "Evenwichtige week",
+      "balancedHint": "Meer groenten, minder gefrituurd, redelijke porties.",
+      "sides": "Een groentebijgerecht voorstellen",
+      "sidesHint": "Als een gerecht weinig groenten bevat.",
+      "quick": "Snelle maaltijden doordeweeks",
+      "no": "Nee",
+      "treats": "Genietmaaltijden per week",
+      "treatsHint": "Pizza, burger, friet, liefst op vrijdagavond of in het weekend.",
+      "treatsFree": "Vrij",
+      "treatsNone": "Geen",
+      "cuisines": "Favoriete keukens",
+      "cuisinesHint": "Vaker voorgesteld, de andere blijven mogelijk."
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "Een groentebijgerecht toevoegen",
+      "hintWeek": "Dit gerecht bevat weinig groenten. Optioneel: tik op een bijgerecht om het aan deze maaltijd en uw boodschappen toe te voegen.",
+      "hintList": "Dit gerecht bevat weinig groenten. Optioneel: tik op een bijgerecht om de ingrediënten aan uw lijst toe te voegen.",
+      "add": "Toevoegen",
+      "see": "Bekijken",
+      "chosenTitle": "Groentebijgerecht",
+      "inShopping": "De ingrediënten staan in de boodschappen van de week, voor dezelfde porties.",
+      "remove": "Bijgerecht verwijderen",
+      "unsuitable": "Dit bijgerecht past niet meer bij uw profiel.",
+      "withSide": "Met het bijgerecht: {{kcal}} kcal en {{protein}} g eiwit per portie",
+      "withLine": "Met {{title}}",
+      "idea": "Groente-idee: {{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "Doel voor deze maaltijd: {{kcal}} kcal, {{protein}} g eiwit per persoon",
+      "day": "Deze dag: ongeveer {{kcal}} kcal en {{protein}} g eiwit per persoon",
+      "dayTarget": "Doel van de geplande maaltijden: {{kcal}} kcal en {{protein}} g eiwit",
+      "dayHeader": "Deze dag, per persoon:",
+      "dayPerson": "{{name}}: ongeveer {{kcal}} kcal en {{protein}} g eiwit, doel {{targetKcal}} kcal en {{targetProtein}} g",
+      "dayHousehold": "Deze dag, voor het huishouden: ongeveer {{kcal}} kcal en {{protein}} g eiwit, doel {{targetKcal}} kcal en {{targetProtein}} g"
+    },
     "reminders": {
       "title": "Herinneringen",
       "hint": "Standaard uitgeschakeld. Schakel alleen in wat voor u nuttig is.",
@@ -1116,6 +1154,40 @@
       "budgetHint": "Indicatieve schatting, op elk moment aanpasbaar",
       "noBudget": "Zonder budget"
     },
+    "nutri": {
+      "title": "Aanpassen per persoon",
+      "intro": "Optioneel. Vul leeftijd, lengte, gewicht, activiteit en doel van iedereen in, porties en boodschappenlijst passen zich aan.",
+      "start": "Aanpassen",
+      "person": "Persoon {{n}}",
+      "personHint": "Alles is optioneel, een leeg veld telt als een standaardportie.",
+      "name": "Voornaam",
+      "age": "Leeftijd",
+      "height": "Lengte (cm)",
+      "weight": "Gewicht (kg)",
+      "sex": "Geslacht",
+      "female": "Vrouw",
+      "male": "Man",
+      "activity": "Activiteit",
+      "act_faible": "Laag",
+      "act_moderee": "Matig",
+      "act_elevee": "Hoog",
+      "act_intense": "Intensief",
+      "actHint_faible": "Weinig of geen sport",
+      "actHint_moderee": "1 tot 3 trainingen per week",
+      "actHint_elevee": "3 tot 5 trainingen per week",
+      "actHint_intense": "Elke dag sport of lichamelijk werk",
+      "goal": "Doel",
+      "goal_perdre": "Afvallen",
+      "goal_maintenir": "Gewicht behouden",
+      "goal_prendre": "Spiermassa opbouwen",
+      "goalMinor": "Onder de 18 geen doel, alleen de behoeften voor de groei tellen.",
+      "needs": "Ongeveer {{kcal}} kcal en {{protein}} g eiwit per dag",
+      "remove": "Verwijderen",
+      "addAdult": "Volwassene toevoegen",
+      "addChild": "Kind toevoegen",
+      "clear": "Alles wissen",
+      "disclaimer": "Indicatieve schatting, geen medisch advies."
+    },
     "meals": {
       "all": "Alle maaltijden",
       "soirOnly": "Alleen avonden",
@@ -1169,6 +1241,25 @@
       "sulfites": "Sulfieten",
       "miel": "Honing"
     },
+    "questionnaire": {
+      "p1Title": "Voor wie koken we?",
+      "p1Text": "Kies wat voor u het eenvoudigst is. Alles is optioneel.",
+      "modeSimple": "Eenvoudig",
+      "modeSimpleHint": "Het aantal volwassenen en kinderen.",
+      "modePerso": "Persoonlijk",
+      "modePersoHint": "Eén profiel per persoon: leeftijd, lengte, gewicht, activiteit.",
+      "keptHint": "Personen die u al hebt ingevuld blijven bewaard, maar tellen niet mee zolang u op Eenvoudig blijft.",
+      "p2Title": "Uw doelen",
+      "p2Text": "Eén doel per volwassene en hoeveel verwenmaaltijden per week.",
+      "goalNeedsPerso": "Kies Persoonlijk op pagina 1 om per persoon een doel in te stellen.",
+      "p3Title": "Uw smaak",
+      "p3Text": "Favoriete keukens, dieet, allergieën en voedingsmiddelen die u wilt vermijden.",
+      "p4Title": "Uw dagelijks leven",
+      "p4Text": "Snelle maaltijden, budget, een evenwichtige week en een groentebijgerecht.",
+      "later": "Later",
+      "redo": "Vragenlijst opnieuw invullen",
+      "redoHint": "Vier pagina's om uw menu's aan te passen. Alles is optioneel en wordt direct bewaard."
+    },
     "onboarding": {
       "skip": "Overslaan",
       "step": "Stap {{n}} van {{total}}",
@@ -1213,6 +1304,14 @@
       "noneTitle": "Meer ideeën voor deze maaltijd",
       "noneText": "Probeer uw beperkingen te versoepelen in de instellingen.",
       "surprise": "Verras mij"
+    },
+    "guests": {
+      "title": "Voor wie?",
+      "sub": "Vink de personen aan die deze maaltijd eten.",
+      "subHeads": "Geef aan hoeveel personen deze maaltijd eten.",
+      "atLeast": "Vink minstens één persoon aan.",
+      "done": "Klaar",
+      "all": "Hele huishouden"
     },
     "added": {
       "ok": "{{count}} producten toegevoegd",
@@ -1508,7 +1607,23 @@
       "favEmptyTitle": "Nog geen favorieten",
       "favEmptyText": "Tik op het hartje van een recept om het hier terug te vinden.",
       "noResultsTitle": "Geen resultaat",
-      "noResultsText": "Probeer een ander woord of verwijder een filter."
+      "noResultsText": "Probeer een ander woord of verwijder een filter.",
+      "balanced": "Evenwichtig",
+      "quick20": "Snel (max. 20 min)",
+      "under30": "Minder dan 30 min",
+      "plentyVeg": "Veel groenten",
+      "cuisinesTitle": "Keukens van de wereld",
+      "cuisines": {
+        "asie": "Azië",
+        "inde": "India",
+        "maghreb-orient": "Maghreb en Midden-Oosten",
+        "italie": "Italië",
+        "espagne-portugal": "Spanje en Portugal",
+        "grece": "Griekenland",
+        "france": "Frankrijk",
+        "ameriques": "Amerika",
+        "afrique": "Afrika"
+      }
     },
     "fridge": {
       "intro": "Geef aan wat u nog heeft, wij zoeken recepten die het gebruiken.",
@@ -1519,6 +1634,9 @@
       "search": "Ingrediënt zoeken",
       "results": "Mogelijke recepten",
       "coverage": "{{pct}}% al in huis",
+      "have": "U heeft {{have}} van {{total}}",
+      "addMissing": "Voeg wat ontbreekt toe aan mijn lijst",
+      "addedMissing": "Toegevoegd aan uw lijst",
       "allThere": "U heeft alles.",
       "missing": "Ontbreekt: {{list}}",
       "usesUp": "Gebruikt {{count}} restjes op.",
@@ -1670,6 +1788,24 @@
       "addWeek": "Toevoegen aan mijn week",
       "addedShop": "Toegevoegd aan uw boodschappen",
       "addedWeek": "Toegevoegd aan uw week"
+    },
+    "month": {
+      "view": "Maand bekijken",
+      "prev": "Vorige maand",
+      "next": "Volgende maand",
+      "past": "Voorbije week, alleen om te bekijken.",
+      "prepare": "Deze week plannen",
+      "prepareNote": "Uw huidige week blijft in uw geschiedenis.",
+      "resume": "Deze week hervatten",
+      "far": "Plan eerst de vorige week.",
+      "searchPh": "Een recept zoeken",
+      "searchHint": "Typ de naam van een gerecht of een ingrediënt.",
+      "addTitle": "Toevoegen aan mijn week",
+      "addSub": "Kies de maaltijd die dit recept vervangt.",
+      "replaceQ": "{{old}} vervangen door {{new}}? Deze maaltijd wordt bewaard.",
+      "replace": "Vervangen",
+      "redoTitle": "Deze week opnieuw doen",
+      "redoAsk": "Deze maaltijden worden uw huidige week. Uw huidige week blijft in de geschiedenis."
     }
   },
   "counts": {

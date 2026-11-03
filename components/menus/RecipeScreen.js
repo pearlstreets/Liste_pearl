@@ -22,10 +22,13 @@ import {
   headsFor,
   portionsForHeads,
 } from '../../lib/menus';
+import { needsSide, mealSide, withSideNutrition, mealTargetOf } from '../../lib/menus/sides';
+import { recipePortionScale } from '../../lib/menus/needs';
 import { T } from './theme';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
 import RecipeVisual from './RecipeVisual';
 import { AddedSheet, PlanPickSheet, PickProductsSheet, warningList } from './Sheets';
+import { AddToWeekSheet } from './MonthScreen';
 import { useMenus, conflictList } from './MenusContext';
 import useT from './useT';
 import { matchLines } from '../../lib/menus/pearl';
@@ -42,7 +45,15 @@ const Dots = ({ n }) => (
   </View>
 );
 
-export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, navigation }) {
+export default function RecipeScreen({
+  id,
+  mealKey,
+  onClose,
+  onCook,
+  onEdit,
+  onOpenRecipe,
+  navigation,
+}) {
   const t = useT();
   // Petit écran : photo et boutons fixes réduits, sinon la recette ne se voit plus.
   const compact = useWindowDimensions().height < 700;
@@ -54,7 +65,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   // Personnes affichées en têtes (comme la carte du repas) ; les quantités comptent les enfants 0,6.
   const mDay = meal ? meal.day : null;
   const mSlot = meal ? meal.slot : null;
-  const foyer = headsFor(profile, mDay, mSlot);
+  const foyer = headsFor(profile, mDay, mSlot, meal);
   const [heads, setHeads] = useState(foyer.heads);
   // Repas cuisiné en double pour un reste prévu : on cuisine aussi les parts du reste.
   const cookExtra =
@@ -64,14 +75,24 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const mealCook = cookExtra ? meal.cookPersons : 0;
   const persons = useMemo(() => {
     if (mealCook && heads === foyer.heads) return mealCook;
+    // convives choisis pour ce repas (Pour qui ?) : les portions du repas, tant que le nombre n'est pas changé ici
+    if (meal && heads === foyer.heads && (meal.eaters || meal.heads) && meal.persons > 0)
+      return Math.round((meal.persons + cookExtra) * 100) / 100;
     return portionsForHeads(profile, mDay, mSlot, heads) + cookExtra;
-  }, [profile, mDay, mSlot, heads, mealCook, cookExtra, foyer.heads]);
+  }, [profile, mDay, mSlot, heads, mealCook, cookExtra, foyer.heads, meal]);
+  // Repas de la semaine : portions ajustées aux besoins des personnes renseignées, comme les Courses et les apports.
+  const fitScale = useMemo(
+    () => (meal && !meal.free && recipe ? recipePortionScale(profile, recipe) : 1),
+    [meal, recipe, profile]
+  );
+  const fitPersons = fitScale === 1 ? persons : Math.round(persons * fitScale * 100) / 100;
   const kidsShown = Math.min(foyer.children, Math.max(0, heads - foyer.adults));
   const [have, setHave] = useState({});
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [adding, setAdding] = useState(false);
   const [planPick, setPlanPick] = useState(false);
+  const [addWeek, setAddWeek] = useState(false);
   const [pickLines, setPickLines] = useState(null);
   const [note, setNoteTxt] = useState(notes[id] || '');
   const noteFocused = useRef(false);
@@ -96,8 +117,10 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
   const pearlShops = usePearlShops('product_purchase');
   const lines = useMemo(
     () =>
-      recipe ? scaleIngredients(recipe, persons, { lang: normalizeLang(lang), ingredients }) : [],
-    [recipe, persons, lang, ingredients]
+      recipe
+        ? scaleIngredients(recipe, fitPersons, { lang: normalizeLang(lang), ingredients })
+        : [],
+    [recipe, fitPersons, lang, ingredients]
   );
   const pearlRows = useMemo(() => {
     const fr = getTexts('fr');
@@ -114,19 +137,68 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
     }));
   }, [lines, pearlShops]);
   const { costOf } = m;
-  const cost = useMemo(() => (recipe ? costOf(recipe, persons) : null), [recipe, persons, costOf]);
+  // Prix par personne : total des portions cuisinées partagé entre les convives, comme sur la carte du repas.
+  const cost = useMemo(() => {
+    if (!recipe) return null;
+    // Portions non arrondies, comme la carte (sinon 3,27 € ici contre 3,26 € sur la carte).
+    const c = costOf(recipe, fitScale === 1 ? persons : persons * fitScale);
+    return fitScale === 1 || !(persons > 0)
+      ? c
+      : { ...c, perPerson: Math.round((c.total / persons) * 100) / 100 };
+  }, [recipe, fitScale, persons, costOf]);
   const steps = useMemo(() => (recipe ? texts.recipeSteps(id) : []), [recipe, texts, id]);
+
+  // Accompagnement de légumes : celui du repas s'il y en a un, sinon 2 ou 3 idées pour un plat pauvre en légumes.
+  const { sidesFor, setMealSide } = m;
+  const side = useMemo(() => (meal ? mealSide(meal, recipeById) : null), [meal, recipeById]);
+  const wantsSide = !!recipe && !side && needsSide(recipe, ingredients);
+  const sideOptions = useMemo(
+    () => (wantsSide ? sidesFor(recipe) : []),
+    [wantsSide, recipe, sidesFor]
+  );
+  const [sideBusy, setSideBusy] = useState(false);
+  const pickSide = useCallback(
+    async (sideId) => {
+      if (sideBusy || adding) return;
+      setSideBusy(true);
+      try {
+        if (meal) {
+          await setMealSide(meal.key, sideId);
+        } else {
+          // Hors semaine : ses ingrédients rejoignent la liste, aux mêmes portions que le plat.
+          const r = await m.sendRecipeToList(sideId, persons);
+          let name = t('shop.defaultList');
+          try {
+            const mine = await readMyLists();
+            const l = mine.lists.find((x) => String(x.id) === String(r.listId));
+            if (l && l.name) name = l.name;
+          } catch {}
+          setAddedName(name);
+          setAdded(r);
+        }
+      } catch {
+        /* rien n'est perdu : la fiche reste ouverte */
+      } finally {
+        setSideBusy(false);
+      }
+    },
+    [sideBusy, adding, meal, setMealSide, m, persons, t]
+  );
+  const mealNeed = useMemo(
+    () => (meal && !meal.free ? mealTargetOf(profile, meal.day, meal.slot, meal) : null),
+    [meal, profile]
+  );
 
   const openPick = useCallback(() => {
     if (adding) return;
-    setPickLines(m.recipeLinesFor(id, persons));
-  }, [adding, m, id, persons]);
+    setPickLines(m.recipeLinesFor(id, fitPersons));
+  }, [adding, m, id, fitPersons]);
   const addToMyList = useCallback(
     async (keys) => {
       if (adding) return;
       setPickLines(null);
       setAdding(true);
-      const r = await m.sendRecipeToList(id, persons, keys);
+      const r = await m.sendRecipeToList(id, fitPersons, keys);
       let name = t('shop.defaultList');
       try {
         const mine = await readMyLists();
@@ -137,7 +209,7 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
       setAdding(false);
       setAdded(r);
     },
-    [adding, m, id, persons, t]
+    [adding, m, id, fitPersons, t]
   );
   const goList = async (screen) => {
     setAdded(null);
@@ -260,6 +332,17 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
                   <View style={{ width: 10 }} />
                 </>
               ) : null}
+              {mine ? null : (
+                <>
+                  <RoundIcon
+                    name="calendar-outline"
+                    onPress={() => setAddWeek(true)}
+                    label={t('month.addTitle')}
+                    bg="rgba(255,255,255,0.95)"
+                  />
+                  <View style={{ width: 10 }} />
+                </>
+              )}
               <RoundIcon
                 name="share-outline"
                 onPress={share}
@@ -418,21 +501,106 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
             </View>
           ) : null}
 
-          {nut ? (
-          <View style={s.nutri}>
-            <Text style={s.nutriTitle}>{t('recipe.nutrition')}</Text>
-            <View style={{ flexDirection: 'row', marginTop: 10 }}>
-              <View style={s.nutriBox}>
-                <Text style={s.nutriVal}>{nut.kcal}</Text>
-                <Text style={s.nutriLab}>{t('kcal')}</Text>
-              </View>
-              <View style={s.nutriBox}>
-                <Text style={s.nutriVal}>{nut.protein}</Text>
-                <Text style={s.nutriLab}>{t('recipe.protein')}</Text>
-              </View>
+          {side ? (
+            <View style={s.side}>
+              <Text style={s.sideTitle}>{t('sides.chosenTitle')}</Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => onOpenRecipe && onOpenRecipe(side.id)}
+                style={s.sideRow}
+                accessibilityRole="button"
+                accessibilityLabel={texts.recipeTitle(side.id)}
+              >
+                <Ionicons name="leaf-outline" size={18} color={T.brandDark} />
+                <View style={{ flex: 1, marginLeft: 10 }}>
+                  <Text style={s.sideName} numberOfLines={2}>
+                    {texts.recipeTitle(side.id)}
+                  </Text>
+                  <Text style={s.sideMeta}>{t('recipe.minutes', { n: side.timeMin })}</Text>
+                </View>
+                {onOpenRecipe ? (
+                  <Ionicons name="chevron-forward" size={16} color={T.muted} />
+                ) : null}
+              </TouchableOpacity>
+              {m.conflictOf(side) ? <Text style={s.sideWarn}>{t('sides.unsuitable')}</Text> : null}
+              <Text style={s.sideHint}>{t('sides.inShopping')}</Text>
+              <TouchableOpacity
+                onPress={() => setMealSide(meal.key, null)}
+                style={s.sideRemove}
+                accessibilityRole="button"
+              >
+                <Text style={s.sideRemoveTxt}>{t('sides.remove')}</Text>
+              </TouchableOpacity>
             </View>
-            <Text style={s.nutriNote}>{t('recipe.nutritionNote')}</Text>
-          </View>
+          ) : null}
+
+          {!side && sideOptions.length > 0 ? (
+            <View style={s.side}>
+              <Text style={s.sideTitle}>{t('sides.title')}</Text>
+              <Text style={s.sideHint}>{t(meal ? 'sides.hintWeek' : 'sides.hintList')}</Text>
+              {sideOptions.map((o) => (
+                <View key={o.id} style={s.sideRow}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => pickSide(o.id)}
+                    disabled={sideBusy}
+                    style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+                    accessibilityRole="button"
+                    accessibilityLabel={`${t('sides.add')} ${texts.recipeTitle(o.id)}`}
+                  >
+                    <Ionicons name="add-circle-outline" size={22} color={T.brandDark} />
+                    <View style={{ flex: 1, marginLeft: 10 }}>
+                      <Text style={s.sideName} numberOfLines={2}>
+                        {texts.recipeTitle(o.id)}
+                      </Text>
+                      <Text style={s.sideMeta}>
+                        {t('recipe.minutes', { n: o.timeMin })}
+                        {Number(o.kcal) > 0 ? ` · ${o.kcal} ${t('kcal')}` : ''}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  {onOpenRecipe ? (
+                    <TouchableOpacity
+                      onPress={() => onOpenRecipe(o.id)}
+                      style={s.sideSee}
+                      accessibilityRole="button"
+                    >
+                      <Text style={s.sideSeeTxt}>{t('sides.see')}</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          ) : null}
+
+          {nut ? (
+            <View style={s.nutri}>
+              <Text style={s.nutriTitle}>{t('recipe.nutrition')}</Text>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <View style={s.nutriBox}>
+                  <Text style={s.nutriVal}>{nut.kcal}</Text>
+                  <Text style={s.nutriLab}>{t('kcal')}</Text>
+                </View>
+                <View style={s.nutriBox}>
+                  <Text style={s.nutriVal}>{nut.protein}</Text>
+                  <Text style={s.nutriLab}>{t('recipe.protein')}</Text>
+                </View>
+              </View>
+              {side ? (
+                <Text style={s.nutriExtra}>
+                  {t('sides.withSide', {
+                    kcal: withSideNutrition(recipe, side).kcal,
+                    protein: Math.round(withSideNutrition(recipe, side).protein),
+                  })}
+                </Text>
+              ) : null}
+              {mealNeed ? (
+                <Text style={s.nutriExtra}>
+                  {t('kcalInfo.mealTarget', { kcal: mealNeed.kcal, protein: mealNeed.protein })}
+                </Text>
+              ) : null}
+              {side ? null : <Text style={s.nutriNote}>{t('recipe.nutritionNote')}</Text>}
+            </View>
           ) : null}
 
           <Text style={s.h2}>{t('recipe.steps')}</Text>
@@ -484,13 +652,16 @@ export default function RecipeScreen({ id, mealKey, onClose, onCook, onEdit, nav
           <PrimaryButton
             icon="play"
             label={t('recipe.cook')}
-            onPress={() => onCook(id, persons)}
+            onPress={() => onCook(id, fitPersons)}
             style={barBtn}
           />
         ) : null}
       </View>
       {planPick ? (
         <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />
+      ) : null}
+      {addWeek ? (
+        <AddToWeekSheet recipe={recipe} onClose={() => setAddWeek(false)} onDone={onClose} />
       ) : null}
       {pickLines ? (
         <PickProductsSheet
@@ -523,7 +694,14 @@ const s = StyleSheet.create({
     marginTop: 12,
   },
   warnFound: { backgroundColor: T.dangerSoft },
-  warnTxt: { flex: 1, marginLeft: 8, fontSize: 14, lineHeight: 20, color: T.ink, fontWeight: '600' },
+  warnTxt: {
+    flex: 1,
+    marginLeft: 8,
+    fontSize: 14,
+    lineHeight: 20,
+    color: T.ink,
+    fontWeight: '600',
+  },
   topBtns: {
     position: 'absolute',
     left: 14,
@@ -555,7 +733,8 @@ const s = StyleSheet.create({
   tags: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
   tag: {
     backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    borderWidth: 1,
+    borderColor: T.border,
     borderRadius: 999,
     paddingHorizontal: 11,
     paddingVertical: 5,
@@ -568,7 +747,8 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    borderWidth: 1,
+    borderColor: T.border,
     borderRadius: 16,
     padding: 16,
     marginTop: 18,
@@ -626,6 +806,31 @@ const s = StyleSheet.create({
   nutriVal: { fontSize: 22, fontWeight: '600', color: T.ink },
   nutriLab: { fontSize: 12, color: T.muted, fontWeight: '700', marginTop: 2 },
   nutriNote: { fontSize: 12, color: T.faint, marginTop: 10, lineHeight: 17 },
+  nutriExtra: { fontSize: 13, color: T.ink, marginTop: 10, lineHeight: 18, fontWeight: '600' },
+  side: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: T.border,
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 24,
+  },
+  sideTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
+  sideHint: { fontSize: 12, color: T.muted, marginTop: 4, lineHeight: 17 },
+  sideRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: T.border,
+  },
+  sideName: { fontSize: 15, fontWeight: '700', color: T.ink },
+  sideMeta: { fontSize: 12, color: T.muted, marginTop: 2 },
+  sideWarn: { fontSize: 13, color: T.danger, marginTop: 8, fontWeight: '600' },
+  sideSee: { paddingHorizontal: 10, paddingVertical: 8, marginLeft: 6 },
+  sideSeeTxt: { fontSize: 13, fontWeight: '700', color: T.brandDark },
+  sideRemove: { alignSelf: 'flex-start', paddingVertical: 8, marginTop: 4 },
+  sideRemoveTxt: { fontSize: 14, fontWeight: '700', color: T.brandDark },
   step: { flexDirection: 'row', marginBottom: 16 },
   stepNum: {
     width: 30,

@@ -1046,7 +1046,45 @@
     "pilates": "普拉提"
   },
   "menus": {
+    "prefs": {
+      "title": "菜单偏好",
+      "intro": "可选。您的选择将用于下一次安排的一周，本周不会改变。",
+      "balanced": "均衡的一周",
+      "balancedHint": "更多蔬菜，更少油炸，分量适中。",
+      "sides": "推荐蔬菜配菜",
+      "sidesHint": "当菜品中蔬菜较少时。",
+      "quick": "工作日快手餐",
+      "no": "否",
+      "treats": "每周享受餐",
+      "treatsHint": "比萨、汉堡、薯条，最好在周五晚上或周末。",
+      "treatsFree": "不限",
+      "treatsNone": "无",
+      "cuisines": "偏好的菜系",
+      "cuisinesHint": "会更常推荐，其他菜系仍可出现。"
+    },
     "kcal": "千卡",
+    "sides": {
+      "title": "添加一道蔬菜配菜",
+      "hintWeek": "这道菜蔬菜较少。可选：点击一道配菜，即可加入这一餐和购物清单。",
+      "hintList": "这道菜蔬菜较少。可选：点击一道配菜，即可将其食材加入您的清单。",
+      "add": "添加",
+      "see": "查看",
+      "chosenTitle": "蔬菜配菜",
+      "inShopping": "其食材已按相同份数加入本周购物。",
+      "remove": "移除配菜",
+      "unsuitable": "这道配菜已不适合您的资料。",
+      "withSide": "含配菜：每份 {{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "withLine": "配 {{title}}",
+      "idea": "蔬菜建议：{{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "这一餐的目标：每人 {{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "day": "这一天：每人约 {{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "dayTarget": "已计划餐食的目标：{{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "dayHeader": "当天每人：",
+      "dayPerson": "{{name}}：约 {{kcal}} 千卡，蛋白质 {{protein}} 克（目标 {{targetKcal}} 千卡，{{targetProtein}} 克）",
+      "dayHousehold": "当天全家：约 {{kcal}} 千卡，蛋白质 {{protein}} 克（目标 {{targetKcal}} 千卡，{{targetProtein}} 克）"
+    },
     "reminders": {
       "title": "提醒",
       "hint": "默认关闭。请只开启对您有用的提醒。",
@@ -1114,6 +1152,40 @@
       "budgetHint": "预估金额，可随时修改",
       "noBudget": "无预算"
     },
+    "nutri": {
+      "title": "为每个人定制",
+      "intro": "可选。填写每个人的年龄、身高、体重、活动量和目标，份量和购物清单会随之调整。",
+      "start": "开始定制",
+      "person": "第 {{n}} 人",
+      "personHint": "全部可选，留空按标准一人份计算。",
+      "name": "名字",
+      "age": "年龄",
+      "height": "身高（厘米）",
+      "weight": "体重（公斤）",
+      "sex": "性别",
+      "female": "女",
+      "male": "男",
+      "activity": "活动量",
+      "act_faible": "低",
+      "act_moderee": "中等",
+      "act_elevee": "高",
+      "act_intense": "很高",
+      "actHint_faible": "很少或不运动",
+      "actHint_moderee": "每周运动 1 到 3 次",
+      "actHint_elevee": "每周运动 3 到 5 次",
+      "actHint_intense": "每天运动或从事体力劳动",
+      "goal": "目标",
+      "goal_perdre": "减重",
+      "goal_maintenir": "保持体重",
+      "goal_prendre": "增肌",
+      "goalMinor": "未满 18 岁不设目标，只考虑成长所需。",
+      "needs": "每天约 {{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "remove": "移除",
+      "addAdult": "添加成人",
+      "addChild": "添加儿童",
+      "clear": "全部清除",
+      "disclaimer": "仅为估算，并非医疗建议。"
+    },
     "meals": {
       "all": "所有餐食",
       "soirOnly": "仅晚餐",
@@ -1167,6 +1239,25 @@
       "sulfites": "亚硫酸盐",
       "miel": "蜂蜜"
     },
+    "questionnaire": {
+      "p1Title": "我们为谁做饭？",
+      "p1Text": "请选择对您最简单的方式，一切均为可选。",
+      "modeSimple": "简单",
+      "modeSimpleHint": "成人和儿童的人数。",
+      "modePerso": "个性化",
+      "modePersoHint": "每人一份资料：年龄、身高、体重、活动量。",
+      "keptHint": "已填写的人员会被保留，但在“简单”模式下不计入计算。",
+      "p2Title": "您的目标",
+      "p2Text": "每位成人一个目标，以及每周的享受餐次数。",
+      "goalNeedsPerso": "请在第 1 页选择“个性化”，为每个人设定目标。",
+      "p3Title": "您的口味",
+      "p3Text": "喜爱的菜系、饮食方式、过敏原和想避开的食物。",
+      "p4Title": "您的日常",
+      "p4Text": "快手餐、预算、均衡的一周和蔬菜配菜。",
+      "later": "稍后",
+      "redo": "重新填写问卷",
+      "redoHint": "共四页，为您定制菜单。一切均为可选，并会随时保存。"
+    },
     "onboarding": {
       "skip": "跳过",
       "step": "第{{n}}步，共{{total}}步",
@@ -1211,6 +1302,14 @@
       "noneTitle": "没有更多选择",
       "noneText": "请尝试在设置中放宽您的限制。",
       "surprise": "给我个惊喜"
+    },
+    "guests": {
+      "title": "给谁吃？",
+      "sub": "请勾选吃这一餐的人。",
+      "subHeads": "请填写吃这一餐的人数。",
+      "atLeast": "请至少勾选一人。",
+      "done": "完成",
+      "all": "全家"
     },
     "added": {
       "ok": "已添加 {{count}} 个产品",
@@ -1480,7 +1579,23 @@
       "favEmptyTitle": "暂无收藏",
       "favEmptyText": "点击食谱上的爱心可收藏至此。",
       "noResultsTitle": "未找到结果",
-      "noResultsText": "请尝试其他词或去掉筛选条件。"
+      "noResultsText": "请尝试其他词或去掉筛选条件。",
+      "balanced": "均衡",
+      "quick20": "快手（最多20分钟）",
+      "under30": "30分钟以内",
+      "plentyVeg": "多蔬菜",
+      "cuisinesTitle": "世界美食",
+      "cuisines": {
+        "asie": "亚洲",
+        "inde": "印度",
+        "maghreb-orient": "马格里布与中东",
+        "italie": "意大利",
+        "espagne-portugal": "西班牙与葡萄牙",
+        "grece": "希腊",
+        "france": "法国",
+        "ameriques": "美洲",
+        "afrique": "非洲"
+      }
     },
     "fridge": {
       "intro": "请告诉我们您还有什么，系统会帮您找使用这些食材的食谱。",
@@ -1491,6 +1606,9 @@
       "search": "搜索食材",
       "results": "可做的食谱",
       "coverage": "已有 {{pct}} %",
+      "have": "您已有 {{have}} / {{total}} 种",
+      "addMissing": "把缺少的加入我的清单",
+      "addedMissing": "已加入您的清单",
       "allThere": "您已全部具备。",
       "missing": "还缺：{{list}}",
       "usesUp": "用完 {{count}} 种剩料。",
@@ -1634,6 +1752,24 @@
       "addWeek": "添加到我的一周",
       "addedShop": "已添加到您的购物清单",
       "addedWeek": "已添加到您的一周"
+    },
+    "month": {
+      "view": "查看月份",
+      "prev": "上个月",
+      "next": "下个月",
+      "past": "已过去的一周，仅供查看。",
+      "prepare": "安排这一周",
+      "prepareNote": "您当前的一周会保留在历史记录中。",
+      "resume": "继续这一周",
+      "far": "请先安排前一周。",
+      "searchPh": "搜索食谱",
+      "searchHint": "请输入菜名或食材名称。",
+      "addTitle": "添加到我的一周",
+      "addSub": "请选择由这份食谱替换的一餐。",
+      "replaceQ": "用{{new}}替换{{old}}吗？这一餐将被保留。",
+      "replace": "替换",
+      "redoTitle": "重做这一周",
+      "redoAsk": "这些餐食将成为您当前的一周。当前的一周会保留在历史记录中。"
     }
   },
   "counts": {

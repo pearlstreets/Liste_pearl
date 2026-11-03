@@ -19,16 +19,19 @@ import {
   budgetStatus,
   refineCheapest,
   normalizeProfile,
+  headsFor,
 } from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
 import MealCard, { isolerPrix } from './MealCard';
-import { SwapSheet, AddedSheet } from './Sheets';
+import { SwapSheet, AddedSheet, GuestsSheet, guestsText } from './Sheets';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { weekTarget, parseISO, dayIndexIn } from '../../lib/menus/weeks';
 import { nearbyShops } from '../../lib/menus/pearl';
 import { usePearlShops, useKnownPlace, openShopFromMenus } from './usePearl';
+import { dayTotals, mealSide, needsSide, sideIdOf } from '../../lib/menus/sides';
+import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
 
 /** Libellé exact de la semaine ("Semaine du 2 novembre"), jamais une formule vague. */
 export function weekLabel(weekStart, lang, t) {
@@ -45,7 +48,7 @@ export function weekLabel(weekStart, lang, t) {
 const mealsSignature = (p) =>
   (p && Array.isArray(p.meals) ? p.meals : [])
     .filter((x) => x && x.key)
-    .map((x) => `${x.key}:${x.recipeId || ''}:${x.free ? 1 : 0}:${Math.round((Number(x.persons) || 0) * 10)}`)
+    .map((x) => `${x.key}:${x.recipeId || ''}:${x.free ? 1 : 0}:${Math.round((Number(x.persons) || 0) * 10)}:${typeof x.sideId === 'string' ? x.sideId : ''}`)
     .sort()
     .join('|');
 
@@ -104,6 +107,7 @@ export default function WeekScreen({
   onOpenShop,
   onOpenBatch,
   onOpenShared,
+  onOpenMonth,
 }) {
   const t = useT();
   // Petit écran : en-tête et pied resserrés, le premier repas reste visible sans défiler.
@@ -126,6 +130,7 @@ export default function WeekScreen({
     [hasFree, restaurants, knownPlace]
   );
   const [swapKey, setSwapKey] = useState(null);
+  const [guestsKey, setGuestsKey] = useState(null);
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [sending, setSending] = useState(false);
@@ -140,17 +145,52 @@ export default function WeekScreen({
   }, [badKeys]);
 
   const days = useMemo(() => (plan ? mealsByDay(plan) : []), [plan]);
+  // Apports par personne et par jour (accompagnements compris), cible si des personnes sont renseignées.
+  const totals = useMemo(
+    () => (plan ? dayTotals(plan, recipeById, m.profile) : []),
+    [plan, recipeById, m.profile]
+  );
+  // Suggestion d'accompagnement sur la carte : seulement si la personne l'a demandé (prefs.sides).
+  const sidesOn = !!(m.profile && m.profile.prefs && m.profile.prefs.sides === true);
+  const { sidesFor } = m;
+  const dayMeals = days[day];
+  const sideIdeas = useMemo(() => {
+    const out = {};
+    if (!sidesOn || !dayMeals) return out;
+    for (const meal of [dayMeals.midi, dayMeals.soir]) {
+      if (!meal || meal.free || !meal.recipeId || sideIdOf(meal)) continue;
+      const r = recipeById.get(meal.recipeId);
+      if (!r || !needsSide(r, ingredients)) continue;
+      const idea = sidesFor(r, 1)[0];
+      if (idea) out[meal.key] = idea;
+    }
+    return out;
+  }, [sidesOn, dayMeals, recipeById, ingredients, sidesFor]);
   const costs = useMemo(() => {
     const out = {};
     if (plan) {
+      // Portions réellement cuisinées : ajustées aux besoins des personnes renseignées, comme le budget et les Courses.
+      const pt = portionTarget(m.profile);
       for (const meal of plan.meals) {
         const r = meal.recipeId && recipeById.get(meal.recipeId);
-        if (r && !meal.free) out[meal.key] = m.costOf(r, meal.persons).perPerson;
+        if (!r || meal.free) continue;
+        const sc = pt ? recipePortionScale(m.profile, r, pt) : 1;
+        const c = m.costOf(r, sc === 1 ? meal.persons : meal.persons * sc);
+        out[meal.key] =
+          sc === 1 || !(meal.persons > 0)
+            ? c.perPerson
+            : Math.round((c.total / meal.persons) * 100) / 100;
+        // Accompagnement choisi : compté dans le prix de la carte, comme dans le budget et les Courses.
+        const sd = mealSide(meal, recipeById);
+        if (sd) {
+          out[meal.key] =
+            Math.round((out[meal.key] + (m.costOf(sd, meal.persons).perPerson || 0)) * 100) / 100;
+        }
       }
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, recipeById, m.costOf]);
+  }, [plan, recipeById, m.costOf, m.profile]);
 
   // Jauge : budget et foyer actuels appliques au plan courant (les repas ne sont pas recomposes).
   const [searchTick, setSearchTick] = useState(0);
@@ -295,6 +335,8 @@ export default function WeekScreen({
     if (!meal) return null;
     const recipe = meal.recipeId ? recipeById.get(meal.recipeId) : null;
     const price = costs[meal.key];
+    const side = recipe ? mealSide(meal, recipeById) : null;
+    const idea = recipe && !side ? sideIdeas[meal.key] : null;
     const card = (
       <MealCard
         key={meal.key}
@@ -303,13 +345,26 @@ export default function WeekScreen({
         title={recipe ? texts.recipeTitle(recipe.id) : ''}
         ingredients={ingredients}
         priceText={t('week.perPerson', { price: formatEur(price || 0, lang) })}
-        people={headcountFor(m.profile, meal.day, meal.slot)}
+        people={
+          meal.eaters || meal.heads
+            ? headsFor(m.profile, meal.day, meal.slot, meal).heads
+            : headcountFor(m.profile, meal.day, meal.slot)
+        }
+        onGuests={() => setGuestsKey(meal.key)}
+        guestsText={guestsText(m.profile, meal, t)}
         onOpen={() => onOpenRecipe(meal.recipeId, meal.key)}
         onChange={() => setSwapKey(meal.key)}
         onLock={() => m.toggleLock(meal.key)}
         onFree={(free) => m.setFree(meal.key, free)}
         nearby={meal.free ? nearby : undefined}
         onOpenShop={(sh) => openShopFromMenus(navigation, sh)}
+        side={side}
+        sideTitle={side ? texts.recipeTitle(side.id) : ''}
+        sideBad={side ? !!m.conflictOf(side) : false}
+        onOpenSide={side ? () => onOpenRecipe(side.id) : undefined}
+        sideIdea={idea}
+        sideIdeaTitle={idea ? texts.recipeTitle(idea.id) : ''}
+        onAddSide={idea ? () => m.setMealSide(meal.key, idea.id) : undefined}
       />
     );
     if (!badKeys.has(meal.key)) return card;
@@ -338,6 +393,16 @@ export default function WeekScreen({
             onPress={() => m.generate()}
             color={T.brandDark}
           />
+          {onOpenMonth ? (
+            <View style={{ marginLeft: 8 }}>
+              <RoundIcon
+                name="calendar-outline"
+                label={t('month.view')}
+                onPress={onOpenMonth}
+                color={T.brandDark}
+              />
+            </View>
+          ) : null}
           {compact ? (
             <View style={{ marginLeft: 8 }}>
               <RoundIcon
@@ -498,6 +563,35 @@ export default function WeekScreen({
           })}
         </View>
         <Text style={[s.dayTitle, compact && s.dayTitleCompact]}>{t(`days.long.${day}`)}</Text>
+        {totals[day] && totals[day].meals > 0 && totals[day].members.length > 0 ? (
+          <Text style={s.dayNutri}>
+            {totals[day].members.length <= 4
+              ? [t('kcalInfo.dayHeader')]
+                  .concat(
+                    totals[day].members.map((p) =>
+                      t('kcalInfo.dayPerson', {
+                        name: (p.name || '').trim() || t('nutri.person', { n: p.n }),
+                        kcal: p.kcal,
+                        protein: p.protein,
+                        targetKcal: p.targetKcal,
+                        targetProtein: p.targetProtein,
+                      })
+                    )
+                  )
+                  .join('\n')
+              : t('kcalInfo.dayHousehold', totals[day].household)}
+          </Text>
+        ) : totals[day] && totals[day].meals > 0 ? (
+          <Text style={s.dayNutri}>
+            {t('kcalInfo.day', { kcal: totals[day].kcal, protein: totals[day].protein })}
+            {totals[day].target
+              ? `\n${t('kcalInfo.dayTarget', {
+                  kcal: totals[day].target.kcal,
+                  protein: totals[day].target.protein,
+                })}`
+              : ''}
+          </Text>
+        ) : null}
 
         {busy ? <Text style={s.composing}>{t('week.composing')}</Text> : null}
         {renderMeal(cur.midi)}
@@ -524,6 +618,7 @@ export default function WeekScreen({
       </View>
 
       {swapKey ? <SwapSheet mealKey={swapKey} onClose={() => setSwapKey(null)} /> : null}
+      {guestsKey ? <GuestsSheet mealKey={guestsKey} onClose={() => setGuestsKey(null)} /> : null}
       {added ? (
         <AddedSheet
           result={added}
@@ -662,6 +757,7 @@ const s = StyleSheet.create({
   dayTitle: { fontSize: 22, fontWeight: '600', color: T.ink, marginTop: 20, marginBottom: 12 },
   dayTitleCompact: { fontSize: 18, marginTop: 10, marginBottom: 8 },
   composing: { fontSize: 13, color: T.muted, marginBottom: 8, fontWeight: '600' },
+  dayNutri: { fontSize: 13, color: T.muted, marginTop: -6, marginBottom: 12, lineHeight: 18 },
   none: { fontSize: 15, color: T.muted, textAlign: 'center', paddingVertical: 24 },
   bar: {
     paddingHorizontal: 18,

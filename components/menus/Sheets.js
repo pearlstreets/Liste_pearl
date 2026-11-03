@@ -1,5 +1,5 @@
 // Feuilles du bas : changer un plat (3 idées) et confirmation d'ajout à la liste.
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,15 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
-import { formatEur } from '../../lib/menus';
+import { formatEur, cleanMembers, guestsOf, headsFor } from '../../lib/menus';
 import { T } from './theme';
-import { PrimaryButton, GhostButton, Empty } from './ui';
+import { PrimaryButton, GhostButton, Empty, Stepper } from './ui';
 import RecipeVisual from './RecipeVisual';
+import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 
-function Sheet({ onClose, children, label }) {
+export function Sheet({ onClose, children, label }) {
   return (
     <View style={s.overlay} pointerEvents="box-none">
       <Pressable style={s.backdrop} onPress={onClose} accessibilityLabel={label} />
@@ -103,13 +104,15 @@ export const PlanPickSheet = memo(function PlanPickSheet({ recipe, onClose, onDo
 /** Changer un plat : 3 idées au choix, ou une surprise. */
 export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
   const t = useT();
-  const { suggest, swap, texts, ingredients, lang, costOf, plan, myRecipes, warningOf } = useMenus();
+  const { suggest, swap, texts, ingredients, lang, costOf, plan, myRecipes, warningOf, profile } =
+    useMenus();
   const [ideas, setIdeas] = useState([]);
   const meal = plan && plan.meals.find((m) => m.key === mealKey);
   useEffect(() => {
-    setIdeas(suggest(3));
+    setIdeas(suggest(3, mealKey));
   }, [mealKey, suggest]);
   const persons = (meal && meal.persons) || 2;
+  const pt = portionTarget(profile);
   const pick = async (id) => {
     onClose();
     await swap(mealKey, id);
@@ -129,7 +132,11 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
           <Empty emoji="🤔" title={t('swap.noneTitle')} text={t('swap.noneText')} />
         ) : (
           ideas.map((r) => {
-            const c = costOf(r, persons);
+            // Portions réellement cuisinées, comme le prix de la carte une fois le plat choisi.
+            const sc = pt ? recipePortionScale(profile, r, pt) : 1;
+            const c = costOf(r, persons * sc);
+            const perPerson =
+              sc === 1 ? c.perPerson : Math.round((c.total / persons) * 100) / 100;
             return (
               <TouchableOpacity
                 key={r.id}
@@ -147,7 +154,7 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
                     {t('recipe.minutes', { n: r.timeMin })}
                     {r.custom
                       ? ''
-                      : ` · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`}
+                      : ` · ${t('week.perPerson', { price: formatEur(perPerson, lang) })}`}
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color={T.faint} />
@@ -182,6 +189,97 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
           label={t('swap.surprise')}
           onPress={() => pick(undefined)}
         />
+        <GhostButton label={t('common.cancel')} onPress={onClose} />
+      </View>
+    </Sheet>
+  );
+});
+
+/** Texte de la ligne « Pour qui ? » d'un repas : noms des convives ou nombre de personnes, '' = tout le foyer. */
+export function guestsText(profile, meal, t) {
+  try {
+    const g = guestsOf(profile, meal);
+    if (!g) return '';
+    if (g.eaters) {
+      const all = cleanMembers(profile && profile.members);
+      return g.eaters
+        .map((id) => {
+          const i = all.findIndex((m) => m.id === id);
+          return all[i].name.trim() || t('nutri.person', { n: i + 1 });
+        })
+        .join(', ');
+    }
+    return t('week.persons', { count: g.heads });
+  } catch {
+    return '';
+  }
+}
+
+/** Pour qui ? Les personnes qui mangent ce repas (cases), ou leur nombre sans personnes renseignées. */
+export const GuestsSheet = memo(function GuestsSheet({ mealKey, onClose }) {
+  const t = useT();
+  const { plan, profile, setGuests } = useMenus();
+  const meal = plan && plan.meals.find((m) => m.key === mealKey);
+  const members = useMemo(() => cleanMembers(profile && profile.members), [profile]);
+  const have = meal ? guestsOf(profile, meal) : null;
+  const [sel, setSel] = useState(() =>
+    have && have.eaters ? have.eaters : members.map((m) => m.id)
+  );
+  const [heads, setHeads] = useState(() =>
+    have && have.heads ? have.heads : meal ? headsFor(profile, meal.day, meal.slot).heads : 2
+  );
+  if (!meal) return null;
+  const detailed = members.length > 0;
+  const toggle = (id) => setSel((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
+  const ok = detailed ? sel.length > 0 : true;
+  const save = async () => {
+    if (!ok) return;
+    onClose();
+    await setGuests(mealKey, detailed ? { eaters: sel } : { heads });
+  };
+  const reset = async () => {
+    onClose();
+    await setGuests(mealKey, {});
+  };
+  return (
+    <Sheet onClose={onClose} label={t('common.close')}>
+      <Text style={s.title}>{t('guests.title')}</Text>
+      <Text style={s.sub}>{t(detailed ? 'guests.sub' : 'guests.subHeads')}</Text>
+      {detailed ? (
+        <ScrollView style={{ maxHeight: 320 }} showsVerticalScrollIndicator={false}>
+          {members.map((m, i) => {
+            const on = sel.includes(m.id);
+            return (
+              <TouchableOpacity
+                key={m.id}
+                activeOpacity={0.85}
+                onPress={() => toggle(m.id)}
+                style={s.idea}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: on }}
+              >
+                <Ionicons
+                  name={on ? 'checkbox' : 'square-outline'}
+                  size={24}
+                  color={on ? T.brandDark : T.faint}
+                  style={{ marginRight: 12 }}
+                />
+                <Text style={s.ideaTitle} numberOfLines={1}>
+                  {m.name.trim() || t('nutri.person', { n: i + 1 })}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      ) : (
+        <View style={{ alignItems: 'center', paddingVertical: 8 }}>
+          <Stepper value={heads} onChange={setHeads} min={1} max={24} label={t('guests.title')} />
+        </View>
+      )}
+      {!ok ? <Text style={s.hint}>{t('guests.atLeast')}</Text> : null}
+      <View style={{ marginTop: 12 }}>
+        <PrimaryButton label={t('guests.done')} onPress={save} disabled={!ok} />
+        {have ? <GhostButton label={t('guests.all')} onPress={reset} /> : null}
         <GhostButton label={t('common.cancel')} onPress={onClose} />
       </View>
     </Sheet>
