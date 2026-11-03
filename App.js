@@ -7,10 +7,11 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable, clearLocalUserData, purgeLegacyLocalAccounts } from "./services/auth";
-import { getSharedWithMe, syncMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
+import { getSharedWithMe, syncMyList, getMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
 import { annulationPossible, refusAnnulation } from "./lib/annulation";
+import { separerDoublons, cumulerQuantite, ajouterAuPanier, champsCommande, articleSansFiche, signaturePanier, etatCommandesEnAttente } from "./lib/panier";
 import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus, champsVariantePanier } from "./lib/variantes";
 import { getAllShops, getShopDetails } from "./services/shops";
 import { getCart, saveCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, clearCart, placeOrder, getMarketplaceOrderStatuses } from "./services/orders";
@@ -177,6 +178,7 @@ function normalizeDob(input) {
   return `${y}-${pad(m)}-${pad(d)}`;
 }
 const KEY_CART = "KEY_CART";
+const KEY_PENDING_PAYMENT = "SG_PENDING_PAYMENT"; // commandes Marketplace créées, en attente de paiement
 const KEY_ORDER_HISTORY = "KEY_ORDER_HISTORY";
 const KEY_PROFILE = "KEY_PROFILE";
 const KEY_FAV_SHOPS="KEY_FAV_SHOPS";
@@ -395,6 +397,9 @@ function ListScreen() {
         const tok = await getTokens();
         if (alive) setIsLoggedIn(!!tok);
         if (!tok) { if (alive) { setSharedLists([]); setViewingShareId(null); } return; }
+        // Connexion faite depuis un autre écran : « Ma liste » du serveur est lue
+        // avant tout envoi (reprendreMaListe).
+        if (alive && hydrated.current && !serveurLuRef.current) reprendreMaListe();
         const res = await getSharedWithMe();
         if (alive && res && res.status) setSharedLists(res.data?.lists || []);
         const g = await getGrantedShares();
@@ -414,6 +419,9 @@ function ListScreen() {
   useEffect(() => {
     if (!hydrated.current) return;
     if (activeListId !== DEFAULT_LIST_ID) return;
+    // Jamais d'envoi avant d'avoir lu la liste du serveur : un téléphone neuf
+    // (liste locale vide) écraserait celle du compte.
+    if (!serveurLuRef.current) return;
     const tm = setTimeout(async () => {
       try {
         const tok = await getTokens();
@@ -425,6 +433,40 @@ function ListScreen() {
 
   const hydrated = React.useRef(false);
   const externalReload = React.useRef(false); // un rechargement (ajout depuis Menus) a déjà eu lieu
+  // « Ma liste » du serveur lue (connecté) : l'envoi vers le serveur est permis.
+  const serveurLuRef = React.useRef(false);
+  // Connecté : si « Ma liste » (par défaut) est VIDE sur l'appareil (téléphone
+  // neuf, après une déconnexion), elle est remplie avec celle du serveur ; sinon
+  // la liste locale est gardée. L'envoi n'est permis qu'après cette lecture.
+  const reprendreMaListe = React.useCallback(async () => {
+    try {
+      const tok = await getTokens();
+      if (!tok) return;
+      const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
+      const locale = await loadListItems(DEFAULT_LIST_ID, act);
+      if (!locale.ok) return; // illisible : ni reprise ni envoi
+      if (locale.items.length > 0) { serveurLuRef.current = true; return; }
+      const r = await getMyList();
+      const srv = (r && r.status !== false && r.data && Array.isArray(r.data.items))
+        ? r.data.items.filter(it => it && typeof it === 'object' && !Array.isArray(it)) : null;
+      if (!srv) return; // serveur injoignable : pas d'envoi (la liste du compte est gardée)
+      if (srv.length > 0) {
+        // Toujours vide (rien ajouté pendant la lecture) : sinon la locale prime.
+        const encore = await loadListItems(DEFAULT_LIST_ID, act);
+        if (!encore.ok) return;
+        if (encore.items.length === 0) {
+          const payload = JSON.stringify(srv);
+          await AsyncStorage.setItem(listItemsKey(DEFAULT_LIST_ID), payload);
+          const actNow = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
+          if (actNow === DEFAULT_LIST_ID) {
+            await AsyncStorage.setItem(KEY_ITEMS, payload);
+            setItems(srv);
+          }
+        }
+      }
+      serveurLuRef.current = true;
+    } catch {}
+  }, []);
   // Une écriture venue d'ailleurs (onglet Menus) recharge la liste active depuis le stockage.
   useEffect(() => {
     const sub = DeviceEventEmitter.addListener('LISTS_UPDATED', async () => {
@@ -439,28 +481,38 @@ function ListScreen() {
     return () => sub.remove();
   }, []);
   useEffect(() => { (async () => {
+    let lisible = true;
     try {
-      // Registre de MES listes (migration : crée 'default' si absent)
-      let lists = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || 'null');
+      // Registre de MES listes (migration : crée 'default' si absent). Registre
+      // illisible : repli sur la liste par défaut, sans écrire par-dessus.
+      let lists = null;
+      let registreLisible = true;
+      try { lists = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || 'null'); }
+      catch { lists = null; registreLisible = false; }
       if (!Array.isArray(lists) || lists.length === 0) {
         lists = [{ id: DEFAULT_LIST_ID, name: '' }];
-        await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(lists));
+        if (registreLisible) await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(lists));
       }
       setMyLists(lists);
       let active = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
       if (!lists.some(l => l.id === active)) active = DEFAULT_LIST_ID;
       setActiveListId(active);
       // Articles de la liste active — KEY_ITEMS reste le miroir de l'active (compat panier)
-      const { items: parsed } = await loadListItems(active, active);
-      if (!externalReload.current) setItems(parsed);
-      if (!externalReload.current) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
+      const { ok, items: parsed } = await loadListItems(active, active);
+      // Liste illisible : rien n'est affiché ni écrit par-dessus (hydrated reste faux).
+      lisible = ok;
+      if (ok && !externalReload.current) setItems(parsed);
+      if (ok && !externalReload.current) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
     } catch {}
+    if (!lisible) return;
     hydrated.current = true;
+    reprendreMaListe();
   })(); }, []);
   // Déconnexion ou suppression du compte : les listes ont été effacées de
   // l'appareil, on vide aussi celles affichées en mémoire.
   useEffect(() => {
     const sub = DeviceEventEmitter.addListener('USER_DATA_CLEARED', () => {
+      serveurLuRef.current = false;
       setMyLists([{ id: DEFAULT_LIST_ID, name: '' }]);
       setActiveListId(DEFAULT_LIST_ID);
       setItems([]);
@@ -484,7 +536,7 @@ function ListScreen() {
     (async () => {
       try {
         const s = await AsyncStorage.getItem("SG_ITEMS");
-        if (s) setItems(JSON.parse(s));
+        if (s) { const v = JSON.parse(s); if (Array.isArray(v)) setItems(v); }
       } catch {}
     })();
   }, []));
@@ -590,11 +642,13 @@ function ListScreen() {
       [
         { text: t('listScreen.cancel'), style: 'cancel' },
         { text: t('listScreen.delete'), style: 'destructive', onPress: async () => {
-          const next = myLists.filter(l => l.id !== id);
-          setMyLists(next);
-          await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(next));
-          await AsyncStorage.removeItem(listItemsKey(id));
-          if (activeListId === id) await switchOwnList(DEFAULT_LIST_ID);
+          try {
+            const next = myLists.filter(l => l.id !== id);
+            setMyLists(next);
+            await AsyncStorage.setItem(KEY_LISTS, JSON.stringify(next));
+            await AsyncStorage.removeItem(listItemsKey(id));
+            if (activeListId === id) await switchOwnList(DEFAULT_LIST_ID);
+          } catch {}
         }},
       ]
     );
@@ -960,7 +1014,10 @@ function ListScreen() {
             qty: Number(it.qty||it.quantity||1),
             // Article venu de Menus : noms français équivalents pour la correspondance
             // (valables tant que le nom n'a pas été modifié).
-            ...((Array.isArray(it.matchNames) && it.matchNames.length && it.matchFor === it.name) ? { matchNames: it.matchNames, matchFor: it.name } : {})
+            ...((Array.isArray(it.matchNames) && it.matchNames.length && it.matchFor === it.name) ? { matchNames: it.matchNames, matchFor: it.name } : {}),
+            // Liste d'origine : l'ajout au panier raye dans CETTE liste, même si
+            // une autre est devenue active entre-temps (sans listId : l'active).
+            listId: activeListId,
           })).filter(it=>it.name);
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
@@ -1493,6 +1550,8 @@ const ProductsScreen = () => {
     __setActiveShopProducts(shop ? (shop.products || []).map(p => ({
       id: p.id, name: p.name, detail: sousCategorie(p) || p.description || '',
       price: Number(p.price) || 0, image: p.image || '', available: true,
+      productId: p.id, companyId: shop.id, shopId: shop.id, category: shop.category || 'product_purchase',
+      ...(query ? { listName: query } : {}),
     })) : []);
     __setActiveQuery(query || '');
     __setInitialQuery(query || '');
@@ -1707,6 +1766,50 @@ const ProductsScreen = () => {
   // Normalize: remove accents, lowercase, trim
   const norm = (s) => String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
+  // Article du panier construit depuis un produit de la comparaison : garde la
+  // vraie fiche (productId, companyId, catégorie) pour le paiement et la course.
+  const versArticlePanier = (si) => ({
+    name: si.name, detail: si.detail||si.subtitle||'',
+    unitPrice: si.unitPrice||si.pricePerKg||'',
+    qty: si.qty||1, price: si.price||0, shop: si.shop,
+    image: si.image||'', shopId: si.shopId,
+    ...champsCommande(si),
+  });
+
+  // Raye dans Ma Liste les articles réellement mis au panier : égalité du nom
+  // normalisé (jamais une inclusion : « chorizo » ne raye pas « riz »), dans la
+  // liste d'où ils ont été envoyés (KEY_SELECTED), sinon dans la liste active.
+  // Le miroir KEY_ITEMS n'est écrit que si cette liste est encore l'active.
+  const rayerDansLaListe = async (noms) => {
+    const cibles = new Set((noms || []).map(n => norm(n)).filter(Boolean));
+    if (!cibles.size) return;
+    let origine = null;
+    try {
+      const sel = JSON.parse((await AsyncStorage.getItem(KEY_SELECTED)) || 'null');
+      const avecListe = Array.isArray(sel) ? sel.find(x => x && x.listId) : null;
+      if (avecListe) origine = String(avecListe.listId);
+    } catch {}
+    const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
+    const listId = origine || act;
+    const cur = await loadListItems(listId, act);
+    if (!cur.ok || !cur.items.length) return;
+    let change = false;
+    const updated = cur.items.map(it => {
+      if (it && !it.crossed && cibles.has(norm(it.name || it.title || ''))) { change = true; return { ...it, crossed: true, selected: false }; }
+      return it;
+    });
+    if (!change) return;
+    const payload = JSON.stringify(updated);
+    await AsyncStorage.setItem(listItemsKey(listId), payload);
+    if (listId === act) await AsyncStorage.setItem(KEY_ITEMS, payload);
+  };
+  // Noms à rayer : l'article de liste d'origine et le nom du produit.
+  const nomsDeListe = (items) => {
+    const out = [];
+    (items || []).forEach(it => { if (!it) return; if (it.listName) out.push(it.listName); out.push(it.name); });
+    return out;
+  };
+
   const buildProposal=(items)=>{
     const inv=buildInventory(items);
     // Aucune boutique (vraies boutiques chargées mais vides / hors-ligne).
@@ -1888,7 +1991,10 @@ const ProductsScreen = () => {
           const real = shop ? findReal(shop.products, p.title) : null;
           if (!real) return;
           if (picked.some(x => x.shopIndex === shopIndex && x.name === real.name)) return;
-          picked.push({ id: __idc++, name: real.name, detail: sousCategorie(real) || '', price: Number(real.price) || 0, image: real.image || '', qty: p.qty || 1, shop: g.name, shopIndex, checked: true });
+          picked.push({ id: __idc++, name: real.name, detail: sousCategorie(real) || '', price: Number(real.price) || 0, image: real.image || '', qty: p.qty || 1, shop: g.name, shopIndex, checked: true,
+            // Vraie fiche : le paiement et la course en ont besoin (productId + companyId).
+            productId: real.id, companyId: shop.id, shopId: shop.id, category: shop.category || 'product_purchase',
+            listName: p.title });
           csAuto[shopIndex] = true;
         });
       });
@@ -2352,27 +2458,15 @@ const ProductsScreen = () => {
                   popupSelectedItems.forEach(si => {
                     const shopIdx = si.shopIndex;
                     if (shopIdx === null || shopIdx === undefined || !checkedShops[shopIdx]) return;
-                    cartItems.push({
-                      name: si.name, detail: si.detail||si.subtitle||'',
-                      unitPrice: si.unitPrice||si.pricePerKg||'',
-                      qty: si.qty||1, price: si.price||0, shop: si.shop,
-                      image: si.image||'', shopId: si.shopId,
-                    });
+                    // listName : article de liste d'origine (rayage), retiré avant l'écriture du panier.
+                    cartItems.push({ ...versArticlePanier(si), ...(si.listName ? { listName: si.listName } : {}) });
                   });
                   const raw = await AsyncStorage.getItem(KEY_CART);
-                  const existing = Array.isArray(raw ? JSON.parse(raw) : []) ? (raw ? JSON.parse(raw) : []) : [];
-                  const merged = [...existing];
-                  const duplicates = [];
-                  const newOnly = [];
-                  cartItems.forEach(newItem => {
-                    const existingIndex = merged.findIndex(e =>
-                      String(e.name||'').toLowerCase().trim() === String(newItem.name||'').toLowerCase().trim() &&
-                      String(e.shop||'').toLowerCase().trim() === String(newItem.shop||'').toLowerCase().trim()
-                    );
-                    if (existingIndex >= 0) { duplicates.push({ newItem, existingIndex }); }
-                    else { newOnly.push(newItem); }
-                  });
-                  newOnly.forEach(item => merged.push(item));
+                  const lu = raw ? JSON.parse(raw) : [];
+                  const existing = Array.isArray(lu) ? lu : [];
+                  // Même article = même fiche + même option quand l'id existe
+                  // (comme l'onglet Boutiques), sinon nom + boutique.
+                  const { merged, duplicates, newOnly } = separerDoublons(existing, cartItems);
                   if (duplicates.length > 0) {
                     setDupItems(duplicates.map(d => ({ ...d, add: false })));
                     setDupMerged(merged);
@@ -2485,38 +2579,22 @@ const ProductsScreen = () => {
             <View style={{paddingHorizontal:16, gap:10}}>
               <TouchableOpacity
                 onPress={async () => {
+                  try {
                   const finalMerged = [...dupMerged];
                   dupItems.forEach(d => {
-                    if (d.add) {
-                      const existingQty = finalMerged[d.existingIndex]?.qty || 1;
-                      finalMerged[d.existingIndex] = { ...finalMerged[d.existingIndex], qty: existingQty + (d.newItem.qty || 1) };
+                    if (d.add && finalMerged[d.existingIndex]) {
+                      // Quantité cumulée plafonnée au stock connu de l'option.
+                      finalMerged[d.existingIndex] = cumulerQuantite(finalMerged[d.existingIndex], d.newItem.qty || 1);
                     }
                   });
                   const added = dupItems.filter(d => d.add).length + dupNewOnly;
-                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(finalMerged));
+                  // Articles réellement mis au panier : les nouveaux + les doublons ajoutés.
+                  const pousses = [...(dupNewOnly > 0 ? dupMerged.slice(-dupNewOnly) : []), ...dupItems.filter(d => d.add).map(d => d.newItem)];
+                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(finalMerged.map(({ listName: _ln, ...it }) => it)));
                   DeviceEventEmitter.emit('CART_UPDATED');
 
                   // Cross off added items in Ma Liste
-                  const selectedRaw2 = await AsyncStorage.getItem(KEY_SELECTED);
-                  const selectedItems2 = selectedRaw2 ? JSON.parse(selectedRaw2) : [];
-                  const originalNames2 = selectedItems2.map(si => norm(si.name));
-                  const productNames2 = dupItems.filter(d => d.add).map(d => norm(d.newItem.name));
-                  const allNames2 = [...new Set([...originalNames2, ...productNames2])];
-                  const listRaw2 = await AsyncStorage.getItem(KEY_ITEMS);
-                  if (listRaw2) {
-                    const listItems2 = JSON.parse(listRaw2);
-                    const updated2 = listItems2.map(it => {
-                      const itName = norm(it.name || it.title || '');
-                      if (allNames2.some(n => n.includes(itName) || itName.includes(n))) {
-                        return { ...it, crossed: true, selected: false };
-                      }
-                      return it;
-                    });
-                    await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated2));
-                    // Miroir -> clé canonique de la liste active (sinon les barrages
-                    // sont perdus au cold-start quand la liste active n'est pas 'default').
-                    try { const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID; const ck = listItemsKey(act); if (ck !== KEY_ITEMS) await AsyncStorage.setItem(ck, JSON.stringify(updated2)); } catch {}
-                  }
+                  try { await rayerDansLaListe(nomsDeListe(pousses)); } catch {}
                   await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
                   setGroups([]); setSummary({price:0,time:0,shops:0});
                   setShowingDefaults(true);
@@ -2527,6 +2605,7 @@ const ProductsScreen = () => {
                   setCartSuccessCount(added);
                   setCartSuccessVisible(true);
                   navigation.navigate('cart');
+                  } catch(e) {}
                 }}
                 style={{height:50, borderRadius:14, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
               >
@@ -2642,40 +2721,17 @@ const ProductsScreen = () => {
                   try {
                     const activeItems = popupSelectedItems.filter(si => checkedShops[si.shopIndex]);
                     const count = activeItems.reduce((s, si) => s + (si.qty || 1), 0);
-                    // Replace cart with only the newly selected products
-                    const newCart = activeItems.map(si => ({
-                      name: si.name,
-                      detail: si.detail||si.subtitle||'',
-                      unitPrice: si.unitPrice||si.pricePerKg||'',
-                      qty: si.qty||1,
-                      price: si.price||0,
-                      shop: si.shop,
-                      image: si.image||'',
-                    }));
+                    // Panier existant GARDÉ : les produits choisis s'y ajoutent (même
+                    // fusion que confirmCartItems, refaite sur le panier relu pour
+                    // tenir compte des quantités modifiées dans cette feuille).
+                    const rawCart = await AsyncStorage.getItem(KEY_CART);
+                    const luCart = rawCart ? JSON.parse(rawCart) : [];
+                    const newCart = ajouterAuPanier(Array.isArray(luCart) ? luCart : [], activeItems.map(versArticlePanier));
                     await AsyncStorage.setItem(KEY_CART, JSON.stringify(newCart));
                     DeviceEventEmitter.emit('CART_UPDATED');
 
-                    // Cross off added items in Ma Liste
-                    // Collect both product names AND original list item names
-                    const selectedRaw = await AsyncStorage.getItem(KEY_SELECTED);
-                    const selectedItems = selectedRaw ? JSON.parse(selectedRaw) : [];
-                    const originalNames = selectedItems.map(si => norm(si.name));
-                    const productNames = activeItems.map(si => norm(si.name));
-                    const allNames = [...new Set([...originalNames, ...productNames])];
-                    const listRaw = await AsyncStorage.getItem(KEY_ITEMS);
-                    if (listRaw) {
-                      const listItems = JSON.parse(listRaw);
-                      const updated = listItems.map(it => {
-                        const itName = norm(it.name || it.title || '');
-                        if (allNames.some(n => n.includes(itName) || itName.includes(n))) {
-                          return { ...it, crossed: true, selected: false };
-                        }
-                        return it;
-                      });
-                      await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(updated));
-                      // Miroir -> clé canonique de la liste active (évite la perte des barrages au cold-start).
-                      try { const act = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID; const ck = listItemsKey(act); if (ck !== KEY_ITEMS) await AsyncStorage.setItem(ck, JSON.stringify(updated)); } catch {}
-                    }
+                    // Cross off added items in Ma Liste (seulement ceux mis au panier)
+                    try { await rayerDansLaListe(nomsDeListe(activeItems)); } catch {}
 
                     // Clear products screen - no more suggestions
                     await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
@@ -3521,6 +3577,17 @@ const CartScreen = ({ isAuth }) => {
   const removeFromCart = async (index) => {
     const updated = cartItems.filter((_, i) => i !== index);
     setCartItems(updated);
+    // Sélection indexée par position : l'index retiré disparaît, les suivants
+    // reculent d'un cran (sinon la coche passe à l'article voisin).
+    setSelectedCart(prev => {
+      const next = {};
+      Object.keys(prev || {}).forEach(k => {
+        const i = Number(k);
+        if (!Number.isInteger(i) || i === index) return;
+        next[i > index ? i - 1 : i] = prev[k];
+      });
+      return next;
+    });
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
   };
@@ -3699,20 +3766,61 @@ const CartScreen = ({ isAuth }) => {
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
   const [pendingPayment, setPendingPayment] = React.useState(null); // { orders:[{orderId,shopName}], totalLabel }
 
-  // Si le panier change, on oublie les commandes en attente : un re-tap recréera
-  // des commandes cohérentes (et évite de payer une sélection périmée).
-  React.useEffect(() => { setPendingPayment(null); }, [cartItems]);
+  // Commandes en attente gardées avec la signature du contenu commandé
+  // (articles cochés, quantités, mode) et enregistrées (KEY_PENDING_PAYMENT) :
+  // après un rechargement du panier, l'app tuée ou un retour sur l'onglet, le
+  // re-tap reprend les MÊMES commandes au lieu d'en recréer. Si le contenu
+  // change vraiment, elles sont ignorées au tap : de nouvelles commandes cohérentes
+  // sont créées (jamais payer une sélection périmée).
+  const signatureCommande = React.useMemo(
+    () => signaturePanier(cartItems.filter((_, i) => selectedCart[i]), orderMode),
+    [cartItems, selectedCart, orderMode]
+  );
+  const enAttenteLuRef = React.useRef(false);
+  React.useEffect(() => {
+    let vivant = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(KEY_PENDING_PAYMENT);
+        const p = raw ? JSON.parse(raw) : null;
+        if (vivant && p && typeof p === 'object' && Array.isArray(p.orders) && p.orders.length && p.sig) {
+          setPendingPayment(prev => prev || p);
+        }
+      } catch (e) {}
+      enAttenteLuRef.current = true;
+    })();
+    return () => { vivant = false; };
+  }, []);
+  React.useEffect(() => {
+    if (!enAttenteLuRef.current) return;
+    (pendingPayment
+      ? AsyncStorage.setItem(KEY_PENDING_PAYMENT, JSON.stringify(pendingPayment))
+      : AsyncStorage.removeItem(KEY_PENDING_PAYMENT)).catch(() => {});
+  }, [pendingPayment]);
+  // Déconnexion : les commandes en attente du compte sont oubliées.
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('USER_DATA_CLEARED', () => {
+      setPendingPayment(null);
+      AsyncStorage.removeItem(KEY_PENDING_PAYMENT).catch(() => {});
+    });
+    return () => sub.remove();
+  }, []);
+  // Commandes en attente encore valables pour le panier affiché (sinon null :
+  // le contenu a changé). Vérifié au tap, jamais pendant un rechargement.
+  const enAttenteValable = pendingPayment && Array.isArray(pendingPayment.orders)
+    && pendingPayment.orders.length && pendingPayment.sig === signatureCommande ? pendingPayment : null;
 
   // Pré-étape carte. Retourne :
   //  'started' → commande(s) Marketplace créées + modal ouvert (le modal prend le relais) ;
   //  'error'   → tentative faite mais échec (alerte affichée) → NE PAS créer de commande locale ;
   //  'local'   → non applicable → l'appelant CONSERVE le flux LOCAL existant (Expo Go sans SDK,
   //              ou sélection contenant des items sans vrais ids Marketplace).
-  const maybeStartCardCheckout = React.useCallback(async () => {
+  const maybeStartCardCheckout = React.useCallback(async (enAttente = null) => {
     if (!StripeAvailable) return 'local';
     // Re-tap après annulation : réutilise les commandes déjà créées au lieu d'en
-    // recréer (évite les commandes awaiting_payment fantômes).
-    if (pendingPayment && Array.isArray(pendingPayment.orders) && pendingPayment.orders.length) {
+    // recréer (évite les commandes awaiting_payment fantômes). `enAttente` =
+    // commandes encore valables pour ce panier (vérifiées par l'appelant).
+    if (enAttente && Array.isArray(enAttente.orders) && enAttente.orders.length) {
       setCardModalVisible(true);
       return 'started';
     }
@@ -3732,7 +3840,11 @@ const CartScreen = ({ isAuth }) => {
     const categoryOf = {};
     for (const k of Object.keys(byCompany)) {
       const cid = await resolveCategoryId(byCompany[k][0].category || 'product_purchase');
-      if (cid == null) return 'local';
+      // Vraies fiches mais catégorie introuvable : jamais de commande locale non payée.
+      if (cid == null) {
+        setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
+        return 'error';
+      }
       categoryOf[k] = cid;
     }
     const otKeyInt = orderMode === 'delivery' ? 3 : 2;   // cart/add : INT
@@ -3764,16 +3876,19 @@ const CartScreen = ({ isAuth }) => {
       setPendingPayment(null);
       return 'error';
     }
-    if (orders.length === 0) return 'local';
+    if (orders.length === 0) {
+      setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.orderCreateFailed', 'Impossible de créer la commande. Réessayez.') });
+      return 'error';
+    }
     // Total INDICATIF : sous-total des prix catalogue réels (pas de frais inventés).
     // Le montant final (frais boutique/taxes) est calculé et débité côté serveur.
     const grand = eligible.reduce((s, it) => s + Number(it.price || 0) * Number(it.qty || 1), 0);
-    setPendingPayment({ orders, totalLabel: fmtPrice(grand) });
+    setPendingPayment({ orders, totalLabel: fmtPrice(grand), sig: signaturePanier(selectedItems, orderMode) });
     // NE PAS ouvrir le modal ici : la feuille "Confirmer" est encore présentée et
     // iOS n'empile pas deux Modals (le modal de paiement resterait invisible/bloqué).
     // L'appelant ferme la feuille PUIS ouvre le modal après un court délai.
     return 'started';
-  }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t, pendingPayment]);
+  }, [cartItems, selectedCart, orderMode, selectedAddressId, fmtPrice, t]);
 
   // Paiement réussi → on rejoue la confirmation LOCALE existante (historique +
   // course livreur + tracker), INCHANGÉE. La commande pro est désormais payée.
@@ -4294,6 +4409,31 @@ const CartScreen = ({ isAuth }) => {
                   setPlacing(true);
                   let cardRes = 'local';
                   try {
+                    // Sécurité : un article sans vraie fiche (productId + companyId)
+                    // ne peut être ni payé ni livré ; jamais de commande « réussie »
+                    // enregistrée sans paiement réel.
+                    if (cartItems.filter((_, i) => selectedCart[i]).some(articleSansFiche)) {
+                      // Articles sans boutique (anciens paniers, catalogue local) : décochés,
+                      // le reste du panier peut être commandé.
+                      setSelectedCart(prev => {
+                        const n = { ...prev };
+                        cartItems.forEach((it, i) => { if (n[i] && articleSansFiche(it)) delete n[i]; });
+                        return n;
+                      });
+                      setPopup({ tone: 'error', title: t('cart.confirmOrder'), message: t('cart.itemsWithoutShop') });
+                      return;
+                    }
+                    // Commandes déjà créées pour ce même panier : statut serveur relu.
+                    // Déjà payées (app tuée après le paiement) : on finalise sans
+                    // repayer ; annulées : on en recrée ; sinon on les reprend.
+                    let enAttente = enAttenteValable;
+                    if (enAttente) {
+                      let statuts = null;
+                      try { statuts = await getMarketplaceOrderStatuses(); } catch (e) {}
+                      const etat = etatCommandesEnAttente(enAttente.orders, statuts);
+                      if (etat === 'payee') { await onCardPaySuccess(); return; }
+                      if (etat === 'abandonnee') { setPendingPayment(null); enAttente = null; }
+                    }
                     // LIVRAISON : la course est la source unique. On la pré-crée
                     // (createDeliveryOrder → NewOrders awaiting_payment) puis on
                     // encaisse ses payable_orders via le CardPaymentModal existant.
@@ -4302,8 +4442,7 @@ const CartScreen = ({ isAuth }) => {
                     if (orderMode === 'delivery' && StripeAvailable) {
                       // Re-tap après annulation : réutilise la course déjà créée
                       // (évite une 2e commande awaiting_payment orpheline).
-                      if (pendingPayment && pendingPayment._delivery
-                          && Array.isArray(pendingPayment.orders) && pendingPayment.orders.length) {
+                      if (enAttente && enAttente._delivery) {
                         cardRes = 'started';
                         setConfirmVisible(false);
                         setTimeout(() => setCardModalVisible(true), 450);
@@ -4335,6 +4474,7 @@ const CartScreen = ({ isAuth }) => {
                           orders: payable.map(o => ({ orderId: o.order_id, shopName: o.shop || '' })),
                           totalLabel: fmtPrice(grand), _delivery: true, orderId: did,
                           ecarts: ecartsCourse, notices: lignesStock(lignesCourse),
+                          sig: signaturePanier(sel, orderMode),
                         });
                         cardRes = 'started';
                         setConfirmVisible(false);
@@ -4352,7 +4492,7 @@ const CartScreen = ({ isAuth }) => {
                     // Option A : tente le paiement carte réel (crée la commande
                     // Marketplace + ouvre le modal). 'local' → flux local inchangé ;
                     // 'error' → déjà alerté, on ne crée PAS de commande locale conflictuelle.
-                    cardRes = await maybeStartCardCheckout();
+                    cardRes = await maybeStartCardCheckout(enAttente);
                     if (cardRes === 'started') {
                       // Ferme la feuille "Confirmer" AVANT d'ouvrir le modal de paiement
                       // (iOS ne présente pas 2 Modals en même temps → sinon écran bloqué).
@@ -4645,13 +4785,13 @@ const CartScreen = ({ isAuth }) => {
                         const newItem = {
                           name: product.name, detail: product.detail || '',
                           unitPrice: product.unitPrice || '', qty: 1,
-                          price: product.price || 0, shop: shopProductsName
+                          price: product.price || 0, shop: shopProductsName,
+                          ...champsCommande(product),
                         };
                         const updated = [...cartItems, newItem];
                         setCartItems(updated);
-                        const sel = {};
-                        updated.forEach((_, i) => { sel[i] = true; });
-                        setSelectedCart(sel);
+                        // Sélection existante gardée, seul l'ajout est coché.
+                        setSelectedCart(prev => ({ ...prev, [updated.length - 1]: true }));
                         await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
                         DeviceEventEmitter.emit('CART_COUNT_CHANGED');
                         // Mark as in cart
@@ -4754,13 +4894,13 @@ const CartScreen = ({ isAuth }) => {
             unitPrice: product.unitPrice || product.pricePerKg || '',
             qty: product.qty || 1,
             price: product.price || 0,
-            shop: cartSearchShop
+            shop: cartSearchShop,
+            ...champsCommande(product),
           };
           const updated = [...cartItems, newItem];
           setCartItems(updated);
-          const sel = {};
-          updated.forEach((_, i) => { sel[i] = true; });
-          setSelectedCart(sel);
+          // Sélection existante gardée, seul l'ajout est coché.
+          setSelectedCart(prev => ({ ...prev, [updated.length - 1]: true }));
           await AsyncStorage.setItem(KEY_CART, JSON.stringify(updated));
           DeviceEventEmitter.emit('CART_COUNT_CHANGED');
           setCartSearchVisible(false);
@@ -7714,8 +7854,23 @@ function FakeProfileScreen({ onLogout, isAuth }) {
 
         {/* Logout */}
         <View style={[profStyles.section, { marginBottom: 8 }]}>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => {
-            Alert.alert(t('profile.logoutTitle'), t('profile.logoutConfirm'), [
+          <TouchableOpacity activeOpacity={0.85} onPress={async () => {
+            // Les listes nommées n'ont aucune copie sur le compte : prévenir
+            // seulement si elles contiennent des articles.
+            let listesPerdues = [];
+            try {
+              const reg = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || '[]');
+              for (const l of (Array.isArray(reg) ? reg : [])) {
+                if (!l || !l.id || l.id === DEFAULT_LIST_ID) continue;
+                const r = await loadListItems(l.id, DEFAULT_LIST_ID);
+                const nom = String(l.name || '').trim();
+                if (nom && r.ok && r.items.length > 0) listesPerdues.push(nom);
+              }
+            } catch (e) { listesPerdues = []; }
+            const msgDeconnexion = listesPerdues.length
+              ? t('profile.logoutConfirm') + '\n\n' + t('profile.logoutListsLost', { names: listesPerdues.join(', ') })
+              : t('profile.logoutConfirm');
+            Alert.alert(t('profile.logoutTitle'), msgDeconnexion, [
               { text: t('profile.cancel'), style: 'cancel' },
               { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
                 if (loggingOutRef.current) return;
@@ -8657,6 +8812,8 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                     qty: it.qty || 1,
                     price: it.price || 0,
                     shop: it.shop || '',
+                    // Vraie fiche gardée par l'historique (articles du panier commandés).
+                    ...champsCommande(it),
                     selected: true,
                   }));
                   setReorderItems(items);
@@ -8729,10 +8886,14 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 onPress={async () => {
                   const selected = reorderItems.filter(it => it.selected).map(it => ({
                     name: it.name, detail: it.detail, unitPrice: it.unitPrice,
-                    qty: it.qty, price: it.price, shop: it.shop
+                    qty: it.qty, price: it.price, shop: it.shop,
+                    ...champsCommande(it),
                   }));
                   if (!selected.length) return;
-                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(selected));
+                  // Panier existant GARDÉ : les articles recommandés s'y ajoutent.
+                  let existant = [];
+                  try { const rawC = await AsyncStorage.getItem(KEY_CART); const luC = rawC ? JSON.parse(rawC) : []; if (Array.isArray(luC)) existant = luC; } catch (e) {}
+                  await AsyncStorage.setItem(KEY_CART, JSON.stringify(ajouterAuPanier(existant, selected)));
                   DeviceEventEmitter.emit('CART_UPDATED');
                   // Close everything at once and navigate
                   setReorderVisible(false);

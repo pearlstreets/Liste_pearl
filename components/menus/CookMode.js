@@ -1,7 +1,8 @@
 // Mode cuisine. Une recette : mode optimisé (KitchenMode, maquette v15). Cuisine en lot (guided) :
 // une étape à la fois, en grand, avec minuteurs, dans l'ordre calculé par la session.
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { scaleIngredients, normalizeLang } from '../../lib/menus';
 import { T } from './theme';
@@ -10,6 +11,24 @@ import { useMenus } from './MenusContext';
 import useT from './useT';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
 import KitchenMode from './KitchenMode';
+import {
+  feedback,
+  keepScreenOn,
+  askCookPermission,
+  scheduleCookAlarms,
+  cancelCookAlarms,
+} from '../../services/cookAlerts';
+
+// minuteurs de la cuisine en lot : alarmes à part de celles des recettes, fins gardées si l'app est tuée
+const LOT_GROUP = 'lot';
+const LOT_KEY = 'menus.cuisineLotMinuteurs';
+const LOT_MAX_MS = 12 * 3600 * 1000;
+const lotSig = (steps) => {
+  const str = steps.join('|');
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+  return `${steps.length}:${h}`;
+};
 
 const fmt = (sec) => {
   const x = Math.max(0, sec);
@@ -38,6 +57,59 @@ function StepCook({ id, persons, onClose, guided }) {
   // minuteurs : { [étape]: { total, left, endAt } } ; endAt = fin prévue quand il tourne
   const [timers, setTimers] = useState({});
   const [now, setNow] = useState(Date.now());
+  const [loaded, setLoaded] = useState(false);
+  const asked = useRef(false);
+  const sig = useMemo(() => lotSig(steps), [steps]);
+
+  useEffect(() => {
+    keepScreenOn(true);
+    return () => keepScreenOn(false);
+  }, []);
+
+  // reprise des minuteurs après fermeture de l'écran ou de l'application
+  useEffect(() => {
+    let vivant = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(LOT_KEY);
+        const v = raw ? JSON.parse(raw) : null;
+        if (v && v.sig === sig && Date.now() - v.at < LOT_MAX_MS && v.timers && vivant) {
+          // fini pendant l'absence : l'alarme a déjà sonné, il reste affiché à zéro
+          const back = {};
+          for (const [k, x] of Object.entries(v.timers))
+            back[k] = x.endAt && x.endAt <= Date.now() ? { ...x, endAt: null, left: 0 } : x;
+          setTimers(back);
+        }
+      } catch {}
+      if (vivant) setLoaded(true);
+    })();
+    return () => {
+      vivant = false;
+    };
+  }, [sig]);
+
+  // sauvegarde et alarmes à chaque changement de minuteur (lancé, en pause, remis, terminé)
+  useEffect(() => {
+    if (!loaded) return;
+    const list = [];
+    for (const [k, v] of Object.entries(timers)) {
+      if (!v.endAt) continue;
+      list.push({
+        id: `etape-${k}`,
+        inSec: (v.endAt - Date.now()) / 1000,
+        title: t('cook.timerDone'),
+        body: steps[Number(k)] || '',
+      });
+    }
+    scheduleCookAlarms(list, t('cook.k.channel'), LOT_GROUP);
+    try {
+      if (Object.keys(timers).length)
+        AsyncStorage.setItem(LOT_KEY, JSON.stringify({ sig, at: Date.now(), timers })).catch(
+          () => {}
+        );
+      else AsyncStorage.removeItem(LOT_KEY).catch(() => {});
+    } catch {}
+  }, [timers, loaded, sig, steps, t]);
 
   const running = Object.values(timers).some((x) => x.endAt);
   useEffect(() => {
@@ -46,9 +118,10 @@ function StepCook({ id, persons, onClose, guided }) {
     return () => clearInterval(h);
   }, [running]);
 
-  // Un minuteur arrivé à zéro s'arrête (visuel seulement).
+  // Un minuteur arrivé à zéro s'arrête et sonne.
   useEffect(() => {
     if (!running) return;
+    if (Object.values(timers).some((v) => v.endAt && v.endAt <= now)) feedback('timer');
     setTimers((cur) => {
       let ch = false;
       const next = { ...cur };
@@ -60,7 +133,7 @@ function StepCook({ id, persons, onClose, guided }) {
       }
       return ch ? next : cur;
     });
-  }, [now, running]);
+  }, [now, running, timers]);
 
   const timerOf = useCallback(
     (i) => {
@@ -83,6 +156,13 @@ function StepCook({ id, persons, onClose, guided }) {
     const cur = timerOf(i);
     if (!cur) return;
     setNow(Date.now());
+    if (!cur.endAt && !asked.current) {
+      asked.current = true;
+      // permission accordée : les alarmes sont reprogrammées
+      askCookPermission()
+        .then(() => setTimers((all) => ({ ...all })))
+        .catch(() => {});
+    }
     setTimers((all) => {
       if (cur.endAt) return { ...all, [i]: { total: cur.total, left: cur.left, endAt: null } };
       const left = cur.left > 0 ? cur.left : cur.total;
@@ -131,6 +211,8 @@ function StepCook({ id, persons, onClose, guided }) {
     .filter((k) => k !== cur && timers[k].endAt);
 
   const finish = async () => {
+    cancelCookAlarms(LOT_GROUP);
+    AsyncStorage.removeItem(LOT_KEY).catch(() => {});
     if (guided) {
       await guided.onAdvance(cur);
       await guided.onFinish();

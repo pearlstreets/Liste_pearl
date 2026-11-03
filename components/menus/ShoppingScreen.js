@@ -113,7 +113,12 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
     (async () => {
       if (activeLines.length === 0) return alive && setState({ kind: 'empty', count: 0 });
       try {
-        const diff = await pendingLines(listId, activeLines, (l) => texts.ingredientName(l.key));
+        const diff = await pendingLines(
+          listId,
+          activeLines,
+          (l) => texts.ingredientName(l.key),
+          (m.plan && m.plan.weekStart) || null
+        );
         if (diff.length === 0) return alive && setState({ kind: 'already', count: 0 });
         const some = diff.length < activeLines.length;
         alive &&
@@ -128,7 +133,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
     return () => {
       alive = false;
     };
-  }, [activeLines, listId, added, focused, texts]);
+  }, [activeLines, listId, added, focused, texts, m.plan]);
 
   const doSend = useCallback(async () => {
     if (sending) return;
@@ -155,7 +160,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
   const goList = async (screen) => {
     setAdded(null);
     if (screen === 'products') {
-      await prefillProducts();
+      await prefillProducts(listId);
       try {
         DeviceEventEmitter.emit('PRODUCTS_RESET');
       } catch {}

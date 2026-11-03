@@ -82,7 +82,7 @@ import {
 } from '../../lib/menus';
 import {
   prepareElig,
-  restrictionSig,
+  okForSig,
   recipeConflicts,
   unsuitableMeals,
 } from '../../lib/menus/pool';
@@ -452,7 +452,7 @@ export function MenusProvider({ children }) {
         profile: planProfile(),
         seed: Math.floor(Math.random() * 1e9),
         // recette personnelle confirmée pour ces restrictions : pas signalée tant qu'elles ne changent pas
-        ...(opts.manual ? { okFor: restrictionSig(profileRef.current) } : {}),
+        ...(opts.manual ? { okFor: okForSig(profileRef.current, recipeIndex.get(recipeId)) } : {}),
       });
       await persist(next);
     },
@@ -463,12 +463,14 @@ export function MenusProvider({ children }) {
    * Repas de la semaine qui ne conviennent plus aux allergies, régimes ou exclusions du profil
    * (profil modifié après la composition) : [{ key, recipeId, reason }].
    */
+  // Après le préchargement seulement : avant, lire une recette générée construit le catalogue d'un bloc
+  // (écran figé au premier affichage). Recalculé dès que dataReady passe à vrai.
   const unsuitable = useMemo(
     () =>
-      plan
+      plan && dataReady
         ? unsuitableMeals(plan, { recipes: recipeIndex, ingredients, profile, texts })
         : [],
-    [plan, recipeIndex, ingredients, profile, texts]
+    [plan, dataReady, recipeIndex, ingredients, profile, texts]
   );
 
   /** Remplace seulement les repas qui ne conviennent plus ; les autres repas restent. */
@@ -592,21 +594,39 @@ export function MenusProvider({ children }) {
     async (draft) => {
       let d = draft;
       let photoLost = false;
+      let copied = null;
       const before = myRecipes.find((r) => r.id === draft.id);
       if (!before && myRecipes.length >= MAX_MY_RECIPES) return { ok: false, reason: 'full' };
       if (d.photoTemp) {
         const file = await persistPhoto(d.photoTemp);
         photoLost = !file;
+        copied = file || null;
         d = file
           ? { ...d, photoFile: file, photoUrl: null, photoTemp: null }
           : { ...d, photoTemp: null };
       }
       const nameIndex = buildNameIndex(ingredients, [baseTexts, getTexts('fr')]);
+      // échec après la copie de la photo : la copie est supprimée, sinon elle reste orpheline
+      const lacher = () => {
+        if (copied && !(before && before.photoFile === copied)) deletePhotoFile(copied);
+      };
       const recipe = recipeFromDraft(d, { nameIndex });
-      if (!recipe) return { ok: false, reason: 'invalid' };
+      if (!recipe) {
+        lacher();
+        return { ok: false, reason: 'invalid' };
+      }
       noteEdit();
-      const r = await storeMyRecipe(recipe);
-      if (!r.ok) return { ok: false, reason: 'storage' };
+      let r;
+      try {
+        r = await storeMyRecipe(recipe);
+      } catch (e) {
+        lacher();
+        throw e;
+      }
+      if (!r.ok) {
+        lacher();
+        return { ok: false, reason: 'storage' };
+      }
       setMyRecipes(r.list);
       if (before && before.photoFile && before.photoFile !== recipe.photoFile)
         deletePhotoFile(before.photoFile);
@@ -715,8 +735,9 @@ export function MenusProvider({ children }) {
 
   /* ------------------------------- courses ------------------------------- */
 
+  // Comme unsuitable : rien avant le préchargement (null = pas encore de liste), puis recalculé.
   const shopping = useMemo(() => {
-    if (!hasRecipes(plan)) return null;
+    if (!dataReady || !hasRecipes(plan)) return null;
     try {
       return buildShoppingList({
         plan,
@@ -728,7 +749,7 @@ export function MenusProvider({ children }) {
     } catch {
       return null;
     }
-  }, [plan, recipeIndex, ingredients, profile, pantryOn]);
+  }, [plan, dataReady, recipeIndex, ingredients, profile, pantryOn]);
 
   const removedSet = useMemo(() => new Set(removed), [removed]);
   const toggleHave = useCallback(
@@ -752,7 +773,8 @@ export function MenusProvider({ children }) {
         const fp = linesFingerprint(all);
         const nameOf = (l) => texts.ingredientName(l.key);
         const matchOf = (l) => ingredientQueries(l.key, getTexts('fr').ingredientName(l.key));
-        const diff = await pendingLines(id, all, nameOf);
+        const week = (planRef.current && planRef.current.weekStart) || null;
+        const diff = await pendingLines(id, all, nameOf, week);
         if (diff.length === 0) return { status: 'already', count: 0, listId: id };
         const r = await addToList(id, diff, {
           nameOf,
@@ -766,7 +788,7 @@ export function MenusProvider({ children }) {
           } catch {}
           const packs = {};
           for (const l of all) packs[l.key] = l.packs;
-          await markSent(id, packs);
+          await markSent(id, packs, week);
           trackMenusUsage('courses_envoyees', langRef.current);
           if (hasRecipes(planRef.current)) {
             try {
@@ -891,7 +913,8 @@ export function MenusProvider({ children }) {
       const nameOf = (l) => texts.ingredientName(l.key);
       const matchOf = (l) => ingredientQueries(l.key, getTexts('fr').ingredientName(l.key));
       const linked = linkedMealKeys(planRef.current, cur).length > 0;
-      const lines = linked ? await pendingLines(id, all, nameOf) : all;
+      const week = (planRef.current && planRef.current.weekStart) || null;
+      const lines = linked ? await pendingLines(id, all, nameOf, week) : all;
       if (lines.length === 0) {
         await setBatchPrepared(true);
         return { status: 'already', count: 0, listId: id };
