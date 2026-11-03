@@ -3,8 +3,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
-import { SectionTitle, GhostButton } from './ui';
-import { HouseholdSection, MealsSection, DietSection } from './ProfileForms';
+import { SectionTitle, GhostButton, PrimaryButton } from './ui';
+import Questionnaire from './Questionnaire';
+import { HouseholdSection, MealsSection, DietSection, PrefsSection } from './ProfileForms';
 import RemindersSection from './RemindersSection';
 import PrivacySection from './PrivacySection';
 import { useMenus } from './MenusContext';
@@ -29,7 +30,8 @@ function syncLine(t, st, lang) {
 
 export default function SettingsScreen({ onClose }) {
   const t = useT();
-  const { profile, updateProfile, texts, ingredients, resetAll, lang } = useMenus();
+  const { profile, updateProfile, texts, ingredients, resetAll, lang, generate } = useMenus();
+  const [quest, setQuest] = useState(false);
   const change = useCallback((patch) => updateProfile(patch), [updateProfile]);
   const [sync, setSync] = useState(null);
   useEffect(() => {
@@ -63,6 +65,22 @@ export default function SettingsScreen({ onClose }) {
       ]
     );
 
+  // « Refaire le questionnaire » : les réponses sont enregistrées au fil des pages ; la fin peut composer la semaine
+  // (les repas verrouillés sont gardés).
+  if (quest)
+    return (
+      <Questionnaire
+        onClose={() => setQuest(false)}
+        onFinish={async (composer) => {
+          setQuest(false);
+          if (composer) {
+            generate();
+            onClose && onClose();
+          }
+        }}
+      />
+    );
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={s.head}>
@@ -83,12 +101,23 @@ export default function SettingsScreen({ onClose }) {
         showsVerticalScrollIndicator={false}
       >
         <Text style={s.intro}>{t('settings.intro')}</Text>
+        <View style={{ marginTop: 14 }}>
+          <PrimaryButton
+            soft
+            icon="options-outline"
+            label={t('questionnaire.redo')}
+            onPress={() => setQuest(true)}
+          />
+          <Text style={[s.sync, { marginTop: 8, fontSize: 13 }]}>{t('questionnaire.redoHint')}</Text>
+        </View>
         <SectionTitle title={t('settings.household')} />
         <HouseholdSection profile={profile} onChange={change} />
         <SectionTitle title={t('settings.meals')} hint={t('settings.mealsHint')} />
         <MealsSection profile={profile} onChange={change} />
         <SectionTitle title={t('settings.diet')} />
         <DietSection profile={profile} onChange={change} texts={texts} ingredients={ingredients} />
+        <SectionTitle title={t('prefs.title')} hint={t('prefs.intro')} />
+        <PrefsSection profile={profile} onChange={change} />
         <RemindersSection />
         <PrivacySection connected={!!(sync && sync.connected)} />
         <SectionTitle title={t('settings.sync')} />

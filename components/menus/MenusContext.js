@@ -15,6 +15,7 @@ import {
   getRecipes,
   getRecipeIndex,
   preloadMenusData,
+  genHealthAsync,
   getCatalogStatus,
   getIngredients,
   getTexts,
@@ -57,6 +58,7 @@ import {
   clearAllMenus,
   resetAllMenus,
   personsFor,
+  mealsForProfile,
   loadMyRecipes,
   loadReminders,
   saveReminders,
@@ -88,6 +90,13 @@ import {
 } from '../../lib/menus/pool';
 
 import { mondayISO, weekTarget, isPastWeek, toISO } from '../../lib/menus/weeks';
+import {
+  sideCandidates,
+  setMealSide as planSetSide,
+  carrySides,
+  planSideIds,
+} from '../../lib/menus/sides';
+import { setMealGuests as planSetGuests, carryGuests, slotIdeas } from '../../lib/menus/planner';
 import { recipeListLines } from '../../lib/menus/recipeList';
 import { ingredientQueries } from '../../lib/menus/pearl';
 import { cleanFamilyShare, defaultFamilyShare } from '../../lib/menus/sharedWeek';
@@ -221,7 +230,8 @@ export function MenusProvider({ children }) {
           plan0 = null;
         }
       } else if (plan0 && Array.isArray(plan0.meals)) {
-        plan0 = { ...plan0, meals: recomputeCooking(plan0.meals) };
+        // Portions du foyer actuel (mode, personnes) : Courses, budget et cartes suivent le profil enregistré.
+        plan0 = { ...plan0, meals: recomputeCooking(mealsForProfile(plan0.meals, pr)) };
       }
       setProfile(normalizeProfile(pr));
       setPlan(plan0);
@@ -258,6 +268,11 @@ export function MenusProvider({ children }) {
           if (off || !mounted.current) return;
           setCatalogStatus(r.status);
           setDataReady(true);
+          // repères santé du catalogue préparés en tranches, pour que la première semaine ne les construise pas d'un bloc
+          return genHealthAsync(undefined, {
+            yieldFn: () => new Promise((res) => setTimeout(res, 0)),
+            cancelled: () => off,
+          }).catch(() => null);
         })
         .catch(() => {
           if (off || !mounted.current) return;
@@ -351,22 +366,27 @@ export function MenusProvider({ children }) {
                 opts.weekStart ||
                 (cur && cur.weekStart && !opts.fresh ? cur.weekStart : weekTarget().start);
               // Changement de semaine : l'ancien plan est gardé dans l'historique.
-              if (cur && cur.weekStart && cur.weekStart !== weekStart && (await pushHistory(cur))) {
-                setHistory(await loadHistory());
+              if (cur && cur.weekStart && cur.weekStart !== weekStart) {
+                // Plan en cours jamais remplacé s'il n'a pas pu être gardé dans l'historique.
+                if (await pushHistory(cur)) setHistory(await loadHistory());
+                else if (hasRecipes(cur)) throw new Error('historique');
               }
               const locked =
                 opts.locked ||
                 (!opts.fresh && cur && cur.weekStart === weekStart
                   ? lockedFromPlan(cur)
                   : undefined);
-              const next = generatePlan({
+              const gen = generatePlan({
                 recipes: recipeIndex,
                 ingredients,
                 profile: planProfile(),
                 seed: opts.seed != null ? opts.seed : Math.floor(Math.random() * 1e9),
                 locked,
                 weekStart,
+                eaters: cur && cur.weekStart === weekStart ? cur : undefined,
               });
+              // accompagnements gardés sur les repas qui restent les mêmes (même semaine)
+              const next = cur && cur.weekStart === weekStart ? carryGuests(cur, carrySides(cur, gen), planProfile()) : gen;
               noteEdit();
               await savePlan(next);
               planRef.current = next;
@@ -389,7 +409,7 @@ export function MenusProvider({ children }) {
   );
 
   const finishOnboarding = useCallback(
-    async (patch) => {
+    async (patch, opts) => {
       noteEdit();
       if (patch) {
         const saved = await saveProfile(patch);
@@ -398,7 +418,7 @@ export function MenusProvider({ children }) {
       }
       await setMeta({ onboarded: true });
       setOnboarded(true);
-      generate({ fresh: true });
+      if (!opts || opts.generate !== false) generate({ fresh: true });
     },
     [generate]
   );
@@ -416,6 +436,22 @@ export function MenusProvider({ children }) {
     if (saved) {
       profileRef.current = normalizeProfile(saved);
       setProfile(profileRef.current);
+    }
+    // Mode (simple, personnalisé) ou foyer changé : portions du plan recalculées, convives choisis gardés sur
+    // chaque repas (repris au retour en personnalisé). Courses, budget et cartes suivent le foyer actuel.
+    const cur = planRef.current;
+    if (cur && Array.isArray(cur.meals)) {
+      const meals = recomputeCooking(mealsForProfile(cur.meals, profileRef.current));
+      const changed = meals.some(
+        (m, i) =>
+          m && cur.meals[i] && (m.persons !== cur.meals[i].persons || m.cookPersons !== cur.meals[i].cookPersons)
+      );
+      if (changed) {
+        const next = { ...cur, meals };
+        planRef.current = next;
+        setPlan(next);
+        await savePlan(next);
+      }
     }
     if (planRef.current) setDirty(true);
   }, []);
@@ -454,7 +490,7 @@ export function MenusProvider({ children }) {
         // recette personnelle confirmée pour ces restrictions : pas signalée tant qu'elles ne changent pas
         ...(opts.manual ? { okFor: okForSig(profileRef.current, recipeIndex.get(recipeId)) } : {}),
       });
-      await persist(next);
+      await persist(carryGuests(cur, carrySides(cur, next), planProfile()));
     },
     [recipeIndex, ingredients, planProfile, persist]
   );
@@ -492,7 +528,7 @@ export function MenusProvider({ children }) {
       profile: planProfile(),
       seed: Math.floor(Math.random() * 1e9),
     });
-    await persist(next);
+    await persist(carryGuests(cur, carrySides(cur, next), planProfile()));
     return bad.length;
   }, [recipeIndex, ingredients, texts, planProfile, persist]);
 
@@ -518,16 +554,78 @@ export function MenusProvider({ children }) {
         ingredients,
         profile: planProfile(),
       });
-      await persist(next);
+      await persist(carryGuests(cur, carrySides(cur, next), planProfile()));
     },
     [recipeIndex, ingredients, planProfile, persist]
   );
 
-  /** 3 idées pour un repas : recettes admises par le foyer, hors celles déjà au menu. */
+  /** Qui mange ce repas : ids de personnes (profile.members) ou, sans personnes, un nombre. Persisté et synchronisé. */
+  const setGuests = useCallback(
+    async (mealKey, guests) => {
+      const cur = planRef.current;
+      if (!cur) return;
+      const g = guests || {};
+      await persist(
+        planSetGuests({
+          plan: cur,
+          profile: planProfile(),
+          mealKey,
+          eaters: g.eaters,
+          heads: g.heads,
+          recipes: recipeIndex,
+          ingredients,
+        })
+      );
+    },
+    [planProfile, persist, recipeIndex, ingredients]
+  );
+
+  /** Accompagnement d'un repas de la semaine : pose (identifiant) ou retire (null). Persisté et synchronisé. */
+  const setMealSide = useCallback(
+    async (mealKey, sideId) => {
+      const cur = planRef.current;
+      if (!cur) return;
+      await persist(planSetSide(cur, mealKey, sideId));
+    },
+    [persist]
+  );
+
+  /**
+   * Accompagnements de légumes proposés pour un plat (2 ou 3), compatibles avec le profil, de saison d'abord.
+   * Ceux déjà choisis ailleurs dans la semaine passent après. Rien avant le préchargement.
+   */
+  const sidesFor = useCallback(
+    (recipe, n = 3) => {
+      if (!dataReady || !recipe) return [];
+      const used = planSideIds(planRef.current);
+      const prof = planProfile();
+      let out = sideCandidates(recipeIndex, ingredients, prof, { forId: recipe.id, exclude: used, n });
+      if (out.length < 2) out = sideCandidates(recipeIndex, ingredients, prof, { forId: recipe.id, n });
+      return out;
+    },
+    [dataReady, recipeIndex, ingredients, planProfile]
+  );
+
+  /**
+   * 3 idées pour un repas : recettes admises par le foyer, hors celles déjà au menu. Avec le repas (mealKey) :
+   * mêmes règles que la génération pour ce créneau, vu le reste de la semaine (slotIdeas).
+   */
   const suggest = useCallback(
-    (n = 3) => {
+    (n = 3, mealKey) => {
       const cur = planRef.current;
       const prof = planProfile();
+      if (mealKey && cur && Array.isArray(cur.meals) && cur.meals.some((m) => m && m.key === mealKey)) {
+        const ideas = slotIdeas({
+          plan: cur,
+          mealKey,
+          recipes: recipeIndex,
+          ingredients,
+          profile: prof,
+          n,
+        });
+        // aucune idée (erreur, données anciennes) : tirage libre ci-dessous plutôt qu'une liste vide
+        if (ideas.length) return ideas;
+      }
       const used = new Set(((cur && cur.meals) || []).map((m) => m.recipeId).filter(Boolean));
       // Catalogue généré : tirage par réservoir sur les colonnes, aucune copie du catalogue.
       if (catalogActive(recipeIndex))
@@ -551,13 +649,43 @@ export function MenusProvider({ children }) {
   );
 
   const refaire = useCallback(
-    (old) => {
-      if (!old || !Array.isArray(old.meals)) return Promise.resolve(null);
+    async (old) => {
+      if (!old || !Array.isArray(old.meals)) return null;
       const locked = lockedFromPlan({ meals: old.meals.map((m) => ({ ...m, locked: true })) });
+      // le plan en cours est gardé dans l'historique avant d'être remplacé (même semaine comprise)
+      const cur = planRef.current;
+      if (cur && cur.weekStart && hasRecipes(cur) && (await pushHistory(cur))) {
+        setHistory(await loadHistory());
+      }
       return generate({ locked, fresh: true });
     },
     [generate]
   );
+
+  /**
+   * Calendrier : reprend une semaine gardée dans l'historique comme semaine en cours. Le plan en cours reste
+   * dans l'historique (rien n'est perdu) ; sans entrée pour cette semaine ou si la sauvegarde échoue, rien ne change.
+   */
+  const openWeek = useCallback(async (weekStart) => {
+    if (genBusy.current || typeof weekStart !== 'string') return null;
+    const cur = planRef.current;
+    if (cur && cur.weekStart === weekStart) return cur;
+    const hist = await loadHistory();
+    let entry = null;
+    for (const h of hist) if (h && h.weekStart === weekStart && hasRecipes(h)) entry = h;
+    if (!entry) return null;
+    if (cur && cur.weekStart && hasRecipes(cur) && !(await pushHistory(cur))) return null;
+    const next = { ...entry };
+    delete next.savedAt;
+    noteEdit();
+    await savePlan(next);
+    planRef.current = next;
+    setPlan(next);
+    setHistory(await loadHistory());
+    setRemoved([]);
+    setDirty(false);
+    return next;
+  }, []);
 
   const toggleFav = useCallback(async (id) => {
     noteEdit();
@@ -745,6 +873,7 @@ export function MenusProvider({ children }) {
         ingredients,
         profile,
         includePantry: pantryOn,
+        fitNeeds: true,
       });
     } catch {
       return null;
@@ -985,8 +1114,12 @@ export function MenusProvider({ children }) {
       swap,
       toggleLock,
       setFree,
+      setMealSide,
+      setGuests,
+      sidesFor,
       suggest,
       refaire,
+      openWeek,
       history,
       favorites,
       toggleFav,
@@ -1050,8 +1183,12 @@ export function MenusProvider({ children }) {
       swap,
       toggleLock,
       setFree,
+      setMealSide,
+      setGuests,
+      sidesFor,
       suggest,
       refaire,
+      openWeek,
       history,
       favorites,
       toggleFav,

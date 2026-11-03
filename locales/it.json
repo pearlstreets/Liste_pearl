@@ -1050,7 +1050,45 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "prefs": {
+      "title": "Preferenze dei menù",
+      "intro": "Facoltativo. Le sue scelte valgono per la prossima settimana pianificata, la settimana in corso non cambia.",
+      "balanced": "Settimana equilibrata",
+      "balancedHint": "Più verdure, meno fritti, porzioni ragionevoli.",
+      "sides": "Proporre un contorno di verdure",
+      "sidesHint": "Quando un piatto contiene poche verdure.",
+      "quick": "Pasti veloci in settimana",
+      "no": "No",
+      "treats": "Pasti sfiziosi a settimana",
+      "treatsHint": "Pizza, hamburger, patatine, preferibilmente il venerdì sera o nel fine settimana.",
+      "treatsFree": "Libero",
+      "treatsNone": "Nessuno",
+      "cuisines": "Cucine preferite",
+      "cuisinesHint": "Proposte più spesso, le altre restano possibili."
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "Aggiungere un contorno di verdure",
+      "hintWeek": "Questo piatto contiene poche verdure. Facoltativo: tocchi un contorno per aggiungerlo a questo pasto e alla spesa.",
+      "hintList": "Questo piatto contiene poche verdure. Facoltativo: tocchi un contorno per aggiungere i suoi ingredienti alla lista.",
+      "add": "Aggiunga",
+      "see": "Dettagli",
+      "chosenTitle": "Contorno di verdure",
+      "inShopping": "I suoi ingredienti sono nella spesa della settimana, per le stesse porzioni.",
+      "remove": "Togliere il contorno",
+      "unsuitable": "Questo contorno non è più adatto al suo profilo.",
+      "withSide": "Con il contorno: {{kcal}} kcal e {{protein}} g di proteine a porzione",
+      "withLine": "Con {{title}}",
+      "idea": "Idea di verdure: {{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "Obiettivo per questo pasto: {{kcal}} kcal, {{protein}} g di proteine a persona",
+      "day": "Questo giorno: circa {{kcal}} kcal e {{protein}} g di proteine a persona",
+      "dayTarget": "Obiettivo dei pasti previsti: {{kcal}} kcal e {{protein}} g di proteine",
+      "dayHeader": "Questo giorno, per ciascuno:",
+      "dayPerson": "{{name}}: circa {{kcal}} kcal e {{protein}} g di proteine, obiettivo {{targetKcal}} kcal e {{targetProtein}} g",
+      "dayHousehold": "Questo giorno, per la famiglia: circa {{kcal}} kcal e {{protein}} g di proteine, obiettivo {{targetKcal}} kcal e {{targetProtein}} g"
+    },
     "reminders": {
       "title": "Promemoria",
       "hint": "Disattivati per impostazione predefinita. Attivi solo quelli che Le sono utili.",
@@ -1118,6 +1156,40 @@
       "budgetHint": "Stima indicativa, modificabile in qualsiasi momento",
       "noBudget": "Nessun budget"
     },
+    "nutri": {
+      "title": "Personalizzare per ogni persona",
+      "intro": "Facoltativo. Indichi età, altezza, peso, attività e obiettivo di ciascuno, le porzioni e la lista della spesa si adattano.",
+      "start": "Personalizzi",
+      "person": "Persona {{n}}",
+      "personHint": "Tutto è facoltativo, un campo vuoto conta come una porzione standard.",
+      "name": "Nome",
+      "age": "Età",
+      "height": "Altezza (cm)",
+      "weight": "Peso (kg)",
+      "sex": "Sesso",
+      "female": "Donna",
+      "male": "Uomo",
+      "activity": "Attività",
+      "act_faible": "Bassa",
+      "act_moderee": "Moderata",
+      "act_elevee": "Elevata",
+      "act_intense": "Intensa",
+      "actHint_faible": "Poco o nessuno sport",
+      "actHint_moderee": "Da 1 a 3 allenamenti a settimana",
+      "actHint_elevee": "Da 3 a 5 allenamenti a settimana",
+      "actHint_intense": "Sport ogni giorno o lavoro fisico",
+      "goal": "Obiettivo",
+      "goal_perdre": "Perdere peso",
+      "goal_maintenir": "Mantenere il peso",
+      "goal_prendre": "Aumentare la massa muscolare",
+      "goalMinor": "Sotto i 18 anni nessun obiettivo, contano solo i bisogni della crescita.",
+      "needs": "Circa {{kcal}} kcal e {{protein}} g di proteine al giorno",
+      "remove": "Rimuova",
+      "addAdult": "Aggiunga un adulto",
+      "addChild": "Aggiunga un bambino",
+      "clear": "Cancelli tutto",
+      "disclaimer": "Stima indicativa, non è un parere medico."
+    },
     "meals": {
       "all": "Tutti i pasti",
       "soirOnly": "Solo cene",
@@ -1171,6 +1243,25 @@
       "sulfites": "Solfiti",
       "miel": "Miele"
     },
+    "questionnaire": {
+      "p1Title": "Per chi cuciniamo?",
+      "p1Text": "Scelga il modo più semplice per Lei. Tutto è facoltativo.",
+      "modeSimple": "Semplice",
+      "modeSimpleHint": "Il numero di adulti e di bambini.",
+      "modePerso": "Personalizzato",
+      "modePersoHint": "Una scheda per persona: età, altezza, peso, attività.",
+      "keptHint": "Le persone già indicate vengono conservate, ma non contano finché resta su Semplice.",
+      "p2Title": "I Suoi obiettivi",
+      "p2Text": "Un obiettivo per adulto e quanti pasti sfiziosi a settimana.",
+      "goalNeedsPerso": "Scelga Personalizzato a pagina 1 per indicare un obiettivo per persona.",
+      "p3Title": "I Suoi gusti",
+      "p3Text": "Cucine preferite, dieta, allergie e alimenti da evitare.",
+      "p4Title": "La Sua quotidianità",
+      "p4Text": "Pasti veloci, budget, una settimana equilibrata e un contorno di verdure.",
+      "later": "Più tardi",
+      "redo": "Rifare il questionario",
+      "redoHint": "Quattro pagine per personalizzare i Suoi menu. Tutto è facoltativo e salvato man mano."
+    },
     "onboarding": {
       "skip": "Salta",
       "step": "Fase {{n}} di {{total}}",
@@ -1215,6 +1306,14 @@
       "noneTitle": "Altre idee per questo pasto",
       "noneText": "Provi ad allentare le Sue restrizioni nelle impostazioni.",
       "surprise": "Mi sorprenda"
+    },
+    "guests": {
+      "title": "Per chi?",
+      "sub": "Selezioni le persone che mangiano questo pasto.",
+      "subHeads": "Indichi quante persone mangiano questo pasto.",
+      "atLeast": "Selezioni almeno una persona.",
+      "done": "Fatto",
+      "all": "Tutta la famiglia"
     },
     "added": {
       "ok": "{{count}} prodotti aggiunti",
@@ -1530,7 +1629,23 @@
       "favEmptyTitle": "Ancora nessun preferito",
       "favEmptyText": "Tocchi il cuore di una ricetta per ritrovarla qui.",
       "noResultsTitle": "Nessun risultato",
-      "noResultsText": "Provi un'altra parola o tolga un filtro."
+      "noResultsText": "Provi un'altra parola o tolga un filtro.",
+      "balanced": "Equilibrato",
+      "quick20": "Veloce (max 20 min)",
+      "under30": "Meno di 30 min",
+      "plentyVeg": "Tante verdure",
+      "cuisinesTitle": "Cucine del mondo",
+      "cuisines": {
+        "asie": "Asia",
+        "inde": "India",
+        "maghreb-orient": "Maghreb e Medio Oriente",
+        "italie": "Italia",
+        "espagne-portugal": "Spagna e Portogallo",
+        "grece": "Grecia",
+        "france": "Francia",
+        "ameriques": "Americhe",
+        "afrique": "Africa"
+      }
     },
     "fridge": {
       "intro": "Indichi cosa Le resta, troviamo le ricette che lo usano.",
@@ -1541,6 +1656,9 @@
       "search": "Cercare un ingrediente",
       "results": "Ricette possibili",
       "coverage": "{{pct}} % già a casa",
+      "have": "Ha {{have}} su {{total}}",
+      "addMissing": "Aggiunga ciò che manca alla mia lista",
+      "addedMissing": "Aggiunto alla sua lista",
       "allThere": "Ha tutto.",
       "missing": "Manca: {{list}}",
       "usesUp": "Termina {{count}} avanzi.",
@@ -1695,6 +1813,24 @@
       "addWeek": "Aggiunga alla mia settimana",
       "addedShop": "Aggiunto alla Sua spesa",
       "addedWeek": "Aggiunto alla Sua settimana"
+    },
+    "month": {
+      "view": "Vedi il mese",
+      "prev": "Mese precedente",
+      "next": "Mese successivo",
+      "past": "Settimana passata, solo consultazione.",
+      "prepare": "Prepari questa settimana",
+      "prepareNote": "La settimana in corso resta nella cronologia.",
+      "resume": "Riprenda questa settimana",
+      "far": "Prepari prima la settimana precedente.",
+      "searchPh": "Cerca una ricetta",
+      "searchHint": "Scriva il nome di un piatto o di un ingrediente.",
+      "addTitle": "Aggiunga alla mia settimana",
+      "addSub": "Scelga il pasto che questa ricetta sostituisce.",
+      "replaceQ": "Sostituire {{old}} con {{new}}? Questo pasto verrà mantenuto.",
+      "replace": "Sostituisci",
+      "redoTitle": "Rifai questa settimana",
+      "redoAsk": "Questi pasti diventano la sua settimana in corso. La settimana attuale resta nella cronologia."
     }
   },
   "counts": {

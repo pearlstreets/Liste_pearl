@@ -503,7 +503,22 @@ describe('nutrition, échelle, recherche', () => {
     expect(formatQtyText(1200, 'ml')).toBe('1,2 l');
     expect(formatQty(NaN, 'g').amount).toBe('0');
     expect(formatQty(0.2, 'g').amount).toBe('1'); // jamais « 0 g »
-    expect(formatQty(0.05, 'cc').amount).toBe('⅛');
+    expect(formatQty(0.05, 'cc').amount).toBe('¼'); // plus petite mesure de cuillère
+    // essai réel du 03/11 : cuillères lisibles, jamais ⅛ ni ⅓ ; les pièces gardent leurs fractions
+    expect(formatQty(19 / 3, 'cs').amount).toBe('6'); // sauce barbecue « 6 ⅓ c. à soupe »
+    expect(formatQty(2.125, 'cs').amount).toBe('2'); // huile « 2 ⅛ c. à soupe »
+    expect(formatQty(1.3, 'cs').amount).toBe('1 ½');
+    expect(formatQty(0.7, 'cc').amount).toBe('½');
+    expect(formatQty(2.8, 'cs').amount).toBe('3');
+    expect(formatQty(3.5, 'cs').amount).toBe('4');
+    expect(formatQty(4 / 3, 'cc').amount).toBe('1 ½');
+    for (let q = 0.05; q < 30; q += 0.07) {
+      const a = formatQty(q, 'cs').amount;
+      expect(a).not.toMatch(/[⅛⅓⅔¾]/);
+      if (q >= 3) expect(a).toMatch(/^\d+$/);
+    }
+    expect(formatQty(1 / 3, 'u').amount).toBe('⅓');
+    expect(formatQty(1.75, 'u').amount).toBe('1 ¾');
   });
   test('portions réelles, pièces entières, « selon votre goût »', () => {
     const quiche = {

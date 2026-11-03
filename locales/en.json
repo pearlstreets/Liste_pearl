@@ -1048,7 +1048,45 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "prefs": {
+      "title": "Menu preferences",
+      "intro": "Optional. Your choices apply to the next week you plan, the current week does not change.",
+      "balanced": "Balanced week",
+      "balancedHint": "More vegetables, less fried food, sensible portions.",
+      "sides": "Suggest a vegetable side",
+      "sidesHint": "When a dish contains few vegetables.",
+      "quick": "Quick meals on weekdays",
+      "no": "No",
+      "treats": "Treat meals per week",
+      "treatsHint": "Pizza, burger, fries, preferably on Friday evening or at the weekend.",
+      "treatsFree": "Free",
+      "treatsNone": "None",
+      "cuisines": "Favourite cuisines",
+      "cuisinesHint": "Suggested more often, the others remain possible."
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "Add a vegetable side",
+      "hintWeek": "This dish has few vegetables. Optional: tap a side to add it to this meal and to your shopping.",
+      "hintList": "This dish has few vegetables. Optional: tap a side to add its ingredients to your list.",
+      "add": "Add",
+      "see": "View",
+      "chosenTitle": "Vegetable side",
+      "inShopping": "Its ingredients are in this week's shopping, for the same servings.",
+      "remove": "Remove the side",
+      "unsuitable": "This side no longer suits your profile.",
+      "withSide": "With the side: {{kcal}} kcal and {{protein}} g of protein per serving",
+      "withLine": "With {{title}}",
+      "idea": "Vegetable idea: {{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "Target for this meal: {{kcal}} kcal, {{protein}} g of protein per person",
+      "day": "This day: about {{kcal}} kcal and {{protein}} g of protein per person",
+      "dayTarget": "Target for the planned meals: {{kcal}} kcal and {{protein}} g of protein",
+      "dayHeader": "This day, for each person:",
+      "dayPerson": "{{name}}: about {{kcal}} kcal and {{protein}} g of protein, target {{targetKcal}} kcal and {{targetProtein}} g",
+      "dayHousehold": "This day, for the household: about {{kcal}} kcal and {{protein}} g of protein, target {{targetKcal}} kcal and {{targetProtein}} g"
+    },
     "reminders": {
       "title": "Reminders",
       "hint": "Off by default. Turn on only the ones you find useful.",
@@ -1116,6 +1154,40 @@
       "budgetHint": "Approximate estimate, can be changed at any time",
       "noBudget": "No budget"
     },
+    "nutri": {
+      "title": "Personalise for each person",
+      "intro": "Optional. Enter the age, height, weight, activity and goal of each person, portions and the shopping list adapt.",
+      "start": "Personalise",
+      "person": "Person {{n}}",
+      "personHint": "Everything is optional, an empty field counts as a standard portion.",
+      "name": "First name",
+      "age": "Age",
+      "height": "Height (cm)",
+      "weight": "Weight (kg)",
+      "sex": "Sex",
+      "female": "Female",
+      "male": "Male",
+      "activity": "Activity",
+      "act_faible": "Low",
+      "act_moderee": "Moderate",
+      "act_elevee": "High",
+      "act_intense": "Intense",
+      "actHint_faible": "Little or no exercise",
+      "actHint_moderee": "1 to 3 workouts per week",
+      "actHint_elevee": "3 to 5 workouts per week",
+      "actHint_intense": "Exercise every day or a physical job",
+      "goal": "Goal",
+      "goal_perdre": "Lose weight",
+      "goal_maintenir": "Maintain weight",
+      "goal_prendre": "Build muscle",
+      "goalMinor": "Under 18, no goal, only growth needs count.",
+      "needs": "About {{kcal}} kcal and {{protein}} g of protein per day",
+      "remove": "Remove",
+      "addAdult": "Add an adult",
+      "addChild": "Add a child",
+      "clear": "Clear all",
+      "disclaimer": "Indicative estimate, not medical advice."
+    },
     "meals": {
       "all": "All meals",
       "soirOnly": "Evenings only",
@@ -1169,6 +1241,25 @@
       "sulfites": "Sulphites",
       "miel": "Honey"
     },
+    "questionnaire": {
+      "p1Title": "Who are we cooking for?",
+      "p1Text": "Pick the way that is simplest for you. Everything is optional.",
+      "modeSimple": "Simple",
+      "modeSimpleHint": "The number of adults and children.",
+      "modePerso": "Custom",
+      "modePersoHint": "One profile per person: age, height, weight, activity.",
+      "keptHint": "People you already entered are kept, but they do not count while you stay on Simple.",
+      "p2Title": "Your goals",
+      "p2Text": "One goal per adult, and how many treat meals per week.",
+      "goalNeedsPerso": "Choose Custom on page 1 to set a goal for each person.",
+      "p3Title": "Your tastes",
+      "p3Text": "Favorite cuisines, diet, allergies and foods to avoid.",
+      "p4Title": "Your daily life",
+      "p4Text": "Quick meals, budget, a balanced week and a vegetable side.",
+      "later": "Later",
+      "redo": "Redo the questionnaire",
+      "redoHint": "Four pages to personalize your menus. Everything is optional and saved as you go."
+    },
     "onboarding": {
       "skip": "Skip",
       "step": "Step {{n}} of {{total}}",
@@ -1213,6 +1304,14 @@
       "noneTitle": "No more ideas for this meal",
       "noneText": "Try relaxing your requirements in the settings.",
       "surprise": "Surprise me"
+    },
+    "guests": {
+      "title": "Who is eating?",
+      "sub": "Tick the people eating this meal.",
+      "subHeads": "Say how many people are eating this meal.",
+      "atLeast": "Tick at least one person.",
+      "done": "Done",
+      "all": "Whole household"
     },
     "added": {
       "ok": "{{count}} products added",
@@ -1510,7 +1609,23 @@
       "favEmptyTitle": "No favorites yet",
       "favEmptyText": "Tap the heart on a recipe to find it here.",
       "noResultsTitle": "No results",
-      "noResultsText": "Try another word or remove a filter."
+      "noResultsText": "Try another word or remove a filter.",
+      "balanced": "Balanced",
+      "quick20": "Quick (20 min max)",
+      "under30": "Under 30 min",
+      "plentyVeg": "Lots of vegetables",
+      "cuisinesTitle": "World cuisines",
+      "cuisines": {
+        "asie": "Asia",
+        "inde": "India",
+        "maghreb-orient": "North Africa and Middle East",
+        "italie": "Italy",
+        "espagne-portugal": "Spain and Portugal",
+        "grece": "Greece",
+        "france": "France",
+        "ameriques": "Americas",
+        "afrique": "Africa"
+      }
     },
     "fridge": {
       "intro": "Indicate what you have left, we will find recipes that use it.",
@@ -1521,6 +1636,9 @@
       "search": "Search for an ingredient",
       "results": "Possible recipes",
       "coverage": "{{pct}}% already at home",
+      "have": "You have {{have}} of {{total}}",
+      "addMissing": "Add what is missing to my list",
+      "addedMissing": "Added to your list",
       "allThere": "You have everything.",
       "missing": "Missing: {{list}}",
       "usesUp": "Uses up {{count}} leftovers.",
@@ -1672,6 +1790,24 @@
       "addWeek": "Add to my week",
       "addedShop": "Added to your shopping",
       "addedWeek": "Added to your week"
+    },
+    "month": {
+      "view": "View month",
+      "prev": "Previous month",
+      "next": "Next month",
+      "past": "Past week, view only.",
+      "prepare": "Plan this week",
+      "prepareNote": "Your current week stays in your history.",
+      "resume": "Pick up this week",
+      "far": "Plan the previous week first.",
+      "searchPh": "Search for a recipe",
+      "searchHint": "Type the name of a dish or an ingredient.",
+      "addTitle": "Add to my week",
+      "addSub": "Choose the meal this recipe replaces.",
+      "replaceQ": "Replace {{old}} with {{new}}? This meal will be kept.",
+      "replace": "Replace",
+      "redoTitle": "Redo this week",
+      "redoAsk": "These meals become your current week. Your current week stays in your history."
     }
   },
   "counts": {

@@ -3,6 +3,7 @@
 import { setGenSource, resetGenSource } from '../lib/menus/genSource';
 import { getRecipes, getCatalog, getIngredients, resetMenusCache } from '../lib/menus/recipes';
 import { generatePlan, swapMeal, estimatePlanTotal } from '../lib/menus/planner';
+import { mealTraits } from '../lib/menus/variety';
 
 beforeAll(() => {
   setGenSource(null);
@@ -158,6 +159,32 @@ describe('budget avec les 474 recettes ecrites a la main', () => {
     'budget %d EUR, foyer de 1 a 5 : tenu ou signale hors d atteinte',
     (budget) => {
       for (const adults of FOYERS) coherent(plan(getRecipes(), budget, adults, 1), budget);
+    },
+    300000
+  );
+});
+
+// Reparation du budget : jamais plus de deux repas de pates (restes compris) ni des pates deux jours de suite
+// quand le budget peut etre tenu autrement (budget serre, foyer vegetarien).
+describe('budget serre : equilibre des bases garde par la reparation', () => {
+  test.each([
+    ['2 adultes, 45 EUR', { adults: 2, budget: 45 }],
+    ['vegetarien, 4 adultes, 60 EUR', { adults: 4, budget: 60, diets: ['vegetarien'] }],
+  ])(
+    '%s : au plus 2 pates, jamais deux jours de suite, budget tenu',
+    (_, profile) => {
+      const cat = getCatalog();
+      for (let seed = 1; seed <= 10; seed++) {
+        const p = plan(cat, profile.budget, profile.adults, seed, profile);
+        const days = [];
+        for (const m of p.meals) {
+          const r = m.recipeId && !m.free ? cat.get(m.recipeId) : null;
+          if (r && mealTraits(r).base === 'pates') days.push(m.day);
+        }
+        expect(days.length).toBeLessThanOrEqual(2);
+        expect(days.some((d) => days.includes(d + 1))).toBe(false);
+        expect(p.budget.estimated).toBeLessThanOrEqual(profile.budget);
+      }
     },
     300000
   );
