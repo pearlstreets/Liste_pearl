@@ -1,127 +1,127 @@
-// Visuel d'une recette : photo si elle existe un jour, sinon une composition d'émojis
-// d'ingrédients sur fond teinté (jamais d'image vide).
-import React, { memo, useMemo, useState, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+// Visuel d'une recette : sa photo (paquet, puis adresses distantes), sinon un fond teinté avec une
+// icône discrète (jamais d'émoji, jamais d'image vide). zoomable : toucher la photo l'ouvre en grand.
+import React, { memo, useMemo, useState, useEffect, useCallback } from 'react';
+import { View, Image, Pressable } from 'react-native';
+import { Ionicons } from '../ui/IoniconsSens';
 import RECIPE_IMAGES from '../../lib/menus/recipeImages';
+import {
+  recipePhotoUri,
+  uniqueUris,
+  pickPhotoSource,
+  ingredientPhotoSource,
+} from '../../lib/menus/photoUrls';
 import { photoSources } from '../../services/recipePhotos';
 import { COURSE_TINT, T } from './theme';
+import PhotoViewer from './PhotoViewer';
+import useT from './useT';
 
-const CACHE_MAX = 400; // les recettes générées sont des milliers : le cache reste borné
-const cache = new Map();
+const ICONE = {
+  plat: 'restaurant-outline',
+  entree: 'leaf-outline',
+  dessert: 'ice-cream-outline',
+  'petit-dejeuner': 'cafe-outline',
+};
 
-function emojisOf(recipe, ingredients) {
-  if (!recipe) return ['🍽️'];
-  const hit = !recipe.custom && cache.get(recipe.id); // une recette personnelle peut changer
-  if (hit) {
-    cache.delete(recipe.id); // plus récemment vue : reste en fin de file
-    cache.set(recipe.id, hit);
-    return hit;
-  }
-  const list = (recipe.ingredients || [])
-    .map((i) => ({ i, ing: ingredients && ingredients[i.key] }))
-    .filter((x) => x.ing && x.ing.emoji && !x.ing.pantry && !x.i.optional);
-  // Recette générée : ses ingrédients principaux d'abord (calculés au build, quelles que soient les unités :
-  // une omelette montre l'œuf avant 350 g de poireaux). Puis la viande ou le poisson, puis les plus grosses quantités.
-  const mains =
-    recipe.generated && recipe.dp && Array.isArray(recipe.dp.mains) ? recipe.dp.mains : [];
-  const rank = (x) => {
-    const k = mains.indexOf(x.i.key);
-    return k < 0 ? mains.length : k;
-  };
-  list.sort((a, b) => {
-    const pa = a.ing.aisle === 'viandes-poissons' ? 1 : 0;
-    const pb = b.ing.aisle === 'viandes-poissons' ? 1 : 0;
-    return rank(a) - rank(b) || pb - pa || (Number(b.i.qty) || 0) - (Number(a.i.qty) || 0);
-  });
-  const out = [];
-  for (const x of list) if (!out.includes(x.ing.emoji)) out.push(x.ing.emoji);
-  const res = out.length ? out.slice(0, 3) : ['🍽️'];
-  if (!recipe.custom) {
-    cache.set(recipe.id, res);
-    if (cache.size > CACHE_MAX) cache.delete(cache.keys().next().value);
-  }
-  return res;
+const Zoom = memo(function Zoom({ source, children }) {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+  const close = useCallback(() => setOpen(false), []);
+  return (
+    <>
+      <Pressable
+        onPress={() => setOpen(true)}
+        accessibilityRole="imagebutton"
+        accessibilityLabel={t('recipe.photoZoom')}
+      >
+        {children}
+      </Pressable>
+      <PhotoViewer source={source} visible={open} onClose={close} />
+    </>
+  );
+});
+
+/** Photo à montrer pour une recette (null : pas de photo), avec le repli si elle ne charge pas. */
+export function useRecipePhoto(recipe) {
+  const local = (recipe && RECIPE_IMAGES[recipe.id]) || null;
+  const uris = useMemo(
+    () => (local ? [] : uniqueUris([...photoSources(recipe), recipePhotoUri(recipe)])),
+    [recipe, local]
+  );
+  const [failed, setFailed] = useState(0); // adresse absente : la suivante, puis le repli
+  useEffect(() => setFailed(0), [uris]);
+  const source = pickPhotoSource(local, uris, failed);
+  const onError = source && !local ? () => setFailed((n) => n + 1) : undefined;
+  return { source, onError };
 }
 
 const RecipeVisual = memo(function RecipeVisual({
   recipe,
-  ingredients,
   height = 120,
   radius = 0,
   round,
+  zoomable,
 }) {
-  const em = useMemo(() => emojisOf(recipe, ingredients), [recipe, ingredients]);
   const tint = (recipe && COURSE_TINT[recipe.course]) || T.brandSoft;
-  const big = Math.round(height * 0.5);
-  const sources = useMemo(() => photoSources(recipe), [recipe]);
-  const [failed, setFailed] = useState(0); // fichier absent : adresse suivante, puis les émojis
-  useEffect(() => setFailed(0), [sources]);
-  const uri = sources[failed];
-  const photo = (recipe && RECIPE_IMAGES[recipe.id]) || (uri ? { uri } : null);
-  if (photo) {
-    return (
+  const { source, onError } = useRecipePhoto(recipe);
+  const shape = {
+    height,
+    width: round ? height : undefined,
+    borderRadius: round ? height / 2 : radius,
+    borderTopLeftRadius: round ? height / 2 : radius,
+    borderTopRightRadius: round ? height / 2 : radius,
+    backgroundColor: tint,
+  };
+  if (source) {
+    const img = (
       <Image
-        source={photo}
-        onError={uri ? () => setFailed((n) => n + 1) : undefined}
+        source={source}
+        onError={onError}
         resizeMode="cover"
-        style={{
-          height,
-          width: round ? height : undefined,
-          borderRadius: round ? height / 2 : radius,
-          borderTopLeftRadius: radius,
-          borderTopRightRadius: radius,
-          backgroundColor: tint,
-        }}
+        style={shape}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
       />
     );
+    return zoomable ? <Zoom source={source}>{img}</Zoom> : img;
   }
   return (
     <View
-      style={{
-        height,
-        width: round ? height : undefined,
-        borderRadius: round ? height / 2 : radius,
-        borderTopLeftRadius: radius,
-        borderTopRightRadius: radius,
-        backgroundColor: tint,
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
+      style={[shape, { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      {em[1] ? (
-        <Text
-          style={{
-            position: 'absolute',
-            left: '12%',
-            top: '14%',
-            fontSize: big * 0.5,
-            opacity: 0.55,
-          }}
-        >
-          {em[1]}
-        </Text>
-      ) : null}
-      {em[2] ? (
-        <Text
-          style={{
-            position: 'absolute',
-            right: '12%',
-            bottom: '10%',
-            fontSize: big * 0.5,
-            opacity: 0.55,
-          }}
-        >
-          {em[2]}
-        </Text>
-      ) : null}
-      <Text style={{ fontSize: big }}>{em[0]}</Text>
+      <Ionicons
+        name={(recipe && ICONE[recipe.course]) || 'restaurant-outline'}
+        size={Math.max(16, Math.min(56, Math.round(height * 0.3)))}
+        color={T.brandDark}
+        style={{ opacity: 0.45 }}
+      />
     </View>
   );
 });
 
 export default RecipeVisual;
+
+/**
+ * Vignette d'un ingrédient, à gauche de sa ligne. Sans photo (ou si elle ne charge pas) : rien du
+ * tout, la ligne commence directement par le nom.
+ */
+export const IngredientThumb = memo(function IngredientThumb({ ingKey, size = 34, style }) {
+  const source = useMemo(() => ingredientPhotoSource(ingKey), [ingKey]);
+  const [ko, setKo] = useState(false);
+  useEffect(() => setKo(false), [source]);
+  if (!source || ko) return null;
+  return (
+    <Image
+      source={source}
+      onError={() => setKo(true)}
+      resizeMode="cover"
+      style={[
+        { width: size, height: size, borderRadius: size / 2, backgroundColor: T.subtle },
+        style,
+      ]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+    />
+  );
+});

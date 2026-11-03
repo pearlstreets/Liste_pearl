@@ -52,6 +52,7 @@ import { T } from './theme';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
+import { IngredientThumb } from './RecipeVisual';
 
 // ancienne clé unique (un seul repas en cours pour toutes les recettes) : relue une fois pour migrer
 export const SAVE_KEY = 'menus.cuisineEnCours';
@@ -766,9 +767,10 @@ export default function KitchenMode({ id, persons, onClose }) {
         {showIng ? (
           <View style={s.ingBox}>
             {lines.map((l, i) => (
-              <Text key={`${l.key}-${i}`} style={s.ingTxt}>
-                {(ingredients[l.key] && ingredients[l.key].emoji) || '•'} {lineText(l)}
-              </Text>
+              <View key={`${l.key}-${i}`} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <IngredientThumb ingKey={l.key} size={22} style={{ marginRight: 8 }} />
+                <Text style={[s.ingTxt, { flex: 1 }]}>{lineText(l)}</Text>
+              </View>
             ))}
           </View>
         ) : null}

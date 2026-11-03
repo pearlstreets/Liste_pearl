@@ -1,0 +1,24 @@
+{
+  "_lecture": "Clé ingrédient : code aliment Ciqual 2020, ou liste de codes (le premier fournit chaque valeur, les suivants comblent celles qu'il n'a pas), ou null (aucun aliment Ciqual assez proche : pas de valeur). Choix relus un à un le 03/11/2026 : produit tel qu'il est vendu et pesé dans les recettes, cru en général.",
+  "_choix": {
+    "creme": "crème 30 % MG semi-épaisse UHT, même composition que la crème liquide entière",
+    "pois-chiches": "appertisés égouttés (boîte), comme les quantités des recettes",
+    "haricots-rouges": "appertisés égouttés (boîte)",
+    "haricots-blancs": "appertisés égouttés (boîte)",
+    "flageolets": "appertisés égouttés (boîte)",
+    "feves": "bouillies : Ciqual n'a pas de fèves en conserve, composition voisine",
+    "lentilles": "sèches (paquet)",
+    "crevette": "crevettes décortiquées vendues cuites",
+    "bacon": "lardon fumé cru : le bacon des recettes est de la poitrine fumée en tranches",
+    "piment": "piment en poudre (pot du placard) : piment de Cayenne",
+    "piment-espelette": "piment en poudre : piment de Cayenne",
+    "tomate-sechee": "à l'huile (bocal)",
+    "tamari": "sauce soja : le tamari est une sauce soja sans blé, composition voisine",
+    "oignon-nouveau": "seule fiche Ciqual de l'oignon nouveau (poêlé sans matière grasse, valeurs du cru à quelques % près)",
+    "sauge": "fraîche (barquette de 20 g)",
+    "potimarron": "courge hokkaïdo crue (même légume), la fiche potimarron cru comble les manques",
+    "bouillon": "bouillon viande et légumes déshydraté (cube)",
+    "cream-cheese": "spécialité fromagère non affinée à tartiner environ 25 % MG",
+    "null": "ras-el-hanout, garam-masala, zaatar, pâtes de curry, pâte tikka masala, eau de fleur d'oranger, petit salé, choucroute crue, estragon séché, burrata, shiitaké frais, citronnelle, gousse de vanille, guanciale, halloumi, sauce d'huître : absents de Ciqual (ou seulement cuits ou cuisinés autrement)"
+  }
+}

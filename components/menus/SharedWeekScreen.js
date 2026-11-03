@@ -92,7 +92,11 @@ export default function SharedWeekScreen({ weeks, onClose }) {
         <View style={s.close} />
       </View>
       {weeks.length === 0 ? (
-        <Empty emoji="🗓️" title={t('shared.emptyTitle')} text={t('shared.emptyText')} />
+        <Empty
+          icon="calendar-outline"
+          title={t('shared.emptyTitle')}
+          text={t('shared.emptyText')}
+        />
       ) : (
         <ScrollView contentContainerStyle={s.body} showsVerticalScrollIndicator={false}>
           {weeks.map((w) => (

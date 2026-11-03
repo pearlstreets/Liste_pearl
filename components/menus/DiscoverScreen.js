@@ -38,6 +38,8 @@ import {
 import { T } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
+import RECIPE_IMAGES from '../../lib/menus/recipeImages';
+import { distinctPhotoRecipes } from '../../lib/menus/photoUrls';
 import { AddToWeekSheet } from './MonthScreen';
 import RecipeVisual from './RecipeVisual';
 import { useMenus, conflictList } from './MenusContext';
@@ -594,7 +596,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     );
     empty = (
       <Empty
-        emoji="📖"
+        icon="book-outline"
         title={t(myRecipes.length ? 'discover.noResultsTitle' : 'myRecipes.emptyTitle')}
         text={t(myRecipes.length ? 'discover.noResultsText' : 'myRecipes.emptyText')}
       />
@@ -608,9 +610,17 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     );
     empty =
       mode === 'favorites' && favorites.length === 0 ? (
-        <Empty emoji="💚" title={t('discover.favEmptyTitle')} text={t('discover.favEmptyText')} />
+        <Empty
+          icon="heart-outline"
+          title={t('discover.favEmptyTitle')}
+          text={t('discover.favEmptyText')}
+        />
       ) : (
-        <Empty emoji="🔎" title={t('discover.noResultsTitle')} text={t('discover.noResultsText')} />
+        <Empty
+          icon="search-outline"
+          title={t('discover.noResultsTitle')}
+          text={t('discover.noResultsText')}
+        />
       );
   } else if (mode === 'fridge') {
     data = fridgeResults;
@@ -624,7 +634,6 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
               {fridge.map((k) => (
                 <Chip
                   key={k}
-                  emoji={ingredients[k] && ingredients[k].emoji}
                   icon={useUp.includes(k) ? 'star' : 'star-outline'}
                   label={texts.ingredientName(k)}
                   on={useUp.includes(k)}
@@ -656,7 +665,6 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           {pickable.map((x) => (
             <Chip
               key={x.key}
-              emoji={x.emoji}
               label={x.name}
               on={false}
               onPress={() => toggleFridge(x.key)}
@@ -669,7 +677,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       </View>
     );
     empty = fridge.length ? (
-      <Empty emoji="🥶" title={t('fridge.noneTitle')} text={t('fridge.noneText')} />
+      <Empty icon="snow-outline" title={t('fridge.noneTitle')} text={t('fridge.noneText')} />
     ) : null;
   }
 
@@ -687,7 +695,11 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
           ListHeaderComponent={<Text style={s.modeNote}>{t('history.intro')}</Text>}
           ListEmptyComponent={
-            <Empty emoji="🗓️" title={t('history.emptyTitle')} text={t('history.emptyText')} />
+            <Empty
+              icon="calendar-outline"
+              title={t('history.emptyTitle')}
+              text={t('history.emptyText')}
+            />
           }
           renderItem={({ item }) => {
             const rs = (item.meals || []).filter((x) => x.recipeId);
@@ -703,18 +715,12 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
                 });
               }
             } catch {}
-            const ems = [];
-            for (const x of rs) {
-              const rec = m.recipeById.get(x.recipeId);
-              const ing =
-                rec &&
-                rec.ingredients &&
-                rec.ingredients
-                  .map((i) => ingredients[i.key])
-                  .find((i) => i && i.emoji && !i.pantry);
-              if (ing && !ems.includes(ing.emoji)) ems.push(ing.emoji);
-              if (ems.length >= 5) break;
-            }
+            // Vignettes des plats de la semaine : ceux qui ont une photo, jamais deux fois la même.
+            const thumbs = distinctPhotoRecipes(
+              rs.map((x) => m.recipeById.get(x.recipeId)),
+              RECIPE_IMAGES,
+              5
+            );
             return (
               <View style={s.hist}>
                 <View style={{ flex: 1 }}>
@@ -725,7 +731,15 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
                       ? ` · ${isolerPrix(formatEur(item.budget.estimated, lang), lang)}`
                       : ''}
                   </Text>
-                  <Text style={{ fontSize: 20, marginTop: 6 }}>{ems.join(' ')}</Text>
+                  {thumbs.length ? (
+                    <View style={{ flexDirection: 'row', marginTop: 8 }}>
+                      {thumbs.map((r) => (
+                        <View key={r.id} style={{ marginRight: 6 }}>
+                          <RecipeVisual recipe={r} height={30} round />
+                        </View>
+                      ))}
+                    </View>
+                  ) : null}
                 </View>
                 <PrimaryButton
                   soft

@@ -9,6 +9,7 @@ import { T } from './theme';
 import { PrimaryButton } from './ui';
 import { useMenus } from './MenusContext';
 import useT from './useT';
+import { IngredientThumb } from './RecipeVisual';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
 import KitchenMode from './KitchenMode';
 import {
@@ -283,14 +284,17 @@ function StepCook({ id, persons, onClose, guided }) {
               const pl = l.plural ? t(`recipe.plural.${l.key}`, { defaultValue: '' }) : '';
               const nom = pl && !pl.includes('recipe.plural.') ? pl : texts.ingredientName(l.key);
               return (
-                <Text key={`${l.key}-${i}`} style={s.ingTxt}>
-                  {(ingredients[l.key] && ingredients[l.key].emoji) || '•'} {nom}
-                  {l.toTaste
-                    ? ` : ${t('recipe.toTaste')}`
-                    : l.amount
-                      ? ` : ${u ? `${l.amount} ${u}` : l.amount}`
-                      : ''}
-                </Text>
+                <View key={`${l.key}-${i}`} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <IngredientThumb ingKey={l.key} size={22} style={{ marginRight: 8 }} />
+                  <Text style={[s.ingTxt, { flex: 1 }]}>
+                    {nom}
+                    {l.toTaste
+                      ? ` : ${t('recipe.toTaste')}`
+                      : l.amount
+                        ? ` : ${u ? `${l.amount} ${u}` : l.amount}`
+                        : ''}
+                  </Text>
+                </View>
               );
             })}
           </View>

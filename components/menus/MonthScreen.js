@@ -112,7 +112,11 @@ export const AddToWeekSheet = memo(function AddToWeekSheet({ recipe, onClose, on
     <Sheet onClose={onClose} label={t('common.close')}>
       <Text style={s.sheetTitle}>{t('month.addTitle')}</Text>
       {meals.length === 0 ? (
-        <Empty emoji="🗓️" title={t('myRecipes.noPlanTitle')} text={t('myRecipes.noPlanText')} />
+        <Empty
+          icon="calendar-outline"
+          title={t('myRecipes.noPlanTitle')}
+          text={t('myRecipes.noPlanText')}
+        />
       ) : (
         <>
           <Text style={s.sheetSub}>
@@ -233,7 +237,7 @@ function RecipePicker({ onPick, onClose }) {
         ListEmptyComponent={
           dq ? (
             <Empty
-              emoji="🔎"
+              icon="search-outline"
               title={t('discover.noResultsTitle')}
               text={t('discover.noResultsText')}
             />
