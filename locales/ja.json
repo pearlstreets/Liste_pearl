@@ -724,7 +724,9 @@
     "title": "問題を報告",
     "pick": "何が起きましたか？",
     "sentTitle": "報告を送信しました",
-    "sent": "サポートチームがお客様のリクエストに対応します。"
+    "sent": "サポートチームがお客様のリクエストに対応します。",
+    "answerTitle": "ご報告への回答",
+    "handled": "ご報告に対応しました"
   },
   "stock": {
     "option": "オプション",
@@ -1659,5 +1661,8 @@
     "addedToCart_other": "{{count}}点の商品をカートに追加しました",
     "pendingRequests": "保留中のリクエスト {{count}}件",
     "pendingRequests_other": "保留中のリクエスト {{count}}件"
+  },
+  "notifications": {
+    "channelOrders": "注文と配達"
   }
 }

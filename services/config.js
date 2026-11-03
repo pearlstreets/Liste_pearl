@@ -39,6 +39,11 @@ const ACTIVE_ENV = 'production';
 
 export const CONFIG = ENV[ACTIVE_ENV];
 
+// En-têtes posés sur toutes les requêtes vers l'API : le serveur reconnaît
+// Pearl List (Marketplace/middleware.py) et note l'app d'origine de chaque
+// commande, pour que ses notifications reviennent ici et non dans AppUser.
+export const APP_HEADERS = { 'X-Platform': 'liste' };
+
 // Clé publishable Stripe (identique à AppUser / .env prod). Une publishable key
 // est safe à embarquer côté client. Source: app.json extra.stripePublishableKey,
 // fallback en dur pour les cas où expoConfig.extra n'est pas résolu.

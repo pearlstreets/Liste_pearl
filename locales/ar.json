@@ -734,7 +734,9 @@
     "title": "الإبلاغ عن مشكلة",
     "pick": "ماذا حدث؟",
     "sentTitle": "تم إرسال البلاغ",
-    "sent": "سيقوم فريق الدعم لدينا بمعالجة طلبكم."
+    "sent": "سيقوم فريق الدعم لدينا بمعالجة طلبكم.",
+    "answerTitle": "الرد على بلاغكم",
+    "handled": "تمت معالجة بلاغكم"
   },
   "stock": {
     "option": "الخيار",
@@ -1846,5 +1848,8 @@
     "pendingRequests_few": "{{count}} طلبات معلقة",
     "pendingRequests_many": "{{count}} طلبًا معلقًا",
     "pendingRequests_other": "{{count}} طلب معلق"
+  },
+  "notifications": {
+    "channelOrders": "الطلبات والتوصيل"
   }
 }

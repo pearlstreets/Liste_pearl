@@ -728,7 +728,9 @@
     "title": "Relatar um problema",
     "pick": "O que aconteceu?",
     "sentTitle": "Relatório enviado",
-    "sent": "Nossa equipe de suporte cuidará da sua solicitação."
+    "sent": "Nossa equipe de suporte cuidará da sua solicitação.",
+    "answerTitle": "Resposta à sua reclamação",
+    "handled": "A sua reclamação foi tratada"
   },
   "stock": {
     "option": "Opção",
@@ -1742,5 +1744,8 @@
     "pendingRequests_one": "{{count}} solicitação pendente",
     "pendingRequests_many": "{{count}} solicitações pendentes",
     "pendingRequests_other": "{{count}} solicitações pendentes"
+  },
+  "notifications": {
+    "channelOrders": "Pedidos e entregas"
   }
 }

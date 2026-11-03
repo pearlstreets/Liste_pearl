@@ -728,7 +728,9 @@
     "title": "Signaler un problème",
     "pick": "Que s'est-il passé ?",
     "sentTitle": "Signalement envoyé",
-    "sent": "Notre support va traiter votre demande."
+    "sent": "Notre support va traiter votre demande.",
+    "answerTitle": "Réponse à votre signalement",
+    "handled": "Votre signalement a été traité"
   },
   "stock": {
     "option": "Option",
@@ -1736,5 +1738,8 @@
     "pendingRequests_one": "{{count}} demande en attente",
     "pendingRequests_many": "{{count}} demandes en attente",
     "pendingRequests_other": "{{count}} demandes en attente"
+  },
+  "notifications": {
+    "channelOrders": "Commandes et livraisons"
   }
 }

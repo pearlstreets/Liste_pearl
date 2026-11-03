@@ -134,6 +134,12 @@ export async function loginUser(identifier, password) {
 // Logout
 // opts.menusFlushed : l'appelant vient de faire partir les menus (flushMenusSync), inutile d'attendre encore.
 export async function logoutUser(opts = {}) {
+  // Téléphone retiré des notifications du compte AVANT tout le reste : la
+  // route exige la session. Échec : retrait rejoué au prochain enregistrement.
+  // Chargé ici, comme les rappels : `auth` reste utilisable sans react-native.
+  try {
+    await require('./pushDirect').retirerAppareil();
+  } catch {}
   // Les menus en attente partent tant que les jetons sont valables.
   if (!(opts && opts.menusFlushed)) await flushMenusSync();
   try {
@@ -233,10 +239,25 @@ export async function purgeLegacyLocalAccounts() {
 // existait toujours. Session et données locales ne sont effacées qu'en cas de
 // vrai succès ; réseau coupé = échec, rien n'est effacé.
 export async function deleteAccount() {
+  // Téléphone retiré des notifications AVANT la suppression, tant que la
+  // session est valable : le serveur ne révoque pas lui-même les appareils
+  // d'un compte supprimé (UserSoftDeleteView), qui recevrait sinon encore les
+  // push de ses commandes en cours sur un téléphone déconnecté. Suppression
+  // échouée : le téléphone est enregistré de nouveau (révocation en attente
+  // rejouée d'abord, puis la même ligne réactivée).
+  const reEnregistrer = async () => {
+    try {
+      await require('./pushDirect').enregistrerAppareil();
+    } catch {}
+  };
+  try {
+    await require('./pushDirect').retirerAppareil();
+  } catch {}
   let res;
   try {
     res = await apiDeleteWithStatus('/users/delete-user/');
   } catch {
+    await reEnregistrer();
     return { success: false, message: 'Account deletion failed' };
   }
   const data = res && res.data;
@@ -245,6 +266,7 @@ export async function deleteAccount() {
     await clearLocalUserData();
     return { success: true, message: data.message };
   }
+  await reEnregistrer();
   return { success: false, message: (data && data.message) || 'Account deletion failed' };
 }
 

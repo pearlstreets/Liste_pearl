@@ -728,7 +728,9 @@
     "title": "Segnalare un problema",
     "pick": "Cosa è successo?",
     "sentTitle": "Segnalazione inviata",
-    "sent": "Il nostro team di supporto gestirà la Sua richiesta."
+    "sent": "Il nostro team di supporto gestirà la Sua richiesta.",
+    "answerTitle": "Risposta alla sua segnalazione",
+    "handled": "La sua segnalazione è stata gestita"
   },
   "stock": {
     "option": "Opzione",
@@ -1742,5 +1744,8 @@
     "pendingRequests_one": "{{count}} richiesta in sospeso",
     "pendingRequests_many": "{{count}} richieste in sospeso",
     "pendingRequests_other": "{{count}} richieste in sospeso"
+  },
+  "notifications": {
+    "channelOrders": "Ordini e consegne"
   }
 }

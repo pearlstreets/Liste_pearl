@@ -724,7 +724,9 @@
     "title": "报告问题",
     "pick": "发生了什么问题？",
     "sentTitle": "已发送报告",
-    "sent": "我们的客服团队将处理您的请求。"
+    "sent": "我们的客服团队将处理您的请求。",
+    "answerTitle": "对您反馈的回复",
+    "handled": "您的问题已处理"
   },
   "stock": {
     "option": "选项",
@@ -1659,5 +1661,8 @@
     "addedToCart_other": "已将 {{count}} 件商品添加到购物车",
     "pendingRequests": "{{count}} 个待处理请求",
     "pendingRequests_other": "{{count}} 个待处理请求"
+  },
+  "notifications": {
+    "channelOrders": "订单和配送"
   }
 }

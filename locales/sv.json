@@ -726,7 +726,9 @@
     "title": "Rapportera ett problem",
     "pick": "Vad hände?",
     "sentTitle": "Rapport skickad",
-    "sent": "Vårt supportteam tar hand om din förfrågan."
+    "sent": "Vårt supportteam tar hand om din förfrågan.",
+    "answerTitle": "Svar på din anmälan",
+    "handled": "Din anmälan har hanterats"
   },
   "stock": {
     "option": "Alternativ",
@@ -1704,5 +1706,8 @@
     "pendingRequests": "{{count}} väntande förfrågningar",
     "pendingRequests_one": "{{count}} väntande förfrågan",
     "pendingRequests_other": "{{count}} väntande förfrågningar"
+  },
+  "notifications": {
+    "channelOrders": "Beställningar och leveranser"
   }
 }
