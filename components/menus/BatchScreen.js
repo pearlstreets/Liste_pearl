@@ -267,7 +267,7 @@ function Session({ onClose, onOpenRecipe }) {
     return (
       <View style={s.root}>
         <Header title={t('batch.title')} onClose={onClose} t={t} />
-        <Empty emoji="🍲" title={t('batch.goneTitle')} text={t('batch.goneText')} />
+        <Empty icon="restaurant-outline" title={t('batch.goneTitle')} text={t('batch.goneText')} />
         <View style={s.bottom}>
           <PrimaryButton
             label={t('batch.newConfirm')}
