@@ -290,7 +290,7 @@ export default function WeekScreen({
     return (
       <View style={{ flex: 1 }}>
         <Empty
-          emoji="🥘"
+          icon="restaurant-outline"
           title={t('week.emptyTitle')}
           text={`${weekLabel(target0.start, lang, t)}\n${t('week.emptyText')}`}
           action={

@@ -22,6 +22,7 @@ import { lineTexts } from '../../lib/menus/lineText';
 import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
 import { usePearlShops, openShopFromMenus } from './usePearl';
+import { IngredientThumb } from './RecipeVisual';
 
 const Row = React.memo(function Row({
   line,
@@ -44,10 +45,8 @@ const Row = React.memo(function Row({
       accessibilityState={{ checked: have }}
       accessibilityLabel={`${name}, ${haveLabel}`}
     >
-      <View style={s.emoji}>
-        <Text style={{ fontSize: 22 }}>{line.emoji || '🛒'}</Text>
-      </View>
-      <View style={{ flex: 1, marginHorizontal: 12 }}>
+      <IngredientThumb ingKey={String(line.key).split('|')[0]} size={46} style={{ marginRight: 12 }} />
+      <View style={{ flex: 1, marginRight: 12 }}>
         <Text style={[s.name, have && { textDecorationLine: 'line-through' }]} numberOfLines={1}>
           {name}
         </Text>
@@ -220,7 +219,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
   if (!shopping) {
     return (
       <Empty
-        emoji="🛒"
+        icon="cart-outline"
         title={t('shop.emptyTitle')}
         text={t('shop.emptyText')}
         action={
@@ -331,7 +330,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
         )}
         ListHeaderComponent={header}
         ListEmptyComponent={
-          <Empty emoji="🧺" title={t('shop.noneTitle')} text={t('shop.noneText')} />
+          <Empty icon="basket-outline" title={t('shop.noneTitle')} text={t('shop.noneText')} />
         }
         contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 24 }}
         stickySectionHeadersEnabled={false}
@@ -397,14 +396,6 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: T.border,
     ...T.shadowSm,
-  },
-  emoji: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: T.subtle,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   name: { fontSize: 16, fontWeight: '600', color: T.ink },
   detail: { fontSize: 13, color: T.muted, marginTop: 2 },

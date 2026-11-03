@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '../ui/IoniconsSens';
 import { T } from './theme';
 
-export const Chip = memo(function Chip({ label, on, onPress, icon, small, emoji }) {
+export const Chip = memo(function Chip({ label, on, onPress, icon, small }) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -21,7 +21,6 @@ export const Chip = memo(function Chip({ label, on, onPress, icon, small, emoji 
       hitSlop={{ top: small ? 6 : 2, bottom: small ? 6 : 2, left: 2, right: 2 }}
       style={[s.chip, small && s.chipSmall, on ? s.chipOn : s.chipOff]}
     >
-      {emoji ? <Text style={{ marginRight: 5, fontSize: small ? 12 : 14 }}>{emoji}</Text> : null}
       {icon ? (
         <Ionicons
           name={icon}
@@ -189,11 +188,11 @@ export const SectionTitle = memo(function SectionTitle({ title, hint, right }) {
   );
 });
 
-export const Empty = memo(function Empty({ emoji = '🍽️', title, text, action }) {
+export const Empty = memo(function Empty({ icon = 'restaurant-outline', title, text, action }) {
   return (
     <View style={s.empty}>
       <View style={s.emptyBubble}>
-        <Text style={{ fontSize: 40 }}>{emoji}</Text>
+        <Ionicons name={icon} size={36} color={T.brandDark} />
       </View>
       <Text style={s.emptyTitle}>{title}</Text>
       {text ? <Text style={s.emptyText}>{text}</Text> : null}

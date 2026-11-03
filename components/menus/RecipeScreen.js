@@ -26,7 +26,7 @@ import { needsSide, mealSide, withSideNutrition, mealTargetOf } from '../../lib/
 import { recipePortionScale } from '../../lib/menus/needs';
 import { T } from './theme';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
-import RecipeVisual from './RecipeVisual';
+import RecipeVisual, { IngredientThumb } from './RecipeVisual';
 import { AddedSheet, PlanPickSheet, PickProductsSheet, warningList } from './Sheets';
 import { AddToWeekSheet } from './MonthScreen';
 import { useMenus, conflictList } from './MenusContext';
@@ -36,6 +36,7 @@ import { getTexts } from '../../lib/menus/recipes';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
 import { isolerPrix } from './MealCard';
 import { usePearlShops, openShopFromMenus } from './usePearl';
+import { ficheInfos } from '../../lib/menus/ficheInfos';
 
 const Dots = ({ n }) => (
   <View style={{ flexDirection: 'row', marginRight: 6 }}>
@@ -44,6 +45,121 @@ const Dots = ({ n }) => (
     ))}
   </View>
 );
+
+// Infos pratiques de la fiche : seules les valeurs établies (non null) sont affichées.
+function FicheInfos({ fiche, t, name }) {
+  const rows = [];
+  const tm = fiche.times;
+  if (tm) {
+    const parts = [t('fiche.prep', { n: tm.prep }), t('fiche.cookTime', { n: tm.cook })];
+    if (tm.rest > 0) parts.push(t('fiche.rest', { n: tm.rest }));
+    rows.push({ key: 'time', text: [parts.join(' · ')] });
+  }
+  if (fiche.utensils.length)
+    rows.push({
+      key: 'ut',
+      label: t('fiche.utensils'),
+      text: [fiche.utensils.map((u) => t(`fiche.utensil.${u}`)).join(t('fiche.listSep'))],
+    });
+  if (fiche.pantry.length)
+    rows.push({
+      key: 'pantry',
+      label: t('fiche.pantry'),
+      text: [fiche.pantry.map(name).join(t('fiche.listSep'))],
+    });
+  const a = fiche.allergens;
+  if (a) {
+    const list = (keys) => keys.map((k) => t(`fiche.allergen.${k}`)).join(t('fiche.listSep'));
+    const text = [
+      a.contains.length
+        ? t('fiche.contains', { list: list(a.contains) })
+        : t('fiche.allergensNone'),
+    ];
+    if (a.mayContain.length) text.push(t('fiche.mayContain', { list: list(a.mayContain) }));
+    rows.push({ key: 'alg', label: t('fiche.allergens'), text, note: t('fiche.allergensNote') });
+  }
+  if (fiche.storage)
+    rows.push({
+      key: 'keep',
+      label: t('fiche.storage'),
+      text: [
+        t('fiche.keepDays', { count: fiche.storage.fridgeDays }) +
+          (fiche.storage.freezable ? ` ${t('fiche.freezable')}` : ''),
+      ],
+    });
+  const plus = [];
+  if (fiche.vegPerPortion) plus.push(t('fiche.veg', { g: fiche.vegPerPortion }));
+  if (fiche.cuisine)
+    plus.push(t('fiche.cuisine', { name: t(`discover.cuisines.${fiche.cuisine}`) }));
+  if (plus.length) rows.push({ key: 'plus', text: plus });
+  if (!rows.length) return null;
+  return (
+    <View style={s.side}>
+      <Text style={s.sideTitle}>{t('fiche.title')}</Text>
+      {rows.map((r) => (
+        <View key={r.key} style={s.ficheRow}>
+          {r.label ? <Text style={s.ficheLab}>{r.label}</Text> : null}
+          {r.text.map((x, i) => (
+            <Text key={i} style={s.ficheTxt}>
+              {x}
+            </Text>
+          ))}
+          {r.note ? <Text style={s.nutriNote}>{r.note}</Text> : null}
+        </View>
+      ))}
+    </View>
+  );
+}
+
+// Tableau des valeurs nutritionnelles (table Ciqual) : par portion, et pour 100 g quand le poids est sûr.
+// Une ligne sans valeur établie n'est pas affichée.
+const NUTRI_ROWS = [
+  ['energy', null],
+  ['fat', 'lipides'],
+  ['saturates', 'satures'],
+  ['carbs', 'glucides'],
+  ['sugars', 'sucres'],
+  ['fibre', 'fibres'],
+  ['protein', 'proteines'],
+  ['salt', 'sel'],
+];
+// Virgule décimale selon la langue, comme les quantités (lib/menus/scaling.js) : « 13,8 g » en français.
+function dec(x, lang) {
+  const s = String(x);
+  return ['en', 'ja', 'zh', 'th'].includes(String(lang || 'fr').slice(0, 2))
+    ? s
+    : s.replace('.', ',');
+}
+function NutritionTable({ n, t, lang }) {
+  const p = n.perPortion;
+  const c = n.per100;
+  const val = (o, k) => {
+    if (!o) return '';
+    if (!k) return t('fiche.nutri.energyValue', { kj: o.kj, kcal: o.kcal });
+    return o[k] === null ? '' : t('fiche.nutri.gram', { n: dec(o[k], lang) });
+  };
+  const rows = NUTRI_ROWS.filter(([, k]) => !k || p[k] !== null);
+  return (
+    <View style={s.nutriTable}>
+      <Text style={s.ficheLab}>{t('fiche.nutri.title')}</Text>
+      <View style={s.nutriTr}>
+        <Text style={s.nutriTd} />
+        <Text style={s.nutriTh}>{t('fiche.nutri.perPortion')}</Text>
+        {c ? <Text style={s.nutriTh}>{t('fiche.nutri.per100')}</Text> : null}
+      </View>
+      {rows.map(([lab, k]) => (
+        <View key={lab} style={s.nutriTr}>
+          <Text style={[s.nutriTd, lab === 'saturates' || lab === 'sugars' ? s.nutriSub : null]}>
+            {t(`fiche.nutri.${lab}`)}
+          </Text>
+          <Text style={s.nutriNum}>{val(p, k)}</Text>
+          {c ? <Text style={s.nutriNum}>{val(c, k)}</Text> : null}
+        </View>
+      ))}
+      <Text style={s.nutriNote}>{t('fiche.nutri.source')}</Text>
+    </View>
+  );
+}
 
 export default function RecipeScreen({
   id,
@@ -147,6 +263,16 @@ export default function RecipeScreen({
       : { ...c, perPerson: Math.round((c.total / persons) * 100) / 100 };
   }, [recipe, fitScale, persons, costOf]);
   const steps = useMemo(() => (recipe ? texts.recipeSteps(id) : []), [recipe, texts, id]);
+  // Infos pratiques (allergènes, ustensiles, temps, placard, conservation) : déduites des données, lues
+  // dans les étapes françaises quelle que soit la langue ; jamais pour une recette personnelle.
+  const fiche = useMemo(() => {
+    if (!recipe || recipe.custom) return null;
+    try {
+      return ficheInfos(recipe, { ingredients, stepsFr: getTexts('fr').recipeSteps(id) });
+    } catch {
+      return null;
+    }
+  }, [recipe, ingredients, id]);
 
   // Accompagnement de légumes : celui du repas s'il y en a un, sinon 2 ou 3 idées pour un plat pauvre en légumes.
   const { sidesFor, setMealSide } = m;
@@ -282,7 +408,11 @@ export default function RecipeScreen({
         <View style={{ padding: 14 }}>
           <RoundIcon name="chevron-back" onPress={onClose} label={t('common.back')} />
         </View>
-        <Empty emoji="🔍" title={t('recipe.missingTitle')} text={t('recipe.missingText')} />
+        <Empty
+          icon="search-outline"
+          title={t('recipe.missingTitle')}
+          text={t('recipe.missingText')}
+        />
       </View>
     );
   }
@@ -305,7 +435,12 @@ export default function RecipeScreen({
         showsVerticalScrollIndicator={false}
       >
         <View>
-          <RecipeVisual recipe={recipe} ingredients={ingredients} height={compact ? 170 : 250} />
+          <RecipeVisual
+            recipe={recipe}
+            ingredients={ingredients}
+            height={compact ? 170 : 250}
+            zoomable
+          />
           <View style={s.topBtns}>
             <RoundIcon
               name="chevron-back"
@@ -449,7 +584,6 @@ export default function RecipeScreen({
 
           <Text style={s.h2}>{t('recipe.ingredients')}</Text>
           {lines.map((l, i) => {
-            const ing = ingredients[l.key] || {};
             const on = !!have[l.key];
             return (
               <TouchableOpacity
@@ -463,7 +597,8 @@ export default function RecipeScreen({
                 <View style={[s.check, on && s.checkOn]}>
                   {on ? <Ionicons name="checkmark" size={14} color="#fff" /> : null}
                 </View>
-                <Text style={{ fontSize: 22, marginHorizontal: 10 }}>{ing.emoji || '🍽️'}</Text>
+                <IngredientThumb ingKey={l.key} style={{ marginLeft: 10 }} />
+                <View style={{ width: 10 }} />
                 <Text
                   style={[s.ingName, on && { opacity: 0.45, textDecorationLine: 'line-through' }]}
                   numberOfLines={2}
@@ -599,9 +734,23 @@ export default function RecipeScreen({
                   {t('kcalInfo.mealTarget', { kcal: mealNeed.kcal, protein: mealNeed.protein })}
                 </Text>
               ) : null}
+              {fiche && fiche.per100 ? (
+                <Text style={s.nutriNote}>
+                  {t('fiche.per100', {
+                    kcal: fiche.per100.kcal,
+                    protein: dec(fiche.per100.protein, normalizeLang(lang)),
+                    g: fiche.per100.portionG,
+                  })}
+                </Text>
+              ) : null}
+              {fiche && fiche.nutrition ? (
+                <NutritionTable n={fiche.nutrition} t={t} lang={normalizeLang(lang)} />
+              ) : null}
               {side ? null : <Text style={s.nutriNote}>{t('recipe.nutritionNote')}</Text>}
             </View>
           ) : null}
+
+          {fiche ? <FicheInfos fiche={fiche} t={t} name={texts.ingredientName} /> : null}
 
           <Text style={s.h2}>{t('recipe.steps')}</Text>
           {steps.map((st, i) => (
@@ -807,6 +956,21 @@ const s = StyleSheet.create({
   nutriLab: { fontSize: 12, color: T.muted, fontWeight: '700', marginTop: 2 },
   nutriNote: { fontSize: 12, color: T.faint, marginTop: 10, lineHeight: 17 },
   nutriExtra: { fontSize: 13, color: T.ink, marginTop: 10, lineHeight: 18, fontWeight: '600' },
+  nutriTable: { marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: T.border },
+  nutriTr: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: T.border,
+  },
+  nutriTh: { flex: 1, fontSize: 12, color: T.muted, fontWeight: '700', textAlign: 'right' },
+  nutriTd: { flex: 1.4, fontSize: 13, color: T.ink },
+  nutriSub: { paddingLeft: 10, color: T.muted },
+  nutriNum: { flex: 1, fontSize: 13, color: T.ink, textAlign: 'right' },
+  ficheRow: { marginTop: 12 },
+  ficheLab: { fontSize: 12, color: T.muted, fontWeight: '700', marginBottom: 2 },
+  ficheTxt: { fontSize: 14, color: T.ink, lineHeight: 20 },
   side: {
     backgroundColor: '#fff',
     borderWidth: 1,

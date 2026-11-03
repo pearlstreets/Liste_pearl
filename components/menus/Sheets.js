@@ -13,7 +13,7 @@ import { Ionicons } from '../ui/IoniconsSens';
 import { formatEur, cleanMembers, guestsOf, headsFor } from '../../lib/menus';
 import { T } from './theme';
 import { PrimaryButton, GhostButton, Empty, Stepper } from './ui';
-import RecipeVisual from './RecipeVisual';
+import RecipeVisual, { IngredientThumb } from './RecipeVisual';
 import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
 import { useMenus } from './MenusContext';
 import useT from './useT';
@@ -72,7 +72,11 @@ export const PlanPickSheet = memo(function PlanPickSheet({ recipe, onClose, onDo
     <Sheet onClose={onClose} label={t('common.close')}>
       <Text style={s.title}>{t('myRecipes.planTitle')}</Text>
       {meals.length === 0 ? (
-        <Empty emoji="🗓️" title={t('myRecipes.noPlanTitle')} text={t('myRecipes.noPlanText')} />
+        <Empty
+          icon="calendar-outline"
+          title={t('myRecipes.noPlanTitle')}
+          text={t('myRecipes.noPlanText')}
+        />
       ) : (
         <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
           {meals.map((x) => (
@@ -129,7 +133,7 @@ export const SwapSheet = memo(function SwapSheet({ mealKey, onClose }) {
       <Text style={s.sub}>{t('swap.sub')}</Text>
       <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
         {ideas.length === 0 ? (
-          <Empty emoji="🤔" title={t('swap.noneTitle')} text={t('swap.noneText')} />
+          <Empty icon="help-circle-outline" title={t('swap.noneTitle')} text={t('swap.noneText')} />
         ) : (
           ideas.map((r) => {
             // Portions réellement cuisinées, comme le prix de la carte une fois le plat choisi.
@@ -351,7 +355,7 @@ export const PickProductsSheet = memo(function PickProductsSheet({
   onConfirm,
 }) {
   const t = useT();
-  const { texts, ingredients } = useMenus();
+  const { texts } = useMenus();
   const [sel, setSel] = useState(() => {
     const o = {};
     for (const l of lines || []) o[l.key] = !(initialOff && initialOff[l.key]);
@@ -378,7 +382,6 @@ export const PickProductsSheet = memo(function PickProductsSheet({
       <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
         {(lines || []).map((l) => {
           const on = !!sel[l.key];
-          const ing = (ingredients && ingredients[l.key]) || {};
           return (
             <TouchableOpacity
               key={l.key}
@@ -391,7 +394,8 @@ export const PickProductsSheet = memo(function PickProductsSheet({
               <View style={[s.pickBox, on && s.pickBoxOn]}>
                 {on ? <Ionicons name="checkmark" size={14} color={T.card} /> : null}
               </View>
-              <Text style={s.pickEmoji}>{ing.emoji || '🍽️'}</Text>
+              <IngredientThumb ingKey={l.key} style={{ marginLeft: 10 }} />
+              <View style={{ width: 10 }} />
               <Text style={s.pickName} numberOfLines={2}>
                 {texts.ingredientName(l.key)}
               </Text>
@@ -465,6 +469,5 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   pickBoxOn: { backgroundColor: T.brand, borderColor: T.brand },
-  pickEmoji: { fontSize: 22, marginHorizontal: 10 },
   pickName: { flex: 1, fontSize: 16, fontWeight: '700', color: T.ink },
 });
