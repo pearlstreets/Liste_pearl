@@ -1,3 +1,7 @@
+// Toucher des notifications de commande : importé en premier, l'abonnement est
+// pris au chargement du module (toucher qui lance l'app compris).
+import { brancherNavigation, consommerDestination, oublierDestination, definirConnexion, prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR } from "./services/pushToucher";
+import { demanderPermission, enregistrerAppareil } from "./services/pushDirect";
 import { autocorrectName } from "./utils/spellcheck";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -191,6 +195,8 @@ const CurrencyContext = React.createContext({ currency: CURRENCIES[0], fmtPrice:
 const Tab = createBottomTabNavigator();
 // Notification de rappel touchée : ouverture de l'onglet Menus, qui prend ensuite le bon écran.
 const navRef = createNavigationContainerRef();
+// Notification de commande touchée : Profil puis détail (services/pushToucher.js).
+brancherNavigation(navRef);
 const ouvrirMenusDepuisRappel = () => {
   if (navRef.isReady() && hasPendingMenuReminder()) navRef.navigate('menus');
 };
@@ -6138,6 +6144,36 @@ export default function App() {
 
   React.useEffect(() => onMenuReminderOpen(ouvrirMenusDepuisRappel), []);
 
+  // Notifications de commande (services/pushDirect.js) : autorisation demandée
+  // une fois au premier passage connecté, puis téléphone enregistré. Une
+  // notification touchée avant la fin du chargement s'ouvre ici. Déconnexion :
+  // la destination en attente n'est plus pour ce compte.
+  const etaitConnecte = React.useRef(false);
+  React.useEffect(() => {
+    definirConnexion(isAuth === true);
+    if (isAuth === true) {
+      demanderPermission()
+        .then(() => enregistrerAppareil())
+        .catch(() => {});
+      consommerDestination();
+    } else if (isAuth === false && etaitConnecte.current) {
+      oublierDestination();
+    }
+    etaitConnecte.current = isAuth === true;
+    if (isAuth !== true) return undefined;
+    // Retour au premier plan (autorisation accordée dans les réglages, envoi
+    // précédent échoué) : nouvel enregistrement, sans effet s'il est à jour.
+    const sub = AppState.addEventListener('change', (etat) => {
+      if (etat !== 'active') return;
+      enregistrerAppareil();
+      consommerDestination();
+    });
+    // Langue changée : le serveur l'apprend (titres des notifications).
+    const surLangue = () => { enregistrerAppareil({ force: true }); };
+    i18nApp.on('languageChanged', surLangue);
+    return () => { sub.remove(); i18nApp.off('languageChanged', surLangue); };
+  }, [isAuth]);
+
   // Mises à jour OTA appliquées dès ce lancement quand c'est rapide (voir services/otaRapide.js).
   React.useEffect(() => demarrerOtaRapide(AppState), []);
 
@@ -6182,7 +6218,7 @@ export default function App() {
     <StatusBar style="dark" />
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <DeuxEcrans>
-      <NavigationContainer ref={navRef} onReady={() => { ouvrirOngletApresRechargement(); ouvrirMenusDepuisRappel(); }} theme={navTheme}>
+      <NavigationContainer ref={navRef} onReady={() => { ouvrirOngletApresRechargement(); ouvrirMenusDepuisRappel(); consommerDestination(); }} theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
       <Modal visible={authVisible} animationType="slide" onRequestClose={() => {
@@ -6695,8 +6731,35 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     setAddressLoading(false);
   }, []);
 
+  // Notification de commande touchée (services/pushToucher.js) : détail de la
+  // commande concernée, retrouvée dans l'historique de l'appareil. iOS n'empile
+  // pas deux Modal : la liste complète ou la fiche livreur est fermée d'abord,
+  // le détail suit 300 ms plus tard. Introuvable : le Profil seul.
+  const autreModaleOuverte = React.useRef(false);
+  autreModaleOuverte.current = allOrdersVisible || driverInfoVisible;
+  const ouvrirCommandeDepuisPush = React.useCallback(async () => {
+    const cible = prendreCommandeAOuvrir();
+    if (!cible) return;
+    const order = await trouverCommande(cible);
+    if (!order) return;
+    if (autreModaleOuverte.current) {
+      setAllOrdersVisible(false);
+      setDriverInfoVisible(false);
+      setTimeout(() => setDetailOrder(order), 300);
+    } else {
+      setDetailOrder(order);
+    }
+  }, []);
+  // L'onglet peut ne pas être monté quand l'évènement part : la commande est
+  // aussi prise au focus ci-dessous.
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(EVENEMENT_OUVRIR, () => { ouvrirCommandeDepuisPush(); });
+    return () => sub.remove();
+  }, [ouvrirCommandeDepuisPush]);
+
   useFocusEffect(React.useCallback(() => {
     loadProfile(); loadOrders(); loadAddresses();
+    ouvrirCommandeDepuisPush();
     // Load driver mode status for regular users
     (async () => {
       try {
@@ -6735,7 +6798,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
         }
       } catch(e) {}
     })();
-  }, [loadProfile, loadOrders, loadAddresses]));
+  }, [loadProfile, loadOrders, loadAddresses, ouvrirCommandeDepuisPush]));
 
   React.useEffect(() => {
     if (isAuth) { loadProfile(); loadOrders(); }
@@ -8445,6 +8508,20 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                         <Ionicons name="alert-circle-outline" size={18} color="#e74c3c" />
                         <Text style={{ color: '#e74c3c', fontWeight: '700', fontSize: 14 }}>{t('report.title', 'Signaler un problème')}</Text>
                       </TouchableOpacity>
+                    </View>
+                  );
+                })()}
+                {/* Réponse au signalement (plainte traitée par le support) */}
+                {(() => {
+                  const plainte = deliveryStatuses[detailOrder.id]?.plainte;
+                  if (!plainte || (plainte.status !== 'resolved' && plainte.status !== 'rejected')) return null;
+                  const note = String(plainte.resolution_note || '').trim();
+                  return (
+                    <View style={{ marginTop: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14 }}>
+                      <Text style={{ fontWeight: '800', fontSize: 15, color: '#111', marginBottom: 8 }}>
+                        {t('report.answerTitle')}
+                      </Text>
+                      <Text style={{ fontSize: 14, color: '#333' }}>{note || t('report.handled')}</Text>
                     </View>
                   );
                 })()}

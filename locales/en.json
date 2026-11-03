@@ -724,7 +724,9 @@
     "title": "Report a problem",
     "pick": "What happened?",
     "sentTitle": "Report sent",
-    "sent": "Our support team will handle your request."
+    "sent": "Our support team will handle your request.",
+    "answerTitle": "Answer to your report",
+    "handled": "Your report has been handled"
   },
   "stock": {
     "option": "Option",
@@ -1706,5 +1708,8 @@
     "pendingRequests": "{{count}} pending requests",
     "pendingRequests_one": "{{count}} pending request",
     "pendingRequests_other": "{{count}} pending requests"
+  },
+  "notifications": {
+    "channelOrders": "Orders and deliveries"
   }
 }

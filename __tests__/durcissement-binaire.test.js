@@ -237,6 +237,11 @@ describe('plugin réseau withSecuriteReseau', () => {
   test('app.json déclare le plugin et garde allowBackup false', () => {
     const app = require('../app.json').expo;
     expect(app.plugins).toContain('./plugins/withSecuriteReseau');
+    // Push en envoi direct (1.0.16) : Firebase côté Android, et toucher de
+    // notification redonné pendant le chargement, posé après withConfigChanges.
+    expect(app.android.googleServicesFile).toBe('./google-services.json');
+    const toucher = app.plugins.indexOf('./plugins/withToucherNotification');
+    expect(toucher).toBeGreaterThan(app.plugins.indexOf('./plugins/withConfigChanges'));
     expect(app.android.allowBackup).toBe(false);
     expect(app.ios.infoPlist.NSAppTransportSecurity.NSAllowsArbitraryLoads).toBe(false);
     // Mises à jour à distance (1.0.9) : serveur Expo du projet, runtime lié à la version.

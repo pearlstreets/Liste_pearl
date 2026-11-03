@@ -726,7 +726,9 @@
     "title": "Reportar un problema",
     "pick": "¿Qué ha pasado?",
     "sentTitle": "Reporte enviado",
-    "sent": "Nuestro equipo de soporte atenderá su solicitud."
+    "sent": "Nuestro equipo de soporte atenderá su solicitud.",
+    "answerTitle": "Respuesta a su incidencia",
+    "handled": "Su incidencia ha sido atendida"
   },
   "stock": {
     "option": "Opción",
@@ -1740,5 +1742,8 @@
     "pendingRequests_one": "{{count}} solicitud pendiente",
     "pendingRequests_many": "{{count}} solicitudes pendientes",
     "pendingRequests_other": "{{count}} solicitudes pendientes"
+  },
+  "notifications": {
+    "channelOrders": "Pedidos y entregas"
   }
 }

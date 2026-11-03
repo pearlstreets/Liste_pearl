@@ -134,6 +134,12 @@ export async function loginUser(identifier, password) {
 // Logout
 // opts.menusFlushed : l'appelant vient de faire partir les menus (flushMenusSync), inutile d'attendre encore.
 export async function logoutUser(opts = {}) {
+  // Téléphone retiré des notifications du compte AVANT tout le reste : la
+  // route exige la session. Échec : retrait rejoué au prochain enregistrement.
+  // Chargé ici, comme les rappels : `auth` reste utilisable sans react-native.
+  try {
+    await require('./pushDirect').retirerAppareil();
+  } catch {}
   // Les menus en attente partent tant que les jetons sont valables.
   if (!(opts && opts.menusFlushed)) await flushMenusSync();
   try {
@@ -240,6 +246,11 @@ export async function deleteAccount() {
   }
   const data = res && res.data;
   if (res && res.ok && data && data.status === true) {
+    // Le serveur a déjà révoqué les appareils du compte supprimé : la clé
+    // locale est seulement oubliée, sans appel.
+    try {
+      await require('./pushDirect').oublierAppareilLocal();
+    } catch {}
     await clearTokens();
     await clearLocalUserData();
     return { success: true, message: data.message };

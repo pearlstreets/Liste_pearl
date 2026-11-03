@@ -1,4 +1,4 @@
-import { CONFIG } from './config';
+import { CONFIG, APP_HEADERS } from './config';
 import { sanitizeResponse, isTokenExpired, requestFingerprint } from './security';
 import { getSecureItem, setSecureItem, removeSecureItem } from './secureStorage';
 
@@ -56,7 +56,7 @@ export function refreshTokens(staleRefresh) {
       }
       const res = await fetchWithTimeout(`${BASE_URL}${REFRESH_PATH}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...APP_HEADERS },
         body: JSON.stringify({ refresh: staleRefresh }),
       });
       if (!res.ok) return null;
@@ -84,6 +84,7 @@ async function apiFetch(endpoint, { multipart, timeoutMs, ...options } = {}) {
     // Envoi de fichiers (FormData) : le Content-Type multipart est posé par fetch.
     ...(multipart ? {} : { 'Content-Type': 'application/json' }),
     'X-Request-ID': requestFingerprint(), // Track requests
+    ...APP_HEADERS,
     ...(options.headers || {}),
   };
 

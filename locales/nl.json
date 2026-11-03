@@ -724,7 +724,9 @@
     "title": "Een probleem melden",
     "pick": "Wat is er gebeurd?",
     "sentTitle": "Melding verzonden",
-    "sent": "Ons supportteam behandelt uw verzoek."
+    "sent": "Ons supportteam behandelt uw verzoek.",
+    "answerTitle": "Antwoord op uw melding",
+    "handled": "Uw melding is behandeld"
   },
   "stock": {
     "option": "Optie",
@@ -1704,5 +1706,8 @@
     "pendingRequests": "{{count}} openstaande verzoeken",
     "pendingRequests_one": "{{count}} openstaand verzoek",
     "pendingRequests_other": "{{count}} openstaande verzoeken"
+  },
+  "notifications": {
+    "channelOrders": "Bestellingen en leveringen"
   }
 }

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CONFIG } from './config';
+import { CONFIG, APP_HEADERS } from './config';
 import { champsVariante } from '../lib/variantes';
 import { refreshTokens as refreshSharedTokens, getTokens } from './api';
 
@@ -16,6 +16,7 @@ async function getStoredTokens() {
 function authHeaders(tokens, extra = {}) {
   return {
     'Content-Type': 'application/json',
+    ...APP_HEADERS,
     ...(tokens?.access ? { Authorization: `Bearer ${tokens.access}` } : {}),
     ...extra,
   };

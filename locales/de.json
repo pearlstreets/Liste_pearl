@@ -724,7 +724,9 @@
     "title": "Problem melden",
     "pick": "Was ist passiert?",
     "sentTitle": "Meldung gesendet",
-    "sent": "Unser Support-Team kümmert sich um Ihr Anliegen."
+    "sent": "Unser Support-Team kümmert sich um Ihr Anliegen.",
+    "answerTitle": "Antwort auf Ihre Meldung",
+    "handled": "Ihre Meldung wurde bearbeitet"
   },
   "stock": {
     "option": "Option",
@@ -1702,5 +1704,8 @@
     "pendingRequests": "{{count}} ausstehende Anfragen",
     "pendingRequests_one": "{{count}} ausstehende Anfrage",
     "pendingRequests_other": "{{count}} ausstehende Anfragen"
+  },
+  "notifications": {
+    "channelOrders": "Bestellungen und Lieferungen"
   }
 }
