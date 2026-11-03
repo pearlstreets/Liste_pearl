@@ -18,6 +18,7 @@ import BatchScreen from './BatchScreen';
 import RecipeEditScreen from './RecipeEditScreen';
 import SettingsScreen from './SettingsScreen';
 import SharedWeekScreen from './SharedWeekScreen';
+import MonthScreen from './MonthScreen';
 import useSharedWeeks from './useSharedWeeks';
 import { onMenuReminderOpen, takePendingMenuReminder } from '../../services/menuReminders';
 
@@ -43,6 +44,10 @@ function Inner({ navigation }) {
   }, []);
   const goShop = useCallback(() => setTab('shop'), []);
   const openShared = useCallback(() => push({ type: 'sharedWeek' }), [push]);
+  const openMonth = useCallback(
+    () => setStack((s) => (s.some((x) => x.type === 'month') ? s : [...s, { type: 'month' }])),
+    []
+  );
 
   // Notification de rappel touchée : on arrive sur le bon écran, sans calque par-dessus.
   const { ready, onboarded, recipeById } = m;
@@ -94,6 +99,8 @@ function Inner({ navigation }) {
   if (!m.onboarded) return <Onboarding />;
 
   const top = stack[stack.length - 1];
+  // Le calendrier reste monté sous une recette ouverte depuis lui : jour et mois choisis sont gardés au retour.
+  const monthOpen = stack.some((x) => x.type === 'month');
 
   return (
     <View style={s.fill}>
@@ -136,6 +143,7 @@ function Inner({ navigation }) {
             onOpenShop={goShop}
             onOpenBatch={openBatch}
             onOpenShared={sharedWeeks.length ? openShared : null}
+            onOpenMonth={openMonth}
           />
         </View>
         <View style={[s.fill, tab !== 'shop' && s.hidden]}>
@@ -151,15 +159,29 @@ function Inner({ navigation }) {
         ) : null}
       </View>
 
-      {top ? (
+      {monthOpen ? (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: '#fff' },
+            top.type !== 'month' && s.hidden,
+          ]}
+        >
+          <MonthScreen onClose={pop} onOpenRecipe={openRecipe} onOpenWeek={goWeek} />
+        </View>
+      ) : null}
+
+      {top && top.type !== 'month' ? (
         <View style={[StyleSheet.absoluteFill, { backgroundColor: '#fff' }]}>
           {top.type === 'recipe' ? (
             <RecipeScreen
+              key={`${top.id}|${top.mealKey || ''}`}
               id={top.id}
               mealKey={top.mealKey}
               onClose={pop}
               onCook={openCook}
               onEdit={openEdit}
+              onOpenRecipe={(rid) => openRecipe(rid)}
               navigation={navigation}
             />
           ) : null}

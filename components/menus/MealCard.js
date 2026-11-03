@@ -84,6 +84,15 @@ function MealCard({
   nearby,
   onOpenShop,
   people,
+  side,
+  sideTitle,
+  sideBad,
+  onOpenSide,
+  sideIdea,
+  sideIdeaTitle,
+  onAddSide,
+  onGuests,
+  guestsText,
 }) {
   const t = useT();
   const { i18n } = useTranslation();
@@ -143,6 +152,8 @@ function MealCard({
   }
 
   const left = !!meal.leftoverOf;
+  // Accompagnement choisi : compté dans les calories affichées.
+  const kcalShown = (Number(recipe.kcal) || 0) + (side ? Number(side.kcal) || 0 : 0);
   return (
     <View style={s.card}>
       <TouchableOpacity
@@ -188,12 +199,61 @@ function MealCard({
             {!recipe.custom ? (
               <View style={s.meta}>
                 <Ionicons name="flame-outline" size={14} color={T.muted} />
-                <Text style={s.metaTxt}>{recipe.kcal} {t('kcal')}</Text>
+                <Text style={s.metaTxt}>{kcalShown} {t('kcal')}</Text>
               </View>
             ) : null}
           </View>
         </View>
       </TouchableOpacity>
+      {side ? (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onOpenSide}
+          style={s.sideLine}
+          accessibilityRole="button"
+        >
+          <Ionicons
+            name={sideBad ? 'warning-outline' : 'leaf-outline'}
+            size={15}
+            color={sideBad ? T.danger : T.brandDark}
+          />
+          <Text style={s.sideLineTxt} numberOfLines={2}>
+            {t('sides.withLine', { title: sideTitle })}
+          </Text>
+        </TouchableOpacity>
+      ) : sideIdea ? (
+        <View style={s.sideLine}>
+          <Ionicons name="leaf-outline" size={15} color={T.muted} />
+          <Text style={[s.sideLineTxt, { color: T.muted }]} numberOfLines={2}>
+            {t('sides.idea', { title: sideIdeaTitle })}
+          </Text>
+          <TouchableOpacity
+            onPress={onAddSide}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={s.sideAdd}
+            accessibilityRole="button"
+            accessibilityLabel={`${t('sides.add')} ${sideIdeaTitle}`}
+          >
+            <Text style={s.sideAddTxt}>{t('sides.add')}</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+      {onGuests ? (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onGuests}
+          style={s.sideLine}
+          accessibilityRole="button"
+        >
+          <Ionicons name="people-outline" size={15} color={guestsText ? T.brandDark : T.muted} />
+          <Text
+            style={[s.sideLineTxt, !guestsText && { color: T.muted }]}
+            numberOfLines={2}
+          >
+            {guestsText ? `${t('guests.title')} ${guestsText}` : t('guests.title')}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
       <View style={s.actions}>
         <Action icon="shuffle" label={t('week.change')} onPress={onChange} />
         <Action
@@ -282,6 +342,23 @@ const s = StyleSheet.create({
   },
   nearbyName: { flex: 1, fontSize: 14, fontWeight: '700', color: T.ink },
   actions: { flexDirection: 'row', paddingHorizontal: 12, paddingBottom: 12, paddingTop: 2 },
+  sideLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginBottom: 10,
+    marginTop: -2,
+  },
+  sideLineTxt: { flex: 1, fontSize: 13, fontWeight: '600', color: T.ink, marginLeft: 6 },
+  sideAdd: {
+    borderWidth: 1,
+    borderColor: T.border,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginLeft: 8,
+  },
+  sideAddTxt: { fontSize: 12.5, fontWeight: '700', color: T.brandDark },
   action: {
     flex: 1,
     flexDirection: 'row',

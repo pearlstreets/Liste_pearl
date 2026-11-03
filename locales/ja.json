@@ -1048,7 +1048,45 @@
     "pilates": "ピラティス"
   },
   "menus": {
+    "prefs": {
+      "title": "献立の好み",
+      "intro": "任意です。選択は次に作成する週に適用され、現在の週は変わりません。",
+      "balanced": "バランスのよい週",
+      "balancedHint": "野菜を多く、揚げ物を少なく、適量に。",
+      "sides": "野菜の付け合わせを提案する",
+      "sidesHint": "料理に野菜が少ないとき。",
+      "quick": "平日はすばやく作れる料理",
+      "no": "いいえ",
+      "treats": "週あたりのお楽しみごはん",
+      "treatsHint": "ピザ、バーガー、フライドポテトなど。できれば金曜の夜か週末に。",
+      "treatsFree": "おまかせ",
+      "treatsNone": "なし",
+      "cuisines": "好きな料理ジャンル",
+      "cuisinesHint": "より多く提案されます。ほかのジャンルも引き続き提案されます。"
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "野菜の副菜を追加",
+      "hintWeek": "この料理は野菜が少なめです。任意：副菜をタップすると、この食事と買い物リストに追加されます。",
+      "hintList": "この料理は野菜が少なめです。任意：副菜をタップすると、材料がリストに追加されます。",
+      "add": "追加",
+      "see": "見る",
+      "chosenTitle": "野菜の副菜",
+      "inShopping": "材料は今週の買い物に同じ人数分で入っています。",
+      "remove": "副菜を外す",
+      "unsuitable": "この副菜はプロフィールに合わなくなりました。",
+      "withSide": "副菜込み：1人前 {{kcal}} kcal、たんぱく質 {{protein}} g",
+      "withLine": "{{title}} 付き",
+      "idea": "野菜のアイデア：{{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "この食事の目安：1人あたり {{kcal}} kcal、たんぱく質 {{protein}} g",
+      "day": "この日：1人あたり約 {{kcal}} kcal、たんぱく質 {{protein}} g",
+      "dayTarget": "予定の食事の目安：{{kcal}} kcal、たんぱく質 {{protein}} g",
+      "dayHeader": "この日の一人ずつの目安：",
+      "dayPerson": "{{name}}：約 {{kcal}} kcal、たんぱく質 {{protein}} g（目安 {{targetKcal}} kcal、{{targetProtein}} g）",
+      "dayHousehold": "この日の家族全体：約 {{kcal}} kcal、たんぱく質 {{protein}} g（目安 {{targetKcal}} kcal、{{targetProtein}} g）"
+    },
     "reminders": {
       "title": "リマインダー",
       "hint": "初期設定ではオフです。必要なものだけオンにしてください。",
@@ -1116,6 +1154,40 @@
       "budgetHint": "目安ですので、いつでも変更できます",
       "noBudget": "予算なし"
     },
+    "nutri": {
+      "title": "一人ひとりに合わせる",
+      "intro": "任意です。各自の年齢、身長、体重、活動量、目標を入力すると、分量と買い物リストが合わせて変わります。",
+      "start": "設定する",
+      "person": "{{n}}人目",
+      "personHint": "すべて任意です。空欄は標準の1人分として数えます。",
+      "name": "名前",
+      "age": "年齢",
+      "height": "身長 (cm)",
+      "weight": "体重 (kg)",
+      "sex": "性別",
+      "female": "女性",
+      "male": "男性",
+      "activity": "活動量",
+      "act_faible": "低い",
+      "act_moderee": "普通",
+      "act_elevee": "高い",
+      "act_intense": "とても高い",
+      "actHint_faible": "運動はほとんどしない",
+      "actHint_moderee": "週1〜3回の運動",
+      "actHint_elevee": "週3〜5回の運動",
+      "actHint_intense": "毎日の運動、または体を使う仕事",
+      "goal": "目標",
+      "goal_perdre": "体重を減らす",
+      "goal_maintenir": "体重を保つ",
+      "goal_prendre": "筋肉をつける",
+      "goalMinor": "18歳未満は目標なしで、成長に必要な量だけを考えます。",
+      "needs": "1日あたり約{{kcal}} kcal、たんぱく質{{protein}} g",
+      "remove": "削除",
+      "addAdult": "大人を追加",
+      "addChild": "子どもを追加",
+      "clear": "すべて消去",
+      "disclaimer": "目安の推定であり、医療上の助言ではありません。"
+    },
     "meals": {
       "all": "すべての食事",
       "soirOnly": "夜のみ",
@@ -1169,6 +1241,25 @@
       "sulfites": "亜硫酸塩",
       "miel": "はちみつ"
     },
+    "questionnaire": {
+      "p1Title": "誰のために料理しますか？",
+      "p1Text": "いちばん簡単な方法をお選びください。すべて任意です。",
+      "modeSimple": "シンプル",
+      "modeSimpleHint": "大人と子どもの人数。",
+      "modePerso": "カスタム",
+      "modePersoHint": "1人につき1枚のプロフィール：年齢、身長、体重、活動量。",
+      "keptHint": "すでに入力した人は保存されますが、「シンプル」のままでは計算に含まれません。",
+      "p2Title": "あなたの目標",
+      "p2Text": "大人ごとの目標と、1週間のごほうび食の回数。",
+      "goalNeedsPerso": "1ページ目で「カスタム」を選ぶと、人ごとに目標を設定できます。",
+      "p3Title": "あなたの好み",
+      "p3Text": "お好みの料理、食事制限、アレルギー、避けたい食材。",
+      "p4Title": "毎日の暮らし",
+      "p4Text": "手早い食事、予算、バランスのよい1週間、野菜の付け合わせ。",
+      "later": "あとで",
+      "redo": "アンケートをやり直す",
+      "redoHint": "メニューを自分好みにする4ページです。すべて任意で、入力のたびに保存されます。"
+    },
     "onboarding": {
       "skip": "スキップ",
       "step": "ステップ{{n}}/{{total}}",
@@ -1213,6 +1304,14 @@
       "noneTitle": "この食事のおすすめはありません",
       "noneText": "設定で制約を緩和してみてください。",
       "surprise": "おまかせで選ぶ"
+    },
+    "guests": {
+      "title": "誰が食べますか？",
+      "sub": "この食事を食べる人にチェックを入れてください。",
+      "subHeads": "この食事を食べる人数を指定してください。",
+      "atLeast": "少なくとも1人を選んでください。",
+      "done": "完了",
+      "all": "家族全員"
     },
     "added": {
       "ok": "{{count}} 品の商品を追加しました",
@@ -1482,7 +1581,23 @@
       "favEmptyTitle": "まだお気に入りがありません",
       "favEmptyText": "レシピのハートをタップすると、ここで見つかります。",
       "noResultsTitle": "結果がありません",
-      "noResultsText": "他のキーワードかフィルターをお試しください。"
+      "noResultsText": "他のキーワードかフィルターをお試しください。",
+      "balanced": "バランス",
+      "quick20": "時短（20分以内）",
+      "under30": "30分以内",
+      "plentyVeg": "野菜たっぷり",
+      "cuisinesTitle": "世界の料理",
+      "cuisines": {
+        "asie": "アジア",
+        "inde": "インド",
+        "maghreb-orient": "マグレブ・中東",
+        "italie": "イタリア",
+        "espagne-portugal": "スペイン・ポルトガル",
+        "grece": "ギリシャ",
+        "france": "フランス",
+        "ameriques": "アメリカ大陸",
+        "afrique": "アフリカ"
+      }
     },
     "fridge": {
       "intro": "ご自宅に残っている食材を入力してください。それを活用したレシピをご提案します。",
@@ -1493,6 +1608,9 @@
       "search": "食材検索",
       "results": "提案レシピ",
       "coverage": "{{pct}}％ すでにあります",
+      "have": "{{total}}品中{{have}}品をお持ちです",
+      "addMissing": "足りないものをリストに追加",
+      "addedMissing": "リストに追加しました",
       "allThere": "すべて揃っています。",
       "missing": "足りないもの：{{list}}",
       "usesUp": "{{count}}個の残り物を消費します。",
@@ -1636,6 +1754,24 @@
       "addWeek": "自分の1週間に追加",
       "addedShop": "買い物に追加しました",
       "addedWeek": "1週間に追加しました"
+    },
+    "month": {
+      "view": "月を表示",
+      "prev": "前の月",
+      "next": "次の月",
+      "past": "過去の週です。閲覧のみ可能です。",
+      "prepare": "この週を準備する",
+      "prepareNote": "現在の週は履歴に残ります。",
+      "resume": "この週を再開する",
+      "far": "先に前の週を準備してください。",
+      "searchPh": "レシピを検索",
+      "searchHint": "料理名または食材名を入力してください。",
+      "addTitle": "私の週に追加",
+      "addSub": "このレシピに置き換える食事を選んでください。",
+      "replaceQ": "{{old}}を{{new}}に置き換えますか？この食事は固定されます。",
+      "replace": "置き換える",
+      "redoTitle": "この週をやり直す",
+      "redoAsk": "これらの食事が現在の週になります。今の週は履歴に残ります。"
     }
   },
   "counts": {

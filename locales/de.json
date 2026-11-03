@@ -1050,7 +1050,45 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "prefs": {
+      "title": "Menü-Vorlieben",
+      "intro": "Optional. Ihre Auswahl gilt für die nächste geplante Woche, die aktuelle Woche bleibt unverändert.",
+      "balanced": "Ausgewogene Woche",
+      "balancedHint": "Mehr Gemüse, weniger Frittiertes, vernünftige Portionen.",
+      "sides": "Gemüsebeilage vorschlagen",
+      "sidesHint": "Wenn ein Gericht wenig Gemüse enthält.",
+      "quick": "Schnelle Gerichte unter der Woche",
+      "no": "Nein",
+      "treats": "Genussmahlzeiten pro Woche",
+      "treatsHint": "Pizza, Burger, Pommes, am liebsten Freitagabend oder am Wochenende.",
+      "treatsFree": "Frei",
+      "treatsNone": "Keine",
+      "cuisines": "Bevorzugte Küchen",
+      "cuisinesHint": "Werden öfter vorgeschlagen, die anderen bleiben möglich."
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "Gemüsebeilage hinzufügen",
+      "hintWeek": "Dieses Gericht enthält wenig Gemüse. Optional: Tippen Sie auf eine Beilage, um sie zu dieser Mahlzeit und zu Ihrem Einkauf hinzuzufügen.",
+      "hintList": "Dieses Gericht enthält wenig Gemüse. Optional: Tippen Sie auf eine Beilage, um ihre Zutaten zu Ihrer Liste hinzuzufügen.",
+      "add": "Hinzufügen",
+      "see": "Ansehen",
+      "chosenTitle": "Gemüsebeilage",
+      "inShopping": "Ihre Zutaten sind im Wocheneinkauf, für dieselben Portionen.",
+      "remove": "Beilage entfernen",
+      "unsuitable": "Diese Beilage passt nicht mehr zu Ihrem Profil.",
+      "withSide": "Mit Beilage: {{kcal}} kcal und {{protein}} g Eiweiß pro Portion",
+      "withLine": "Mit {{title}}",
+      "idea": "Gemüseidee: {{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "Ziel für diese Mahlzeit: {{kcal}} kcal, {{protein}} g Eiweiß pro Person",
+      "day": "Dieser Tag: etwa {{kcal}} kcal und {{protein}} g Eiweiß pro Person",
+      "dayTarget": "Ziel der geplanten Mahlzeiten: {{kcal}} kcal und {{protein}} g Eiweiß",
+      "dayHeader": "An diesem Tag, für jede Person:",
+      "dayPerson": "{{name}}: etwa {{kcal}} kcal und {{protein}} g Eiweiß, Ziel {{targetKcal}} kcal und {{targetProtein}} g",
+      "dayHousehold": "An diesem Tag, für den Haushalt: etwa {{kcal}} kcal und {{protein}} g Eiweiß, Ziel {{targetKcal}} kcal und {{targetProtein}} g"
+    },
     "reminders": {
       "title": "Erinnerungen",
       "hint": "Standardmäßig deaktiviert. Aktivieren Sie nur die, die für Sie nützlich sind.",
@@ -1118,6 +1156,40 @@
       "budgetHint": "Unverbindliche Schätzung, jederzeit anpassbar",
       "noBudget": "Kein Budget"
     },
+    "nutri": {
+      "title": "Für jede Person anpassen",
+      "intro": "Optional. Geben Sie Alter, Größe, Gewicht, Aktivität und Ziel jeder Person an, Portionen und Einkaufsliste passen sich an.",
+      "start": "Anpassen",
+      "person": "Person {{n}}",
+      "personHint": "Alles ist optional, ein leeres Feld zählt als Standardportion.",
+      "name": "Vorname",
+      "age": "Alter",
+      "height": "Größe (cm)",
+      "weight": "Gewicht (kg)",
+      "sex": "Geschlecht",
+      "female": "Frau",
+      "male": "Mann",
+      "activity": "Aktivität",
+      "act_faible": "Gering",
+      "act_moderee": "Mäßig",
+      "act_elevee": "Hoch",
+      "act_intense": "Intensiv",
+      "actHint_faible": "Wenig oder kein Sport",
+      "actHint_moderee": "1 bis 3 Trainingseinheiten pro Woche",
+      "actHint_elevee": "3 bis 5 Trainingseinheiten pro Woche",
+      "actHint_intense": "Täglich Sport oder körperliche Arbeit",
+      "goal": "Ziel",
+      "goal_perdre": "Abnehmen",
+      "goal_maintenir": "Gewicht halten",
+      "goal_prendre": "Muskeln aufbauen",
+      "goalMinor": "Unter 18 Jahren kein Ziel, nur der Wachstumsbedarf zählt.",
+      "needs": "Etwa {{kcal}} kcal und {{protein}} g Eiweiß pro Tag",
+      "remove": "Entfernen",
+      "addAdult": "Erwachsenen hinzufügen",
+      "addChild": "Kind hinzufügen",
+      "clear": "Alles löschen",
+      "disclaimer": "Unverbindliche Schätzung, keine ärztliche Beratung."
+    },
     "meals": {
       "all": "Alle Mahlzeiten",
       "soirOnly": "Nur abends",
@@ -1171,6 +1243,25 @@
       "sulfites": "Sulfite",
       "miel": "Honig"
     },
+    "questionnaire": {
+      "p1Title": "Für wen kochen wir?",
+      "p1Text": "Wählen Sie, was für Sie am einfachsten ist. Alles ist freiwillig.",
+      "modeSimple": "Einfach",
+      "modeSimpleHint": "Die Anzahl der Erwachsenen und Kinder.",
+      "modePerso": "Individuell",
+      "modePersoHint": "Ein Profil pro Person: Alter, Größe, Gewicht, Aktivität.",
+      "keptHint": "Bereits eingetragene Personen bleiben gespeichert, zählen aber nicht, solange Sie bei Einfach bleiben.",
+      "p2Title": "Ihre Ziele",
+      "p2Text": "Ein Ziel pro Erwachsenem und wie viele Genussmahlzeiten pro Woche.",
+      "goalNeedsPerso": "Wählen Sie auf Seite 1 Individuell, um für jede Person ein Ziel festzulegen.",
+      "p3Title": "Ihr Geschmack",
+      "p3Text": "Lieblingsküchen, Ernährungsweise, Allergien und Lebensmittel, die Sie meiden.",
+      "p4Title": "Ihr Alltag",
+      "p4Text": "Schnelle Gerichte, Budget, eine ausgewogene Woche und eine Gemüsebeilage.",
+      "later": "Später",
+      "redo": "Fragebogen wiederholen",
+      "redoHint": "Vier Seiten, um Ihre Menüs anzupassen. Alles ist freiwillig und wird laufend gespeichert."
+    },
     "onboarding": {
       "skip": "Überspringen",
       "step": "Schritt {{n}} von {{total}}",
@@ -1215,6 +1306,14 @@
       "noneTitle": "Keine weiteren Ideen für diese Mahlzeit",
       "noneText": "Versuchen Sie, Ihre Einschränkungen in den Einstellungen zu lockern.",
       "surprise": "Überraschen Sie mich"
+    },
+    "guests": {
+      "title": "Für wen?",
+      "sub": "Wählen Sie die Personen aus, die dieses Essen essen.",
+      "subHeads": "Geben Sie an, wie viele Personen dieses Essen essen.",
+      "atLeast": "Wählen Sie mindestens eine Person aus.",
+      "done": "Fertig",
+      "all": "Ganzer Haushalt"
     },
     "added": {
       "ok": "{{count}} Produkte hinzugefügt",
@@ -1508,7 +1607,23 @@
       "favEmptyTitle": "Noch keine Favoriten",
       "favEmptyText": "Tippen Sie auf das Herz bei einem Rezept, um es hier zu speichern.",
       "noResultsTitle": "Kein Ergebnis",
-      "noResultsText": "Versuchen Sie ein anderes Wort oder entfernen Sie einen Filter."
+      "noResultsText": "Versuchen Sie ein anderes Wort oder entfernen Sie einen Filter.",
+      "balanced": "Ausgewogen",
+      "quick20": "Schnell (max. 20 Min.)",
+      "under30": "Unter 30 Min.",
+      "plentyVeg": "Viel Gemüse",
+      "cuisinesTitle": "Küchen der Welt",
+      "cuisines": {
+        "asie": "Asien",
+        "inde": "Indien",
+        "maghreb-orient": "Maghreb und Orient",
+        "italie": "Italien",
+        "espagne-portugal": "Spanien und Portugal",
+        "grece": "Griechenland",
+        "france": "Frankreich",
+        "ameriques": "Amerika",
+        "afrique": "Afrika"
+      }
     },
     "fridge": {
       "intro": "Geben Sie an, was Sie noch haben, wir finden passende Rezepte dafür.",
@@ -1519,6 +1634,9 @@
       "search": "Zutat suchen",
       "results": "Mögliche Rezepte",
       "coverage": "{{pct}} % bereits vorhanden",
+      "have": "Sie haben {{have}} von {{total}}",
+      "addMissing": "Fehlendes zu meiner Liste hinzufügen",
+      "addedMissing": "Zu Ihrer Liste hinzugefügt",
       "allThere": "Sie haben alles.",
       "missing": "Fehlt: {{list}}",
       "usesUp": "Verbraucht {{count}} Reste.",
@@ -1670,6 +1788,24 @@
       "addWeek": "Zu meiner Woche hinzufügen",
       "addedShop": "Zu Ihren Einkäufen hinzugefügt",
       "addedWeek": "Zu Ihrer Woche hinzugefügt"
+    },
+    "month": {
+      "view": "Monat ansehen",
+      "prev": "Vorheriger Monat",
+      "next": "Nächster Monat",
+      "past": "Vergangene Woche, nur zum Ansehen.",
+      "prepare": "Diese Woche planen",
+      "prepareNote": "Ihre aktuelle Woche bleibt im Verlauf.",
+      "resume": "Diese Woche fortsetzen",
+      "far": "Planen Sie zuerst die vorherige Woche.",
+      "searchPh": "Rezept suchen",
+      "searchHint": "Geben Sie den Namen eines Gerichts oder einer Zutat ein.",
+      "addTitle": "Zu meiner Woche hinzufügen",
+      "addSub": "Wählen Sie die Mahlzeit, die dieses Rezept ersetzt.",
+      "replaceQ": "{{old}} durch {{new}} ersetzen? Diese Mahlzeit wird beibehalten.",
+      "replace": "Ersetzen",
+      "redoTitle": "Diese Woche wiederholen",
+      "redoAsk": "Diese Mahlzeiten werden Ihre aktuelle Woche. Ihre bisherige Woche bleibt im Verlauf."
     }
   },
   "counts": {

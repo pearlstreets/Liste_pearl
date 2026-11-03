@@ -30,10 +30,15 @@ import {
   idFromRow,
   norm,
   formatEur,
+  CUISINES,
+  PLENTY_VEG,
+  genHealthAsync,
+  personsFor,
 } from '../../lib/menus';
 import { T } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
+import { AddToWeekSheet } from './MonthScreen';
 import RecipeVisual from './RecipeVisual';
 import { useMenus, conflictList } from './MenusContext';
 import useT from './useT';
@@ -51,9 +56,17 @@ const MODE_ICON = {
   history: 'time',
 };
 const COURSES = ['plat', 'entree', 'dessert', 'petit-dejeuner'];
-const QUICK_TAGS = ['rapide', 'leger', 'economique', 'enfants', 'batch', 'sans-cuisson'];
+const QUICK_TAGS = ['leger', 'economique', 'enfants', 'batch', 'sans-cuisson'];
+// Temps maximal (minutes) des puces « Rapide » et « Moins de 30 min » : une seule active à la fois.
+const TIME_CHIPS = [
+  { max: 20, label: 'discover.quick20' },
+  { max: 30, label: 'discover.under30' },
+];
 const PAGE = 30; // recettes ajoutées à chaque fin de liste
-const FRIDGE_LIMIT = 40;
+const FRIDGE_LIMIT = 60;
+const FRIDGE_MAX_MISSING = 5;
+// Etat du bouton d'ajout par recette ET par liste de manquants : si le frigo change, le bouton se réarme.
+const fridgeKey = (it) => `${it.recipe.id}:${it.missing.join(',')}`;
 const DEBOUNCE_MS = 130; // attente apres la derniere frappe avant de relancer la recherche
 
 // Ordre sans recherche : les recettes relues d'abord, puis les générées dans un ordre mélangé stable pour la journée.
@@ -78,6 +91,8 @@ const RecipeRow = memo(function RecipeRow({
   fav,
   onPress,
   onFav,
+  onAddWeek,
+  addLabel,
 }) {
   return (
     <TouchableOpacity
@@ -101,6 +116,17 @@ const RecipeRow = memo(function RecipeRow({
           </Text>
         ) : null}
       </View>
+      {onAddWeek ? (
+        <TouchableOpacity
+          onPress={() => onAddWeek(recipe)}
+          hitSlop={HIT}
+          accessibilityRole="button"
+          accessibilityLabel={addLabel}
+          style={{ marginRight: 12 }}
+        >
+          <Ionicons name="calendar-outline" size={24} color={T.faint} />
+        </TouchableOpacity>
+      ) : null}
       <TouchableOpacity onPress={() => onFav(recipe.id)} hitSlop={HIT} accessibilityRole="button">
         <Ionicons
           name={fav ? 'heart' : 'heart-outline'}
@@ -119,6 +145,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const catalog = m.recipeById;
   const useCat = catalogActive(catalog);
   const [mode, setMode] = useState('ideas');
+  const [addRecipe, setAddRecipe] = useState(null);
   const [q, setQ] = useState('');
   // Recherche relancee 130 ms apres la derniere frappe (pas a chaque lettre), puis calcul differe ;
   // champ vide : liste complete tout de suite, sans attendre.
@@ -135,6 +162,11 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const dq = q ? qDiff : '';
   const [course, setCourse] = useState(null);
   const [tags, setTags] = useState([]);
+  // Repères santé, tous éteints par défaut : équilibré, temps maximal, plein de légumes, une cuisine du monde.
+  const [balanced, setBalanced] = useState(false);
+  const [maxTime, setMaxTime] = useState(null);
+  const [plentyVeg, setPlentyVeg] = useState(false);
+  const [cuisine, setCuisine] = useState(null);
   // Recherche ou filtre changé : la liste repart tout en haut, sur les premiers résultats.
   // Deja en haut : pas de defilement force (un defilement a chaque recherche, espace de plus d'une demi-seconde,
   // fait croire a la liste qu'elle est lente a se mettre a jour).
@@ -145,7 +177,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       listRef.current.scrollToOffset({ offset: 0, animated: false });
       offsetRef.current = 0;
     }
-  }, [mode, dq, course, tags]);
+  }, [mode, dq, course, tags, balanced, maxTime, plentyVeg, cuisine]);
   const onScrollEnd = useCallback((e) => {
     offsetRef.current = e.nativeEvent.contentOffset.y;
   }, []);
@@ -181,7 +213,17 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     buildSearchIndex(tl, {
       yieldFn: () => new Promise((r) => setTimeout(r, 0)),
       cancelled: () => off,
-    }).catch(() => {});
+    })
+      // puis les repères santé du catalogue (légumes, cuisine), pour que la première puce réponde tout de suite
+      .then(() =>
+        off
+          ? null
+          : genHealthAsync(undefined, {
+              yieldFn: () => new Promise((r) => setTimeout(r, 0)),
+              cancelled: () => off,
+            })
+      )
+      .catch(() => {});
     return () => {
       off = true;
     };
@@ -197,6 +239,10 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         favoritesOnly: mode === 'favorites',
         favorites,
         month: mode === 'season' ? month : undefined,
+        maxTimeMin: maxTime || undefined,
+        balanced: balanced || undefined,
+        minVeg: plentyVeg ? PLENTY_VEG : undefined,
+        cuisine: cuisine || undefined,
       },
       titleOf: (r) => texts.recipeTitle(r.id),
       ingredientNameOf: (k) => texts.ingredientName(k),
@@ -219,7 +265,25 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
     }
     const list = searchRecipes(base.legacy || recipes, opts);
     return { total: list.length, refs: list.map((_, i) => -(i + 1)), legacy: list };
-  }, [mode, base, dq, course, tags, favorites, month, texts, useCat, catalog, tl, seed, recipes]);
+  }, [
+    mode,
+    base,
+    dq,
+    course,
+    tags,
+    balanced,
+    maxTime,
+    plentyVeg,
+    cuisine,
+    favorites,
+    month,
+    texts,
+    useCat,
+    catalog,
+    tl,
+    seed,
+    recipes,
+  ]);
 
   // Pagination : 30 recettes d'abord, 30 de plus à chaque fin de liste ; repart à 30 quand les résultats changent.
   // La clé de pagination ignore les favoris hors du mode favoris : cocher un cœur ne ramène pas la liste à 30.
@@ -227,7 +291,25 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const pageKey = useMemo(
     () => ({}),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [mode, base, dq, course, tags, month, texts, useCat, catalog, tl, seed, recipes, favDep]
+    [
+      mode,
+      base,
+      dq,
+      course,
+      tags,
+      balanced,
+      maxTime,
+      plentyVeg,
+      cuisine,
+      month,
+      texts,
+      useCat,
+      catalog,
+      tl,
+      seed,
+      recipes,
+      favDep,
+    ]
   );
   const [page, setPage] = useState({ res: null, n: PAGE });
   const shown = results && page.res === pageKey ? page.n : PAGE;
@@ -236,30 +318,58 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   }, [results, shown, pageKey]);
   const pageData = useMemo(() => (results ? results.refs.slice(0, shown) : []), [results, shown]);
 
+  // Avec ce que j'ai : placard du foyer compté comme présent, préférences rapide et équilibré respectées,
+  // classement par nombre d'ingrédients manquants (aucun d'abord, puis 1, 2...).
   const fridgeResults = useMemo(() => {
     if (mode !== 'fridge' || fridge.length === 0) return [];
     const toUseUp = useUp.filter((k) => fridge.includes(k));
+    const pf = profile && profile.prefs;
+    const filters = {
+      maxTimeMin: pf && pf.quick > 0 ? pf.quick : undefined,
+      balanced: pf && pf.balanced === true ? true : undefined,
+    };
+    const common = {
+      ingredients,
+      toUseUp,
+      filters,
+      basics: profile && Array.isArray(profile.pantry) ? profile.pantry : [],
+      byMissing: true,
+      maxMissing: FRIDGE_MAX_MISSING,
+      limit: FRIDGE_LIMIT,
+    };
     if (useCat) {
       try {
         return pantryCatalog({
+          ...common,
           catalog,
           legacyList: base.legacy,
           allowedRows: base.allowed,
-          ingredients,
           have: fridge,
-          toUseUp,
-          limit: FRIDGE_LIMIT,
         }).items;
       } catch {
         /* repli ci-dessous */
       }
     }
-    return recipesByPantry(base.legacy || recipes, fridge, {
-      ingredients,
-      toUseUp,
-      limit: FRIDGE_LIMIT,
-    });
-  }, [mode, base, fridge, ingredients, useUp, useCat, catalog, recipes]);
+    return recipesByPantry(base.legacy || recipes, fridge, common);
+  }, [mode, base, fridge, ingredients, useUp, useCat, catalog, recipes, profile]);
+
+  // Ajout des seuls ingrédients manquants à la liste (portions du foyer, sans doublon).
+  const [fridgeAdded, setFridgeAdded] = useState({});
+  const addMissing = useCallback(
+    async (item) => {
+      const id = fridgeKey(item);
+      setFridgeAdded((a) => (a[id] === 'busy' ? a : { ...a, [id]: 'busy' }));
+      let st = 'error';
+      try {
+        const r = await m.sendRecipeToList(item.recipe.id, personsFor(profile, null, null), item.missing);
+        st = r && (r.status === 'ok' || r.status === 'already' || r.status === 'empty') ? 'ok' : 'error';
+      } catch {
+        st = 'error';
+      }
+      setFridgeAdded((a) => ({ ...a, [id]: st }));
+    },
+    [m, profile]
+  );
 
   const pickable = useMemo(() => {
     if (mode !== 'fridge') return [];
@@ -296,7 +406,8 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       let v;
       if (r.custom) v = t('recipe.minutes', { n: r.timeMin });
       else {
-        const c = costOf(r, Math.max(1, profile.adults + profile.children * 0.6));
+        // portions du foyer (personnes renseignées comprises), comme la semaine
+        const c = costOf(r, personsFor(profile, null, null));
         v = `${t('recipe.minutes', { n: r.timeMin })} · ${r.kcal} ${t('kcal')} · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
         v = isolerPrix(isolerUnitesLatines(v, lang), lang);
       }
@@ -325,14 +436,14 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       const w = r.custom ? warningOf(r) : conflictOf(r);
       if (w && w.found)
         extra = t('myRecipes.rowWarning', { list: r.custom ? warningList(w, t) : conflictList(w, t) });
-      return (
+      const row = (
         <RecipeRow
           recipe={r}
           title={texts.recipeTitle(r.id)}
           ingredients={ingredients}
           meta={
             item && item.recipe
-              ? t('fridge.coverage', { pct: Math.round(item.coverage * 100) }) +
+              ? t('fridge.have', { have: item.have.length, total: item.have.length + item.missing.length }) +
                 ' · ' +
                 t('recipe.minutes', { n: r.timeMin })
               : metaOf(r)
@@ -341,10 +452,26 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           fav={favSet.has(r.id)}
           onPress={onOpenRecipe}
           onFav={toggleFav}
+          onAddWeek={setAddRecipe}
+          addLabel={t('month.addTitle')}
         />
       );
+      if (!item || !item.recipe || item.missing.length === 0) return row;
+      const st = fridgeAdded[fridgeKey(item)];
+      return (
+        <View>
+          {row}
+          <View style={{ alignItems: 'flex-start', marginBottom: 8 }}>
+            <GhostButton
+              icon={st === 'ok' ? 'checkmark-circle-outline' : 'cart-outline'}
+              label={st === 'ok' ? t('fridge.addedMissing') : t('fridge.addMissing')}
+              onPress={st === 'ok' || st === 'busy' ? undefined : () => addMissing(item)}
+            />
+          </View>
+        </View>
+      );
     },
-    [texts, ingredients, favSet, onOpenRecipe, warningOf, conflictOf, toggleFav, metaOf, t, results, catalog]
+    [texts, ingredients, favSet, onOpenRecipe, warningOf, conflictOf, toggleFav, metaOf, t, results, catalog, fridgeAdded, addMissing]
   );
 
   // Cle stable : l'id de la recette (jamais la position), meme fonction tant que les resultats ne changent pas.
@@ -391,6 +518,27 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
             onPress={() => setCourse(course === c ? null : c)}
           />
         ))}
+        <Chip
+          small
+          label={t('discover.balanced')}
+          on={balanced}
+          onPress={() => setBalanced(!balanced)}
+        />
+        {TIME_CHIPS.map((x) => (
+          <Chip
+            small
+            key={x.max}
+            label={t(x.label)}
+            on={maxTime === x.max}
+            onPress={() => setMaxTime(maxTime === x.max ? null : x.max)}
+          />
+        ))}
+        <Chip
+          small
+          label={t('discover.plentyVeg')}
+          on={plentyVeg}
+          onPress={() => setPlentyVeg(!plentyVeg)}
+        />
         {QUICK_TAGS.map((x) => (
           <Chip
             small
@@ -398,6 +546,24 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
             label={t(`tags.${x}`)}
             on={tags.includes(x)}
             onPress={() => toggleTag(x)}
+          />
+        ))}
+      </ScrollView>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={s.filters}
+      >
+        <Text style={[s.tip, { alignSelf: 'center', marginRight: 8 }]}>
+          {t('discover.cuisinesTitle')}
+        </Text>
+        {CUISINES.map((x) => (
+          <Chip
+            small
+            key={x}
+            label={t(`discover.cuisines.${x}`)}
+            on={cuisine === x}
+            onPress={() => setCuisine(cuisine === x ? null : x)}
           />
         ))}
       </ScrollView>
@@ -627,6 +793,9 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         removeClippedSubviews={Platform.OS === 'android'}
         showsVerticalScrollIndicator={false}
       />
+      {addRecipe ? (
+        <AddToWeekSheet recipe={addRecipe} onClose={() => setAddRecipe(null)} />
+      ) : null}
     </View>
   );
 }

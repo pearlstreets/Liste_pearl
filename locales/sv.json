@@ -1050,7 +1050,45 @@
     "pilates": "Pilates"
   },
   "menus": {
+    "prefs": {
+      "title": "Menyinställningar",
+      "intro": "Valfritt. Dina val gäller nästa vecka du planerar, den pågående veckan ändras inte.",
+      "balanced": "Balanserad vecka",
+      "balancedHint": "Mer grönsaker, mindre friterat, rimliga portioner.",
+      "sides": "Föreslå ett grönsakstillbehör",
+      "sidesHint": "När en rätt innehåller lite grönsaker.",
+      "quick": "Snabba måltider på vardagar",
+      "no": "Nej",
+      "treats": "Njutningsmåltider per vecka",
+      "treatsHint": "Pizza, hamburgare, pommes frites, helst på fredagskvällen eller helgen.",
+      "treatsFree": "Fritt",
+      "treatsNone": "Inga",
+      "cuisines": "Favoritkök",
+      "cuisinesHint": "Föreslås oftare, de andra är fortfarande möjliga."
+    },
     "kcal": "kcal",
+    "sides": {
+      "title": "Lägg till ett grönsakstillbehör",
+      "hintWeek": "Rätten innehåller lite grönsaker. Valfritt: tryck på ett tillbehör för att lägga till det i måltiden och i dina inköp.",
+      "hintList": "Rätten innehåller lite grönsaker. Valfritt: tryck på ett tillbehör för att lägga till dess ingredienser i din lista.",
+      "add": "Lägg till",
+      "see": "Visa",
+      "chosenTitle": "Grönsakstillbehör",
+      "inShopping": "Ingredienserna finns i veckans inköp, för samma portioner.",
+      "remove": "Ta bort tillbehöret",
+      "unsuitable": "Tillbehöret passar inte längre din profil.",
+      "withSide": "Med tillbehöret: {{kcal}} kcal och {{protein}} g protein per portion",
+      "withLine": "Med {{title}}",
+      "idea": "Grönsaksidé: {{title}}"
+    },
+    "kcalInfo": {
+      "mealTarget": "Mål för måltiden: {{kcal}} kcal, {{protein}} g protein per person",
+      "day": "Den här dagen: cirka {{kcal}} kcal och {{protein}} g protein per person",
+      "dayTarget": "Mål för planerade måltider: {{kcal}} kcal och {{protein}} g protein",
+      "dayHeader": "Den här dagen, per person:",
+      "dayPerson": "{{name}}: cirka {{kcal}} kcal och {{protein}} g protein, mål {{targetKcal}} kcal och {{targetProtein}} g",
+      "dayHousehold": "Den här dagen, för hushållet: cirka {{kcal}} kcal och {{protein}} g protein, mål {{targetKcal}} kcal och {{targetProtein}} g"
+    },
     "reminders": {
       "title": "Påminnelser",
       "hint": "Avstängda som standard. Slå bara på dem du har nytta av.",
@@ -1118,6 +1156,40 @@
       "budgetHint": "Ungefärlig uppskattning, kan ändras när som helst",
       "noBudget": "Ingen budget"
     },
+    "nutri": {
+      "title": "Anpassa för varje person",
+      "intro": "Valfritt. Ange ålder, längd, vikt, aktivitet och mål för var och en, portionerna och inköpslistan anpassas.",
+      "start": "Anpassa",
+      "person": "Person {{n}}",
+      "personHint": "Allt är valfritt, ett tomt fält räknas som en standardportion.",
+      "name": "Förnamn",
+      "age": "Ålder",
+      "height": "Längd (cm)",
+      "weight": "Vikt (kg)",
+      "sex": "Kön",
+      "female": "Kvinna",
+      "male": "Man",
+      "activity": "Aktivitet",
+      "act_faible": "Låg",
+      "act_moderee": "Måttlig",
+      "act_elevee": "Hög",
+      "act_intense": "Intensiv",
+      "actHint_faible": "Lite eller ingen träning",
+      "actHint_moderee": "1 till 3 träningspass i veckan",
+      "actHint_elevee": "3 till 5 träningspass i veckan",
+      "actHint_intense": "Träning varje dag eller fysiskt arbete",
+      "goal": "Mål",
+      "goal_perdre": "Gå ner i vikt",
+      "goal_maintenir": "Behålla vikten",
+      "goal_prendre": "Bygga muskler",
+      "goalMinor": "Under 18 år finns inget mål, bara behoven för växandet räknas.",
+      "needs": "Cirka {{kcal}} kcal och {{protein}} g protein per dag",
+      "remove": "Ta bort",
+      "addAdult": "Lägg till en vuxen",
+      "addChild": "Lägg till ett barn",
+      "clear": "Rensa allt",
+      "disclaimer": "Ungefärlig uppskattning, inte medicinsk rådgivning."
+    },
     "meals": {
       "all": "Alla måltider",
       "soirOnly": "Endast middagar",
@@ -1171,6 +1243,25 @@
       "sulfites": "Sulfiter",
       "miel": "Honung"
     },
+    "questionnaire": {
+      "p1Title": "Vem lagar vi mat åt?",
+      "p1Text": "Välj det sätt som är enklast för dig. Allt är frivilligt.",
+      "modeSimple": "Enkelt",
+      "modeSimpleHint": "Antal vuxna och barn.",
+      "modePerso": "Anpassat",
+      "modePersoHint": "Ett kort per person: ålder, längd, vikt, aktivitet.",
+      "keptHint": "Personer du redan fyllt i sparas, men räknas inte så länge du stannar på Enkelt.",
+      "p2Title": "Dina mål",
+      "p2Text": "Ett mål per vuxen och hur många festmåltider per vecka.",
+      "goalNeedsPerso": "Välj Anpassat på sida 1 för att ange ett mål för varje person.",
+      "p3Title": "Din smak",
+      "p3Text": "Favoritkök, kost, allergier och livsmedel du vill undvika.",
+      "p4Title": "Din vardag",
+      "p4Text": "Snabba måltider, budget, en balanserad vecka och ett grönsakstillbehör.",
+      "later": "Senare",
+      "redo": "Gör frågeformuläret igen",
+      "redoHint": "Fyra sidor för att anpassa dina menyer. Allt är frivilligt och sparas efter hand."
+    },
     "onboarding": {
       "skip": "Hoppa över",
       "step": "Steg {{n}} av {{total}}",
@@ -1215,6 +1306,14 @@
       "noneTitle": "Fler idéer för denna måltid",
       "noneText": "Testa att lätta på begränsningarna i inställningarna.",
       "surprise": "Överraska mig"
+    },
+    "guests": {
+      "title": "Vem äter?",
+      "sub": "Kryssa i de som äter den här måltiden.",
+      "subHeads": "Ange hur många som äter den här måltiden.",
+      "atLeast": "Kryssa i minst en person.",
+      "done": "Klart",
+      "all": "Hela hushållet"
     },
     "added": {
       "ok": "{{count}} produkter har lagts till",
@@ -1510,7 +1609,23 @@
       "favEmptyTitle": "Inga favoriter än",
       "favEmptyText": "Tryck hjärtat på ett recept för att hitta det här.",
       "noResultsTitle": "Inget resultat",
-      "noResultsText": "Prova ett annat ord eller ta bort ett filter."
+      "noResultsText": "Prova ett annat ord eller ta bort ett filter.",
+      "balanced": "Balanserat",
+      "quick20": "Snabbt (max 20 min)",
+      "under30": "Under 30 min",
+      "plentyVeg": "Mycket grönsaker",
+      "cuisinesTitle": "Världens kök",
+      "cuisines": {
+        "asie": "Asien",
+        "inde": "Indien",
+        "maghreb-orient": "Maghreb och Mellanöstern",
+        "italie": "Italien",
+        "espagne-portugal": "Spanien och Portugal",
+        "grece": "Grekland",
+        "france": "Frankrike",
+        "ameriques": "Amerika",
+        "afrique": "Afrika"
+      }
     },
     "fridge": {
       "intro": "Berätta vad du har kvar, så hittar vi recept som använder det.",
@@ -1521,6 +1636,9 @@
       "search": "Sök ingrediens",
       "results": "Möjliga recept",
       "coverage": "{{pct}} % har du redan hemma",
+      "have": "Du har {{have}} av {{total}}",
+      "addMissing": "Lägg till det som saknas i min lista",
+      "addedMissing": "Tillagt i din lista",
       "allThere": "Du har allt.",
       "missing": "Saknas: {{list}}",
       "usesUp": "Får slut på {{count}} rester.",
@@ -1670,6 +1788,24 @@
       "addWeek": "Lägg till i min vecka",
       "addedShop": "Tillagt i dina inköp",
       "addedWeek": "Tillagt i din vecka"
+    },
+    "month": {
+      "view": "Visa månaden",
+      "prev": "Föregående månad",
+      "next": "Nästa månad",
+      "past": "Tidigare vecka, endast visning.",
+      "prepare": "Planera den här veckan",
+      "prepareNote": "Din nuvarande vecka finns kvar i historiken.",
+      "resume": "Återuppta den här veckan",
+      "far": "Planera först veckan innan.",
+      "searchPh": "Sök efter ett recept",
+      "searchHint": "Skriv namnet på en rätt eller en ingrediens.",
+      "addTitle": "Lägg till i min vecka",
+      "addSub": "Välj den måltid som det här receptet ersätter.",
+      "replaceQ": "Ersätta {{old}} med {{new}}? Den här måltiden behålls.",
+      "replace": "Ersätt",
+      "redoTitle": "Gör om den här veckan",
+      "redoAsk": "De här måltiderna blir din nuvarande vecka. Din nuvarande vecka finns kvar i historiken."
     }
   },
   "counts": {
