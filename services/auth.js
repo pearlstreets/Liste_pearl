@@ -162,6 +162,7 @@ export async function logoutUser(opts = {}) {
 // devise) sont conservées.
 const USER_KEYS_TO_REMOVE = [
   KEY_AUTH,
+  'SG_PENDING_PAYMENT',
   KEY_PROFILE,
   'KEY_ORDER_HISTORY',
   'MARKETPLACE_TOKENS',

@@ -19,6 +19,8 @@ const SYNC_PATH = '/users/list-menus/sync/';
 export const PUSH_DELAY_MS = 3000;
 export const FLUSH_TIMEOUT_MS = 2500;
 export const MAX_PUT_ATTEMPTS = 3;
+// Limite du serveur pour un envoi (TAILLE_MAX_SYNC de list_menus_views.py).
+export const MAX_SYNC_BYTES = 512 * 1024;
 
 let timer = null;
 let running = null;
@@ -26,6 +28,7 @@ let again = false;
 let session = 0; // change à la déconnexion : tout échange en cours est alors abandonné
 let appStateSub = null;
 let lastAppState = null;
+let againNow = false; // passage suivant tout de suite (départ en arrière-plan), sans délai
 
 const mergeListeners = new Set();
 const statusListeners = new Set();
@@ -99,6 +102,40 @@ const pick = (data, keys) => {
   for (const k of keys) out[k] = data[k];
   return out;
 };
+// Taille en octets UTF-8 du corps envoyé (celle que mesure le serveur).
+function tailleOctets(obj) {
+  const s = JSON.stringify(obj);
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    if (c < 0x80) n += 1;
+    else if (c < 0x800) n += 2;
+    else if (c >= 0xd800 && c <= 0xdbff && i + 1 < s.length) {
+      n += 4;
+      i++;
+    } else n += 3;
+  }
+  return n;
+}
+
+// Clés à envoyer retenues sur l'appareil, de la plus lourde à la plus légère (recettes d'abord).
+function clesARetenir(data, toPush) {
+  const poids = (k) => (data[k] ? JSON.stringify(data[k]).length : 0);
+  return [...toPush].sort(
+    (a, b) => (b === 'myRecipes') - (a === 'myRecipes') || poids(b) - poids(a)
+  );
+}
+
+// Corps sans les clés retenues : le compte garde sa propre version de ces clés (jamais effacée).
+function sansCles(data, held, remoteData) {
+  const out = { ...data };
+  for (const k of held) {
+    if (remoteData && Object.prototype.hasOwnProperty.call(remoteData, k)) out[k] = remoteData[k];
+    else delete out[k];
+  }
+  return out;
+}
+
 const stampsOf = (data) => {
   const out = {};
   for (const [k, e] of Object.entries(data)) if (e && Number.isFinite(e.u)) out[k] = e.u;
@@ -119,6 +156,7 @@ async function cycle(sess, owner) {
   let remote = lireEtatServeur(res.data);
   if (!remote) return; // réponse inexploitable : surtout ne rien écraser
 
+  let retenues = 0; // clés lourdes gardées sur l'appareil après un refus 413
   for (let essai = 1; essai <= MAX_PUT_ATTEMPTS; essai++) {
     const snap = await readSyncSnapshot();
     if (!alive()) return;
@@ -135,9 +173,10 @@ async function cycle(sess, owner) {
     notifyMerge(applied.applied, applied.filled);
     if (!alive()) return;
     // Clé saisie pendant la fusion : la version du compte reste à réunir au prochain passage.
+    let held = [];
     const recu = () => {
       const sent = stampsOf(data);
-      for (const k of applied.skipped) delete sent[k];
+      for (const k of [...applied.skipped, ...held]) delete sent[k];
       return sent;
     };
 
@@ -145,19 +184,28 @@ async function cycle(sess, owner) {
       await confirmSyncSent({ owner, sent: recu() });
       return;
     }
-    const put = await apiJsonWithStatus('PUT', SYNC_PATH, {
-      base_version: remote.version,
-      data,
-    });
+    // Trop volumineux pour le compte : les clés les plus lourdes restent "à envoyer" sur
+    // l'appareil, les autres partent.
+    const ordre = clesARetenir(data, toPush);
+    const corps = () => ({ base_version: remote.version, data: sansCles(data, held, remote.data) });
+    held = ordre.slice(0, retenues);
+    while (held.length < ordre.length && tailleOctets(corps()) > MAX_SYNC_BYTES)
+      held = ordre.slice(0, held.length + 1);
+    if (held.length >= ordre.length || tailleOctets(corps()) > MAX_SYNC_BYTES) {
+      console.warn('[menus] sauvegarde trop volumineuse, données gardées sur l appareil');
+      return;
+    }
+    const put = await apiJsonWithStatus('PUT', SYNC_PATH, corps());
     if (!alive()) return;
     if (put.ok) {
       await confirmSyncSent({ owner, sent: recu() });
+      if (held.length > 0)
+        console.warn('[menus] sauvegarde trop volumineuse, données gardées sur l appareil');
       return;
     }
     if (put.status === 413) {
-      // Trop volumineux pour le compte : tout reste sur l'appareil, rien n'est bloqué.
-      console.warn('[menus] sauvegarde trop volumineuse, données gardées sur l appareil');
-      return;
+      retenues = held.length + 1;
+      continue;
     }
     if (put.status !== 409) return;
     remote = lireEtatServeur(put.data);
@@ -186,8 +234,10 @@ export function requestMenusSync() {
     notifyStatus();
     if (again) {
       again = false;
-      schedulePush();
+      if (againNow) requestMenusSync();
+      else schedulePush();
     }
+    againNow = false;
   });
   return running;
 }
@@ -252,6 +302,7 @@ export async function flushMenusSync(timeoutMs = FLUSH_TIMEOUT_MS) {
 export function resetMenusSyncSession() {
   session++;
   again = false;
+  againNow = false;
   if (timer) {
     clearTimeout(timer);
     timer = null;
@@ -267,10 +318,24 @@ export function startMenusSync(AppState) {
       const prev = lastAppState;
       lastAppState = next;
       if (next === 'active' && prev !== 'active') requestMenusSync();
-      else if (next === 'background' && timer) {
-        clearTimeout(timer);
-        timer = null;
-        requestMenusSync();
+      else if (next === 'background') {
+        // Envoi avant la mise en veille : délai en cours, passage à refaire ou clé en attente.
+        const enAttente = !!timer || again;
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+        if (enAttente) {
+          if (running) againNow = true;
+          requestMenusSync();
+        } else
+          readSyncState()
+            .then((st) => {
+              if (!st || Object.keys(st.dirty || {}).length === 0) return;
+              if (running) againNow = true;
+              requestMenusSync();
+            })
+            .catch(() => {});
       }
     });
   }

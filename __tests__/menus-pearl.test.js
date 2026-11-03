@@ -349,7 +349,7 @@ describe('articles ajoutés : pris en compte dans l\'onglet Produits', () => {
     const ex = [{ id: 'a', name: 'chicken fillet', qty: 1, unit: 'u', crossed: true, selected: false }];
     const r = toListItems(lines, nameOf, ex, { matchOf, force: true });
     expect(r.merged).toBe(1);
-    expect(r.items[0]).toMatchObject({ qty: 2, selected: true, crossed: false });
+    expect(r.items[0]).toMatchObject({ qty: 1, selected: true, crossed: false }); // barré = déjà acheté, pas cumulé
   });
   test('sans matchOf : comportement d\'avant', () => {
     const r = toListItems(lines, nameOf, [], { force: true, idGen: () => 'i' });

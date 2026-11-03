@@ -255,3 +255,64 @@ describe('listBridge', () => {
     expect(r.activeId).toBe('default');
   });
 });
+
+describe('donnée illisible et écriture d un seul tenant', () => {
+  const AS = require('@react-native-async-storage/async-storage');
+  test('lecture impossible, version future ou clé corrompue sur un compte : rien n est écrasé', async () => {
+    AS.getItem.mockImplementationOnce(async () => {
+      throw new Error('Row too big to fit into CursorWindow');
+    });
+    expect(await toggleFavorite('a')).toBeNull();
+    expect(mockStore.has(MENUS_KEY.favorites)).toBe(false);
+    const futur = JSON.stringify({ v: 99, data: ['z'] });
+    mockStore.set(MENUS_KEY.favorites, futur);
+    expect(await toggleFavorite('a')).toBeNull();
+    expect(mockStore.get(MENUS_KEY.favorites)).toBe(futur);
+    mockStore.set(MENUS_KEY.sync, JSON.stringify({ v: 1, data: { owner: '7' } }));
+    mockStore.set(MENUS_KEY.notes, '{pas du json');
+    expect(await setNote('r', 'x')).toBe(false);
+    expect(mockStore.get(MENUS_KEY.notes)).toBe('{pas du json');
+    expect(JSON.parse(mockStore.get(MENUS_KEY.sync)).data.dirty).toBeUndefined();
+    mockStore.delete(MENUS_KEY.sync); // sans compte : rien à protéger, l écriture répare
+    expect(await setNote('r', 'x')).toBe(true);
+    expect(await loadNotes()).toEqual({ r: 'x' });
+  });
+  test('valeur et état "à envoyer" écrits d un seul multiSet', async () => {
+    AS.multiSet = jest.fn(async (items) => items.forEach(([k, v]) => mockStore.set(k, v)));
+    try {
+      await toggleFavorite('a');
+      expect(AS.multiSet).toHaveBeenCalledTimes(1);
+      expect(AS.multiSet.mock.calls[0][0].map(([k]) => k)).toEqual([
+        MENUS_KEY.favorites,
+        MENUS_KEY.sync,
+      ]);
+      expect(JSON.parse(mockStore.get(MENUS_KEY.sync)).data.dirty.favorites).toBe(true);
+    } finally {
+      delete AS.multiSet;
+    }
+  });
+});
+
+describe('recette personnelle supprimée', () => {
+  const { mergeSync } = require('../lib/menus/sync');
+  test('une fusion en conflit ne la ramène pas, sauf modifiée après la suppression', () => {
+    const rec = (id, updatedAt) => ({ id, updatedAt, title: id });
+    const r = mergeSync(
+      {
+        myRecipes: { u: 30, v: [rec('my-2', 5)] },
+        myRecipesDeleted: { u: 30, v: { 'my-1': 20 } },
+      },
+      { myRecipes: { u: 25, v: [rec('my-1', 10), rec('my-2', 5), rec('my-3', 40)] } },
+      { dirty: { myRecipes: true, myRecipesDeleted: true }, base: { myRecipes: 10 } }
+    );
+    expect(r.data.myRecipes.v.map((x) => x.id).sort()).toEqual(['my-2', 'my-3']);
+    expect(r.toApply).toContain('myRecipes');
+    expect(r.toPush).toEqual(expect.arrayContaining(['myRecipes', 'myRecipesDeleted']));
+  });
+  test('la suppression laisse une marque datée', async () => {
+    const { deleteMyRecipe } = require('../lib/menus/storage');
+    await deleteMyRecipe('my-9');
+    const m = JSON.parse(mockStore.get(MENUS_KEY.myRecipesDeleted)).data;
+    expect(Number.isFinite(m['my-9'])).toBe(true);
+  });
+});
