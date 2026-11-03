@@ -89,6 +89,13 @@ describe('lecture des données', () => {
     });
     expect(d.order_id).toBe('8');
   });
+  test('content.data réduit sans app : trigger.payload repris', () => {
+    const d = toucher.donneesPushListe({
+      content: { data: { order_id: '8' } },
+      trigger: { payload: donnees({ order_id: '8' }) },
+    });
+    expect(d.app).toBe('liste');
+  });
   test('Android : trigger.remoteMessage.data', () => {
     const d = toucher.donneesPushListe({
       content: { data: null },

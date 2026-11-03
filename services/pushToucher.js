@@ -60,11 +60,14 @@ export function donneesPushListe(requete) {
   try {
     const content = requete && requete.content;
     const trigger = requete && requete.trigger;
-    let data = content && content.data;
-    if (!nonVide(data)) data = trigger && trigger.payload;
-    if (!nonVide(data)) data = trigger && trigger.remoteMessage && trigger.remoteMessage.data;
-    if (!nonVide(data)) return null;
-    if (data.app !== 'liste' || data.source === 'menus' || data.cuisine === true) return null;
+    // Première source qui porte app 'liste' : content.data peut arriver réduit.
+    const sources = [
+      content && content.data,
+      trigger && trigger.payload,
+      trigger && trigger.remoteMessage && trigger.remoteMessage.data,
+    ];
+    const data = sources.find((d) => nonVide(d) && d.app === 'liste');
+    if (!data || data.source === 'menus' || data.cuisine === true) return null;
     return data;
   } catch {
     return null;
