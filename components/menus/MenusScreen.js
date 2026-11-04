@@ -21,6 +21,7 @@ import SharedWeekScreen from './SharedWeekScreen';
 import MonthScreen from './MonthScreen';
 import useSharedWeeks from './useSharedWeeks';
 import { onMenuReminderOpen, takePendingMenuReminder } from '../../services/menuReminders';
+import { usePhotoManifestRefresh } from '../../services/photoManifest';
 
 const TABS = ['week', 'shop', 'discover'];
 
@@ -52,6 +53,7 @@ function Inner({ navigation }) {
   // Notification de rappel touchée : on arrive sur le bon écran, sans calque par-dessus.
   const { ready, onboarded, recipeById } = m;
   const sharedWeeks = useSharedWeeks(focused && ready && onboarded);
+  usePhotoManifestRefresh(focused); // photos en ligne : manifeste au démarrage, puis toutes les 30 min
   useEffect(() => {
     if (!ready || !onboarded) return undefined;
     const ouvrir = () => {
