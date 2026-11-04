@@ -1,7 +1,7 @@
 // Prompts anglais des photos IA : un par recette sans photo et un par ingrédient.
 // Style calqué sur les 344 photos de assets/menus (640x640) : photo culinaire réaliste, assiette en grès
 // clair moucheté, fond beige clair (pierre ou lin), lumière naturelle douce de fenêtre, vue de trois quarts,
-// faible profondeur de champ, accessoires flous derrière (huile, sel, herbes, ail, ingrédient cru du plat).
+// faible profondeur de champ, accessoires flous derrière, jamais d'aliment : le plat fini seul (demande du 04/11).
 'use strict';
 
 const ASPECTS = require('./aspects');
@@ -584,52 +584,29 @@ const LUMIERES = [
   'soft natural daylight from a window on the right',
 ];
 const ACCESSOIRES_SALE = [
-  'a small glass bottle of olive oil',
-  'a small wooden bowl of coarse sea salt',
-  'a sprig of fresh thyme',
-  'a few garlic cloves',
+  'a folded beige linen napkin',
   'a wooden pepper mill',
-  'a halved lemon',
-  'a small ceramic dish of ground spices',
-  'a few fresh parsley leaves',
-  'a sprig of rosemary',
-  'a small dish of black peppercorns',
+  'an empty small glass carafe of water',
+  'a small light wooden board',
+  'a stack of two small off-white plates',
+  'a crumpled natural linen cloth',
+  'an empty drinking glass',
+  'a small empty off-white ceramic dish',
+  'a small vase of dried flowers',
+  'a woven rattan placemat',
 ];
 const ACCESSOIRES_SUCRE = [
-  'a small glass jar of honey',
-  'a small ceramic bowl of sugar',
-  'a few cinnamon sticks',
-  'a few fresh berries',
   'a folded beige linen napkin',
-  'a small glass jug of milk',
-  'a vanilla pod',
-  'a few mint leaves',
-  'a small bowl of nuts',
-  'a halved lemon',
+  'a small empty off-white ceramic cup',
+  'a small vase of dried flowers',
+  'a small light wooden board',
+  'a stack of two small off-white plates',
+  'a crumpled natural linen cloth',
+  'an empty small glass jar',
+  'a crumpled sheet of parchment paper',
+  'a ceramic teapot',
+  'a woven rattan placemat',
 ];
-const ACCESSOIRES_CUISINE = {
-  Thai: ['a lime wedge', 'a small bunch of fresh coriander', 'a red chili'],
-  Indian: [
-    'a small ceramic bowl of whole spices',
-    'a sprig of fresh coriander',
-    'a few cardamom pods',
-  ],
-  Japanese: ['a small ceramic dish of soy sauce', 'a few spring onion slices'],
-  Korean: ['a small ceramic dish of kimchi', 'toasted sesame seeds'],
-  Vietnamese: ['a lime wedge', 'fresh mint and coriander leaves'],
-  'Chinese-style': ['a small ceramic dish of soy sauce', 'a few spring onions', 'a red chili'],
-  Moroccan: [
-    'a small ceramic dish of ras el hanout',
-    'a sprig of fresh coriander',
-    'a lemon wedge',
-  ],
-  'Middle Eastern': ['a small dish of zaatar', 'fresh mint leaves', 'a lemon wedge'],
-  Greek: ['a small bowl of olives', 'a sprig of oregano'],
-  Mexican: ['a lime wedge', 'a small bunch of fresh coriander'],
-  Spanish: ['a small dish of smoked paprika', 'a lemon wedge'],
-  Italian: ['a sprig of fresh basil', 'a small wedge of Parmesan'],
-};
-
 // Ingrédient seul : aucun autre aliment derrière (il serait confondu avec le sujet).
 const ACCESSOIRES_NEUTRES = [
   'a folded beige linen napkin',
@@ -762,16 +739,9 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
       );
     }
   }
-  // ingrédient cru principal posé derrière, flou, comme sur les photos actuelles
-  const cru = roles.visibles.find((x) => {
-    const info = ctx.ingredients[x.key] || {};
-    return info.aisle === 'fruits-legumes';
-  });
   const pool = sucre ? ACCESSOIRES_SUCRE : ACCESSOIRES_SALE;
   const acc = v.accessoires.map((i) => pool[i]);
-  if (cuis && ACCESSOIRES_CUISINE[cuis])
-    acc[2] = ACCESSOIRES_CUISINE[cuis][k % ACCESSOIRES_CUISINE[cuis].length];
-  if (cru) acc.unshift(`some raw ${cru.nom}`);
+  // plat fini seul : aucun ingrédient cru dans le décor (demande du 04/11)
   morceaux.push(gabaritStyle(v, uniq(acc), type.contenant));
   morceaux.push(`Reference ${item.id} (internal identifier, never shown in the image).`);
   return morceaux.join(' ');

@@ -79,7 +79,7 @@ Dossier de travail : `~/pearl-photos/`, hors du dépôt.
 > 1. Installe avec installer.sh, puis fais les prompts avec prompts.sh.
 > 2. Pas d'essai : lance tout de suite toute la génération en arrière-plan, en même temps que le PC :
 >    `nohup ~/pearl-photos/venv/bin/python scripts/menus-photos/mac/generer_mac.py --avec-pc --envoyer-tous 20 >> ~/pearl-photos/sortie.log 2>&1 &`
->    Le Mac prend les ingrédients puis les recettes en partant de la fin, et saute tout ce que le PC a déjà mis en ligne.
+>    Le Mac fait les plats en partant de la fin de la liste (les photos d ingrédients à la fin), et saute tout ce que le PC a déjà mis en ligne.
 >    Les photos partent en ligne toutes les 20 images avec envoyer.sh, sans jamais écraser une photo déjà en ligne.
 > 3. Vérifie que les premières photos sont bien en ligne (ligne `MANIFESTE` dans ~/pearl-photos/envoi.log, puis une adresse https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v1/<id>.webp en 200), puis montre-m'en quelques-unes avec le temps moyen par image et la fin prévue.
 > 4. Ne reste jamais bloqué à attendre plus de 270 s : regarde le journal (`tail -n 5 ~/pearl-photos/journal.log`) de temps en temps. Ne merge rien.

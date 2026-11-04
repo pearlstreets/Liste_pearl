@@ -17,8 +17,8 @@ Options :
   --modele CHEMIN        dossier du modèle (défaut ~/pearl-photos/modele/flux-1-schnell-mflux-q4)
   --envoyer-tous N       lance envoyer.sh en arrière-plan toutes les N nouvelles images (0 = jamais)
   --nice N               priorité basse (défaut 10)
-  --avec-pc              travaille en même temps que le PC : ingrédients d'abord, puis les recettes
-                         générées en partant de la FIN, et saute tout ce qui est déjà en ligne
+  --avec-pc              travaille en même temps que le PC : les plats d'abord (recettes
+                         générées en partant de la FIN), les ingrédients à la fin ; saute ce qui est en ligne
                          (manifeste CloudFront relu toutes les 20 images)
   --racine D             dossier de travail (défaut ~/pearl-photos)
   --preparer-refaire     ne génère rien : lit a-refaire.json (controle.js) et en-ligne.txt, écrit
@@ -99,11 +99,12 @@ def ordonner(prompts):
 
 def ordre_avec_pc(ordre):
     """Le PC fait les recettes à la main puis les générées dans l'ordre, puis les ingrédients :
+    le Mac fait les plats d'abord (générées depuis la fin), les ingrédients en dernier ;
     le Mac prend l'autre bout pour que les deux ne se croisent qu'à la fin."""
     main = [p for p in ordre if est_main(p)]
     ingr = [p for p in ordre if p["type"] == "ingredient"]
     gen = [p for p in ordre if p["type"] == "recette" and not est_main(p)]
-    return ingr + gen[::-1] + main
+    return gen[::-1] + main + ingr
 
 
 MANIFESTE_URL = "https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/manifeste.json"
