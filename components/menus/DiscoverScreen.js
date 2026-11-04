@@ -40,6 +40,7 @@ import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
 import RECIPE_IMAGES from '../../lib/menus/recipeImages';
 import { distinctPhotoRecipes } from '../../lib/menus/photoUrls';
+import { remoteRecipePhotoUri } from '../../lib/menus/photoManifest';
 import { AddToWeekSheet } from './MonthScreen';
 import RecipeVisual from './RecipeVisual';
 import { useMenus, conflictList } from './MenusContext';
@@ -719,7 +720,8 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
             const thumbs = distinctPhotoRecipes(
               rs.map((x) => m.recipeById.get(x.recipeId)),
               RECIPE_IMAGES,
-              5
+              5,
+              remoteRecipePhotoUri
             );
             return (
               <View style={s.hist}>

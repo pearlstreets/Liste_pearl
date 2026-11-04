@@ -4,13 +4,10 @@ import React, { memo, useMemo, useState, useEffect, useCallback } from 'react';
 import { View, Image, Pressable } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
 import RECIPE_IMAGES from '../../lib/menus/recipeImages';
-import {
-  recipePhotoUri,
-  uniqueUris,
-  pickPhotoSource,
-  ingredientPhotoSource,
-} from '../../lib/menus/photoUrls';
+import { uniqueUris, pickPhotoSource } from '../../lib/menus/photoUrls';
+import { remoteRecipePhotoUri, remoteIngredientSource } from '../../lib/menus/photoManifest';
 import { photoSources } from '../../services/recipePhotos';
+import { useManifestVersion } from '../../services/photoManifest';
 import { COURSE_TINT, T } from './theme';
 import PhotoViewer from './PhotoViewer';
 import useT from './useT';
@@ -43,9 +40,11 @@ const Zoom = memo(function Zoom({ source, children }) {
 /** Photo à montrer pour une recette (null : pas de photo), avec le repli si elle ne charge pas. */
 export function useRecipePhoto(recipe) {
   const local = (recipe && RECIPE_IMAGES[recipe.id]) || null;
+  const mv = useManifestVersion(); // photo en ligne seulement si le manifeste la liste
   const uris = useMemo(
-    () => (local ? [] : uniqueUris([...photoSources(recipe), recipePhotoUri(recipe)])),
-    [recipe, local]
+    () => (local ? [] : uniqueUris([...photoSources(recipe), remoteRecipePhotoUri(recipe)])),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [recipe, local, mv]
   );
   const [failed, setFailed] = useState(0); // adresse absente : la suivante, puis le repli
   useEffect(() => setFailed(0), [uris]);
@@ -107,7 +106,9 @@ export default RecipeVisual;
  * tout, la ligne commence directement par le nom.
  */
 export const IngredientThumb = memo(function IngredientThumb({ ingKey, size = 34, style }) {
-  const source = useMemo(() => ingredientPhotoSource(ingKey), [ingKey]);
+  const mv = useManifestVersion();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const source = useMemo(() => remoteIngredientSource(ingKey), [ingKey, mv]);
   const [ko, setKo] = useState(false);
   useEffect(() => setKo(false), [source]);
   if (!source || ko) return null;
