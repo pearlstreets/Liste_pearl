@@ -177,7 +177,84 @@ const OEUF_VISIBLE = new Set(['salade', 'bowl', 'sandwich', 'soupe', 'wok', 'ome
  * ingrédients nommés dans le titre passent tout devant, dans l'ordre du titre (roles.principaux) ;
  * un œuf absent du titre n'est jamais l'élément principal.
  */
-function rolesIngredients(recette, ingredients, nomEn, sucre, titre, typeT) {
+// Découpe de l'ingrédient dans le plat fini (demande du 04/11 : « tomate coupée en deux dans la
+// recette = tomate coupée en deux dans le plat »). D'abord ce que disent les étapes de la recette,
+// sinon la découpe habituelle ci-dessous. Jamais pour les plats mixés (velouté, boisson).
+const DECOUPE = {
+  'tomate-cerise': 'cherry tomatoes cut in half',
+  tomate: 'tomato wedges',
+  'tomate-sechee': 'sun-dried tomato strips',
+  carotte: 'carrot rounds',
+  oignon: 'thinly sliced onion',
+  'oignon-rouge': 'thin red onion rings',
+  echalote: 'finely sliced shallot',
+  poireau: 'sliced leek rounds',
+  poivron: 'bell pepper strips',
+  courgette: 'zucchini half-moons',
+  aubergine: 'eggplant cubes',
+  champignon: 'sliced mushrooms',
+  concombre: 'cucumber slices',
+  avocat: 'avocado slices',
+  brocoli: 'small broccoli florets',
+  fenouil: 'thin fennel slices',
+  radis: 'thinly sliced radishes',
+  'asperge-verte': 'whole green asparagus spears',
+  'chou-chinois': 'shredded Chinese cabbage',
+  'patate-douce': 'sweet potato cubes',
+  potiron: 'pumpkin cubes',
+  courge: 'squash cubes',
+  'piment-frais': 'thin fresh chili slices',
+  olives: 'whole olives',
+  persil: 'chopped parsley',
+  coriandre: 'fresh coriander leaves',
+  ciboulette: 'snipped chives',
+  basilic: 'whole basil leaves',
+  menthe: 'fresh mint leaves',
+  citron: 'lemon wedges',
+  'citron-vert': 'lime wedges',
+  mangue: 'mango cubes',
+  ananas: 'pineapple chunks',
+  pomme: 'apple slices',
+  banane: 'banana slices',
+  feta: 'crumbled feta',
+};
+
+const COUPES = [
+  [/\b(?:cut\s+(?:\w+\s+)?in(?:to)?\s+(?:two|half|halves)|halve[sd]?)\b/, 'halved'],
+  [/\bquarter(?:s|ed)?\b/, 'quartered'],
+  [/\bdic(?:e|ed|es)\b|\binto\s+(?:small\s+)?dice\b/, 'diced'],
+  [/\bcub(?:e|ed|es)\b/, 'cubed'],
+  [/\b(?:thinly\s+)?slic(?:e|ed|es)\b|\binto\s+(?:thin\s+)?(?:slices|rounds)\b/, 'sliced'],
+  [/\binto\s+(?:thin\s+)?strips\b|\bjulienne\b/, 'cut into strips'],
+  [/\bwedges\b/, 'cut into wedges'],
+  [/\bgrat(?:e|ed|es)\b/, 'grated'],
+  [/\bshred(?:s|ded)?\b/, 'shredded'],
+  [/\b(?:finely\s+)?(?:chop(?:s|ped)?|mince[sd]?)\b/, 'chopped'],
+];
+
+/** Découpe lue dans les étapes : le morceau de phrase (entre virgules, « and ») qui nomme l'ingrédient. */
+function decoupeDesEtapes(nom, etapes) {
+  if (!etapes || !etapes.length) return null;
+  const mot = nom.split(' ').pop().replace(/(es|s)$/, '');
+  if (mot.length < 3) return null;
+  const reMot = new RegExp(`\\b${mot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
+  for (const bout of etapes.join('. ').toLowerCase().split(/[.;,:]\s*|\s+and\s+|\s+then\s+/)) {
+    if (!reMot.test(bout) || /\bjuice\b|\bzest\b/.test(bout)) continue;
+    for (const [re, forme] of COUPES) if (re.test(bout)) return forme;
+  }
+  return null;
+}
+
+function nomDecoupe(cle, nom, etapes, mixe, info) {
+  if (mixe) return nom;
+  // étapes : seulement fruits, légumes et herbes (le chocolat haché, lui, fond dans le plat)
+  const forme = info && info.aisle === 'fruits-legumes' ? decoupeDesEtapes(nom, etapes) : null;
+  if (forme) return forme.startsWith('cut') ? `${nom} ${forme}` : `${forme} ${nom}`;
+  return DECOUPE[cle] || nom;
+}
+
+function rolesIngredients(recette, ingredients, nomEn, sucre, titre, typeT, etapes) {
+  const mixe = ['soupe-veloute', 'boisson'].includes(typeT);
   const mains = (recette.dp && recette.dp.mains) || [];
   const lignes = (recette.ingredients || []).filter((l) => l && l.key && !l.optional);
   const vus = lignes
@@ -209,7 +286,7 @@ function rolesIngredients(recette, ingredients, nomEn, sucre, titre, typeT) {
       continue;
     // œuf de liaison, de pâte ou de dorure, absent du titre : fondu dans le plat
     if (titre && k === 'oeuf' && !v.dansTitre && !OEUF_VISIBLE.has(typeT)) continue;
-    const nom = nomDansPlat(nomEn(k));
+    const nom = nomDecoupe(k, nomDansPlat(nomEn(k)), etapes, mixe, v.info);
     roles.visibles.push({ key: k, nom });
     if (v.dansTitre && !ACCENTS.test(k) && !HERBES.has(k) && roles.principaux.length < 3) {
       roles.principaux.push(nom);
@@ -731,7 +808,16 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
   const titre = (item.titre || item.id).trim();
   const type = typeDePlat(titre, recette);
   const sucre = estSucre(recette, titre, type);
-  const roles = rolesIngredients(recette, ctx.ingredients, ctx.nomEn, sucre, titre, type.t);
+  const etapes = ((ctx.etapes || {})[item.id] || {}).steps;
+  const roles = rolesIngredients(
+    recette,
+    ctx.ingredients,
+    ctx.nomEn,
+    sucre,
+    titre,
+    type.t,
+    etapes
+  );
   const cuis = cuisine(titre, recette);
   const famille = familleDe(item);
   const v = variation(famille, k, essai);
@@ -934,8 +1020,8 @@ function construirePrompts(liste, ctx, essais = {}) {
 
 /** Contexte à partir de donnees.js. */
 function contexte(donnees) {
-  const { ingredients } = donnees.charger();
-  return { ingredients, nomEn: donnees.nomIngredientEn };
+  const { ingredients, en } = donnees.charger();
+  return { ingredients, nomEn: donnees.nomIngredientEn, etapes: (en && en.recipes) || {} };
 }
 
 module.exports = {
