@@ -4,6 +4,8 @@
 // faible profondeur de champ, accessoires flous derrière (huile, sel, herbes, ail, ingrédient cru du plat).
 'use strict';
 
+const ASPECTS = require('./aspects');
+
 /* ------------------------------------------------------------------ utilitaires */
 
 /** FNV-1a 32 bits : décalage stable par famille. */
@@ -128,37 +130,95 @@ function grammes(ligne, info) {
   }
 }
 
+// Mots qui ne désignent pas l'aliment lui-même : on ne les cherche pas dans le titre.
+const MOTS_VAGUES = new Set(
+  'cheese sheet sheets fresh leaves leaf powder paste fillet fillets loin meat sauce whole ground minced baby sweet red green yellow white black smoked cherry sun dried flaked grated button bell spring cured cooked sliced large small mixed rump'.split(
+    ' '
+  )
+);
+const racine = (m) =>
+  m
+    .toLowerCase()
+    .replace(/ies$/, 'y')
+    .replace(/(ch|sh|ss|x|o)es$/, '$1')
+    .replace(/s$/, '');
+
+/** Position (en mots) du nom d'ingrédient dans le titre, d'après ses mots propres au singulier, ou -1. */
+function positionDansTitre(nom, titre) {
+  if (!titre) return -1;
+  const motsTitre = titre
+    .toLowerCase()
+    .split(/[^a-zà-ÿ]+/)
+    .filter(Boolean)
+    .map(racine);
+  const mots = nom
+    .toLowerCase()
+    .split(/[^a-zà-ÿ]+/)
+    .filter(Boolean);
+  let cherche = mots.filter((m) => m.length >= 3 && !MOTS_VAGUES.has(m));
+  if (!cherche.length) cherche = mots.slice(-1);
+  let pos = -1;
+  for (const m of cherche) {
+    const i = motsTitre.indexOf(racine(m));
+    if (i >= 0 && (pos < 0 || i < pos)) pos = i;
+  }
+  return pos;
+}
+
+// Nommés dans le titre mais jamais « élément principal » : herbes, agrumes, aromates.
+const ACCENTS = /^(citron|citron-vert|ail|gingembre|piment|echalote|oignon-nouveau)/;
+// Plats où un œuf absent du titre se voit encore (salade, bowl, sandwich, soupe, wok, omelette) ;
+// ailleurs (quiche, cake, pâte, liaison, dorure, panure) il est fondu dans le plat : pas montré.
+const OEUF_VISIBLE = new Set(['salade', 'bowl', 'sandwich', 'soupe', 'wok', 'omelette']);
+
 /**
  * Ingrédients visibles d'une recette, du plus important au moins important, rangés par rôle.
- * dp.mains (cœur du catalogue généré) passent devant.
+ * dp.mains (cœur du catalogue généré) passent devant. Avec le titre (et le type de plat) : les
+ * ingrédients nommés dans le titre passent tout devant, dans l'ordre du titre (roles.principaux) ;
+ * un œuf absent du titre n'est jamais l'élément principal.
  */
-function rolesIngredients(recette, ingredients, nomEn, sucre) {
+function rolesIngredients(recette, ingredients, nomEn, sucre, titre, typeT) {
   const mains = (recette.dp && recette.dp.mains) || [];
   const lignes = (recette.ingredients || []).filter((l) => l && l.key && !l.optional);
   const vus = lignes
     .map((l, i) => {
       const info = ingredients[l.key] || {};
+      const pos = positionDansTitre(nomDansPlat(nomEn(l.key)), titre);
       const poids =
-        grammes(l, info) + (mains.includes(l.key) ? 1e6 * (2 - mains.indexOf(l.key)) : 0);
-      return { key: l.key, info, poids, ordre: i };
+        grammes(l, info) +
+        (mains.includes(l.key) ? 1e6 * (2 - mains.indexOf(l.key)) : 0) +
+        (pos >= 0 ? 1e8 * (60 - pos) : 0);
+      return { key: l.key, info, poids, ordre: i, dansTitre: pos >= 0 };
     })
     .sort((a, b) => b.poids - a.poids || a.ordre - b.ordre);
-  const roles = { proteine: [], base: [], legumes: [], sauce: [], visibles: [] };
+  const roles = { principaux: [], proteine: [], base: [], legumes: [], sauce: [], visibles: [] };
   for (const v of vus) {
     const k = v.key;
     if (SAUCES[k]) {
       roles.sauce.push(SAUCES[k]);
       continue;
     }
-    if (INVISIBLES.has(k) || (sucre && DANS_LA_PATE.has(k)) || k === 'farine') continue;
+    if (INVISIBLES.has(k) || k === 'farine') continue;
+    if (sucre && DANS_LA_PATE.has(k) && !v.dansTitre) continue;
     if (v.info.pantry && !mains.includes(k)) continue;
-    if (['lait', 'beurre', 'beurre-demi-sel', 'huile-olive'].includes(k) && !mains.includes(k))
+    if (
+      ['lait', 'beurre', 'beurre-demi-sel', 'huile-olive'].includes(k) &&
+      !mains.includes(k) &&
+      !v.dansTitre
+    )
       continue;
+    // œuf de liaison, de pâte ou de dorure, absent du titre : fondu dans le plat
+    if (titre && k === 'oeuf' && !v.dansTitre && !OEUF_VISIBLE.has(typeT)) continue;
     const nom = nomDansPlat(nomEn(k));
-    if (v.info.aisle === 'viandes-poissons' || PROTEINES.has(k)) roles.proteine.push(nom);
+    roles.visibles.push({ key: k, nom });
+    if (v.dansTitre && !ACCENTS.test(k) && !HERBES.has(k) && roles.principaux.length < 3) {
+      roles.principaux.push(nom);
+      continue;
+    }
+    if (titre && k === 'oeuf') roles.legumes.push(nom);
+    else if (v.info.aisle === 'viandes-poissons' || PROTEINES.has(k)) roles.proteine.push(nom);
     else if (BASES.test(k)) roles.base.push(nom);
     else roles.legumes.push(nom);
-    roles.visibles.push({ key: k, nom });
   }
   roles.sauce = uniq(roles.sauce);
   return roles;
@@ -224,8 +284,17 @@ const TYPES = [
     contenant: 'gratin dish',
   },
   {
+    // flan aux fruits sans pâte : pas la mise en scène d'une tarte
+    t: 'clafoutis',
+    re: /\b(clafoutis|far breton)\b/,
+    course: ['dessert'],
+    scene:
+      'baked in a round off-white ceramic baking dish, one generous portion served on a small dessert plate next to it',
+    contenant: 'plate',
+  },
+  {
     t: 'tarte-sucree',
-    re: /\b(tart|tarte|pie|galette des rois|clafoutis)\b/,
+    re: /\b(tart|tarte|pie|galette des rois)\b/,
     course: ['dessert'],
     scene:
       'a slice of the tart on a small off-white dessert plate, the rest of the whole tart in its ceramic tart dish softly blurred behind, golden crisp pastry',
@@ -629,6 +698,7 @@ function estSucre(recette, titreEn, type) {
     [
       'boisson',
       'tarte-sucree',
+      'clafoutis',
       'crumble',
       'gateau',
       'dessert',
@@ -649,20 +719,33 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
   const titre = (item.titre || item.id).trim();
   const type = typeDePlat(titre, recette);
   const sucre = estSucre(recette, titre, type);
-  const roles = rolesIngredients(recette, ctx.ingredients, ctx.nomEn, sucre);
+  const roles = rolesIngredients(recette, ctx.ingredients, ctx.nomEn, sucre, titre, type.t);
   const cuis = cuisine(titre, recette);
   const famille = familleDe(item);
   const v = variation(famille, k, essai);
+  const asp = ASPECTS.aspectDe(titre);
+  const exclus = ASPECTS.exclusions(
+    asp,
+    (recette.ingredients || []).filter((l) => l && l.key && !l.optional).map((l) => l.key)
+  );
 
   const morceaux = [];
   morceaux.push(
     `Realistic food photograph of a single dish: "${titre}"${cuis ? `, ${cuis} home cooking` : ''}, ${type.scene}.`
   );
+  if (asp) morceaux.push(`The finished dish looks like this: ${asp.aspect}.`);
   const visibles = roles.visibles.slice(0, 6).map((x) => x.nom);
   if (visibles.length) {
     const desc = [];
-    if (roles.proteine.length)
+    // nommés dans le titre d'abord ; sinon la protéine, jamais un œuf absent du titre
+    if (roles.principaux.length)
+      desc.push(
+        `${enumerer(roles.principaux)} as the main element${roles.principaux.length > 1 ? 's' : ''}`
+      );
+    else if (roles.proteine.length)
       desc.push(`${enumerer(roles.proteine.slice(0, 2))} as the main element`);
+    if (roles.principaux.length && roles.proteine.length)
+      roles.legumes.unshift(...roles.proteine.slice(0, 2));
     if (roles.base.length) desc.push(`${enumerer(roles.base.slice(0, 2))} as the base`);
     if (roles.legumes.length) desc.push(`${enumerer(roles.legumes.slice(0, 4))} clearly visible`);
     const soupe = type.t === 'soupe' || type.t === 'soupe-veloute';
@@ -675,7 +758,7 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
     } else {
       morceaux.push(`In the dish: ${desc.join('; ')}.`);
       morceaux.push(
-        `The main ingredients must be easy to recognize: ${enumerer(visibles.slice(0, 4))}. Nothing that is not in the recipe.`
+        `The main ingredients must be easy to recognize: ${enumerer(visibles.slice(0, 4))}. Nothing that is not in the recipe${exclus.length ? `: no ${exclus.join(', no ')}` : ''}.`
       );
     }
   }
