@@ -61,6 +61,27 @@ function titreGenereEn(row) {
   return titresEn.get(bloc)[row % core.SHARD] || '';
 }
 
+let phrasesEn = null;
+/** Étapes anglaises d'une recette générée (phrases de data/menus/gen/lang/en-steps.js), ou []. */
+function etapesGenereEn(row) {
+  const { core } = charger();
+  const { phraseGroups } = require(path.join(RACINE, 'lib', 'menus', 'catalog.js'));
+  const groupes = phraseGroups(core, row);
+  if (!groupes) return [];
+  if (!phrasesEn) {
+    const f = path.join(DATA, 'gen', 'lang', 'en-steps.js');
+    phrasesEn = fs.existsSync(f) ? String(require(f)).split('\n') : [];
+  }
+  return groupes
+    .map((g) =>
+      g
+        .map((id) => phrasesEn[id] || '')
+        .join(' ')
+        .trim()
+    )
+    .filter(Boolean);
+}
+
 /** Nom anglais d'un ingrédient, sans précision entre parenthèses. */
 function nomIngredientEn(cle) {
   const { en } = charger();
@@ -87,7 +108,14 @@ function recettesSansPhoto() {
   for (let row = 0; row < core.N; row++) {
     const r = catalogue.materialize(row);
     if (!r) continue; // case retirée
-    out.push({ id: r.id, type: 'recette', source: 'gen', recette: r, titre: titreGenereEn(row) });
+    out.push({
+      id: r.id,
+      type: 'recette',
+      source: 'gen',
+      recette: r,
+      titre: titreGenereEn(row),
+      etapes: etapesGenereEn(row),
+    });
   }
   return out;
 }
@@ -111,4 +139,5 @@ module.exports = {
   ingredientsTous,
   nomIngredientEn,
   titreGenereEn,
+  etapesGenereEn,
 };

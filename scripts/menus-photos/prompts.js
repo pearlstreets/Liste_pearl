@@ -232,24 +232,68 @@ const COUPES = [
   [/\b(?:finely\s+)?(?:chop(?:s|ped)?|mince[sd]?)\b/, 'chopped'],
 ];
 
-/** Découpe lue dans les étapes : le morceau de phrase (entre virgules, « and ») qui nomme l'ingrédient. */
-function decoupeDesEtapes(nom, etapes) {
-  if (!etapes || !etapes.length) return null;
-  const mot = nom.split(' ').pop().replace(/(es|s)$/, '');
-  if (mot.length < 3) return null;
-  const reMot = new RegExp(`\\b${mot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
-  for (const bout of etapes.join('. ').toLowerCase().split(/[.;,:]\s*|\s+and\s+|\s+then\s+/)) {
-    if (!reMot.test(bout) || /\bjuice\b|\bzest\b/.test(bout)) continue;
-    for (const [re, forme] of COUPES) if (re.test(bout)) return forme;
-  }
-  return null;
+/** Morceaux de phrases des étapes (coupés aux virgules, « and », « then »), en minuscules. */
+function boutsEtapes(etapes) {
+  return etapes
+    .join('. ')
+    .toLowerCase()
+    .split(/[.;,:]\s*|\s+and\s+|\s+then\s+/);
 }
+
+/**
+ * Découpe lue dans les VRAIES étapes de la recette : 'halved', 'cut into strips'…, '' si les étapes
+ * nomment l'ingrédient sans le couper (on n'invente rien), null si elles ne le nomment pas.
+ */
+function decoupeDesEtapes(nom, bouts) {
+  const mots = nom
+    .toLowerCase()
+    .split(/\s+/)
+    .map((m) => m.replace(/(es|s)$/, ''))
+    .filter((m) => m.length >= 3 && !/^(fillet|breast|fresh|green|red|white|sweet|with)$/.test(m));
+  if (!mots.length) return null;
+  const reMot = new RegExp(
+    `\\b(?:${mots.map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\w*`,
+    'gi'
+  );
+  let vu = false;
+  for (const bout of bouts) {
+    if (!reMot.test(bout)) continue;
+    reMot.lastIndex = 0;
+    vu = true;
+    if (/\bjuice\b|\bzest\b/.test(bout)) continue;
+    const reste = bout.replace(reMot, ' '); // « lamb chops » ne vaut pas « chop »
+    if (/\bwhole\b/.test(reste)) return 'whole';
+    for (const [re, forme] of COUPES) if (re.test(reste)) return forme;
+  }
+  return vu ? '' : null;
+}
+
+const FRUITS_DECOUPE = new Set([
+  'ananas',
+  'mangue',
+  'pomme',
+  'banane',
+  'citron',
+  'citron-vert',
+  'orange',
+  'poire',
+  'peche',
+  'abricot',
+  'fraise',
+]);
 
 function nomDecoupe(cle, nom, etapes, mixe, info) {
   if (mixe) return nom;
-  // étapes : seulement fruits, légumes et herbes (le chocolat haché, lui, fond dans le plat)
-  const forme = info && info.aisle === 'fruits-legumes' ? decoupeDesEtapes(nom, etapes) : null;
-  if (forme) return forme.startsWith('cut') ? `${nom} ${forme}` : `${forme} ${nom}`;
+  const aisle = (info && info.aisle) || '';
+  if (etapes && etapes.length && aisle !== 'epicerie' && aisle !== 'boissons') {
+    const bouts = boutsEtapes(etapes);
+    let forme = decoupeDesEtapes(nom, bouts);
+    // « Cut the vegetables into strips » vaut pour les légumes que l'étape ne nomme pas
+    if (forme === null && aisle === 'fruits-legumes' && !FRUITS_DECOUPE.has(cle))
+      forme = decoupeDesEtapes('vegetables', bouts);
+    if (forme === '') return nom;
+    if (forme) return forme.startsWith('cut') ? `${nom} ${forme}` : `${forme} ${nom}`;
+  }
   return DECOUPE[cle] || nom;
 }
 
@@ -782,7 +826,10 @@ const ACCOMPAGNEMENTS = [
   [/mashed potato/, 'a smooth, creamy swirl of pale ivory mashed potatoes'],
   [/saut[ée]ed potato/, 'golden, crispy pan-fried potato cubes'],
   [/steamed potato/, 'small whole steamed yellow potatoes with thin skins'],
-  [/polenta/, 'a flat, smooth, silky spread of pale cream-colored cornmeal polenta, glossy like a purée'],
+  [
+    /polenta/,
+    'a flat, smooth, silky spread of pale cream-colored cornmeal polenta, glossy like a purée',
+  ],
   [/couscous/, 'a mound of fluffy, separate, pale golden couscous grains'],
   [/\brice\b/, 'a neat mound of fluffy white steamed rice'],
   [/green beans?/, 'a bundle of bright green, whole, thin green beans'],
@@ -808,16 +855,8 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
   const titre = (item.titre || item.id).trim();
   const type = typeDePlat(titre, recette);
   const sucre = estSucre(recette, titre, type);
-  const etapes = ((ctx.etapes || {})[item.id] || {}).steps;
-  const roles = rolesIngredients(
-    recette,
-    ctx.ingredients,
-    ctx.nomEn,
-    sucre,
-    titre,
-    type.t,
-    etapes
-  );
+  const etapes = item.etapes || ((ctx.etapes || {})[item.id] || {}).steps;
+  const roles = rolesIngredients(recette, ctx.ingredients, ctx.nomEn, sucre, titre, type.t, etapes);
   const cuis = cuisine(titre, recette);
   const famille = familleDe(item);
   const v = variation(famille, k, essai);
@@ -868,7 +907,9 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
   if (cote) {
     const re = /the side arranged next to (it|them)/;
     if (re.test(texte)) {
-      texte = texte.replace(re, `${cote} next to $1`).replace(/,? the side arranged next to (it|them)/g, '');
+      texte = texte
+        .replace(re, `${cote} next to $1`)
+        .replace(/,? the side arranged next to (it|them)/g, '');
     } else {
       texte = texte.replace(' In the dish:', ` Served with ${cote}. In the dish:`);
     }
