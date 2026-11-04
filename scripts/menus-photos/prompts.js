@@ -181,7 +181,7 @@ const OEUF_VISIBLE = new Set(['salade', 'bowl', 'sandwich', 'soupe', 'wok', 'ome
 // recette = tomate coupée en deux dans le plat »). D'abord ce que disent les étapes de la recette,
 // sinon la découpe habituelle ci-dessous. Jamais pour les plats mixés (velouté, boisson).
 const DECOUPE = {
-  'tomate-cerise': 'cherry tomatoes cut in half',
+  'tomate-cerise': 'cherry tomatoes cut in half, cut side up',
   tomate: 'tomato wedges',
   'tomate-sechee': 'sun-dried tomato strips',
   carotte: 'carrot rounds',
@@ -282,6 +282,24 @@ const FRUITS_DECOUPE = new Set([
   'fraise',
 ]);
 
+/** Découpe écrite de façon que FLUX la dessine vraiment (une moitié montre sa face coupée). */
+const VISIBLE = {
+  halved: (n) => `${n} cut in half, cut side up`,
+  quartered: (n) => `${n} cut into quarters`,
+  diced: (n) => `${n} in small cubes`,
+  cubed: (n) => `${n} in bite-size cubes`,
+  sliced: (n) => `${n} in thin slices`,
+  'cut into strips': (n) => `${n} in thin strips`,
+  'cut into wedges': (n) => `${n} in wedges`,
+  grated: (n) => `grated ${n}`,
+  shredded: (n) => `shredded ${n}`,
+  chopped: (n) => `finely chopped ${n}`,
+  whole: (n) => `whole ${n}`,
+};
+function formeVisible(nom, forme) {
+  return (VISIBLE[forme] || ((n) => `${forme} ${n}`))(nom);
+}
+
 function nomDecoupe(cle, nom, etapes, mixe, info) {
   if (mixe) return nom;
   const aisle = (info && info.aisle) || '';
@@ -292,7 +310,7 @@ function nomDecoupe(cle, nom, etapes, mixe, info) {
     if (forme === null && aisle === 'fruits-legumes' && !FRUITS_DECOUPE.has(cle))
       forme = decoupeDesEtapes('vegetables', bouts);
     if (forme === '') return nom;
-    if (forme) return forme.startsWith('cut') ? `${nom} ${forme}` : `${forme} ${nom}`;
+    if (forme) return formeVisible(nom, forme);
   }
   return DECOUPE[cle] || nom;
 }
