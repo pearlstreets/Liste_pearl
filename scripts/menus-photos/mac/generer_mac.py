@@ -17,6 +17,9 @@ Options :
   --modele CHEMIN        dossier du modèle (défaut ~/pearl-photos/modele/flux-1-schnell-mflux-q4)
   --envoyer-tous N       lance envoyer.sh en arrière-plan toutes les N nouvelles images (0 = jamais)
   --nice N               priorité basse (défaut 10)
+  --avec-pc              travaille en même temps que le PC : ingrédients d'abord, puis les recettes
+                         générées en partant de la FIN, et saute tout ce qui est déjà en ligne
+                         (manifeste CloudFront relu toutes les 20 images)
   --racine D             dossier de travail (défaut ~/pearl-photos)
   --preparer-refaire     ne génère rien : lit a-refaire.json (controle.js) et en-ligne.txt, écrit
                          refaire-liste.json (une image déjà en ligne n'est jamais remplacée : on refait
@@ -92,6 +95,51 @@ def ordonner(prompts):
             if not familles[f]:
                 del familles[f]
     return main + ingr + gen
+
+
+def ordre_avec_pc(ordre):
+    """Le PC fait les recettes à la main puis les générées dans l'ordre, puis les ingrédients :
+    le Mac prend l'autre bout pour que les deux ne se croisent qu'à la fin."""
+    main = [p for p in ordre if est_main(p)]
+    ingr = [p for p in ordre if p["type"] == "ingredient"]
+    gen = [p for p in ordre if p["type"] == "recette" and not est_main(p)]
+    return ingr + gen[::-1] + main
+
+
+MANIFESTE_URL = "https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/manifeste.json"
+B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+
+def en_ligne():
+    """Ensemble des identifiants qui ont déjà une photo en ligne (même lecture que lib/menus/photoManifest.js).
+    En cas d'échec réseau : None, et rien n'est sauté."""
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(MANIFESTE_URL, timeout=20) as r:
+            m = json.loads(r.read().decode("utf-8"))
+    except Exception:
+        return None
+    ids = set(m.get("recettes") or []) | set(m.get("ingredients") or [])
+    gen = m.get("gen") or ""
+    gen_n = m.get("genN") or len(gen) * 6
+    for i, c in enumerate(gen):
+        v = B64.find(c)
+        for k in range(6):
+            r = i * 6 + k
+            if v > 0 and r < gen_n and (v >> k) & 1:
+                ids.add("g-" + base36(r))
+    return ids
+
+
+def base36(n):
+    chiffres = "0123456789abcdefghijklmnopqrstuvwxyz"
+    out = ""
+    while True:
+        n, k = divmod(n, 36)
+        out = chiffres[k] + out
+        if n == 0:
+            return out
 
 
 def echantillon(ordre, n):
@@ -274,6 +322,7 @@ def main():
     ap.add_argument("--modele", default=MODELE_DEFAUT)
     ap.add_argument("--envoyer-tous", type=int, default=0)
     ap.add_argument("--nice", type=int, default=10)
+    ap.add_argument("--avec-pc", action="store_true")
     ap.add_argument("--preparer-refaire", action="store_true")
     ap.add_argument("--a-blanc", action="store_true", help="liste et ordre seulement, sans modèle")
     o = ap.parse_args()
@@ -289,12 +338,17 @@ def main():
     if not prompts:
         raise SystemExit(f"{fp} absent ou vide : lancez d'abord scripts/menus-photos/mac/prompts.sh")
     ordre = ordonner(prompts)
+    if o.avec_pc:
+        ordre = ordre_avec_pc(ordre)
     if o.ids:
         voulus = {s.strip() for s in o.ids.split(",") if s.strip()}
         ordre = [p for p in ordre if p["id"] in voulus]
     if o.echantillon:
         ordre = echantillon(ordre, o.echantillon)
     restants = [p for p in ordre if o.refaire or not fichier_image(racine, p).exists()]
+    deja = en_ligne() if o.avec_pc else None
+    if deja:
+        restants = [p for p in restants if p["id"] not in deja]
     print(f"Liste : {len(ordre)} ; déjà faites : {len(ordre) - len(restants)} ; à faire : {len(restants)}")
     if o.a_blanc:
         for p in restants[:30]:
@@ -358,6 +412,11 @@ def main():
             f.rename(rej / f"{p['id']}.{int(time.time())}.webp")
         elif f.exists():
             continue
+        if o.avec_pc:
+            if n % 20 == 0:
+                deja = en_ligne() or deja
+            if deja and p["id"] in deja:
+                continue
         seed = seed_de(p["id"], essai)
         t1 = time.time()
         try:

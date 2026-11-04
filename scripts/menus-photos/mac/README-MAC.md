@@ -31,7 +31,7 @@ Ces chiffres sont des estimations. Aucun banc d'essai publié ne mesure exacteme
 - la doc de mflux donne environ 97 s pour un Mac mini M4 de 16 Go en 1024x1024, 2 étapes, 8 bits ;
 - en 640x640, on a 2,5 fois moins de pixels.
 
-**L'échantillon de 20 images donne la vraie moyenne.** Le journal affiche ensuite la fin prévue.
+Le journal donne la vraie moyenne et la fin prévue dès les premières images.
 
 La génération tourne en **priorité basse** (`nice`) et empêche la mise en veille (`caffeinate -i`).
 Le build des sites, lancé par launchd toutes les 2 min, passe donc devant pour le processeur.
@@ -77,10 +77,12 @@ Dossier de travail : `~/pearl-photos/`, hors du dépôt.
 > Dans /Users/remsko/Liste_Pearl (dépôt pearlstreets/Liste_pearl), fais `git fetch` puis passe sur la branche `claude/list-photos-mac`. Suis scripts/menus-photos/mac/README-MAC.md.
 >
 > 1. Installe avec installer.sh, puis fais les prompts avec prompts.sh.
-> 2. Génère les 20 photos d'essai (`--echantillon 20`). Montre-les-moi avec le temps moyen par image et la durée totale prévue, puis attends mon accord.
-> 3. Après mon accord, lance toute la génération en arrière-plan (nohup, `--envoyer-tous 500`), pour que les images partent au fur et à mesure. Ne reste jamais bloqué à attendre plus de 270 s : regarde le journal de temps en temps.
-> 4. À la fin, lance refaire.sh, puis envoyer.sh une dernière fois, puis manifeste.sh.
-> 5. Commite `lib/menus/photosManifest.js` sur la branche et ouvre une PR, sans la merger.
+> 2. Pas d'essai : lance tout de suite toute la génération en arrière-plan, en même temps que le PC :
+>    `nohup ~/pearl-photos/venv/bin/python scripts/menus-photos/mac/generer_mac.py --avec-pc --envoyer-tous 20 >> ~/pearl-photos/sortie.log 2>&1 &`
+>    Le Mac prend les ingrédients puis les recettes en partant de la fin, et saute tout ce que le PC a déjà mis en ligne.
+>    Les photos partent en ligne toutes les 20 images avec envoyer.sh, sans jamais écraser une photo déjà en ligne.
+> 3. Vérifie que les premières photos sont bien en ligne (ligne `MANIFESTE` dans ~/pearl-photos/envoi.log, puis une adresse https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v1/<id>.webp en 200), puis montre-m'en quelques-unes avec le temps moyen par image et la fin prévue.
+> 4. Ne reste jamais bloqué à attendre plus de 270 s : regarde le journal (`tail -n 5 ~/pearl-photos/journal.log`) de temps en temps. Ne merge rien.
 >
 > Les images restent toujours gratuites : uniquement FLUX.1-schnell en local avec mflux, jamais OpenAI ni aucun service payant, aucune clé. Coupe le son.
 

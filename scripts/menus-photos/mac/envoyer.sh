@@ -1,50 +1,29 @@
 #!/usr/bin/env bash
-# Envoie les photos faites vers le serveur (rsync via l'alias ssh pearl-prod), puis du serveur vers S3
-# (s3_envoi.py, identifiants du .env Django jamais affichés). Rien n'est jamais écrasé en ligne.
-# Lancé à la main ou tout seul par generer_mac.py --envoyer-tous 500. Peut tourner pendant la génération.
-#   bash scripts/menus-photos/mac/envoyer.sh [--a-blanc]
+# Envoie les photos faites sur le Mac vers le serveur, puis du serveur vers S3, par le même chemin que le PC :
+# ~/list-menus-photos/v1/ sur pearl-prod, puis ~/list-menus-photos/s3_envoi.py --manifeste (installé par le PC),
+# qui n'écrase JAMAIS une image déjà en ligne et refait le manifeste lu par l'application.
+# Lancé tout seul par generer_mac.py --envoyer-tous N, ou à la main :
+#   bash scripts/menus-photos/mac/envoyer.sh
 set -euo pipefail
-ICI="$(cd "$(dirname "$0")" && pwd)"
-DEPOT="$(cd "$ICI/../../.." && pwd)"
 RACINE="${PEARL_PHOTOS:-$HOME/pearl-photos}"
-VERSION="${PHOTOS_VERSION:-1}"
-DISTANT="list-menus-photos/v$VERSION"          # relatif au HOME du serveur
-ENV_DJANGO='~/Marketplace---Pearl-Streets/Backend/Marketplace/.env'
-A_BLANC=""; [ "${1:-}" = "--a-blanc" ] && A_BLANC="--a-blanc"
+APP=/home/ubuntu/Backend-Marketplace-Python/Marketplace---Pearl-Streets/BackendPython/Marketplace
+SSH="ssh -o BatchMode=yes -o ConnectTimeout=20 pearl-prod"
 
 # Un seul envoi à la fois
 VERROU="$RACINE/.envoi.lock"
 mkdir "$VERROU" 2>/dev/null || { echo "Un envoi est déjà en cours ($VERROU)."; exit 0; }
 trap 'rmdir "$VERROU"' EXIT
 
-echo "== $(date '+%F %T') envoi v$VERSION"
-# 1. Contrôle : doublons, quasi doublons, tailles (sharp si présent, sinon empreintes de etat.json)
-EXIST=""; (cd "$DEPOT" && node -e "require('sharp')" 2>/dev/null) && EXIST="--existantes"
-node "$DEPOT/scripts/menus-photos/controle.js" "$RACINE" $EXIST
+echo "== $(date '+%F %T') envoi"
+$SSH 'test -f ~/list-menus-photos/s3_envoi.py && mkdir -p ~/list-menus-photos/v1/ingredients' ||
+  { echo "ERREUR : ~/list-menus-photos/s3_envoi.py absent du serveur (installé par le PC)"; exit 1; }
 
-# 2. Ce qui est déjà en ligne (tenu par le serveur), puis liste à refaire : jamais envoyée
-ssh pearl-prod "cat ~/$DISTANT/en-ligne.txt 2>/dev/null || true" > "$RACINE/en-ligne.txt"
-"$RACINE/venv/bin/python" "$ICI/generer_mac.py" --preparer-refaire
+# Copie sans écraser ce que le PC a déjà déposé (les .part en cours d'écriture sont ignorés)
+[ -d "$RACINE/images/recettes" ] &&
+  rsync -a --ignore-existing --include '*.webp' --exclude '*' "$RACINE/images/recettes/" "pearl-prod:list-menus-photos/v1/"
+[ -d "$RACINE/images/ingredients" ] &&
+  rsync -a --ignore-existing --include '*.webp' --exclude '*' "$RACINE/images/ingredients/" "pearl-prod:list-menus-photos/v1/ingredients/"
 
-# 3. Copie vers le serveur (les .part en cours d'écriture sont ignorés)
-ssh pearl-prod "mkdir -p ~/$DISTANT/images"
-rsync -a --exclude '*.part' --exclude '.*' "$RACINE/images/" "pearl-prod:$DISTANT/images/"
-rsync -a "$RACINE/refaire-liste.json" "$ICI/s3_envoi.py" "pearl-prod:$DISTANT/"
-
-# 4. Sur le serveur : un Python qui a boto3 (venv Django d'abord), puis envoi S3 sans écrasement
-ssh pearl-prod "bash -s" <<DISTANT_EOF
-set -e
-PY=""
-for p in ~/Marketplace---Pearl-Streets/Backend/Marketplace/venv/bin/python ~/Marketplace---Pearl-Streets/Backend/venv/bin/python ~/Marketplace---Pearl-Streets/venv/bin/python python3; do
-  if [ -x "\$p" ] || command -v "\$p" >/dev/null 2>&1; then
-    if "\$p" -c 'import boto3' 2>/dev/null; then PY="\$p"; break; fi
-  fi
-done
-[ -n "\$PY" ] || { echo "ERREUR : aucun Python avec boto3 sur le serveur" >&2; exit 1; }
-nice -n 10 "\$PY" ~/$DISTANT/s3_envoi.py --dossier ~/$DISTANT --version $VERSION \
-  --exclure ~/$DISTANT/refaire-liste.json --env $ENV_DJANGO $A_BLANC
-DISTANT_EOF
-
-# 5. État en ligne rapatrié (sert au refaire et au manifeste)
-ssh pearl-prod "cat ~/$DISTANT/en-ligne.txt 2>/dev/null || true" > "$RACINE/en-ligne.txt"
-echo "En ligne : $(wc -l < "$RACINE/en-ligne.txt" | tr -d ' ') images (https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v$VERSION/<id>.webp)"
+# Sur le serveur : envoi S3 sans écrasement, puis manifeste refait s'il a changé
+$SSH "cd $APP && nice -n 10 venv/bin/python ~/list-menus-photos/s3_envoi.py --manifeste 2>&1 | grep -E '^(REFUS|NOUVEAUX|MANIFESTE|Traceback|[A-Za-z]*Error)'" || true
+echo "== $(date '+%F %T') fin de l'envoi"
