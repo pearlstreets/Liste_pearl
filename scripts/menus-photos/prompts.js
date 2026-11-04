@@ -698,6 +698,30 @@ function estSucre(recette, titreEn, type) {
   return recette.course === 'dessert' || SUBS_SUCRES.has(recette.sub || '');
 }
 
+// Accompagnement du titre (« …, served with X ») décrit tel qu'il doit apparaître dans l'assiette
+// (04/11 : polenta prise pour des œufs, frites ou haricots remplacés par autre chose).
+const ACCOMPAGNEMENTS = [
+  [/oven fries|fries/, 'a pile of straight, thin, golden oven-baked French fries'],
+  [/mashed potato/, 'a smooth, creamy swirl of pale ivory mashed potatoes'],
+  [/saut[ée]ed potato/, 'golden, crispy pan-fried potato cubes'],
+  [/steamed potato/, 'small whole steamed yellow potatoes with thin skins'],
+  [/polenta/, 'a flat, smooth, silky spread of pale cream-colored cornmeal polenta, glossy like a purée'],
+  [/couscous/, 'a mound of fluffy, separate, pale golden couscous grains'],
+  [/\brice\b/, 'a neat mound of fluffy white steamed rice'],
+  [/green beans?/, 'a bundle of bright green, whole, thin green beans'],
+  [/roasted vegetables/, 'colorful roasted vegetable chunks with caramelized edges'],
+  [/green salad/, 'a small fresh green leaf salad, lightly dressed'],
+  [/tagliatelle/, 'a nest of golden tagliatelle ribbons'],
+];
+
+function accompagnement(titre) {
+  const m = /\bserved with (.+)$/i.exec(titre);
+  if (!m) return null;
+  const cote = m[1].toLowerCase();
+  const trouve = ACCOMPAGNEMENTS.find(([re]) => re.test(cote));
+  return trouve ? trouve[1] : null;
+}
+
 /**
  * Prompt d'une recette. item : { id, titre, recette } (voir donnees.js). ctx : { ingredients, nomEn }.
  * k : rang dans sa famille (variation), essai : n° de reprise.
@@ -753,7 +777,17 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
   // plat fini seul, aucun objet dans le décor (demande du 04/11), gabarit court (256 jetons)
   morceaux.push(gabaritPlat(v, type.contenant));
   morceaux.push(`Reference ${item.id} (internal identifier, never shown in the image).`);
-  return morceaux.join(' ');
+  let texte = morceaux.join(' ');
+  const cote = accompagnement(titre);
+  if (cote) {
+    const re = /the side arranged next to (it|them)/;
+    if (re.test(texte)) {
+      texte = texte.replace(re, `${cote} next to $1`).replace(/,? the side arranged next to (it|them)/g, '');
+    } else {
+      texte = texte.replace(' In the dish:', ` Served with ${cote}. In the dish:`);
+    }
+  }
+  return texte;
 }
 
 /* ------------------------------------------------------------------ ingrédients seuls */
