@@ -61,11 +61,11 @@ Dossier de travail : `~/pearl-photos/`, hors du dépôt.
 6. **Envoi** : `bash scripts/menus-photos/mac/envoyer.sh`. Il est lancé tout seul tous les 500, et une dernière fois à la main à la fin.
    - D'abord, il contrôle les images et laisse de côté celles à refaire.
    - Ensuite, il copie les images par `rsync` vers `pearl-prod:~/list-menus-photos/v1/`.
-   - Enfin, il lance `s3_envoi.py` **sur le serveur**, qui envoie dans le compartiment `markerplacemobileapp`, sous `uploads/list-menus/v1/<id>.webp` et `.../ingredients/<clé>.webp`.
+   - Enfin, il lance `s3_envoi.py` **sur le serveur**, qui envoie dans le compartiment `markerplacemobileapp`, sous `uploads/list-menus/v2/<id>.webp` et `.../ingredients/<clé>.webp`.
    - En-têtes : `image/webp` et `public, max-age=31536000, immutable`.
    - Une clé déjà présente n'est jamais écrasée : `head_object`, puis écriture conditionnelle.
    - Les identifiants AWS sont lus dans le `.env` Django du serveur et ne sont jamais affichés. `--a-blanc` liste ce qui partirait.
-   - Adresse publique : `https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v1/<id>.webp`.
+   - Adresse publique : `https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v2/<id>.webp`.
 7. **Manifeste** : `bash scripts/menus-photos/mac/manifeste.sh`.
    - Il ne prend que ce qui est **en ligne** : la liste `en-ligne.txt` est tenue par le serveur.
    - Il vérifie par HEAD sur CloudFront 40 images tirées au hasard. Si une seule manque, il s'arrête.
@@ -81,7 +81,7 @@ Dossier de travail : `~/pearl-photos/`, hors du dépôt.
 >    `nohup ~/pearl-photos/venv/bin/python scripts/menus-photos/mac/generer_mac.py --avec-pc --envoyer-tous 20 >> ~/pearl-photos/sortie.log 2>&1 &`
 >    Le Mac fait les plats en partant de la fin de la liste (les photos d ingrédients à la fin), et saute tout ce que le PC a déjà mis en ligne.
 >    Les photos partent en ligne toutes les 20 images avec envoyer.sh, sans jamais écraser une photo déjà en ligne.
-> 3. Vérifie que les premières photos sont bien en ligne (ligne `MANIFESTE` dans ~/pearl-photos/envoi.log, puis une adresse https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v1/<id>.webp en 200), puis montre-m'en quelques-unes avec le temps moyen par image et la fin prévue.
+> 3. Vérifie que les premières photos sont bien en ligne (ligne `MANIFESTE` dans ~/pearl-photos/envoi.log, puis une adresse https://d24hrna6wu3lb7.cloudfront.net/uploads/list-menus/v2/<id>.webp en 200), puis montre-m'en quelques-unes avec le temps moyen par image et la fin prévue.
 > 4. Ne reste jamais bloqué à attendre plus de 270 s : regarde le journal (`tail -n 5 ~/pearl-photos/journal.log`) de temps en temps. Ne merge rien.
 >
 > Les images restent toujours gratuites : uniquement FLUX.1-schnell en local avec mflux, jamais OpenAI ni aucun service payant, aucune clé. Coupe le son.
