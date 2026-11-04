@@ -25,7 +25,7 @@ Options :
                          refaire-liste.json (une image déjà en ligne n'est jamais remplacée : on refait
                          plutôt l'autre image de la paire si elle n'est pas en ligne)
 
-Sortie : ~/pearl-photos/images/{recettes,ingredients}/<id>.webp (WebP 640x640 qualité 80).
+Sortie : ~/pearl-photos/images/{recettes,ingredients}/<id>.webp (WebP 640x640 qualité 92).
 Reprise : une image déjà présente est sautée. Arrêt propre : créer ~/pearl-photos/STOP, ou Ctrl+C
 (l'image en cours se termine). Journal : ~/pearl-photos/journal.log ; état : ~/pearl-photos/etat.json.
 """
@@ -184,7 +184,7 @@ def empreintes(img):
     return a, d
 
 
-def vers_webp(img, qualite=80):
+def vers_webp(img, qualite=92):
     """Image PIL vers octets WebP COTExCOTE (recadrage centré si besoin)."""
     import io
 

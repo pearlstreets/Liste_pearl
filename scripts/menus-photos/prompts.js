@@ -449,7 +449,7 @@ const TYPES = [
     re: /\b(fillets?|loin|steaks?|chops?|breasts?|thighs?|escalopes?|cutlets?|magret|roast|roasted|grilled|pan-fried|seared|baked)\b/,
     sub: ['viandes', 'poissons'],
     scene:
-      'plated on a light ceramic plate: the main piece nicely seared and golden, the side arranged next to it, sauce spooned around',
+      'plated on a light ceramic plate: the main piece nicely seared and golden, the side arranged next to it, sauce neatly drizzled, never pooled',
     contenant: 'plate',
   },
   {
@@ -665,6 +665,17 @@ function gabaritStyle(v, accessoires, contenant) {
   );
 }
 
+// Gabarit court des plats : FLUX.1-schnell ne lit que 256 jetons (T5), la fin d'un prompt plus long est
+// coupée (angle, décor, « no text »). Plat seul, appétissant, net ; mêmes variations d'angle, surface, lumière.
+function gabaritPlat(v, contenant) {
+  const pose = contenant === 'glass' ? `Clear glass on ${v.surface}` : `On ${v.surface}`;
+  return (
+    `${v.angle[0].toUpperCase()}${v.angle.slice(1).replace(' the table', '')}, not top-down, ${v.cadrage.replace(' square', '')}. ` +
+    `Photorealistic, irresistible recipe-magazine photo, fresh glossy textures, vibrant colors, crisp sharp focus. ` +
+    `No text, no hands. ${pose}, ${v.lumiere}.`
+  );
+}
+
 /* ------------------------------------------------------------------ prompts */
 
 const SUBS_SUCRES = new Set(['desserts', 'gateaux', 'boissons', 'petit_dejeuner']);
@@ -708,7 +719,7 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
 
   const morceaux = [];
   morceaux.push(
-    `Realistic food photograph of a single dish: "${titre}"${cuis ? `, ${cuis} home cooking` : ''}, ${type.scene}.`
+    `Mouth-watering, beautifully plated food photograph of a single dish: "${titre}"${cuis ? `, ${cuis} home cooking` : ''}, ${type.scene}.`
   );
   if (asp) morceaux.push(`The finished dish looks like this: ${asp.aspect}.`);
   const visibles = roles.visibles.slice(0, 6).map((x) => x.nom);
@@ -735,14 +746,12 @@ function promptRecette(item, ctx, k = 0, essai = 0) {
     } else {
       morceaux.push(`In the dish: ${desc.join('; ')}.`);
       morceaux.push(
-        `The main ingredients must be easy to recognize: ${enumerer(visibles.slice(0, 4))}. Nothing that is not in the recipe${exclus.length ? `: no ${exclus.join(', no ')}` : ''}.`
+        `Nothing that is not in the recipe${exclus.length ? `: no ${exclus.join(', no ')}` : ''}.`
       );
     }
   }
-  const pool = sucre ? ACCESSOIRES_SUCRE : ACCESSOIRES_SALE;
-  const acc = v.accessoires.map((i) => pool[i]);
-  // plat fini seul : aucun ingrédient cru dans le décor (demande du 04/11)
-  morceaux.push(gabaritStyle(v, uniq(acc), type.contenant));
+  // plat fini seul, aucun objet dans le décor (demande du 04/11), gabarit court (256 jetons)
+  morceaux.push(gabaritPlat(v, type.contenant));
   morceaux.push(`Reference ${item.id} (internal identifier, never shown in the image).`);
   return morceaux.join(' ');
 }
@@ -854,7 +863,7 @@ function promptIngredient(item, k = 0, essai = 0) {
     ACCESSOIRES_NEUTRES[5 + (v.accessoires[1] % 3)],
   ];
   return [
-    `Realistic food photograph of a single raw ingredient: ${item.nom.toLowerCase()}, ${scene}. It is the only subject in focus, nothing else is cooked or mixed with it.`,
+    `Beautiful, fresh, appetizing food photograph of a single raw ingredient: ${item.nom.toLowerCase()}, ${scene}. It is the only subject in focus, nothing else is cooked or mixed with it.`,
     gabaritStyle({ ...v, cadrage: v.cadrage.replace('the dish', 'the ingredient') }, acc, ''),
     `Reference ingredient ${item.id} (internal identifier, never shown in the image).`,
   ].join(' ');
