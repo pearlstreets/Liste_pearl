@@ -56,7 +56,11 @@
     "grantedPending": "Warten auf Antwort",
     "revoke": "Entfernen",
     "dragHint": "Zum Verschieben lang drücken",
-    "shareNeedsLogin": "Melden Sie sich an, um eine Teilen-Anfrage zu senden."
+    "shareNeedsLogin": "Melden Sie sich an, um eine Teilen-Anfrage zu senden.",
+    "profileFollowers": "Follower",
+    "profileFollowing": "Gefolgt",
+    "profileOpenFull": "Profil auf Pearl Streets ansehen",
+    "grantedAdd": "Person hinzufügen"
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",

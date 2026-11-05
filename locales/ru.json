@@ -58,7 +58,11 @@
     "grantedPending": "Ожидает ответа",
     "revoke": "Убрать",
     "dragHint": "Удерживайте, чтобы переместить",
-    "shareNeedsLogin": "Войдите, чтобы отправить запрос на совместный доступ."
+    "shareNeedsLogin": "Войдите, чтобы отправить запрос на совместный доступ.",
+    "profileFollowers": "Подписчики",
+    "profileFollowing": "Подписки",
+    "profileOpenFull": "Открыть профиль в Pearl Streets",
+    "grantedAdd": "Добавить человека"
   },
   "productsScreen": {
     "clickAndCollect": "Заказать и забрать",

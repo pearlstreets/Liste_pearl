@@ -60,7 +60,11 @@
     "grantedPending": "في انتظار الرد",
     "revoke": "إزالة",
     "dragHint": "اضغطوا مطولاً للتحريك",
-    "shareNeedsLogin": "يرجى تسجيل الدخول لتتمكنوا من إرسال طلب مشاركة."
+    "shareNeedsLogin": "يرجى تسجيل الدخول لتتمكنوا من إرسال طلب مشاركة.",
+    "profileFollowers": "المتابعون",
+    "profileFollowing": "المتابَعون",
+    "profileOpenFull": "عرض الملف الشخصي على Pearl Streets",
+    "grantedAdd": "إضافة شخص"
   },
   "productsScreen": {
     "clickAndCollect": "اطلبوا واستلموا",
