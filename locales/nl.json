@@ -59,7 +59,8 @@
     "shareNeedsLogin": "Log in om een deelverzoek te kunnen versturen.",
     "profileFollowers": "Volgers",
     "profileFollowing": "Volgend",
-    "profileOpenFull": "Profiel bekijken op Pearl Streets"
+    "profileOpenFull": "Profiel bekijken op Pearl Streets",
+    "grantedAdd": "Iemand toevoegen"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",

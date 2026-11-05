@@ -58,7 +58,8 @@
     "shareNeedsLogin": "共有リクエストを送信するにはログインしてください。",
     "profileFollowers": "フォロワー",
     "profileFollowing": "フォロー中",
-    "profileOpenFull": "Pearl Streetsでプロフィールを見る"
+    "profileOpenFull": "Pearl Streetsでプロフィールを見る",
+    "grantedAdd": "ユーザーを追加"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",

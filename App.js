@@ -367,6 +367,18 @@ function ListScreen() {
   const [grantedOpen, setGrantedOpen] = useState(false);
   // Pop-up « profil Pearl Streets » d'une personne de « Qui a accès à ma liste ».
   const [profilPartage, setProfilPartage] = useState(null); // { username, user?, loading }
+  // Ouvre la fenêtre de partage (bouton « Partager » et « Ajouter une personne »).
+  const ouvrirPartage = () => {
+    setShareInput(''); setShareInputKey((k) => k + 1); setShareModalOpen(true);
+    // Connecté : liste des utilisateurs affichée d'emblée (cache -> instantané).
+    // Sans compte : aucune suggestion d'autres utilisateurs (vie privée).
+    setShareSuggestions(isLoggedIn ? (shareCache.current.get('') || []) : []);
+    getTokens().then((tok) => {
+      setIsLoggedIn(!!tok);
+      if (tok) fetchShareUsers('');
+      else { shareReqId.current++; shareCache.current.clear(); setShareSuggestions([]); }
+    }).catch(() => {});
+  };
   const ouvrirProfilPartage = async (u) => {
     const username = u?.username;
     if (!username) return;
@@ -870,17 +882,7 @@ function ListScreen() {
           <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.filter(it => it && it.selected && !it.crossed).length })}</Text>
         </View>
         {!readOnly && (
-          <TouchableOpacity onPress={() => {
-              setShareInput(''); setShareInputKey((k) => k + 1); setShareModalOpen(true);
-              // Connecté : liste des utilisateurs affichée d'emblée (cache -> instantané).
-              // Sans compte : aucune suggestion d'autres utilisateurs (vie privée).
-              setShareSuggestions(isLoggedIn ? (shareCache.current.get('') || []) : []);
-              getTokens().then((tok) => {
-                setIsLoggedIn(!!tok);
-                if (tok) fetchShareUsers('');
-                else { shareReqId.current++; shareCache.current.clear(); setShareSuggestions([]); }
-              }).catch(() => {});
-            }} activeOpacity={0.8} style={lstyles.scanBtn}>
+          <TouchableOpacity onPress={ouvrirPartage} activeOpacity={0.8} style={lstyles.scanBtn}>
             <Ionicons name="share-social-outline" size={17} color={THEME.brandDark} />
             <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
           </TouchableOpacity>
@@ -1229,6 +1231,13 @@ function ListScreen() {
                 </View>
               ))}
             </ScrollView>
+            <TouchableOpacity
+              onPress={() => { setGrantedOpen(false); setTimeout(ouvrirPartage, 350); }}
+              activeOpacity={0.8}
+              style={{ flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop:14, paddingVertical:12, borderRadius:12, backgroundColor:'#FFFFFF', borderWidth:1, borderColor:THEME.border }}>
+              <Ionicons name="person-add-outline" size={17} color={THEME.ink} />
+              <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:14, marginLeft:8 }}>{t('listScreen.grantedAdd', 'Ajouter une personne')}</Text>
+            </TouchableOpacity>
           </View>
           )}
         </View>

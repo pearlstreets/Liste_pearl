@@ -61,7 +61,8 @@
     "shareNeedsLogin": "Войдите, чтобы отправить запрос на совместный доступ.",
     "profileFollowers": "Подписчики",
     "profileFollowing": "Подписки",
-    "profileOpenFull": "Открыть профиль в Pearl Streets"
+    "profileOpenFull": "Открыть профиль в Pearl Streets",
+    "grantedAdd": "Добавить человека"
   },
   "productsScreen": {
     "clickAndCollect": "Заказать и забрать",

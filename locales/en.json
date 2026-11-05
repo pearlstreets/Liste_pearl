@@ -59,7 +59,8 @@
     "shareNeedsLogin": "Log in to send a share request.",
     "profileFollowers": "Followers",
     "profileFollowing": "Following",
-    "profileOpenFull": "View profile on Pearl Streets"
+    "profileOpenFull": "View profile on Pearl Streets",
+    "grantedAdd": "Add someone"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

@@ -59,7 +59,8 @@
     "shareNeedsLogin": "Logga in för att kunna skicka en delningsförfrågan.",
     "profileFollowers": "Följare",
     "profileFollowing": "Följer",
-    "profileOpenFull": "Visa profilen på Pearl Streets"
+    "profileOpenFull": "Visa profilen på Pearl Streets",
+    "grantedAdd": "Lägg till en person"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",

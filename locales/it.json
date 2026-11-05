@@ -60,7 +60,8 @@
     "shareNeedsLogin": "Acceda per poter inviare una richiesta di condivisione.",
     "profileFollowers": "Follower",
     "profileFollowing": "Seguiti",
-    "profileOpenFull": "Vedi il profilo su Pearl Streets"
+    "profileOpenFull": "Vedi il profilo su Pearl Streets",
+    "grantedAdd": "Aggiungi una persona"
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",

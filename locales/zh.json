@@ -58,7 +58,8 @@
     "shareNeedsLogin": "请登录后再发送共享请求。",
     "profileFollowers": "粉丝",
     "profileFollowing": "关注",
-    "profileOpenFull": "在 Pearl Streets 查看个人资料"
+    "profileOpenFull": "在 Pearl Streets 查看个人资料",
+    "grantedAdd": "添加成员"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",

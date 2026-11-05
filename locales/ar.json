@@ -63,7 +63,8 @@
     "shareNeedsLogin": "يرجى تسجيل الدخول لتتمكنوا من إرسال طلب مشاركة.",
     "profileFollowers": "المتابعون",
     "profileFollowing": "المتابَعون",
-    "profileOpenFull": "عرض الملف الشخصي على Pearl Streets"
+    "profileOpenFull": "عرض الملف الشخصي على Pearl Streets",
+    "grantedAdd": "إضافة شخص"
   },
   "productsScreen": {
     "clickAndCollect": "اطلبوا واستلموا",

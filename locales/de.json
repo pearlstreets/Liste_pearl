@@ -59,7 +59,8 @@
     "shareNeedsLogin": "Melden Sie sich an, um eine Teilen-Anfrage zu senden.",
     "profileFollowers": "Follower",
     "profileFollowing": "Gefolgt",
-    "profileOpenFull": "Profil auf Pearl Streets ansehen"
+    "profileOpenFull": "Profil auf Pearl Streets ansehen",
+    "grantedAdd": "Person hinzufügen"
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",

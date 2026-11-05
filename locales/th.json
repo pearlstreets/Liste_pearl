@@ -58,7 +58,8 @@
     "shareNeedsLogin": "กรุณาเข้าสู่ระบบเพื่อส่งคำขอแชร์",
     "profileFollowers": "ผู้ติดตาม",
     "profileFollowing": "กำลังติดตาม",
-    "profileOpenFull": "ดูโปรไฟล์บน Pearl Streets"
+    "profileOpenFull": "ดูโปรไฟล์บน Pearl Streets",
+    "grantedAdd": "เพิ่มผู้ใช้"
   },
   "productsScreen": {
     "clickAndCollect": "คลิกและรับสินค้า",
