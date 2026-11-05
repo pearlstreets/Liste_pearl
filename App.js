@@ -1142,6 +1142,17 @@ function ListScreen() {
                 <View key={`p-${g.share_id}`} style={{ flexDirection:'row', alignItems:'center', paddingVertical:11 }}>
                   <Ionicons name="time-outline" size={18} color={THEME.faint} />
                   <Text style={{ flex:1, marginLeft:10, fontSize:14, color:THEME.muted }} numberOfLines={1}>@{g.user?.username}</Text>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      try { await revokeShare(g.user?.username); } catch {}
+                      try {
+                        const r = await getGrantedShares();
+                        if (r && r.status && r.data) setGranted({ accepted: r.data.accepted || [], pending: r.data.pending || [], count: r.data.count || 0 });
+                      } catch {}
+                    }}
+                    activeOpacity={0.7} style={{ paddingHorizontal:8, paddingVertical:6 }}>
+                    <Text style={{ color:THEME.danger, fontWeight:'700', fontSize:12.5 }}>{t('listScreen.revoke', 'Retirer')}</Text>
+                  </TouchableOpacity>
                 </View>
               ))}
             </ScrollView>
