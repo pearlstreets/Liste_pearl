@@ -1,4 +1,5 @@
 import { CONFIG } from './config';
+import { EN_TETE_PROVENANCE, provenanceInstallation } from './provenanceInstall';
 import { sanitizeResponse, isTokenExpired, requestFingerprint } from './security';
 import { getSecureItem, setSecureItem, removeSecureItem } from './secureStorage';
 
@@ -84,6 +85,10 @@ async function apiFetch(endpoint, { multipart, timeoutMs, ...options } = {}) {
     // Envoi de fichiers (FormData) : le Content-Type multipart est posé par fetch.
     ...(multipart ? {} : { 'Content-Type': 'application/json' }),
     'X-Request-ID': requestFingerprint(), // Track requests
+    // Provenance publicitaire de l'installation (services/provenanceInstall),
+    // sur les POST : le serveur la range sur le compte créé.
+    ...(String(options.method || '').toUpperCase() === 'POST'
+      ? { [EN_TETE_PROVENANCE]: provenanceInstallation() } : {}),
     ...(options.headers || {}),
   };
 
