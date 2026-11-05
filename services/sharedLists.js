@@ -45,3 +45,9 @@ export const getBlocks = () => apiGet('/users/block/');
 export const blockUser = (identifier) => apiPost('/users/block/', { identifier });
 export const blockUserById = (userId) => apiPost('/users/block/', { user_id: userId });
 export const unblockUser = (identifier) => apiDelete('/users/block/', { identifier });
+
+// Profil Pearl Streets public d'un utilisateur (par pseudo), pour le pop-up
+// « Qui a accès à ma liste ». Réponse : { user: { username, display_name,
+// profileImage, bio, followers_count, following_count, ... } }
+export const getPublicProfile = (username) =>
+  apiGet(`/users/get-users-profile-by-barcode/${encodeURIComponent(username || '')}/`);

@@ -55,7 +55,10 @@
     "grantedPending": "返答待ち",
     "revoke": "解除",
     "dragHint": "長押しで移動",
-    "shareNeedsLogin": "共有リクエストを送信するにはログインしてください。"
+    "shareNeedsLogin": "共有リクエストを送信するにはログインしてください。",
+    "profileFollowers": "フォロワー",
+    "profileFollowing": "フォロー中",
+    "profileOpenFull": "Pearl Streetsでプロフィールを見る"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",

@@ -56,7 +56,10 @@
     "grantedPending": "Wacht op antwoord",
     "revoke": "Intrekken",
     "dragHint": "Lang indrukken om te verplaatsen",
-    "shareNeedsLogin": "Log in om een deelverzoek te kunnen versturen."
+    "shareNeedsLogin": "Log in om een deelverzoek te kunnen versturen.",
+    "profileFollowers": "Volgers",
+    "profileFollowing": "Volgend",
+    "profileOpenFull": "Profiel bekijken op Pearl Streets"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",

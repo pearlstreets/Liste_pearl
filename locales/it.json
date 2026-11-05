@@ -57,7 +57,10 @@
     "grantedPending": "In attesa di risposta",
     "revoke": "Rimuovere",
     "dragHint": "Tenga premuto per spostare",
-    "shareNeedsLogin": "Acceda per poter inviare una richiesta di condivisione."
+    "shareNeedsLogin": "Acceda per poter inviare una richiesta di condivisione.",
+    "profileFollowers": "Follower",
+    "profileFollowing": "Seguiti",
+    "profileOpenFull": "Vedi il profilo su Pearl Streets"
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",

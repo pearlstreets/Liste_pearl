@@ -7,7 +7,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 // Marketplace API Services
 import { loginUser, registerUser, logoutUser, deleteAccount as apiDeleteAccount, forgotPassword as apiForgotPassword, updatePassword as apiUpdatePassword, getDocumentStatus, checkEmailAvailable, checkUsernameAvailable, clearLocalUserData, purgeLegacyLocalAccounts } from "./services/auth";
-import { getSharedWithMe, syncMyList, getMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares } from "./services/sharedLists";
+import { getSharedWithMe, syncMyList, getMyList, sendShareRequest, getIncomingRequests, respondRequest, revokeShare, getBlocks, blockUser, blockUserById, unblockUser, searchUsers, getGrantedShares, getPublicProfile } from "./services/sharedLists";
 import { COUNTRIES, findCountry } from "./lib/countries";
 import { getAllProducts, getCompanyProducts, searchProducts as apiSearchProducts, getCategories, getShopsByCategory, resolveCategoryId, getProductOptions, prefetchShopOptions } from "./services/products";
 import { annulationPossible, refusAnnulation } from "./lib/annulation";
@@ -365,6 +365,20 @@ function ListScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [granted, setGranted] = useState({ accepted: [], pending: [], count: 0 }); // qui a accès à MA liste
   const [grantedOpen, setGrantedOpen] = useState(false);
+  // Pop-up « profil Pearl Streets » d'une personne de « Qui a accès à ma liste ».
+  const [profilPartage, setProfilPartage] = useState(null); // { username, user?, loading }
+  const ouvrirProfilPartage = async (u) => {
+    const username = u?.username;
+    if (!username) return;
+    setProfilPartage({ username, user: { ...u }, loading: true });
+    try {
+      const r = await getPublicProfile(username);
+      const pu = r && (r.user || r.data?.user);
+      setProfilPartage((p) => (p && p.username === username ? { username, user: { ...u, ...(pu || {}) }, loading: false } : p));
+    } catch {
+      setProfilPartage((p) => (p && p.username === username ? { ...p, loading: false } : p));
+    }
+  };
   const shareDebounce = React.useRef(null);
   const shareCache = React.useRef(new Map()); // requête -> résultats (affichage instantané)
   const shareReqId = React.useRef(0);         // ignore les réponses réseau périmées
@@ -1093,9 +1107,64 @@ function ListScreen() {
       </Modal>
 
       {/* Qui a accès à MA liste */}
-      <Modal visible={grantedOpen} transparent animationType="fade" onRequestClose={() => setGrantedOpen(false)}>
+      <Modal visible={grantedOpen} transparent animationType="fade" onRequestClose={() => { if (profilPartage) setProfilPartage(null); else setGrantedOpen(false); }} onDismiss={() => setProfilPartage(null)}>
         <View style={lstyles.modalBackdrop}>
-          <Pressable style={StyleSheet.absoluteFill} onPress={() => setGrantedOpen(false)} />
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => { setProfilPartage(null); setGrantedOpen(false); }} />
+          {profilPartage ? (() => {
+            const pu = profilPartage.user || {};
+            const nom = pu.display_name || pu.name || pu.username;
+            return (
+              <View style={[lstyles.modalBox, { alignItems:'center' }]}>
+                <View style={{ alignSelf:'stretch', flexDirection:'row', alignItems:'center', marginBottom:6 }}>
+                  <TouchableOpacity onPress={() => setProfilPartage(null)} activeOpacity={0.7}
+                    hitSlop={{ top:10, bottom:10, left:10, right:10 }}
+                    style={{ width:32, height:32, borderRadius:16, backgroundColor:THEME.subtle, alignItems:'center', justifyContent:'center' }}>
+                    <Ionicons name="chevron-back" size={18} color={THEME.muted} />
+                  </TouchableOpacity>
+                  <View style={{ flex:1 }} />
+                  <TouchableOpacity onPress={() => { setProfilPartage(null); setGrantedOpen(false); }} activeOpacity={0.7}
+                    hitSlop={{ top:10, bottom:10, left:10, right:10 }}
+                    style={{ width:32, height:32, borderRadius:16, backgroundColor:THEME.subtle, alignItems:'center', justifyContent:'center' }}>
+                    <Ionicons name="close" size={18} color={THEME.muted} />
+                  </TouchableOpacity>
+                </View>
+                {pu.profileImage
+                  ? <Image source={{ uri: pu.profileImage }} style={{ width:84, height:84, borderRadius:42, backgroundColor:THEME.subtle }} />
+                  : <View style={{ width:84, height:84, borderRadius:42, alignItems:'center', justifyContent:'center', backgroundColor:THEME.brandSoft }}>
+                      <Ionicons name="person" size={38} color={THEME.brandDark} />
+                    </View>}
+                <Text style={{ fontSize:18, fontWeight:'800', color:THEME.ink, marginTop:12 }} numberOfLines={1}>{nom}</Text>
+                <Text style={{ fontSize:13.5, color:THEME.faint, marginTop:2 }} numberOfLines={1}>@{pu.username}</Text>
+                {profilPartage.loading ? (
+                  <ActivityIndicator style={{ marginTop:16 }} color={THEME.brand} />
+                ) : (
+                  <>
+                    {(pu.followers_count != null || pu.following_count != null) && (
+                      <View style={{ flexDirection:'row', marginTop:16 }}>
+                        <View style={{ alignItems:'center', marginHorizontal:18 }}>
+                          <Text style={{ fontSize:16, fontWeight:'800', color:THEME.ink }}>{pu.followers_count ?? 0}</Text>
+                          <Text style={{ fontSize:12.5, color:THEME.faint }}>{t('listScreen.profileFollowers', 'Abonnés')}</Text>
+                        </View>
+                        <View style={{ alignItems:'center', marginHorizontal:18 }}>
+                          <Text style={{ fontSize:16, fontWeight:'800', color:THEME.ink }}>{pu.following_count ?? 0}</Text>
+                          <Text style={{ fontSize:12.5, color:THEME.faint }}>{t('listScreen.profileFollowing', 'Abonnements')}</Text>
+                        </View>
+                      </View>
+                    )}
+                    {!!(pu.bio && String(pu.bio).trim()) && (
+                      <Text style={{ fontSize:13.5, color:THEME.muted, textAlign:'center', marginTop:14 }} numberOfLines={4}>{String(pu.bio).trim()}</Text>
+                    )}
+                  </>
+                )}
+                <TouchableOpacity
+                  onPress={() => Linking.openURL(`https://pearlstreets.com/user-profile/share-profile-link?userName=${encodeURIComponent(pu.username || '')}`).catch(() => {})}
+                  activeOpacity={0.8}
+                  style={{ alignSelf:'stretch', marginTop:20, paddingVertical:12, borderRadius:12, backgroundColor:'#FFFFFF', borderWidth:1, borderColor:THEME.border, alignItems:'center' }}>
+                  <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:14 }}>{t('listScreen.profileOpenFull', 'Voir le profil sur Pearl Streets')}</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })() : (
           <View style={lstyles.modalBox}>
             <View style={{ flexDirection:'row', alignItems:'center', marginBottom:14 }}>
               <Text style={[lstyles.modalTitle, { flex:1, marginBottom:0 }]}>{t('listScreen.grantedTitle', 'Qui a accès à ma liste')}</Text>
@@ -1111,6 +1180,7 @@ function ListScreen() {
               )}
               {granted.accepted.map((g) => (
                 <View key={`a-${g.share_id}`} style={{ flexDirection:'row', alignItems:'center', paddingVertical:11, borderBottomWidth:1, borderBottomColor:THEME.border }}>
+                  <TouchableOpacity onPress={() => ouvrirProfilPartage(g.user)} activeOpacity={0.7} style={{ flex:1, flexDirection:'row', alignItems:'center' }}>
                   {g.user?.profileImage
                     ? <Image source={{ uri: g.user.profileImage }} style={lstyles.suggestAvatar} />
                     : <View style={[lstyles.suggestAvatar, { alignItems:'center', justifyContent:'center', backgroundColor:THEME.brandSoft }]}>
@@ -1120,6 +1190,7 @@ function ListScreen() {
                     <Text style={{ fontSize:14, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{g.user?.name || g.user?.username}</Text>
                     <Text style={{ fontSize:12.5, color:THEME.faint }} numberOfLines={1}>@{g.user?.username}</Text>
                   </View>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={async () => {
                       try { await revokeShare(g.user?.username); } catch {}
@@ -1140,8 +1211,10 @@ function ListScreen() {
               )}
               {granted.pending.map((g) => (
                 <View key={`p-${g.share_id}`} style={{ flexDirection:'row', alignItems:'center', paddingVertical:11 }}>
+                  <TouchableOpacity onPress={() => ouvrirProfilPartage(g.user)} activeOpacity={0.7} style={{ flex:1, flexDirection:'row', alignItems:'center' }}>
                   <Ionicons name="time-outline" size={18} color={THEME.faint} />
                   <Text style={{ flex:1, marginLeft:10, fontSize:14, color:THEME.muted }} numberOfLines={1}>@{g.user?.username}</Text>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={async () => {
                       try { await revokeShare(g.user?.username); } catch {}
@@ -1157,6 +1230,7 @@ function ListScreen() {
               ))}
             </ScrollView>
           </View>
+          )}
         </View>
       </Modal>
 

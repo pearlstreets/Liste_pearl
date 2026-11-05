@@ -55,7 +55,10 @@
     "grantedPending": "等待回复",
     "revoke": "移除",
     "dragHint": "长按以移动",
-    "shareNeedsLogin": "请登录后再发送共享请求。"
+    "shareNeedsLogin": "请登录后再发送共享请求。",
+    "profileFollowers": "粉丝",
+    "profileFollowing": "关注",
+    "profileOpenFull": "在 Pearl Streets 查看个人资料"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",

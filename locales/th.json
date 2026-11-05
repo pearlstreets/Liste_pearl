@@ -55,7 +55,10 @@
     "grantedPending": "รอการตอบกลับ",
     "revoke": "นำออก",
     "dragHint": "กดค้างเพื่อย้าย",
-    "shareNeedsLogin": "กรุณาเข้าสู่ระบบเพื่อส่งคำขอแชร์"
+    "shareNeedsLogin": "กรุณาเข้าสู่ระบบเพื่อส่งคำขอแชร์",
+    "profileFollowers": "ผู้ติดตาม",
+    "profileFollowing": "กำลังติดตาม",
+    "profileOpenFull": "ดูโปรไฟล์บน Pearl Streets"
   },
   "productsScreen": {
     "clickAndCollect": "คลิกและรับสินค้า",

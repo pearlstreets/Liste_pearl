@@ -56,7 +56,10 @@
     "grantedPending": "Awaiting response",
     "revoke": "Remove",
     "dragHint": "Long press to move",
-    "shareNeedsLogin": "Log in to send a share request."
+    "shareNeedsLogin": "Log in to send a share request.",
+    "profileFollowers": "Followers",
+    "profileFollowing": "Following",
+    "profileOpenFull": "View profile on Pearl Streets"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
