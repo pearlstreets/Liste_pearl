@@ -1,4 +1,5 @@
 import { CONFIG, APP_HEADERS } from './config';
+import { EN_TETE_PROVENANCE, provenanceInstallation } from './provenanceInstall';
 import { sanitizeResponse, isTokenExpired, requestFingerprint } from './security';
 import { getSecureItem, setSecureItem, removeSecureItem } from './secureStorage';
 
@@ -85,6 +86,10 @@ async function apiFetch(endpoint, { multipart, timeoutMs, ...options } = {}) {
     ...(multipart ? {} : { 'Content-Type': 'application/json' }),
     'X-Request-ID': requestFingerprint(), // Track requests
     ...APP_HEADERS,
+    // Provenance publicitaire de l'installation (services/provenanceInstall),
+    // sur les POST : le serveur la range sur le compte créé.
+    ...(String(options.method || '').toUpperCase() === 'POST'
+      ? { [EN_TETE_PROVENANCE]: provenanceInstallation() } : {}),
     ...(options.headers || {}),
   };
 
