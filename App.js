@@ -1,6 +1,6 @@
 // Toucher des notifications de commande : importé en premier, l'abonnement est
 // pris au chargement du module (toucher qui lance l'app compris).
-import { brancherNavigation, consommerDestination, oublierDestination, definirConnexion, prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR } from "./services/pushToucher";
+import { brancherNavigation, consommerDestination, oublierDestination, definirConnexion, prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR, EVENEMENT_PARTAGE, ouvrirDemandesPartage, prendrePartageAOuvrir } from "./services/pushToucher";
 import { demanderPermission, enregistrerAppareil } from "./services/pushDirect";
 import { autocorrectName } from "./utils/spellcheck";
 import React, { useEffect, useMemo, useState } from "react";
@@ -202,6 +202,13 @@ brancherNavigation(navRef);
 const ouvrirMenusDepuisRappel = () => {
   if (navRef.isReady() && hasPendingMenuReminder()) navRef.navigate('menus');
 };
+// Lien pearl-list://partage (notification touchée dans l'app Pearl Streets) :
+// Profil puis « Demandes de partage », au lancement comme app déjà ouverte.
+const estLienPartage = (url) => typeof url === 'string' && /^pearl-list:\/\/+partage/i.test(url);
+try {
+  Linking.getInitialURL().then((u) => { if (estLienPartage(u)) ouvrirDemandesPartage(); }).catch(() => {});
+  Linking.addEventListener('url', (e) => { if (estLienPartage(e && e.url)) ouvrirDemandesPartage(); });
+} catch {}
 // Onglet mémorisé avant un rechargement dû au changement de langue : lu une
 // seule fois au démarrage, effacé aussitôt, ouvert quand la navigation est prête.
 let ongletApresRechargement = AsyncStorage.getItem(CLE_ONGLET_APRES_RECHARGEMENT)
@@ -6990,10 +6997,28 @@ function FakeProfileScreen({ onLogout, isAuth }) {
     const sub = DeviceEventEmitter.addListener(EVENEMENT_OUVRIR, () => { ouvrirCommandeDepuisPush(); });
     return () => sub.remove();
   }, [ouvrirCommandeDepuisPush]);
+  // Demande de partage (push ou lien pearl-list://partage) : fenêtre
+  // « Demandes de partage », rechargée, après fermeture d'une autre modale.
+  const ouvrirPartageDepuisPush = React.useCallback(() => {
+    if (!prendrePartageAOuvrir()) return;
+    loadShareData();
+    if (autreModaleOuverte.current) {
+      setAllOrdersVisible(false);
+      setDriverInfoVisible(false);
+      setTimeout(() => setShareRequestsVisible(true), 300);
+    } else {
+      setShareRequestsVisible(true);
+    }
+  }, [loadShareData]);
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(EVENEMENT_PARTAGE, () => { ouvrirPartageDepuisPush(); });
+    return () => sub.remove();
+  }, [ouvrirPartageDepuisPush]);
 
   useFocusEffect(React.useCallback(() => {
     loadProfile(); loadOrders(); loadAddresses();
     ouvrirCommandeDepuisPush();
+    ouvrirPartageDepuisPush();
     // Load driver mode status for regular users
     (async () => {
       try {

@@ -17,6 +17,10 @@ export const CLE_DERNIER_TAP = 'push.dernierTap';
 export const DUREE_DERNIER_TAP = 5 * 60 * 1000;
 export const DUREE_DESTINATION = 120 * 1000;
 export const EVENEMENT_OUVRIR = 'PUSH_OUVRIR_COMMANDE';
+// Demande de partage de liste (push ou lien pearl-list://partage) : Profil puis
+// la fenêtre « Demandes de partage ».
+export const EVENEMENT_PARTAGE = 'PUSH_OUVRIR_PARTAGE';
+const ROUTE_PARTAGE = 'partage';
 const KEY_ORDER_HISTORY = 'KEY_ORDER_HISTORY';
 const ONGLET_PROFIL = 'profile';
 const ROUTES = ['commande', 'suivi', 'plainte'];
@@ -26,6 +30,7 @@ let _navRef = null;
 let _connecte = false;
 let _destination = null; // { route, client_order_id, external_order_id, at }
 let _commandeAOuvrir = null; // { route, client_order_id, external_order_id }
+let _partageAOuvrir = false;
 const _vus = new Set();
 const _arrets = [];
 
@@ -66,7 +71,9 @@ export function donneesPushListe(requete) {
       trigger && trigger.payload,
       trigger && trigger.remoteMessage && trigger.remoteMessage.data,
     ];
-    const data = sources.find((d) => nonVide(d) && d.app === 'liste');
+    const data = sources.find(
+      (d) => nonVide(d) && (d.app === 'liste' || d.type === 'list_share_request')
+    );
     if (!data || data.source === 'menus' || data.cuisine === true) return null;
     return data;
   } catch {
@@ -113,7 +120,7 @@ export async function traiterReponse(reponse) {
       /* sans gravité */
     }
     _destination = {
-      route: String(data.route || ''),
+      route: data.type === 'list_share_request' ? ROUTE_PARTAGE : String(data.route || ''),
       client_order_id: String(data.client_order_id || ''),
       external_order_id: String(data.external_order_id || ''),
       at: Date.now(),
@@ -150,6 +157,14 @@ export function consommerDestination() {
       return;
     const d = _destination;
     _destination = null;
+    if (d.route === ROUTE_PARTAGE) {
+      _commandeAOuvrir = null;
+      _partageAOuvrir = true;
+      _navRef.navigate(ONGLET_PROFIL);
+      const ep = emetteur();
+      if (ep) ep.emit(EVENEMENT_PARTAGE);
+      return;
+    }
     // Route inconnue : le Profil seul.
     _commandeAOuvrir = ROUTES.includes(d.route)
       ? {
@@ -166,6 +181,22 @@ export function consommerDestination() {
   }
 }
 
+/**
+ * Lien pearl-list://partage (app Pearl Streets, e-mail) : même destination
+ * qu'une push de demande de partage. Ne lève jamais.
+ */
+export function ouvrirDemandesPartage() {
+  _destination = { route: ROUTE_PARTAGE, client_order_id: '', external_order_id: '', at: Date.now() };
+  consommerDestination();
+}
+
+/** Vrai une seule fois si les demandes de partage sont à ouvrir (Profil). */
+export function prendrePartageAOuvrir() {
+  const v = _partageAOuvrir;
+  _partageAOuvrir = false;
+  return v;
+}
+
 /** Rend la commande à ouvrir et l'oublie (Profil, au focus ou sur l'évènement). */
 export function prendreCommandeAOuvrir() {
   const c = _commandeAOuvrir;
@@ -177,6 +208,7 @@ export function prendreCommandeAOuvrir() {
 export function oublierDestination() {
   _destination = null;
   _commandeAOuvrir = null;
+  _partageAOuvrir = false;
 }
 
 /**
@@ -258,6 +290,7 @@ export function _resetPushToucherForTests() {
   _connecte = false;
   _destination = null;
   _commandeAOuvrir = null;
+  _partageAOuvrir = false;
   _vus.clear();
   demarrer();
 }
