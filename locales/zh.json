@@ -329,6 +329,7 @@
     "emailOrPseudo": "电子邮件或用户名",
     "password": "密码",
     "loginBtn": "登录",
+    "stayConnected": "保持登录",
     "signupBtn": "注册",
     "noAccount": "没有账户？",
     "hasAccount": "已有账户？",
