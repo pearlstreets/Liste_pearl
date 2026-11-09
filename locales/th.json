@@ -329,6 +329,7 @@
     "emailOrPseudo": "อีเมลหรือชื่อผู้ใช้",
     "password": "รหัสผ่าน",
     "loginBtn": "เข้าสู่ระบบ",
+    "stayConnected": "คงสถานะการเข้าสู่ระบบ",
     "signupBtn": "สมัครสมาชิก",
     "noAccount": "ไม่มีบัญชี?",
     "hasAccount": "มีบัญชีแล้ว?",

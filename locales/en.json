@@ -330,6 +330,7 @@
     "emailOrPseudo": "Email or Username",
     "password": "Password",
     "loginBtn": "Log in",
+    "stayConnected": "Stay signed in",
     "signupBtn": "Sign up",
     "noAccount": "No account?",
     "noAccountPearl": "No account? ",

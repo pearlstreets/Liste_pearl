@@ -332,6 +332,7 @@
     "emailOrPseudo": "Email или имя пользователя",
     "password": "Пароль",
     "loginBtn": "Вход",
+    "stayConnected": "Оставаться в системе",
     "signupBtn": "Регистрация",
     "noAccount": "Нет аккаунта?",
     "hasAccount": "Уже есть аккаунт?",
