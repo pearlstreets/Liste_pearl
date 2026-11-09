@@ -15,7 +15,7 @@ import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadP
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "./services/addresses";
 import { getTokens } from "./services/api";
 import { LEGAL_URLS } from "./services/config";
-import { getSecureItem, setSecureItem } from "./services/secureStorage";
+import { getSecureItem, setSecureItem, removeSecureItems, SECURE_KEYS } from "./services/secureStorage";
 import { createDeliveryOrder, cancelDelivery, trackDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo, toggleDriverMode, isDriverMode, getDriverEarnings, canDeliver, getDriverCountry, setDriverCountry, COUNTRY_LIMITS, getCountryLimit } from "./services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
 import { addToCartApi, updateCartMetaApi, createOrderApi } from "./services/payment";
@@ -5585,6 +5585,10 @@ const authStyles = StyleSheet.create({
   pwdRow: { flexDirection: 'row', alignItems: 'center', height: 52, backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border },
   pwdInput: { flex: 1, height: 52, paddingHorizontal: 16, fontSize: 15, color: THEME.ink },
   pwdEye: { paddingHorizontal: 14, height: 52, alignItems: 'center', justifyContent: 'center' },
+  stayRow: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', marginTop: 12, paddingVertical: 4 },
+  stayBox: { width: 20, height: 20, borderRadius: 5, borderWidth: 1.5, borderColor: THEME.faint, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  stayBoxOn: { backgroundColor: THEME.brand, borderColor: THEME.brand },
+  stayTxt: { marginLeft: 10, fontSize: 14, color: '#44403C' },
 
   // Primary button
   primaryBtn: { height: 54, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 4, ...THEME.shadow },
@@ -5775,6 +5779,23 @@ async function fetchPhotonSuggestions(query, countryCode, lang) {
 let modeAuthGarde = null;
 const oublierModeAuth = () => { modeAuthGarde = null; };
 
+// « Rester connecté » (choix de la page de connexion, cochée par défaut).
+// Décochée : la session (jetons, compte, profil) est effacée au démarrage à
+// froid suivant, avant sa restauration. Une seule purge par lancement.
+const KEY_RESTER_CONNECTE = 'resterConnecte';
+let purgeDemarrage = null;
+const purgerSessionSiNonConservee = () => {
+  if (!purgeDemarrage) {
+    purgeDemarrage = (async () => {
+      try {
+        const choix = await AsyncStorage.getItem(KEY_RESTER_CONNECTE);
+        if (choix === 'false') await removeSecureItems(SECURE_KEYS);
+      } catch (_) {}
+    })();
+  }
+  return purgeDemarrage;
+};
+
 function AuthScreen({ onLogin, onClose, initialIsLogin = true, retourRef }) {
   const { t, i18n: i18nAuth } = useTranslation();
   const [isLogin, setIsLogin] = React.useState(() => (modeAuthGarde !== null ? modeAuthGarde : initialIsLogin));
@@ -5786,6 +5807,15 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true, retourRef }) {
   const [nom, setNom] = React.useState('');
   const [error, setError] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
+  const [resterConnecte, setResterConnecte] = React.useState(true);
+  React.useEffect(() => {
+    AsyncStorage.getItem(KEY_RESTER_CONNECTE).then((v) => { if (v === 'false') setResterConnecte(false); }).catch(() => {});
+  }, []);
+  const basculerResterConnecte = () => {
+    const v = !resterConnecte;
+    setResterConnecte(v);
+    AsyncStorage.setItem(KEY_RESTER_CONNECTE, v ? 'true' : 'false').catch(() => {});
+  };
   const [showConfirmPwd, setShowConfirmPwd] = React.useState(false);
   // Erreurs PAR CHAMP, affichées sous le champ concerné (comme l'inscription
   // AppUser) plutôt qu'en un seul bandeau en haut, loin du champ fautif.
@@ -5851,7 +5881,10 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true, retourRef }) {
       const apiPromise = loginUser(email.trim(), password);
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15000));
       const result = await Promise.race([apiPromise, timeoutPromise]);
-      if (result && result.success) { setLoading(false); onLogin(); return; }
+      if (result && result.success) {
+        try { await AsyncStorage.setItem(KEY_RESTER_CONNECTE, resterConnecte ? 'true' : 'false'); } catch (_) {}
+        setLoading(false); onLogin(); return;
+      }
       setError((result && result.message) || t('auth.errorWrongPassword', 'Email ou mot de passe incorrect'));
     } catch (e) {
       setError(t('auth.errorNetwork', 'Connexion au serveur impossible. Vérifiez votre connexion et réessayez.'));
@@ -5982,16 +6015,22 @@ function AuthScreen({ onLogin, onClose, initialIsLogin = true, retourRef }) {
             {/* ---------- Connexion ---------- */}
             <View style={authStyles.fieldGroup}>
               <Text style={authStyles.fieldLabel}>{t('auth.emailOrPseudo')}</Text>
-              <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailOrPseudoPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={authStyles.field} />
+              <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailOrPseudoPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" textContentType="username" autoComplete="email" importantForAutofill="yes" style={authStyles.field} />
             </View>
             <View style={authStyles.fieldGroup}>
               <Text style={authStyles.fieldLabel}>{t('auth.password')}</Text>
               <View style={authStyles.pwdRow}>
-                <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} textContentType="password" autoComplete="password" importantForAutofill="yes" style={authStyles.pwdInput} />
                 <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
                   <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                 </TouchableOpacity>
               </View>
+              <TouchableOpacity onPress={basculerResterConnecte} style={authStyles.stayRow} activeOpacity={0.7} accessibilityRole="checkbox" accessibilityState={{ checked: resterConnecte }}>
+                <View style={[authStyles.stayBox, resterConnecte && authStyles.stayBoxOn]}>
+                  {resterConnecte ? <Ionicons name="checkmark" size={14} color="#FFFFFF" /> : null}
+                </View>
+                <Text style={authStyles.stayTxt}>{t('auth.stayConnected', 'Rester connecté')}</Text>
+              </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={handleLogin} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
               {loading ? <ActivityIndicator color="#1C1917" /> : <Text style={authStyles.primaryBtnTxt}>{t('auth.loginBtn')}</Text>}
@@ -6317,6 +6356,7 @@ export default function App() {
   // Check if pro user needs verification
   React.useEffect(() => {
     (async () => {
+      await purgerSessionSiNonConservee();
       const authRaw = await getSecureItem(KEY_AUTH);
       if (authRaw) {
         const auth = JSON.parse(authRaw);
@@ -6377,6 +6417,7 @@ export default function App() {
 
   React.useEffect(() => {
     (async () => {
+      await purgerSessionSiNonConservee();
       await purgeLegacyLocalAccounts();
       startMenusSync(AppState);
       startMenuReminders(AppState, i18nApp);

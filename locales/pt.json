@@ -331,6 +331,7 @@
     "emailOrPseudo": "E-mail ou Nome de usuário",
     "password": "Senha",
     "loginBtn": "Entrar",
+    "stayConnected": "Manter sessão iniciada",
     "signupBtn": "Registre-se",
     "noAccount": "Sem conta?",
     "hasAccount": "Já tem uma conta?",
