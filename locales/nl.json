@@ -330,6 +330,7 @@
     "emailOrPseudo": "E-mail of Gebruikersnaam",
     "password": "Wachtwoord",
     "loginBtn": "Inloggen",
+    "stayConnected": "Ingelogd blijven",
     "signupBtn": "Registreren",
     "noAccount": "Geen account?",
     "hasAccount": "Al een account?",

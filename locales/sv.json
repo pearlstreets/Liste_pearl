@@ -330,6 +330,7 @@
     "emailOrPseudo": "E-post eller Användarnamn",
     "password": "Lösenord",
     "loginBtn": "Logga in",
+    "stayConnected": "Förbli inloggad",
     "signupBtn": "Registrera",
     "noAccount": "Inget konto?",
     "hasAccount": "Har du redan ett konto?",
