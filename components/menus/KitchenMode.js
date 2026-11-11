@@ -281,6 +281,18 @@ export default function KitchenMode({ id, persons, onClose }) {
     [plan, textOf, t, alarmGroup]
   );
 
+  // Langue de l'app changée en pleine cuisson : canal et alarmes reprogrammés dans la nouvelle langue.
+  const tPrec = useRef(t);
+  useEffect(() => {
+    if (tPrec.current === t) return;
+    tPrec.current = t;
+    if (!loaded) return;
+    try {
+      syncAlarms(SRef.current);
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, loaded]);
+
   /* ------------------------------ temps ------------------------------ */
 
   const tick = useCallback(() => {
