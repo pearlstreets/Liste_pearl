@@ -151,18 +151,20 @@ export function feedback(kind) {
 
 /* ------------------------------ notifications ------------------------------ */
 
-let canal = false;
+// Dernier nom posé sur le canal : re-créé (renommé) quand la langue de l'app change.
+let canalNom = null;
 async function creerCanal(nat, name) {
-  if (canal || Platform.OS !== 'android' || typeof nat.setNotificationChannelAsync !== 'function')
+  const nom = name || 'Pearl List';
+  if (canalNom === nom || Platform.OS !== 'android' || typeof nat.setNotificationChannelAsync !== 'function')
     return;
   try {
     await nat.setNotificationChannelAsync(COOK_CHANNEL_ID, {
-      name: name || 'Pearl List',
+      name: nom,
       importance: nat.AndroidImportance ? nat.AndroidImportance.HIGH : 4,
       sound: 'default',
       vibrationPattern: [0, 500, 200, 500],
     });
-    canal = true;
+    canalNom = nom;
   } catch {}
 }
 
@@ -199,7 +201,8 @@ let derniere = {};
 export function scheduleCookAlarms(list, channelName, group) {
   const voulu = (Array.isArray(list) ? list : []).filter((x) => x && x.inSec >= 1);
   const g = group ? `${group}:` : '';
-  const sig = JSON.stringify(voulu.map((x) => [x.id, Math.round(x.inSec / 5)]));
+  // Titre et texte dans la signature : après un changement de langue, les alarmes sont reprogrammées.
+  const sig = JSON.stringify(voulu.map((x) => [x.id, Math.round(x.inSec / 5), x.title, x.body]));
   if (derniere[g] === sig) return file;
   if (g) derniere[g] = sig;
   else derniere = { '': sig };
@@ -259,7 +262,7 @@ export function cancelCookAlarms(group) {
 export function _resetCookAlertsForTests() {
   notifications = undefined;
   keepAwake = undefined;
-  canal = false;
+  canalNom = null;
   derniere = {};
   file = Promise.resolve();
 }
