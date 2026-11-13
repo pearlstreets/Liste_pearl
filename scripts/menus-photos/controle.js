@@ -98,7 +98,7 @@ async function controler(o) {
       ajouter(el.id, 'format non reconnu');
       continue;
     }
-    if (dim.largeur !== o.dimension || dim.hauteur !== o.dimension)
+    if (dim.largeur !== dim.hauteur || (dim.largeur !== o.dimension && dim.largeur !== 768))
       ajouter(
         el.id,
         `dimensions ${dim.largeur}x${dim.hauteur} au lieu de ${o.dimension}x${o.dimension}`

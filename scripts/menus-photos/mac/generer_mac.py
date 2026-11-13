@@ -12,7 +12,7 @@ Options :
   --prompts f.json       liste de prompts (défaut ~/pearl-photos/prompts.json, faite par prompts.sh)
   --refaire              l'image existante est rangée dans ~/pearl-photos/rejetees/ puis refaite
                          (avec --prompts ~/pearl-photos/prompts-refaire.json, voir refaire.sh)
-  --taille 640|768       taille générée (défaut 640) ; 768 est réduite à 640
+  --taille 640|768       taille générée (défaut 640), gardée telle quelle (768 = plus net)
   --etapes N             étapes de débruitage (défaut 4)
   --modele CHEMIN        dossier du modèle (défaut ~/pearl-photos/modele/flux-1-schnell-mflux-q4)
   --envoyer-tous N       lance envoyer.sh en arrière-plan toutes les N nouvelles images (0 = jamais)
@@ -25,7 +25,7 @@ Options :
                          refaire-liste.json (une image déjà en ligne n'est jamais remplacée : on refait
                          plutôt l'autre image de la paire si elle n'est pas en ligne)
 
-Sortie : ~/pearl-photos/images/{recettes,ingredients}/<id>.webp (WebP 640x640 qualité 92).
+Sortie : ~/pearl-photos/images/{recettes,ingredients}/<id>.webp (WebP carré à la taille générée, qualité 92).
 Reprise : une image déjà présente est sautée. Arrêt propre : créer ~/pearl-photos/STOP, ou Ctrl+C
 (l'image en cours se termine). Journal : ~/pearl-photos/journal.log ; état : ~/pearl-photos/etat.json.
 """
@@ -185,7 +185,10 @@ def empreintes(img):
 
 
 def vers_webp(img, qualite=92):
-    """Image PIL vers octets WebP COTExCOTE (recadrage centré si besoin)."""
+    """Image PIL vers octets WebP carrés (recadrage centré si besoin).
+
+    La taille générée est gardée (768 reste en 768, plus net) ; seule une image plus petite
+    que COTE est remontée à COTE."""
     import io
 
     from PIL import Image
@@ -195,7 +198,7 @@ def vers_webp(img, qualite=92):
     if w != h:
         c = min(w, h)
         img = img.crop(((w - c) // 2, (h - c) // 2, (w - c) // 2 + c, (h - c) // 2 + c))
-    if img.size != (COTE, COTE):
+    if img.size[0] < COTE:
         img = img.resize((COTE, COTE), Image.LANCZOS)
     b = io.BytesIO()
     img.save(b, format="WEBP", quality=qualite, method=5)

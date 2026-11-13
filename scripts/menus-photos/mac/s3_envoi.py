@@ -97,7 +97,7 @@ def main():
                 exclues += 1
                 continue
             b = f.read_bytes()
-            if len(b) < 8000 or dimensions_webp(b) != (COTE, COTE):
+            if len(b) < 8000 or dimensions_webp(b) not in ((640, 640), (768, 768)):
                 invalides.append(local)
                 continue
             cle = f"{prefixe}/{ident}.webp" if sous == "recettes" else f"{prefixe}/ingredients/{ident}.webp"

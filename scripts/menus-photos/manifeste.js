@@ -78,7 +78,7 @@ function construire(o, ctx) {
     }
     const buf = fs.readFileSync(el.fichier);
     const d = buf.length ? IMG.dimensions(buf) : null;
-    if (!d || d.largeur !== o.dimension || d.hauteur !== o.dimension) {
+    if (!d || d.largeur !== d.hauteur || (d.largeur !== o.dimension && d.largeur !== 768)) {
       ecartes.push(`${el.id} (invalide)`);
       continue;
     }
