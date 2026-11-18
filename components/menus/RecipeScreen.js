@@ -582,7 +582,27 @@ export default function RecipeScreen({
             />
           </View>
 
-          <Text style={s.h2}>{t('recipe.ingredients')}</Text>
+          <View style={s.h2Row}>
+            <Text style={[s.h2, s.h2InRow]}>{t('recipe.ingredients')}</Text>
+            {lines.length > 0 ? (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() =>
+                  setHave(
+                    lines.every((l) => have[l.key])
+                      ? {}
+                      : Object.fromEntries(lines.map((l) => [l.key, true]))
+                  )
+                }
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                accessibilityRole="button"
+              >
+                <Text style={s.h2Link}>
+                  {t(lines.every((l) => have[l.key]) ? 'recipe.selectNone' : 'recipe.selectAll')}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
           {lines.map((l, i) => {
             const on = !!have[l.key];
             return (
@@ -915,6 +935,15 @@ const s = StyleSheet.create({
   pearlName: { flex: 1, fontSize: 14, color: T.ink, marginRight: 8 },
   pearlVal: { fontSize: 13, fontWeight: '700', color: T.brandDark },
   h2: { fontSize: 22, fontWeight: '600', color: T.ink, marginTop: 28, marginBottom: 10 },
+  h2Row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 28,
+    marginBottom: 10,
+  },
+  h2InRow: { marginTop: 0, marginBottom: 0, flexShrink: 1 },
+  h2Link: { fontSize: 14, fontWeight: '600', color: T.ink, marginLeft: 12 },
   ing: {
     flexDirection: 'row',
     alignItems: 'center',
