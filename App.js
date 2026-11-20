@@ -1576,15 +1576,18 @@ const ProductsScreen = () => {
   // Load favorite product names
   React.useEffect(() => {
     (async () => {
-      const raw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
-      const arr = raw ? JSON.parse(raw) : [];
-      setFavProductNames(new Set(arr.map(p => p.name)));
+      try {
+        const raw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
+        const arr = raw ? JSON.parse(raw) : [];
+        setFavProductNames(new Set((Array.isArray(arr) ? arr : []).map(p => p && p.name)));
+      } catch (e) {}
     })();
   }, []);
 
   const toggleProductFav = async (product) => {
     const raw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
-    let arr = raw ? JSON.parse(raw) : [];
+    let arr = [];
+    try { const lu = raw ? JSON.parse(raw) : []; if (Array.isArray(lu)) arr = lu; } catch (e) {}
     const exists = arr.findIndex(p => p.name === product.name);
     if (exists >= 0) {
       arr = arr.filter(p => p.name !== product.name);
@@ -1708,7 +1711,8 @@ const ProductsScreen = () => {
   const loadSelected=async()=>{
     // Only load from KEY_SELECTED — set by "Trouver produits exacts" button
     const raw = await AsyncStorage.getItem(KEY_SELECTED);
-    let selected = raw ? JSON.parse(raw) : null;
+    let selected = null;
+    try { selected = raw ? JSON.parse(raw) : null; } catch (e) { selected = null; }
     // If KEY_SELECTED is explicitly empty [], products were cleared after cart push
     if (Array.isArray(selected) && selected.length === 0) {
       setShowingDefaults(true);
@@ -6372,7 +6376,9 @@ export default function App() {
       await purgerSessionSiNonConservee();
       const authRaw = await getSecureItem(KEY_AUTH);
       if (authRaw) {
-        const auth = JSON.parse(authRaw);
+        let auth = null;
+        try { auth = JSON.parse(authRaw); } catch (e) { auth = null; }
+        if (!auth) return;
         if (auth.role === 'professionaluser' && !auth.isVerified) {
           setProBlocked(true);
         } else {
