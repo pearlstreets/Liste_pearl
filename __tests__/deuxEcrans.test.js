@@ -50,3 +50,17 @@ describe('estEnColonne', () => {
     expect(estEnColonne('web', 834, 1194)).toBe(false);
   });
 });
+
+describe('echelleDe', () => {
+  const { echelleDe, ECHELLE } = require('../components/DeuxEcrans');
+  it('iPad et tablette Android : agrandi', () => {
+    expect(echelleDe('ios', 834, 1194)).toBe(ECHELLE);
+    expect(echelleDe('ios', 1194, 834)).toBe(ECHELLE);
+    expect(echelleDe('android', 800, 1280)).toBe(ECHELLE);
+  });
+  it('telephone, pliable, web : taille normale', () => {
+    expect(echelleDe('ios', 393, 852)).toBe(1);
+    expect(echelleDe('android', 701, 841)).toBe(1);
+    expect(echelleDe('web', 834, 1194)).toBe(1);
+  });
+});

@@ -11,8 +11,7 @@
 // touchers : impossible de la poser sur une moitie. Ce fichier exporte donc un
 // Modal de remplacement :
 //  - plie, telephone, iPhone : la Modal de react-native, inchangee ;
-//  - en colonne (tablette en portrait) : son contenu est rendu dans la
-//    colonne, par-dessus l'ecran ;
+//  - tablette en portrait : son contenu est rendu par-dessus l'ecran ;
 //  - deplie : son contenu est rendu dans la moitie droite (Modal opaque = page)
 //    ou par-dessus la moitie qui l'a ouverte (Modal transparente = fenetre de
 //    choix). La moitie d'en face reste utilisable.
@@ -38,6 +37,7 @@ import React, {
 import {
   BackHandler,
   Image,
+  KeyboardAvoidingView,
   Modal as ModalNative,
   Platform,
   StyleSheet,
@@ -49,17 +49,60 @@ import { NavigationContext, NavigationRouteContext } from '@react-navigation/nat
 // Grand ecran (plus petit cote >= 600 dp : pliable deplie, tablette Android,
 // iPad ; user 20/11/2026 pour les tablettes) :
 //  - en paysage, deux moities (estDeplie) ;
-//  - en portrait, l'ecran du telephone dans une colonne centree de
-//    LARGEUR_COLONNE dp (estEnColonne), pages et fenetres comprises.
+//  - en portrait, l'ecran du telephone sur toute la largeur (estEnColonne),
+//    pages et fenetres comprises.
+// Tablette (plus petit cote >= MIN_AGRANDI) : tout est affiche ECHELLE fois
+// plus gros (boutons, cases, textes ; user 20/11/2026, sans marges grises).
 // Exportees pour les tests.
 export const LARGEUR_MIN = 600;
-export const LARGEUR_COLONNE = 600;
+export const MIN_AGRANDI = 740;
+export const ECHELLE = 1.2;
 const grandEcran = (os, width, height) =>
   (os === 'android' || os === 'ios') && Math.min(width, height) >= LARGEUR_MIN;
-export const estDeplie = (os, width, height) =>
-  grandEcran(os, width, height) && width >= height;
-export const estEnColonne = (os, width, height) =>
-  grandEcran(os, width, height) && width < height;
+export const estDeplie = (os, width, height) => grandEcran(os, width, height) && width >= height;
+export const estEnColonne = (os, width, height) => grandEcran(os, width, height) && width < height;
+export const echelleDe = (os, width, height) =>
+  grandEcran(os, width, height) && Math.min(width, height) >= MIN_AGRANDI ? ECHELLE : 1;
+
+// Echelle en cours, lue par le correctif clavier ci-dessous.
+let echelleCourante = 1;
+
+// KeyboardAvoidingView compare sa place (en points de l'app, donc agrandis)
+// a la position du clavier (en points de l'ecran) : sur un ecran agrandi, la
+// position du clavier est ramenee en points de l'app, sinon le champ saisi
+// reste sous le clavier.
+const hauteurClavierOrigine = KeyboardAvoidingView?.prototype?._relativeKeyboardHeight;
+if (hauteurClavierOrigine) {
+  KeyboardAvoidingView.prototype._relativeKeyboardHeight = function (clavier) {
+    if (echelleCourante === 1 || !clavier) return hauteurClavierOrigine.call(this, clavier);
+    return hauteurClavierOrigine.call(this, {
+      ...clavier,
+      screenX: clavier.screenX / echelleCourante,
+      screenY: clavier.screenY / echelleCourante,
+      width: clavier.width / echelleCourante,
+      height: clavier.height / echelleCourante,
+    });
+  };
+}
+
+// Contenu dessine `echelle` fois plus gros, sur tout l'ecran : il est mis en
+// page sur l'ecran divise par `echelle`, puis agrandi.
+function Agrandi({ echelle, width, height, children }) {
+  if (echelle === 1) return children;
+  return (
+    <View style={styles.agrandi}>
+      <View
+        style={{
+          width: width / echelle,
+          height: height / echelle,
+          transform: [{ scale: echelle }],
+        }}
+      >
+        {children}
+      </View>
+    </View>
+  );
+}
 
 const HoteContext = createContext(null);
 // Page (moitie droite) dans laquelle un contenu est rendu.
@@ -116,15 +159,14 @@ export function DeuxEcrans({ children }) {
     return () => abonnement.remove();
   }, [ecoute]);
 
-  const moitie = Math.floor(width / 2);
+  const echelle = echelleDe(Platform.OS, width, height);
+  echelleCourante = echelle;
+  const moitie = Math.floor(width / echelle / 2);
   const pages = horsModale ? ouverts.filter((e) => e.page) : [];
   const pageVisible = pages[pages.length - 1];
   const rendrePages = () =>
     pages.map((p) => (
-      <View
-        key={p.id}
-        style={[StyleSheet.absoluteFill, p === pageVisible ? null : styles.cache]}
-      >
+      <View key={p.id} style={[StyleSheet.absoluteFill, p === pageVisible ? null : styles.cache]}>
         <PageContext.Provider value={p.id}>
           {p.contenu}
           {fenetres(p.id)}
@@ -143,45 +185,49 @@ export function DeuxEcrans({ children }) {
   // L'app reste au meme endroit de l'arbre plie ou deplie : rien n'est
   // remonte au pliage.
   if (colonne) {
-    // Portrait : les pages s'empilent par-dessus l'ecran, dans la colonne.
+    // Portrait : les pages s'empilent par-dessus l'ecran.
     return (
       <HoteContext.Provider value={valeur}>
-        <View style={[styles.milieu, styles.cotes]}>
-          <View style={[styles.cote, styles.colonne, { width: Math.min(width, LARGEUR_COLONNE) }]}>
-            {children}
-            {fenetres(null)}
-            {rendrePages()}
+        <Agrandi echelle={echelle} width={width} height={height}>
+          <View style={styles.racine}>
+            <View style={[styles.cote, styles.plein]}>
+              {children}
+              {fenetres(null)}
+              {rendrePages()}
+            </View>
           </View>
-        </View>
+        </Agrandi>
       </HoteContext.Provider>
     );
   }
 
   return (
     <HoteContext.Provider value={valeur}>
-      <View style={styles.racine}>
-        <View style={deplie ? [styles.cote, { width: moitie }] : styles.plein}>
-          {children}
-          {fenetres(null)}
-        </View>
-        {deplie ? (
-          <View style={[styles.cote, styles.droite]}>
-            {!pageVisible ? (
-              <View style={[StyleSheet.absoluteFill, styles.repos]}>
-                <Image
-                  source={require('../assets/logo-repos.png')}
-                  style={styles.logo}
-                  resizeMode="contain"
-                />
-              </View>
-            ) : null}
-            {rendrePages()}
+      <Agrandi echelle={echelle} width={width} height={height}>
+        <View style={styles.racine}>
+          <View style={deplie ? [styles.cote, { width: moitie }] : styles.plein}>
+            {children}
+            {fenetres(null)}
           </View>
-        ) : null}
-        {deplie ? (
-          <View pointerEvents="none" style={[styles.separation, { left: moitie }]} />
-        ) : null}
-      </View>
+          {deplie ? (
+            <View style={[styles.cote, styles.droite]}>
+              {!pageVisible ? (
+                <View style={[StyleSheet.absoluteFill, styles.repos]}>
+                  <Image
+                    source={require('../assets/logo-repos.png')}
+                    style={styles.logo}
+                    resizeMode="contain"
+                  />
+                </View>
+              ) : null}
+              {rendrePages()}
+            </View>
+          ) : null}
+          {deplie ? (
+            <View pointerEvents="none" style={[styles.separation, { left: moitie }]} />
+          ) : null}
+        </View>
+      </Agrandi>
     </HoteContext.Provider>
   );
 }
@@ -248,17 +294,25 @@ export default function Modal({ page, figer, ...props }) {
   return <ModalNative {...props} />;
 }
 
-// Ecran d'avant l'app (choix de la langue) : une colonne au milieu, deplie
-// ou en colonne.
+// Ecran d'avant l'app (choix de la langue) : une colonne au milieu deplie,
+// toute la largeur en portrait ; agrandi sur tablette.
 export function AuMilieu({ children }) {
   const { width, height } = useWindowDimensions();
   const deplie = estDeplie(Platform.OS, width, height);
-  if (!deplie && !estEnColonne(Platform.OS, width, height)) return children;
-  const largeur = deplie ? Math.floor(width / 2) : Math.min(width, LARGEUR_COLONNE);
-  return (
-    <View style={[styles.milieu, deplie ? null : styles.cotes]}>
-      <View style={{ width: largeur, backgroundColor: '#fff' }}>{children}</View>
+  const echelle = echelleDe(Platform.OS, width, height);
+  const contenu = deplie ? (
+    <View style={styles.milieu}>
+      <View style={{ width: Math.floor(width / echelle / 2), backgroundColor: '#fff' }}>
+        {children}
+      </View>
     </View>
+  ) : (
+    children
+  );
+  return (
+    <Agrandi echelle={echelle} width={width} height={height}>
+      {contenu}
+    </Agrandi>
   );
 }
 
@@ -278,12 +332,11 @@ const styles = StyleSheet.create({
     backgroundColor: COULEUR_SEPARATION,
   },
   milieu: { flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: '#fff' },
-  // Portrait sur grand ecran : fond gris de part et d'autre de la colonne.
-  cotes: { backgroundColor: FOND_REPOS },
-  colonne: {
+  agrandi: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
     backgroundColor: '#fff',
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: COULEUR_SEPARATION,
   },
 });
