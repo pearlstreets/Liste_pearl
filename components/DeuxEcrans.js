@@ -11,6 +11,8 @@
 // touchers : impossible de la poser sur une moitie. Ce fichier exporte donc un
 // Modal de remplacement :
 //  - plie, telephone, iPhone : la Modal de react-native, inchangee ;
+//  - en colonne (tablette en portrait) : son contenu est rendu dans la
+//    colonne, par-dessus l'ecran ;
 //  - deplie : son contenu est rendu dans la moitie droite (Modal opaque = page)
 //    ou par-dessus la moitie qui l'a ouverte (Modal transparente = fenetre de
 //    choix). La moitie d'en face reste utilisable.
@@ -44,11 +46,20 @@ import {
 } from 'react-native';
 import { NavigationContext, NavigationRouteContext } from '@react-navigation/native';
 
-// Deplie : Android, grand ecran (plus petit cote >= 600 dp) tenu en paysage.
-// Exportee pour les tests.
+// Grand ecran (plus petit cote >= 600 dp : pliable deplie, tablette Android,
+// iPad ; user 20/11/2026 pour les tablettes) :
+//  - en paysage, deux moities (estDeplie) ;
+//  - en portrait, l'ecran du telephone dans une colonne centree de
+//    LARGEUR_COLONNE dp (estEnColonne), pages et fenetres comprises.
+// Exportees pour les tests.
 export const LARGEUR_MIN = 600;
+export const LARGEUR_COLONNE = 600;
+const grandEcran = (os, width, height) =>
+  (os === 'android' || os === 'ios') && Math.min(width, height) >= LARGEUR_MIN;
 export const estDeplie = (os, width, height) =>
-  os === 'android' && Math.min(width, height) >= LARGEUR_MIN && width >= height;
+  grandEcran(os, width, height) && width >= height;
+export const estEnColonne = (os, width, height) =>
+  grandEcran(os, width, height) && width < height;
 
 const HoteContext = createContext(null);
 // Page (moitie droite) dans laquelle un contenu est rendu.
@@ -63,6 +74,7 @@ let compteur = 0;
 export function DeuxEcrans({ children }) {
   const { width, height } = useWindowDimensions();
   const deplie = estDeplie(Platform.OS, width, height);
+  const colonne = estEnColonne(Platform.OS, width, height);
   // Contenus ouverts, dans l'ordre d'ouverture.
   const [ouverts, setOuverts] = useState([]);
 
@@ -83,13 +95,15 @@ export function DeuxEcrans({ children }) {
     }),
     []
   );
-  const valeur = useMemo(() => ({ deplie, ...actions }), [deplie, actions]);
+  // `deplie` (pour Modal) : le contenu est rendu ici, pas en Modal native.
+  const horsModale = deplie || colonne;
+  const valeur = useMemo(() => ({ deplie: horsModale, ...actions }), [horsModale, actions]);
 
   // Retour Android : ferme le dernier contenu ouvert, comme une Modal.
   const derniers = useRef(ouverts);
   derniers.current = ouverts;
   // Plie, seule une fenetre figee (ouverte deplie) peut rester dans la liste.
-  const ecoute = deplie || ouverts.length > 0;
+  const ecoute = horsModale || ouverts.length > 0;
   useEffect(() => {
     if (!ecoute) return undefined;
     const abonnement = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -103,8 +117,20 @@ export function DeuxEcrans({ children }) {
   }, [ecoute]);
 
   const moitie = Math.floor(width / 2);
-  const pages = deplie ? ouverts.filter((e) => e.page) : [];
+  const pages = horsModale ? ouverts.filter((e) => e.page) : [];
   const pageVisible = pages[pages.length - 1];
+  const rendrePages = () =>
+    pages.map((p) => (
+      <View
+        key={p.id}
+        style={[StyleSheet.absoluteFill, p === pageVisible ? null : styles.cache]}
+      >
+        <PageContext.Provider value={p.id}>
+          {p.contenu}
+          {fenetres(p.id)}
+        </PageContext.Provider>
+      </View>
+    ));
   const fenetres = (parent) =>
     ouverts
       .filter((e) => !e.page && e.parent === parent)
@@ -116,6 +142,21 @@ export function DeuxEcrans({ children }) {
 
   // L'app reste au meme endroit de l'arbre plie ou deplie : rien n'est
   // remonte au pliage.
+  if (colonne) {
+    // Portrait : les pages s'empilent par-dessus l'ecran, dans la colonne.
+    return (
+      <HoteContext.Provider value={valeur}>
+        <View style={[styles.milieu, styles.cotes]}>
+          <View style={[styles.cote, styles.colonne, { width: Math.min(width, LARGEUR_COLONNE) }]}>
+            {children}
+            {fenetres(null)}
+            {rendrePages()}
+          </View>
+        </View>
+      </HoteContext.Provider>
+    );
+  }
+
   return (
     <HoteContext.Provider value={valeur}>
       <View style={styles.racine}>
@@ -134,17 +175,7 @@ export function DeuxEcrans({ children }) {
                 />
               </View>
             ) : null}
-            {pages.map((p) => (
-              <View
-                key={p.id}
-                style={[StyleSheet.absoluteFill, p === pageVisible ? null : styles.cache]}
-              >
-                <PageContext.Provider value={p.id}>
-                  {p.contenu}
-                  {fenetres(p.id)}
-                </PageContext.Provider>
-              </View>
-            ))}
+            {rendrePages()}
           </View>
         ) : null}
         {deplie ? (
@@ -217,13 +248,16 @@ export default function Modal({ page, figer, ...props }) {
   return <ModalNative {...props} />;
 }
 
-// Ecran d'avant l'app (choix de la langue) : une colonne au milieu, deplie.
+// Ecran d'avant l'app (choix de la langue) : une colonne au milieu, deplie
+// ou en colonne.
 export function AuMilieu({ children }) {
   const { width, height } = useWindowDimensions();
-  if (!estDeplie(Platform.OS, width, height)) return children;
+  const deplie = estDeplie(Platform.OS, width, height);
+  if (!deplie && !estEnColonne(Platform.OS, width, height)) return children;
+  const largeur = deplie ? Math.floor(width / 2) : Math.min(width, LARGEUR_COLONNE);
   return (
-    <View style={styles.milieu}>
-      <View style={{ width: Math.floor(width / 2) }}>{children}</View>
+    <View style={[styles.milieu, deplie ? null : styles.cotes]}>
+      <View style={{ width: largeur, backgroundColor: '#fff' }}>{children}</View>
     </View>
   );
 }
@@ -244,4 +278,12 @@ const styles = StyleSheet.create({
     backgroundColor: COULEUR_SEPARATION,
   },
   milieu: { flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: '#fff' },
+  // Portrait sur grand ecran : fond gris de part et d'autre de la colonne.
+  cotes: { backgroundColor: FOND_REPOS },
+  colonne: {
+    backgroundColor: '#fff',
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: COULEUR_SEPARATION,
+  },
 });
