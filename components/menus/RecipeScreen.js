@@ -24,7 +24,8 @@ import {
 } from '../../lib/menus';
 import { needsSide, mealSide, withSideNutrition, mealTargetOf } from '../../lib/menus/sides';
 import { recipePortionScale } from '../../lib/menus/needs';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { PrimaryButton, Stepper, Field, Empty, RoundIcon } from './ui';
 import RecipeVisual, { IngredientThumb } from './RecipeVisual';
 import { AddedSheet, PlanPickSheet, PickProductsSheet, warningList } from './Sheets';
@@ -171,9 +172,8 @@ export default function RecipeScreen({
   navigation,
 }) {
   const t = useT();
-  // Petit écran : photo et boutons fixes réduits, sinon la recette ne se voit plus.
+  // Petit écran : photo réduite, sinon la recette ne se voit plus.
   const compact = useWindowDimensions().height < 700;
-  const barBtn = compact ? { minHeight: 44 } : null;
   const m = useMenus();
   const { recipeById, texts, ingredients, lang, profile, plan, favorites, notes, cooked } = m;
   const recipe = recipeById.get(id);
@@ -404,8 +404,8 @@ export default function RecipeScreen({
 
   if (!recipe) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={{ padding: 14 }}>
+      <View style={{ flex: 1, backgroundColor: T.bg }}>
+        <View style={{ paddingHorizontal: TAILLES.marge, paddingVertical: 14 }}>
           <RoundIcon name="chevron-back" onPress={onClose} label={t('common.back')} />
         </View>
         <Empty
@@ -428,7 +428,7 @@ export default function RecipeScreen({
     .slice(0, 6);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 30 }}
         keyboardShouldPersistTaps="handled"
@@ -442,12 +442,7 @@ export default function RecipeScreen({
             zoomable
           />
           <View style={s.topBtns}>
-            <RoundIcon
-              name="chevron-back"
-              onPress={onClose}
-              label={t('common.back')}
-              bg="rgba(255,255,255,0.95)"
-            />
+            <RoundIcon name="chevron-back" onPress={onClose} label={t('common.back')} bg="#fff" />
             <View style={{ flexDirection: 'row' }}>
               {mine ? (
                 <>
@@ -455,14 +450,14 @@ export default function RecipeScreen({
                     name="trash-outline"
                     onPress={askDelete}
                     label={t('myRecipes.delete')}
-                    bg="rgba(255,255,255,0.95)"
+                    bg="#fff"
                   />
                   <View style={{ width: 10 }} />
                   <RoundIcon
                     name="create-outline"
                     onPress={() => onEdit(id)}
                     label={t('myRecipes.edit')}
-                    bg="rgba(255,255,255,0.95)"
+                    bg="#fff"
                   />
                   <View style={{ width: 10 }} />
                 </>
@@ -473,24 +468,19 @@ export default function RecipeScreen({
                     name="calendar-outline"
                     onPress={() => setAddWeek(true)}
                     label={t('month.addTitle')}
-                    bg="rgba(255,255,255,0.95)"
+                    bg="#fff"
                   />
                   <View style={{ width: 10 }} />
                 </>
               )}
-              <RoundIcon
-                name="share-outline"
-                onPress={share}
-                label={t('recipe.share')}
-                bg="rgba(255,255,255,0.95)"
-              />
+              <RoundIcon name="share-outline" onPress={share} label={t('recipe.share')} bg="#fff" />
               <View style={{ width: 10 }} />
               <RoundIcon
                 name={fav ? 'heart' : 'heart-outline'}
                 onPress={() => m.toggleFav(id)}
                 label={t('recipe.favorite')}
-                bg="rgba(255,255,255,0.95)"
-                color={fav ? T.danger : T.ink}
+                bg="#fff"
+                color={fav ? T.brand : T.ink}
               />
             </View>
           </View>
@@ -806,25 +796,30 @@ export default function RecipeScreen({
             icon="calendar-outline"
             label={t('myRecipes.addToPlan')}
             onPress={() => setPlanPick(true)}
-            style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
+            style={[s.barBtn, { marginBottom: compact ? 6 : 10 }]}
           />
         ) : null}
-        <PrimaryButton
-          soft
-          icon="cart"
-          label={t('recipe.addToList')}
-          loading={adding}
-          onPress={openPick}
-          style={[{ marginBottom: compact ? 6 : 10 }, barBtn]}
-        />
-        {steps.length ? (
+        <View style={s.barRow}>
           <PrimaryButton
-            icon="play"
-            label={t('recipe.cook')}
-            onPress={() => onCook(id, fitPersons)}
-            style={barBtn}
+            soft
+            icon="cart"
+            label={t('recipe.addToList')}
+            loading={adding}
+            onPress={openPick}
+            style={[s.barBtn, s.barBtnFlex]}
           />
-        ) : null}
+          {steps.length ? (
+            <>
+              <View style={{ width: 10 }} />
+              <PrimaryButton
+                icon="play"
+                label={t('recipe.cook')}
+                onPress={() => onCook(id, fitPersons)}
+                style={[s.barBtn, s.barBtnFlex, s.barBtnNoir]}
+              />
+            </>
+          ) : null}
+        </View>
       </View>
       {planPick ? (
         <PlanPickSheet recipe={recipe} onClose={() => setPlanPick(false)} onDone={onClose} />
@@ -873,18 +868,18 @@ const s = StyleSheet.create({
   },
   topBtns: {
     position: 'absolute',
-    left: 14,
-    right: 14,
+    left: TAILLES.marge,
+    right: TAILLES.marge,
     top: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   sheet: {
-    marginTop: -28,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
+    marginTop: -22,
+    backgroundColor: T.bg,
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 22,
   },
   course: {
@@ -894,10 +889,17 @@ const s = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.6,
   },
-  title: { fontSize: 28, fontWeight: '600', color: T.ink, lineHeight: 34, marginTop: 4 },
+  title: {
+    fontFamily: SERIF,
+    fontSize: 24,
+    fontWeight: '600',
+    color: T.ink,
+    lineHeight: 30,
+    marginTop: 4,
+  },
   metaRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 12 },
   meta: { flexDirection: 'row', alignItems: 'center', marginRight: 16, marginBottom: 4 },
-  metaTxt: { fontSize: 14, color: T.muted, fontWeight: '700', marginLeft: 5 },
+  metaTxt: { fontSize: 14, lineHeight: 18, color: T.muted, fontWeight: '600', marginLeft: 5 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: T.border, marginRight: 3 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
   tag: {
@@ -934,10 +936,17 @@ const s = StyleSheet.create({
   },
   pearlName: { flex: 1, fontSize: 14, color: T.ink, marginRight: 8 },
   pearlVal: { fontSize: 13, fontWeight: '700', color: T.brandDark },
-  h2: { fontSize: 22, fontWeight: '600', color: T.ink, marginTop: 28, marginBottom: 10 },
+  h2: {
+    fontFamily: SERIF,
+    fontSize: 22,
+    fontWeight: '600',
+    color: T.ink,
+    marginTop: 28,
+    marginBottom: 10,
+  },
   h2Row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'baseline',
     justifyContent: 'space-between',
     marginTop: 28,
     marginBottom: 10,
@@ -960,7 +969,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkOn: { backgroundColor: T.brand, borderColor: T.brand },
+  checkOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
   ingName: { flex: 1, fontSize: 16, fontWeight: '700', color: T.ink },
   ingQty: { fontSize: 15, fontWeight: '600', color: T.ink, marginLeft: 8 },
   nutri: {
@@ -972,7 +981,7 @@ const s = StyleSheet.create({
     marginTop: 24,
     ...T.shadowSm,
   },
-  nutriTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
+  nutriTitle: { fontFamily: SERIF, fontSize: 17, fontWeight: '600', color: T.ink },
   nutriBox: {
     flex: 1,
     backgroundColor: T.subtle,
@@ -1008,7 +1017,7 @@ const s = StyleSheet.create({
     padding: 16,
     marginTop: 24,
   },
-  sideTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
+  sideTitle: { fontFamily: SERIF, fontSize: 17, fontWeight: '600', color: T.ink },
   sideHint: { fontSize: 12, color: T.muted, marginTop: 4, lineHeight: 17 },
   sideRow: {
     flexDirection: 'row',
@@ -1020,16 +1029,26 @@ const s = StyleSheet.create({
   sideName: { fontSize: 15, fontWeight: '700', color: T.ink },
   sideMeta: { fontSize: 12, color: T.muted, marginTop: 2 },
   sideWarn: { fontSize: 13, color: T.danger, marginTop: 8, fontWeight: '600' },
-  sideSee: { paddingHorizontal: 10, paddingVertical: 8, marginLeft: 6 },
+  sideSee: {
+    height: TAILLES.boutonPetit,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    marginLeft: 6,
+  },
   sideSeeTxt: { fontSize: 13, fontWeight: '700', color: T.brandDark },
-  sideRemove: { alignSelf: 'flex-start', paddingVertical: 8, marginTop: 4 },
+  sideRemove: {
+    alignSelf: 'flex-start',
+    height: TAILLES.boutonPetit,
+    justifyContent: 'center',
+    marginTop: 4,
+  },
   sideRemoveTxt: { fontSize: 14, fontWeight: '700', color: T.brandDark },
   step: { flexDirection: 'row', marginBottom: 16 },
   stepNum: {
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: T.brand,
+    backgroundColor: MARCHE.noir,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -1038,11 +1057,21 @@ const s = StyleSheet.create({
   stepNumTxt: { color: '#fff', fontWeight: '600', fontSize: 14 },
   stepTxt: { flex: 1, fontSize: 16, color: T.ink, lineHeight: 24 },
   bar: {
-    paddingHorizontal: 18,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
     paddingBottom: 12,
     borderTopWidth: 1,
     borderTopColor: T.border,
-    backgroundColor: '#fff',
+    backgroundColor: T.bg,
   },
+  barRow: { flexDirection: 'row', alignItems: 'center' },
+  // Boutons du bas : même hauteur, texte centré ; un blanc à contour fin et un noir.
+  barBtn: {
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+    paddingHorizontal: 14,
+  },
+  barBtnFlex: { flex: 1 },
+  barBtnNoir: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
 });

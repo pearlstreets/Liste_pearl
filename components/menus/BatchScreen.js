@@ -15,7 +15,7 @@ import {
   normalizeLang,
 } from '../../lib/menus';
 import { parseISO, toISO } from '../../lib/menus/weeks';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { Empty, PrimaryButton, GhostButton, Stepper } from './ui';
 import { useMenus } from './MenusContext';
 import CookMode from './CookMode';
@@ -155,7 +155,7 @@ function Chooser({ onClose }) {
           disabled={count < MIN_RECIPES}
           loading={saving}
           onPress={create}
-          style={{ alignSelf: 'stretch' }}
+          style={[s.btn, s.btnNoir]}
         />
       </View>
     </View>
@@ -272,7 +272,7 @@ function Session({ onClose, onOpenRecipe }) {
           <PrimaryButton
             label={t('batch.newConfirm')}
             onPress={() => m.clearBatch()}
-            style={{ alignSelf: 'stretch' }}
+            style={[s.btn, s.btnNoir]}
           />
         </View>
       </View>
@@ -319,7 +319,7 @@ function Session({ onClose, onOpenRecipe }) {
             icon="play"
             label={t(progress.done > 0 ? 'batch.resume' : 'batch.follow')}
             onPress={() => setFollowing(progress.nextIndex)}
-            style={{ alignSelf: 'stretch', marginTop: 14 }}
+            style={[s.btn, s.btnNoir, { marginTop: 14 }]}
           />
         )}
         <PrimaryButton
@@ -328,7 +328,7 @@ function Session({ onClose, onOpenRecipe }) {
           label={t('batch.addShopping')}
           loading={adding}
           onPress={addShopping}
-          style={{ alignSelf: 'stretch', marginTop: 10 }}
+          style={[s.btn, { marginTop: 10 }]}
         />
         {shopMsg ? <Text style={s.note}>{shopMsg}</Text> : null}
         {linked.length ? (
@@ -409,13 +409,32 @@ export default function BatchScreen({ onClose, onOpenRecipe }) {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#fff' },
+  root: { flex: 1, backgroundColor: T.bg },
   top: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 8 },
-  topTitle: { flex: 1, textAlign: 'center', fontSize: 17, fontWeight: '600', color: T.ink },
-  x: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
-  scroll: { paddingHorizontal: 18, paddingBottom: 32 },
+  topTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+  },
+  x: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll: { paddingHorizontal: TAILLES.marge, paddingBottom: 32 },
   intro: { fontSize: 15, lineHeight: 22, color: T.muted, fontWeight: '600', marginTop: 4 },
-  section: { fontSize: 18, fontWeight: '600', color: T.ink, marginTop: 22, marginBottom: 6 },
+  section: {
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+    marginTop: 22,
+    marginBottom: 6,
+  },
   row: { borderBottomWidth: 1, borderBottomColor: T.border },
   rowMain: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12, minHeight: 48 },
   rowTitle: { fontSize: 15, lineHeight: 21, fontWeight: '700', color: T.ink },
@@ -425,17 +444,31 @@ const s = StyleSheet.create({
   meta: { flexShrink: 1, fontSize: 12, fontWeight: '600', color: T.brandDark },
   stepper: { paddingBottom: 12, paddingLeft: 36, alignItems: 'flex-start' },
   bottom: {
-    paddingHorizontal: 18,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
     paddingBottom: 14,
     borderTopWidth: 1,
     borderTopColor: T.border,
   },
-  summary: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.border, borderRadius: 16, padding: 18, marginTop: 4 },
+  summary: {
+    backgroundColor: T.card,
+    borderWidth: 1,
+    borderColor: T.border,
+    borderRadius: 16,
+    padding: 18,
+    marginTop: 4,
+  },
   summaryVal: { fontSize: 32, fontWeight: '600', color: T.ink },
   summaryTxt: { fontSize: 14, lineHeight: 20, fontWeight: '600', color: T.ink, marginTop: 2 },
   note: { fontSize: 13, lineHeight: 19, color: T.muted, fontWeight: '600', marginTop: 8 },
   warn: { fontSize: 13, lineHeight: 19, color: T.danger, fontWeight: '700', marginTop: 6 },
   doneAll: { fontSize: 15, fontWeight: '600', color: T.brandDark, marginTop: 14 },
+  btn: {
+    alignSelf: 'stretch',
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+  },
+  btnNoir: { backgroundColor: T.ink },
   keep: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: T.border },
 });
