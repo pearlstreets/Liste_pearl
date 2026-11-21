@@ -24,6 +24,7 @@ import { matchLines } from '../../lib/menus/pearl';
 import { getTexts } from '../../lib/menus/recipes';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 import { IngredientThumb } from './RecipeVisual';
+import { allerA } from '../../app/onglets';
 
 // Icône de chaque rayon (titres de rayon en style Marché).
 const AISLE_ICON = {
@@ -164,15 +165,21 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
   const nBad = (m.unsuitable || []).length;
   const send = useCallback(() => {
     if (sending) return;
+    // Tout est déjà dans la liste : on ouvre la fiche « déjà ajouté » (voir ou comparer la liste) au lieu d'une impasse.
+    if (state.kind === 'already') {
+      setAdded({ status: 'already', count: 0 });
+      return;
+    }
     if (nBad === 0) {
       doSend();
       return;
     }
     Alert.alert(t('myRecipes.confirmTitle'), t('week.unsuitableConfirm', { count: nBad }), [
       { text: t('common.cancel'), style: 'cancel' },
+      { text: t('week.unsuitableAction', { count: nBad }), onPress: () => m.replaceUnsuitable() },
       { text: t('myRecipes.confirmAdd'), style: 'destructive', onPress: doSend },
     ]);
-  }, [sending, nBad, doSend, t]);
+  }, [sending, state.kind, nBad, doSend, m, t]);
 
   const goList = async (screen) => {
     setAdded(null);
@@ -183,7 +190,12 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
       } catch {}
     }
     try {
-      navigation.navigate(screen);
+      // Liste remplie autre que l'active : Ma Liste l'ouvre (paramètre lu par ListScreen).
+      if (screen === 'myList' && listId !== lists.activeId) {
+        allerA(navigation, screen, { listId, n: Date.now() });
+      } else {
+        allerA(navigation, screen);
+      }
     } catch {}
   };
 
@@ -264,7 +276,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
       ? t('shop.alreadyAdded')
       : state.kind === 'delta'
         ? t('shop.addDelta', { count: state.count })
-        : t('shop.add');
+        : t('recipe.addToList');
 
   const header = (
     <View style={{ paddingBottom: 6 }}>
@@ -373,7 +385,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
           icon={state.kind === 'already' ? 'checkmark-done' : 'add-circle'}
           label={label}
           soft={state.kind === 'already'}
-          disabled={state.kind === 'already' || state.kind === 'empty'}
+          disabled={state.kind === 'empty'}
           loading={sending}
           onPress={send}
           style={[s.btnMain, state.kind !== 'already' && s.btnNoir]}

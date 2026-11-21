@@ -101,15 +101,6 @@ export default function SettingsScreen({ onClose }) {
         showsVerticalScrollIndicator={false}
       >
         <Text style={s.intro}>{t('settings.intro')}</Text>
-        <View style={{ marginTop: 14 }}>
-          <PrimaryButton
-            soft
-            icon="options-outline"
-            label={t('questionnaire.redo')}
-            onPress={() => setQuest(true)}
-          />
-          <Text style={[s.sync, { marginTop: 8, fontSize: 13 }]}>{t('questionnaire.redoHint')}</Text>
-        </View>
         <SectionTitle title={t('settings.household')} />
         <HouseholdSection profile={profile} onChange={change} />
         <SectionTitle title={t('settings.meals')} hint={t('settings.mealsHint')} />
@@ -122,6 +113,15 @@ export default function SettingsScreen({ onClose }) {
         <PrivacySection connected={!!(sync && sync.connected)} />
         <SectionTitle title={t('settings.sync')} />
         <Text style={s.sync}>{syncLine(t, sync, lang)}</Text>
+        <View style={{ marginTop: 24 }}>
+          <PrimaryButton
+            soft
+            icon="options-outline"
+            label={t('questionnaire.redo')}
+            onPress={() => setQuest(true)}
+          />
+          <Text style={[s.sync, { marginTop: 8, fontSize: 13 }]}>{t('questionnaire.redoHint')}</Text>
+        </View>
         <View style={{ marginTop: 34, alignItems: 'center' }}>
           <GhostButton
             danger
