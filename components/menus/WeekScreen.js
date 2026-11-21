@@ -711,7 +711,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: T.border,
   },
-  pillOn: { backgroundColor: T.ink, borderColor: T.ink },
+  pillOn: { backgroundColor: T.noir, borderColor: T.noir },
   pillTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
   pillDots: { flexDirection: 'row', marginTop: 6 },
   pillDot: {
@@ -791,7 +791,7 @@ const s = StyleSheet.create({
     minHeight: TAILLES.bouton,
     borderRadius: TAILLES.rayonBouton,
   },
-  btnNoir: { backgroundColor: T.ink },
+  btnNoir: { backgroundColor: T.noir },
   barLink: { alignItems: 'center', paddingTop: 10, paddingBottom: 2 },
   barLinkTxt: { fontSize: 14, fontWeight: '600', color: T.muted },
 });

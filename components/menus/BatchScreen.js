@@ -469,6 +469,6 @@ const s = StyleSheet.create({
     minHeight: TAILLES.bouton,
     borderRadius: TAILLES.rayonBouton,
   },
-  btnNoir: { backgroundColor: T.ink },
+  btnNoir: { backgroundColor: T.noir },
   keep: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: T.border },
 });
