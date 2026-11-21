@@ -12,6 +12,7 @@ export const T = {
   card: '#FFFFFF',
   subtle: MARCHE.subtle,
   ink: MARCHE.ink,
+  noir: MARCHE.noir, // fond des boutons et pastilles pleins
   muted: MARCHE.muted,
   faint: MARCHE.faint,
   border: MARCHE.border,

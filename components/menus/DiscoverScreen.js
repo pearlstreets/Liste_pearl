@@ -510,6 +510,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={s.filtersBar}
         contentContainerStyle={s.filters}
       >
         {COURSES.map((c) => (
@@ -555,9 +556,10 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={s.filtersBar}
         contentContainerStyle={s.filters}
       >
-        <Text style={[s.tip, { alignSelf: 'center', marginRight: 8 }]}>
+        <Text style={[s.tip, { alignSelf: 'center', marginRight: 8, marginBottom: 8 }]}>
           {t('discover.cuisinesTitle')}
         </Text>
         {CUISINES.map((x) => (
@@ -856,7 +858,9 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     marginLeft: 10,
   },
-  filters: { paddingTop: 6, paddingBottom: 0 },
+  // Rangées de filtres pleine largeur (comme la rangée des modes) : défilent jusqu'au bord de l'écran.
+  filtersBar: { marginHorizontal: -TAILLES.marge },
+  filters: { paddingHorizontal: TAILLES.marge, paddingTop: 6, paddingBottom: 0, alignItems: 'center' },
   mineRow: { flexDirection: 'row', marginBottom: 4 },
   modeNote: { fontSize: 14, color: T.muted, lineHeight: 20, marginVertical: 8 },
   label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 14, marginBottom: 10 },
