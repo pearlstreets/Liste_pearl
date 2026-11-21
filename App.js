@@ -5415,8 +5415,8 @@ const ShopsScreen = () => {
 
 const shopStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
-  header: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 },
-  title: { fontSize: 26, fontFamily: SERIF, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
+  header: { paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: 12 },
+  title: { fontSize: 26, fontFamily: SERIF, fontWeight: '400', color: THEME.ink, letterSpacing: -0.3 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
   emptyTxt: { fontSize: 14, color: THEME.muted, marginTop: 12, fontWeight: '600', textAlign: 'center' },
@@ -6599,13 +6599,13 @@ const profStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
 
   // Custom in-screen header
-  header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 6 },
+  header: { paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: 6 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 26, fontFamily: SERIF, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
+  title: { fontSize: 26, fontFamily: SERIF, fontWeight: '400', color: THEME.ink, letterSpacing: -0.3 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
   // Profile identity card
-  profileCard: { backgroundColor: THEME.card, borderRadius: 16, marginHorizontal: 20, marginTop: 8, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  profileCard: { backgroundColor: THEME.card, borderRadius: 16, marginHorizontal: TAILLES.marge, marginTop: 8, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   avatarWrap: { width: 60, height: 60, marginBottom: 8 },
   avatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#9ca3af', alignItems: 'center', justifyContent: 'center', borderWidth: 2.5, borderColor: '#3B82F6', overflow: 'hidden' },
   avatarImg: { width: 60, height: 60 },
@@ -6617,7 +6617,7 @@ const profStyles = StyleSheet.create({
   editBtnTxt: { color: THEME.ink, fontWeight: '700', fontSize: 13, marginLeft: 6 },
 
   // Section
-  section: { marginTop: 14, paddingHorizontal: 20 },
+  section: { marginTop: 14, paddingHorizontal: TAILLES.marge },
   sectionHeadRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
   sectionTitle: { fontSize: 17, fontFamily: SERIF, fontWeight: '600', color: THEME.ink, letterSpacing: -0.3 },
   sectionCount: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
@@ -6688,7 +6688,7 @@ const profStyles = StyleSheet.create({
   guestBtn: { height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
   guestBtnTxt: { color: THEME.ink, fontWeight: '600', fontSize: 16, marginLeft: 8 },
   // Guest hero (design soigné) + préférences accessibles sans connexion
-  guestHero: { margin: 20, borderRadius: TAILLES.rayonCarte, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
+  guestHero: { marginHorizontal: TAILLES.marge, marginVertical: 20, borderRadius: TAILLES.rayonCarte, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
   guestHeroIcon: { width: 78, height: 78, borderRadius: 39, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
   guestHeroTitle: { fontSize: 20, fontFamily: SERIF, fontWeight: '600', color: THEME.ink, textAlign: 'center', letterSpacing: -0.3 },
   guestHeroHint: { fontSize: 13, color: THEME.muted, textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },

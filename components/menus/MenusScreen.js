@@ -240,7 +240,7 @@ const s = StyleSheet.create({
     borderRadius: TAILLES.rayonBouton - 4,
     paddingHorizontal: 4,
   },
-  segOn: { backgroundColor: T.ink },
+  segOn: { backgroundColor: T.noir },
   segTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
   gear: {
     width: TAILLES.icone,
