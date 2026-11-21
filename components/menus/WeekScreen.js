@@ -648,7 +648,7 @@ const s = StyleSheet.create({
   nextTxt: { color: T.brandDark, fontSize: 14, fontWeight: '600', lineHeight: 20 },
   scroll: { paddingHorizontal: TAILLES.marge, paddingBottom: 24 },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
-  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink },
+  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '400', color: T.ink, letterSpacing: -0.3 },
   bigCompact: { fontSize: 24 },
   sub: { fontSize: 14, color: T.muted, fontWeight: '600', marginTop: 2 },
   gauge: {
