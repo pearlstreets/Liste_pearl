@@ -19,7 +19,7 @@ import Modal from "../../components/DeuxEcrans";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, Alert, ActivityIndicator, ScrollView, Platform, KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useFocusEffect, useRoute } from "@react-navigation/native";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import RepeatButton from "../../components/ui/RepeatButton";
 import { MARCHE, SERIF, TAILLES } from "../../components/ui/marche";
@@ -213,6 +213,9 @@ const CartScreen = ({ isAuth }) => {
   // Connexion demandée depuis « Confirmer » : la feuille s'ouvre d'elle-même
   // une fois connecté (l'intention n'est pas perdue).
   const veutConfirmerRef = React.useRef(false);
+  // Panier quitté sans s'être connecté : l'intention est oubliée (une connexion
+  // faite plus tard ailleurs n'ouvre pas la feuille « Confirmer »).
+  useFocusEffect(React.useCallback(() => () => { veutConfirmerRef.current = false; }, []));
   React.useEffect(() => {
     if (!isAuth) return;
     loadOrders();
@@ -426,6 +429,19 @@ const CartScreen = ({ isAuth }) => {
   // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
   const [pendingPayment, setPendingPayment] = React.useState(null); // { orders:[{orderId,shopName}], totalLabel }
+
+  // Mode choisi dans Comparer (navigate('cart', { mode, n })) : repris à l'arrivée,
+  // jamais pendant un paiement en cours.
+  const route = useRoute();
+  const modeDemande = route && route.params ? route.params.mode : undefined;
+  const modeDemandeN = route && route.params ? route.params.n : undefined;
+  const cardModalVisibleRef = React.useRef(false);
+  cardModalVisibleRef.current = cardModalVisible;
+  React.useEffect(() => {
+    if (modeDemande !== 'collect' && modeDemande !== 'delivery') return;
+    if (cardModalVisibleRef.current || placingRef.current) return;
+    setOrderMode(modeDemande);
+  }, [modeDemande, modeDemandeN]);
 
   // Commandes en attente gardées avec la signature du contenu commandé
   // (articles cochés, quantités, mode) et enregistrées (KEY_PENDING_PAYMENT) :

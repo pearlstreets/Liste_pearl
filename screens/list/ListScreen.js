@@ -8,7 +8,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, 
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReorderableList from "react-native-reorderable-list";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useFocusEffect, useRoute } from "@react-navigation/native";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import { loadListItems, persistActiveItems } from "../../lib/listStore";
 import { listItemPack } from "../../lib/menus/shopping";
@@ -35,6 +35,14 @@ export default function ListScreen() {
   }), [t, langueListe]);
   const tMenus = React.useCallback((k, o) => t('menus.' + k, o), [t]);
   const navigation = useNavigation();
+  // Liste demandée par l'onglet Menus (navigate('myList', { listId, n })) : ouverte
+  // une seule fois par demande (n), au chargement ou au retour sur l'onglet.
+  const route = useRoute();
+  const listeDemandee = route && route.params ? route.params.listId : undefined;
+  const listeDemandeeN = route && route.params ? route.params.n : undefined;
+  const demandeListeRef = React.useRef(null);
+  demandeListeRef.current = listeDemandee != null && listeDemandeeN != null ? { id: String(listeDemandee), n: listeDemandeeN } : null;
+  const demandeListeTraiteeRef = React.useRef(null);
   const [text, setText] = useState("");
   const [items, setItems] = useState([]);
   const [, setSelectAll] = useState(false);
@@ -108,8 +116,11 @@ export default function ListScreen() {
     return () => sub.remove();
   }, [ouvrirPartageDepuisPush]);
   // Ligne « Demandes de partage » du Profil (EVT_OUVRIR_DEMANDES_PARTAGE).
+  // Ouverte depuis le Profil : sa fermeture ramène au Profil.
+  const depuisProfilRef = React.useRef(false);
   React.useEffect(() => {
     const sub = DeviceEventEmitter.addListener('OUVRIR_DEMANDES_PARTAGE', () => {
+      depuisProfilRef.current = true;
       loadShareData();
       if (autreModaleListe.current) {
         fermerModalesListe.current();
@@ -133,6 +144,12 @@ export default function ListScreen() {
   // --- Multi-listes (MES listes) ---
   const [myLists, setMyLists] = useState([{ id: DEFAULT_LIST_ID, name: '' }]);
   const [activeListId, setActiveListId] = useState(DEFAULT_LIST_ID);
+  const activeListIdRef = React.useRef(activeListId);
+  activeListIdRef.current = activeListId;
+  const viewingShareIdRef = React.useRef(viewingShareId);
+  viewingShareIdRef.current = viewingShareId;
+  const myListsRef = React.useRef(myLists);
+  myListsRef.current = myLists;
   const [createListOpen, setCreateListOpen] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [renameOpen, setRenameOpen] = useState(false);
@@ -195,6 +212,14 @@ export default function ListScreen() {
     })();
     return () => { alive = false; };
   }, [demandesOuvertes, isLoggedIn]);
+  const demandesOuvertesPourProfil = React.useRef(demandesOuvertes);
+  useEffect(() => {
+    const etaitOuverte = demandesOuvertesPourProfil.current;
+    demandesOuvertesPourProfil.current = demandesOuvertes;
+    if (!etaitOuverte || demandesOuvertes || !depuisProfilRef.current) return;
+    depuisProfilRef.current = false;
+    allerA(navigation, 'profile');
+  }, [demandesOuvertes, navigation]);
 
   // Synchronise « Ma liste » (la liste par défaut) vers le serveur pour le partage.
   // IMPORTANT : seule la liste par défaut est partagée. Les listes nommées
@@ -281,13 +306,28 @@ export default function ListScreen() {
       setMyLists(lists);
       let active = (await AsyncStorage.getItem(KEY_ACTIVE_LIST)) || DEFAULT_LIST_ID;
       if (!lists.some(l => l.id === active)) active = DEFAULT_LIST_ID;
+      const dem = demandeListeRef.current;
+      let bascule = false;
+      if (dem && dem.n !== demandeListeTraiteeRef.current) {
+        demandeListeTraiteeRef.current = dem.n;
+        if (dem.id !== active && lists.some(l => l.id === dem.id)) {
+          // L'ancienne active est d'abord lue (migration de SG_ITEMS vers sa clé)
+          // avant que le miroir ne prenne la liste demandée.
+          const ancienne = await loadListItems(active, active);
+          if (ancienne.ok) {
+            active = dem.id;
+            bascule = true;
+            await AsyncStorage.setItem(KEY_ACTIVE_LIST, active);
+          }
+        }
+      }
       setActiveListId(active);
       // Articles de la liste active — KEY_ITEMS reste le miroir de l'active (compat panier)
       const { ok, items: parsed } = await loadListItems(active, active);
       // Liste illisible : rien n'est affiché ni écrit par-dessus (hydrated reste faux).
       lisible = ok;
-      if (ok && !externalReload.current) setItems(parsed);
-      if (ok && !externalReload.current) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
+      if (ok && (bascule || !externalReload.current)) setItems(parsed);
+      if (ok && (bascule || !externalReload.current)) await AsyncStorage.setItem(KEY_ITEMS, JSON.stringify(parsed));
     } catch {}
     if (!lisible) return;
     hydrated.current = true;
@@ -318,6 +358,17 @@ export default function ListScreen() {
 
   // Reload items when returning to this tab (e.g. after adding to cart crosses them off)
   useFocusEffect(React.useCallback(() => {
+    const dem = demandeListeRef.current;
+    if (dem && dem.n !== demandeListeTraiteeRef.current) {
+      // Premier chargement en cours : il ouvre lui-même la liste demandée.
+      if (!hydrated.current) return;
+      demandeListeTraiteeRef.current = dem.n;
+      const autre = dem.id !== activeListIdRef.current || viewingShareIdRef.current != null;
+      if (autre && myListsRef.current.some(l => l.id === dem.id)) {
+        switchOwnListRef.current(dem.id);
+        return;
+      }
+    }
     (async () => {
       try {
         const s = await AsyncStorage.getItem("SG_ITEMS");
@@ -417,6 +468,9 @@ export default function ListScreen() {
     } catch {}
     setSwitcherOpen(false);
   };
+
+  const switchOwnListRef = React.useRef(switchOwnList);
+  switchOwnListRef.current = switchOwnList;
 
   // Création via modale custom (cross-platform iOS + Android — Alert.prompt est iOS-only).
   const createList = () => {

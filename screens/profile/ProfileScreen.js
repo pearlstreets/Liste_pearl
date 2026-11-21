@@ -137,21 +137,37 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
   // page de connexion (les adresses sont rattachées au compte).
   const autreModaleOuverte = React.useRef(false);
   autreModaleOuverte.current = driverInfoVisible || editVisible || langVisible || currencyVisible || paymentMethodsVisible;
+  const addressListVisibleRef = React.useRef(false);
+  addressListVisibleRef.current = addressListVisible;
   const isAuthRef = React.useRef(isAuth);
   isAuthRef.current = isAuth;
+  // Seul le Panier émet cet évènement (« Ajouter une adresse ») : le formulaire
+  // s'ouvre directement, et la nouvelle adresse enregistrée ramène au Panier.
+  const depuisPanierRef = React.useRef(false);
   React.useEffect(() => {
     const sub = DeviceEventEmitter.addListener(EVT_OUVRIR_ADRESSES, () => {
       if (!isAuthRef.current) { DeviceEventEmitter.emit('OPEN_AUTH'); return; }
-      if (autreModaleOuverte.current) {
+      depuisPanierRef.current = true;
+      const ouvrirFormulaire = () => {
+        setEditingAddressId(null);
+        setAddrForm(EMPTY_ADDR_FORM);
+        setAddressFormVisible(true);
+        loadAddresses();
+      };
+      if (autreModaleOuverte.current || addressListVisibleRef.current) {
         setDriverInfoVisible(false); setEditVisible(false); setLangVisible(false);
-        setCurrencyVisible(false); setPaymentMethodsVisible(false);
-        setTimeout(() => { setAddressListVisible(true); loadAddresses(); }, 300);
+        setCurrencyVisible(false); setPaymentMethodsVisible(false); setAddressListVisible(false);
+        setTimeout(ouvrirFormulaire, 300);
       } else {
-        setAddressListVisible(true); loadAddresses();
+        ouvrirFormulaire();
       }
     });
     return () => sub.remove();
   }, [loadAddresses]);
+  // Formulaire refermé sans nouvelle adresse : on reste dans le Profil.
+  React.useEffect(() => {
+    if (!addressFormVisible) depuisPanierRef.current = false;
+  }, [addressFormVisible]);
 
   useFocusEffect(React.useCallback(() => {
     loadProfile(); loadOrders(); loadAddresses(); loadShareData();
@@ -294,7 +310,10 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
       if (editingAddressId) await updateAddress(editingAddressId, payload);
       else await createAddress(payload);
       await loadAddresses();
+      const retourPanier = !editingAddressId && depuisPanierRef.current;
+      depuisPanierRef.current = false;
       setAddressFormVisible(false);
+      if (retourPanier) { try { navigation.navigate('cart'); } catch {} }
     } catch (e) {
       Alert.alert(t('profile.deliveryAddress'), t('profile.addrSaveError', 'Could not save the address.'));
     }

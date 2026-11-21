@@ -1071,7 +1071,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                         <Text style={prodStyles.totalValue}>{shopSelected.length} ({t('counts.items', { count: liveQty })})</Text>
                       </View>
                       <View style={[prodStyles.totalRow, {marginTop:6}]}>
-                        <Text style={prodStyles.grandLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+                        <Text style={prodStyles.grandLabel}>{t('cart.total')}</Text>
                         <Text style={prodStyles.grandValue}>{fmtPrice(liveTotal)}</Text>
                       </View>
                       {mode==="delivery" ? (
@@ -1410,7 +1410,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                 <Text style={{fontSize:16, fontWeight:'700', color:THEME.ink}}>{popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)}</Text>
               </View>
               <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom:4}}>
-                <Text style={{fontSize:16, fontWeight:'700', color:THEME.ink}}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+                <Text style={{fontSize:16, fontWeight:'700', color:THEME.ink}}>{t('cart.total')}</Text>
                 <Text style={{fontSize:16, fontWeight:'700', color:BRAND}}>{fmtPrice(popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (Number(si.price||0) * Number(si.qty||1)), 0))}</Text>
               </View>
               <TouchableOpacity
@@ -1467,7 +1467,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
             <Text style={{fontFamily:SERIF, fontSize:22, fontWeight:'400', color:THEME.ink, textAlign:'center'}}>{t('cart.addedToCart')}</Text>
             <Text style={{fontSize:14, color:THEME.muted, marginTop:8, textAlign:'center'}}>{t('counts.addedToCart', { count: cartSuccessCount })}</Text>
             <TouchableOpacity
-              onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart', { mode }); }}
+              onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart', { mode, n: Date.now() }); }}
               style={{marginTop:20, width:'100%', height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
             >
               <Text style={{color:MARCHE.blanc, fontWeight:'700', fontSize:16}}>{t('cart.viewCart')}</Text>

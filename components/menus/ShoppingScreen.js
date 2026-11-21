@@ -190,7 +190,12 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
       } catch {}
     }
     try {
-      allerA(navigation, screen);
+      // Liste remplie autre que l'active : Ma Liste l'ouvre (paramètre lu par ListScreen).
+      if (screen === 'myList' && listId !== lists.activeId) {
+        allerA(navigation, screen, { listId, n: Date.now() });
+      } else {
+        allerA(navigation, screen);
+      }
     } catch {}
   };
 
