@@ -6,6 +6,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, Alert, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { MARCHE, SERIF, TAILLES } from './ui/marche';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
 import useSecureScreen from '../lib/useSecureScreen';
 import { marquerPaiement } from '../services/otaRapide';
@@ -14,7 +15,7 @@ import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { getSavedCardsApi, saveCardApi, deleteSavedCardApi, createStripeCustomerApi } from '../services/payment';
 
-const BRAND = '#1C1917';
+const BRAND = MARCHE.noir;
 
 function brandIcon(brand) {
   const b = String(brand || '').toLowerCase();
@@ -100,8 +101,8 @@ function PaymentMethodsInner({ t, onClose }) {
         <View style={styles.handle} />
         <View style={styles.headRow}>
           <Text style={styles.title}>{tr('cart.paymentMethods', 'Moyens de paiement')}</Text>
-          <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-            <Ionicons name="close" size={24} color="#6B7280" />
+          <TouchableOpacity onPress={onClose} style={styles.closeBtn} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={24} color={MARCHE.muted} />
           </TouchableOpacity>
         </View>
 
@@ -139,7 +140,7 @@ function PaymentMethodsInner({ t, onClose }) {
                 <CardField
                   postalCodeEnabled={false}
                   placeholders={{ number: '4242 4242 4242 4242' }}
-                  cardStyle={{ backgroundColor: '#FFFFFF', textColor: '#0F1B2B', borderColor: '#E3E8EF', borderWidth: 1, borderRadius: 12 }}
+                  cardStyle={{ backgroundColor: '#FFFFFF', textColor: MARCHE.ink, borderColor: MARCHE.border, borderWidth: 1, borderRadius: TAILLES.rayonCarte }}
                   style={styles.cardField}
                   onCardChange={(d) => setCardDetails(d)}
                 />
@@ -148,7 +149,7 @@ function PaymentMethodsInner({ t, onClose }) {
               )}
               {error ? <Text style={styles.err}>{error}</Text> : null}
               <TouchableOpacity activeOpacity={0.9} onPress={handleAdd} disabled={busy} style={[styles.saveBtn, busy && { opacity: 0.6 }]}>
-                {busy ? <ActivityIndicator color="#1C1917" /> : <Text style={styles.saveTxt}>{tr('cart.saveCard', 'Enregistrer la carte')}</Text>}
+                {busy ? <ActivityIndicator color={MARCHE.noir} /> : <Text style={styles.saveTxt}>{tr('cart.saveCard', 'Enregistrer la carte')}</Text>}
               </TouchableOpacity>
             </View>
           ) : (
@@ -163,7 +164,7 @@ function PaymentMethodsInner({ t, onClose }) {
         </ScrollView>
 
         <Text style={styles.secure}>
-          <Ionicons name="shield-checkmark" size={12} color="#8A94A6" /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
+          <Ionicons name="shield-checkmark" size={12} color={MARCHE.faint} /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
         </Text>
       </View>
     </View>
@@ -193,23 +194,24 @@ export default function PaymentMethodsModal({ visible, t, onClose }) {
 }
 
 const styles = StyleSheet.create({
-  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#FFFFFF', borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 22, paddingTop: 10, paddingBottom: Platform.OS === 'ios' ? 34 : 22, maxHeight: '82%' },
-  handle: { alignSelf: 'center', width: 40, height: 4, borderRadius: 2, backgroundColor: '#E3E8EF', marginBottom: 14 },
+  backdrop: { flex: 1, backgroundColor: 'rgba(46,28,18,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: '#FFFFFF', borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: Platform.OS === 'ios' ? 34 : 22, maxHeight: '82%' },
+  handle: { alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: MARCHE.border, marginBottom: 14 },
+  closeBtn: { width: TAILLES.icone, height: TAILLES.icone, alignItems: 'center', justifyContent: 'center', marginRight: -8 },
   headRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
-  title: { fontSize: 18, fontWeight: '600', color: '#0F1B2B' },
-  empty: { color: '#8A94A6', fontSize: 14, textAlign: 'center', marginVertical: 22 },
-  cardRow: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#F7F9FB', borderRadius: 16, paddingVertical: 12, paddingHorizontal: 14, marginBottom: 10, borderWidth: 1, borderColor: '#EEF1F5' },
-  cardIcon: { width: 38, height: 38, borderRadius: 10, backgroundColor: 'rgba(39,39,42,0.12)', alignItems: 'center', justifyContent: 'center' },
-  cardBrand: { fontSize: 15, fontWeight: '700', color: '#0F1B2B' },
-  cardExp: { fontSize: 12.5, color: '#8A94A6', marginTop: 2 },
-  addBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14, marginTop: 4 },
-  addTxt: { color: BRAND, fontSize: 15, fontWeight: '700' },
-  addBox: { marginTop: 8, backgroundColor: '#F7F9FB', borderRadius: 16, padding: 14, borderWidth: 1, borderColor: '#EEF1F5' },
-  cardField: { width: '100%', height: 50, marginBottom: 8 },
-  info: { color: '#8A94A6', fontSize: 13, textAlign: 'center', marginVertical: 8 },
+  title: { fontFamily: SERIF, fontSize: 20, fontWeight: '600', color: MARCHE.ink },
+  empty: { color: MARCHE.faint, fontSize: 14, textAlign: 'center', marginVertical: 22 },
+  cardRow: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 62, backgroundColor: MARCHE.card, borderRadius: 16, paddingVertical: 12, paddingHorizontal: 14, marginBottom: 10, borderWidth: 1, borderColor: MARCHE.border },
+  cardIcon: { width: 38, height: 38, borderRadius: 10, backgroundColor: MARCHE.subtle, alignItems: 'center', justifyContent: 'center' },
+  cardBrand: { fontSize: 15, fontWeight: '600', color: MARCHE.ink },
+  cardExp: { fontSize: 12.5, color: MARCHE.faint, marginTop: 2 },
+  addBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: TAILLES.bouton, marginTop: 4 },
+  addTxt: { color: BRAND, fontSize: 15, fontWeight: '600' },
+  addBox: { marginTop: 8, backgroundColor: MARCHE.card, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: MARCHE.border },
+  cardField: { width: '100%', height: TAILLES.champ, marginBottom: 8 },
+  info: { color: MARCHE.faint, fontSize: 13, textAlign: 'center', marginVertical: 8 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 6, marginBottom: 2 },
-  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, height: 50, marginTop: 10 },
-  saveTxt: { color: '#1C1917', fontSize: 15, fontWeight: '600' },
-  secure: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 8 },
+  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF', borderRadius: TAILLES.rayonBouton, height: TAILLES.bouton, marginTop: 10 },
+  saveTxt: { color: MARCHE.noir, fontSize: 15, fontWeight: '600' },
+  secure: { fontSize: 11.5, color: MARCHE.faint, textAlign: 'center', marginTop: 8 },
 });

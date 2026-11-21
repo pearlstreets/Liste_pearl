@@ -13,7 +13,8 @@ import { prefillProducts } from '../../lib/menus/listBridge';
 import { Ionicons } from '../ui/IoniconsSens';
 import { useIsFocused } from '@react-navigation/native';
 import { formatEur, readMyLists, pendingLines } from '../../lib/menus';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { Chip, PrimaryButton, Empty } from './ui';
 import { AddedSheet } from './Sheets';
 import { useMenus } from './MenusContext';
@@ -24,8 +25,21 @@ import { getTexts } from '../../lib/menus/recipes';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 import { IngredientThumb } from './RecipeVisual';
 
+// Icône de chaque rayon (titres de rayon en style Marché).
+const AISLE_ICON = {
+  'fruits-legumes': 'leaf-outline',
+  'viandes-poissons': 'fish-outline',
+  cremerie: 'egg-outline',
+  epicerie: 'basket-outline',
+  surgeles: 'snow-outline',
+  boulangerie: 'restaurant-outline',
+  boissons: 'wine-outline',
+};
+
 const Row = React.memo(function Row({
   line,
+  first,
+  lastRow,
   name,
   have,
   onToggle,
@@ -40,18 +54,22 @@ const Row = React.memo(function Row({
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={() => onToggle(line.key)}
-      style={[s.row, have && { opacity: 0.5 }]}
+      style={[s.row, first && s.rowFirst, lastRow && s.rowLast, !first && s.rowSep]}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: have }}
       accessibilityLabel={`${name}, ${haveLabel}`}
     >
-      <IngredientThumb ingKey={String(line.key).split('|')[0]} size={46} style={{ marginRight: 12 }} />
-      <View style={{ flex: 1, marginRight: 12 }}>
-        <Text style={[s.name, have && { textDecorationLine: 'line-through' }]} numberOfLines={1}>
+      <View style={[s.check, have && s.checkOn]}>
+        {have ? <Ionicons name="checkmark" size={14} color={MARCHE.blanc} /> : null}
+      </View>
+      <IngredientThumb
+        ingKey={String(line.key).split('|')[0]}
+        size={40}
+        style={[{ marginRight: 12 }, have && { opacity: 0.5 }]}
+      />
+      <View style={{ flex: 1, marginRight: 10 }}>
+        <Text style={[s.name, have && s.nameHave]} numberOfLines={1}>
           {name}
-        </Text>
-        <Text style={s.detail} numberOfLines={2}>
-          {packText ? `${qtyText} · ${packText}` : qtyText}
         </Text>
         {usedText ? (
           <Text style={s.used} numberOfLines={1}>
@@ -64,11 +82,11 @@ const Row = React.memo(function Row({
           </Text>
         ) : null}
       </View>
-      <View style={{ alignItems: 'flex-end' }}>
-        <Text style={s.price}>{priceText}</Text>
-        <View style={[s.check, have && s.checkOn]}>
-          {have ? <Ionicons name="checkmark" size={14} color="#fff" /> : null}
-        </View>
+      <View style={s.right}>
+        <Text style={s.detail} numberOfLines={2}>
+          {packText ? `${qtyText} · ${packText}` : qtyText}
+        </Text>
+        {priceText ? <Text style={[s.price, have && { color: T.faint }]}>{priceText}</Text> : null}
       </View>
     </TouchableOpacity>
   );
@@ -185,17 +203,21 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
     [t]
   );
   const renderItem = useCallback(
-    ({ item }) => {
+    ({ item, index, section }) => {
       const lt = lineTexts(item, t, { lang, labels: qtyLabels });
       return (
         <Row
           line={item}
+          first={index === 0}
+          lastRow={index === section.data.length - 1}
           name={texts.ingredientName(item.key)}
           have={removedSet.has(item.key)}
           onToggle={toggleHave}
           qtyText={lt.qtyText}
           packText={lt.packText}
-          priceText={item.free ? '' : `${item.priceKnown ? '' : '~'}${formatEur(item.estimatedEur, lang)}`}
+          priceText={
+            item.free ? '' : `${item.priceKnown ? '' : '~'}${formatEur(item.estimatedEur, lang)}`
+          }
           usedText={
             Array.isArray(item.usedIn) && item.usedIn.length > 1
               ? t('shop.usedIn', { count: item.usedIn.length })
@@ -228,7 +250,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
             icon="calendar"
             label={t('shop.goPlan')}
             onPress={onOpenPlan}
-            style={{ alignSelf: 'stretch' }}
+            style={[s.btnMain, { alignSelf: 'stretch' }]}
           />
         }
       />
@@ -246,8 +268,8 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
 
   const header = (
     <View style={{ paddingBottom: 6 }}>
-      <Text style={s.big}>{t('shop.title')}</Text>
       <Text style={s.sub}>{t('shop.summary', { count, total: formatEur(total, lang) })}</Text>
+      <Text style={s.big}>{t('shop.title')}</Text>
       <Text style={s.note}>{t('shop.estimateNote')}</Text>
       {shopping && shopping.unpricedCount > 0 ? (
         <Text style={s.note}>{t('shop.unpriced', { count: shopping.unpricedCount })}</Text>
@@ -317,14 +339,22 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <SectionList
         sections={sections}
         keyExtractor={(i) => i.key}
         renderItem={renderItem}
         renderSectionHeader={({ section }) => (
           <View style={s.sectionHead}>
-            <Text style={s.sectionTxt}>{t(`aisles.${section.aisle}`)}</Text>
+            <Ionicons
+              name={AISLE_ICON[section.aisle] || 'basket-outline'}
+              size={17}
+              color={T.brand}
+              style={{ marginRight: 8 }}
+            />
+            <Text style={s.sectionTxt} numberOfLines={1}>
+              {t(`aisles.${section.aisle}`)}
+            </Text>
             <Text style={s.sectionCount}>{section.data.length}</Text>
           </View>
         )}
@@ -332,7 +362,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
         ListEmptyComponent={
           <Empty icon="basket-outline" title={t('shop.noneTitle')} text={t('shop.noneText')} />
         }
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 24 }}
+        contentContainerStyle={{ paddingHorizontal: TAILLES.marge, paddingBottom: 24 }}
         stickySectionHeadersEnabled={false}
         initialNumToRender={14}
         windowSize={7}
@@ -346,6 +376,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
           disabled={state.kind === 'already' || state.kind === 'empty'}
           loading={sending}
           onPress={send}
+          style={[s.btnMain, state.kind !== 'already' && s.btnNoir]}
         />
       </View>
       {added ? (
@@ -362,49 +393,66 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
 }
 
 const s = StyleSheet.create({
-  big: { fontSize: 34, fontWeight: '600', color: T.ink, letterSpacing: -0.5, marginTop: 6 },
-  sub: { fontSize: 15, color: T.ink, fontWeight: '700', marginTop: 2 },
+  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink, marginTop: 2 },
+  sub: { fontSize: 12, color: T.muted, fontWeight: '600', marginTop: 8, letterSpacing: 0.3 },
   note: { fontSize: 12, color: T.faint, marginTop: 4, lineHeight: 17 },
   label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 18, marginBottom: 10 },
   hint: { fontSize: 12, color: T.muted, marginTop: 8 },
   sectionHead: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginTop: 20,
-    marginBottom: 6,
+    marginBottom: 8,
+    paddingHorizontal: 4,
   },
-  sectionTxt: { fontSize: 18, fontWeight: '600', color: T.ink },
+  sectionTxt: { flex: 1, fontFamily: SERIF, fontSize: 15, fontWeight: '600', color: T.ink },
   sectionCount: {
     fontSize: 13,
     fontWeight: '600',
     color: T.brandDark,
-    backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    backgroundColor: T.card,
+    borderWidth: 1,
+    borderColor: T.border,
     borderRadius: 999,
+    minWidth: 28,
+    textAlign: 'center',
     paddingHorizontal: 10,
     paddingVertical: 3,
     overflow: 'hidden',
   },
+  // Articles d'un même rayon : une seule carte blanche, lignes séparées par un trait fin.
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 12,
-    marginVertical: 4,
-    borderWidth: 1,
+    backgroundColor: T.card,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderColor: T.border,
-    ...T.shadowSm,
   },
+  rowFirst: {
+    borderTopWidth: 1,
+    borderTopLeftRadius: TAILLES.rayonCarte,
+    borderTopRightRadius: TAILLES.rayonCarte,
+  },
+  rowLast: {
+    borderBottomWidth: 1,
+    borderBottomLeftRadius: TAILLES.rayonCarte,
+    borderBottomRightRadius: TAILLES.rayonCarte,
+  },
+  rowSep: { borderTopWidth: 1, borderTopColor: T.border },
   name: { fontSize: 16, fontWeight: '600', color: T.ink },
-  detail: { fontSize: 13, color: T.muted, marginTop: 2 },
-  used: { fontSize: 12, color: T.faint, marginTop: 1 },
+  nameHave: { color: T.faint, textDecorationLine: 'line-through' },
+  right: { alignItems: 'flex-end', justifyContent: 'center', maxWidth: '38%' },
+  detail: { fontSize: 13, color: T.faint, textAlign: 'right' },
+  used: { fontSize: 12, color: T.faint, marginTop: 2 },
   pearl: { fontSize: 12, color: T.brandDark, fontWeight: '700', marginTop: 2 },
   pearlBox: {
-    backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
-    borderRadius: 16,
+    backgroundColor: T.card,
+    borderWidth: 1,
+    borderColor: T.border,
+    borderRadius: TAILLES.rayonCarte,
     padding: 12,
     marginTop: 12,
   },
@@ -414,30 +462,37 @@ const s = StyleSheet.create({
   pearlShop: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    paddingHorizontal: 12,
+    backgroundColor: T.card,
+    borderRadius: TAILLES.rayonCarte,
     paddingVertical: 9,
     marginTop: 6,
   },
   pearlShopName: { fontSize: 14, fontWeight: '600', color: T.ink },
   pearlShopSub: { fontSize: 12, color: T.muted, marginTop: 1 },
-  price: { fontSize: 14, fontWeight: '600', color: T.ink, marginBottom: 6 },
+  price: { fontSize: 14, fontWeight: '600', color: T.ink, marginTop: 2 },
   check: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    width: 24,
+    height: 24,
+    borderRadius: 7,
     borderWidth: 2,
     borderColor: T.borderInput,
+    backgroundColor: T.card,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 12,
   },
-  checkOn: { backgroundColor: T.brand, borderColor: T.brand },
+  checkOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  btnMain: {
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+  },
+  btnNoir: { backgroundColor: MARCHE.noir },
   bar: {
-    paddingHorizontal: 18,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
     paddingBottom: 8,
-    backgroundColor: '#fff',
+    backgroundColor: T.card,
     borderTopWidth: 1,
     borderTopColor: T.border,
   },

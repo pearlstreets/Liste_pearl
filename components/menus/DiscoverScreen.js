@@ -35,7 +35,7 @@ import {
   genHealthAsync,
   personsFor,
 } from '../../lib/menus';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { Chip, Field, Empty, PrimaryButton, GhostButton } from './ui';
 import { warningList } from './Sheets';
 import RECIPE_IMAGES from '../../lib/menus/recipeImages';
@@ -134,7 +134,7 @@ const RecipeRow = memo(function RecipeRow({
         <Ionicons
           name={fav ? 'heart' : 'heart-outline'}
           size={24}
-          color={fav ? T.danger : T.faint}
+          color={fav ? T.brand : T.faint}
         />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -592,7 +592,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         icon="add"
         label={t('myRecipes.add')}
         onPress={() => onAddRecipe()}
-        style={{ marginBottom: 12 }}
+        style={s.addBtn}
       />
     );
     empty = (
@@ -693,7 +693,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         <FlatList
           data={list}
           keyExtractor={(p, i) => `${p.weekStart || ''}-${p.fingerprint || ''}-${i}`}
-          contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
+          contentContainerStyle={s.listContent}
           ListHeaderComponent={<Text style={s.modeNote}>{t('history.intro')}</Text>}
           ListEmptyComponent={
             <Empty
@@ -747,7 +747,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
                   soft
                   icon="repeat"
                   label={t('history.redo')}
-                  style={{ minHeight: 44, paddingHorizontal: 14 }}
+                  style={s.redoBtn}
                   onPress={async () => {
                     await m.refaire(item);
                     onOpenWeek();
@@ -799,7 +799,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
         ListHeaderComponent={header}
         ListEmptyComponent={empty}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
+        contentContainerStyle={s.listContent}
         onScrollEndDrag={onScrollEnd}
         onMomentumScrollEnd={onScrollEnd}
         initialNumToRender={8}
@@ -817,21 +817,45 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 }
 
 const s = StyleSheet.create({
-  head: { paddingHorizontal: 18, paddingTop: 6 },
-  big: { fontSize: 34, fontWeight: '600', color: T.ink, letterSpacing: -0.5 },
+  head: { paddingHorizontal: TAILLES.marge, paddingTop: 6 },
+  big: { fontFamily: SERIF, fontSize: 32, fontWeight: '600', color: T.ink, letterSpacing: -0.3 },
   search: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: TAILLES.champ,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: T.borderInput,
-    borderRadius: 16,
+    borderRadius: TAILLES.champ / 2,
     paddingHorizontal: 14,
     marginTop: 12,
   },
-  searchInput: { flex: 1, borderWidth: 0, paddingHorizontal: 0, paddingVertical: 12 },
+  // Le champ remplit la barre : hauteur fixe, texte centré verticalement.
+  searchInput: {
+    flex: 1,
+    height: TAILLES.champ - 2,
+    borderWidth: 0,
+    borderRadius: 0,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
   modesBar: { flexGrow: 0, flexShrink: 0 },
-  modes: { paddingHorizontal: 18, paddingTop: 14, paddingBottom: 4 },
+  modes: { paddingHorizontal: TAILLES.marge, paddingTop: 14, paddingBottom: 4 },
+  listContent: { paddingHorizontal: TAILLES.marge, paddingBottom: 30, flexGrow: 1 },
+  addBtn: {
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+    marginBottom: 12,
+  },
+  redoBtn: {
+    height: TAILLES.boutonPetit,
+    minHeight: TAILLES.boutonPetit,
+    borderRadius: TAILLES.boutonPetit / 2,
+    paddingHorizontal: 14,
+    marginLeft: 10,
+  },
   filters: { paddingTop: 6, paddingBottom: 0 },
   mineRow: { flexDirection: 'row', marginBottom: 4 },
   modeNote: { fontSize: 14, color: T.muted, lineHeight: 20, marginVertical: 8 },
@@ -842,7 +866,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 22,
+    borderRadius: TAILLES.rayonCarte,
     padding: 10,
     marginVertical: 6,
     borderWidth: 1,
@@ -850,14 +874,14 @@ const s = StyleSheet.create({
     ...T.shadowSm,
   },
   rowBody: { flex: 1, marginHorizontal: 14 },
-  rowTitle: { fontSize: 16, fontWeight: '600', color: T.ink, lineHeight: 21 },
+  rowTitle: { fontFamily: SERIF, fontSize: 16, fontWeight: '600', color: T.ink, lineHeight: 21 },
   rowMeta: { fontSize: 13, color: T.muted, marginTop: 3, fontWeight: '600' },
   rowExtra: { fontSize: 12, color: T.brandDark, marginTop: 3, fontWeight: '700' },
   hist: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 22,
+    borderRadius: TAILLES.rayonCarte,
     padding: 16,
     marginVertical: 6,
     borderWidth: 1,
