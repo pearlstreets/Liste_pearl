@@ -27,9 +27,10 @@ describe('estDeplie', () => {
     expect(estDeplie('android', 701, 841)).toBe(false);
   });
 
-  it('iPad ou tablette Android en paysage : deux moities', () => {
-    expect(estDeplie('ios', 1194, 834)).toBe(true);
-    expect(estDeplie('android', 1280, 800)).toBe(true);
+  it('iPad ou tablette Android en paysage : un seul ecran, pas deux moities', () => {
+    expect(estDeplie('ios', 1194, 834)).toBe(false);
+    expect(estDeplie('ios', 1180, 820)).toBe(false);
+    expect(estDeplie('android', 1280, 800)).toBe(false);
   });
 
   it('iPhone et web : rien ne change', () => {
@@ -44,8 +45,13 @@ describe('estEnColonne', () => {
     expect(estEnColonne('android', 701, 841)).toBe(true);
   });
 
-  it('paysage, telephone ou web : pas de colonne', () => {
-    expect(estEnColonne('ios', 1194, 834)).toBe(false);
+  it('tablette en paysage : pleine largeur', () => {
+    expect(estEnColonne('ios', 1194, 834)).toBe(true);
+    expect(estEnColonne('android', 1280, 800)).toBe(true);
+  });
+
+  it('pliable deplie, telephone ou web : pas de colonne', () => {
+    expect(estEnColonne('android', 841, 701)).toBe(false);
     expect(estEnColonne('ios', 430, 932)).toBe(false);
     expect(estEnColonne('web', 834, 1194)).toBe(false);
   });

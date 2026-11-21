@@ -48,9 +48,10 @@ import { NavigationContext, NavigationRouteContext } from '@react-navigation/nat
 
 // Grand ecran (plus petit cote >= 600 dp : pliable deplie, tablette Android,
 // iPad ; user 20/11/2026 pour les tablettes) :
-//  - en paysage, deux moities (estDeplie) ;
-//  - en portrait, l'ecran du telephone sur toute la largeur (estEnColonne),
-//    pages et fenetres comprises.
+//  - pliable Android deplie, deux moities (estDeplie) ;
+//  - sinon (tablette en portrait ou en paysage, pliable tenu en portrait),
+//    l'ecran du telephone sur toute la largeur (estEnColonne), pages et
+//    fenetres comprises.
 // Tablette (plus petit cote >= MIN_AGRANDI) : tout est affiche ECHELLE fois
 // plus gros (boutons, cases, textes ; user 20/11/2026, sans marges grises).
 // Exportees pour les tests.
@@ -59,8 +60,19 @@ export const MIN_AGRANDI = 740;
 export const ECHELLE = 1.2;
 const grandEcran = (os, width, height) =>
   (os === 'android' || os === 'ios') && Math.min(width, height) >= LARGEUR_MIN;
-export const estDeplie = (os, width, height) => grandEcran(os, width, height) && width >= height;
-export const estEnColonne = (os, width, height) => grandEcran(os, width, height) && width < height;
+// Tablette et pliable sont deux choses differentes (user 20/11/2026) : seul
+// le pliable Android deplie (ecran presque carre : Galaxy Z Fold, Pixel Fold)
+// est coupe en deux ; une tablette (iPad, tablette Android) garde un seul
+// ecran sur toute la largeur, en paysage aussi.
+export const RAPPORT_MAX_PLIABLE = 1.3;
+const pliableDeplie = (os, width, height) =>
+  os === 'android' &&
+  grandEcran(os, width, height) &&
+  width >= height &&
+  width / height < RAPPORT_MAX_PLIABLE;
+export const estDeplie = (os, width, height) => pliableDeplie(os, width, height);
+export const estEnColonne = (os, width, height) =>
+  grandEcran(os, width, height) && !pliableDeplie(os, width, height);
 export const echelleDe = (os, width, height) =>
   grandEcran(os, width, height) && Math.min(width, height) >= MIN_AGRANDI ? ECHELLE : 1;
 
