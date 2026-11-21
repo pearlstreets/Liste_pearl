@@ -45,6 +45,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { NavigationContext, NavigationRouteContext } from '@react-navigation/native';
+import { MARCHE } from './ui/marche';
 
 // Grand ecran (plus petit cote >= 600 dp : pliable deplie, tablette Android,
 // iPad ; user 20/11/2026 pour les tablettes) :
@@ -120,9 +121,9 @@ const HoteContext = createContext(null);
 // Page (moitie droite) dans laquelle un contenu est rendu.
 const PageContext = createContext(null);
 
-const COULEUR_SEPARATION = '#E5E7EB';
-const FOND_REPOS = '#F7F7F5';
-const TEINTE_LOGO = '#C4C7CC';
+const COULEUR_SEPARATION = MARCHE.border;
+const FOND_REPOS = MARCHE.bg;
+const TEINTE_LOGO = MARCHE.borderInput;
 
 let compteur = 0;
 
@@ -314,7 +315,7 @@ export function AuMilieu({ children }) {
   const echelle = echelleDe(Platform.OS, width, height);
   const contenu = deplie ? (
     <View style={styles.milieu}>
-      <View style={{ width: Math.floor(width / echelle / 2), backgroundColor: '#fff' }}>
+      <View style={{ width: Math.floor(width / echelle / 2), backgroundColor: MARCHE.bg }}>
         {children}
       </View>
     </View>
@@ -329,7 +330,7 @@ export function AuMilieu({ children }) {
 }
 
 const styles = StyleSheet.create({
-  racine: { flex: 1, flexDirection: 'row', backgroundColor: '#fff' },
+  racine: { flex: 1, flexDirection: 'row', backgroundColor: MARCHE.bg },
   plein: { flex: 1 },
   cote: { overflow: 'hidden' },
   droite: { flex: 1 },
@@ -343,12 +344,12 @@ const styles = StyleSheet.create({
     width: StyleSheet.hairlineWidth,
     backgroundColor: COULEUR_SEPARATION,
   },
-  milieu: { flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: '#fff' },
+  milieu: { flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: MARCHE.bg },
   agrandi: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    backgroundColor: '#fff',
+    backgroundColor: MARCHE.bg,
   },
 });
