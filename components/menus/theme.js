@@ -1,21 +1,25 @@
 // Jetons de style de l'onglet Menus : mêmes valeurs que THEME dans App.js (design Graphite),
-// sauf la couleur principale (brand, brandDark, brandSoft) qui reste verte côté recettes.
+// avec le terracotta du style Marché comme couleur d'accent (jamais en fond de bouton).
+import { MARCHE, SERIF, TAILLES } from '../ui/marche';
+
+export { SERIF, TAILLES };
+
 export const T = {
-  brand: '#09d7aa',
-  brandDark: '#07b896',
-  brandSoft: '#E0FAF3',
-  bg: '#FAFAF9',
+  brand: MARCHE.terra,
+  brandDark: MARCHE.terraDark,
+  brandSoft: MARCHE.terraSoft,
+  bg: MARCHE.bg,
   card: '#FFFFFF',
-  subtle: '#F5F5F4',
-  ink: '#1C1917',
-  muted: '#78716C',
-  faint: '#A8A29E',
-  border: '#E7E5E4',
-  borderInput: '#D6D3D1',
+  subtle: MARCHE.subtle,
+  ink: MARCHE.ink,
+  muted: MARCHE.muted,
+  faint: MARCHE.faint,
+  border: MARCHE.border,
+  borderInput: MARCHE.borderInput,
   danger: '#EF4444',
   dangerSoft: '#FEE2E2',
-  accent: '#FFB547',
-  accentSoft: '#FFF3E0',
+  accent: MARCHE.terra,
+  accentSoft: MARCHE.terraSoft,
   info: '#3B82F6',
   infoSoft: '#DBEAFE',
   // Cartes à contour fin, sans ombre.
