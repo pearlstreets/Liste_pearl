@@ -6,7 +6,11 @@
     "cart": "Kundvagn",
     "profile": "Profil",
     "shops": "Butiker",
-    "menus": "Meny"
+    "menus": "Meny",
+    "acheter": "Handla"
+  },
+  "acheter": {
+    "comparer": "Jämför"
   },
   "listScreen": {
     "scan": "Skanna",
@@ -23,7 +27,7 @@
     "cancel": "Avbryt",
     "save": "Spara",
     "delete": "Radera",
-    "deleteTitle": "Radera",
+    "deleteTitle": "Radera dessa varor?",
     "deleteConfirm": "Radera",
     "deleteItem": "vald vara",
     "deleteItem_one": "vald vara",
@@ -60,7 +64,13 @@
     "profileFollowers": "Följare",
     "profileFollowing": "Följer",
     "profileOpenFull": "Visa profilen på Pearl Streets",
-    "grantedAdd": "Lägg till en person"
+    "grantedAdd": "Lägg till en person",
+    "compareMyList": "Jämför min lista",
+    "deleteThisItem": "Ta bort den här varan",
+    "deleteThisItemConfirm": "Varan tas bort från din lista.",
+    "markBought": "Markera som köpt",
+    "rejectRequest": "Avböj förfrågan",
+    "blockUser": "Blockera den här personen"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",
@@ -95,14 +105,15 @@
     "notFound": "hittades inte i butik",
     "noMatchTitle": "Inga produkter hittades\nför din lista",
     "noMatchSub": "Dessa butiker säljer inte dessa varor. Kontrollera namnen eller bläddra bland butikerna.",
-    "searchToPrice": "Tryck på Sök för att välja dina produkter och se priset.",
+    "searchToPrice": "Tryck på \"Lägg till en produkt\" för att välja dina produkter och se priset.",
     "searchToPriceShop": "Sök efter en produkt för att se priset.",
     "shopUnit": "butik",
     "shopUnitPlural": "butiker",
-    "defaultProducts": "Lägg till varor i Min Lista och tryck sedan på \"Hitta exakta produkter\" för att se resultaten här.",
+    "defaultProducts": "Lägg till varor i Min Lista och tryck sedan på \"Jämför min lista\" för att se resultaten här.",
     "addProduct": "Lägg till en produkt",
     "addFromList": "Lägg till produkter i Min Lista",
-    "addFromListSub": "Tryck sedan på \"Hitta exakta produkter\""
+    "addFromListSub": "Tryck sedan på \"Jämför min lista\"",
+    "clearConfirmMsg": "Rensa den pågående jämförelsen? De valda produkterna tas bort."
   },
   "searchPopup": {
     "header": "Vad behöver du?",
@@ -117,7 +128,8 @@
     "close": "Stäng",
     "soonAvailable": "Snart tillgänglig",
     "validate": "Lägg till",
-    "finish": "Klar"
+    "finish": "Klar",
+    "addToSelection": "Lägg till i urvalet"
   },
   "camera": {
     "permissionDenied": "Behörighet nekad",
@@ -173,13 +185,14 @@
   "favorites": {
     "noFavorites": "Inga favoritbutiker ännu",
     "addFromProducts": "Lägg till dina favoritbutiker från fliken Produkter",
-    "searchPlaceholder": "Sök en favorit...",
+    "searchPlaceholder": "Sök en butik...",
     "manageHint": "Dina favoritbutiker och produkter",
     "shops": "Butiker",
     "products": "Produkter",
     "searchProductPlaceholder": "Sök en produkt...",
     "noFavProducts": "Inga favoritprodukter",
-    "addProductHint": "Tryck på hjärtat på en produkt för att lägga till den"
+    "addProductHint": "Tryck på hjärtat på en produkt för att lägga till den",
+    "addFromBuy": "Lägg till från fliken Handla"
   },
   "profile": {
     "guestTitle": "Du är inte inloggad",
@@ -322,7 +335,9 @@
     "termsOfUse": "Användarvillkor",
     "menusUnsavedTitle": "Menyerna har inte sparats",
     "menusUnsavedMsg": "Dina menyer kunde inte sparas på ditt konto. Radera dem från den här enheten?",
-    "menusUnsavedErase": "Radera och logga ut"
+    "menusUnsavedErase": "Radera och logga ut",
+    "myOrders": "Mina beställningar",
+    "myOrdersHint": "Följ och hitta dina beställningar"
   },
   "auth": {
     "login": "Logga in",
@@ -446,7 +461,27 @@
     "errorPhone": "Ogiltigt telefonnummer (5 till 16 siffror)",
     "errorUsernameTaken": "Det här användarnamnet är redan upptaget.",
     "passwordRuleHint": "Minst 8 tecken, med en gemen, en versal, en siffra och ett specialtecken (@$!%*?&).",
-    "chooseYourLanguage": "Välj ditt språk"
+    "chooseYourLanguage": "Välj ditt språk",
+    "forgotTitle": "Glömt lösenord",
+    "forgotEmailHint": "Ange e-postadressen till ditt konto. Vi skickar en verifieringskod till dig.",
+    "forgotSendCode": "Få koden",
+    "forgotCodeHint": "Ange koden som skickades via e-post till {{email}}.",
+    "forgotCodeLabel": "Verifieringskod",
+    "forgotCodePlaceholder": "Kod mottagen via e-post",
+    "forgotVerifyCode": "Verifiera koden",
+    "forgotResendCode": "Skicka koden igen",
+    "forgotCodeResent": "En ny kod har skickats till dig.",
+    "forgotCodeRequired": "Ange koden du fick via e-post.",
+    "forgotNewPwdHint": "Välj ditt nya lösenord.",
+    "forgotSavePwd": "Spara lösenordet",
+    "forgotSuccess": "Ditt lösenord har ändrats. Du kan nu logga in.",
+    "forgotErrorCode": "Ogiltig eller utgången kod.",
+    "forgotErrorExpired": "Tiden har gått ut. Begär en ny kod.",
+    "forgotErrorWeak": "Det här lösenordet godtas inte. Välj ett annat som är svårare att gissa.",
+    "forgotErrorGeneric": "Något gick fel. Försök igen.",
+    "forgotTooMany": "För många förfrågningar. Försök igen senare.",
+    "forgotBackToLogin": "Tillbaka till inloggningen",
+    "forgotEmailNotFound": "Den här e-postadressen är inte kopplad till något konto."
   },
   "cart": {
     "today": "Idag",
@@ -571,7 +606,15 @@
     "tipDriver": "Tacka ditt bud",
     "totalPrice": "pris",
     "qtyMinus": "minska",
-    "qtyPlus": "öka"
+    "qtyPlus": "öka",
+    "myOrders": "Mina beställningar",
+    "paidByCard": "Betalt med kort",
+    "byCard": "Med kort",
+    "trackMyOrder": "Följ min beställning",
+    "orderConfirmedCollectCart": "Din beställning förbereds för upphämtning. Följ statusen under Mina beställningar, högst upp i varukorgen.",
+    "orderConfirmedDeliveryCart": "Ett bud tar hand om din beställning. Följ statusen under Mina beställningar, högst upp i varukorgen.",
+    "noShopProductFound": "Ingen produkt hittades för den här butiken.",
+    "searchAllProducts": "Sök bland alla produkter"
   },
   "orderStatus": {
     "confirmed": "Beställning bekräftad",
@@ -720,7 +763,8 @@
     "thanks": "Tack!",
     "saved": "Ditt betyg har sparats.",
     "yourRating": "Ditt betyg",
-    "rateDriver": "Betygsätt ditt bud"
+    "rateDriver": "Betygsätt ditt bud",
+    "failed": "Ditt betyg kunde inte sparas. Försök igen."
   },
   "report": {
     "notReceived": "Beställning ej mottagen",
@@ -731,7 +775,11 @@
     "title": "Rapportera ett problem",
     "pick": "Vad hände?",
     "sentTitle": "Rapport skickad",
-    "sent": "Vårt supportteam tar hand om din förfrågan."
+    "sent": "Vårt supportteam tar hand om din förfrågan.",
+    "answerTitle": "Svar på din anmälan",
+    "handled": "Din anmälan har hanterats",
+    "failed": "Din rapport kunde inte skickas. Försök igen.",
+    "moreReasons": "Andra orsaker…"
   },
   "stock": {
     "option": "Alternativ",
@@ -1328,6 +1376,7 @@
       "alreadyText": "Allt finns redan i \"{{name}}\".",
       "seeList": "Visa min lista",
       "compare": "Jämför priser",
+      "compareList": "Jämför min lista",
       "compareHint": "Jämför de verkliga priserna i Pearl Streets butiker.",
       "err": {
         "error": "Ett fel uppstod, försök igen.",
@@ -1553,7 +1602,7 @@
       "summary_one": "{{count}} vara, cirka {{total}}",
       "summary_other": "{{count}} varor, cirka {{total}}",
       "estimateNote": "Ungefärlig uppskattning (~). Det verkliga priset är butikens, jämför det efteråt.",
-      "targetList": "Lägg till på lista",
+      "targetList": "I vilken lista?",
       "defaultList": "Min Lista",
       "activeList": "aktiv",
       "showBasics": "Visa baskamrar",
@@ -1921,5 +1970,8 @@
     "pendingRequests": "{{count}} väntande förfrågningar",
     "pendingRequests_one": "{{count}} väntande förfrågan",
     "pendingRequests_other": "{{count}} väntande förfrågningar"
+  },
+  "notifications": {
+    "channelOrders": "Beställningar och leveranser"
   }
 }

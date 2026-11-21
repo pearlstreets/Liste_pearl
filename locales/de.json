@@ -6,7 +6,11 @@
     "cart": "Warenkorb",
     "profile": "Profil",
     "shops": "Shops",
-    "menus": "Menüs"
+    "menus": "Menüs",
+    "acheter": "Einkaufen"
+  },
+  "acheter": {
+    "comparer": "Vergleichen"
   },
   "listScreen": {
     "scan": "Scannen",
@@ -23,7 +27,7 @@
     "cancel": "Abbrechen",
     "save": "Speichern",
     "delete": "Löschen",
-    "deleteTitle": "Löschen",
+    "deleteTitle": "Diese Artikel löschen?",
     "deleteConfirm": "Löschen",
     "deleteItem": "ausgewählter Artikel",
     "deleteItem_one": "ausgewählter Artikel",
@@ -60,7 +64,13 @@
     "profileFollowers": "Follower",
     "profileFollowing": "Gefolgt",
     "profileOpenFull": "Profil auf Pearl Streets ansehen",
-    "grantedAdd": "Person hinzufügen"
+    "grantedAdd": "Person hinzufügen",
+    "compareMyList": "Meine Liste vergleichen",
+    "deleteThisItem": "Diesen Artikel löschen",
+    "deleteThisItemConfirm": "Dieser Artikel wird von Ihrer Liste entfernt.",
+    "markBought": "Als gekauft markieren",
+    "rejectRequest": "Anfrage ablehnen",
+    "blockUser": "Diese Person blockieren"
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",
@@ -95,14 +105,15 @@
     "notFound": "nicht im Shop gefunden",
     "noMatchTitle": "Keine Produkte\nfür Ihre Liste gefunden",
     "noMatchSub": "Diese Shops verkaufen diese Artikel nicht. Prüfen Sie die Namen oder durchstöbern Sie die Shops.",
-    "searchToPrice": "Tippen Sie auf Suchen, um Ihre Produkte zu wählen und den Preis zu sehen.",
+    "searchToPrice": "Tippen Sie auf \"Produkt hinzufügen\", um Ihre Produkte zu wählen und den Preis zu sehen.",
     "searchToPriceShop": "Suchen Sie ein Produkt, um den Preis zu sehen.",
     "shopUnit": "Shop",
     "shopUnitPlural": "Shops",
-    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Exakte Produkte finden\", um die Ergebnisse hier zu sehen.",
+    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Meine Liste vergleichen\", um die Ergebnisse hier zu sehen.",
     "addProduct": "Produkt hinzufügen",
     "addFromList": "Fügen Sie Produkte zu Meine Liste hinzu",
-    "addFromListSub": "Tippen Sie dann auf \"Exakte Produkte finden\""
+    "addFromListSub": "Tippen Sie dann auf \"Meine Liste vergleichen\"",
+    "clearConfirmMsg": "Den aktuellen Vergleich löschen? Die gewählten Produkte werden entfernt."
   },
   "searchPopup": {
     "header": "Was brauchen Sie?",
@@ -117,7 +128,8 @@
     "close": "Schließen",
     "soonAvailable": "Bald verfügbar",
     "validate": "Hinzufügen",
-    "finish": "Fertig"
+    "finish": "Fertig",
+    "addToSelection": "Zur Auswahl hinzufügen"
   },
   "camera": {
     "permissionDenied": "Berechtigung verweigert",
@@ -173,13 +185,14 @@
   "favorites": {
     "noFavorites": "Noch keine Lieblingsgeschäfte",
     "addFromProducts": "Fügen Sie Ihre Lieblingsgeschäfte auf der Registerkarte Produkte hinzu",
-    "searchPlaceholder": "Ein Favorit suchen...",
+    "searchPlaceholder": "Ein Geschäft suchen...",
     "manageHint": "Ihre Lieblingsshops und -produkte",
     "shops": "Geschäfte",
     "products": "Produkte",
     "searchProductPlaceholder": "Produkt suchen...",
     "noFavProducts": "Keine Lieblingsprodukte",
-    "addProductHint": "Tippen Sie auf das Herz eines Produkts, um es hinzuzufügen"
+    "addProductHint": "Tippen Sie auf das Herz eines Produkts, um es hinzuzufügen",
+    "addFromBuy": "Fügen Sie sie über den Tab Einkaufen hinzu"
   },
   "profile": {
     "guestTitle": "Sie sind nicht angemeldet",
@@ -322,7 +335,9 @@
     "termsOfUse": "Nutzungsbedingungen",
     "menusUnsavedTitle": "Menüs nicht gespeichert",
     "menusUnsavedMsg": "Ihre Menüs konnten nicht in Ihrem Konto gespeichert werden. Von diesem Gerät löschen?",
-    "menusUnsavedErase": "Löschen und abmelden"
+    "menusUnsavedErase": "Löschen und abmelden",
+    "myOrders": "Meine Bestellungen",
+    "myOrdersHint": "Verfolgen und finden Sie Ihre Bestellungen"
   },
   "auth": {
     "login": "Anmelden",
@@ -446,7 +461,27 @@
     "errorPhone": "Ungültige Telefonnummer (5 bis 16 Ziffern)",
     "errorUsernameTaken": "Dieser Benutzername ist bereits vergeben.",
     "passwordRuleHint": "Mindestens 8 Zeichen, mit einem Kleinbuchstaben, einem Großbuchstaben, einer Ziffer und einem Sonderzeichen (@$!%*?&).",
-    "chooseYourLanguage": "Wählen Sie Ihre Sprache"
+    "chooseYourLanguage": "Wählen Sie Ihre Sprache",
+    "forgotTitle": "Passwort vergessen",
+    "forgotEmailHint": "Geben Sie die E-Mail-Adresse Ihres Kontos ein. Wir senden Ihnen einen Bestätigungscode.",
+    "forgotSendCode": "Code erhalten",
+    "forgotCodeHint": "Geben Sie den Code ein, den Sie per E-Mail an {{email}} erhalten haben.",
+    "forgotCodeLabel": "Bestätigungscode",
+    "forgotCodePlaceholder": "Per E-Mail erhaltener Code",
+    "forgotVerifyCode": "Code prüfen",
+    "forgotResendCode": "Code erneut senden",
+    "forgotCodeResent": "Ein neuer Code wurde Ihnen gesendet.",
+    "forgotCodeRequired": "Geben Sie den per E-Mail erhaltenen Code ein.",
+    "forgotNewPwdHint": "Wählen Sie Ihr neues Passwort.",
+    "forgotSavePwd": "Passwort speichern",
+    "forgotSuccess": "Ihr Passwort wurde geändert. Sie können sich jetzt anmelden.",
+    "forgotErrorCode": "Ungültiger oder abgelaufener Code.",
+    "forgotErrorExpired": "Die Frist ist abgelaufen. Bitte fordern Sie einen neuen Code an.",
+    "forgotErrorWeak": "Dieses Passwort wird nicht akzeptiert. Wählen Sie ein anderes, schwerer zu erratendes.",
+    "forgotErrorGeneric": "Ein Problem ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "forgotTooMany": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+    "forgotBackToLogin": "Zurück zur Anmeldung",
+    "forgotEmailNotFound": "Diese E-Mail-Adresse ist mit keinem Konto verknüpft."
   },
   "cart": {
     "today": "Heute",
@@ -571,7 +606,15 @@
     "tipDriver": "Bedanken Sie sich bei Ihrem Fahrer",
     "totalPrice": "Preis",
     "qtyMinus": "weniger",
-    "qtyPlus": "mehr"
+    "qtyPlus": "mehr",
+    "myOrders": "Meine Bestellungen",
+    "paidByCard": "Mit Karte bezahlt",
+    "byCard": "Mit Karte",
+    "trackMyOrder": "Meine Bestellung verfolgen",
+    "orderConfirmedCollectCart": "Ihre Bestellung wird zur Abholung vorbereitet. Verfolgen Sie den Status unter „Meine Bestellungen“ oben im Warenkorb.",
+    "orderConfirmedDeliveryCart": "Ein Fahrer wird Ihre Bestellung übernehmen. Verfolgen Sie den Status unter „Meine Bestellungen“ oben im Warenkorb.",
+    "noShopProductFound": "Für diesen Shop wurde kein Produkt gefunden.",
+    "searchAllProducts": "In allen Produkten suchen"
   },
   "orderStatus": {
     "confirmed": "Bestellung bestätigt",
@@ -720,7 +763,8 @@
     "thanks": "Danke!",
     "saved": "Ihre Bewertung wurde gespeichert.",
     "yourRating": "Ihre Bewertung",
-    "rateDriver": "Bewerten Sie Ihren Fahrer"
+    "rateDriver": "Bewerten Sie Ihren Fahrer",
+    "failed": "Ihre Bewertung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
   },
   "report": {
     "notReceived": "Bestellung nicht erhalten",
@@ -731,7 +775,11 @@
     "title": "Problem melden",
     "pick": "Was ist passiert?",
     "sentTitle": "Meldung gesendet",
-    "sent": "Unser Support-Team kümmert sich um Ihr Anliegen."
+    "sent": "Unser Support-Team kümmert sich um Ihr Anliegen.",
+    "answerTitle": "Antwort auf Ihre Meldung",
+    "handled": "Ihre Meldung wurde bearbeitet",
+    "failed": "Ihre Meldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "moreReasons": "Weitere Gründe…"
   },
   "stock": {
     "option": "Option",
@@ -1328,6 +1376,7 @@
       "alreadyText": "Alles ist bereits auf „{{name}}“.",
       "seeList": "Meine Liste ansehen",
       "compare": "Preise vergleichen",
+      "compareList": "Meine Liste vergleichen",
       "compareHint": "Vergleichen Sie die echten Preise der Pearl-Streets-Shops.",
       "err": {
         "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
@@ -1549,7 +1598,7 @@
       "title": "Mein Einkauf",
       "summary": "{{count}} Artikel, ca. {{total}}",
       "estimateNote": "Ungefähre Schätzung (~). Der echte Preis ist der des Shops, vergleichen Sie ihn anschließend.",
-      "targetList": "Auf die Liste setzen",
+      "targetList": "In welche Liste?",
       "defaultList": "Meine Liste",
       "activeList": "aktiv",
       "showBasics": "Grundnahrungsmittel anzeigen",
@@ -1921,5 +1970,8 @@
     "pendingRequests": "{{count}} ausstehende Anfragen",
     "pendingRequests_one": "{{count}} ausstehende Anfrage",
     "pendingRequests_other": "{{count}} ausstehende Anfragen"
+  },
+  "notifications": {
+    "channelOrders": "Bestellungen und Lieferungen"
   }
 }

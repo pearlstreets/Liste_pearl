@@ -38,6 +38,7 @@ import { isolerUnitesLatines } from '../../lib/texteBidi';
 import { isolerPrix } from './MealCard';
 import { usePearlShops, openShopFromMenus } from './usePearl';
 import { ficheInfos } from '../../lib/menus/ficheInfos';
+import { allerA } from '../../app/onglets';
 
 const Dots = ({ n }) => (
   <View style={{ flexDirection: 'row', marginRight: 6 }}>
@@ -347,7 +348,7 @@ export default function RecipeScreen({
     }
     try {
       onClose();
-      navigation.navigate(screen);
+      allerA(navigation, screen);
     } catch {}
   };
 

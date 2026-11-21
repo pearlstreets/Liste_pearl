@@ -6,7 +6,11 @@
     "cart": "购物车",
     "profile": "个人资料",
     "shops": "商店",
-    "menus": "菜单"
+    "menus": "菜单",
+    "acheter": "购买"
+  },
+  "acheter": {
+    "comparer": "比较"
   },
   "listScreen": {
     "scan": "扫描",
@@ -23,7 +27,7 @@
     "cancel": "取消",
     "save": "保存",
     "delete": "删除",
-    "deleteTitle": "删除",
+    "deleteTitle": "删除这些项目？",
     "deleteConfirm": "删除",
     "deleteItem": "所选项目",
     "deleteItem_other": "所选项目",
@@ -59,7 +63,13 @@
     "profileFollowers": "粉丝",
     "profileFollowing": "关注",
     "profileOpenFull": "在 Pearl Streets 查看个人资料",
-    "grantedAdd": "添加成员"
+    "grantedAdd": "添加成员",
+    "compareMyList": "比较我的清单",
+    "deleteThisItem": "删除此项",
+    "deleteThisItemConfirm": "此项将从您的清单中移除。",
+    "markBought": "标记为已购买",
+    "rejectRequest": "拒绝请求",
+    "blockUser": "屏蔽此人"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",
@@ -94,14 +104,15 @@
     "notFound": "在店铺中未找到",
     "noMatchTitle": "未找到与您清单\n匹配的商品",
     "noMatchSub": "这些商店不出售这些商品。请检查名称或浏览商店。",
-    "searchToPrice": "点击“搜索”选择商品并查看价格。",
+    "searchToPrice": "点击“添加商品”选择商品并查看价格。",
     "searchToPriceShop": "搜索商品以查看价格。",
     "shopUnit": "商店",
     "shopUnitPlural": "商店",
-    "defaultProducts": "将商品添加到「我的清单」，然后点按「查找确切产品」即可在此查看结果。",
+    "defaultProducts": "将商品添加到「我的清单」，然后点按「比较我的清单」即可在此查看结果。",
     "addProduct": "添加商品",
     "addFromList": "将商品添加到「我的清单」",
-    "addFromListSub": "然后点按「查找确切产品」"
+    "addFromListSub": "然后点按「比较我的清单」",
+    "clearConfirmMsg": "清除当前比较？已选商品将被移除。"
   },
   "searchPopup": {
     "header": "您需要什么？",
@@ -116,7 +127,8 @@
     "close": "关闭",
     "soonAvailable": "即将推出",
     "validate": "添加",
-    "finish": "完成"
+    "finish": "完成",
+    "addToSelection": "添加到所选"
   },
   "camera": {
     "permissionDenied": "权限被拒绝",
@@ -172,13 +184,14 @@
   "favorites": {
     "noFavorites": "还没有喜欢的店铺",
     "addFromProducts": "从产品选项卡添加您喜欢的店铺",
-    "searchPlaceholder": "搜索收藏...",
+    "searchPlaceholder": "搜索店铺...",
     "manageHint": "您收藏的商店和商品",
     "shops": "商店",
     "products": "商品",
     "searchProductPlaceholder": "搜索商品...",
     "noFavProducts": "没有收藏的商品",
-    "addProductHint": "点按商品上的爱心即可添加"
+    "addProductHint": "点按商品上的爱心即可添加",
+    "addFromBuy": "请从“购买”标签页添加"
   },
   "profile": {
     "guestTitle": "您尚未登录",
@@ -321,7 +334,9 @@
     "termsOfUse": "使用条款",
     "menusUnsavedTitle": "菜单未保存",
     "menusUnsavedMsg": "您的菜单未能保存到您的账户。要从此设备上删除吗？",
-    "menusUnsavedErase": "删除并退出登录"
+    "menusUnsavedErase": "删除并退出登录",
+    "myOrders": "我的订单",
+    "myOrdersHint": "跟踪并查看您的订单"
   },
   "auth": {
     "login": "登录",
@@ -445,7 +460,27 @@
     "errorPhone": "电话号码无效（5 至 16 位数字）",
     "errorUsernameTaken": "该用户名已被占用。",
     "passwordRuleHint": "至少 8 个字符，包含小写字母、大写字母、数字和特殊字符（@$!%*?&）。",
-    "chooseYourLanguage": "选择您的语言"
+    "chooseYourLanguage": "选择您的语言",
+    "forgotTitle": "忘记密码",
+    "forgotEmailHint": "请输入您账户的电子邮箱地址。我们将向您发送验证码。",
+    "forgotSendCode": "获取验证码",
+    "forgotCodeHint": "请输入发送至 {{email}} 的验证码。",
+    "forgotCodeLabel": "验证码",
+    "forgotCodePlaceholder": "邮件中收到的验证码",
+    "forgotVerifyCode": "验证",
+    "forgotResendCode": "重新发送验证码",
+    "forgotCodeResent": "已向您发送新的验证码。",
+    "forgotCodeRequired": "请输入邮件中收到的验证码。",
+    "forgotNewPwdHint": "请设置您的新密码。",
+    "forgotSavePwd": "保存密码",
+    "forgotSuccess": "您的密码已修改，现在可以登录。",
+    "forgotErrorCode": "验证码无效或已过期。",
+    "forgotErrorExpired": "已超时，请重新获取验证码。",
+    "forgotErrorWeak": "此密码不被接受，请选择一个更难猜到的密码。",
+    "forgotErrorGeneric": "出现问题，请重试。",
+    "forgotTooMany": "请求过多，请稍后再试。",
+    "forgotBackToLogin": "返回登录",
+    "forgotEmailNotFound": "此电子邮件地址未关联任何账户。"
   },
   "cart": {
     "today": "今天",
@@ -569,7 +604,15 @@
     "tipDriver": "感谢您的配送员",
     "totalPrice": "价格",
     "qtyMinus": "减少",
-    "qtyPlus": "增加"
+    "qtyPlus": "增加",
+    "myOrders": "我的订单",
+    "paidByCard": "已用银行卡支付",
+    "byCard": "银行卡支付",
+    "trackMyOrder": "跟踪我的订单",
+    "orderConfirmedCollectCart": "您的订单将备好供您自取。请在购物车顶部的“我的订单”中查看状态。",
+    "orderConfirmedDeliveryCart": "配送员将负责您的订单。请在购物车顶部的“我的订单”中查看状态。",
+    "noShopProductFound": "未找到该店铺的商品。",
+    "searchAllProducts": "在所有商品中搜索"
   },
   "orderStatus": {
     "confirmed": "订单已确认",
@@ -718,7 +761,8 @@
     "thanks": "谢谢！",
     "saved": "您的评分已保存。",
     "yourRating": "您的评分",
-    "rateDriver": "为配送员评分"
+    "rateDriver": "为配送员评分",
+    "failed": "无法保存您的评分，请重试。"
   },
   "report": {
     "notReceived": "未收到订单",
@@ -729,7 +773,11 @@
     "title": "报告问题",
     "pick": "发生了什么问题？",
     "sentTitle": "已发送报告",
-    "sent": "我们的客服团队将处理您的请求。"
+    "sent": "我们的客服团队将处理您的请求。",
+    "answerTitle": "对您反馈的回复",
+    "handled": "您的问题已处理",
+    "failed": "无法发送您的报告，请重试。",
+    "moreReasons": "其他原因…"
   },
   "stock": {
     "option": "选项",
@@ -1324,6 +1372,7 @@
       "alreadyText": "所有内容已在“{{name}}”中。",
       "seeList": "查看我的清单",
       "compare": "比较价格",
+      "compareList": "比较我的清单",
       "compareHint": "请比较 Pearl Streets 各店铺的实际价格。",
       "err": {
         "error": "发生错误，请重试。",
@@ -1533,7 +1582,7 @@
       "title": "我的购物清单",
       "summary": "{{count}} 件商品，约 {{total}}",
       "estimateNote": "此为大致估算（~）。实际价格以店铺为准，请随后比较。",
-      "targetList": "添加到列表",
+      "targetList": "放入哪个清单？",
       "defaultList": "我的清单",
       "activeList": "正在使用",
       "showBasics": "显示厨房常备",
@@ -1875,5 +1924,8 @@
     "addedToCart_other": "已将 {{count}} 件商品添加到购物车",
     "pendingRequests": "{{count}} 个待处理请求",
     "pendingRequests_other": "{{count}} 个待处理请求"
+  },
+  "notifications": {
+    "channelOrders": "订单和配送"
   }
 }
