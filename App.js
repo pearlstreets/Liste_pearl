@@ -939,6 +939,7 @@ function ListScreen() {
           onChangeText={setText}
           placeholder={t('listScreen.inputPlaceholder')}
           placeholderTextColor={THEME.faint}
+          numberOfLines={1}
           style={lstyles.input}
           returnKeyType="done"
           onSubmitEditing={addFromInput}
