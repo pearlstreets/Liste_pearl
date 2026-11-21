@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { DeviceEventEmitter } from "react-native";
 import SearchPopup from "../../components/SearchPopup";
 import Modal from "../../components/DeuxEcrans";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, Image, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, Image, Platform, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -278,9 +278,15 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
   const [showingDefaults, setShowingDefaults] = React.useState(false);
   const [cartPushed, setCartPushed] = React.useState(false); // true after adding to cart = block refresh
 
+  // Chaîne brute de KEY_SELECTED lue au dernier chargement (undefined = jamais lue)
+  // et boutiques utilisées : au retour sur l'écran, on ne recharge que si elles ont
+  // changé (sinon la sélection et les quantités faites à la main restent).
+  const dernierSelRef = React.useRef(undefined);
+  const realShopsVusRef = React.useRef(undefined);
   const loadSelected=async()=>{
     // Only load from KEY_SELECTED — set by "Trouver produits exacts" button
     const raw = await AsyncStorage.getItem(KEY_SELECTED);
+    dernierSelRef.current = raw;
     let selected = raw ? JSON.parse(raw) : null;
     // If KEY_SELECTED is explicitly empty [], products were cleared after cart push
     if (Array.isArray(selected) && selected.length === 0) {
@@ -635,6 +641,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
 
   const refresh=React.useCallback(async()=>{
     if (cartPushed) { setLoading(false); return; }
+    realShopsVusRef.current = realShops;
     setLoading(true);
     try{
       const items=await loadSelected();
@@ -679,7 +686,19 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
   },[mode,strategy,realShops]);
 
   React.useEffect(()=>{ refresh(); },[refresh]);
-  React.useEffect(()=>{ if (visible) refresh(); },[visible, refresh]);
+  React.useEffect(()=>{
+    if (!visible) return;
+    let vivant = true;
+    (async()=>{
+      // Jamais chargé : l'effet du dessus s'en charge déjà.
+      if (dernierSelRef.current === undefined) return;
+      let raw = null;
+      try { raw = await AsyncStorage.getItem(KEY_SELECTED); } catch(e) { return; }
+      if (!vivant) return;
+      if (raw !== dernierSelRef.current || realShopsVusRef.current !== realShops) refresh();
+    })();
+    return ()=>{ vivant = false; };
+  },[visible, refresh, realShops]);
 
   // Reset cartPushed when user pushes new products from Ma Liste
   React.useEffect(() => {
@@ -722,7 +741,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
       <View style={prodStyles.header}>
         <View style={prodStyles.headerRow}>
           <View style={{flex:1}}>
-            <Text style={prodStyles.title}>{t('tabs.products')}</Text>
+            <Text style={prodStyles.title}>{integre ? t('acheter.comparer') : t('tabs.products')}</Text>
           </View>
           {/* Nombre de boutiques de la proposition, aligné à droite du titre.
               Même calcul que la carte résumé (Set des shops de popupSelectedItems)
@@ -787,12 +806,20 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
           <Chip label={t('productsScreen.strategies.totalPrice')}  active={strategy==='eco'} onPress={()=>setStrategy('eco')} />
           <Chip label={t('productsScreen.strategies.time')}  active={strategy==='fast'} onPress={()=>setStrategy('fast')} />
           {groups.length > 0 && (
-            <TouchableOpacity activeOpacity={0.8} onPress={async () => {
-              await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
-              setGroups([]); setSummary({price:0,time:0,shops:0});
-              setPopupSelectedItems([]); setCheckedShops({});
-              setShowingDefaults(true);
-            }} style={[prodStyles.clearBtn, { marginLeft: 4, marginBottom: 8 }]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+              Alert.alert(t('productsScreen.clear'), t('productsScreen.clearConfirmMsg'), [
+                { text: t('profile.cancel'), style: 'cancel' },
+                { text: t('profile.confirm'), style: 'destructive', onPress: async () => {
+                  try {
+                    await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify([]));
+                    setGroups([]); setSummary({price:0,time:0,shops:0});
+                    setPopupSelectedItems([]); setCheckedShops({});
+                    setShowingDefaults(true);
+                  } catch(e) {}
+                } },
+              ]);
+            }} style={[prodStyles.clearBtn, { marginLeft: 4, marginBottom: 8 }]}
+              accessibilityRole="button" accessibilityLabel={t('productsScreen.clear')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
               <Ionicons name="trash-outline" size={18} color={THEME.danger} />
             </TouchableOpacity>
           )}
@@ -814,7 +841,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
               <View style={{ flexDirection:'row', alignItems:'center', marginTop:10 }}>
                 <Ionicons name="search-outline" size={18} color={THEME.brand} />
                 <Text style={{ flex:1, marginLeft:10, fontSize:13, color:THEME.muted, fontWeight:'600', lineHeight:18 }}>
-                  {t('productsScreen.searchToPrice', 'Appuyez sur « Chercher » pour choisir vos produits et voir le prix.')}
+                  {t('productsScreen.searchToPrice', 'Appuyez sur « Ajouter un produit » pour choisir vos produits et voir le prix.')}
                 </Text>
               </View>
             </View>
@@ -850,7 +877,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
       {showingDefaults && !loading && realShops !== null && (
         <View style={prodStyles.infoBanner}>
           <Ionicons name="information-circle" size={18} color={THEME.brand} />
-          <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts', 'Ajoutez des articles dans Ma Liste puis appuyez sur "Trouver produits exacts" pour voir les résultats ici.')}</Text>
+          <Text style={prodStyles.infoTxt}>{t('productsScreen.defaultProducts', 'Ajoutez des articles dans Ma Liste puis appuyez sur « Comparer ma liste » pour voir les résultats ici.')}</Text>
         </View>
       )}
 
@@ -866,13 +893,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
           </View>
         )}
           renderItem={({item,index})=>(
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={()=>{
-                const wasChecked = !!checkedShops[index];
-                setCheckedShops(prev=>({...prev,[index]:!wasChecked}));
-                setPopupSelectedItems(prev => prev.map(si => si.shopIndex === index ? {...si, checked: !wasChecked} : si));
-              }}
+            <View
               style={[prodStyles.card, checkedShops[index] && prodStyles.cardOn]}>
               <View style={prodStyles.cardHead}>
                 <View style={prodStyles.cardHeadLeft}>
@@ -1063,7 +1084,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                   )}
                 </>;
               })()}
-            </TouchableOpacity>
+            </View>
           )}
           ListEmptyComponent={
             (loading || realShops === null) ? (
@@ -1078,7 +1099,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
               ) : (
                 <>
                   <Text style={prodStyles.emptyTitle}>{t('productsScreen.addFromList', 'Ajoutez des produits dans Ma Liste')}</Text>
-                  <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub', 'Puis appuyez sur "Trouver produits exacts"')}</Text>
+                  <Text style={prodStyles.emptyHint}>{t('productsScreen.addFromListSub', 'Puis appuyez sur « Comparer ma liste »')}</Text>
                 </>
               )}
             </View>
@@ -1263,6 +1284,8 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                     }
                   });
                   const added = dupItems.filter(d => d.add).length + dupNewOnly;
+                  // Tout est doublon ignoré : rien n'est écrit, la comparaison reste.
+                  if (added === 0) { setDupModalVisible(false); return; }
                   // Articles réellement mis au panier : les nouveaux + les doublons ajoutés.
                   const pousses = [...(dupNewOnly > 0 ? dupMerged.slice(-dupNewOnly) : []), ...dupItems.filter(d => d.add).map(d => d.newItem)];
                   await AsyncStorage.setItem(KEY_CART, JSON.stringify(finalMerged.map(({ listName: _ln, ...it }) => it)));
@@ -1279,7 +1302,6 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                   setDupModalVisible(false);
                   setCartSuccessCount(added);
                   setCartSuccessVisible(true);
-                  navigation.navigate('cart');
                   } catch(e) {}
                 }}
                 style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
@@ -1418,8 +1440,6 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                     setConfirmCartVisible(false);
                     setCartSuccessCount(count);
                     setCartSuccessVisible(true);
-                    // Navigate to cart
-                    navigation.navigate('cart');
                   } catch(e) {}
                 }}
                 style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
@@ -1447,7 +1467,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
             <Text style={{fontFamily:SERIF, fontSize:22, fontWeight:'400', color:THEME.ink, textAlign:'center'}}>{t('cart.addedToCart')}</Text>
             <Text style={{fontSize:14, color:THEME.muted, marginTop:8, textAlign:'center'}}>{t('counts.addedToCart', { count: cartSuccessCount })}</Text>
             <TouchableOpacity
-              onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart'); }}
+              onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart', { mode }); }}
               style={{marginTop:20, width:'100%', height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
             >
               <Text style={{color:MARCHE.blanc, fontWeight:'700', fontSize:16}}>{t('cart.viewCart')}</Text>

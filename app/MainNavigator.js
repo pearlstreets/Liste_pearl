@@ -76,6 +76,8 @@ export default function MainNavigator({ onLogout, isAuth }) {
 
   return (
     <Tab.Navigator
+      // Retour Android : onglet précédent, plus toujours Ma Liste.
+      backBehavior="history"
       screenOptions={({ route }) => ({
         headerShown: true,
         headerTitleAlign: "center",

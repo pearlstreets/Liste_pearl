@@ -27,7 +27,7 @@
     "cancel": "Annuleren",
     "save": "Opslaan",
     "delete": "Verwijderen",
-    "deleteTitle": "Verwijderen",
+    "deleteTitle": "Deze items verwijderen?",
     "deleteConfirm": "Verwijderen",
     "deleteItem": "geselecteerde item",
     "deleteItem_one": "geselecteerd item",
@@ -67,7 +67,10 @@
     "grantedAdd": "Iemand toevoegen",
     "compareMyList": "Mijn lijst vergelijken",
     "deleteThisItem": "Dit artikel verwijderen",
-    "deleteThisItemConfirm": "Dit artikel wordt van uw lijst verwijderd."
+    "deleteThisItemConfirm": "Dit artikel wordt van uw lijst verwijderd.",
+    "markBought": "Markeren als gekocht",
+    "rejectRequest": "Verzoek weigeren",
+    "blockUser": "Deze persoon blokkeren"
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",
@@ -102,14 +105,15 @@
     "notFound": "niet in winkels gevonden",
     "noMatchTitle": "Geen producten gevonden\nvoor uw lijst",
     "noMatchSub": "Deze winkels verkopen deze artikelen niet. Controleer de namen of blader door de Winkels.",
-    "searchToPrice": "Tik op Zoeken om uw producten te kiezen en de prijs te zien.",
+    "searchToPrice": "Tik op \"Product toevoegen\" om uw producten te kiezen en de prijs te zien.",
     "searchToPriceShop": "Zoek een product om de prijs te zien.",
     "shopUnit": "winkel",
     "shopUnitPlural": "winkels",
-    "defaultProducts": "Voeg artikelen toe aan Mijn Lijst en tik daarna op \"Exacte producten zoeken\" om de resultaten hier te zien.",
+    "defaultProducts": "Voeg artikelen toe aan Mijn Lijst en tik daarna op \"Mijn lijst vergelijken\" om de resultaten hier te zien.",
     "addProduct": "Product toevoegen",
     "addFromList": "Voeg producten toe aan Mijn Lijst",
-    "addFromListSub": "Tik daarna op \"Exacte producten zoeken\""
+    "addFromListSub": "Tik daarna op \"Mijn lijst vergelijken\"",
+    "clearConfirmMsg": "De huidige vergelijking wissen? De gekozen producten worden verwijderd."
   },
   "searchPopup": {
     "header": "Wat hebt u nodig?",
@@ -181,7 +185,7 @@
   "favorites": {
     "noFavorites": "Nog geen favoriete winkels",
     "addFromProducts": "Voeg uw favoriete winkels toe vanaf het tabblad Producten",
-    "searchPlaceholder": "Zoeken naar een favoriet...",
+    "searchPlaceholder": "Zoeken naar een winkel...",
     "manageHint": "Uw favoriete winkels en producten",
     "shops": "Winkels",
     "products": "Producten",
@@ -476,7 +480,8 @@
     "forgotErrorWeak": "Dit wachtwoord wordt niet geaccepteerd. Kies een ander, moeilijker te raden wachtwoord.",
     "forgotErrorGeneric": "Er is iets misgegaan. Probeer het opnieuw.",
     "forgotTooMany": "Te veel verzoeken. Probeer het later opnieuw.",
-    "forgotBackToLogin": "Terug naar inloggen"
+    "forgotBackToLogin": "Terug naar inloggen",
+    "forgotEmailNotFound": "Dit e-mailadres is niet aan een account gekoppeld."
   },
   "cart": {
     "today": "Vandaag",
@@ -758,7 +763,8 @@
     "thanks": "Bedankt!",
     "saved": "Uw beoordeling is opgeslagen.",
     "yourRating": "Uw beoordeling",
-    "rateDriver": "Beoordeel uw bezorger"
+    "rateDriver": "Beoordeel uw bezorger",
+    "failed": "Uw beoordeling kon niet worden opgeslagen. Probeer het opnieuw."
   },
   "report": {
     "notReceived": "Bestelling niet ontvangen",
@@ -771,7 +777,9 @@
     "sentTitle": "Melding verzonden",
     "sent": "Ons supportteam behandelt uw verzoek.",
     "answerTitle": "Antwoord op uw melding",
-    "handled": "Uw melding is behandeld"
+    "handled": "Uw melding is behandeld",
+    "failed": "Uw melding kon niet worden verzonden. Probeer het opnieuw.",
+    "moreReasons": "Andere redenen…"
   },
   "stock": {
     "option": "Optie",
@@ -1592,7 +1600,7 @@
       "summary_one": "{{count}} artikel, ongeveer {{total}}",
       "summary_other": "{{count}} artikelen, ongeveer {{total}}",
       "estimateNote": "Indicatieve schatting (~). De echte prijs is die van de winkel, u kunt die daarna vergelijken.",
-      "targetList": "Toevoegen aan lijst",
+      "targetList": "In welke lijst?",
       "defaultList": "Mijn Lijst",
       "activeList": "actief",
       "showBasics": "Basisproducten tonen",

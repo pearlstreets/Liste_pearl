@@ -43,6 +43,14 @@ export function useDemandesPartage(t) {
 // Fenêtre « Partage de listes » (version invité et version connectée, inchangées).
 export function DemandesPartageModale({ t, partage, invite }) {
   const { shareRequests, blockedUsers, shareRequestsVisible, setShareRequestsVisible, runShareAction } = partage;
+  // Bloquer est rare et lourd : une confirmation évite un blocage par erreur.
+  const confirmerBlocage = (r) => {
+    if (!r.from?.id) return;
+    Alert.alert(t('listScreen.blockUser', 'Bloquer cette personne'), r.from?.name || '', [
+      { text: t('listScreen.cancel'), style: 'cancel' },
+      { text: t('listScreen.blockUser', 'Bloquer cette personne'), style: 'destructive', onPress: () => runShareAction(() => blockUserById(r.from.id)) },
+    ]);
+  };
   if (invite) return (
         <Modal visible={shareRequestsVisible} animationType="slide" onRequestClose={() => setShareRequestsVisible(false)}>
           <SafeAreaView style={{ flex:1, backgroundColor:THEME.bg }}>
@@ -62,10 +70,12 @@ export function DemandesPartageModale({ t, partage, invite }) {
                   <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: THEME.borderInput, backgroundColor:THEME.card, borderRadius:TAILLES.rayonBouton, paddingHorizontal:14, height:TAILLES.boutonPetit, alignItems:'center', justifyContent:'center', marginRight:6 }}>
                     <Text style={{ color:THEME.ink, fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
+                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}
+                  accessibilityRole="button" accessibilityLabel={t('listScreen.rejectRequest', 'Refuser la demande')}>
                     <Ionicons name="close" size={20} color={THEME.faint} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => { if (r.from?.id) runShareAction(() => blockUserById(r.from.id)); }} style={{ padding:6 }}>
+                  <TouchableOpacity onPress={() => confirmerBlocage(r)} style={{ padding:6 }}
+                  accessibilityRole="button" accessibilityLabel={t('listScreen.blockUser', 'Bloquer cette personne')}>
                     <Ionicons name="ban-outline" size={20} color={THEME.danger} />
                   </TouchableOpacity>
                 </View>
@@ -104,10 +114,12 @@ export function DemandesPartageModale({ t, partage, invite }) {
                 <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                   <Text style={{ color:'#1C1917', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
+                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}
+                  accessibilityRole="button" accessibilityLabel={t('listScreen.rejectRequest', 'Refuser la demande')}>
                   <Ionicons name="close" size={20} color={THEME.faint} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { if (r.from?.id) runShareAction(() => blockUserById(r.from.id)); }} style={{ padding:6 }}>
+                <TouchableOpacity onPress={() => confirmerBlocage(r)} style={{ padding:6 }}
+                  accessibilityRole="button" accessibilityLabel={t('listScreen.blockUser', 'Bloquer cette personne')}>
                   <Ionicons name="ban-outline" size={20} color={THEME.danger} />
                 </TouchableOpacity>
               </View>

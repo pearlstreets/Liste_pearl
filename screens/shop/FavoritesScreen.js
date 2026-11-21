@@ -43,7 +43,7 @@ const favStyles = StyleSheet.create({
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 });
 
-const FavoritesScreen = ({ onClose }) => {
+const FavoritesScreen = ({ onClose, onOpenShop }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const [tab, setTab] = React.useState('shops'); // 'shops' | 'products'
@@ -134,7 +134,7 @@ const FavoritesScreen = ({ onClose }) => {
       <View style={favStyles.searchWrap}>
         <Ionicons name="search-outline" size={18} color={THEME.faint} />
         <TextInput value={searchQuery} onChangeText={setSearchQuery}
-          placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder', 'Rechercher un shop')) : (t('favorites.searchProductPlaceholder', 'Rechercher un produit'))}
+          placeholder={tab === 'shops' ? (t('favorites.searchPlaceholder', 'Rechercher une boutique...')) : (t('favorites.searchProductPlaceholder', 'Rechercher un produit'))}
           placeholderTextColor={THEME.faint} style={favStyles.searchInput} />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
@@ -175,7 +175,9 @@ const FavoritesScreen = ({ onClose }) => {
                 <View style={favStyles.shopIcon}>
                   <Ionicons name="storefront" size={22} color={THEME.brand} />
                 </View>
-                <View style={favStyles.cardBody}>
+                <TouchableOpacity style={favStyles.cardBody} activeOpacity={0.7} disabled={!onOpenShop}
+                  onPress={() => { if (onOpenShop) onOpenShop(item.name); }}
+                  accessibilityRole={onOpenShop ? 'button' : undefined} accessibilityLabel={item.name}>
                   <Text style={favStyles.cardTitle}>{item.name}</Text>
                   {item.address ? <Text style={favStyles.cardSub}>{item.address}</Text> : null}
                   <View style={favStyles.metaRow}>
@@ -192,7 +194,7 @@ const FavoritesScreen = ({ onClose }) => {
                       </View>
                     ) : null}
                   </View>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => removeShopFav(item.name)} activeOpacity={0.8} style={favStyles.favBtn}>
                   <Ionicons name="heart-dislike-outline" size={17} color={THEME.danger} />
                 </TouchableOpacity>

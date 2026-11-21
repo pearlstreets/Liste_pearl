@@ -20,6 +20,7 @@ import { flushMenusSync } from "../../services/menusSync";
 import * as ImagePicker from 'expo-image-picker';
 import { MARCHE } from "../../components/ui/marche";
 import { CURRENCIES } from "../../data/currencies";
+import { PASSWORD_RE } from "../auth/validation";
 import { BRAND, THEME } from "../../components/commun/theme";
 import { lstyles } from "../../components/commun/lstyles";
 import { useCurrency } from "../../components/commun/devise";
@@ -202,12 +203,18 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
     const updated = { ...profile, nom: editNom.trim(), prenom: editPrenom.trim(), pseudo: editPseudo.trim(), email: editEmail.trim() };
     // Try to update on Marketplace backend first
     try {
-      await apiUpdateProfile({
+      const res = await apiUpdateProfile({
         prenom: editPrenom.trim(),
         nom: editNom.trim(),
         pseudo: editPseudo.trim(),
         email: editEmail.trim(),
       });
+      // Refus du serveur (compte connecté) : on le dit et on garde la fenêtre
+      // ouverte, sans enregistrer localement ce qui n'a pas été accepté.
+      if (isAuth && res && res.success === false && res.message) {
+        Alert.alert(t('profile.editProfile'), res.message);
+        return;
+      }
     } catch(e) {}
     setProfile(updated);
     await setSecureItem(KEY_PROFILE, JSON.stringify(updated));
@@ -359,7 +366,7 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
     setPwdError(''); setPwdSuccess('');
     if (!oldPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) { setPwdError(t('profile.pwdErrorEmpty')); return; }
     if (newPassword !== confirmPassword) { setPwdError(t('profile.pwdErrorMismatch')); return; }
-    if (newPassword.length < 6) { setPwdError(t('profile.pwdErrorLength')); return; }
+    if (!PASSWORD_RE.test(newPassword.trim())) { setPwdError(t('auth.errorPasswordRule')); return; }
     try {
       // Uniquement par le serveur Marketplace : aucun mot de passe n'est
       // gardé ni comparé en local.
@@ -979,6 +986,7 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
                     <Text style={profStyles.fieldLabel}>{t('profile.newPassword')}</Text>
                     <TextInput value={newPassword} onChangeText={setNewPassword} placeholder={t('profile.newPassword')} secureTextEntry
                       placeholderTextColor={THEME.faint} style={profStyles.field} />
+                    <Text numberOfLines={2} style={{ fontSize: 12, color: THEME.faint, marginTop: 6, lineHeight: 17 }}>{t('auth.passwordRuleHint')}</Text>
                   </View>
 
                   <View style={[profStyles.fieldGroup, { marginBottom: 4 }]}>
@@ -1060,7 +1068,12 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
             {CURRENCIES.map(curr => {
               const isSelected = pendingCurrency === curr.code || (!pendingCurrency && currency.code === curr.code);
               return (
-                <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
+                <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => {
+                  const found = CURRENCIES.find(c => c.code === curr.code);
+                  if (found) setCurrency(found);
+                  setPendingCurrency(null);
+                  setCurrencyVisible(false);
+                }} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
                   <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
                   <View style={{ flex:1 }}>
                     <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{t(`currencies.${curr.code}`, curr.name)}</Text>

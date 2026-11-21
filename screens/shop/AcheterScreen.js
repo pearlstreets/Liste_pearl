@@ -8,6 +8,8 @@ import { Ionicons } from "../../components/ui/IoniconsSens";
 import { TAILLES } from "../../components/ui/marche";
 import { THEME } from "../../components/commun/theme";
 import { SEGMENT_COMPARER, SEGMENT_BOUTIQUES } from "../../app/onglets";
+import { peekShops, loadShops } from "../../lib/shopsCache";
+import { requestOpenShop } from "../../lib/openShop";
 import ProductsScreen from "./ProductsScreen";
 import ShopsScreen from "./ShopsScreen";
 import FavoritesScreen from "./FavoritesScreen";
@@ -38,6 +40,19 @@ const AcheterScreen = () => {
   }, [demande, nonce]);
 
   const fermerFavoris = () => { setFavVisible(false); setFavTick((n) => n + 1); };
+
+  // Carte d'une boutique favorite : ferme les Favoris, passe sur Boutiques puis
+  // ouvre sa fiche une fois la modale fermée (deux modales à la suite sur iOS).
+  const ouvrirBoutiqueFavorite = (nom) => {
+    fermerFavoris();
+    setSegment(SEGMENT_BOUTIQUES);
+    setTimeout(() => {
+      const trouver = (liste) => (Array.isArray(liste) ? liste : []).find((s) => s && s.name === nom);
+      const deja = trouver(peekShops('product_purchase'));
+      if (deja) { requestOpenShop(deja); return; }
+      loadShops('product_purchase').then((liste) => { const s = trouver(liste); if (s) requestOpenShop(s); }).catch(() => {});
+    }, 400);
+  };
 
   // Ligne « Favoris » du Profil (EVT_OUVRIR_FAVORIS) : ouvre les Favoris.
   // L'onglet peut ne pas être monté quand l'évènement part : la demande gardée
@@ -80,7 +95,7 @@ const AcheterScreen = () => {
       </View>
       {favVisible ? (
         <Modal visible animationType="slide" onRequestClose={fermerFavoris}>
-          <FavoritesScreen onClose={fermerFavoris} />
+          <FavoritesScreen onClose={fermerFavoris} onOpenShop={ouvrirBoutiqueFavorite} />
         </Modal>
       ) : null}
     </SafeAreaView>

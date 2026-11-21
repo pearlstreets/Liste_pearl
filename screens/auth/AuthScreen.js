@@ -182,6 +182,10 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
   const [dobPickerOpen, setDobPickerOpen] = React.useState(false);
   const [addrSuggestions, setAddrSuggestions] = React.useState([]);
   const addrDebounce = React.useRef(null);
+  // Enchaînement des champs au clavier (touche « Suivant » puis « OK »).
+  const mdpRef = React.useRef(null);
+  const inscMdpRef = React.useRef(null);
+  const inscConfirmRef = React.useRef(null);
 
   // Autocomplétion d'adresse (Photon) — comme AppUser, filtrée sur le pays choisi.
   const onAddrLineChange = (text) => {
@@ -371,8 +375,8 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
               emailInitial={email}
               etape={oubli}
               setEtape={setOubli}
-              onTermine={(e) => {
-                setOubli(0); setEmail(e); setPassword(''); setError('');
+              onTermine={(e, mdpRecu) => {
+                setOubli(0); setEmail(e); setPassword(mdpRecu || ''); setError('');
                 setSucces(t('auth.forgotSuccess', 'Votre mot de passe a été modifié. Vous pouvez vous connecter.'));
               }}
             />
@@ -385,12 +389,12 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
             {/* ---------- Connexion ---------- */}
             <View style={authStyles.fieldGroup}>
               <Text style={authStyles.fieldLabel}>{t('auth.emailOrPseudo')}</Text>
-              <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailOrPseudoPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" textContentType="username" autoComplete="email" importantForAutofill="yes" style={authStyles.field} />
+              <TextInput value={email} onChangeText={setEmail} placeholder={t('auth.emailOrPseudoPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" textContentType="username" autoComplete="email" importantForAutofill="yes" returnKeyType="next" blurOnSubmit={false} onSubmitEditing={() => mdpRef.current?.focus()} style={authStyles.field} />
             </View>
             <View style={authStyles.fieldGroup}>
               <Text style={authStyles.fieldLabel}>{t('auth.password')}</Text>
               <View style={authStyles.pwdRow}>
-                <TextInput value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} textContentType="password" autoComplete="password" importantForAutofill="yes" style={authStyles.pwdInput} />
+                <TextInput ref={mdpRef} returnKeyType="go" onSubmitEditing={handleLogin} value={password} onChangeText={setPassword} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} textContentType="password" autoComplete="password" importantForAutofill="yes" style={authStyles.pwdInput} />
                 <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
                   <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                 </TouchableOpacity>
@@ -432,13 +436,13 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
               <>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('profile.email', 'Adresse e-mail')}</Text>
-                  <TextInput value={email} onChangeText={(v) => { setEmail(v); clearFE('email'); }} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" style={[authStyles.field, fieldErr.email && authStyles.fieldInvalid]} />
+                  <TextInput value={email} onChangeText={(v) => { setEmail(v); clearFE('email'); }} placeholder={t('auth.emailPlaceholder')} placeholderTextColor={THEME.faint} keyboardType="email-address" autoCapitalize="none" returnKeyType="next" blurOnSubmit={false} onSubmitEditing={() => inscMdpRef.current?.focus()} style={[authStyles.field, fieldErr.email && authStyles.fieldInvalid]} />
                   {fieldErr.email ? <Text numberOfLines={2} style={authStyles.fieldError}>{fieldErr.email}</Text> : null}
                 </View>
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.password', 'Mot de passe')}</Text>
                   <View style={[authStyles.pwdRow, fieldErr.password && authStyles.fieldInvalid]}>
-                    <TextInput value={password} onChangeText={(v) => { setPassword(v); clearFE('password'); }} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
+                    <TextInput ref={inscMdpRef} returnKeyType="next" blurOnSubmit={false} onSubmitEditing={() => inscConfirmRef.current?.focus()} value={password} onChangeText={(v) => { setPassword(v); clearFE('password'); }} placeholder={t('auth.passwordPlaceholder')} placeholderTextColor={THEME.faint} secureTextEntry={!showPwd} style={authStyles.pwdInput} />
                     <TouchableOpacity onPress={() => setShowPwd(!showPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
                       <Ionicons name={showPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                     </TouchableOpacity>
@@ -448,7 +452,7 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
                 <View style={authStyles.fieldGroup}>
                   <Text style={authStyles.fieldLabel}>{t('auth.confirmPassword', 'Confirmer le mot de passe')}</Text>
                   <View style={[authStyles.pwdRow, fieldErr.confirmPwd && authStyles.fieldInvalid]}>
-                    <TextInput value={confirmPwd} onChangeText={(v) => { setConfirmPwd(v); clearFE('confirmPwd'); }} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showConfirmPwd} style={authStyles.pwdInput} />
+                    <TextInput ref={inscConfirmRef} returnKeyType="go" onSubmitEditing={goToStep2} value={confirmPwd} onChangeText={(v) => { setConfirmPwd(v); clearFE('confirmPwd'); }} placeholder={t('auth.confirmPasswordPlaceholder', 'Retapez votre mot de passe')} placeholderTextColor={THEME.faint} secureTextEntry={!showConfirmPwd} style={authStyles.pwdInput} />
                     <TouchableOpacity onPress={() => setShowConfirmPwd(!showConfirmPwd)} style={authStyles.pwdEye} activeOpacity={0.7}>
                       <Ionicons name={showConfirmPwd ? "eye-off-outline" : "eye-outline"} size={20} color={THEME.faint} />
                     </TouchableOpacity>

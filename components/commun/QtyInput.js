@@ -10,15 +10,16 @@ export const QtyInput = ({ value, onCommit }) => {
     <TextInput
       value={temp}
       onChangeText={(t) => {
-        const digits = (t || "").replace(/[^\d]/g, "");
+        const digits = (t || "").replace(/[^\d.,]/g, "");
         setTemp(digits);
       }}
       onEndEditing={() => {
-        const next = temp === "" ? 1 : Math.max(1, parseInt(temp, 10));
+        const n = parseFloat(String(temp).replace(',', '.'));
+        const next = !temp || !isFinite(n) ? 1 : Math.max(1, Math.round(n * 100) / 100);
         onCommit(next);
         setTemp(String(next));
       }}
-      keyboardType="number-pad"
+      keyboardType="decimal-pad"
       style={styles.qtyInput}
     />
   );

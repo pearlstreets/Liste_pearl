@@ -27,7 +27,7 @@
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
-    "deleteTitle": "Delete",
+    "deleteTitle": "Delete these items?",
     "deleteConfirm": "Delete",
     "deleteItem": "selected item",
     "deleteItem_one": "selected item",
@@ -67,7 +67,10 @@
     "grantedAdd": "Add someone",
     "compareMyList": "Compare my list",
     "deleteThisItem": "Delete this item",
-    "deleteThisItemConfirm": "This item will be removed from your list."
+    "deleteThisItemConfirm": "This item will be removed from your list.",
+    "markBought": "Mark as bought",
+    "rejectRequest": "Decline request",
+    "blockUser": "Block this person"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -97,19 +100,20 @@
     "search": "Search",
     "noItems": "No items",
     "addFromList": "Add products to My List",
-    "addFromListSub": "Then tap \"Find exact products\"",
+    "addFromListSub": "Then tap \"Compare my list\"",
     "clear": "Clear",
     "addProduct": "Add a product",
-    "defaultProducts": "Add items to My List then tap \"Find exact products\" to see results here.",
+    "defaultProducts": "Add items to My List then tap \"Compare my list\" to see results here.",
     "quantity": "quantity",
     "continueShopping": "Continue shopping",
     "notFound": "not found in shops",
     "noMatchTitle": "No products found\nfor your list",
     "noMatchSub": "These shops do not sell these items. Check the names or browse the Shops.",
-    "searchToPrice": "Tap Search to choose your products and see the price.",
+    "searchToPrice": "Tap \"Add a product\" to choose your products and see the price.",
     "searchToPriceShop": "Search for a product to see the price.",
     "shopUnit": "shop",
-    "shopUnitPlural": "shops"
+    "shopUnitPlural": "shops",
+    "clearConfirmMsg": "Clear the current comparison? The chosen products will be removed."
   },
   "searchPopup": {
     "header": "What do you need?",
@@ -476,7 +480,8 @@
     "forgotErrorWeak": "This password is not accepted. Please choose another one that is harder to guess.",
     "forgotErrorGeneric": "Something went wrong. Please try again.",
     "forgotTooMany": "Too many requests. Please try again later.",
-    "forgotBackToLogin": "Back to login"
+    "forgotBackToLogin": "Back to login",
+    "forgotEmailNotFound": "This email address is not linked to any account."
   },
   "cart": {
     "today": "Today",
@@ -758,7 +763,8 @@
     "thanks": "Thank you!",
     "saved": "Your rating has been saved.",
     "yourRating": "Your rating",
-    "rateDriver": "Rate your driver"
+    "rateDriver": "Rate your driver",
+    "failed": "Your rating could not be saved. Please try again."
   },
   "report": {
     "notReceived": "Order not received",
@@ -771,7 +777,9 @@
     "sentTitle": "Report sent",
     "sent": "Our support team will handle your request.",
     "answerTitle": "Answer to your report",
-    "handled": "Your report has been handled"
+    "handled": "Your report has been handled",
+    "failed": "Your report could not be sent. Please try again.",
+    "moreReasons": "Other reasons…"
   },
   "stock": {
     "option": "Option",
@@ -1594,7 +1602,7 @@
       "summary_one": "{{count}} item, about {{total}}",
       "summary_other": "{{count}} items, about {{total}}",
       "estimateNote": "Indicative estimate (~). The real price is the shop's, compare it next.",
-      "targetList": "Add to list",
+      "targetList": "Which list?",
       "defaultList": "My List",
       "activeList": "active",
       "showBasics": "Show pantry basics",

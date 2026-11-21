@@ -118,7 +118,7 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation, apresRecomm
                     <View style={{ marginTop: 12, backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, borderWidth: 1, borderColor: THEME.border, padding: 14 }}>
                       <Text style={{ fontFamily: SERIF, fontWeight: '600', fontSize: 15, color: THEME.ink, marginBottom: 8 }}>
                         {tipped > 0
-                          ? t('cart.tipThanks', 'Merci pour votre pourboire !')
+                          ? t('cart.tipThanks', 'Merci pour votre pourboire !') + ' · ' + fmtPrice(tipped)
                           : t('cart.tipDriver', 'Remercier votre livreur')}
                       </Text>
                       <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -140,6 +140,8 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation, apresRecomm
                   const delivered = st === 'delivered' || st === DELIVERY_STATUS.DELIVERED;
                   if (detailOrder.mode !== 'delivery' || !delivered) return null;
                   const rated = Number(deliveryStatuses[detailOrder.id]?.data?.rating || 0);
+                  const plainte = deliveryStatuses[detailOrder.id]?.plainte;
+                  const plainteEnCours = !!plainte && plainte.status !== 'resolved' && plainte.status !== 'rejected';
                   return (
                     <View style={{ marginTop: 12, backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, borderWidth: 1, borderColor: THEME.border, padding: 14 }}>
                       <Text style={{ fontFamily: SERIF, fontWeight: '600', fontSize: 15, color: THEME.ink, marginBottom: 8 }}>
@@ -157,6 +159,9 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation, apresRecomm
                         <Ionicons name="alert-circle-outline" size={18} color="#e74c3c" />
                         <Text style={{ color: '#e74c3c', fontWeight: '700', fontSize: 14 }}>{t('report.title', 'Signaler un problème')}</Text>
                       </TouchableOpacity>
+                      {plainteEnCours ? (
+                        <Text style={{ fontSize: 14, color: THEME.muted, marginTop: 6 }}>{t('report.sentTitle', 'Signalement envoyé')}</Text>
+                      ) : null}
                     </View>
                   );
                 })()}
@@ -371,7 +376,7 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation, apresRecomm
             />
 
             <View style={profStyles.reorderTotalRow}>
-              <Text style={profStyles.reorderTotalLabel}>{t('cart.total') + ' ' + t('cart.totalPrice', {defaultValue: 'prix'})}</Text>
+              <Text style={profStyles.reorderTotalLabel}>{t('cart.total')}</Text>
               <Text style={profStyles.reorderTotalValue}>{fmtPrice(reorderItems.filter(it => it.selected).reduce((s, it) => s + (Number(it.price||0) * Number(it.qty||1)), 0))}</Text>
             </View>
             <View style={profStyles.sheetFooter}>

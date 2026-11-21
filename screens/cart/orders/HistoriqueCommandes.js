@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from '../../../components/DeuxEcrans';
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "../../../components/ui/IoniconsSens";
 import { INSET_BAS, THEME } from "../../../components/commun/theme";
@@ -43,9 +43,17 @@ export function CarteCommande({ order, status, t, fmtPrice, onPress }) {
 // « Mes commandes » de l'onglet Panier : tout l'historique, dans l'écran
 // (pas de fenêtre), le détail s'ouvre au toucher.
 export function ListeCommandes({ commandes, t, fmtPrice }) {
-  const { orders, setDetailOrder, getOrderStatus } = commandes;
+  const { orders, setDetailOrder, getOrderStatus, loadOrders } = commandes;
+  // Tirer pour rafraîchir (geste seul, aucun élément visuel ajouté).
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try { if (typeof loadOrders === 'function') await loadOrders(); } catch (e) {}
+    setRefreshing(false);
+  }, [loadOrders]);
   return (
-    <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS }} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS }} showsVerticalScrollIndicator={false}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {orders.length === 0 ? (
         <View style={profStyles.empty}>
           <Text style={profStyles.emptyTitle}>{t('profile.noOrders')}</Text>

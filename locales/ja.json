@@ -27,7 +27,7 @@
     "cancel": "キャンセル",
     "save": "保存",
     "delete": "削除",
-    "deleteTitle": "削除",
+    "deleteTitle": "これらのアイテムを削除しますか？",
     "deleteConfirm": "削除",
     "deleteItem": "選択したアイテム",
     "deleteItem_other": "選択したアイテム",
@@ -66,7 +66,10 @@
     "grantedAdd": "ユーザーを追加",
     "compareMyList": "リストを比較",
     "deleteThisItem": "この項目を削除",
-    "deleteThisItemConfirm": "この項目はリストから削除されます。"
+    "deleteThisItemConfirm": "この項目はリストから削除されます。",
+    "markBought": "購入済みにする",
+    "rejectRequest": "リクエストを拒否",
+    "blockUser": "このユーザーをブロック"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",
@@ -101,14 +104,15 @@
     "notFound": "店舗に見つかりません",
     "noMatchTitle": "リストに一致する\n商品が見つかりません",
     "noMatchSub": "これらの店舗ではこれらの商品を販売していません。名前を確認するか、店舗を見てみてください。",
-    "searchToPrice": "「検索」をタップして商品を選び、価格を確認してください。",
+    "searchToPrice": "「商品を追加」をタップして商品を選び、価格を確認してください。",
     "searchToPriceShop": "商品を検索して価格を確認してください。",
     "shopUnit": "店舗",
     "shopUnitPlural": "店舗",
-    "defaultProducts": "「マイリスト」に商品を追加し、「正確な商品を検索」をタップすると、ここに結果が表示されます。",
+    "defaultProducts": "「マイリスト」に商品を追加し、「リストを比較」をタップすると、ここに結果が表示されます。",
     "addProduct": "商品を追加",
     "addFromList": "「マイリスト」に商品を追加",
-    "addFromListSub": "次に「正確な商品を検索」をタップ"
+    "addFromListSub": "次に「リストを比較」をタップ",
+    "clearConfirmMsg": "現在の比較を消去しますか？選んだ商品は削除されます。"
   },
   "searchPopup": {
     "header": "何が必要ですか？",
@@ -180,7 +184,7 @@
   "favorites": {
     "noFavorites": "まだお気に入りの店舗はありません",
     "addFromProducts": "商品タブからお気に入りの店舗を追加してください",
-    "searchPlaceholder": "お気に入りを検索...",
+    "searchPlaceholder": "ショップを検索...",
     "manageHint": "お気に入りの店舗と商品",
     "shops": "ショップ",
     "products": "商品",
@@ -475,7 +479,8 @@
     "forgotErrorWeak": "このパスワードは使用できません。推測されにくい別のパスワードを選んでください。",
     "forgotErrorGeneric": "問題が発生しました。もう一度お試しください。",
     "forgotTooMany": "リクエストが多すぎます。しばらくしてから再度お試しください。",
-    "forgotBackToLogin": "ログインに戻る"
+    "forgotBackToLogin": "ログインに戻る",
+    "forgotEmailNotFound": "このメールアドレスはどのアカウントにも登録されていません。"
   },
   "cart": {
     "today": "今日",
@@ -756,7 +761,8 @@
     "thanks": "ありがとうございます！",
     "saved": "評価を保存しました。",
     "yourRating": "お客様の評価",
-    "rateDriver": "配達員を評価する"
+    "rateDriver": "配達員を評価する",
+    "failed": "評価を保存できませんでした。もう一度お試しください。"
   },
   "report": {
     "notReceived": "注文が届いていない",
@@ -769,7 +775,9 @@
     "sentTitle": "報告を送信しました",
     "sent": "サポートチームがお客様のリクエストに対応します。",
     "answerTitle": "ご報告への回答",
-    "handled": "ご報告に対応しました"
+    "handled": "ご報告に対応しました",
+    "failed": "報告を送信できませんでした。もう一度お試しください。",
+    "moreReasons": "その他の理由…"
   },
   "stock": {
     "option": "オプション",
@@ -1574,7 +1582,7 @@
       "title": "買い物リスト",
       "summary": "{{count}}品目、約{{total}}",
       "estimateNote": "概算です（~）。実際の価格は各店舗の価格ですので、あとで比べてご確認ください。",
-      "targetList": "リストに追加します",
+      "targetList": "どのリストに入れますか？",
       "defaultList": "マイリスト",
       "activeList": "使用中",
       "showBasics": "常備品を表示します",

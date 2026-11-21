@@ -27,7 +27,7 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "delete": "Supprimer",
-    "deleteTitle": "Supprimer",
+    "deleteTitle": "Supprimer ces articles ?",
     "deleteConfirm": "Supprimer",
     "deleteItem": "produit sélectionné",
     "deleteItem_one": "produit sélectionné",
@@ -68,7 +68,10 @@
     "grantedAdd": "Ajouter une personne",
     "compareMyList": "Comparer ma liste",
     "deleteThisItem": "Supprimer cet article",
-    "deleteThisItemConfirm": "Cet article sera retiré de votre liste."
+    "deleteThisItemConfirm": "Cet article sera retiré de votre liste.",
+    "markBought": "Marquer comme acheté",
+    "rejectRequest": "Refuser la demande",
+    "blockUser": "Bloquer cette personne"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -98,19 +101,20 @@
     "search": "Chercher",
     "noItems": "Aucun article",
     "addFromList": "Ajoutez des produits dans Ma Liste",
-    "addFromListSub": "Puis appuyez sur « Trouver les produits exacts »",
+    "addFromListSub": "Puis appuyez sur « Comparer ma liste »",
     "clear": "Effacer",
     "addProduct": "Ajouter un produit",
-    "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur « Trouver les produits exacts » pour voir les résultats ici.",
+    "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur « Comparer ma liste » pour voir les résultats ici.",
     "quantity": "quantité",
     "continueShopping": "Continuer les courses",
     "notFound": "non trouvé(s) en boutique",
     "noMatchTitle": "Aucun produit trouvé\npour votre liste",
     "noMatchSub": "Ces boutiques ne vendent pas ces articles. Vérifiez les noms ou parcourez les Boutiques.",
-    "searchToPrice": "Appuyez sur « Chercher » pour choisir vos produits et voir le prix.",
+    "searchToPrice": "Appuyez sur « Ajouter un produit » pour choisir vos produits et voir le prix.",
     "searchToPriceShop": "Recherchez un produit pour voir le prix.",
     "shopUnit": "boutique",
-    "shopUnitPlural": "boutiques"
+    "shopUnitPlural": "boutiques",
+    "clearConfirmMsg": "Effacer la comparaison en cours ? Les produits choisis seront retirés."
   },
   "searchPopup": {
     "header": "De quoi avez-vous besoin ?",
@@ -184,7 +188,7 @@
     "noFavProducts": "Aucun produit favori",
     "addFromProducts": "Ajoutez depuis l'onglet Produits",
     "addProductHint": "Appuyez sur le coeur d'un produit pour l'ajouter",
-    "searchPlaceholder": "Rechercher un shop...",
+    "searchPlaceholder": "Rechercher une boutique...",
     "searchProductPlaceholder": "Rechercher un produit...",
     "shops": "Boutiques",
     "products": "Produits",
@@ -477,7 +481,8 @@
     "forgotErrorWeak": "Ce mot de passe n'est pas accepté. Choisissez-en un autre, plus difficile à deviner.",
     "forgotErrorGeneric": "Une erreur est survenue. Veuillez réessayer.",
     "forgotTooMany": "Trop de demandes. Veuillez réessayer plus tard.",
-    "forgotBackToLogin": "Retour à la connexion"
+    "forgotBackToLogin": "Retour à la connexion",
+    "forgotEmailNotFound": "Cette adresse e-mail n'est reliée à aucun compte."
   },
   "cart": {
     "today": "Aujourd'hui",
@@ -760,7 +765,8 @@
     "thanks": "Merci !",
     "saved": "Votre note a été enregistrée.",
     "yourRating": "Votre note",
-    "rateDriver": "Noter votre livreur"
+    "rateDriver": "Noter votre livreur",
+    "failed": "Votre note n'a pas pu être enregistrée. Veuillez réessayer."
   },
   "report": {
     "notReceived": "Commande non reçue",
@@ -773,7 +779,9 @@
     "sentTitle": "Signalement envoyé",
     "sent": "Notre support va traiter votre demande.",
     "answerTitle": "Réponse à votre signalement",
-    "handled": "Votre signalement a été traité"
+    "handled": "Votre signalement a été traité",
+    "failed": "Votre signalement n'a pas pu être envoyé. Veuillez réessayer.",
+    "moreReasons": "Autres motifs…"
   },
   "stock": {
     "option": "Option",
@@ -1602,7 +1610,7 @@
       "summary_many": "{{count}} articles, environ {{total}}",
       "summary_other": "{{count}} articles, environ {{total}}",
       "estimateNote": "Estimation indicative (~). Le prix réel est celui de la boutique, comparez-le ensuite.",
-      "targetList": "Ajouter à la liste",
+      "targetList": "Dans quelle liste ?",
       "defaultList": "Ma Liste",
       "activeList": "active",
       "showBasics": "Afficher les basiques du placard",
@@ -1975,10 +1983,10 @@
     "itemsSelected_one": "{{count}} article sélectionné",
     "itemsSelected_many": "{{count}} articles sélectionnés",
     "itemsSelected_other": "{{count}} articles sélectionnés",
-    "listSelected": "{{count}} produits sélectionnés",
-    "listSelected_one": "{{count}} produit sélectionné",
-    "listSelected_many": "{{count}} produits sélectionnés",
-    "listSelected_other": "{{count}} produits sélectionnés",
+    "listSelected": "{{count}} articles sélectionnés",
+    "listSelected_one": "{{count}} article sélectionné",
+    "listSelected_many": "{{count}} articles sélectionnés",
+    "listSelected_other": "{{count}} articles sélectionnés",
     "notFound": "{{count}} produits non trouvés en boutique",
     "notFound_one": "{{count}} produit non trouvé en boutique",
     "notFound_many": "{{count}} produits non trouvés en boutique",

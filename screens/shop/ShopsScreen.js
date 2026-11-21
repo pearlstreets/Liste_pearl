@@ -1,7 +1,7 @@
 import React from "react";
 import { getProductOptions, prefetchShopOptions } from "../../services/products";
 import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante } from "../../lib/variantes";
-import { loadShops } from "../../lib/shopsCache";
+import { loadShops, peekShops } from "../../lib/shopsCache";
 import { takePendingShop, onOpenShop } from "../../lib/openShop";
 import { useTranslation } from "react-i18next";
 import { DeviceEventEmitter } from "react-native";
@@ -14,7 +14,7 @@ import { MARCHE, SERIF, TAILLES } from "../../components/ui/marche";
 import { BRAND, INSET_BAS, THEME } from "../../components/commun/theme";
 import { useCurrency } from "../../components/commun/devise";
 import { KEY_CART, KEY_FAV_SHOPS } from "../../lib/constants";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { sousCategorie } from "../../lib/sousCategorie";
 
 
@@ -29,8 +29,12 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
   const estFocus = useIsFocused();
   const visible = estFocus && actif !== false;
   const { fmtPrice } = useCurrency();
-  const [shops, setShops] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const navigation = useNavigation();
+  // Dernière liste connue (même ancienne) affichée tout de suite ; load() au
+  // montage la rafraîchit en arrière-plan.
+  const cacheBoutiques = peekShops('product_purchase');
+  const [shops, setShops] = React.useState(() => cacheBoutiques || []);
+  const [loading, setLoading] = React.useState(() => !(cacheBoutiques && cacheBoutiques.length));
   const [refreshing, setRefreshing] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [selectedShop, setSelectedShop] = React.useState(null);
@@ -253,9 +257,12 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
 
   // Filtres de recherche (boutiques + produits d'une boutique). Insensible à la casse.
   const _q = (s) => String(s || '').toLowerCase().trim();
-  const filteredShops = shopSearch.trim()
-    ? shops.filter((s) => _q(s.name).includes(_q(shopSearch)) || _q(s.address).includes(_q(shopSearch)))
+  const boutiquesFiltrees = shopSearch.trim()
+    ? shops.filter((s) => _q(s.name).includes(_q(shopSearch)) || _q(s.address).includes(_q(shopSearch))
+      || (s.products || []).some((p) => _q(p.name).includes(_q(shopSearch))))
     : shops;
+  // Favoris en tête, ordre d'origine gardé (tri stable), comme Comparer.
+  const filteredShops = [...boutiquesFiltrees].sort((a, b) => (isShopFav(a.name) ? 0 : 1) - (isShopFav(b.name) ? 0 : 1));
   const _shopProducts = selectedShop?.products || [];
   const filteredProducts = productSearch.trim()
     ? _shopProducts.filter((p) => _q(p.name).includes(_q(productSearch)) || _q(sousCategorie(p)).includes(_q(productSearch)))
@@ -301,6 +308,9 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
         <View style={shopStyles.center}>
           <Ionicons name="storefront-outline" size={40} color={THEME.faint} />
           <Text style={shopStyles.emptyTxt}>{t('shops.empty', 'Aucune boutique disponible')}</Text>
+          <TouchableOpacity style={shopStyles.retryBtn} onPress={() => { setLoading(true); load(true); }}>
+            <Text style={shopStyles.retryTxt}>{t('shops.retry', 'Réessayer')}</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <FlatList
@@ -353,7 +363,11 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
             ListEmptyComponent={<Text style={[shopStyles.emptyTxt, { marginTop: 24 }]}>{productSearch.trim() ? t('shops.noProductMatch', 'Aucun produit trouvé') : t('shops.noProducts', 'Aucun produit')}</Text>}
           />
           {toast ? (
-            <View style={shopStyles.toast}><Ionicons name="checkmark-circle" size={18} color="#1C1917" /><Text style={shopStyles.toastTxt}>{toast}</Text></View>
+            <TouchableOpacity activeOpacity={0.8} style={shopStyles.toast}
+              onPress={() => { setSelectedShop(null); navigation.navigate('cart'); }}
+              accessibilityRole="button" accessibilityLabel={`${toast} · ${t('cart.viewCart')}`}>
+              <Ionicons name="checkmark-circle" size={18} color="#1C1917" /><Text style={shopStyles.toastTxt}>{toast} · {t('cart.viewCart')}</Text>
+            </TouchableOpacity>
           ) : null}
 
           {/* Détail produit — page plein écran façon AppUser (overlay absolu
@@ -432,7 +446,7 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
                 const auPlafond = cap !== null && pdQty >= cap;
                 return (
               <View style={shopStyles.pdFooter}>
-                <TouchableOpacity style={shopStyles.pdQtyBtn} onPress={() => setPdQty((q) => Math.max(1, q - 1))}
+                <TouchableOpacity style={[shopStyles.pdQtyBtn, pdQty <= 1 && { opacity: 0.4 }]} onPress={() => setPdQty((q) => Math.max(1, q - 1))}
                   accessibilityRole="button" accessibilityLabel={t('cart.qtyMinus', 'moins')}>
                   <Ionicons name="remove" size={20} color={THEME.ink} />
                 </TouchableOpacity>

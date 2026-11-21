@@ -27,7 +27,7 @@
     "cancel": "Abbrechen",
     "save": "Speichern",
     "delete": "Löschen",
-    "deleteTitle": "Löschen",
+    "deleteTitle": "Diese Artikel löschen?",
     "deleteConfirm": "Löschen",
     "deleteItem": "ausgewählter Artikel",
     "deleteItem_one": "ausgewählter Artikel",
@@ -67,7 +67,10 @@
     "grantedAdd": "Person hinzufügen",
     "compareMyList": "Meine Liste vergleichen",
     "deleteThisItem": "Diesen Artikel löschen",
-    "deleteThisItemConfirm": "Dieser Artikel wird von Ihrer Liste entfernt."
+    "deleteThisItemConfirm": "Dieser Artikel wird von Ihrer Liste entfernt.",
+    "markBought": "Als gekauft markieren",
+    "rejectRequest": "Anfrage ablehnen",
+    "blockUser": "Diese Person blockieren"
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",
@@ -102,14 +105,15 @@
     "notFound": "nicht im Shop gefunden",
     "noMatchTitle": "Keine Produkte\nfür Ihre Liste gefunden",
     "noMatchSub": "Diese Shops verkaufen diese Artikel nicht. Prüfen Sie die Namen oder durchstöbern Sie die Shops.",
-    "searchToPrice": "Tippen Sie auf Suchen, um Ihre Produkte zu wählen und den Preis zu sehen.",
+    "searchToPrice": "Tippen Sie auf \"Produkt hinzufügen\", um Ihre Produkte zu wählen und den Preis zu sehen.",
     "searchToPriceShop": "Suchen Sie ein Produkt, um den Preis zu sehen.",
     "shopUnit": "Shop",
     "shopUnitPlural": "Shops",
-    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Exakte Produkte finden\", um die Ergebnisse hier zu sehen.",
+    "defaultProducts": "Fügen Sie Artikel zu Meine Liste hinzu und tippen Sie dann auf \"Meine Liste vergleichen\", um die Ergebnisse hier zu sehen.",
     "addProduct": "Produkt hinzufügen",
     "addFromList": "Fügen Sie Produkte zu Meine Liste hinzu",
-    "addFromListSub": "Tippen Sie dann auf \"Exakte Produkte finden\""
+    "addFromListSub": "Tippen Sie dann auf \"Meine Liste vergleichen\"",
+    "clearConfirmMsg": "Den aktuellen Vergleich löschen? Die gewählten Produkte werden entfernt."
   },
   "searchPopup": {
     "header": "Was brauchen Sie?",
@@ -181,7 +185,7 @@
   "favorites": {
     "noFavorites": "Noch keine Lieblingsgeschäfte",
     "addFromProducts": "Fügen Sie Ihre Lieblingsgeschäfte auf der Registerkarte Produkte hinzu",
-    "searchPlaceholder": "Ein Favorit suchen...",
+    "searchPlaceholder": "Ein Geschäft suchen...",
     "manageHint": "Ihre Lieblingsshops und -produkte",
     "shops": "Geschäfte",
     "products": "Produkte",
@@ -476,7 +480,8 @@
     "forgotErrorWeak": "Dieses Passwort wird nicht akzeptiert. Wählen Sie ein anderes, schwerer zu erratendes.",
     "forgotErrorGeneric": "Ein Problem ist aufgetreten. Bitte versuchen Sie es erneut.",
     "forgotTooMany": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
-    "forgotBackToLogin": "Zurück zur Anmeldung"
+    "forgotBackToLogin": "Zurück zur Anmeldung",
+    "forgotEmailNotFound": "Diese E-Mail-Adresse ist mit keinem Konto verknüpft."
   },
   "cart": {
     "today": "Heute",
@@ -758,7 +763,8 @@
     "thanks": "Danke!",
     "saved": "Ihre Bewertung wurde gespeichert.",
     "yourRating": "Ihre Bewertung",
-    "rateDriver": "Bewerten Sie Ihren Fahrer"
+    "rateDriver": "Bewerten Sie Ihren Fahrer",
+    "failed": "Ihre Bewertung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
   },
   "report": {
     "notReceived": "Bestellung nicht erhalten",
@@ -771,7 +777,9 @@
     "sentTitle": "Meldung gesendet",
     "sent": "Unser Support-Team kümmert sich um Ihr Anliegen.",
     "answerTitle": "Antwort auf Ihre Meldung",
-    "handled": "Ihre Meldung wurde bearbeitet"
+    "handled": "Ihre Meldung wurde bearbeitet",
+    "failed": "Ihre Meldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "moreReasons": "Weitere Gründe…"
   },
   "stock": {
     "option": "Option",
@@ -1590,7 +1598,7 @@
       "title": "Mein Einkauf",
       "summary": "{{count}} Artikel, ca. {{total}}",
       "estimateNote": "Ungefähre Schätzung (~). Der echte Preis ist der des Shops, vergleichen Sie ihn anschließend.",
-      "targetList": "Auf die Liste setzen",
+      "targetList": "In welche Liste?",
       "defaultList": "Meine Liste",
       "activeList": "aktiv",
       "showBasics": "Grundnahrungsmittel anzeigen",

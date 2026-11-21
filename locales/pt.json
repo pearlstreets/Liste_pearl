@@ -27,7 +27,7 @@
     "cancel": "Cancelar",
     "save": "Salvar",
     "delete": "Excluir",
-    "deleteTitle": "Excluir",
+    "deleteTitle": "Excluir estes itens?",
     "deleteConfirm": "Excluir",
     "deleteItem": "item selecionado",
     "deleteItem_one": "item selecionado",
@@ -68,7 +68,10 @@
     "grantedAdd": "Adicionar alguém",
     "compareMyList": "Comparar a minha lista",
     "deleteThisItem": "Eliminar este artigo",
-    "deleteThisItemConfirm": "Este artigo será removido da sua lista."
+    "deleteThisItemConfirm": "Este artigo será removido da sua lista.",
+    "markBought": "Marcar como comprado",
+    "rejectRequest": "Recusar o pedido",
+    "blockUser": "Bloquear esta pessoa"
   },
   "productsScreen": {
     "clickAndCollect": "Compre e Retire",
@@ -103,14 +106,15 @@
     "notFound": "não encontrado(s) em loja",
     "noMatchTitle": "Nenhum produto encontrado\npara a sua lista",
     "noMatchSub": "Estas lojas não vendem estes artigos. Verifique os nomes ou explore as Lojas.",
-    "searchToPrice": "Toque em Procurar para escolher os seus produtos e ver o preço.",
+    "searchToPrice": "Toque em \"Adicionar um produto\" para escolher os seus produtos e ver o preço.",
     "searchToPriceShop": "Procure um produto para ver o preço.",
     "shopUnit": "loja",
     "shopUnitPlural": "lojas",
-    "defaultProducts": "Adicione itens à Minha Lista e toque em \"Encontrar produtos exatos\" para ver os resultados aqui.",
+    "defaultProducts": "Adicione itens à Minha Lista e toque em \"Comparar a minha lista\" para ver os resultados aqui.",
     "addProduct": "Adicionar um produto",
     "addFromList": "Adicione produtos à Minha Lista",
-    "addFromListSub": "Depois toque em \"Encontrar produtos exatos\""
+    "addFromListSub": "Depois toque em \"Comparar a minha lista\"",
+    "clearConfirmMsg": "Limpar a comparação atual? Os produtos escolhidos serão removidos."
   },
   "searchPopup": {
     "header": "O que você precisa?",
@@ -182,7 +186,7 @@
   "favorites": {
     "noFavorites": "Nenhuma loja favorita ainda",
     "addFromProducts": "Adicione suas lojas favoritas na aba Produtos",
-    "searchPlaceholder": "Pesquisar um favorito...",
+    "searchPlaceholder": "Pesquisar uma loja...",
     "manageHint": "As suas lojas e produtos favoritos",
     "shops": "Lojas",
     "products": "Produtos",
@@ -477,7 +481,8 @@
     "forgotErrorWeak": "Esta palavra-passe não é aceite. Escolha outra, mais difícil de adivinhar.",
     "forgotErrorGeneric": "Ocorreu um problema. Tente novamente.",
     "forgotTooMany": "Demasiados pedidos. Tente novamente mais tarde.",
-    "forgotBackToLogin": "Voltar ao início de sessão"
+    "forgotBackToLogin": "Voltar ao início de sessão",
+    "forgotEmailNotFound": "Este endereço de e-mail não está associado a nenhuma conta."
   },
   "cart": {
     "today": "Hoje",
@@ -760,7 +765,8 @@
     "thanks": "Obrigado!",
     "saved": "Sua avaliação foi salva.",
     "yourRating": "Sua avaliação",
-    "rateDriver": "Avalie seu entregador"
+    "rateDriver": "Avalie seu entregador",
+    "failed": "Não foi possível salvar sua avaliação. Tente novamente."
   },
   "report": {
     "notReceived": "Pedido não recebido",
@@ -773,7 +779,9 @@
     "sentTitle": "Relatório enviado",
     "sent": "Nossa equipe de suporte cuidará da sua solicitação.",
     "answerTitle": "Resposta à sua reclamação",
-    "handled": "A sua reclamação foi tratada"
+    "handled": "A sua reclamação foi tratada",
+    "failed": "Não foi possível enviar seu relatório. Tente novamente.",
+    "moreReasons": "Outros motivos…"
   },
   "stock": {
     "option": "Opção",
@@ -1605,7 +1613,7 @@
       "summary_many": "{{count}} artigos, cerca de {{total}}",
       "summary_other": "{{count}} artigos, cerca de {{total}}",
       "estimateNote": "Estimativa indicativa (~). O preço real é o da loja, compare-o depois.",
-      "targetList": "Adicionar à lista",
+      "targetList": "Em que lista?",
       "defaultList": "Minha Lista",
       "activeList": "ativa",
       "showBasics": "Mostrar essenciais da despensa",

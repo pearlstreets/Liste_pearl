@@ -27,7 +27,7 @@
     "cancel": "Annullare",
     "save": "Salvare",
     "delete": "Eliminare",
-    "deleteTitle": "Eliminare",
+    "deleteTitle": "Eliminare questi articoli?",
     "deleteConfirm": "Eliminare",
     "deleteItem": "articolo selezionato",
     "deleteItem_one": "articolo selezionato",
@@ -68,7 +68,10 @@
     "grantedAdd": "Aggiungi una persona",
     "compareMyList": "Confronta la mia lista",
     "deleteThisItem": "Elimina questo articolo",
-    "deleteThisItemConfirm": "Questo articolo verrà rimosso dalla sua lista."
+    "deleteThisItemConfirm": "Questo articolo verrà rimosso dalla sua lista.",
+    "markBought": "Segna come acquistato",
+    "rejectRequest": "Rifiuta la richiesta",
+    "blockUser": "Blocca questa persona"
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",
@@ -103,14 +106,15 @@
     "notFound": "non trovato/i in negozio",
     "noMatchTitle": "Nessun prodotto trovato\nper la Sua lista",
     "noMatchSub": "Questi negozi non vendono questi articoli. Controlli i nomi o esplori i Negozi.",
-    "searchToPrice": "Tocchi Cercare per scegliere i Suoi prodotti e vedere il prezzo.",
+    "searchToPrice": "Tocchi \"Aggiungere un prodotto\" per scegliere i Suoi prodotti e vedere il prezzo.",
     "searchToPriceShop": "Cerchi un prodotto per vedere il prezzo.",
     "shopUnit": "negozio",
     "shopUnitPlural": "negozi",
-    "defaultProducts": "Aggiunga articoli a La mia Lista, poi tocchi \"Trovare i prodotti esatti\" per vedere i risultati qui.",
+    "defaultProducts": "Aggiunga articoli a La mia Lista, poi tocchi \"Confronta la mia lista\" per vedere i risultati qui.",
     "addProduct": "Aggiungere un prodotto",
     "addFromList": "Aggiunga prodotti a La mia Lista",
-    "addFromListSub": "Poi tocchi \"Trovare i prodotti esatti\""
+    "addFromListSub": "Poi tocchi \"Confronta la mia lista\"",
+    "clearConfirmMsg": "Cancellare il confronto in corso? I prodotti scelti saranno rimossi."
   },
   "searchPopup": {
     "header": "Di cosa ha bisogno?",
@@ -182,7 +186,7 @@
   "favorites": {
     "noFavorites": "Nessun negozio preferito ancora",
     "addFromProducts": "Aggiunga i Suoi negozi preferiti dalla scheda Prodotti",
-    "searchPlaceholder": "Cercare un preferito...",
+    "searchPlaceholder": "Cercare un negozio...",
     "manageHint": "I Suoi negozi e prodotti preferiti",
     "shops": "Negozi",
     "products": "Prodotti",
@@ -477,7 +481,8 @@
     "forgotErrorWeak": "Questa password non è accettata. Ne scelga un'altra, più difficile da indovinare.",
     "forgotErrorGeneric": "Si è verificato un problema. Riprovi.",
     "forgotTooMany": "Troppe richieste. Riprovi più tardi.",
-    "forgotBackToLogin": "Torna all'accesso"
+    "forgotBackToLogin": "Torna all'accesso",
+    "forgotEmailNotFound": "Questo indirizzo e-mail non è collegato a nessun account."
   },
   "cart": {
     "today": "Oggi",
@@ -760,7 +765,8 @@
     "thanks": "Grazie!",
     "saved": "La Sua valutazione è stata salvata.",
     "yourRating": "La Sua valutazione",
-    "rateDriver": "Valutare il corriere"
+    "rateDriver": "Valutare il corriere",
+    "failed": "Non è stato possibile salvare la Sua valutazione. La preghiamo di riprovare."
   },
   "report": {
     "notReceived": "Ordine non ricevuto",
@@ -773,7 +779,9 @@
     "sentTitle": "Segnalazione inviata",
     "sent": "Il nostro team di supporto gestirà la Sua richiesta.",
     "answerTitle": "Risposta alla sua segnalazione",
-    "handled": "La sua segnalazione è stata gestita"
+    "handled": "La sua segnalazione è stata gestita",
+    "failed": "Non è stato possibile inviare la Sua segnalazione. La preghiamo di riprovare.",
+    "moreReasons": "Altri motivi…"
   },
   "stock": {
     "option": "Opzione",
@@ -1605,7 +1613,7 @@
       "summary_many": "{{count}} articoli, circa {{total}}",
       "summary_other": "{{count}} articoli, circa {{total}}",
       "estimateNote": "Stima indicativa (~). Il prezzo reale è quello del negozio, lo confronti in seguito.",
-      "targetList": "Aggiungere alla lista",
+      "targetList": "In quale lista?",
       "defaultList": "La mia Lista",
       "activeList": "attiva",
       "showBasics": "Mostrare i prodotti di base",

@@ -23,6 +23,7 @@ import { DragWrap } from "../../components/commun/DragWrap";
 import { KEY_ITEMS, KEY_LISTS, KEY_ACTIVE_LIST, DEFAULT_LIST_ID, listItemsKey, KEY_SELECTED } from "../../lib/constants";
 import { EVENEMENT_PARTAGE, prendrePartageAOuvrir } from "../../services/pushToucher";
 import { useDemandesPartage, DemandesPartageModale } from "./DemandesPartage";
+import { allerA } from '../../app/onglets';
 
 export default function ListScreen() {
   const { t, i18n: i18nListe } = useTranslation();
@@ -36,8 +37,8 @@ export default function ListScreen() {
   const navigation = useNavigation();
   const [text, setText] = useState("");
   const [items, setItems] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [strikeAll, setStrikeAll] = useState(false);
+  const [, setSelectAll] = useState(false);
+  const [, setStrikeAll] = useState(false);
   const [hideCrossed, setHideCrossed] = useState(false);
 
   const [editVisible, setEditVisible] = useState(false);
@@ -178,6 +179,23 @@ export default function ListScreen() {
     return () => { alive = false; };
   }, []));
 
+  // Fenêtre « Partage de listes » refermée : une liste acceptée apparaît tout de suite.
+  const demandesOuvertes = partage.shareRequestsVisible;
+  const demandesOuvertesAvant = React.useRef(demandesOuvertes);
+  useEffect(() => {
+    const etaitOuverte = demandesOuvertesAvant.current;
+    demandesOuvertesAvant.current = demandesOuvertes;
+    if (!etaitOuverte || demandesOuvertes || !isLoggedIn) return;
+    let alive = true;
+    (async () => {
+      try {
+        const res = await getSharedWithMe();
+        if (alive && res && res.status) setSharedLists(res.data?.lists || []);
+      } catch {}
+    })();
+    return () => { alive = false; };
+  }, [demandesOuvertes, isLoggedIn]);
+
   // Synchronise « Ma liste » (la liste par défaut) vers le serveur pour le partage.
   // IMPORTANT : seule la liste par défaut est partagée. Les listes nommées
   // supplémentaires restent privées/locales — on ne pousse JAMAIS leur contenu
@@ -308,7 +326,7 @@ export default function ListScreen() {
     })();
   }, []));
 
-  const addFromInput = () => {
+  const addFromInput = (garderClavier) => {
     const parsed = parseMulti(text);
     if (parsed.length === 0) return;
     setItems(prev => {
@@ -321,7 +339,7 @@ export default function ListScreen() {
       return base;
     });
     setText("");
-    Keyboard.dismiss();
+    if (!garderClavier) Keyboard.dismiss();
   };
 
   const onMinus = id => setItems(items.map(it => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it));
@@ -332,11 +350,11 @@ export default function ListScreen() {
   const toggleCrossed  = id => setItems(items.map(it => it.id === id ? { ...it, crossed: !it.crossed, selected: it.crossed ? it.selected : false } : it));
 
   const toggleSelectAll = () => {
-    const v = !selectAll; setSelectAll(v);
-    setItems(items.map(it => ({ ...it, selected: v })));
+    const v = !toutCoche; setSelectAll(v);
+    setItems(items.map(it => it.crossed ? it : { ...it, selected: v }));
   };
   const toggleStrikeAll = () => {
-    const v = !strikeAll; setStrikeAll(v);
+    const v = !toutBarre; setStrikeAll(v);
     setItems(items.map(it => ({ ...it, crossed: v, selected: v ? false : it.selected })));
   };
 
@@ -353,6 +371,9 @@ export default function ListScreen() {
     () => (hideCrossed ? [] : sourceItems.filter(i => i && i.crossed)),
     [sourceItems, hideCrossed],
   );
+  // États des pastilles calculés sur les articles (et non un état local).
+  const toutCoche = activeItems.length > 0 && activeItems.every(i => i.selected);
+  const toutBarre = sourceItems.length > 0 && sourceItems.every(i => i && i.crossed);
 
   const openEdit = (it) => { setEditId(it.id); setEditText(it.name); setEditVisible(true); };
   const closeEdit = () => { setEditVisible(false); setEditId(null); setEditText(""); };
@@ -551,14 +572,15 @@ export default function ListScreen() {
       accessibilityHint={drag ? t('listScreen.dragHint', 'Appui long pour déplacer') : undefined}
     >
       {/* Select checkbox */}
-      <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
+      <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}
+        accessibilityRole="checkbox" accessibilityState={{ checked: !!(item.selected && !isCrossed) }} accessibilityLabel={paquet.name}>
         <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
           {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color={MARCHE.blanc} /> : null}
         </View>
       </TouchableOpacity>
 
       {/* Name — tap to edit, appui long pour déplacer la ligne */}
-      <TouchableOpacity onPress={() => !isCrossed && openEdit(item)} onLongPress={drag} delayLongPress={220} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
+      <TouchableOpacity onPress={() => openEdit(item)} onLongPress={drag} delayLongPress={220} activeOpacity={0.7} style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
         <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{paquet.name}</Text>
         {paquet.detail ? <Text numberOfLines={1} style={lstyles.itemPack}>{paquet.detail}</Text> : null}
       </TouchableOpacity>
@@ -588,7 +610,8 @@ export default function ListScreen() {
       </TouchableOpacity>
 
       {/* Done toggle */}
-      <TouchableOpacity onPress={() => toggleCrossed(item.id)} activeOpacity={0.7} style={{ marginLeft: 10 }}>
+      <TouchableOpacity onPress={() => toggleCrossed(item.id)} activeOpacity={0.7} style={{ marginLeft: 10 }}
+        accessibilityRole="checkbox" accessibilityState={{ checked: !!isCrossed }} accessibilityLabel={t('listScreen.markBought', 'Marquer comme acheté')}>
         <View style={[lstyles.doneBtn, isCrossed && lstyles.doneBtnOn]}>
           <Ionicons name="checkmark" size={15} color={isCrossed ? '#fff' : THEME.faint} />
         </View>
@@ -705,36 +728,39 @@ export default function ListScreen() {
           numberOfLines={1}
           style={lstyles.input}
           returnKeyType="done"
-          onSubmitEditing={addFromInput}
+          blurOnSubmit={false}
+          onSubmitEditing={() => addFromInput(true)}
         />
-        <TouchableOpacity onPress={addFromInput} activeOpacity={0.85} style={lstyles.addBtn}>
+        <TouchableOpacity onPress={() => addFromInput(false)} activeOpacity={0.85} style={lstyles.addBtn}>
           <Ionicons name="add" size={26} color="#1C1917" />
         </TouchableOpacity>
       </View>
 
+      {items.length > 0 && (
       <View style={lstyles.toolRow}>
-        <TouchableOpacity onPress={toggleSelectAll} activeOpacity={0.8} style={[lstyles.pill, selectAll && lstyles.pillOn]}>
-          <Text style={[lstyles.pillTxt, selectAll && lstyles.pillTxtOn]}>{t('listScreen.selectAll')}</Text>
+        <TouchableOpacity onPress={toggleSelectAll} activeOpacity={0.8} style={[lstyles.pill, toutCoche && lstyles.pillOn]}>
+          <Text style={[lstyles.pillTxt, toutCoche && lstyles.pillTxtOn]}>{t(toutCoche ? 'listScreen.deselectAll' : 'listScreen.selectAll')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={toggleStrikeAll} activeOpacity={0.8} style={[lstyles.pill, strikeAll && lstyles.pillOnDark]}>
-          <Text style={[lstyles.pillTxt, strikeAll && lstyles.pillTxtOn]}>{t('listScreen.strikeAll')}</Text>
+        <TouchableOpacity onPress={toggleStrikeAll} activeOpacity={0.8} style={[lstyles.pill, toutBarre && lstyles.pillOnDark]}>
+          <Text style={[lstyles.pillTxt, toutBarre && lstyles.pillTxtOn]}>{t('listScreen.strikeAll')}</Text>
         </TouchableOpacity>
-        {items.some(it => it.selected) && (
+        {items.some(it => it.selected && !it.crossed) && (
           <TouchableOpacity onPress={() => {
-            const count = items.filter(it => it.selected).length;
+            const count = items.filter(it => it.selected && !it.crossed).length;
             Alert.alert(t('listScreen.deleteTitle'), `${t('listScreen.deleteConfirm')} ${t('counts.listSelected', { count })}`, [
               { text: t('listScreen.cancel'), style: 'cancel' },
               { text: t('listScreen.delete'), style: 'destructive', onPress: () => {
-                setItems(prev => prev.filter(it => !it.selected));
+                setItems(prev => prev.filter(it => !(it.selected && !it.crossed)));
                 setSelectAll(false);
               }}
             ]);
           }} activeOpacity={0.8} style={lstyles.delPill}>
             <Ionicons name="trash-outline" size={15} color={THEME.danger} />
-            <Text style={lstyles.delTxt}>{items.filter(it => it.selected).length}</Text>
+            <Text style={lstyles.delTxt}>{items.filter(it => it.selected && !it.crossed).length}</Text>
           </TouchableOpacity>
         )}
       </View>
+      )}
       </>)}
     </View>
   );
@@ -750,9 +776,10 @@ export default function ListScreen() {
         renderItem={renderItem}
         ListHeaderComponent={Header}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          crossedItems.length === 0 ? (
+          sourceItems.length === 0 ? (
             <View style={lstyles.empty}>
               <Text style={lstyles.emptyTitle}>{t('listScreen.noItems')}</Text>
               <Text style={lstyles.emptyHint}>{t('listScreen.inputPlaceholder')}</Text>
@@ -811,7 +838,7 @@ export default function ListScreen() {
           await AsyncStorage.setItem(KEY_SELECTED, JSON.stringify(chosen));
         }catch(e){}
         DeviceEventEmitter.emit('PRODUCTS_RESET');
-        navigation.navigate("products");
+        allerA(navigation, 'products');
       }}>
           <Ionicons name="bag-check-outline" size={20} color="#1C1917" />
           <Text style={lstyles.ctaTxt}>{t('listScreen.compareMyList')} ({itemsToSend.length})</Text>
@@ -1082,18 +1109,20 @@ export default function ListScreen() {
       {/* Partager ma liste */}
       <Modal visible={shareModalOpen} transparent animationType="fade" onRequestClose={() => setShareModalOpen(false)}
         onShow={() => setTimeout(() => shareInputRef.current?.focus(), 80)}>
-        <View style={lstyles.modalBackdrop}>
+        <KeyboardAvoidingView behavior="padding" style={lstyles.modalBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} onPress={() => setShareModalOpen(false)} />
           <View style={lstyles.modalBox}>
             <Text style={lstyles.modalTitle}>{t('listScreen.shareTitle', 'Partager ma liste')}</Text>
             <Text style={{ color:THEME.faint, marginBottom:12 }}>{t('listScreen.shareHint', 'Email ou pseudo de la personne. Elle recevra une demande à accepter.')}</Text>
             {!isLoggedIn && (
-              <View style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, borderRadius:12, padding:10, marginBottom:10 }}>
+              <TouchableOpacity activeOpacity={0.8} accessibilityRole="button"
+                onPress={() => { setShareModalOpen(false); setTimeout(() => DeviceEventEmitter.emit('OPEN_AUTH'), 350); }}
+                style={{ flexDirection:'row', alignItems:'center', backgroundColor:THEME.brandSoft, borderRadius:12, padding:10, marginBottom:10 }}>
                 <Ionicons name="information-circle-outline" size={18} color={THEME.brandDark} style={{ marginRight:8 }} />
                 <Text style={{ flex:1, fontSize:12.5, color:THEME.brandDark, fontWeight:'600' }}>
-                  {t('listScreen.shareNeedsLogin', 'Connectez-vous pour pouvoir envoyer une demande de partage.')}
+                  {t('listScreen.shareNeedsLogin', 'Connectez-vous pour pouvoir envoyer une demande de partage.')} {t('auth.loginBtn')}
                 </Text>
-              </View>
+              </TouchableOpacity>
             )}
             {shareModalOpen ? (
             <TextInput
@@ -1137,7 +1166,7 @@ export default function ListScreen() {
               <Text style={lstyles.ctaTxt}>{t('listScreen.sendRequest', 'Envoyer la demande')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
 
       {/* Unit picker modal */}

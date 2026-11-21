@@ -95,7 +95,7 @@ export default function MotDePasseOublie({ styles, t, emailInitial = '', etape, 
     if (mdp !== mdp2) { setErreur(t('auth.errorPwdMismatch', 'Les mots de passe ne correspondent pas')); return; }
     lancer(async () => {
       const r = await apiPost('/users/reset-password/', { reset_token: jeton, new_password: mdp });
-      if (r && r.status) { onTermine(email.trim()); return; }
+      if (r && r.status) { onTermine(email.trim(), mdp); return; }
       if (estQuota(r)) { setErreur(t('auth.forgotTooMany', 'Trop de demandes. Veuillez réessayer plus tard.')); return; }
       if (r && r.statusCode === 401) {
         // Jeton expiré ou déjà servi : il faut un nouveau code.

@@ -2,7 +2,7 @@ import React from "react";
 import { refusAnnulation } from "../../../lib/annulation";
 import { getMarketplaceOrderStatuses } from "../../../services/orders";
 import { cancelDelivery, getDeliveryStatus, addDeliveryTip, reportDeliveryProblem, rateDelivery, DELIVERY_STATUS, getDeliveryStatusInfo } from "../../../services/delivery";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KEY_ORDER_HISTORY } from "../../../lib/constants";
 
@@ -142,8 +142,12 @@ export function useCommandes(t) {
         const s = await getDeliveryStatus(orderId);
         if (s && s.status) setDeliveryStatuses(prev => ({ ...prev, [orderId]: s }));
         Alert.alert(t('rating.thanks', 'Merci !'), t('rating.saved', 'Votre note a été enregistrée.'));
+      } else {
+        Alert.alert(t('rating.rateDriver', 'Noter votre livreur'), t('rating.failed', "Votre note n'a pas pu être enregistrée. Veuillez réessayer."));
       }
-    } catch (e) {}
+    } catch (e) {
+      Alert.alert(t('rating.rateDriver', 'Noter votre livreur'), t('rating.failed', "Votre note n'a pas pu être enregistrée. Veuillez réessayer."));
+    }
   }, [t]);
   const submitReport = React.useCallback((orderId) => {
     const cats = [
@@ -153,21 +157,33 @@ export function useCommandes(t) {
       { key: 'damaged', label: t('report.damaged', 'Commande endommagée') },
       { key: 'other', label: t('report.other', 'Autre') },
     ];
-    Alert.alert(
-      t('report.title', 'Signaler un problème'),
-      t('report.pick', "Que s'est-il passé ?"),
-      [
-        ...cats.map(c => ({ text: c.label, onPress: async () => {
-          try {
-            const res = await reportDeliveryProblem(orderId, c.key);
-            if (res && res.status === 'success') {
-              Alert.alert(t('report.sentTitle', 'Signalement envoyé'), t('report.sent', 'Notre support va traiter votre demande.'));
-            }
-          } catch (e) {}
-        } })),
-        { text: t('common.cancel', 'Annuler'), style: 'cancel' },
-      ],
-    );
+    const titre = t('report.title', 'Signaler un problème');
+    const question = t('report.pick', "Que s'est-il passé ?");
+    const echec = () => Alert.alert(titre, t('report.failed', "Votre signalement n'a pas pu être envoyé. Veuillez réessayer."));
+    const bouton = c => ({ text: c.label, onPress: async () => {
+      try {
+        const res = await reportDeliveryProblem(orderId, c.key);
+        if (res && res.status === 'success') {
+          Alert.alert(t('report.sentTitle', 'Signalement envoyé'), t('report.sent', 'Notre support va traiter votre demande.'));
+        } else {
+          echec();
+        }
+      } catch (e) { echec(); }
+    } });
+    const annuler = { text: t('common.cancel', 'Annuler'), style: 'cancel' };
+    if (Platform.OS === 'android') {
+      // Android n'affiche que 3 boutons par Alert : motifs répartis sur deux
+      // Alert successifs (2 motifs + « Autres motifs… », puis les 3 autres).
+      // Pas de place pour « Annuler » : retour ou toucher à côté ferme l'Alert.
+      Alert.alert(titre, question, [
+        ...cats.slice(0, 2).map(bouton),
+        { text: t('report.moreReasons', 'Autres motifs…'), onPress: () => {
+          Alert.alert(titre, question, cats.slice(2).map(bouton), { cancelable: true });
+        } },
+      ], { cancelable: true });
+      return;
+    }
+    Alert.alert(titre, question, [...cats.map(bouton), annuler], { cancelable: true });
   }, [t]);
 
   // Annulation par le client (course livraison). Le serveur décide : refus 409

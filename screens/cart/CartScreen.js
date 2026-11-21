@@ -210,7 +210,17 @@ const CartScreen = ({ isAuth }) => {
   }, []);
 
   useFocusEffect(React.useCallback(() => { loadCart(); loadAddresses(); loadOrders(); }, [loadCart, loadAddresses, loadOrders]));
-  React.useEffect(() => { if (isAuth) loadOrders(); }, [isAuth, loadOrders]);
+  // Connexion demandée depuis « Confirmer » : la feuille s'ouvre d'elle-même
+  // une fois connecté (l'intention n'est pas perdue).
+  const veutConfirmerRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!isAuth) return;
+    loadOrders();
+    if (veutConfirmerRef.current) {
+      veutConfirmerRef.current = false;
+      setTimeout(() => { setPopup(null); setConfirmVisible(true); }, 450);
+    }
+  }, [isAuth, loadOrders]);
 
   // À l'ouverture de la feuille « Confirmer », recharge les adresses : après une
   // connexion, l'écran panier ne reprend pas le focus (le login est un modal
@@ -408,7 +418,7 @@ const CartScreen = ({ isAuth }) => {
     setSelectedCart(sel);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(remaining));
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-    setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6), notices: lignesStock(lignes), paid: opts.paid === true, commande: order });
+    setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-4), notices: lignesStock(lignes), paid: opts.paid === true, commande: order });
     loadOrders();
     return order;
   }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock, loadOrders, t]);
@@ -687,8 +697,8 @@ const CartScreen = ({ isAuth }) => {
         notices={placedOrder?.notices}
         paid={!!placedOrder?.paid}
         onTrack={placedOrder && placedOrder.commande ? suivreCommande : undefined}
-        onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
-        onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
+        onCancel={() => { setOrderVisible(false); if (placedOrder?.commande) setVue('commandes'); setPlacedOrder(null); }}
+        onClose={() => { setOrderVisible(false); if (placedOrder?.commande) setVue('commandes'); setPlacedOrder(null); }}
       />
       <DetailCommande commandes={mesCommandes} t={t} fmtPrice={fmtPrice} navigation={navigation} apresRecommande={() => setVue('panier')} />
     </>
@@ -700,7 +710,7 @@ const CartScreen = ({ isAuth }) => {
         <SafeAreaView style={cartStyles.screen} edges={['top']}>
           <View style={cartStyles.header}>
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
-            <Text style={cartStyles.subtitle}>{t('counts.items', { count: 0 })}</Text>
+            {vue !== 'commandes' ? <Text style={cartStyles.subtitle}>{t('counts.items', { count: 0 })}</Text> : null}
           </View>
           {segmentVue}
           {vue === 'commandes' ? listeCommandes : (
@@ -723,7 +733,7 @@ const CartScreen = ({ isAuth }) => {
         <View style={cartStyles.headerRow}>
           <View style={{ flex: 1 }}>
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
-            <Text style={cartStyles.subtitle}>{t('counts.items', { count: cartItems.reduce((s, it) => s + Number(it.qty || 1), 0) })}</Text>
+            {vue !== 'commandes' ? <Text style={cartStyles.subtitle}>{t('counts.items', { count: cartItems.reduce((s, it) => s + Number(it.qty || 1), 0) })}</Text> : null}
           </View>
           {vue === 'panier' ? (
           <TouchableOpacity onPress={clearCart} activeOpacity={0.8} style={cartStyles.clearBtn}>
@@ -830,10 +840,10 @@ const CartScreen = ({ isAuth }) => {
           <Text style={cartStyles.bottomCountVal}>{cartItems.filter((_, i) => selectedCart[i]).reduce((s, it) => s + Number(it.qty || 1), 0)}</Text>
         </View>
         <View style={[cartStyles.bottomRow, { marginTop: 6 }]}>
-          <Text style={cartStyles.bottomTotalLabel}>{t('cart.total')}</Text>
+          <Text style={cartStyles.bottomTotalLabel}>{t('cart.subtotal')}</Text>
           <Text style={cartStyles.bottomTotalVal}>{fmtPrice(totalPrice)}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { DeviceEventEmitter.emit('OPEN_AUTH'); return; } setPopup(null); setConfirmVisible(true); }} style={cartStyles.cta}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { veutConfirmerRef.current = true; DeviceEventEmitter.emit('OPEN_AUTH'); return; } setPopup(null); setConfirmVisible(true); }} style={cartStyles.cta}>
           <Ionicons name="bicycle" size={20} color="#1C1917" />
           <Text style={cartStyles.ctaTxt}>{t('cart.confirmOrder')}</Text>
         </TouchableOpacity>
@@ -888,13 +898,13 @@ const CartScreen = ({ isAuth }) => {
                   <View key={si} style={cartStyles.shopBlock}>
                     <View style={cartStyles.shopBlockHead}>
                       <Ionicons name="storefront" size={16} color={THEME.brand} />
-                      <Text style={cartStyles.shopBlockName}>{shop}</Text>
+                      <Text style={cartStyles.shopBlockName}>{shop === '__other__' ? t('cart.otherShop') : shop}</Text>
                     </View>
                     {items.map((it, i) => (
                       <View key={i} style={[cartStyles.miniRow, i < items.length - 1 && cartStyles.productDivider]}>
                         <ProductImage uri={it.image} name={it.name || it.title} size={40} />
                         <View style={{flex:1, marginLeft:10}}>
-                          <Text style={cartStyles.miniName}>{it.name || it.title}</Text>
+                          <Text style={cartStyles.miniName}>{t('productNames.' + (it.name || it.title), { defaultValue: it.name || it.title })}</Text>
                           <Text style={cartStyles.miniPrice}>{fmtPrice(Number(it.price||0) * Number(it.qty||1))}</Text>
                         </View>
                         <View style={cartStyles.miniStepper}>
@@ -907,11 +917,13 @@ const CartScreen = ({ isAuth }) => {
                                 const remaining = Object.keys(newSelected).filter(k => newSelected[k]).length;
                                 if (remaining === 0) setConfirmVisible(false);
                               } else {
-                                setCartItems(prev => { const u = [...prev]; u[it._origIdx] = {...u[it._origIdx], qty: Math.max(1, (u[it._origIdx].qty || 1) - 1)}; return u; });
+                                keepTipRef.current = true;
+                                updateQty(it._origIdx, -1);
                               }
                             }}
                             onLongAction={() => {
-                              setCartItems(prev => { const u = [...prev]; const q = u[it._origIdx].qty || 1; if (q > 1) u[it._origIdx] = {...u[it._origIdx], qty: q - 1}; return u; });
+                              keepTipRef.current = true;
+                              updateQty(it._origIdx, -1);
                             }}
                             style={(it.qty || 1) <= 1 ? cartStyles.miniStepBtnDel : cartStyles.miniStepBtn}
                           >
@@ -920,10 +932,12 @@ const CartScreen = ({ isAuth }) => {
                           <Text style={cartStyles.miniStepQty}>{it.qty || 1}</Text>
                           <RepeatButton
                             onPress={() => {
-                              setCartItems(prev => { const u = [...prev]; u[it._origIdx] = {...u[it._origIdx], qty: (u[it._origIdx].qty || 1) + 1}; return u; });
+                              keepTipRef.current = true;
+                              updateQty(it._origIdx, 1);
                             }}
                             onLongAction={() => {
-                              setCartItems(prev => { const u = [...prev]; u[it._origIdx] = {...u[it._origIdx], qty: (u[it._origIdx].qty || 1) + 1}; return u; });
+                              keepTipRef.current = true;
+                              updateQty(it._origIdx, 1);
                             }}
                             style={cartStyles.miniStepBtn}
                           >
@@ -1159,7 +1173,6 @@ const CartScreen = ({ isAuth }) => {
                   // En livraison, une adresse est obligatoire (sinon le livreur
                   // n'a pas de destination). On ouvre directement le sélecteur.
                   if (orderMode === 'delivery' && !selectedAddress) {
-                    Alert.alert(t('cart.addressRequired', 'Adresse requise'), t('cart.addressRequiredMsg', 'Ajoutez une adresse de livraison pour continuer.'));
                     setAddressPickerVisible(true);
                     return;
                   }
@@ -1651,6 +1664,20 @@ const CartScreen = ({ isAuth }) => {
                     </TouchableOpacity>
                   );
                 })}
+                <TouchableOpacity
+                  onPress={() => {
+                    setAddressPickerVisible(false);
+                    setConfirmVisible(false);
+                    navigation.navigate('profile');
+                    // Le Profil ouvre son formulaire d'adresse (laissé le temps
+                    // de monter l'onglet et de fermer la feuille).
+                    setTimeout(() => DeviceEventEmitter.emit('OUVRIR_ADRESSES'), 450);
+                  }}
+                  activeOpacity={0.9}
+                  style={[cartStyles.addrSaveBtn, { flex: 0, paddingHorizontal: 22, marginTop: 16 }]}
+                >
+                  <Text style={cartStyles.addrSaveTxt}>{t('profile.addrAdd', 'Add New Address')}</Text>
+                </TouchableOpacity>
               </ScrollView>
             )}
           </View>

@@ -27,7 +27,7 @@
     "cancel": "Avbryt",
     "save": "Spara",
     "delete": "Radera",
-    "deleteTitle": "Radera",
+    "deleteTitle": "Radera dessa varor?",
     "deleteConfirm": "Radera",
     "deleteItem": "vald vara",
     "deleteItem_one": "vald vara",
@@ -67,7 +67,10 @@
     "grantedAdd": "Lägg till en person",
     "compareMyList": "Jämför min lista",
     "deleteThisItem": "Ta bort den här varan",
-    "deleteThisItemConfirm": "Varan tas bort från din lista."
+    "deleteThisItemConfirm": "Varan tas bort från din lista.",
+    "markBought": "Markera som köpt",
+    "rejectRequest": "Avböj förfrågan",
+    "blockUser": "Blockera den här personen"
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",
@@ -102,14 +105,15 @@
     "notFound": "hittades inte i butik",
     "noMatchTitle": "Inga produkter hittades\nför din lista",
     "noMatchSub": "Dessa butiker säljer inte dessa varor. Kontrollera namnen eller bläddra bland butikerna.",
-    "searchToPrice": "Tryck på Sök för att välja dina produkter och se priset.",
+    "searchToPrice": "Tryck på \"Lägg till en produkt\" för att välja dina produkter och se priset.",
     "searchToPriceShop": "Sök efter en produkt för att se priset.",
     "shopUnit": "butik",
     "shopUnitPlural": "butiker",
-    "defaultProducts": "Lägg till varor i Min Lista och tryck sedan på \"Hitta exakta produkter\" för att se resultaten här.",
+    "defaultProducts": "Lägg till varor i Min Lista och tryck sedan på \"Jämför min lista\" för att se resultaten här.",
     "addProduct": "Lägg till en produkt",
     "addFromList": "Lägg till produkter i Min Lista",
-    "addFromListSub": "Tryck sedan på \"Hitta exakta produkter\""
+    "addFromListSub": "Tryck sedan på \"Jämför min lista\"",
+    "clearConfirmMsg": "Rensa den pågående jämförelsen? De valda produkterna tas bort."
   },
   "searchPopup": {
     "header": "Vad behöver du?",
@@ -181,7 +185,7 @@
   "favorites": {
     "noFavorites": "Inga favoritbutiker ännu",
     "addFromProducts": "Lägg till dina favoritbutiker från fliken Produkter",
-    "searchPlaceholder": "Sök en favorit...",
+    "searchPlaceholder": "Sök en butik...",
     "manageHint": "Dina favoritbutiker och produkter",
     "shops": "Butiker",
     "products": "Produkter",
@@ -476,7 +480,8 @@
     "forgotErrorWeak": "Det här lösenordet godtas inte. Välj ett annat som är svårare att gissa.",
     "forgotErrorGeneric": "Något gick fel. Försök igen.",
     "forgotTooMany": "För många förfrågningar. Försök igen senare.",
-    "forgotBackToLogin": "Tillbaka till inloggningen"
+    "forgotBackToLogin": "Tillbaka till inloggningen",
+    "forgotEmailNotFound": "Den här e-postadressen är inte kopplad till något konto."
   },
   "cart": {
     "today": "Idag",
@@ -758,7 +763,8 @@
     "thanks": "Tack!",
     "saved": "Ditt betyg har sparats.",
     "yourRating": "Ditt betyg",
-    "rateDriver": "Betygsätt ditt bud"
+    "rateDriver": "Betygsätt ditt bud",
+    "failed": "Ditt betyg kunde inte sparas. Försök igen."
   },
   "report": {
     "notReceived": "Beställning ej mottagen",
@@ -771,7 +777,9 @@
     "sentTitle": "Rapport skickad",
     "sent": "Vårt supportteam tar hand om din förfrågan.",
     "answerTitle": "Svar på din anmälan",
-    "handled": "Din anmälan har hanterats"
+    "handled": "Din anmälan har hanterats",
+    "failed": "Din rapport kunde inte skickas. Försök igen.",
+    "moreReasons": "Andra orsaker…"
   },
   "stock": {
     "option": "Alternativ",
@@ -1594,7 +1602,7 @@
       "summary_one": "{{count}} vara, cirka {{total}}",
       "summary_other": "{{count}} varor, cirka {{total}}",
       "estimateNote": "Ungefärlig uppskattning (~). Det verkliga priset är butikens, jämför det efteråt.",
-      "targetList": "Lägg till på lista",
+      "targetList": "I vilken lista?",
       "defaultList": "Min Lista",
       "activeList": "aktiv",
       "showBasics": "Visa baskamrar",

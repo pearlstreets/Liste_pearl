@@ -27,7 +27,7 @@
     "cancel": "取消",
     "save": "保存",
     "delete": "删除",
-    "deleteTitle": "删除",
+    "deleteTitle": "删除这些项目？",
     "deleteConfirm": "删除",
     "deleteItem": "所选项目",
     "deleteItem_other": "所选项目",
@@ -66,7 +66,10 @@
     "grantedAdd": "添加成员",
     "compareMyList": "比较我的清单",
     "deleteThisItem": "删除此项",
-    "deleteThisItemConfirm": "此项将从您的清单中移除。"
+    "deleteThisItemConfirm": "此项将从您的清单中移除。",
+    "markBought": "标记为已购买",
+    "rejectRequest": "拒绝请求",
+    "blockUser": "屏蔽此人"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",
@@ -101,14 +104,15 @@
     "notFound": "在店铺中未找到",
     "noMatchTitle": "未找到与您清单\n匹配的商品",
     "noMatchSub": "这些商店不出售这些商品。请检查名称或浏览商店。",
-    "searchToPrice": "点击“搜索”选择商品并查看价格。",
+    "searchToPrice": "点击“添加商品”选择商品并查看价格。",
     "searchToPriceShop": "搜索商品以查看价格。",
     "shopUnit": "商店",
     "shopUnitPlural": "商店",
-    "defaultProducts": "将商品添加到「我的清单」，然后点按「查找确切产品」即可在此查看结果。",
+    "defaultProducts": "将商品添加到「我的清单」，然后点按「比较我的清单」即可在此查看结果。",
     "addProduct": "添加商品",
     "addFromList": "将商品添加到「我的清单」",
-    "addFromListSub": "然后点按「查找确切产品」"
+    "addFromListSub": "然后点按「比较我的清单」",
+    "clearConfirmMsg": "清除当前比较？已选商品将被移除。"
   },
   "searchPopup": {
     "header": "您需要什么？",
@@ -180,7 +184,7 @@
   "favorites": {
     "noFavorites": "还没有喜欢的店铺",
     "addFromProducts": "从产品选项卡添加您喜欢的店铺",
-    "searchPlaceholder": "搜索收藏...",
+    "searchPlaceholder": "搜索店铺...",
     "manageHint": "您收藏的商店和商品",
     "shops": "商店",
     "products": "商品",
@@ -475,7 +479,8 @@
     "forgotErrorWeak": "此密码不被接受，请选择一个更难猜到的密码。",
     "forgotErrorGeneric": "出现问题，请重试。",
     "forgotTooMany": "请求过多，请稍后再试。",
-    "forgotBackToLogin": "返回登录"
+    "forgotBackToLogin": "返回登录",
+    "forgotEmailNotFound": "此电子邮件地址未关联任何账户。"
   },
   "cart": {
     "today": "今天",
@@ -756,7 +761,8 @@
     "thanks": "谢谢！",
     "saved": "您的评分已保存。",
     "yourRating": "您的评分",
-    "rateDriver": "为配送员评分"
+    "rateDriver": "为配送员评分",
+    "failed": "无法保存您的评分，请重试。"
   },
   "report": {
     "notReceived": "未收到订单",
@@ -769,7 +775,9 @@
     "sentTitle": "已发送报告",
     "sent": "我们的客服团队将处理您的请求。",
     "answerTitle": "对您反馈的回复",
-    "handled": "您的问题已处理"
+    "handled": "您的问题已处理",
+    "failed": "无法发送您的报告，请重试。",
+    "moreReasons": "其他原因…"
   },
   "stock": {
     "option": "选项",
@@ -1574,7 +1582,7 @@
       "title": "我的购物清单",
       "summary": "{{count}} 件商品，约 {{total}}",
       "estimateNote": "此为大致估算（~）。实际价格以店铺为准，请随后比较。",
-      "targetList": "添加到列表",
+      "targetList": "放入哪个清单？",
       "defaultList": "我的清单",
       "activeList": "正在使用",
       "showBasics": "显示厨房常备",

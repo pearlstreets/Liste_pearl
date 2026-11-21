@@ -27,7 +27,7 @@
     "cancel": "Cancelar",
     "save": "Guardar",
     "delete": "Eliminar",
-    "deleteTitle": "Eliminar",
+    "deleteTitle": "¿Eliminar estos artículos?",
     "deleteConfirm": "Eliminar",
     "deleteItem": "artículo seleccionado",
     "deleteItem_one": "artículo seleccionado",
@@ -68,7 +68,10 @@
     "grantedAdd": "Añadir a alguien",
     "compareMyList": "Comparar mi lista",
     "deleteThisItem": "Eliminar este artículo",
-    "deleteThisItemConfirm": "Este artículo se eliminará de su lista."
+    "deleteThisItemConfirm": "Este artículo se eliminará de su lista.",
+    "markBought": "Marcar como comprado",
+    "rejectRequest": "Rechazar la solicitud",
+    "blockUser": "Bloquear a esta persona"
   },
   "productsScreen": {
     "clickAndCollect": "Compra y Recoge",
@@ -103,14 +106,15 @@
     "notFound": "no encontrado(s) en tienda",
     "noMatchTitle": "No se encontraron productos\npara su lista",
     "noMatchSub": "Estas tiendas no venden estos artículos. Revise los nombres o explore las Tiendas.",
-    "searchToPrice": "Pulse Buscar para elegir sus productos y ver el precio.",
+    "searchToPrice": "Pulse \"Añadir un producto\" para elegir sus productos y ver el precio.",
     "searchToPriceShop": "Busque un producto para ver el precio.",
     "shopUnit": "tienda",
     "shopUnitPlural": "tiendas",
-    "defaultProducts": "Añada artículos a Mi Lista y luego toque \"Encontrar productos exactos\" para ver los resultados aquí.",
+    "defaultProducts": "Añada artículos a Mi Lista y luego toque \"Comparar mi lista\" para ver los resultados aquí.",
     "addProduct": "Añadir un producto",
     "addFromList": "Añada productos a Mi Lista",
-    "addFromListSub": "Luego toque \"Encontrar productos exactos\""
+    "addFromListSub": "Luego toque \"Comparar mi lista\"",
+    "clearConfirmMsg": "¿Borrar la comparación actual? Los productos elegidos se quitarán."
   },
   "searchPopup": {
     "header": "¿Qué necesita?",
@@ -182,7 +186,7 @@
   "favorites": {
     "noFavorites": "Sin tiendas favoritas aún",
     "addFromProducts": "Agregue sus tiendas favoritas desde la pestaña Productos",
-    "searchPlaceholder": "Buscar un favorito...",
+    "searchPlaceholder": "Buscar una tienda...",
     "manageHint": "Sus tiendas y productos favoritos",
     "shops": "Tiendas",
     "products": "Productos",
@@ -477,7 +481,8 @@
     "forgotErrorWeak": "Esta contraseña no se acepta. Elija otra más difícil de adivinar.",
     "forgotErrorGeneric": "Se ha producido un problema. Vuelva a intentarlo.",
     "forgotTooMany": "Demasiadas solicitudes. Vuelva a intentarlo más tarde.",
-    "forgotBackToLogin": "Volver al inicio de sesión"
+    "forgotBackToLogin": "Volver al inicio de sesión",
+    "forgotEmailNotFound": "Esta dirección de correo electrónico no está vinculada a ninguna cuenta."
   },
   "cart": {
     "today": "Hoy",
@@ -760,7 +765,8 @@
     "thanks": "¡Gracias!",
     "saved": "Su valoración se ha guardado.",
     "yourRating": "Su valoración",
-    "rateDriver": "Valore a su repartidor"
+    "rateDriver": "Valore a su repartidor",
+    "failed": "No se ha podido guardar su valoración. Inténtelo de nuevo."
   },
   "report": {
     "notReceived": "Pedido no recibido",
@@ -773,7 +779,9 @@
     "sentTitle": "Reporte enviado",
     "sent": "Nuestro equipo de soporte atenderá su solicitud.",
     "answerTitle": "Respuesta a su incidencia",
-    "handled": "Su incidencia ha sido atendida"
+    "handled": "Su incidencia ha sido atendida",
+    "failed": "No se ha podido enviar su reporte. Inténtelo de nuevo.",
+    "moreReasons": "Otros motivos…"
   },
   "stock": {
     "option": "Opción",
@@ -1605,7 +1613,7 @@
       "summary_many": "{{count}} artículos, aproximadamente {{total}}",
       "summary_other": "{{count}} artículos, aproximadamente {{total}}",
       "estimateNote": "Estimación orientativa (~). El precio real es el de la tienda, compárelo después.",
-      "targetList": "Agregar a la lista",
+      "targetList": "¿En qué lista?",
       "defaultList": "Mi Lista",
       "activeList": "activa",
       "showBasics": "Mostrar básicos de la despensa",
