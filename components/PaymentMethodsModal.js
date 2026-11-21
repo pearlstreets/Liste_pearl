@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   cardField: { width: '100%', height: 50, marginBottom: 8 },
   info: { color: '#8A94A6', fontSize: 13, textAlign: 'center', marginVertical: 8 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 6, marginBottom: 2 },
-  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, height: 50, marginTop: 10 },
+  saveBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, height: 50, marginTop: 10 },
   saveTxt: { color: '#1C1917', fontSize: 15, fontWeight: '600' },
   secure: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 8 },
 });
