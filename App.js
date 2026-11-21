@@ -58,7 +58,7 @@ import SearchPopup from './components/SearchPopup';
 import Modal, { DeuxEcrans, AuMilieu } from './components/DeuxEcrans';
 import * as Location from 'expo-location';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Keyboard, FlatList, Pressable, Alert, ActivityIndicator, Image, Animated, ScrollView, Platform, KeyboardAvoidingView, InputAccessoryView, RefreshControl, Linking } from "react-native";
-import { SafeAreaView, initialWindowMetrics } from "react-native-safe-area-context";
+import { SafeAreaView, initialWindowMetrics, SafeAreaInsetsContext, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ReorderableList, { useReorderableDrag } from "react-native-reorderable-list";
@@ -6353,6 +6353,19 @@ function FirstLaunchLanguage({ onDone }) {
   );
 }
 
+// Ecran exterieur de l'iPhone Duo (camera et heure sur le cote) : marges gauche et droite
+// appliquees une seule fois ici, puis remises a zero pour les ecrans en dessous.
+// Sans marge laterale (tous les autres telephones), rien ne change.
+function MargesCotes({ children }) {
+  const insets = useSafeAreaInsets();
+  if (!insets.left && !insets.right) return children;
+  return (
+    <View style={{ flex: 1, paddingLeft: insets.left, paddingRight: insets.right, backgroundColor: THEME.bg }}>
+      <SafeAreaInsetsContext.Provider value={{ ...insets, left: 0, right: 0 }}>{children}</SafeAreaInsetsContext.Provider>
+    </View>
+  );
+}
+
 export default function App() {
   const { i18n: i18nApp } = useTranslation();
   const [isAuth, setIsAuth] = React.useState(null); // null = loading, true/false
@@ -6497,7 +6510,7 @@ export default function App() {
   }
 
   if (needLangChoice) {
-    return <AuMilieu><StatusBar style="dark" /><FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} /></AuMilieu>;
+    return <MargesCotes><AuMilieu><StatusBar style="dark" /><FirstLaunchLanguage onDone={() => setNeedLangChoice(false)} /></AuMilieu></MargesCotes>;
   }
 
   return (
@@ -6505,9 +6518,11 @@ export default function App() {
     <StatusBar style="dark" />
     <CurrencyContext.Provider value={{ currency, setCurrency, fmtPrice }}>
       <DeuxEcrans>
+      <MargesCotes>
       <NavigationContainer ref={navRef} onReady={() => { ouvrirOngletApresRechargement(); ouvrirMenusDepuisRappel(); consommerDestination(); }} theme={navTheme}>
         <MainNavigator onLogout={() => setIsAuth(false)} isAuth={isAuth} />
       </NavigationContainer>
+      </MargesCotes>
       <Modal visible={authVisible} animationType="slide" onRequestClose={() => {
         if (authRetour.current && authRetour.current()) return;
         oublierModeAuth(); setAuthVisible(false);
