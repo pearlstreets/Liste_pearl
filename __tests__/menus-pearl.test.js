@@ -79,9 +79,9 @@ describe('matchProduct : même règle que App.js', () => {
     expect(nameMatches('filet de poulet', 'Filet de poulet fermier')).toBe(true);
     expect(nameMatches('pain', 'Pain au chocolat')).toBe(false);
   });
-  test('App.js utilise la fonction partagée', () => {
-    const app = fs.readFileSync(path.join(__dirname, '..', 'App.js'), 'utf8');
-    expect(app).toMatch(/from "\.\/lib\/matchProduct"/);
+  test('l\'écran Produits utilise la fonction partagée', () => {
+    const app = fs.readFileSync(path.join(__dirname, '..', 'screens', 'shop', 'ProductsScreen.js'), 'utf8');
+    expect(app).toMatch(/from "\.\.\/\.\.\/lib\/matchProduct"/);
     expect(app).toMatch(/matchProduct\(/);
     expect(app).toMatch(/loadShops\('product_purchase'/);
   });
