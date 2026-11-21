@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, BackHandler, StyleSheet } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { T } from './theme';
+import { T, TAILLES } from './theme';
 import { Loading, ErrorBox } from './ui';
 import { MenusProvider, useMenus } from './MenusContext';
 import useT from './useT';
@@ -130,6 +130,7 @@ function Inner({ navigation }) {
         <TouchableOpacity
           onPress={() => push({ type: 'settings' })}
           style={s.gear}
+          hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
           accessibilityRole="button"
           accessibilityLabel={t('settings.title')}
         >
@@ -165,7 +166,7 @@ function Inner({ navigation }) {
         <View
           style={[
             StyleSheet.absoluteFill,
-            { backgroundColor: '#fff' },
+            { backgroundColor: T.bg },
             top.type !== 'month' && s.hidden,
           ]}
         >
@@ -174,7 +175,7 @@ function Inner({ navigation }) {
       ) : null}
 
       {top && top.type !== 'month' ? (
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: '#fff' }]}>
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: T.bg }]}>
           {top.type === 'recipe' ? (
             <RecipeScreen
               key={`${top.id}|${top.mealKey || ''}`}
@@ -213,20 +214,39 @@ export default function MenusScreen({ navigation }) {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#fff' },
+  root: { flex: 1, backgroundColor: T.bg },
   fill: { flex: 1 },
   hidden: { display: 'none' },
-  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingTop: 8 },
-  seg: { flex: 1, flexDirection: 'row', backgroundColor: '#fff', borderWidth: 1, borderColor: T.border, borderRadius: 16, padding: 3 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: TAILLES.marge,
+    paddingTop: 8,
+  },
+  seg: {
+    flex: 1,
+    flexDirection: 'row',
+    height: TAILLES.bouton,
+    backgroundColor: T.card,
+    borderWidth: 1,
+    borderColor: T.border,
+    borderRadius: TAILLES.rayonBouton,
+    padding: 4,
+  },
   segBtn: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 44,
-    borderRadius: 11,
+    borderRadius: TAILLES.rayonBouton - 4,
     paddingHorizontal: 4,
   },
-  segOn: { backgroundColor: T.brand },
+  segOn: { backgroundColor: T.noir },
   segTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
-  gear: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
+  gear: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
 });

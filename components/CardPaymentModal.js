@@ -8,6 +8,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { MARCHE, SERIF, TAILLES } from './ui/marche';
 import { STRIPE_PUBLISHABLE_KEY } from '../services/config';
 import useSecureScreen from '../lib/useSecureScreen';
 import { marquerPaiement } from '../services/otaRapide';
@@ -16,7 +17,7 @@ import Modal from './DeuxEcrans';
 import { StripeAvailable, StripeProvider, useStripe, CardField } from '../services/stripeNative';
 import { createStripeCustomerApi, payOrderApi, getSavedCardsApi } from '../services/payment';
 
-const BRAND = '#1C1917';
+const BRAND = MARCHE.noir;
 const NEW_CARD = '__new__';
 // URL de retour app (scheme enregistré dans Info.plist) : permet au SDK Stripe de
 // refermer automatiquement la vue 3DS et de revenir dans l'app après validation banque.
@@ -138,12 +139,12 @@ function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel 
     const on = selectedCardId === id;
     return (
       <TouchableOpacity activeOpacity={0.85} onPress={() => { setError(''); setSelectedCardId(id); }} style={[styles.optRow, on && styles.optRowOn]}>
-        <Ionicons name={icon} size={20} color={on ? BRAND : '#8A94A6'} />
+        <Ionicons name={icon} size={20} color={on ? BRAND : MARCHE.faint} />
         <View style={{ flex: 1 }}>
           <Text style={styles.optLabel}>{label}</Text>
           {sub ? <Text style={styles.optSub}>{sub}</Text> : null}
         </View>
-        <Ionicons name={on ? 'radio-button-on' : 'radio-button-off'} size={20} color={on ? BRAND : '#C7CFD9'} />
+        <Ionicons name={on ? 'radio-button-on' : 'radio-button-off'} size={20} color={on ? BRAND : MARCHE.borderInput} />
       </TouchableOpacity>
     );
   };
@@ -186,7 +187,7 @@ function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel 
                   <CardField
                     postalCodeEnabled={false}
                     placeholders={{ number: '4242 4242 4242 4242' }}
-                    cardStyle={{ backgroundColor: '#FFFFFF', textColor: '#0F1B2B', borderColor: '#E3E8EF', borderWidth: 1, borderRadius: 12 }}
+                    cardStyle={{ backgroundColor: '#FFFFFF', textColor: MARCHE.ink, borderColor: MARCHE.border, borderWidth: 1, borderRadius: TAILLES.rayonCarte }}
                     style={styles.cardField}
                     onCardChange={(d) => setCardDetails(d)}
                   />
@@ -201,9 +202,9 @@ function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel 
         {error ? <Text style={styles.err}>{error}</Text> : null}
 
         <TouchableOpacity activeOpacity={0.9} onPress={handlePay} disabled={busy || cardsLoading} style={[styles.payBtn, (busy || cardsLoading) && { opacity: 0.6 }]}>
-          {busy ? <ActivityIndicator color="#1C1917" /> : (
+          {busy ? <ActivityIndicator color={MARCHE.noir} /> : (
             <>
-              <Ionicons name="lock-closed" size={18} color="#1C1917" />
+              <Ionicons name="lock-closed" size={18} color={MARCHE.noir} />
               <Text style={styles.payTxt}>{tr('cart.payNow', 'Payer maintenant')}</Text>
             </>
           )}
@@ -214,7 +215,7 @@ function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel 
         </TouchableOpacity>
 
         <Text style={styles.secure}>
-          <Ionicons name="shield-checkmark" size={12} color="#8A94A6" /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
+          <Ionicons name="shield-checkmark" size={12} color={MARCHE.faint} /> {tr('cart.securedByStripe', 'Paiement sécurisé par Stripe')}
         </Text>
       </View>
     </View>
@@ -252,29 +253,29 @@ export default function CardPaymentModal({
 }
 
 const styles = StyleSheet.create({
-  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#FFFFFF', borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 22, paddingTop: 10, paddingBottom: Platform.OS === 'ios' ? 34 : 22 },
-  handle: { alignSelf: 'center', width: 40, height: 4, borderRadius: 2, backgroundColor: '#E3E8EF', marginBottom: 14 },
-  title: { fontSize: 18, fontWeight: '600', color: '#0F1B2B', textAlign: 'center' },
-  total: { fontSize: 15, fontWeight: '700', color: BRAND, textAlign: 'center', marginTop: 4 },
-  subtotalNote: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 3, marginBottom: 10, paddingHorizontal: 8 },
+  backdrop: { flex: 1, backgroundColor: 'rgba(46,28,18,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: '#FFFFFF', borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: Platform.OS === 'ios' ? 34 : 22 },
+  handle: { alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: MARCHE.border, marginBottom: 14 },
+  title: { fontFamily: SERIF, fontSize: 20, fontWeight: '600', color: MARCHE.ink, textAlign: 'center' },
+  total: { fontSize: 15, fontWeight: '600', color: BRAND, textAlign: 'center', marginTop: 4 },
+  subtotalNote: { fontSize: 11.5, color: MARCHE.faint, textAlign: 'center', marginTop: 3, marginBottom: 10, paddingHorizontal: 8 },
   notices: {
-    backgroundColor: '#F7F9FB',
+    backgroundColor: MARCHE.subtle,
     borderRadius: 16,
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginBottom: 10,
   },
-  notice: { fontSize: 12.5, lineHeight: 17, color: '#4B5563', fontWeight: '600' },
-  optRow: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#F7F9FB', borderRadius: 16, paddingVertical: 13, paddingHorizontal: 14, marginBottom: 8, borderWidth: 1, borderColor: '#EEF1F5' },
-  optRowOn: { borderColor: BRAND, backgroundColor: 'rgba(39,39,42,0.06)' },
-  optLabel: { fontSize: 15, fontWeight: '700', color: '#0F1B2B' },
-  optSub: { fontSize: 12.5, color: '#8A94A6', marginTop: 2 },
-  cardField: { width: '100%', height: 50, marginTop: 2, marginBottom: 6 },
+  notice: { fontSize: 12.5, lineHeight: 17, color: MARCHE.muted, fontWeight: '600' },
+  optRow: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: MARCHE.card, borderRadius: 16, minHeight: 56, paddingVertical: 10, paddingHorizontal: 14, marginBottom: 8, borderWidth: 1, borderColor: MARCHE.border },
+  optRowOn: { borderColor: BRAND, backgroundColor: MARCHE.subtle },
+  optLabel: { fontSize: 15, fontWeight: '600', color: MARCHE.ink },
+  optSub: { fontSize: 12.5, color: MARCHE.faint, marginTop: 2 },
+  cardField: { width: '100%', height: TAILLES.champ, marginTop: 2, marginBottom: 6 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 8, marginBottom: 2 },
-  payBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, height: 54, marginTop: 12 },
-  payTxt: { color: '#1C1917', fontSize: 16, fontWeight: '600' },
-  cancelBtn: { alignItems: 'center', paddingVertical: 14 },
-  cancelTxt: { color: '#6B7280', fontSize: 15, fontWeight: '600' },
-  secure: { fontSize: 11.5, color: '#8A94A6', textAlign: 'center', marginTop: 2 },
+  payBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF', borderRadius: TAILLES.rayonBouton, height: TAILLES.bouton, marginTop: 12 },
+  payTxt: { color: MARCHE.noir, fontSize: 16, fontWeight: '600' },
+  cancelBtn: { alignItems: 'center', justifyContent: 'center', height: TAILLES.bouton },
+  cancelTxt: { color: MARCHE.muted, fontSize: 15, fontWeight: '600' },
+  secure: { fontSize: 11.5, color: MARCHE.faint, textAlign: 'center', marginTop: 2 },
 });

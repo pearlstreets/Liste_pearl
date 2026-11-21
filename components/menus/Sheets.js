@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
 import { formatEur, cleanMembers, guestsOf, headsFor } from '../../lib/menus';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { PrimaryButton, GhostButton, Empty, Stepper } from './ui';
 import RecipeVisual, { IngredientThumb } from './RecipeVisual';
 import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
@@ -424,12 +425,12 @@ const s = StyleSheet.create({
     zIndex: 50,
     elevation: 0,
   },
-  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(15,23,42,0.45)' },
+  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(46,28,18,0.45)' },
   sheet: {
     backgroundColor: '#fff',
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: TAILLES.marge,
     paddingBottom: 22,
     paddingTop: 10,
     ...T.shadow, borderWidth: 1, borderColor: T.border },
@@ -441,23 +442,23 @@ const s = StyleSheet.create({
     backgroundColor: T.border,
     marginBottom: 14,
   },
-  title: { fontSize: 22, fontWeight: '600', color: T.ink },
+  title: { fontFamily: SERIF, fontSize: 20, fontWeight: '600', color: T.ink },
   sub: { fontSize: 14, color: T.muted, marginTop: 4, marginBottom: 12, lineHeight: 20 },
-  idea: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  idea: { flexDirection: 'row', alignItems: 'center', minHeight: 56, paddingVertical: 10 },
   ideaTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
   ideaMeta: { fontSize: 13, color: T.muted, marginTop: 3 },
   badge: {
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: T.brand,
+    backgroundColor: MARCHE.noir,
     alignItems: 'center',
     justifyContent: 'center',
   },
   hint: { fontSize: 12, color: T.faint, textAlign: 'center', marginTop: 8 },
   pickHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
   pickAll: { fontSize: 14, fontWeight: '600', color: T.brandDark, marginLeft: 10 },
-  pickRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 9 },
+  pickRow: { flexDirection: 'row', alignItems: 'center', minHeight: 56, paddingVertical: 9 },
   pickBox: {
     width: 22,
     height: 22,
@@ -468,6 +469,6 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pickBoxOn: { backgroundColor: T.brand, borderColor: T.brand },
-  pickName: { flex: 1, fontSize: 16, fontWeight: '700', color: T.ink },
+  pickBoxOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  pickName: { flex: 1, fontSize: 16, fontWeight: '600', color: T.ink },
 });

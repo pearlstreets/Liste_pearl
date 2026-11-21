@@ -20,8 +20,9 @@ import { autocorrectName } from '../utils/spellcheck';
 import SEARCH_MAP from '../data/search-map.json';
 import { libelleDetail } from '../lib/libelleDetail';
 import { Ionicons } from '@expo/vector-icons';
+import { MARCHE, SERIF, TAILLES } from './ui/marche';
 
-const BRAND = '#1C1917';
+const BRAND = MARCHE.noir;
 
 const RptBtn = ({ onPress, onLongAction, style, children }) => {
   const ref = React.useRef(null);
@@ -265,22 +266,19 @@ const SearchItem = React.memo(
     return (
       <View
         style={{
-          backgroundColor: hasQty ? '#ECFDF5' : '#fff',
-          borderRadius: 16,
+          backgroundColor: hasQty ? MARCHE.subtle : MARCHE.card,
+          borderRadius: TAILLES.rayonCarte,
           padding: 14,
-          marginVertical: 8,
-          shadowColor: '#000',
-          shadowOpacity: 0.04,
-          shadowRadius: 6,
-          borderWidth: hasQty ? 1.5 : 0,
-          borderColor: hasQty ? BRAND : 'transparent',
+          marginVertical: 6,
+          borderWidth: hasQty ? 1.5 : 1,
+          borderColor: hasQty ? BRAND : MARCHE.border,
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {(!hasQty && item.image) ? (
             <Image
               source={{ uri: item.image }}
-              style={{ width: 44, height: 44, borderRadius: 14, marginRight: 12, backgroundColor: '#F3F4F6' }}
+              style={{ width: 44, height: 44, borderRadius: 14, marginRight: 12, backgroundColor: MARCHE.subtle }}
               resizeMode="cover"
             />
           ) : (
@@ -289,34 +287,34 @@ const SearchItem = React.memo(
                 width: 44,
                 height: 44,
                 borderRadius: 22,
-                backgroundColor: hasQty ? '#D1FAE5' : '#F3F4F6',
+                backgroundColor: hasQty ? MARCHE.terraSoft : MARCHE.subtle,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginRight: 12,
               }}
             >
               {hasQty ? (
-                <Ionicons name="checkmark-circle" size={24} color={BRAND} />
+                <Ionicons name="checkmark-circle" size={24} color={MARCHE.terra} />
               ) : (
                 <Text style={{ fontSize: 22 }}>{emoji}</Text>
               )}
             </View>
           )}
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: '800', color: '#111' }} numberOfLines={1}>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: MARCHE.ink }} numberOfLines={1}>
               {translatedName}
             </Text>
             {!!translatedDetail && (
-              <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }} numberOfLines={1}>
+              <Text style={{ fontSize: 12, color: MARCHE.muted, marginTop: 2 }} numberOfLines={1}>
                 {translatedDetail}
               </Text>
             )}
             <View style={{ flexDirection: 'row', alignItems: 'baseline', marginTop: 8 }}>
-              <Text style={{ fontSize: 18, fontWeight: '800', color: '#111' }}>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: MARCHE.ink }}>
                 {formatPrice(item.price)}
               </Text>
               {!!item.unitPrice && (
-                <Text style={{ marginLeft: 8, color: '#9CA3AF' }}>{item.unitPrice}</Text>
+                <Text style={{ marginLeft: 8, color: MARCHE.faint }}>{item.unitPrice}</Text>
               )}
             </View>
           </View>
@@ -325,15 +323,15 @@ const SearchItem = React.memo(
               onPress={() => setQty(1)}
               onLongAction={inc}
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: 18,
-                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+                borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Text style={{ color: '#1C1917', fontSize: 20, lineHeight: 20 }}>+</Text>
+              <Ionicons name="add" size={18} color={MARCHE.noir} />
             </RptBtn>
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -342,39 +340,39 @@ const SearchItem = React.memo(
                   onPress={() => setQty(0)}
                   onLongAction={() => setQty(0)}
                   style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 14,
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
                     borderWidth: 1.5,
                     borderColor: '#EF4444',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Ionicons name="trash-outline" size={14} color="#EF4444" />
+                  <Ionicons name="trash-outline" size={16} color="#EF4444" />
                 </RptBtn>
               ) : (
                 <RptBtn
                   onPress={dec}
                   onLongAction={dec}
                   style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 14,
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
                     borderWidth: 1.5,
-                    borderColor: '#D1D5DB',
+                    borderColor: MARCHE.borderInput,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Ionicons name="remove" size={14} color="#555" />
+                  <Ionicons name="remove" size={16} color={MARCHE.muted} />
                 </RptBtn>
               )}
               <Text
                 style={{
                   fontSize: 16,
                   fontWeight: '700',
-                  color: '#111',
+                  color: MARCHE.ink,
                   marginHorizontal: 6,
                   minWidth: 18,
                   textAlign: 'center',
@@ -386,15 +384,15 @@ const SearchItem = React.memo(
                 onPress={inc}
                 onLongAction={inc}
                 style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
-                  borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Ionicons name="add" size={14} color="#1C1917" />
+                <Ionicons name="add" size={16} color={MARCHE.noir} />
               </RptBtn>
             </View>
           )}
@@ -602,7 +600,7 @@ export default function SearchPopup({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={0}
       >
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.35)' }}>
+        <View style={{ flex: 1, backgroundColor: 'rgba(46,28,18,0.45)' }}>
           <TouchableWithoutFeedback onPress={handleFinish}>
             <View style={{ height: '10%' }} />
           </TouchableWithoutFeedback>
@@ -610,14 +608,14 @@ export default function SearchPopup({
           <View
             style={{
               flex: 1,
-              backgroundColor: '#fff',
+              backgroundColor: MARCHE.card,
               borderTopLeftRadius: 24,
               borderTopRightRadius: 24,
               overflow: 'hidden',
             }}
           >
             {/* Header */}
-            <View style={{ padding: 16, paddingBottom: 0 }}>
+            <View style={{ paddingHorizontal: TAILLES.marge, paddingTop: 10 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -626,11 +624,28 @@ export default function SearchPopup({
                   marginBottom: 10,
                 }}
               >
-                <Text style={{ color: BRAND, fontWeight: '800', fontSize: 17 }}>
+                <Text
+                  style={{
+                    fontFamily: SERIF,
+                    color: MARCHE.ink,
+                    fontWeight: '600',
+                    fontSize: 20,
+                    flexShrink: 1,
+                  }}
+                >
                   {shopName || t('searchPopup.title') || 'What do you need?'}
                 </Text>
-                <TouchableOpacity onPress={handleFinish} style={{ padding: 4 }}>
-                  <Text style={{ fontSize: 22, color: '#999' }}>✕</Text>
+                <TouchableOpacity
+                  onPress={handleFinish}
+                  style={{
+                    width: TAILLES.icone,
+                    height: TAILLES.icone,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: -8,
+                  }}
+                >
+                  <Text style={{ fontSize: 22, color: MARCHE.muted }}>✕</Text>
                 </TouchableOpacity>
               </View>
               <TextInput
@@ -643,12 +658,16 @@ export default function SearchPopup({
                 textContentType="none"
                 autoCorrect={true}
                 spellCheck={true}
+                placeholderTextColor={MARCHE.faint}
                 style={{
-                  backgroundColor: '#fff',
+                  backgroundColor: MARCHE.card,
+                  borderWidth: 1,
+                  borderColor: MARCHE.borderInput,
+                  height: TAILLES.champ,
                   paddingHorizontal: 14,
-                  paddingVertical: 12,
-                  borderRadius: 14,
+                  borderRadius: TAILLES.rayonCarte,
                   fontSize: 16,
+                  color: MARCHE.ink,
                 }}
               />
             </View>
@@ -660,21 +679,25 @@ export default function SearchPopup({
               renderItem={renderItem}
               extraData={selectedItems}
               ListEmptyComponent={
-                <Text style={{ textAlign: 'center', color: '#9CA3AF', marginTop: 24 }}>
+                <Text style={{ textAlign: 'center', color: MARCHE.faint, marginTop: 24 }}>
                   {t('searchPopup.noResults') || 'No results'}
                 </Text>
               }
-              contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20, paddingTop: 10 }}
+              contentContainerStyle={{
+                paddingHorizontal: TAILLES.marge,
+                paddingBottom: 20,
+                paddingTop: 10,
+              }}
               keyboardShouldPersistTaps="handled"
               style={{ flex: 1 }}
             />
 
             {/* Bottom: selected items list + Terminer */}
-            <SafeAreaView style={{ backgroundColor: '#fff' }}>
+            <SafeAreaView style={{ backgroundColor: MARCHE.card }}>
               {selList.length > 0 && (
-                <View style={{ borderTopWidth: 1, borderTopColor: '#E5E7EB' }}>
+                <View style={{ borderTopWidth: 1, borderTopColor: MARCHE.border }}>
                   <ScrollView
-                    style={{ paddingHorizontal: 16, maxHeight: 120 }}
+                    style={{ paddingHorizontal: TAILLES.marge, maxHeight: 120 }}
                     showsVerticalScrollIndicator={true}
                   >
                     {selList.map((a) => {
@@ -687,14 +710,15 @@ export default function SearchPopup({
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
+                            minHeight: 40,
                             paddingVertical: 7,
                             borderBottomWidth: 1,
-                            borderBottomColor: '#F3F4F6',
+                            borderBottomColor: MARCHE.border,
                           }}
                         >
                           <Text style={{ fontSize: 16, marginRight: 8 }}>{em}</Text>
                           <Text
-                            style={{ flex: 1, fontSize: 13, fontWeight: '600', color: '#111' }}
+                            style={{ flex: 1, fontSize: 13, fontWeight: '600', color: MARCHE.ink }}
                             numberOfLines={1}
                           >
                             {nm}
@@ -702,8 +726,8 @@ export default function SearchPopup({
                           <Text
                             style={{
                               fontSize: 13,
-                              fontWeight: '800',
-                              color: '#111',
+                              fontWeight: '700',
+                              color: MARCHE.ink,
                               marginRight: 8,
                             }}
                           >
@@ -715,39 +739,39 @@ export default function SearchPopup({
                                 onPress={() => handleRemove(a.item.id)}
                                 onLongAction={() => handleRemove(a.item.id)}
                                 style={{
-                                  width: 24,
-                                  height: 24,
-                                  borderRadius: 12,
+                                  width: 28,
+                                  height: 28,
+                                  borderRadius: 14,
                                   borderWidth: 1.5,
                                   borderColor: '#EF4444',
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                 }}
                               >
-                                <Ionicons name="trash-outline" size={12} color="#EF4444" />
+                                <Ionicons name="trash-outline" size={14} color="#EF4444" />
                               </RptBtn>
                             ) : (
                               <RptBtn
                                 onPress={() => onQtyDelta(a.item, -1)}
                                 onLongAction={() => onQtyDelta(a.item, -1)}
                                 style={{
-                                  width: 24,
-                                  height: 24,
-                                  borderRadius: 12,
+                                  width: 28,
+                                  height: 28,
+                                  borderRadius: 14,
                                   borderWidth: 1.5,
-                                  borderColor: '#D1D5DB',
+                                  borderColor: MARCHE.borderInput,
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                 }}
                               >
-                                <Ionicons name="remove" size={12} color="#555" />
+                                <Ionicons name="remove" size={14} color={MARCHE.muted} />
                               </RptBtn>
                             )}
                             <Text
                               style={{
                                 fontSize: 14,
                                 fontWeight: '700',
-                                color: '#111',
+                                color: MARCHE.ink,
                                 marginHorizontal: 5,
                                 minWidth: 16,
                                 textAlign: 'center',
@@ -759,15 +783,15 @@ export default function SearchPopup({
                               onPress={() => onQtyDelta(a.item, 1)}
                               onLongAction={() => onQtyDelta(a.item, 1)}
                               style={{
-                                width: 24,
-                                height: 24,
-                                borderRadius: 12,
-                                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                                width: 28,
+                                height: 28,
+                                borderRadius: 14,
+                                borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                               }}
                             >
-                              <Ionicons name="add" size={12} color="#1C1917" />
+                              <Ionicons name="add" size={14} color={MARCHE.noir} />
                             </RptBtn>
                           </View>
                         </View>
@@ -780,34 +804,34 @@ export default function SearchPopup({
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      paddingHorizontal: 16,
+                      paddingHorizontal: TAILLES.marge,
                       paddingVertical: 6,
                     }}
                   >
-                    <Text style={{ fontSize: 14, fontWeight: '700', color: '#374151' }}>
+                    <Text style={{ fontSize: 14, fontWeight: '700', color: MARCHE.ink }}>
                       {t('counts.items', { count: selList.reduce((s, a) => s + a.qty, 0) })}
                     </Text>
-                    <Text style={{ fontSize: 15, fontWeight: '800', color: BRAND }}>
+                    <Text style={{ fontSize: 15, fontWeight: '700', color: BRAND }}>
                       {formatPrice(selList.reduce((s, a) => s + a.item.price * a.qty, 0))}
                     </Text>
                   </View>
                 </View>
               )}
-              <View style={{ paddingHorizontal: 16, paddingVertical: 10 }}>
+              <View style={{ paddingHorizontal: TAILLES.marge, paddingVertical: 10 }}>
                 <TouchableOpacity
                   onPress={handleFinish}
                   activeOpacity={0.9}
                   style={{
-                    borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
-                    paddingVertical: 14,
-                    borderRadius: 14,
+                    borderWidth: 1, borderColor: MARCHE.borderInput, backgroundColor: '#FFFFFF',
+                    height: TAILLES.bouton,
+                    borderRadius: TAILLES.rayonBouton,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Ionicons name="cart" size={18} color="#1C1917" style={{ marginRight: 8 }} />
-                  <Text style={{ color: '#1C1917', fontWeight: '800', fontSize: 16 }}>
+                  <Ionicons name="cart" size={18} color={MARCHE.noir} style={{ marginRight: 8 }} />
+                  <Text style={{ color: MARCHE.noir, fontWeight: '700', fontSize: 16 }}>
                     {t('cart.addToCart') || 'Ajouter'} ({totalCount})
                   </Text>
                 </TouchableOpacity>

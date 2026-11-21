@@ -62,5 +62,5 @@ export default function PrivacySection({ connected }) {
 const s = StyleSheet.create({
   legal: { paddingVertical: 6 },
   legalTxt: { fontSize: 13, color: T.muted, lineHeight: 18 },
-  legalLink: { fontSize: 14, fontWeight: '700', color: T.brandDark, marginTop: 4, textDecorationLine: 'underline' },
+  legalLink: { fontSize: 14, fontWeight: '600', color: T.brandDark, marginTop: 4, textDecorationLine: 'underline' },
 });

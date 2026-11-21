@@ -3,10 +3,13 @@ import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '../ui/IoniconsSens';
-import { T } from './theme';
+import { T, SERIF, TAILLES as TAILLES_THEME } from './theme';
 import RecipeVisual from './RecipeVisual';
 import useT from './useT';
 import { langueEstRTL } from '../../lib/sensEcriture';
+
+// Repli quand le thème est simulé (tests) : les styles se créent au chargement du module.
+const TAILLES = TAILLES_THEME || {};
 
 const LRI = '⁦';
 const PDI = '⁩';
@@ -35,14 +38,14 @@ const Badge = ({ icon, label, tone }) => (
       <Ionicons
         name={icon}
         size={12}
-        color={tone === 'accent' ? '#B45309' : tone === 'info' ? '#1D4ED8' : T.ink}
+        color={tone === 'accent' ? T.brandDark : tone === 'info' ? '#1D4ED8' : T.ink}
         style={{ marginRight: 4 }}
       />
     ) : null}
     <Text
       style={[
         s.badgeTxt,
-        tone === 'accent' && { color: '#B45309' },
+        tone === 'accent' && { color: T.brandDark },
         tone === 'info' && { color: '#1D4ED8' },
       ]}
       textBreakStrategy="simple"
@@ -93,6 +96,7 @@ function MealCard({
   onAddSide,
   onGuests,
   guestsText,
+  style,
 }) {
   const t = useT();
   const { i18n } = useTranslation();
@@ -100,7 +104,7 @@ function MealCard({
 
   if (meal.free) {
     return (
-      <View style={[s.card, s.free]}>
+      <View style={[s.card, s.free, style]}>
         <View style={s.freeRow}>
           <View style={s.freeIcon}>
             <Ionicons name="restaurant" size={24} color={T.brandDark} />
@@ -131,7 +135,7 @@ function MealCard({
             ))}
           </View>
         ) : null}
-        <View style={s.actions}>
+        <View style={[s.actions, s.actionsFree]}>
           <Action icon="book-outline" label={t('week.takeRecipe')} onPress={() => onFree(false)} />
         </View>
       </View>
@@ -140,10 +144,10 @@ function MealCard({
 
   if (!recipe) {
     return (
-      <View style={[s.card, s.free, { paddingVertical: 18 }]}>
+      <View style={[s.card, s.free, style]}>
         <Text style={s.slot}>{slotLabel}</Text>
         <Text style={s.freeText}>{t(meal.recipeId ? 'week.unavailable' : 'week.noMeal')}</Text>
-        <View style={s.actions}>
+        <View style={[s.actions, s.actionsFree]}>
           <Action icon="shuffle" label={t('week.change')} onPress={onChange} />
           <Action icon="restaurant-outline" label={t('week.free')} onPress={() => onFree(true)} />
         </View>
@@ -155,14 +159,14 @@ function MealCard({
   // Accompagnement choisi : compté dans les calories affichées.
   const kcalShown = (Number(recipe.kcal) || 0) + (side ? Number(side.kcal) || 0 : 0);
   return (
-    <View style={s.card}>
+    <View style={[s.card, style]}>
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={onOpen}
         accessibilityRole="button"
         accessibilityLabel={title}
       >
-        <RecipeVisual recipe={recipe} ingredients={ingredients} height={132} radius={22} />
+        <RecipeVisual recipe={recipe} ingredients={ingredients} height={132} radius={17} />
         <View style={s.badges}>
           {left ? <Badge icon="repeat" label={t('week.leftover')} tone="info" /> : null}
           {meal.batchOf ? (
@@ -273,13 +277,13 @@ export default memo(MealCard);
 const s = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 24,
+    borderRadius: 18,
     marginBottom: 16,
     borderWidth: 1,
     borderColor: T.border,
     ...T.shadow,
   },
-  free: { padding: 16, backgroundColor: '#FAFFFD', borderStyle: 'dashed', borderColor: T.brand },
+  free: { padding: 16, backgroundColor: T.card, borderStyle: 'dashed', borderColor: T.brand },
   freeRow: { flexDirection: 'row', alignItems: 'center' },
   freeIcon: {
     width: 52,
@@ -290,7 +294,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  freeTitle: { fontSize: 18, fontWeight: '600', color: T.ink, marginTop: 2 },
+  freeTitle: { fontFamily: SERIF, fontSize: 18, fontWeight: '600', color: T.ink, marginTop: 2 },
   freeText: { fontSize: 13, color: T.muted, marginTop: 2, lineHeight: 18 },
   badges: {
     position: 'absolute',
@@ -319,14 +323,21 @@ const s = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  title: { fontSize: 19, fontWeight: '600', color: T.ink, marginTop: 4, lineHeight: 25 },
+  title: {
+    fontFamily: SERIF,
+    fontSize: 19,
+    fontWeight: '600',
+    color: T.ink,
+    marginTop: 4,
+    lineHeight: 25,
+  },
   metaRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
   meta: { flexDirection: 'row', alignItems: 'center', marginRight: 14, marginBottom: 2 },
   metaTxt: { fontSize: 13, color: T.muted, fontWeight: '600', marginLeft: 4 },
   // prix : une seule ligne, qui se resserre au lieu de se couper en deux (arabe : montant + للشخص)
   metaPrix: { flexShrink: 1, maxWidth: '100%' },
   metaPrixTxt: { flexShrink: 1 },
-  nearby: { paddingHorizontal: 12, paddingTop: 10 },
+  nearby: { paddingTop: 10 },
   nearbyTitle: { fontSize: 13, fontWeight: '600', color: T.ink, marginBottom: 4 },
   nearbyRow: {
     flexDirection: 'row',
@@ -337,25 +348,33 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: T.border,
     paddingHorizontal: 12,
-    paddingVertical: 9,
-    marginTop: 5,
+    minHeight: TAILLES.boutonPetit,
+    marginTop: 6,
   },
   nearbyName: { flex: 1, fontSize: 14, fontWeight: '700', color: T.ink },
   actions: { flexDirection: 'row', paddingHorizontal: 12, paddingBottom: 12, paddingTop: 2 },
+  // carte libre : déjà 16 de marge intérieure, boutons alignés sur le texte
+  actionsFree: {
+    paddingHorizontal: 0,
+    paddingBottom: 0,
+    paddingTop: 0,
+    marginHorizontal: -4,
+    marginTop: 12,
+  },
   sideLine: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 16,
     marginBottom: 10,
-    marginTop: -2,
   },
   sideLineTxt: { flex: 1, fontSize: 13, fontWeight: '600', color: T.ink, marginLeft: 6 },
   sideAdd: {
     borderWidth: 1,
     borderColor: T.border,
     borderRadius: 999,
+    minHeight: 30,
+    justifyContent: 'center',
     paddingHorizontal: 12,
-    paddingVertical: 6,
     marginLeft: 8,
   },
   sideAddTxt: { fontSize: 12.5, fontWeight: '700', color: T.brandDark },
@@ -366,8 +385,9 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
     borderWidth: 1, borderColor: T.border,
-    borderRadius: 16,
-    paddingVertical: 10,
+    height: TAILLES.boutonPetit,
+    borderRadius: TAILLES.boutonPetit / 2,
+    paddingHorizontal: 6,
     marginHorizontal: 4,
   },
   actionTxt: { fontSize: 12.5, fontWeight: '600', color: T.ink, marginLeft: 6, flexShrink: 1 },

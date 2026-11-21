@@ -21,7 +21,8 @@ import {
 } from '../../lib/menus/myRecipes';
 import { importRecipe } from '../../services/myRecipesApi';
 import { pickPhoto, photoSources } from '../../services/recipePhotos';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { Chip, Field, PrimaryButton, GhostButton, RoundIcon, Stepper } from './ui';
 import { useMenus } from './MenusContext';
 import useT from './useT';
@@ -119,7 +120,7 @@ export default function RecipeEditScreen({ id, onClose }) {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: '#fff' }}
+      style={{ flex: 1, backgroundColor: T.bg }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <View style={s.head}>
@@ -145,6 +146,7 @@ export default function RecipeEditScreen({ id, onClose }) {
               keyboardType="url"
               returnKeyType="go"
               onSubmitEditing={doImport}
+              style={s.field}
             />
             <PrimaryButton
               soft
@@ -153,7 +155,7 @@ export default function RecipeEditScreen({ id, onClose }) {
               loading={importing}
               disabled={!url.trim()}
               onPress={doImport}
-              style={{ marginTop: 10 }}
+              style={[s.btn, { marginTop: 10 }]}
             />
             {importMsg ? (
               <Text style={[s.msg, !importMsg.ok && { color: T.danger }]}>{importMsg.text}</Text>
@@ -167,6 +169,7 @@ export default function RecipeEditScreen({ id, onClose }) {
           onChangeText={(v) => patch({ title: v })}
           placeholder={tr('titlePlaceholder')}
           maxLength={120}
+          style={s.field}
         />
         {errors.includes('title') ? <Text style={s.err}>{tr('errTitle')}</Text> : null}
 
@@ -201,7 +204,7 @@ export default function RecipeEditScreen({ id, onClose }) {
                 onChangeText={(v) => setIngredient(i, { name: v })}
                 placeholder={tr('ingName')}
                 maxLength={80}
-                style={{ flex: 1 }}
+                style={[s.field, { flex: 1 }]}
               />
               <TouchableOpacity
                 onPress={() => patch({ ingredients: draft.ingredients.filter((_, j) => j !== i) })}
@@ -219,7 +222,7 @@ export default function RecipeEditScreen({ id, onClose }) {
                 onChangeText={(v) => setIngredient(i, { qty: v })}
                 placeholder={tr('ingQty')}
                 keyboardType="decimal-pad"
-                style={s.qty}
+                style={[s.field, s.qty]}
               />
               <ScrollView
                 horizontal
@@ -297,16 +300,38 @@ export default function RecipeEditScreen({ id, onClose }) {
       </ScrollView>
       <View style={s.bar}>
         {saveError ? <Text style={s.err}>{saveError}</Text> : null}
-        <PrimaryButton icon="checkmark" label={tr('save')} loading={saving} onPress={save} />
+        <PrimaryButton
+          icon="checkmark"
+          label={tr('save')}
+          loading={saving}
+          onPress={save}
+          style={[s.btn, s.btnNoir]}
+        />
       </View>
     </KeyboardAvoidingView>
   );
 }
 
 const s = StyleSheet.create({
-  head: { flexDirection: 'row', alignItems: 'center', padding: 14 },
-  title: { flex: 1, marginLeft: 12, fontSize: 20, fontWeight: '600', color: T.ink },
-  body: { paddingHorizontal: 18, paddingBottom: 30 },
+  head: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: TAILLES.marge,
+    paddingVertical: 14,
+  },
+  title: {
+    flex: 1,
+    marginLeft: 12,
+    fontFamily: SERIF,
+    fontSize: 21,
+    fontWeight: '600',
+    color: T.ink,
+  },
+  body: { paddingHorizontal: TAILLES.marge, paddingBottom: 30 },
+  // Champs d'une ligne : même hauteur partout, texte centré verticalement.
+  field: { height: TAILLES.champ, paddingVertical: 0 },
+  btn: { height: TAILLES.bouton, minHeight: TAILLES.bouton, borderRadius: TAILLES.rayonBouton },
+  btnNoir: { backgroundColor: MARCHE.noir },
   box: { backgroundColor: T.subtle, borderRadius: 16, padding: 14 },
   label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 20, marginBottom: 8 },
   inlineLabel: { flex: 1, fontSize: 15, fontWeight: '600', color: T.ink },
@@ -318,5 +343,11 @@ const s = StyleSheet.create({
   remove: { marginLeft: 8 },
   qty: { width: 96 },
   photo: { height: 180, borderRadius: 16, backgroundColor: T.subtle, marginBottom: 6 },
-  bar: { padding: 14, borderTopWidth: 1, borderTopColor: T.border, backgroundColor: '#fff' },
+  bar: {
+    paddingHorizontal: TAILLES.marge,
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: T.border,
+    backgroundColor: T.bg,
+  },
 });

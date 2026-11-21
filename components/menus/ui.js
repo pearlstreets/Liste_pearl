@@ -9,7 +9,8 @@ import {
   TextInput,
 } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 
 export const Chip = memo(function Chip({ label, on, onPress, icon, small }) {
   return (
@@ -109,7 +110,7 @@ export const RoundIcon = memo(function RoundIcon({
   onPress,
   color,
   bg,
-  size = 40,
+  size = TAILLES.icone,
   label,
   active,
 }) {
@@ -128,7 +129,7 @@ export const RoundIcon = memo(function RoundIcon({
           alignItems: 'center',
           justifyContent: 'center',
         },
-        { backgroundColor: bg || (active ? T.brand : '#fff') },
+        { backgroundColor: bg || (active ? MARCHE.noir : '#fff') },
         !bg && !active && { borderWidth: 1, borderColor: T.borderInput },
       ]}
     >
@@ -218,7 +219,7 @@ export const ErrorBox = memo(function ErrorBox({ text, onRetry, retryLabel }) {
       {onRetry ? (
         <TouchableOpacity onPress={onRetry}>
           <Text
-            style={[s.errTxt, { color: T.ink, fontWeight: '800', textDecorationLine: 'underline' }]}
+            style={[s.errTxt, { color: T.ink, fontWeight: '700', textDecorationLine: 'underline' }]}
           >
             {retryLabel}
           </Text>
@@ -232,44 +233,44 @@ const s = StyleSheet.create({
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 14,
-    minHeight: 40,
+    height: TAILLES.boutonPetit,
     maxWidth: '100%',
-    paddingVertical: 9,
     borderRadius: 999,
     borderWidth: 1,
     marginRight: 8,
     marginBottom: 8,
   },
-  chipSmall: { paddingHorizontal: 11, paddingVertical: 6 },
-  chipOn: { backgroundColor: T.brand, borderColor: T.brand },
+  chipSmall: { paddingHorizontal: 11, height: 32 },
+  chipOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
   chipOff: { backgroundColor: '#fff', borderColor: T.border },
-  chipTxt: { fontSize: 14, fontWeight: '700', color: T.ink },
+  chipTxt: { fontSize: 14, fontWeight: '600', color: T.ink },
   btn: {
-    minHeight: 54,
-    borderRadius: 16,
+    height: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnOn: { backgroundColor: T.brand, ...T.shadowSm },
+  btnOn: { backgroundColor: MARCHE.noir, ...T.shadowSm },
   btnSoft: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.borderInput },
-  btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  // flexShrink : le libellé reste dans la marge intérieure (réduit par adjustsFontSizeToFit) au lieu de déborder.
+  btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600', flexShrink: 1 },
   ghost: {
-    minHeight: 44,
+    height: TAILLES.boutonPetit,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
     paddingHorizontal: 8,
     justifyContent: 'center',
   },
-  ghostTxt: { color: T.muted, fontSize: 14, fontWeight: '700' },
+  ghostTxt: { color: T.muted, fontSize: 14, fontWeight: '600' },
   stepper: { flexDirection: 'row', alignItems: 'center' },
   stepBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    borderRadius: TAILLES.icone / 2,
     backgroundColor: '#fff',
     borderWidth: 1, borderColor: T.borderInput,
     alignItems: 'center',
@@ -280,14 +281,15 @@ const s = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: T.borderInput,
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
+    minHeight: TAILLES.champ,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
     color: T.ink,
   },
   sectionRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 24, marginBottom: 12 },
-  sectionTitle: { fontSize: 20, fontWeight: '600', color: T.ink },
+  sectionTitle: { fontFamily: SERIF, fontSize: 20, fontWeight: '600', color: T.ink },
   sectionHint: { fontSize: 13, color: T.muted, marginTop: 2 },
   empty: {
     alignItems: 'center',
@@ -305,7 +307,13 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 18,
   },
-  emptyTitle: { fontSize: 20, fontWeight: '600', color: T.ink, textAlign: 'center' },
+  emptyTitle: {
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+    textAlign: 'center',
+  },
   emptyText: {
     fontSize: 15,
     color: T.muted,
@@ -319,7 +327,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     backgroundColor: T.dangerSoft,
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
     padding: 12,
     marginVertical: 8,
   },

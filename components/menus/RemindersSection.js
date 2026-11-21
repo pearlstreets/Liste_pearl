@@ -1,7 +1,8 @@
 // Réglages des rappels : tout est désactivé par défaut, la permission n'est demandée qu'à l'activation.
 import React, { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking, StyleSheet, Switch, Text, View } from 'react-native';
-import { T } from './theme';
+import { T, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { Chip, GhostButton, SectionTitle, Stepper } from './ui';
 import { useMenus } from './MenusContext';
 import useT from './useT';
@@ -29,7 +30,7 @@ export function Ligne({ label, hint, on, onChange }) {
         value={on}
         onValueChange={onChange}
         accessibilityLabel={label}
-        trackColor={{ false: T.borderInput, true: T.brand }}
+        trackColor={{ false: T.borderInput, true: MARCHE.noir }}
         thumbColor="#fff"
         ios_backgroundColor={T.borderInput}
       />
@@ -154,15 +155,15 @@ export default function RemindersSection() {
 }
 
 const s = StyleSheet.create({
-  ligne: { flexDirection: 'row', alignItems: 'center', minHeight: 48, paddingVertical: 6 },
+  ligne: { flexDirection: 'row', alignItems: 'center', minHeight: 56, paddingVertical: 8 },
   ligneTxt: { flex: 1, paddingRight: 12 },
-  label: { fontSize: 15, fontWeight: '700', color: T.ink },
+  label: { fontSize: 15, fontWeight: '600', color: T.ink },
   hint: { fontSize: 13, color: T.muted, lineHeight: 18, marginTop: 2 },
   quand: { paddingBottom: 10, gap: 10, alignItems: 'flex-start' },
   jours: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   alerte: {
     backgroundColor: T.subtle,
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
     padding: 12,
     marginBottom: 8,
     alignItems: 'flex-start',
