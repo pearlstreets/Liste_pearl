@@ -412,6 +412,9 @@ export default function SearchPopup({
   onSelect,
   fmtPrice: fmtPriceProp,
   realShopMode = false,
+  // Libellé du bouton qui valide (par défaut « Ajouter ») : la sélection d'une
+  // boutique dans Comparer n'est pas encore le panier.
+  libelleValider,
 }) {
   const { t } = useTranslation();
   const formatPrice = useMemo(() => fmtPriceProp || ((v) => fmtEuro(v) + ' €'), [fmtPriceProp]);
@@ -575,6 +578,13 @@ export default function SearchPopup({
     onClose();
   }, [selectedItems, onSelect, onClose]);
 
+  // Croix, fond et retour Android : ANNULER, rien n'est ajouté. Seul le bouton
+  // du bas valide la sélection (handleFinish).
+  const handleCancel = useCallback(() => {
+    setSelectedItems({});
+    onClose();
+  }, [onClose]);
+
   const selList = Object.values(selectedItems).reverse();
   const totalCount = selList.reduce((s, a) => s + a.qty, 0);
 
@@ -594,14 +604,14 @@ export default function SearchPopup({
   );
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={handleFinish}>
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={handleCancel}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={0}
       >
         <View style={{ flex: 1, backgroundColor: 'rgba(46,28,18,0.45)' }}>
-          <TouchableWithoutFeedback onPress={handleFinish}>
+          <TouchableWithoutFeedback onPress={handleCancel}>
             <View style={{ height: '10%' }} />
           </TouchableWithoutFeedback>
 
@@ -636,7 +646,9 @@ export default function SearchPopup({
                   {shopName || t('searchPopup.title') || 'What do you need?'}
                 </Text>
                 <TouchableOpacity
-                  onPress={handleFinish}
+                  onPress={handleCancel}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('common.cancel')}
                   style={{
                     width: TAILLES.icone,
                     height: TAILLES.icone,
@@ -832,7 +844,7 @@ export default function SearchPopup({
                 >
                   <Ionicons name="cart" size={18} color={MARCHE.noir} style={{ marginRight: 8 }} />
                   <Text style={{ color: MARCHE.noir, fontWeight: '700', fontSize: 16 }}>
-                    {t('cart.addToCart') || 'Ajouter'} ({totalCount})
+                    {libelleValider || t('cart.addToCart') || 'Ajouter'} ({totalCount})
                   </Text>
                 </TouchableOpacity>
               </View>

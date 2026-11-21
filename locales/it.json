@@ -6,7 +6,11 @@
     "cart": "Carrello",
     "profile": "Profilo",
     "shops": "Negozi",
-    "menus": "Menu"
+    "menus": "Menu",
+    "acheter": "Acquista"
+  },
+  "acheter": {
+    "comparer": "Confronta la mia lista"
   },
   "listScreen": {
     "scan": "Scansionare",
@@ -61,7 +65,10 @@
     "profileFollowers": "Follower",
     "profileFollowing": "Seguiti",
     "profileOpenFull": "Vedi il profilo su Pearl Streets",
-    "grantedAdd": "Aggiungi una persona"
+    "grantedAdd": "Aggiungi una persona",
+    "compareMyList": "Confronta la mia lista",
+    "deleteThisItem": "Elimina questo articolo",
+    "deleteThisItemConfirm": "Questo articolo verrà rimosso dalla sua lista."
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",
@@ -118,7 +125,8 @@
     "close": "Chiudere",
     "soonAvailable": "Disponibile presto",
     "validate": "Aggiungere",
-    "finish": "Fine"
+    "finish": "Fine",
+    "addToSelection": "Aggiungi alla selezione"
   },
   "camera": {
     "permissionDenied": "Autorizzazione negata",
@@ -180,7 +188,8 @@
     "products": "Prodotti",
     "searchProductPlaceholder": "Cercare un prodotto...",
     "noFavProducts": "Nessun prodotto preferito",
-    "addProductHint": "Tocchi il cuore di un prodotto per aggiungerlo"
+    "addProductHint": "Tocchi il cuore di un prodotto per aggiungerlo",
+    "addFromBuy": "Le aggiunga dalla scheda Acquista"
   },
   "profile": {
     "guestTitle": "Non ha effettuato l'accesso",
@@ -323,7 +332,9 @@
     "termsOfUse": "Condizioni d'uso",
     "menusUnsavedTitle": "Menu non salvati",
     "menusUnsavedMsg": "Non è stato possibile salvare i Suoi menu sul Suo account. Cancellarli da questo dispositivo?",
-    "menusUnsavedErase": "Cancellare e uscire"
+    "menusUnsavedErase": "Cancellare e uscire",
+    "myOrders": "I miei ordini",
+    "myOrdersHint": "Segua e ritrovi i suoi ordini"
   },
   "auth": {
     "login": "Accedere",
@@ -447,7 +458,26 @@
     "errorPhone": "Numero di telefono non valido (da 5 a 16 cifre)",
     "errorUsernameTaken": "Questo nome utente è già in uso.",
     "passwordRuleHint": "Minimo 8 caratteri, con una minuscola, una maiuscola, un numero e un carattere speciale (@$!%*?&).",
-    "chooseYourLanguage": "Scelga la Sua lingua"
+    "chooseYourLanguage": "Scelga la Sua lingua",
+    "forgotTitle": "Password dimenticata",
+    "forgotEmailHint": "Inserisca l'indirizzo e-mail del suo account. Le invieremo un codice di verifica.",
+    "forgotSendCode": "Ricevi il codice",
+    "forgotCodeHint": "Inserisca il codice ricevuto via e-mail all'indirizzo {{email}}.",
+    "forgotCodeLabel": "Codice di verifica",
+    "forgotCodePlaceholder": "Codice ricevuto via e-mail",
+    "forgotVerifyCode": "Verifica il codice",
+    "forgotResendCode": "Invia di nuovo il codice",
+    "forgotCodeResent": "Le è stato inviato un nuovo codice.",
+    "forgotCodeRequired": "Inserisca il codice ricevuto via e-mail.",
+    "forgotNewPwdHint": "Scelga la sua nuova password.",
+    "forgotSavePwd": "Salva la password",
+    "forgotSuccess": "La sua password è stata modificata. Ora può accedere.",
+    "forgotErrorCode": "Codice non valido o scaduto.",
+    "forgotErrorExpired": "Il tempo è scaduto. Richieda un nuovo codice.",
+    "forgotErrorWeak": "Questa password non è accettata. Ne scelga un'altra, più difficile da indovinare.",
+    "forgotErrorGeneric": "Si è verificato un problema. Riprovi.",
+    "forgotTooMany": "Troppe richieste. Riprovi più tardi.",
+    "forgotBackToLogin": "Torna all'accesso"
   },
   "cart": {
     "today": "Oggi",
@@ -573,7 +603,15 @@
     "tipDriver": "Ringraziare il corriere",
     "totalPrice": "prezzo",
     "qtyMinus": "meno",
-    "qtyPlus": "più"
+    "qtyPlus": "più",
+    "myOrders": "I miei ordini",
+    "paidByCard": "Pagato con carta",
+    "byCard": "Con carta",
+    "trackMyOrder": "Segui il mio ordine",
+    "orderConfirmedCollectCart": "Il suo ordine sarà preparato per il ritiro. Segua lo stato in I miei ordini, in alto nel carrello.",
+    "orderConfirmedDeliveryCart": "Un fattorino prenderà in carico il suo ordine. Segua lo stato in I miei ordini, in alto nel carrello.",
+    "noShopProductFound": "Nessun prodotto trovato per questo negozio.",
+    "searchAllProducts": "Cerca in tutti i prodotti"
   },
   "orderStatus": {
     "confirmed": "Ordine confermato",
@@ -1333,6 +1371,7 @@
       "alreadyText": "Tutto è già presente in « {{name}} ».",
       "seeList": "Vedere la mia lista",
       "compare": "Confrontare i prezzi",
+      "compareList": "Confrontare la mia lista",
       "compareHint": "Confronti i prezzi reali dei negozi Pearl Streets.",
       "err": {
         "error": "Si è verificato un errore, La preghiamo di riprovare.",

@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from 'react-i18next';
-import { DeviceEventEmitter, StyleSheet } from 'react-native';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "../components/ui/IoniconsSens";
@@ -8,13 +9,26 @@ import MenusScreen from "../components/menus/MenusScreen";
 import TabLabel from "../components/menus/TabLabel";
 import { THEME } from "../components/commun/theme";
 import { KEY_CART } from "../lib/constants";
-import ProductsScreen from "../screens/shop/ProductsScreen";
-import ShopsScreen from "../screens/shop/ShopsScreen";
+import AcheterScreen from "../screens/shop/AcheterScreen";
+import { ROUTE_ACHETER, ANCIENNES_ROUTES } from "./onglets";
 import CartScreen from "../screens/cart/CartScreen";
 import ListScreen from "../screens/list/ListScreen";
 import FakeProfileScreen from "../screens/profile/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
+
+// Anciens onglets 'products' et 'shops' : écrans cachés de la barre, qui ouvrent
+// aussitôt Acheter sur le bon segment (navigate('products') et navigate('shops')
+// marchent toujours, comme le reste des paramètres passés).
+const redirection = (segment) => function AncienOnglet({ navigation, route }) {
+  useFocusEffect(React.useCallback(() => {
+    try { navigation.navigate(ROUTE_ACHETER, { ...(route.params || {}), segment, n: Date.now() }); } catch {}
+  }, [navigation, route.params]));
+  return <View style={{ flex: 1, backgroundColor: THEME.bg }} />;
+};
+const AncienProduits = redirection(ANCIENNES_ROUTES.products);
+const AncienneBoutiques = redirection(ANCIENNES_ROUTES.shops);
+const CACHE = { headerShown: false, tabBarButton: () => null, tabBarItemStyle: { display: 'none' } };
 
 export default function MainNavigator({ onLogout, isAuth }) {
   const { t } = useTranslation();
@@ -45,8 +59,7 @@ export default function MainNavigator({ onLogout, isAuth }) {
     "myList": { focused: "reorder-three", unfocused: "reorder-three-outline" },
     // Optimiseur = comparaison de prix (icône distincte du Panier)
     "menus": { focused: "restaurant", unfocused: "restaurant-outline" },
-    "products": { focused: "pricetags",      unfocused: "pricetags-outline" },
-    "shops": { focused: "storefront",      unfocused: "storefront-outline" },
+    "acheter": { focused: "storefront",      unfocused: "storefront-outline" },
     "cart":   { focused: "bag-handle",     unfocused: "bag-handle-outline" }
   };
 
@@ -54,8 +67,7 @@ export default function MainNavigator({ onLogout, isAuth }) {
     const tabNames = {
       myList: t('tabs.myList'),
       menus: t('tabs.menus'),
-      products: t('tabs.products'),
-      shops: t('tabs.shops', 'Boutiques'),
+      acheter: t('tabs.acheter'),
       cart: t('tabs.cart'),
       profile: t('tabs.profile')
     };
@@ -81,10 +93,11 @@ export default function MainNavigator({ onLogout, isAuth }) {
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
       <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="acheter" component={AcheterScreen} options={{ headerShown: false }} />
       <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8 } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="products" component={AncienProduits} options={CACHE} />
+      <Tab.Screen name="shops" component={AncienneBoutiques} options={CACHE} />
     </Tab.Navigator>
   );
 }

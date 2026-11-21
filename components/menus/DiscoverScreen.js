@@ -467,7 +467,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
           <View style={{ alignItems: 'flex-start', marginBottom: 8 }}>
             <GhostButton
               icon={st === 'ok' ? 'checkmark-circle-outline' : 'cart-outline'}
-              label={st === 'ok' ? t('fridge.addedMissing') : t('fridge.addMissing')}
+              label={st === 'ok' ? t('fridge.addedMissing') : t('recipe.addToList')}
               onPress={st === 'ok' || st === 'busy' ? undefined : () => addMissing(item)}
             />
           </View>

@@ -16,6 +16,7 @@ import { fetchPhotonSuggestions } from "../../lib/photon";
 import { EMAIL_RE, PASSWORD_RE, PHONE_RE, USERNAME_MIN, normalizeDob } from "./validation";
 import { KEY_RESTER_CONNECTE } from "./session";
 import WheelDatePicker from "./WheelDatePicker";
+import MotDePasseOublie from "./MotDePasseOublie";
 
 const authStyles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: THEME.bg },
@@ -45,6 +46,9 @@ const authStyles = StyleSheet.create({
   // Error banner
   errorBanner: { backgroundColor: THEME.dangerSoft, borderRadius: 16, padding: 14, marginBottom: 18, flexDirection: 'row', alignItems: 'center' },
   errorTxt: { color: THEME.danger, fontSize: 13, marginLeft: 8, flex: 1, fontWeight: '600' },
+  successBanner: { backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 14, marginBottom: 18, flexDirection: 'row', alignItems: 'center' },
+  successTxt: { color: THEME.brandDark, fontSize: 13, marginLeft: 8, flex: 1, fontWeight: '600' },
+  forgotLink: { alignSelf: 'flex-end', paddingVertical: 6, marginTop: 4 },
 
   // Form fields
   fieldGroup: { marginBottom: 14 },
@@ -140,6 +144,9 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
   const [prenom, setPrenom] = React.useState('');
   const [nom, setNom] = React.useState('');
   const [error, setError] = React.useState('');
+  // Mot de passe oublié : 0 = fermé, 1 e-mail, 2 code, 3 nouveau mot de passe.
+  const [oubli, setOubli] = React.useState(0);
+  const [succes, setSucces] = React.useState('');
   const [showPwd, setShowPwd] = React.useState(false);
   const [resterConnecte, setResterConnecte] = React.useState(true);
   React.useEffect(() => {
@@ -200,7 +207,7 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
   };
 
   const handleLogin = async () => {
-    setError('');
+    setError(''); setSucces('');
     if (!email.trim() && !password.trim()) { setError(t('auth.errorBothEmpty', 'Veuillez saisir votre email et mot de passe')); return; }
     if (!email.trim()) { setError(t('auth.errorNoEmail', 'Veuillez saisir votre email')); return; }
     if (!password.trim()) { setError(t('auth.errorNoPassword', 'Veuillez saisir votre mot de passe')); return; }
@@ -307,6 +314,7 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
   // connexion) ; en connexion, la page se ferme.
   if (retourRef) {
     retourRef.current = () => {
+      if (isLogin && oubli) { setOubli(oubli === 2 ? 1 : oubli === 3 ? 1 : 0); return true; }
       if (isLogin) return false;
       if (step === 2) { setStep(1); } else { setIsLogin(true); }
       setError('');
@@ -319,7 +327,11 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <SafeAreaView style={authStyles.screen} edges={[]}>
       <View style={authStyles.topBar}>
-        {!isLogin ? (
+        {isLogin && oubli ? (
+          <TouchableOpacity onPress={() => setOubli(oubli === 1 ? 0 : 1)} style={authStyles.topBtn} activeOpacity={0.7}>
+            <Ionicons name="arrow-back" size={22} color={THEME.ink} />
+          </TouchableOpacity>
+        ) : !isLogin ? (
           <TouchableOpacity onPress={() => { if (step === 2) { setStep(1); } else { setIsLogin(true); } setError(''); }} style={authStyles.topBtn} activeOpacity={0.7}>
             <Ionicons name="arrow-back" size={22} color={THEME.ink} />
           </TouchableOpacity>
@@ -335,16 +347,40 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
           <Image source={require('../../assets/icon.png')} style={[authStyles.brandLogo, !isLogin && authStyles.brandLogoSignup]} resizeMode="cover" />
           <Text style={authStyles.brandTitle}>Pearl List</Text>
           <Text style={authStyles.brandSubtitle}>
-            {isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte, utilisable sur l\'app et le site Marketplace'))}
+            {isLogin && oubli ? t('auth.forgotTitle', 'Réinitialiser votre mot de passe') : isLogin ? (t('auth.pearlLoginHint', 'Connectez-vous avec votre compte Pearl Streets ou Marketplace')) : (t('auth.pearlSignupHint', 'Créez un compte, utilisable sur l\'app et le site Marketplace'))}
           </Text>
         </View>
-        {error ? (
+        {error && !(isLogin && oubli) ? (
           <View style={authStyles.errorBanner}>
             <Ionicons name="alert-circle" size={18} color={THEME.danger} />
             <Text style={authStyles.errorTxt}>{error}</Text>
           </View>
         ) : null}
-        {isLogin ? (
+        {succes && isLogin && !oubli ? (
+          <View style={authStyles.successBanner}>
+            <Ionicons name="checkmark-circle" size={18} color={THEME.brandDark} />
+            <Text style={authStyles.successTxt}>{succes}</Text>
+          </View>
+        ) : null}
+        {isLogin && oubli ? (
+          <>
+            {/* ---------- Mot de passe oublié ---------- */}
+            <MotDePasseOublie
+              styles={authStyles}
+              t={t}
+              emailInitial={email}
+              etape={oubli}
+              setEtape={setOubli}
+              onTermine={(e) => {
+                setOubli(0); setEmail(e); setPassword(''); setError('');
+                setSucces(t('auth.forgotSuccess', 'Votre mot de passe a été modifié. Vous pouvez vous connecter.'));
+              }}
+            />
+            <TouchableOpacity onPress={() => setOubli(0)} style={authStyles.toggleLink} activeOpacity={0.7}>
+              <Text style={authStyles.toggleTxt}>{t('auth.forgotBackToLogin', 'Retour à la connexion')}</Text>
+            </TouchableOpacity>
+          </>
+        ) : isLogin ? (
           <>
             {/* ---------- Connexion ---------- */}
             <View style={authStyles.fieldGroup}>
@@ -364,6 +400,9 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
                   {resterConnecte ? <Ionicons name="checkmark" size={14} color="#FFFFFF" /> : null}
                 </View>
                 <Text style={authStyles.stayTxt}>{t('auth.stayConnected', 'Rester connecté')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setError(''); setSucces(''); setOubli(1); }} style={authStyles.forgotLink} activeOpacity={0.7} hitSlop={{ top: 6, bottom: 6, left: 8, right: 8 }}>
+                <Text style={authStyles.toggleTxtBrand}>{t('auth.forgotPassword', 'Mot de passe oublié ?')}</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={handleLogin} disabled={loading} activeOpacity={0.85} style={[authStyles.primaryBtn, loading && authStyles.primaryBtnDisabled]}>
@@ -515,8 +554,8 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
             )}
           </>
         )}
-        <TouchableOpacity onPress={() => {
-            setIsLogin(!isLogin); setError(''); setStep(1); setFieldErr({});
+        {!(isLogin && oubli) ? <TouchableOpacity onPress={() => {
+            setIsLogin(!isLogin); setError(''); setSucces(''); setStep(1); setFieldErr({});
             // Repart d'un formulaire propre (pas d'état d'inscription périmé).
             setConfirmPwd(''); setGender(''); setDob(''); setPhone('');
             setDialCode('+33'); setDialCountryCode('FR');
@@ -526,7 +565,7 @@ export default function AuthScreen({ onLogin, onClose, initialIsLogin = true, re
             {isLogin ? (t('auth.noAccountPearl', 'Pas de compte ? ')) : (t('auth.hasAccountPearl', 'Déjà un compte ? '))}
             <Text style={authStyles.toggleTxtBrand}>{isLogin ? t('auth.signupBtn') : t('auth.loginBtn')}</Text>
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> : null}
       </ScrollView>
     </SafeAreaView>
     </KeyboardAvoidingView>

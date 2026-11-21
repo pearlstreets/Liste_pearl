@@ -6,7 +6,11 @@
     "cart": "购物车",
     "profile": "个人资料",
     "shops": "商店",
-    "menus": "菜单"
+    "menus": "菜单",
+    "acheter": "购买"
+  },
+  "acheter": {
+    "comparer": "比较我的清单"
   },
   "listScreen": {
     "scan": "扫描",
@@ -59,7 +63,10 @@
     "profileFollowers": "粉丝",
     "profileFollowing": "关注",
     "profileOpenFull": "在 Pearl Streets 查看个人资料",
-    "grantedAdd": "添加成员"
+    "grantedAdd": "添加成员",
+    "compareMyList": "比较我的清单",
+    "deleteThisItem": "删除此项",
+    "deleteThisItemConfirm": "此项将从您的清单中移除。"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",
@@ -116,7 +123,8 @@
     "close": "关闭",
     "soonAvailable": "即将推出",
     "validate": "添加",
-    "finish": "完成"
+    "finish": "完成",
+    "addToSelection": "添加到所选"
   },
   "camera": {
     "permissionDenied": "权限被拒绝",
@@ -178,7 +186,8 @@
     "products": "商品",
     "searchProductPlaceholder": "搜索商品...",
     "noFavProducts": "没有收藏的商品",
-    "addProductHint": "点按商品上的爱心即可添加"
+    "addProductHint": "点按商品上的爱心即可添加",
+    "addFromBuy": "请从“购买”标签页添加"
   },
   "profile": {
     "guestTitle": "您尚未登录",
@@ -321,7 +330,9 @@
     "termsOfUse": "使用条款",
     "menusUnsavedTitle": "菜单未保存",
     "menusUnsavedMsg": "您的菜单未能保存到您的账户。要从此设备上删除吗？",
-    "menusUnsavedErase": "删除并退出登录"
+    "menusUnsavedErase": "删除并退出登录",
+    "myOrders": "我的订单",
+    "myOrdersHint": "跟踪并查看您的订单"
   },
   "auth": {
     "login": "登录",
@@ -445,7 +456,26 @@
     "errorPhone": "电话号码无效（5 至 16 位数字）",
     "errorUsernameTaken": "该用户名已被占用。",
     "passwordRuleHint": "至少 8 个字符，包含小写字母、大写字母、数字和特殊字符（@$!%*?&）。",
-    "chooseYourLanguage": "选择您的语言"
+    "chooseYourLanguage": "选择您的语言",
+    "forgotTitle": "忘记密码",
+    "forgotEmailHint": "请输入您账户的电子邮箱地址。我们将向您发送验证码。",
+    "forgotSendCode": "获取验证码",
+    "forgotCodeHint": "请输入发送至 {{email}} 的验证码。",
+    "forgotCodeLabel": "验证码",
+    "forgotCodePlaceholder": "邮件中收到的验证码",
+    "forgotVerifyCode": "验证",
+    "forgotResendCode": "重新发送验证码",
+    "forgotCodeResent": "已向您发送新的验证码。",
+    "forgotCodeRequired": "请输入邮件中收到的验证码。",
+    "forgotNewPwdHint": "请设置您的新密码。",
+    "forgotSavePwd": "保存密码",
+    "forgotSuccess": "您的密码已修改，现在可以登录。",
+    "forgotErrorCode": "验证码无效或已过期。",
+    "forgotErrorExpired": "已超时，请重新获取验证码。",
+    "forgotErrorWeak": "此密码不被接受，请选择一个更难猜到的密码。",
+    "forgotErrorGeneric": "出现问题，请重试。",
+    "forgotTooMany": "请求过多，请稍后再试。",
+    "forgotBackToLogin": "返回登录"
   },
   "cart": {
     "today": "今天",
@@ -569,7 +599,15 @@
     "tipDriver": "感谢您的配送员",
     "totalPrice": "价格",
     "qtyMinus": "减少",
-    "qtyPlus": "增加"
+    "qtyPlus": "增加",
+    "myOrders": "我的订单",
+    "paidByCard": "已用银行卡支付",
+    "byCard": "银行卡支付",
+    "trackMyOrder": "跟踪我的订单",
+    "orderConfirmedCollectCart": "您的订单将备好供您自取。请在购物车顶部的“我的订单”中查看状态。",
+    "orderConfirmedDeliveryCart": "配送员将负责您的订单。请在购物车顶部的“我的订单”中查看状态。",
+    "noShopProductFound": "未找到该店铺的商品。",
+    "searchAllProducts": "在所有商品中搜索"
   },
   "orderStatus": {
     "confirmed": "订单已确认",
@@ -1326,6 +1364,7 @@
       "alreadyText": "所有内容已在“{{name}}”中。",
       "seeList": "查看我的清单",
       "compare": "比较价格",
+      "compareList": "比较我的清单",
       "compareHint": "请比较 Pearl Streets 各店铺的实际价格。",
       "err": {
         "error": "发生错误，请重试。",

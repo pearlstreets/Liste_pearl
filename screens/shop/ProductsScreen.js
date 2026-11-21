@@ -10,7 +10,7 @@ import Modal from "../../components/DeuxEcrans";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, Image, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import { loadListItems } from "../../lib/listStore";
 import RepeatButton from "../../components/ui/RepeatButton";
@@ -131,8 +131,13 @@ const prodStyles = StyleSheet.create({
   ctaTxt: { color: MARCHE.noir, fontWeight: '600', fontSize: 16, marginLeft: 8 },
 });
 
-const ProductsScreen = () => {
+// integre : affiché dans l'onglet Acheter (sous son segment, sans marge du haut).
+// actif : segment « Comparer ma liste » choisi ; l'écran se recharge quand il
+// devient visible (onglet au premier plan ET segment choisi), comme avant au focus.
+const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
   const { t } = useTranslation();
+  const estFocus = useIsFocused();
+  const visible = estFocus && actif !== false;
   const { fmtPrice } = useCurrency();
   const navigation = useNavigation();
   const [__activeQuery, __setActiveQuery] = React.useState('');
@@ -147,8 +152,8 @@ const ProductsScreen = () => {
       const raw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
       const arr = raw ? JSON.parse(raw) : [];
       setFavProductNames(new Set(arr.map(p => p.name)));
-    })();
-  }, []);
+    })().catch(() => {});
+  }, [favTick]);
 
   const toggleProductFav = async (product) => {
     const raw = await AsyncStorage.getItem(KEY_FAV_PRODUCTS);
@@ -185,7 +190,7 @@ const ProductsScreen = () => {
   const [mode,setMode]=React.useState("collect");
   const [favShops,setFavShops]=React.useState([]);
   const loadFavShops = React.useCallback(async()=>{ try{ const raw=await AsyncStorage.getItem(KEY_FAV_SHOPS); const arr=raw?JSON.parse(raw):[]; setFavShops(Array.isArray(arr)?arr:[]); }catch(e){ setFavShops([]);} },[]);
-  useFocusEffect(React.useCallback(()=>{ let a=true;(async()=>{ await loadFavShops(); })(); return ()=>{a=false}; },[loadFavShops]));
+  React.useEffect(()=>{ if (visible) loadFavShops(); },[visible, loadFavShops, favTick]);
   const isShopFav = (name)=> favShops.includes(String(name||""));
   const toggleShopFav = async (shopObj)=>{
     try{
@@ -674,7 +679,7 @@ const ProductsScreen = () => {
   },[mode,strategy,realShops]);
 
   React.useEffect(()=>{ refresh(); },[refresh]);
-  useFocusEffect(React.useCallback(()=>{ refresh(); },[refresh]));
+  React.useEffect(()=>{ if (visible) refresh(); },[visible, refresh]);
 
   // Reset cartPushed when user pushes new products from Ma Liste
   React.useEffect(() => {
@@ -712,7 +717,7 @@ const ProductsScreen = () => {
 
   return (
     <View style={prodStyles.screen}>
-    <SafeAreaView style={prodStyles.screen} edges={['top']}>
+    <SafeAreaView style={prodStyles.screen} edges={integre ? [] : ['top']}>
       {/* Header avec titre + bouton effacer */}
       <View style={prodStyles.header}>
         <View style={prodStyles.headerRow}>
@@ -1165,6 +1170,7 @@ const ProductsScreen = () => {
             fmtPrice={fmtPrice}
             data={__activeShopProducts}
             realShopMode={true}
+            libelleValider={t('searchPopup.addToSelection')}
             onClose={()=>__setSearchVisible(false)}
             onSelect={(it)=>{
               try{

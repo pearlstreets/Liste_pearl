@@ -7,14 +7,14 @@ import { THEME } from "../../components/commun/theme";
 import { useCurrency } from "../../components/commun/devise";
 import { cartStyles } from "./cartStyles";
 
-const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo, notices }) => {
+const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo, notices, paid, onTrack }) => {
   const { t } = useTranslation();
   const { fmtPrice } = useCurrency();
   const isCollect = mode === 'collect';
   // Suivi HONNÊTE : la commande est réellement créée à la confirmation. On
   // n'affiche donc plus de fausse progression temporisée ni de « Livré » simulé.
   // Seule l'étape « confirmée » est validée ; la suite est le parcours à venir,
-  // suivi en temps réel dans Profil > Commandes.
+  // suivi en temps réel dans Panier, Mes commandes.
   const steps = isCollect ? [
     { icon: "checkmark-circle", label: t('orderStatus.confirmed') },
     { icon: "storefront", label: t('orderStatus.preparing') },
@@ -51,7 +51,7 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo,
           </View>
           <Text style={cartStyles.etaCaption}>{t('cart.orderConfirmedTitle', 'Commande confirmée')}</Text>
           <Text style={[cartStyles.stepLabel, cartStyles.stepLabelOff, { textAlign: 'center', marginTop: 6, paddingHorizontal: 34 }]}>
-            {isCollect ? t('cart.orderConfirmedCollect', 'Votre commande sera préparée pour le retrait. Suivez son statut dans Profil > Commandes.') : t('cart.orderConfirmedDelivery', 'Un livreur va prendre en charge votre commande. Suivez son statut dans Profil > Commandes.')}
+            {isCollect ? t('cart.orderConfirmedCollectCart', 'Votre commande sera préparée pour le retrait. Suivez son statut dans Mes commandes, en haut du panier.') : t('cart.orderConfirmedDeliveryCart', 'Un livreur va prendre en charge votre commande. Suivez son statut dans Mes commandes, en haut du panier.')}
           </Text>
         </View>
 
@@ -113,13 +113,19 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo,
             </View>
             <View style={[cartStyles.trackerLineRow, { paddingLeft: 0, marginTop: 8 }]}>
               <Text style={cartStyles.trackerLineName}>{t('cart.payment', 'Paiement')}</Text>
-              <Text style={cartStyles.trackerLinePrice}>{isCollect ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
+              <Text style={cartStyles.trackerLinePrice}>{paid ? t('cart.paidByCard', 'Payé par carte') : isCollect ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
             </View>
           </View>
         </ScrollView>
 
         {/* Terminé — toujours disponible (la commande est déjà enregistrée) */}
         <View style={cartStyles.trackerFooter}>
+          {typeof onTrack === 'function' ? (
+            <TouchableOpacity onPress={onTrack} activeOpacity={0.9} style={[cartStyles.ghostBtn, { flexDirection: 'row', marginBottom: 10 }]} accessibilityRole="button" accessibilityLabel={t('cart.trackMyOrder', 'Suivre ma commande')}>
+              <Ionicons name="navigate-outline" size={18} color="#1C1917" />
+              <Text style={[cartStyles.ghostBtnTxt, { marginLeft: 8 }]}>{t('cart.trackMyOrder', 'Suivre ma commande')}</Text>
+            </TouchableOpacity>
+          ) : null}
           <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={cartStyles.primaryBtn} accessibilityRole="button" accessibilityLabel={t('cart.done')}>
             <Ionicons name="checkmark-circle" size={20} color="#1C1917" />
             <Text style={cartStyles.primaryBtnTxt}>{t('cart.done')}</Text>

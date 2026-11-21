@@ -3,7 +3,7 @@ import { annulationPossible } from "../../../lib/annulation";
 import { ajouterAuPanier, champsCommande } from "../../../lib/panier";
 import { DELIVERY_STATUS } from "../../../services/delivery";
 import LiveDeliveryMap from "../../../components/LiveDeliveryMap";
-import { DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, Linking } from 'react-native';
 import Modal from '../../../components/DeuxEcrans';
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +19,10 @@ import { fmtDate, cleanPickupDate } from "./useCommandes";
 
 // Détail d'une commande (carte live, livreur, code, pourboire, note, signalement,
 // annulation) et fenêtre « Recommander », au même niveau.
-export function DetailCommande({ commandes, t, fmtPrice, navigation }) {
+// Numéro du livreur gardé pour l'appel (chiffres et « + » seulement).
+const numeroAppel = (n) => String(n || '').replace(/[^\d+]/g, '');
+
+export function DetailCommande({ commandes, t, fmtPrice, navigation, apresRecommande }) {
   const { setAllOrdersVisible, detailOrder, setDetailOrder, reorderVisible, setReorderVisible, reorderItems, setReorderItems, deliveryStatuses, tipLoading, submitPostTip, submitRating, submitReport, annulation, annulerCommande, getOrderStatus } = commandes;
   return (
     <>
@@ -96,8 +99,9 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation }) {
                         {deliveryStatuses[detailOrder.id]?.estimated_arrival || detailOrder.estimatedArrival || t('orderStatus.onTheWay')}
                       </Text>
                     </View>
-                    {(deliveryStatuses[detailOrder.id]?.driver_phone || detailOrder.driverPhone) ? (
-                      <TouchableOpacity style={profStyles.driverChipCall}>
+                    {numeroAppel(deliveryStatuses[detailOrder.id]?.driver_phone || detailOrder.driverPhone) ? (
+                      <TouchableOpacity style={profStyles.driverChipCall} accessibilityRole="button"
+                        onPress={() => { Linking.openURL('tel:' + numeroAppel(deliveryStatuses[detailOrder.id]?.driver_phone || detailOrder.driverPhone)).catch(() => {}); }}>
                         <Ionicons name="call" size={16} color="#1C1917" />
                       </TouchableOpacity>
                     ) : null}
@@ -390,6 +394,7 @@ export function DetailCommande({ commandes, t, fmtPrice, navigation }) {
                   setDetailOrder(null);
                   setAllOrdersVisible(false);
                   navigation.navigate('cart');
+                  if (typeof apresRecommande === 'function') apresRecommande();
                 }}
                 disabled={!reorderItems.some(it => it.selected)}
                 style={[profStyles.primaryBtn, !reorderItems.some(it => it.selected) && profStyles.primaryBtnDisabled]}

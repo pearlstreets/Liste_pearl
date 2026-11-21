@@ -7,6 +7,56 @@ import { INSET_BAS, THEME } from "../../../components/commun/theme";
 import { profStyles } from "../../profile/profStyles";
 import { fmtDate } from "./useCommandes";
 
+// Carte d'une commande (numéro, statut, boutiques, date, mode, total).
+export function CarteCommande({ order, status, t, fmtPrice, onPress }) {
+  return (
+                <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={profStyles.orderCard}>
+                  <View style={profStyles.orderRow}>
+                    <View style={profStyles.orderIcon}>
+                      <Ionicons name={status.icon} size={20} color={THEME.brand} />
+                    </View>
+                    <View style={profStyles.orderBody}>
+                      <Text style={profStyles.orderTitle} numberOfLines={1}>{t('profile.orderNumber')} #{String(order.id).slice(-4)}</Text>
+                      <View style={profStyles.orderStatusRow}>
+                        <View style={[profStyles.orderDot, { backgroundColor: status.color }]} />
+                        <Text style={[profStyles.orderStatusTxt, { color: status.color }]}>{status.label}</Text>
+                      </View>
+                      {(order.shops && order.shops.length > 0) ? (
+                        <Text style={profStyles.orderShops} numberOfLines={1}>{order.shops.join(', ')}</Text>
+                      ) : null}
+                      <Text style={profStyles.orderDate}>{fmtDate(order.date)}</Text>
+                    </View>
+                    <View style={profStyles.orderSide}>
+                      <View style={profStyles.modePill}>
+                        <Text style={profStyles.modePillTxt}>
+                          {order.mode === 'collect' ? t('productsScreen.clickAndCollect') : t('cart.delivery')}
+                        </Text>
+                      </View>
+                      <Text style={profStyles.orderPrice}>{fmtPrice(order.total||0)}</Text>
+                      <Ionicons name="chevron-forward" size={16} color={THEME.faint} style={{marginTop:4}} />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+  );
+}
+
+// « Mes commandes » de l'onglet Panier : tout l'historique, dans l'écran
+// (pas de fenêtre), le détail s'ouvre au toucher.
+export function ListeCommandes({ commandes, t, fmtPrice }) {
+  const { orders, setDetailOrder, getOrderStatus } = commandes;
+  return (
+    <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS }} showsVerticalScrollIndicator={false}>
+      {orders.length === 0 ? (
+        <View style={profStyles.empty}>
+          <Text style={profStyles.emptyTitle}>{t('profile.noOrders')}</Text>
+        </View>
+      ) : orders.map((order) => (
+        <CarteCommande key={order.id} order={order} status={getOrderStatus(order)} t={t} fmtPrice={fmtPrice} onPress={() => setDetailOrder(order)} />
+      ))}
+    </ScrollView>
+  );
+}
+
 // Bloc « Historique des commandes » du Profil : trois dernières commandes.
 export function ApercuCommandes({ commandes, t, fmtPrice }) {
   const { orders, setAllOrdersVisible, setDetailOrder, getOrderStatus } = commandes;

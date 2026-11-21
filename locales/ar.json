@@ -6,7 +6,11 @@
     "cart": "السلة",
     "profile": "الملف الشخصي",
     "shops": "المتاجر",
-    "menus": "القوائم"
+    "menus": "القوائم",
+    "acheter": "شراء"
+  },
+  "acheter": {
+    "comparer": "مقارنة قائمتي"
   },
   "listScreen": {
     "scan": "مسح ضوئي",
@@ -64,7 +68,10 @@
     "profileFollowers": "المتابعون",
     "profileFollowing": "المتابَعون",
     "profileOpenFull": "عرض الملف الشخصي على Pearl Streets",
-    "grantedAdd": "إضافة شخص"
+    "grantedAdd": "إضافة شخص",
+    "compareMyList": "مقارنة قائمتي",
+    "deleteThisItem": "حذف هذا العنصر",
+    "deleteThisItemConfirm": "ستتم إزالة هذا العنصر من قائمتكم."
   },
   "productsScreen": {
     "clickAndCollect": "اطلبوا واستلموا",
@@ -121,7 +128,8 @@
     "close": "إغلاق",
     "soonAvailable": "متاح قريبا",
     "validate": "إضافة",
-    "finish": "إنهاء"
+    "finish": "إنهاء",
+    "addToSelection": "إضافة إلى التحديد"
   },
   "camera": {
     "permissionDenied": "تم رفض الإذن",
@@ -183,7 +191,8 @@
     "products": "المنتجات",
     "searchProductPlaceholder": "البحث عن منتج...",
     "noFavProducts": "لا توجد منتجات مفضلة",
-    "addProductHint": "اضغطوا على أيقونة القلب في المنتج لإضافته"
+    "addProductHint": "اضغطوا على أيقونة القلب في المنتج لإضافته",
+    "addFromBuy": "أضيفوها من تبويب شراء"
   },
   "profile": {
     "guestTitle": "لم تسجّلوا الدخول",
@@ -326,7 +335,9 @@
     "termsOfUse": "شروط الاستخدام",
     "menusUnsavedTitle": "لم يتم حفظ القوائم",
     "menusUnsavedMsg": "تعذر حفظ قوائم طعامكم في حسابكم. هل تريدون حذفها من هذا الجهاز؟",
-    "menusUnsavedErase": "الحذف وتسجيل الخروج"
+    "menusUnsavedErase": "الحذف وتسجيل الخروج",
+    "myOrders": "طلباتي",
+    "myOrdersHint": "تابعوا طلباتكم واعثروا عليها"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -450,7 +461,26 @@
     "errorPhone": "رقم هاتف غير صالح (من 5 إلى 16 رقمًا)",
     "errorUsernameTaken": "اسم المستخدم هذا محجوز بالفعل.",
     "passwordRuleHint": "8 أحرف على الأقل، تتضمن حرفًا صغيرًا وحرفًا كبيرًا ورقمًا ورمزًا خاصًا (@$!%*?&).",
-    "chooseYourLanguage": "اختاروا لغتكم"
+    "chooseYourLanguage": "اختاروا لغتكم",
+    "forgotTitle": "نسيت كلمة المرور",
+    "forgotEmailHint": "أدخلوا عنوان البريد الإلكتروني لحسابكم. سنرسل إليكم رمز تحقق.",
+    "forgotSendCode": "استلام الرمز",
+    "forgotCodeHint": "أدخلوا الرمز المرسل بالبريد الإلكتروني إلى {{email}}.",
+    "forgotCodeLabel": "رمز التحقق",
+    "forgotCodePlaceholder": "الرمز المستلم بالبريد",
+    "forgotVerifyCode": "التحقق من الرمز",
+    "forgotResendCode": "إعادة إرسال الرمز",
+    "forgotCodeResent": "تم إرسال رمز جديد إليكم.",
+    "forgotCodeRequired": "أدخلوا الرمز المستلم بالبريد الإلكتروني.",
+    "forgotNewPwdHint": "اختاروا كلمة المرور الجديدة.",
+    "forgotSavePwd": "حفظ كلمة المرور",
+    "forgotSuccess": "تم تغيير كلمة المرور. يمكنكم الآن تسجيل الدخول.",
+    "forgotErrorCode": "رمز غير صالح أو منتهي الصلاحية.",
+    "forgotErrorExpired": "انتهت المهلة. يرجى طلب رمز جديد.",
+    "forgotErrorWeak": "كلمة المرور هذه غير مقبولة. اختاروا كلمة أخرى يصعب تخمينها.",
+    "forgotErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "forgotTooMany": "طلبات كثيرة جدًا. يرجى المحاولة لاحقًا.",
+    "forgotBackToLogin": "العودة إلى تسجيل الدخول"
   },
   "cart": {
     "today": "اليوم",
@@ -579,7 +609,15 @@
     "tipDriver": "اشكروا السائق",
     "totalPrice": "السعر",
     "qtyMinus": "إنقاص",
-    "qtyPlus": "زيادة"
+    "qtyPlus": "زيادة",
+    "myOrders": "طلباتي",
+    "paidByCard": "تم الدفع بالبطاقة",
+    "byCard": "بالبطاقة",
+    "trackMyOrder": "تتبع طلبي",
+    "orderConfirmedCollectCart": "سيتم تجهيز طلبكم للاستلام. تابعوا حالته في «طلباتي» أعلى السلة.",
+    "orderConfirmedDeliveryCart": "سيتولى أحد السائقين توصيل طلبكم. تابعوا حالته في «طلباتي» أعلى السلة.",
+    "noShopProductFound": "لم يتم العثور على أي منتج لهذا المتجر.",
+    "searchAllProducts": "البحث في جميع المنتجات"
   },
   "orderStatus": {
     "confirmed": "تم تأكيد الطلب",
@@ -1342,6 +1380,7 @@
       "alreadyText": "كل شيء موجود بالفعل في «{{name}}».",
       "seeList": "عرض قائمتي",
       "compare": "مقارنة الأسعار",
+      "compareList": "قارنوا قائمتي",
       "compareHint": "يرجى مقارنة الأسعار الفعلية لمتاجر Pearl Streets.",
       "err": {
         "error": "حدث خطأ، يرجى المحاولة مرة أخرى.",

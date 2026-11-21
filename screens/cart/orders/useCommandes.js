@@ -50,11 +50,16 @@ export function useCommandes(t) {
   // Track delivery status from API for delivery orders
   const [deliveryStatuses, setDeliveryStatuses] = React.useState({});
 
-  // Poll delivery status for recent delivery orders
+  // Poll delivery status for recent delivery orders. Les commandes sont lues
+  // dans une ref : relire l'historique (focus, segment, commande passée) ne
+  // relance pas une salve d'appels, seul le cycle de 30 s interroge l'API.
+  const ordersRef = React.useRef(orders);
+  ordersRef.current = orders;
+  const aDesCommandes = orders.length > 0;
   React.useEffect(() => {
     let mounted = true;
     const pollDeliveryStatuses = async () => {
-      const recentDeliveryOrders = orders.filter(o => o.mode === 'delivery' && o.deliveryStatus && o.deliveryStatus !== DELIVERY_STATUS.DELIVERED && o.deliveryStatus !== DELIVERY_STATUS.CANCELLED);
+      const recentDeliveryOrders = ordersRef.current.filter(o => o.mode === 'delivery' && o.deliveryStatus && o.deliveryStatus !== DELIVERY_STATUS.DELIVERED && o.deliveryStatus !== DELIVERY_STATUS.CANCELLED);
       for (const order of recentDeliveryOrders.slice(0, 5)) {
         try {
           const status = await getDeliveryStatus(order.id);
@@ -78,13 +83,13 @@ export function useCommandes(t) {
         } catch(e) {}
       }
     };
-    if (orders.length > 0) {
+    if (aDesCommandes) {
       pollDeliveryStatuses();
       const interval = setInterval(pollDeliveryStatuses, 30000); // Poll every 30s
       return () => { mounted = false; clearInterval(interval); };
     }
     return () => { mounted = false; };
-  }, [orders]);
+  }, [aDesCommandes]);
 
   // Suivi LIVE (type Uber Eats) : quand le modal détail est ouvert sur une
   // livraison EN COURS, on rafraîchit la position du livreur toutes les 5 s

@@ -264,7 +264,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
       ? t('shop.alreadyAdded')
       : state.kind === 'delta'
         ? t('shop.addDelta', { count: state.count })
-        : t('shop.add');
+        : t('recipe.addToList');
 
   const header = (
     <View style={{ paddingBottom: 6 }}>

@@ -1,4 +1,3 @@
-import { prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR, EVENEMENT_PARTAGE, prendrePartageAOuvrir } from "../../services/pushToucher";
 import React from "react";
 import { logoutUser, deleteAccount as apiDeleteAccount, updatePassword as apiUpdatePassword, getDocumentStatus, clearLocalUserData } from "../../services/auth";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "../../services/profile";
@@ -24,16 +23,21 @@ import { CURRENCIES } from "../../data/currencies";
 import { BRAND, THEME } from "../../components/commun/theme";
 import { lstyles } from "../../components/commun/lstyles";
 import { useCurrency } from "../../components/commun/devise";
-import { KEY_LISTS, DEFAULT_LIST_ID, KEY_PROFILE, KEY_AUTH, LANGUAGES } from "../../lib/constants";
+import { KEY_LISTS, DEFAULT_LIST_ID, KEY_PROFILE, KEY_AUTH, KEY_ORDER_HISTORY, LANGUAGES } from "../../lib/constants";
 import { fetchPhotonSuggestions } from "../../lib/photon";
-import FavoritesScreen from "../shop/FavoritesScreen";
 import { formatSavedAddress } from "../cart/adresses";
 import { profStyles } from "./profStyles";
 import LegalLinks from "./LegalLinks";
-import { useCommandes } from "../cart/orders/useCommandes";
-import { ApercuCommandes, ToutesLesCommandes } from "../cart/orders/HistoriqueCommandes";
-import { DetailCommande } from "../cart/orders/DetailCommande";
-import { useDemandesPartage, DemandesPartageModale } from "../list/DemandesPartage";
+import { useDemandesPartage } from "../list/DemandesPartage";
+
+// Le Profil ne garde que le compte. Les commandes vivent dans Panier > Mes
+// commandes, les favoris dans Acheter, les demandes de partage dans Ma Liste :
+// les lignes du Profil ouvrent l'onglet puis émettent l'évènement d'ouverture.
+export const EVT_OUVRIR_MES_COMMANDES = 'OUVRIR_MES_COMMANDES';
+export const EVT_OUVRIR_FAVORIS = 'OUVRIR_FAVORIS';
+export const EVT_OUVRIR_DEMANDES_PARTAGE = 'OUVRIR_DEMANDES_PARTAGE';
+// Émis par un autre écran (Panier par exemple) pour ouvrir le gestionnaire d'adresses.
+export const EVT_OUVRIR_ADRESSES = 'OUVRIR_ADRESSES';
 
 const EMPTY_ADDR_FORM = {
   first_name: '', last_name: '', phone_code: '+33', phone_number: '',
@@ -43,7 +47,7 @@ const EMPTY_ADDR_FORM = {
 
 export default function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();
-  const { currency, setCurrency, fmtPrice } = useCurrency();
+  const { currency, setCurrency } = useCurrency();
   const navigation = useNavigation();
   const [profile, setProfile] = React.useState({ nom: '', prenom: '', pseudo: '', photo: null });
   const [editVisible, setEditVisible] = React.useState(false);
@@ -61,17 +65,23 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [pwdError, setPwdError] = React.useState('');
   const [pwdSuccess, setPwdSuccess] = React.useState('');
-  const commandes = useCommandes(t);
-  const { orders, allOrdersVisible, setAllOrdersVisible, setDetailOrder, loadOrders } = commandes;
+  // Nombre de commandes de l'appareil : seul usage restant ici, la couleur de
+  // l'anneau de l'avatar (bleu tant qu'aucune commande).
+  const [nbCommandes, setNbCommandes] = React.useState(0);
+  const loadOrders = React.useCallback(async () => {
+    try {
+      const raw = await AsyncStorage.getItem(KEY_ORDER_HISTORY);
+      const list = raw ? JSON.parse(raw) : [];
+      setNbCommandes(Array.isArray(list) ? list.length : 0);
+    } catch (e) {}
+  }, []);
   const [langVisible, setLangVisible] = React.useState(false);
   const [pendingLang, setPendingLang] = React.useState(null);
   const [currencyVisible, setCurrencyVisible] = React.useState(false);
   const [pendingCurrency, setPendingCurrency] = React.useState(null);
   const [paymentMethodsVisible, setPaymentMethodsVisible] = React.useState(false); // section Moyens de paiement (cartes)
-  const [favVisible, setFavVisible] = React.useState(false); // Favoris déplacé dans Profil (dispo sans connexion)
-  // Partage de listes : demandes reçues + utilisateurs bloqués
-  const partage = useDemandesPartage(t);
-  const { shareRequests, setShareRequestsVisible, loadShareData } = partage;
+  // Partage de listes : seul le nombre de demandes reçues reste ici (pastille).
+  const { shareRequests, loadShareData } = useDemandesPartage(t);
   const [addressListVisible, setAddressListVisible] = React.useState(false);
   const [addresses, setAddresses] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(false);
@@ -113,53 +123,37 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
     setAddressLoading(false);
   }, []);
 
-  // Notification de commande touchée (services/pushToucher.js) : détail de la
-  // commande concernée, retrouvée dans l'historique de l'appareil. iOS n'empile
-  // pas deux Modal : la liste complète ou la fiche livreur est fermée d'abord,
-  // le détail suit 300 ms plus tard. Introuvable : le Profil seul.
+  // Ouvre un onglet puis l'écran demandé dans cet onglet. L'évènement part un
+  // peu après la navigation : un onglet jamais ouvert doit d'abord se monter et
+  // brancher son écouteur.
+  const allerVers = React.useCallback((onglet, evenement) => {
+    try { navigation.navigate(onglet); } catch (e) {}
+    setTimeout(() => DeviceEventEmitter.emit(evenement), 350);
+  }, [navigation]);
+
+  // Gestionnaire d'adresses demandé depuis un autre écran. iOS n'empile pas
+  // deux Modal : une autre fenêtre du Profil est fermée d'abord. Invité : la
+  // page de connexion (les adresses sont rattachées au compte).
   const autreModaleOuverte = React.useRef(false);
-  autreModaleOuverte.current = allOrdersVisible || driverInfoVisible;
-  const ouvrirCommandeDepuisPush = React.useCallback(async () => {
-    const cible = prendreCommandeAOuvrir();
-    if (!cible) return;
-    const order = await trouverCommande(cible);
-    if (!order) return;
-    if (autreModaleOuverte.current) {
-      setAllOrdersVisible(false);
-      setDriverInfoVisible(false);
-      setTimeout(() => setDetailOrder(order), 300);
-    } else {
-      setDetailOrder(order);
-    }
-  }, []);
-  // L'onglet peut ne pas être monté quand l'évènement part : la commande est
-  // aussi prise au focus ci-dessous.
+  autreModaleOuverte.current = driverInfoVisible || editVisible || langVisible || currencyVisible || paymentMethodsVisible;
+  const isAuthRef = React.useRef(isAuth);
+  isAuthRef.current = isAuth;
   React.useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(EVENEMENT_OUVRIR, () => { ouvrirCommandeDepuisPush(); });
+    const sub = DeviceEventEmitter.addListener(EVT_OUVRIR_ADRESSES, () => {
+      if (!isAuthRef.current) { DeviceEventEmitter.emit('OPEN_AUTH'); return; }
+      if (autreModaleOuverte.current) {
+        setDriverInfoVisible(false); setEditVisible(false); setLangVisible(false);
+        setCurrencyVisible(false); setPaymentMethodsVisible(false);
+        setTimeout(() => { setAddressListVisible(true); loadAddresses(); }, 300);
+      } else {
+        setAddressListVisible(true); loadAddresses();
+      }
+    });
     return () => sub.remove();
-  }, [ouvrirCommandeDepuisPush]);
-  // Demande de partage (push ou lien pearl-list://partage) : fenêtre
-  // « Demandes de partage », rechargée, après fermeture d'une autre modale.
-  const ouvrirPartageDepuisPush = React.useCallback(() => {
-    if (!prendrePartageAOuvrir()) return;
-    loadShareData();
-    if (autreModaleOuverte.current) {
-      setAllOrdersVisible(false);
-      setDriverInfoVisible(false);
-      setTimeout(() => setShareRequestsVisible(true), 300);
-    } else {
-      setShareRequestsVisible(true);
-    }
-  }, [loadShareData]);
-  React.useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(EVENEMENT_PARTAGE, () => { ouvrirPartageDepuisPush(); });
-    return () => sub.remove();
-  }, [ouvrirPartageDepuisPush]);
+  }, [loadAddresses]);
 
   useFocusEffect(React.useCallback(() => {
-    loadProfile(); loadOrders(); loadAddresses();
-    ouvrirCommandeDepuisPush();
-    ouvrirPartageDepuisPush();
+    loadProfile(); loadOrders(); loadAddresses(); loadShareData();
     // Load driver mode status for regular users
     (async () => {
       try {
@@ -198,7 +192,7 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
         }
       } catch(e) {}
     })();
-  }, [loadProfile, loadOrders, loadAddresses, ouvrirCommandeDepuisPush]));
+  }, [loadProfile, loadOrders, loadAddresses, loadShareData]));
 
   React.useEffect(() => {
     if (isAuth) { loadProfile(); loadOrders(); }
@@ -409,7 +403,7 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
 
   const initials = (profile.prenom || profile.nom || '').trim().charAt(0).toUpperCase();
   // Avatar ring reflects the user's status — a new user (no orders yet) gets a blue ring.
-  const statusRingColor = (orders.length === 0) ? '#3B82F6' : BRAND;
+  const statusRingColor = (nbCommandes === 0) ? '#3B82F6' : BRAND;
 
   const OrderSteps = ({ mode }) => {
     const isCollect = mode === 'collect';
@@ -444,22 +438,20 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
     );
   };
 
-  // Favoris présenté en plein écran depuis Profil (fini l'onglet dédié). Monté à
-  // l'ouverture seulement → rechargement frais des favoris (stockés localement,
-  // donc dispo même sans connexion).
-  const favModal = favVisible ? (
-    <Modal visible animationType="slide" onRequestClose={() => setFavVisible(false)}>
-      <FavoritesScreen onClose={() => setFavVisible(false)} />
-    </Modal>
-  ) : null;
-
-  if (!isAuth) {
-    return (
-      <SafeAreaView style={profStyles.screen} edges={['top']}>
-        <View style={profStyles.header}>
-          <Text style={profStyles.title}>{t('tabs.profile')}</Text>
-        </View>
-        <ScrollView contentContainerStyle={{ paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+  // UN SEUL arbre pour l'invité et le compte connecté : l'invité voit en haut
+  // « Se connecter / Créer un compte », puis les sections utilisables sans compte.
+  return (
+    <SafeAreaView style={profStyles.screen} edges={['top']}>
+      <View style={profStyles.header}>
+        <Text style={profStyles.title}>{t('tabs.profile')}</Text>
+        {isAuth ? <Text style={profStyles.subtitle}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text> : null}
+      </View>
+      {isAuth && paymentMethodsVisible ? (
+        <PaymentMethodsModal visible={paymentMethodsVisible} t={t} onClose={() => setPaymentMethodsVisible(false)} />
+      ) : null}
+      <ScrollView contentContainerStyle={{ paddingBottom:28 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+        {!isAuth ? (
+          <>
           {/* Hero connexion — design soigné */}
           <View style={profStyles.guestHero}>
             <View style={profStyles.guestHeroIcon}>
@@ -476,233 +468,137 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
               <Text style={profStyles.guestHeroBtnAltTxt}>{t('auth.signupBtn', 'Créer un compte')}</Text>
             </TouchableOpacity>
           </View>
+          </>
+        ) : (
+          <>
+          {/* Profile Card */}
+          <View style={profStyles.profileCard}>
+            <TouchableOpacity onPress={pickPhoto} activeOpacity={0.8} style={profStyles.avatarWrap}>
+              <View style={[profStyles.avatar, { borderColor: statusRingColor }]}>
+                {profile.photo && (/^(https?:|data:|file:|content:)/i.test(profile.photo) || profile.photo.startsWith('/')) ? (
+                  <Image source={{ uri: profile.photo }} style={profStyles.avatarImg} />
+                ) : (
+                  <Text style={profStyles.avatarInitials}>{initials || '👤'}</Text>
+                )}
+              </View>
+              <View style={profStyles.avatarBadge}>
+                <Ionicons name="camera" size={14} color="#1C1917" />
+              </View>
+            </TouchableOpacity>
+            <Text style={profStyles.profileName}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
+            {profile.pseudo ? <Text style={profStyles.profileHandle}>@{profile.pseudo}</Text> : null}
 
-          {/* Favoris — accessibles SANS connexion (stockés localement) */}
-          <View style={profStyles.section}>
-            <View style={profStyles.settingsCard}>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={profStyles.settingRow}>
-                <View style={profStyles.settingIcon}>
-                  <Ionicons name="heart-outline" size={19} color="#1C1917" />
-                </View>
-                <View style={profStyles.settingBody}>
-                  <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
-                  <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
-                </View>
-                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => { setEditNom(profile.nom); setEditPrenom(profile.prenom); setEditPseudo(profile.pseudo||''); setEditEmail(profile.email||''); setShowPwdChange(false); setPwdError(''); setPwdSuccess(''); setEditVisible(true); }} style={profStyles.editBtn}>
+              <Ionicons name="create-outline" size={16} color={THEME.brandDark} />
+              <Text style={profStyles.editBtnTxt}>{t('profile.editProfile')}</Text>
+            </TouchableOpacity>
           </View>
 
-          {/* Préférences — accessibles SANS connexion */}
-          <View style={profStyles.section}>
-            <Text style={profStyles.guestPrefTitle}>{t('profile.preferences', 'Préférences')}</Text>
-            <View style={profStyles.settingsCard}>
-              {/* Langue */}
-              <TouchableOpacity activeOpacity={0.8} onPress={() => setLangVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
-                <View style={profStyles.settingIcon}>
-                  <Ionicons name="language-outline" size={19} color="#1C1917" />
-                </View>
-                <View style={profStyles.settingBody}>
-                  <Text style={profStyles.settingLabel}>{t('profile.language')}</Text>
-                  <Text style={profStyles.settingValue}>
-                    {LANGUAGES.find(l => l.code === i18nInstance.language)?.flag || '🌐'} {({'fr':'Français','en':'English','es':'Español','zh':'中文','ar':'العربية','de':'Deutsch','nl':'Nederlands','it':'Italiano','pt':'Português','ja':'日本語','th':'ไทย','sv':'Svenska','ru':'Русский'})[i18nInstance.language] || i18nInstance.language}
-                  </Text>
-                </View>
-                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-              </TouchableOpacity>
-              {/* Devise */}
-              <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={profStyles.settingRow}>
-                <View style={profStyles.settingIcon}>
-                  <Ionicons name="cash-outline" size={19} color="#1C1917" />
-                </View>
-                <View style={profStyles.settingBody}>
-                  <Text style={profStyles.settingLabel}>{t('profile.currency')}</Text>
-                  <Text style={profStyles.settingValue}>{currency.flag} {currency.code}</Text>
-                </View>
-                <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <LegalLinks />
-        </ScrollView>
-
-        {/* Sélecteur de langue (dispo sans connexion) */}
-        {/* Partage de listes : demandes reçues + utilisateurs bloqués */}
-        <DemandesPartageModale invite t={t} partage={partage} />
-
-        <Modal onRequestClose={() => { setPendingLang(null); setLangVisible(false); }} visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
-          <SafeAreaView style={profStyles.modalScreen} edges={[]}>
-            <View style={profStyles.modalHeader}>
-              <TouchableOpacity onPress={() => { setPendingLang(null); setLangVisible(false); }} style={profStyles.modalBack}>
-                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
-              </TouchableOpacity>
-              <Text style={profStyles.modalTitle}>{t('profile.language')}</Text>
-            </View>
-            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
-              {LANGUAGES.map(lang => {
-                const currentLang = i18nInstance.language || 'fr';
-                const isActive = currentLang === lang.code || currentLang.startsWith(lang.code);
-                const isSelected = pendingLang === lang.code || (!pendingLang && isActive);
-                return (
-                  <TouchableOpacity key={lang.code} activeOpacity={0.8} onPress={() => setPendingLang(lang.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
-                    <Text style={profStyles.pickerFlag}>{lang.flag}</Text>
-                    <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn, { flex:1 }]}>{lang.label}</Text>
-                    {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-            <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
-              <View style={profStyles.sheetFooter}>
-                <TouchableOpacity activeOpacity={0.85} onPress={async () => {
-                  const lang = pendingLang || i18nInstance.language;
-                  definirOngletApresRechargement('profile');
-                  i18nInstance.changeLanguage(lang);
-                  await AsyncStorage.setItem('APP_LANGUAGE', lang);
-                  setPendingLang(null);
-                  setLangVisible(false);
-                }} style={[profStyles.primaryBtn, !pendingLang && profStyles.primaryBtnDisabled]}>
-                  <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
-                </TouchableOpacity>
+          {/* Document Verification Status (Pro users) */}
+          {profile.role === 'professionaluser' && (
+            <View style={profStyles.section}>
+              <View style={profStyles.sectionHeadRow}>
+                <Text style={profStyles.sectionTitle}>{t('profile.verificationStatus', 'Statut de vérification')}</Text>
               </View>
-            </SafeAreaView>
-          </SafeAreaView>
-        </Modal>
-
-        {/* Sélecteur de devise (dispo sans connexion) */}
-        <Modal onRequestClose={() => { setPendingCurrency(null); setCurrencyVisible(false); }} visible={currencyVisible} animationType="slide" onShow={() => setPendingCurrency(null)}>
-          <SafeAreaView style={profStyles.modalScreen} edges={[]}>
-            <View style={profStyles.modalHeader}>
-              <TouchableOpacity onPress={() => { setPendingCurrency(null); setCurrencyVisible(false); }} style={profStyles.modalBack}>
-                <Ionicons name="arrow-back" size={20} color={THEME.ink} />
-              </TouchableOpacity>
-              <Text style={profStyles.modalTitle}>{t('profile.currency')}</Text>
-            </View>
-            <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:24 }} showsVerticalScrollIndicator={false}>
-              {CURRENCIES.map(curr => {
-                const isSelected = pendingCurrency === curr.code || (!pendingCurrency && currency.code === curr.code);
-                return (
-                  <TouchableOpacity key={curr.code} activeOpacity={0.8} onPress={() => setPendingCurrency(curr.code)} style={[profStyles.pickerRow, isSelected && profStyles.pickerRowOn]}>
-                    <Text style={profStyles.pickerFlag}>{curr.flag}</Text>
-                    <View style={{ flex:1 }}>
-                      <Text style={[profStyles.pickerName, isSelected && profStyles.pickerNameOn]}>{t(`currencies.${curr.code}`, curr.name)}</Text>
-                      <Text style={profStyles.pickerSub}>{curr.code}</Text>
-                    </View>
-                    {isSelected && <Ionicons name="checkmark-circle" size={22} color={THEME.brand} />}
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-            <SafeAreaView style={{ backgroundColor: THEME.bg }} edges={[]}>
-              <View style={profStyles.sheetFooter}>
-                <TouchableOpacity activeOpacity={0.85} onPress={() => {
-                  const code = pendingCurrency || currency.code;
-                  const found = CURRENCIES.find(c => c.code === code);
-                  if (found) setCurrency(found);
-                  setPendingCurrency(null);
-                  setCurrencyVisible(false);
-                }} style={[profStyles.primaryBtn, !pendingCurrency && profStyles.primaryBtnDisabled]}>
-                  <Text style={[profStyles.primaryBtnTxt, { marginLeft: 0 }]}>{t('profile.confirm')}</Text>
-                </TouchableOpacity>
-              </View>
-            </SafeAreaView>
-          </SafeAreaView>
-        </Modal>
-        {favModal}
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView style={profStyles.screen} edges={['top']}>
-      <View style={profStyles.header}>
-        <Text style={profStyles.title}>{t('tabs.profile')}</Text>
-        <Text style={profStyles.subtitle}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
-      </View>
-      {favModal}
-      {paymentMethodsVisible ? (
-        <PaymentMethodsModal visible={paymentMethodsVisible} t={t} onClose={() => setPaymentMethodsVisible(false)} />
-      ) : null}
-      <ScrollView contentContainerStyle={{ paddingBottom:28 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-        {/* Profile Card */}
-        <View style={profStyles.profileCard}>
-          <TouchableOpacity onPress={pickPhoto} activeOpacity={0.8} style={profStyles.avatarWrap}>
-            <View style={[profStyles.avatar, { borderColor: statusRingColor }]}>
-              {profile.photo && (/^(https?:|data:|file:|content:)/i.test(profile.photo) || profile.photo.startsWith('/')) ? (
-                <Image source={{ uri: profile.photo }} style={profStyles.avatarImg} />
-              ) : (
-                <Text style={profStyles.avatarInitials}>{initials || '👤'}</Text>
+              {!profile.isVerified && (
+                <View style={[profStyles.banner, profStyles.bannerWarn]}>
+                  <Ionicons name="time-outline" size={20} color="#B45309" />
+                  <Text style={[profStyles.bannerTxt, { color:'#92400E' }]}>{t('profile.verificationPending', 'Votre compte est en cours de vérification par notre équipe.')}</Text>
+                </View>
+              )}
+              {profile.isVerified && (
+                <View style={[profStyles.banner, profStyles.bannerOk]}>
+                  <Ionicons name="checkmark-circle" size={20} color={THEME.brandDark} />
+                  <Text style={[profStyles.bannerTxt, { color:THEME.brandDark }]}>{t('profile.verificationApproved', 'Compte vérifié')}</Text>
+                </View>
+              )}
+              {docStatuses && (
+                <View style={profStyles.docCard}>
+                  {[
+                    { key: 'kbiss_status', label: t('auth.docKbiss', 'Kbis') },
+                    { key: 'iban_status', label: t('auth.docIban', 'IBAN / RIB') },
+                    { key: 'identityCardFront_status', label: t('auth.docIdFront', 'Carte d\'identité (recto)') },
+                    { key: 'identityCardBack_status', label: t('auth.docIdBack', 'Carte d\'identité (verso)') },
+                    { key: 'proofOfAddress_status', label: t('auth.docProofAddress', 'Justificatif de domicile') },
+                  ].map((doc, i) => {
+                    const status = docStatuses[doc.key] || 'pending';
+                    const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
+                    const color = status === 'approved' ? THEME.brand : status === 'rejected' ? THEME.danger : '#F59E0B';
+                    const tint = status === 'approved' ? THEME.brandSoft : status === 'rejected' ? THEME.dangerSoft : '#FEF3C7';
+                    const label = status === 'approved' ? (t('profile.docApproved', 'Approuvé')) : status === 'rejected' ? (t('profile.docRejected', 'Rejeté')) : (t('profile.docPending', 'En attente'));
+                    return (
+                      <View key={i} style={[profStyles.docRow, i < 4 && profStyles.docDivider]}>
+                        <View style={[profStyles.docIcon, { backgroundColor: tint }]}>
+                          <Ionicons name={icon} size={17} color={color} />
+                        </View>
+                        <Text style={profStyles.docLabel}>{doc.label}</Text>
+                        <View style={[profStyles.docStatusPill, { backgroundColor: tint }]}>
+                          <Text style={[profStyles.docStatusTxt, { color }]}>{label}</Text>
+                        </View>
+                      </View>
+                    );
+                  })}
+                </View>
               )}
             </View>
-            <View style={profStyles.avatarBadge}>
-              <Ionicons name="camera" size={14} color="#1C1917" />
-            </View>
-          </TouchableOpacity>
-          <Text style={profStyles.profileName}>{(profile.prenom || '') + ' ' + (profile.nom || '')}</Text>
-          {profile.pseudo ? <Text style={profStyles.profileHandle}>@{profile.pseudo}</Text> : null}
-
-          <TouchableOpacity activeOpacity={0.85} onPress={() => { setEditNom(profile.nom); setEditPrenom(profile.prenom); setEditPseudo(profile.pseudo||''); setEditEmail(profile.email||''); setShowPwdChange(false); setPwdError(''); setPwdSuccess(''); setEditVisible(true); }} style={profStyles.editBtn}>
-            <Ionicons name="create-outline" size={16} color={THEME.brandDark} />
-            <Text style={profStyles.editBtnTxt}>{t('profile.editProfile')}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Document Verification Status (Pro users) */}
-        {profile.role === 'professionaluser' && (
-          <View style={profStyles.section}>
-            <View style={profStyles.sectionHeadRow}>
-              <Text style={profStyles.sectionTitle}>{t('profile.verificationStatus', 'Statut de vérification')}</Text>
-            </View>
-            {!profile.isVerified && (
-              <View style={[profStyles.banner, profStyles.bannerWarn]}>
-                <Ionicons name="time-outline" size={20} color="#B45309" />
-                <Text style={[profStyles.bannerTxt, { color:'#92400E' }]}>{t('profile.verificationPending', 'Votre compte est en cours de vérification par notre équipe.')}</Text>
-              </View>
-            )}
-            {profile.isVerified && (
-              <View style={[profStyles.banner, profStyles.bannerOk]}>
-                <Ionicons name="checkmark-circle" size={20} color={THEME.brandDark} />
-                <Text style={[profStyles.bannerTxt, { color:THEME.brandDark }]}>{t('profile.verificationApproved', 'Compte vérifié')}</Text>
-              </View>
-            )}
-            {docStatuses && (
-              <View style={profStyles.docCard}>
-                {[
-                  { key: 'kbiss_status', label: t('auth.docKbiss', 'Kbis') },
-                  { key: 'iban_status', label: t('auth.docIban', 'IBAN / RIB') },
-                  { key: 'identityCardFront_status', label: t('auth.docIdFront', 'Carte d\'identité (recto)') },
-                  { key: 'identityCardBack_status', label: t('auth.docIdBack', 'Carte d\'identité (verso)') },
-                  { key: 'proofOfAddress_status', label: t('auth.docProofAddress', 'Justificatif de domicile') },
-                ].map((doc, i) => {
-                  const status = docStatuses[doc.key] || 'pending';
-                  const icon = status === 'approved' ? 'checkmark-circle' : status === 'rejected' ? 'close-circle' : 'time-outline';
-                  const color = status === 'approved' ? THEME.brand : status === 'rejected' ? THEME.danger : '#F59E0B';
-                  const tint = status === 'approved' ? THEME.brandSoft : status === 'rejected' ? THEME.dangerSoft : '#FEF3C7';
-                  const label = status === 'approved' ? (t('profile.docApproved', 'Approuvé')) : status === 'rejected' ? (t('profile.docRejected', 'Rejeté')) : (t('profile.docPending', 'En attente'));
-                  return (
-                    <View key={i} style={[profStyles.docRow, i < 4 && profStyles.docDivider]}>
-                      <View style={[profStyles.docIcon, { backgroundColor: tint }]}>
-                        <Ionicons name={icon} size={17} color={color} />
-                      </View>
-                      <Text style={profStyles.docLabel}>{doc.label}</Text>
-                      <View style={[profStyles.docStatusPill, { backgroundColor: tint }]}>
-                        <Text style={[profStyles.docStatusTxt, { color }]}>{label}</Text>
-                      </View>
-                    </View>
-                  );
-                })}
-              </View>
-            )}
-          </View>
+          )}
+          </>
         )}
 
-        {/* Order History */}
-        <ApercuCommandes commandes={commandes} t={t} fmtPrice={fmtPrice} />
-
-        {/* Preferences */}
+        {/* Commandes, favoris, partage : ouverts dans leur onglet */}
         <View style={profStyles.section}>
           <View style={profStyles.settingsCard}>
+            {/* Mes commandes : ouvertes dans Panier (compte connecté seulement, comme avant) */}
+            {isAuth ? (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => allerVers('cart', EVT_OUVRIR_MES_COMMANDES)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="receipt-outline" size={19} color="#1C1917" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('profile.myOrders', 'Mes commandes')}</Text>
+                <Text style={profStyles.settingValue}>{t('profile.myOrdersHint', 'Suivez et retrouvez vos commandes')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+            ) : null}
+            {/* Favoris : onglet Acheter (accessibles SANS connexion, stockés localement) */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => allerVers('acheter', EVT_OUVRIR_FAVORIS)} style={[profStyles.settingRow, isAuth && profStyles.settingDivider]}>
+              <View style={profStyles.settingIcon}>
+                <Ionicons name="heart-outline" size={19} color="#1C1917" />
+              </View>
+              <View style={profStyles.settingBody}>
+                <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
+                <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+            </TouchableOpacity>
+            {isAuth ? (
+              <>
+                {/* Demandes de partage de liste */}
+                <TouchableOpacity activeOpacity={0.8} onPress={() => allerVers('myList', EVT_OUVRIR_DEMANDES_PARTAGE)} style={profStyles.settingRow}>
+                  <View style={profStyles.settingIcon}>
+                    <Ionicons name="git-network-outline" size={19} color="#1C1917" />
+                  </View>
+                  <View style={profStyles.settingBody}>
+                    <Text style={profStyles.settingLabel}>{t('profile.listShares', 'Partage de listes')}</Text>
+                    <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? t('counts.pendingRequests', { count: shareRequests.length }) : (t('profile.manageShares', 'Demandes reçues · utilisateurs bloqués'))}</Text>
+                  </View>
+                  {shareRequests.length > 0 && (
+                    <View style={{ backgroundColor: THEME.danger, borderRadius:11, minWidth:22, height:22, alignItems:'center', justifyContent:'center', paddingHorizontal:6, marginRight:6 }}>
+                      <Text style={{ color:'#fff', fontWeight:'800', fontSize:12 }}>{shareRequests.length}</Text>
+                    </View>
+                  )}
+                  <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
+                </TouchableOpacity>
+              </>
+            ) : null}
+          </View>
+        </View>
+
+        {/* Compte : adresse, moyens de paiement */}
+        {isAuth ? (
+          <View style={profStyles.section}>
+            <View style={profStyles.settingsCard}>
             {/* Address */}
             <TouchableOpacity activeOpacity={0.8} onPress={openAddressList} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>
@@ -716,35 +612,25 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>
-            {/* Favoris */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setFavVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+            {/* Moyens de paiement (cartes enregistrées) */}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setPaymentMethodsVisible(true)} style={profStyles.settingRow}>
               <View style={profStyles.settingIcon}>
-                <Ionicons name="heart-outline" size={19} color="#1C1917" />
+                <Ionicons name="card-outline" size={19} color="#1C1917" />
               </View>
               <View style={profStyles.settingBody}>
-                <Text style={profStyles.settingLabel}>{t('tabs.favorites')}</Text>
-                <Text style={profStyles.settingValue}>{t('favorites.manageHint', 'Vos boutiques et produits favoris')}</Text>
+                <Text style={profStyles.settingLabel}>{t('cart.paymentMethods', 'Moyens de paiement')}</Text>
+                <Text style={profStyles.settingValue}>{t('cart.paymentMethodsHint', 'Vos cartes pour payer')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>
+            </View>
+          </View>
+        ) : null}
 
-            {/* Demandes de partage de liste */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => { loadShareData(); setShareRequestsVisible(true); }} style={[profStyles.settingRow, profStyles.settingDivider]}>
-              <View style={profStyles.settingIcon}>
-                <Ionicons name="git-network-outline" size={19} color="#1C1917" />
-              </View>
-              <View style={profStyles.settingBody}>
-                <Text style={profStyles.settingLabel}>{t('profile.listShares', 'Partage de listes')}</Text>
-                <Text style={profStyles.settingValue}>{shareRequests.length > 0 ? t('counts.pendingRequests', { count: shareRequests.length }) : (t('profile.manageShares', 'Demandes reçues · utilisateurs bloqués'))}</Text>
-              </View>
-              {shareRequests.length > 0 && (
-                <View style={{ backgroundColor: THEME.danger, borderRadius:11, minWidth:22, height:22, alignItems:'center', justifyContent:'center', paddingHorizontal:6, marginRight:6 }}>
-                  <Text style={{ color:'#fff', fontWeight:'800', fontSize:12 }}>{shareRequests.length}</Text>
-                </View>
-              )}
-              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-            </TouchableOpacity>
-
+        {/* Préférences : accessibles SANS connexion */}
+        <View style={profStyles.section}>
+          <Text style={profStyles.guestPrefTitle}>{t('profile.preferences', 'Préférences')}</Text>
+          <View style={profStyles.settingsCard}>
             {/* Language */}
             <TouchableOpacity activeOpacity={0.8} onPress={() => setLangVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
               <View style={profStyles.settingIcon}>
@@ -758,9 +644,8 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>
-
             {/* Currency */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={[profStyles.settingRow, profStyles.settingDivider]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrencyVisible(true)} style={profStyles.settingRow}>
               <View style={profStyles.settingIcon}>
                 <Ionicons name="cash-outline" size={19} color="#1C1917" />
               </View>
@@ -770,141 +655,132 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
               </View>
               <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
             </TouchableOpacity>
-
-            {/* Moyens de paiement (cartes enregistrées) */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setPaymentMethodsVisible(true)} style={profStyles.settingRow}>
-              <View style={profStyles.settingIcon}>
-                <Ionicons name="card-outline" size={19} color="#1C1917" />
-              </View>
-              <View style={profStyles.settingBody}>
-                <Text style={profStyles.settingLabel}>{t('cart.paymentMethods', 'Moyens de paiement')}</Text>
-                <Text style={profStyles.settingValue}>{t('cart.paymentMethodsHint', 'Vos cartes pour payer')}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={16} color={THEME.faint} />
-            </TouchableOpacity>
           </View>
         </View>
 
         <LegalLinks />
 
-        {/* Become a driver */}
-        <View style={profStyles.section}>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => setDriverInfoVisible(true)} style={profStyles.driverCard}>
-            <View style={profStyles.driverIcon}>
-              <Ionicons name="bicycle" size={22} color="#1C1917" />
+        {isAuth ? (
+          <>
+            {/* Become a driver */}
+            <View style={profStyles.section}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => setDriverInfoVisible(true)} style={profStyles.driverCard}>
+                <View style={profStyles.driverIcon}>
+                  <Ionicons name="bicycle" size={22} color="#1C1917" />
+                </View>
+                <View style={profStyles.driverBody}>
+                  <Text style={profStyles.driverTitle}>{t('profile.becomeDriver', 'Devenir livreur')}</Text>
+                  <Text style={profStyles.driverSub}>{t('profile.driverSubtitle', 'Livrez et gagnez un complément de revenu')}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
+              </TouchableOpacity>
             </View>
-            <View style={profStyles.driverBody}>
-              <Text style={profStyles.driverTitle}>{t('profile.becomeDriver', 'Devenir livreur')}</Text>
-              <Text style={profStyles.driverSub}>{t('profile.driverSubtitle', 'Livrez et gagnez un complément de revenu')}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
-          </TouchableOpacity>
-        </View>
 
-        {/* Logout */}
-        <View style={[profStyles.section, { marginBottom: 8 }]}>
-          <TouchableOpacity activeOpacity={0.85} onPress={async () => {
-            // Les listes nommées n'ont aucune copie sur le compte : prévenir
-            // seulement si elles contiennent des articles.
-            let listesPerdues = [];
-            try {
-              const reg = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || '[]');
-              for (const l of (Array.isArray(reg) ? reg : [])) {
-                if (!l || !l.id || l.id === DEFAULT_LIST_ID) continue;
-                const r = await loadListItems(l.id, DEFAULT_LIST_ID);
-                const nom = String(l.name || '').trim();
-                if (nom && r.ok && r.items.length > 0) listesPerdues.push(nom);
-              }
-            } catch (e) { listesPerdues = []; }
-            const msgDeconnexion = listesPerdues.length
-              ? t('profile.logoutConfirm') + '\n\n' + t('profile.logoutListsLost', { names: listesPerdues.join(', ') })
-              : t('profile.logoutConfirm');
-            Alert.alert(t('profile.logoutTitle'), msgDeconnexion, [
-              { text: t('profile.cancel'), style: 'cancel' },
-              { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
-                if (loggingOutRef.current) return;
-                loggingOutRef.current = true;
-                // Les menus en attente partent d'abord (jetons encore valables) ; s'ils n'ont pas pu
-                // partir (hors ligne, trop volumineux, délai), rien n'est effacé sans votre accord.
-                let menusOk = false;
-                try { menusOk = await flushMenusSync(); } catch (e) { menusOk = false; }
-                const terminer = async () => {
-                  // Logout from Marketplace API first (needs tokens)
-                  try { await logoutUser({ menusFlushed: true }); } catch(e) {}
-                  // Effacer TOUTES les données du compte gardées sur l'appareil
-                  // (jetons, profil, listes, panier, favoris, commandes).
-                  try {
-                    await clearLocalUserData({ menusFlushed: true });
-                    DeviceEventEmitter.emit('USER_DATA_CLEARED');
-                    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-                  } catch(e) {}
-                  loggingOutRef.current = false;
-                  if (onLogout) onLogout();
-                };
-                if (menusOk) { await terminer(); return; }
-                Alert.alert(
-                  t('profile.menusUnsavedTitle', 'Menus non sauvegardés'),
-                  t('profile.menusUnsavedMsg', "Vos menus n'ont pas pu être sauvegardés sur votre compte. Les effacer de cet appareil ?"),
-                  [
-                    { text: t('profile.cancel', 'Annuler'), style: 'cancel', onPress: () => { loggingOutRef.current = false; } },
-                    { text: t('profile.menusUnsavedErase', 'Effacer et me déconnecter'), style: 'destructive', onPress: terminer },
-                  ],
-                  { cancelable: false }
-                );
-              }}
-            ]);
-          }} style={profStyles.logoutBtn}>
-            <Ionicons name="log-out-outline" size={20} color={THEME.danger} />
-            <Text style={profStyles.logoutTxt}>{t('profile.logout')}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Supprimer le compte (obligatoire App Store 5.1.1(v)) */}
-        <View style={[profStyles.section, { marginBottom: 24 }]}>
-          <TouchableOpacity activeOpacity={0.85} disabled={deletingAccount} onPress={() => {
-            if (deletingAccountRef.current) return;
-            Alert.alert(
-              t('profile.deleteAccountTitle', 'Supprimer mon compte'),
-              t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Vous pouvez restaurer votre compte pendant 30 jours ; ensuite, la suppression est définitive."),
-              [
-                { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
-                { text: t('profile.deleteAccountAction', 'Supprimer'), style: 'destructive', onPress: async () => {
-                  if (deletingAccountRef.current) return;
-                  deletingAccountRef.current = true;
-                  setDeletingAccount(true);
-                  let res;
-                  try { res = await apiDeleteAccount(); } catch (e) { res = { success: false }; }
-                  deletingAccountRef.current = false;
-                  setDeletingAccount(false);
-                  if (!res || !res.success) {
-                    Alert.alert(
-                      t('profile.deleteAccountErrTitle', 'Suppression impossible'),
-                      t('profile.deleteAccountErr', 'La suppression du compte a échoué. Vérifiez votre connexion et réessayez.')
-                    );
-                    return;
+            {/* Logout */}
+            <View style={[profStyles.section, { marginBottom: 8 }]}>
+              <TouchableOpacity activeOpacity={0.85} onPress={async () => {
+                // Les listes nommées n'ont aucune copie sur le compte : prévenir
+                // seulement si elles contiennent des articles.
+                let listesPerdues = [];
+                try {
+                  const reg = JSON.parse((await AsyncStorage.getItem(KEY_LISTS)) || '[]');
+                  for (const l of (Array.isArray(reg) ? reg : [])) {
+                    if (!l || !l.id || l.id === DEFAULT_LIST_ID) continue;
+                    const r = await loadListItems(l.id, DEFAULT_LIST_ID);
+                    const nom = String(l.name || '').trim();
+                    if (nom && r.ok && r.items.length > 0) listesPerdues.push(nom);
                   }
-                  // Effacer toutes les données locales (comme à la déconnexion)
-                  try {
-                    await clearLocalUserData();
-                    DeviceEventEmitter.emit('USER_DATA_CLEARED');
-                    DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-                  } catch (e) {}
-                  Alert.alert(
-                    t('profile.deleteAccountDoneTitle', 'Compte supprimé'),
-                    t('profile.deleteAccountDone', 'Votre compte a bien été supprimé.')
-                  );
-                  if (onLogout) onLogout();
-                }},
-              ]
-            );
-          }} style={profStyles.deleteAccountBtn}>
-            {deletingAccount
-              ? <ActivityIndicator size="small" color={THEME.danger} />
-              : <Ionicons name="trash-outline" size={18} color={THEME.danger} />}
-            <Text style={profStyles.deleteAccountTxt}>{t('profile.deleteAccount', 'Supprimer mon compte')}</Text>
-          </TouchableOpacity>
-        </View>
+                } catch (e) { listesPerdues = []; }
+                const msgDeconnexion = listesPerdues.length
+                  ? t('profile.logoutConfirm') + '\n\n' + t('profile.logoutListsLost', { names: listesPerdues.join(', ') })
+                  : t('profile.logoutConfirm');
+                Alert.alert(t('profile.logoutTitle'), msgDeconnexion, [
+                  { text: t('profile.cancel'), style: 'cancel' },
+                  { text: t('profile.logoutAction'), style: 'destructive', onPress: async () => {
+                    if (loggingOutRef.current) return;
+                    loggingOutRef.current = true;
+                    // Les menus en attente partent d'abord (jetons encore valables) ; s'ils n'ont pas pu
+                    // partir (hors ligne, trop volumineux, délai), rien n'est effacé sans votre accord.
+                    let menusOk = false;
+                    try { menusOk = await flushMenusSync(); } catch (e) { menusOk = false; }
+                    const terminer = async () => {
+                      // Logout from Marketplace API first (needs tokens)
+                      try { await logoutUser({ menusFlushed: true }); } catch(e) {}
+                      // Effacer TOUTES les données du compte gardées sur l'appareil
+                      // (jetons, profil, listes, panier, favoris, commandes).
+                      try {
+                        await clearLocalUserData({ menusFlushed: true });
+                        DeviceEventEmitter.emit('USER_DATA_CLEARED');
+                        DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+                      } catch(e) {}
+                      loggingOutRef.current = false;
+                      if (onLogout) onLogout();
+                    };
+                    if (menusOk) { await terminer(); return; }
+                    Alert.alert(
+                      t('profile.menusUnsavedTitle', 'Menus non sauvegardés'),
+                      t('profile.menusUnsavedMsg', "Vos menus n'ont pas pu être sauvegardés sur votre compte. Les effacer de cet appareil ?"),
+                      [
+                        { text: t('profile.cancel', 'Annuler'), style: 'cancel', onPress: () => { loggingOutRef.current = false; } },
+                        { text: t('profile.menusUnsavedErase', 'Effacer et me déconnecter'), style: 'destructive', onPress: terminer },
+                      ],
+                      { cancelable: false }
+                    );
+                  }}
+                ]);
+              }} style={profStyles.logoutBtn}>
+                <Ionicons name="log-out-outline" size={20} color={THEME.danger} />
+                <Text style={profStyles.logoutTxt}>{t('profile.logout')}</Text>
+              </TouchableOpacity>
+            </View>
 
+            {/* Supprimer le compte (obligatoire App Store 5.1.1(v)) */}
+            <View style={[profStyles.section, { marginBottom: 24 }]}>
+              <TouchableOpacity activeOpacity={0.85} disabled={deletingAccount} onPress={() => {
+                if (deletingAccountRef.current) return;
+                Alert.alert(
+                  t('profile.deleteAccountTitle', 'Supprimer mon compte'),
+                  t('profile.deleteAccountConfirm', "Attention : votre compte est un compte Pearl Streets partagé. Le supprimer ici le supprime aussi sur l'app et le site Marketplace Pearl Streets (commandes, favoris, fidélité). Vos données sont conservées le temps requis par la loi puis effacées. Vous pouvez restaurer votre compte pendant 30 jours ; ensuite, la suppression est définitive."),
+                  [
+                    { text: t('profile.cancel', 'Annuler'), style: 'cancel' },
+                    { text: t('profile.deleteAccountAction', 'Supprimer'), style: 'destructive', onPress: async () => {
+                      if (deletingAccountRef.current) return;
+                      deletingAccountRef.current = true;
+                      setDeletingAccount(true);
+                      let res;
+                      try { res = await apiDeleteAccount(); } catch (e) { res = { success: false }; }
+                      deletingAccountRef.current = false;
+                      setDeletingAccount(false);
+                      if (!res || !res.success) {
+                        Alert.alert(
+                          t('profile.deleteAccountErrTitle', 'Suppression impossible'),
+                          t('profile.deleteAccountErr', 'La suppression du compte a échoué. Vérifiez votre connexion et réessayez.')
+                        );
+                        return;
+                      }
+                      // Effacer toutes les données locales (comme à la déconnexion)
+                      try {
+                        await clearLocalUserData();
+                        DeviceEventEmitter.emit('USER_DATA_CLEARED');
+                        DeviceEventEmitter.emit('CART_COUNT_CHANGED');
+                      } catch (e) {}
+                      Alert.alert(
+                        t('profile.deleteAccountDoneTitle', 'Compte supprimé'),
+                        t('profile.deleteAccountDone', 'Votre compte a bien été supprimé.')
+                      );
+                      if (onLogout) onLogout();
+                    }},
+                  ]
+                );
+              }} style={profStyles.deleteAccountBtn}>
+                {deletingAccount
+                  ? <ActivityIndicator size="small" color={THEME.danger} />
+                  : <Ionicons name="trash-outline" size={18} color={THEME.danger} />}
+                <Text style={profStyles.deleteAccountTxt}>{t('profile.deleteAccount', 'Supprimer mon compte')}</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : null}
       </ScrollView>
 
       {/* Driver Info Full Page Modal */}
@@ -1129,9 +1005,6 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
           </KeyboardAvoidingView>
         </SafeAreaView>
       </Modal>
-
-      {/* Partage de listes : demandes reçues + utilisateurs bloqués (profil connecté) */}
-      <DemandesPartageModale t={t} partage={partage} />
 
       {/* Language Selector Full Page Modal */}
       <Modal onRequestClose={() => { setPendingLang(null); setLangVisible(false); }} visible={langVisible} animationType="slide" onShow={() => setPendingLang(null)}>
@@ -1396,10 +1269,6 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
         </SafeAreaView>
       </Modal>
 
-      {/* All Orders Full Page Modal */}
-      <ToutesLesCommandes commandes={commandes} t={t} fmtPrice={fmtPrice} />
-
-      <DetailCommande commandes={commandes} t={t} fmtPrice={fmtPrice} navigation={navigation} />
     </SafeAreaView>
   );
 }

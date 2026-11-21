@@ -6,7 +6,11 @@
     "cart": "Winkelwagen",
     "profile": "Profiel",
     "shops": "Winkels",
-    "menus": "Menu's"
+    "menus": "Menu's",
+    "acheter": "Kopen"
+  },
+  "acheter": {
+    "comparer": "Mijn lijst vergelijken"
   },
   "listScreen": {
     "scan": "Scannen",
@@ -60,7 +64,10 @@
     "profileFollowers": "Volgers",
     "profileFollowing": "Volgend",
     "profileOpenFull": "Profiel bekijken op Pearl Streets",
-    "grantedAdd": "Iemand toevoegen"
+    "grantedAdd": "Iemand toevoegen",
+    "compareMyList": "Mijn lijst vergelijken",
+    "deleteThisItem": "Dit artikel verwijderen",
+    "deleteThisItemConfirm": "Dit artikel wordt van uw lijst verwijderd."
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",
@@ -117,7 +124,8 @@
     "close": "Sluiten",
     "soonAvailable": "Binnenkort beschikbaar",
     "validate": "Toevoegen",
-    "finish": "Klaar"
+    "finish": "Klaar",
+    "addToSelection": "Aan selectie toevoegen"
   },
   "camera": {
     "permissionDenied": "Toestemming geweigerd",
@@ -179,7 +187,8 @@
     "products": "Producten",
     "searchProductPlaceholder": "Zoek een product...",
     "noFavProducts": "Geen favoriete producten",
-    "addProductHint": "Tik op het hartje van een product om het toe te voegen"
+    "addProductHint": "Tik op het hartje van een product om het toe te voegen",
+    "addFromBuy": "Voeg ze toe via het tabblad Kopen"
   },
   "profile": {
     "guestTitle": "U bent niet ingelogd",
@@ -322,7 +331,9 @@
     "termsOfUse": "Gebruiksvoorwaarden",
     "menusUnsavedTitle": "Menu's niet opgeslagen",
     "menusUnsavedMsg": "Uw menu's konden niet in uw account worden opgeslagen. Wilt u ze van dit apparaat wissen?",
-    "menusUnsavedErase": "Wissen en afmelden"
+    "menusUnsavedErase": "Wissen en afmelden",
+    "myOrders": "Mijn bestellingen",
+    "myOrdersHint": "Volg en vind uw bestellingen"
   },
   "auth": {
     "login": "Inloggen",
@@ -446,7 +457,26 @@
     "errorPhone": "Ongeldig telefoonnummer (5 tot 16 cijfers)",
     "errorUsernameTaken": "Deze gebruikersnaam is al in gebruik.",
     "passwordRuleHint": "Minimaal 8 tekens, met een kleine letter, een hoofdletter, een cijfer en een speciaal teken (@$!%*?&).",
-    "chooseYourLanguage": "Kies uw taal"
+    "chooseYourLanguage": "Kies uw taal",
+    "forgotTitle": "Wachtwoord vergeten",
+    "forgotEmailHint": "Voer het e-mailadres van uw account in. Wij sturen u een verificatiecode.",
+    "forgotSendCode": "Code ontvangen",
+    "forgotCodeHint": "Voer de code in die per e-mail naar {{email}} is verzonden.",
+    "forgotCodeLabel": "Verificatiecode",
+    "forgotCodePlaceholder": "Code ontvangen per e-mail",
+    "forgotVerifyCode": "Code controleren",
+    "forgotResendCode": "Code opnieuw verzenden",
+    "forgotCodeResent": "Er is een nieuwe code naar u verzonden.",
+    "forgotCodeRequired": "Voer de per e-mail ontvangen code in.",
+    "forgotNewPwdHint": "Kies uw nieuwe wachtwoord.",
+    "forgotSavePwd": "Wachtwoord opslaan",
+    "forgotSuccess": "Uw wachtwoord is gewijzigd. U kunt nu inloggen.",
+    "forgotErrorCode": "Ongeldige of verlopen code.",
+    "forgotErrorExpired": "De termijn is verstreken. Vraag een nieuwe code aan.",
+    "forgotErrorWeak": "Dit wachtwoord wordt niet geaccepteerd. Kies een ander, moeilijker te raden wachtwoord.",
+    "forgotErrorGeneric": "Er is iets misgegaan. Probeer het opnieuw.",
+    "forgotTooMany": "Te veel verzoeken. Probeer het later opnieuw.",
+    "forgotBackToLogin": "Terug naar inloggen"
   },
   "cart": {
     "today": "Vandaag",
@@ -571,7 +601,15 @@
     "tipDriver": "Bedank uw bezorger",
     "totalPrice": "prijs",
     "qtyMinus": "minder",
-    "qtyPlus": "meer"
+    "qtyPlus": "meer",
+    "myOrders": "Mijn bestellingen",
+    "paidByCard": "Betaald met kaart",
+    "byCard": "Met kaart",
+    "trackMyOrder": "Mijn bestelling volgen",
+    "orderConfirmedCollectCart": "Uw bestelling wordt klaargemaakt om af te halen. Volg de status in Mijn bestellingen, bovenaan het winkelmandje.",
+    "orderConfirmedDeliveryCart": "Een bezorger neemt uw bestelling op zich. Volg de status in Mijn bestellingen, bovenaan het winkelmandje.",
+    "noShopProductFound": "Geen product gevonden voor deze winkel.",
+    "searchAllProducts": "Zoeken in alle producten"
   },
   "orderStatus": {
     "confirmed": "Bestelling bevestigd",
@@ -1330,6 +1368,7 @@
       "alreadyText": "Alles staat al in « {{name}} ».",
       "seeList": "Mijn lijst bekijken",
       "compare": "Prijzen vergelijken",
+      "compareList": "Mijn lijst vergelijken",
       "compareHint": "Vergelijk de echte prijzen van de Pearl Streets-winkels.",
       "err": {
         "error": "Er is een fout opgetreden, probeer het alstublieft opnieuw.",

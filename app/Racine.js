@@ -49,6 +49,7 @@ import FirstLaunchLanguage from "../screens/auth/FirstLaunchLanguage";
 import { purgerSessionSiNonConservee } from "../screens/auth/session";
 import MainNavigator from "./MainNavigator";
 import MargesCotes from "./MargesCotes";
+import { routeDOnglet } from "./onglets";
 
 
 
@@ -62,13 +63,13 @@ import MargesCotes from "./MargesCotes";
 
 // Notification de rappel touchée : ouverture de l'onglet Menus, qui prend ensuite le bon écran.
 const navRef = createNavigationContainerRef();
-// Notification de commande touchée : Profil puis détail (services/pushToucher.js).
+// Notification de commande touchée : Panier > Mes commandes puis détail (services/pushToucher.js).
 brancherNavigation(navRef);
 const ouvrirMenusDepuisRappel = () => {
   if (navRef.isReady() && hasPendingMenuReminder()) navRef.navigate('menus');
 };
 // Lien pearl-list://partage (notification touchée dans l'app Pearl Streets) :
-// Profil puis « Demandes de partage », au lancement comme app déjà ouverte.
+// Ma Liste puis « Demandes de partage », au lancement comme app déjà ouverte.
 const estLienPartage = (url) => typeof url === 'string' && /^pearl-list:\/\/+partage/i.test(url);
 try {
   Linking.getInitialURL().then((u) => { if (estLienPartage(u)) ouvrirDemandesPartage(); }).catch(() => {});
@@ -85,7 +86,12 @@ let ongletApresRechargement = AsyncStorage.getItem(CLE_ONGLET_APRES_RECHARGEMENT
 const ouvrirOngletApresRechargement = () => {
   const lecture = ongletApresRechargement;
   ongletApresRechargement = null;
-  if (lecture) lecture.then((nom) => { if (nom && navRef.isReady()) navRef.navigate(nom); });
+  // Ancien nom mémorisé ('products', 'shops') : onglet Acheter, bon segment.
+  if (lecture) lecture.then((nom) => {
+    if (!nom || !navRef.isReady()) return;
+    const r = routeDOnglet(nom);
+    try { if (r.params === undefined) navRef.navigate(r.name); else navRef.navigate(r.name, r.params); } catch {}
+  });
 };
 const navTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: BRAND, background: "#fff" } };
 

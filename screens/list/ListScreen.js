@@ -21,6 +21,8 @@ import { lstyles } from "../../components/commun/lstyles";
 import { QtyInput } from "../../components/commun/QtyInput";
 import { DragWrap } from "../../components/commun/DragWrap";
 import { KEY_ITEMS, KEY_LISTS, KEY_ACTIVE_LIST, DEFAULT_LIST_ID, listItemsKey, KEY_SELECTED } from "../../lib/constants";
+import { EVENEMENT_PARTAGE, prendrePartageAOuvrir } from "../../services/pushToucher";
+import { useDemandesPartage, DemandesPartageModale } from "./DemandesPartage";
 
 export default function ListScreen() {
   const { t, i18n: i18nListe } = useTranslation();
@@ -82,6 +84,47 @@ export default function ListScreen() {
       setProfilPartage((p) => (p && p.username === username ? { ...p, loading: false } : p));
     }
   };
+  // Demandes de partage reçues + utilisateurs bloqués (fenêtre « Partage de listes »).
+  const partage = useDemandesPartage(t);
+  const { shareRequests, setShareRequestsVisible, loadShareData } = partage;
+  // Demande de partage (push ou lien pearl-list://partage, services/pushToucher.js) :
+  // fenêtre « Partage de listes », rechargée. iOS n'empile pas deux Modal : une
+  // autre fenêtre de Ma Liste ouverte est fermée d'abord, la suivante vient 300 ms après.
+  const autreModaleListe = React.useRef(false);
+  const fermerModalesListe = React.useRef(() => {});
+  const ouvrirPartageDepuisPush = React.useCallback(() => {
+    if (!prendrePartageAOuvrir()) return;
+    loadShareData();
+    if (autreModaleListe.current) {
+      fermerModalesListe.current();
+      setTimeout(() => setShareRequestsVisible(true), 300);
+    } else {
+      setShareRequestsVisible(true);
+    }
+  }, [loadShareData]);
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(EVENEMENT_PARTAGE, () => { ouvrirPartageDepuisPush(); });
+    return () => sub.remove();
+  }, [ouvrirPartageDepuisPush]);
+  // Ligne « Demandes de partage » du Profil (EVT_OUVRIR_DEMANDES_PARTAGE).
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('OUVRIR_DEMANDES_PARTAGE', () => {
+      loadShareData();
+      if (autreModaleListe.current) {
+        fermerModalesListe.current();
+        setTimeout(() => setShareRequestsVisible(true), 300);
+      } else {
+        setShareRequestsVisible(true);
+      }
+    });
+    return () => sub.remove();
+  }, [loadShareData]);
+  // L'onglet peut ne pas être monté quand l'évènement part : la demande est
+  // aussi prise au focus, avec le compteur des demandes rechargé.
+  useFocusEffect(React.useCallback(() => {
+    loadShareData();
+    ouvrirPartageDepuisPush();
+  }, [loadShareData, ouvrirPartageDepuisPush]));
   const shareDebounce = React.useRef(null);
   const shareCache = React.useRef(new Map()); // requête -> résultats (affichage instantané)
   const shareReqId = React.useRef(0);         // ignore les réponses réseau périmées
@@ -99,6 +142,13 @@ export default function ListScreen() {
   const renameInputRef = React.useRef(null);
   const shareInputRef = React.useRef(null);
   const editInputRef = React.useRef(null);
+  // Fenêtres de Ma Liste ouvertes (lu par ouvrirPartageDepuisPush).
+  autreModaleListe.current = switcherOpen || shareModalOpen || grantedOpen || createListOpen || renameOpen || editVisible || unitPickerId !== null;
+  fermerModalesListe.current = () => {
+    setSwitcherOpen(false); setShareModalOpen(false); setGrantedOpen(false); setProfilPartage(null);
+    setCreateListOpen(false); setRenameOpen(false); setUnitPickerId(null);
+    setEditVisible(false); setEditId(null); setEditText("");
+  };
   const activeListName = (myLists.find(l => l.id === activeListId)?.name) || t('tabs.myList');
   const activeShared = viewingShareId != null
     ? sharedLists.find(l => String(l.share_id) === String(viewingShareId))
@@ -310,6 +360,22 @@ export default function ListScreen() {
     if (!editText.trim()) { closeEdit(); return; }
     setItems(prev => prev.map(it => it.id === editId ? { ...it, name: editText.trim() } : it));
     closeEdit();
+  };
+  // « Supprimer cet article » depuis « Modifier l'article », après confirmation.
+  const deleteEditedItem = () => {
+    const id = editId;
+    if (id == null) return;
+    Alert.alert(
+      t('listScreen.deleteThisItem'),
+      t('listScreen.deleteThisItemConfirm'),
+      [
+        { text: t('listScreen.cancel'), style: 'cancel' },
+        { text: t('listScreen.delete'), style: 'destructive', onPress: () => {
+          setItems(prev => prev.filter(it => it.id !== id));
+          closeEdit();
+        }},
+      ]
+    );
   };
 
   // --- Multi-listes : bascule / création / suppression ---
@@ -595,6 +661,20 @@ export default function ListScreen() {
           <Ionicons name="chevron-down" size={15} color={THEME.faint} />
         </TouchableOpacity>
 
+        <View style={{ flexDirection:'row', alignItems:'center' }}>
+        {/* Demandes de partage reçues et utilisateurs bloqués (connecté) : pastille rouge du nombre de demandes. */}
+        {!readOnly && isLoggedIn && (
+          <TouchableOpacity onPress={() => { loadShareData(); setShareRequestsVisible(true); }} activeOpacity={0.8}
+            accessibilityRole="button" accessibilityLabel={shareRequests.length > 0 ? `${t('profile.listShares')}, ${t('counts.pendingRequests', { count: shareRequests.length })}` : t('profile.listShares')}
+            style={{ flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:THEME.card, borderWidth:1, borderColor:THEME.border, borderRadius:TAILLES.boutonPetit / 2, paddingHorizontal:12, height:TAILLES.boutonPetit, marginLeft:10 }}>
+            <Ionicons name="mail-outline" size={16} color={THEME.brandDark} />
+            {shareRequests.length > 0 && (
+              <View style={{ backgroundColor: THEME.danger, borderRadius:10, minWidth:20, height:20, alignItems:'center', justifyContent:'center', paddingHorizontal:5, marginLeft:6 }}>
+                <Text style={{ color:'#fff', fontWeight:'800', fontSize:11.5 }}>{shareRequests.length}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        )}
         {/* Ma liste est partagée : icône + nombre. Un appui montre qui y a accès. */}
         {!readOnly && (granted.accepted.length > 0 || granted.pending.length > 0) && (
           <TouchableOpacity onPress={() => setGrantedOpen(true)} activeOpacity={0.8}
@@ -606,6 +686,7 @@ export default function ListScreen() {
             </Text>
           </TouchableOpacity>
         )}
+        </View>
       </View>
 
       {!readOnly && (<>
@@ -714,7 +795,7 @@ export default function ListScreen() {
         </Pressable>
         {itemsToSend.length > 0 && (
         <TouchableOpacity activeOpacity={0.9} style={lstyles.cta}
-        accessibilityRole="button" accessibilityLabel={t('listScreen.findExactProducts')} onPress={async ()=>{
+        accessibilityRole="button" accessibilityLabel={`${t('listScreen.compareMyList')} (${itemsToSend.length})`} onPress={async ()=>{
         try{
           // Un seul critère : les articles à envoyer (non barrés), jamais les barrés.
           const chosen = itemsToSend.map(it=>({
@@ -733,7 +814,7 @@ export default function ListScreen() {
         navigation.navigate("products");
       }}>
           <Ionicons name="bag-check-outline" size={20} color="#1C1917" />
-          <Text style={lstyles.ctaTxt}>{t('listScreen.findExactProducts')} ({itemsToSend.length})</Text>
+          <Text style={lstyles.ctaTxt}>{t('listScreen.compareMyList')} ({itemsToSend.length})</Text>
         </TouchableOpacity>
         )}
       </View>
@@ -1117,9 +1198,17 @@ export default function ListScreen() {
                 <Text style={lstyles.modalSaveTxt}>{t('listScreen.save')}</Text>
               </Pressable>
             </View>
+            <Pressable onPress={deleteEditedItem} accessibilityRole="button"
+              style={{ marginTop:10, height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:THEME.card, borderWidth:1, borderColor:THEME.borderInput }}>
+              <Ionicons name="trash-outline" size={16} color={THEME.danger} />
+              <Text style={{ marginLeft:6, color:THEME.danger, fontWeight:'700', fontSize:14 }}>{t('listScreen.deleteThisItem')}</Text>
+            </Pressable>
           </View>
         </KeyboardAvoidingView>
       </Modal>
+
+      {/* Partage de listes : demandes reçues (Accepter, Refuser, Bloquer) et utilisateurs bloqués (Débloquer). */}
+      <DemandesPartageModale t={t} partage={partage} />
     </SafeAreaView>
     </KeyboardAvoidingView>
     </View>

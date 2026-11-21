@@ -157,7 +157,7 @@ const FavoritesScreen = ({ onClose }) => {
               {tab === 'shops' ? (t('favorites.noFavorites', 'Aucune boutique favorite')) : (t('favorites.noFavProducts', 'Aucun produit favori'))}
             </Text>
             <Text style={favStyles.emptyHint}>
-              {tab === 'shops' ? (t('favorites.addFromProducts', 'Ajoutez depuis l\'onglet Produits')) : (t('favorites.addProductHint', 'Appuyez sur le coeur d\'un produit pour l\'ajouter'))}
+              {tab === 'shops' ? (t('favorites.addFromBuy')) : (t('favorites.addProductHint', 'Appuyez sur le coeur d\'un produit pour l\'ajouter'))}
             </Text>
           </View>
         </>

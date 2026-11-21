@@ -30,6 +30,10 @@ import { KEY_CART, KEY_PENDING_PAYMENT, KEY_ORDER_HISTORY, KEY_PROFILE } from ".
 import { cartStyles } from "./cartStyles";
 import OrderTracker from "./OrderTracker";
 import { formatSavedAddress, formatAddressContact } from "./adresses";
+import { useCommandes } from "./orders/useCommandes";
+import { ListeCommandes } from "./orders/HistoriqueCommandes";
+import { DetailCommande } from "./orders/DetailCommande";
+import { prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR } from "../../services/pushToucher";
 
 const SEARCH_MAP = require('../../data/search-map.json');
 
@@ -97,6 +101,12 @@ const CartScreen = ({ isAuth }) => {
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [addProductShop, setAddProductShop] = React.useState(null); // shop name for add product popup
   const [addProductSearch, setAddProductSearch] = React.useState('');
+  // Segment en haut de l'onglet : 'panier' ou 'commandes' (Mes commandes).
+  const [vue, setVue] = React.useState('panier');
+  // Historique, détail et suivi live des commandes (une seule instance : le
+  // relevé livraison 30 s et le suivi 5 s du détail vivent ici).
+  const mesCommandes = useCommandes(t);
+  const { setDetailOrder, loadOrders } = mesCommandes;
 
   // Générer les 7 prochains jours (exclure aujourd'hui si aucun créneau dispo)
   const deliveryDays = React.useMemo(() => {
@@ -199,7 +209,8 @@ const CartScreen = ({ isAuth }) => {
     }
   }, []);
 
-  useFocusEffect(React.useCallback(() => { loadCart(); loadAddresses(); }, [loadCart, loadAddresses]));
+  useFocusEffect(React.useCallback(() => { loadCart(); loadAddresses(); loadOrders(); }, [loadCart, loadAddresses, loadOrders]));
+  React.useEffect(() => { if (isAuth) loadOrders(); }, [isAuth, loadOrders]);
 
   // À l'ouverture de la feuille « Confirmer », recharge les adresses : après une
   // connexion, l'écran panier ne reprend pas le focus (le login est un modal
@@ -397,9 +408,10 @@ const CartScreen = ({ isAuth }) => {
     setSelectedCart(sel);
     await AsyncStorage.setItem(KEY_CART, JSON.stringify(remaining));
     DeviceEventEmitter.emit('CART_COUNT_CHANGED');
-    setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6), notices: lignesStock(lignes) });
+    setPlacedOrder({ items: commandes, total: subtotal + deliveryFee, mode: orderMode, orderNo: '#' + String(orderId).slice(-6), notices: lignesStock(lignes), paid: opts.paid === true, commande: order });
+    loadOrders();
     return order;
-  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock, t]);
+  }, [cartItems, selectedCart, orderMode, selectedSlot, selectedDateIndex, deliveryDays, deliveryAddress, selectedAddress, selectedAddressId, buildDeliveryOrderArgs, signalerRefusDeStock, lignesStock, loadOrders, t]);
 
   // ===== Option A — paiement carte réel (le PRO reçoit la commande payée) =====
   const [cardModalVisible, setCardModalVisible] = React.useState(false);
@@ -540,7 +552,7 @@ const CartScreen = ({ isAuth }) => {
       const did = pendingPayment.orderId;
       const ecartsCourse = pendingPayment.ecarts || null;
       setPendingPayment(null);
-      const ok = await placeOrder([], { orderId: did, ecarts: ecartsCourse });
+      const ok = await placeOrder([], { orderId: did, ecarts: ecartsCourse, paid: true });
       if (ok) { setConfirmVisible(false); setOrderVisible(true); }
       placingRef.current = false; setPlacing(false);
       return;
@@ -550,7 +562,7 @@ const CartScreen = ({ isAuth }) => {
     const backendOrderIds = (pendingPayment && Array.isArray(pendingPayment.orders))
       ? pendingPayment.orders.map(o => o.orderId).filter(Boolean) : [];
     setPendingPayment(null);
-    const ok = await placeOrder(backendOrderIds);
+    const ok = await placeOrder(backendOrderIds, { paid: true });
     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
     placingRef.current = false; setPlacing(false);
   }, [placeOrder, pendingPayment]);
@@ -561,6 +573,64 @@ const CartScreen = ({ isAuth }) => {
     // (évite les commandes awaiting_payment fantômes). Nettoyé si le panier change.
     placingRef.current = false; setPlacing(false);
   }, []);
+
+  // Notification de commande touchée (services/pushToucher.js) : « Mes
+  // commandes » puis le détail de la commande, retrouvée dans l'historique de
+  // l'appareil. iOS n'empile pas deux Modal : une fenêtre ouverte est fermée
+  // d'abord, le détail suit 300 ms plus tard. Paiement en cours : jamais
+  // interrompu, la commande s'ouvre dès que la fenêtre de paiement se ferme.
+  const autreModaleOuverte = React.useRef(false);
+  autreModaleOuverte.current = orderVisible || confirmVisible || shopProductsVisible || addressPickerVisible
+    || cartSearchVisible || mesCommandes.reorderVisible || mesCommandes.allOrdersVisible;
+  const paiementEnCoursRef = React.useRef(false);
+  paiementEnCoursRef.current = cardModalVisible;
+  const commandePushEnAttente = React.useRef(null);
+  const montrerCommande = React.useCallback((order) => {
+    setVue('commandes');
+    if (autreModaleOuverte.current) {
+      setOrderVisible(false); setPlacedOrder(null);
+      setConfirmVisible(false); setShopProductsVisible(false);
+      setAddressPickerVisible(false); setCartSearchVisible(false);
+      mesCommandes.setReorderVisible(false); mesCommandes.setAllOrdersVisible(false);
+      setTimeout(() => setDetailOrder(order), 300);
+    } else {
+      setDetailOrder(order);
+    }
+  }, []);
+  const ouvrirCommandeDepuisPush = React.useCallback(async () => {
+    const cible = prendreCommandeAOuvrir() || commandePushEnAttente.current;
+    if (!cible) return;
+    if (paiementEnCoursRef.current) { commandePushEnAttente.current = cible; return; }
+    commandePushEnAttente.current = null;
+    const order = await trouverCommande(cible);
+    if (!order) { setVue('commandes'); return; }
+    montrerCommande(order);
+  }, [montrerCommande]);
+  // L'onglet peut ne pas être monté quand l'évènement part : la commande est
+  // aussi prise au focus ci-dessous.
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(EVENEMENT_OUVRIR, () => { ouvrirCommandeDepuisPush(); });
+    return () => sub.remove();
+  }, [ouvrirCommandeDepuisPush]);
+  useFocusEffect(React.useCallback(() => { ouvrirCommandeDepuisPush(); }, [ouvrirCommandeDepuisPush]));
+  React.useEffect(() => {
+    if (!cardModalVisible && commandePushEnAttente.current) ouvrirCommandeDepuisPush();
+  }, [cardModalVisible, ouvrirCommandeDepuisPush]);
+  // Ligne « Mes commandes » du Profil (EVT_OUVRIR_MES_COMMANDES) : vue Mes commandes.
+  React.useEffect(() => {
+    const sub = DeviceEventEmitter.addListener('OUVRIR_MES_COMMANDES', () => { setVue('commandes'); loadOrders(); });
+    return () => sub.remove();
+  }, [loadOrders]);
+
+  // « Suivre ma commande » du suivi après paiement : détail dans Mes commandes.
+  const suivreCommande = React.useCallback(() => {
+    const order = placedOrder && placedOrder.commande;
+    setOrderVisible(false); setPlacedOrder(null);
+    if (!order) return;
+    setVue('commandes');
+    loadOrders();
+    setTimeout(() => setDetailOrder(order), 300);
+  }, [placedOrder, loadOrders]);
 
   // Group cart items by shop (must be before early return to respect hooks order)
   const groupedCart = React.useMemo(() => {
@@ -583,6 +653,47 @@ const CartScreen = ({ isAuth }) => {
     });
   };
 
+  // Segment « Panier » / « Mes commandes », sous le titre.
+  // Récap de la feuille Confirmer : paiement carte quand le tunnel carte prendra
+  // la commande (build natif, toutes les lignes cochées sont de vraies fiches).
+  const lignesCochees = cartItems.filter((_, i) => selectedCart[i]);
+  const paiementParCarte = !!StripeAvailable && lignesCochees.length > 0 && !lignesCochees.some(articleSansFiche);
+  const segmentVue = (
+    <View style={[cartStyles.segment, { marginTop: 8, marginBottom: 6 }]}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setVue('panier')} accessibilityRole="button" accessibilityState={{ selected: vue === 'panier' }}
+        style={[cartStyles.segBtn, vue === 'panier' && cartStyles.segBtnOn]}>
+        <Ionicons name="cart-outline" size={16} color={vue === 'panier' ? THEME.terra : THEME.muted} />
+        <Text style={[cartStyles.segTxt, vue === 'panier' && cartStyles.segTxtOn]}>{t('tabs.cart')}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => { setVue('commandes'); loadOrders(); }} accessibilityRole="button" accessibilityState={{ selected: vue === 'commandes' }}
+        style={[cartStyles.segBtn, vue === 'commandes' && cartStyles.segBtnOn]}>
+        <Ionicons name="receipt-outline" size={16} color={vue === 'commandes' ? THEME.terra : THEME.muted} />
+        <Text style={[cartStyles.segTxt, vue === 'commandes' && cartStyles.segTxtOn]}>{t('cart.myOrders', 'Mes commandes')}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+  const listeCommandes = <ListeCommandes commandes={mesCommandes} t={t} fmtPrice={fmtPrice} />;
+  // Suivi après commande et détail d'une commande : montés dans les deux
+  // rendus (panier vide ou non), au même endroit, pour ne pas les démonter
+  // quand la commande vide le panier.
+  const modalesCommandes = (
+    <>
+      <OrderTracker
+        visible={orderVisible}
+        items={placedOrder?.items || []}
+        total={placedOrder?.total || 0}
+        mode={placedOrder?.mode || orderMode}
+        orderNo={placedOrder?.orderNo}
+        notices={placedOrder?.notices}
+        paid={!!placedOrder?.paid}
+        onTrack={placedOrder && placedOrder.commande ? suivreCommande : undefined}
+        onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
+        onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
+      />
+      <DetailCommande commandes={mesCommandes} t={t} fmtPrice={fmtPrice} navigation={navigation} apresRecommande={() => setVue('panier')} />
+    </>
+  );
+
   if (cartItems.length === 0) {
     return (
       <View style={cartStyles.screen}>
@@ -591,11 +702,15 @@ const CartScreen = ({ isAuth }) => {
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
             <Text style={cartStyles.subtitle}>{t('counts.items', { count: 0 })}</Text>
           </View>
+          {segmentVue}
+          {vue === 'commandes' ? listeCommandes : (
           <View style={cartStyles.empty}>
             <Text style={cartStyles.emptyTitle}>{t('cart.emptyCart')}</Text>
-            <Text style={cartStyles.emptyHint}>{t('cart.addProductsFromTab')}</Text>
+            <Text style={cartStyles.emptyHint}>{t('favorites.addFromBuy')}</Text>
           </View>
+          )}
         </SafeAreaView>
+        {modalesCommandes}
       </View>
     );
   }
@@ -610,11 +725,15 @@ const CartScreen = ({ isAuth }) => {
             <Text style={cartStyles.title}>{t('tabs.cart')}</Text>
             <Text style={cartStyles.subtitle}>{t('counts.items', { count: cartItems.reduce((s, it) => s + Number(it.qty || 1), 0) })}</Text>
           </View>
+          {vue === 'panier' ? (
           <TouchableOpacity onPress={clearCart} activeOpacity={0.8} style={cartStyles.clearBtn}>
             <Ionicons name="trash-outline" size={19} color={THEME.danger} />
           </TouchableOpacity>
+          ) : null}
         </View>
       </View>
+      {segmentVue}
+      {vue === 'commandes' ? listeCommandes : (<>
       <FlatList
         data={groupedCart}
         keyExtractor={(item, i) => item.shop + i}
@@ -720,6 +839,7 @@ const CartScreen = ({ isAuth }) => {
         </TouchableOpacity>
       </View>
       )}
+      </>)}
 
       {/* Modal de confirmation de commande */}
       <Modal onRequestClose={() => setConfirmVisible(false)} visible={confirmVisible} animationType="slide" transparent={true}>
@@ -1007,7 +1127,7 @@ const CartScreen = ({ isAuth }) => {
                 </View>
                 <View style={[cartStyles.totalRow, { marginTop: 10, marginBottom: 0 }]}>
                   <Text style={cartStyles.totalLabel}>{t('cart.payment', 'Paiement')}</Text>
-                  <Text style={cartStyles.totalValue}>{orderMode === 'collect' ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
+                  <Text style={cartStyles.totalValue}>{paiementParCarte ? t('cart.byCard', 'Par carte') : orderMode === 'collect' ? t('cart.payAtPickup', 'À payer au retrait') : t('cart.payAtDelivery', 'À payer à la livraison')}</Text>
                 </View>
               </View>
 
@@ -1125,7 +1245,7 @@ const CartScreen = ({ isAuth }) => {
                       // → flux LOCAL avec ce même orderId (course déjà créée, idempotent).
                       const okd = await placeOrder([], { orderId: did, ecarts: ecartsCourse });
                       if (okd) { setConfirmVisible(false); setOrderVisible(true); }
-                      else if (okd !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
+                      else if (okd !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('favorites.addFromBuy') }); }
                       return;
                     }
                     // Option A : tente le paiement carte réel (crée la commande
@@ -1143,7 +1263,7 @@ const CartScreen = ({ isAuth }) => {
                     if (cardRes === 'error') return;
                     const ok = await placeOrder();
                     if (ok) { setConfirmVisible(false); setOrderVisible(true); }
-                    else if (ok !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('cart.addProductsFromTab') }); }
+                    else if (ok !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('favorites.addFromBuy') }); }
                   } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
                 style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
@@ -1334,16 +1454,6 @@ const CartScreen = ({ isAuth }) => {
       </Modal>
 
 
-      <OrderTracker
-        visible={orderVisible}
-        items={placedOrder?.items || []}
-        total={placedOrder?.total || 0}
-        mode={placedOrder?.mode || orderMode}
-        orderNo={placedOrder?.orderNo}
-        notices={placedOrder?.notices}
-        onCancel={() => { setOrderVisible(false); setPlacedOrder(null); }}
-        onClose={() => { setOrderVisible(false); setPlacedOrder(null); }}
-      />
 
       {/* Paiement carte (Option A) — monté uniquement en build natif (StripeAvailable) */}
       {cardModalVisible && pendingPayment ? (
@@ -1401,6 +1511,26 @@ const CartScreen = ({ isAuth }) => {
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal:20, paddingBottom:16}}
+              // Rien à montrer (catalogue vide ou recherche sans résultat) :
+              // message et repli sur la recherche dans tous les produits.
+              ListEmptyComponent={(
+                <View style={cartStyles.pickerEmpty}>
+                  <Ionicons name="search-outline" size={30} color={THEME.faint} />
+                  <Text style={[cartStyles.pickerEmptyTxt, { marginTop: 8 }]}>{t('cart.noShopProductFound', 'Aucun produit trouvé pour cette boutique.')}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShopProductsVisible(false);
+                      setCartSearchShop(shopProductsName);
+                      setTimeout(() => setCartSearchVisible(true), 350);
+                    }}
+                    activeOpacity={0.9}
+                    accessibilityRole="button"
+                    style={[cartStyles.ghostBtn, { paddingHorizontal: 22, marginTop: 16, alignSelf: 'center' }]}
+                  >
+                    <Text style={cartStyles.ghostBtnTxt}>{t('cart.searchAllProducts', 'Rechercher dans tous les produits')}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
               renderItem={({item: product}) => (
                 <View style={cartStyles.pickerRow}>
                   <ProductThumb name={product.name} size={40} />
@@ -1472,7 +1602,14 @@ const CartScreen = ({ isAuth }) => {
                 <Ionicons name="location-outline" size={30} color={THEME.faint} />
                 <Text style={[cartStyles.pickerEmptyTxt, { marginTop: 8 }]}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
                 <TouchableOpacity
-                  onPress={() => { setAddressPickerVisible(false); navigation.navigate('profile'); }}
+                  onPress={() => {
+                    setAddressPickerVisible(false);
+                    setConfirmVisible(false);
+                    navigation.navigate('profile');
+                    // Le Profil ouvre son formulaire d'adresse (laissé le temps
+                    // de monter l'onglet et de fermer la feuille).
+                    setTimeout(() => DeviceEventEmitter.emit('OUVRIR_ADRESSES'), 450);
+                  }}
                   activeOpacity={0.9}
                   style={[cartStyles.addrSaveBtn, { flex: 0, paddingHorizontal: 22, marginTop: 16 }]}
                 >
@@ -1546,6 +1683,7 @@ const CartScreen = ({ isAuth }) => {
         }}
       />
     </SafeAreaView>
+    {modalesCommandes}
     </View>
   );
 };

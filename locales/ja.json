@@ -6,7 +6,11 @@
     "cart": "カート",
     "profile": "プロフィール",
     "shops": "ショップ",
-    "menus": "メニュー"
+    "menus": "メニュー",
+    "acheter": "購入"
+  },
+  "acheter": {
+    "comparer": "リストを比較"
   },
   "listScreen": {
     "scan": "スキャン",
@@ -59,7 +63,10 @@
     "profileFollowers": "フォロワー",
     "profileFollowing": "フォロー中",
     "profileOpenFull": "Pearl Streetsでプロフィールを見る",
-    "grantedAdd": "ユーザーを追加"
+    "grantedAdd": "ユーザーを追加",
+    "compareMyList": "リストを比較",
+    "deleteThisItem": "この項目を削除",
+    "deleteThisItemConfirm": "この項目はリストから削除されます。"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",
@@ -116,7 +123,8 @@
     "close": "閉じる",
     "soonAvailable": "近日利用可能",
     "validate": "追加",
-    "finish": "完了"
+    "finish": "完了",
+    "addToSelection": "選択に追加"
   },
   "camera": {
     "permissionDenied": "権限が拒否されました",
@@ -178,7 +186,8 @@
     "products": "商品",
     "searchProductPlaceholder": "商品を検索...",
     "noFavProducts": "お気に入りの商品はありません",
-    "addProductHint": "商品のハートをタップして追加します"
+    "addProductHint": "商品のハートをタップして追加します",
+    "addFromBuy": "「購入」タブから追加してください"
   },
   "profile": {
     "guestTitle": "ログインしていません",
@@ -321,7 +330,9 @@
     "termsOfUse": "利用規約",
     "menusUnsavedTitle": "献立が保存されていません",
     "menusUnsavedMsg": "献立をアカウントに保存できませんでした。この端末から削除しますか？",
-    "menusUnsavedErase": "削除してログアウト"
+    "menusUnsavedErase": "削除してログアウト",
+    "myOrders": "注文履歴",
+    "myOrdersHint": "注文の追跡と確認"
   },
   "auth": {
     "login": "ログイン",
@@ -445,7 +456,26 @@
     "errorPhone": "電話番号が無効です（5〜16桁）",
     "errorUsernameTaken": "このユーザー名はすでに使用されています。",
     "passwordRuleHint": "8文字以上で、小文字、大文字、数字、特殊文字（@$!%*?&）をそれぞれ含めてください。",
-    "chooseYourLanguage": "言語を選択してください"
+    "chooseYourLanguage": "言語を選択してください",
+    "forgotTitle": "パスワードをお忘れの方",
+    "forgotEmailHint": "アカウントのメールアドレスを入力してください。確認コードをお送りします。",
+    "forgotSendCode": "コードを受け取る",
+    "forgotCodeHint": "{{email}} 宛てにメールで届いたコードを入力してください。",
+    "forgotCodeLabel": "確認コード",
+    "forgotCodePlaceholder": "メールで届いたコード",
+    "forgotVerifyCode": "コードを確認",
+    "forgotResendCode": "コードを再送信",
+    "forgotCodeResent": "新しいコードを送信しました。",
+    "forgotCodeRequired": "メールで届いたコードを入力してください。",
+    "forgotNewPwdHint": "新しいパスワードを設定してください。",
+    "forgotSavePwd": "パスワードを保存",
+    "forgotSuccess": "パスワードを変更しました。ログインできます。",
+    "forgotErrorCode": "コードが無効か、有効期限が切れています。",
+    "forgotErrorExpired": "有効期限が切れました。新しいコードをリクエストしてください。",
+    "forgotErrorWeak": "このパスワードは使用できません。推測されにくい別のパスワードを選んでください。",
+    "forgotErrorGeneric": "問題が発生しました。もう一度お試しください。",
+    "forgotTooMany": "リクエストが多すぎます。しばらくしてから再度お試しください。",
+    "forgotBackToLogin": "ログインに戻る"
   },
   "cart": {
     "today": "今日",
@@ -569,7 +599,15 @@
     "tipDriver": "配達員にお礼を伝える",
     "totalPrice": "価格",
     "qtyMinus": "減らす",
-    "qtyPlus": "増やす"
+    "qtyPlus": "増やす",
+    "myOrders": "注文履歴",
+    "paidByCard": "カードで支払い済み",
+    "byCard": "カード払い",
+    "trackMyOrder": "注文を追跡",
+    "orderConfirmedCollectCart": "ご注文は受け取り用に準備されます。カート上部の「注文履歴」で状況をご確認ください。",
+    "orderConfirmedDeliveryCart": "配達員がご注文をお届けします。カート上部の「注文履歴」で状況をご確認ください。",
+    "noShopProductFound": "このショップの商品が見つかりません。",
+    "searchAllProducts": "すべての商品から検索"
   },
   "orderStatus": {
     "confirmed": "注文確認済み",
@@ -1326,6 +1364,7 @@
       "alreadyText": "すべて「{{name}}」にすでに含まれています。",
       "seeList": "リストを見る",
       "compare": "価格を比較する",
+      "compareList": "マイリストを比較",
       "compareHint": "Pearl Streetsの店舗の実際の価格をお比べください。",
       "err": {
         "error": "エラーが発生しました。再度お試しください。",

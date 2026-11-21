@@ -606,7 +606,7 @@ export default function WeekScreen({
       <View style={s.bar}>
         <PrimaryButton
           icon="cart"
-          label={t('week.validate')}
+          label={t('recipe.addToList')}
           disabled={!hasMeals || !m.shopping || m.activeLines.length === 0}
           loading={sending}
           onPress={onValidate}

@@ -13,7 +13,8 @@ import { Ionicons } from "../../components/ui/IoniconsSens";
 import { MARCHE, SERIF, TAILLES } from "../../components/ui/marche";
 import { BRAND, INSET_BAS, THEME } from "../../components/commun/theme";
 import { useCurrency } from "../../components/commun/devise";
-import { KEY_CART } from "../../lib/constants";
+import { KEY_CART, KEY_FAV_SHOPS } from "../../lib/constants";
+import { useIsFocused } from "@react-navigation/native";
 import { sousCategorie } from "../../lib/sousCategorie";
 
 
@@ -21,8 +22,12 @@ import { sousCategorie } from "../../lib/sousCategorie";
 // Catalogue réel via getShopsByCategory('product_purchase'). Tap shop → ses vrais
 // produits → ajout panier (KEY_CART, champ `shop` réel) → checkout collect/livraison
 // existant. Aucune donnée mockée.
-const ShopsScreen = () => {
+// integre : affiché dans l'onglet Acheter (sous son segment, sans marge du haut).
+// actif : segment « Boutiques » choisi (favoris relus quand il devient visible).
+const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
   const { t } = useTranslation();
+  const estFocus = useIsFocused();
+  const visible = estFocus && actif !== false;
   const { fmtPrice } = useCurrency();
   const [shops, setShops] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -70,12 +75,39 @@ const ShopsScreen = () => {
     return onOpenShop(() => ouvrir(takePendingShop()));
   }, []);
 
+  // Boutiques favorites : même stockage que Comparer et Favoris (KEY_FAV_SHOPS,
+  // tableau de noms).
+  const [favShops, setFavShops] = React.useState([]);
+  const loadFavShops = React.useCallback(async () => {
+    try { const raw = await AsyncStorage.getItem(KEY_FAV_SHOPS); const arr = raw ? JSON.parse(raw) : []; setFavShops(Array.isArray(arr) ? arr : []); }
+    catch (e) { setFavShops([]); }
+  }, []);
+  React.useEffect(() => { if (visible) loadFavShops(); }, [visible, loadFavShops, favTick]);
+  const isShopFav = (name) => favShops.includes(String(name || ''));
+  const toggleShopFav = async (shop) => {
+    try {
+      const name = String(shop?.name || '');
+      if (!name) return;
+      // Relu juste avant l'écriture : un favori posé ailleurs n'est pas écrasé.
+      const raw = await AsyncStorage.getItem(KEY_FAV_SHOPS);
+      const cur = raw ? JSON.parse(raw) : [];
+      const set = new Set(Array.isArray(cur) ? cur : []);
+      if (set.has(name)) set.delete(name); else set.add(name);
+      const out = [...set];
+      setFavShops(out);
+      await AsyncStorage.setItem(KEY_FAV_SHOPS, JSON.stringify(out));
+    } catch (e) {}
+  };
+
   const onRefresh = () => { setRefreshing(true); load(true); };
 
   // `option` = option choisie (fiche à plusieurs options) ou prise d'office :
   // gardée dans l'article (`variant`) et envoyée à la création de la course.
   // Quantité plafonnée au stock de l'option (`maxQty`), sans message.
-  const addToCart = async (shop, product, qty = 1, option = null) => {
+  // `note` = « Instructions spéciales » de la fiche, gardée sur la ligne panier
+  // (champ `note`). Elle ne compte pas dans la fusion des lignes : une note
+  // nouvelle s'ajoute à celle de la ligne existante.
+  const addToCart = async (shop, product, qty = 1, option = null, note = '') => {
     try {
       const raw = await AsyncStorage.getItem(KEY_CART);
       const existing = raw ? (JSON.parse(raw) || []) : [];
@@ -91,6 +123,11 @@ const ShopsScreen = () => {
         existing[idx].qty = plafonner((existing[idx].qty || 1) + qty, cap);
         existing[idx].price = product.price || existing[idx].price;
         if (cap !== null) existing[idx].maxQty = cap;
+        const n = String(note || '').trim();
+        if (n) {
+          const avant = String(existing[idx].note || '').trim();
+          existing[idx].note = !avant ? n : (avant.split('\n').includes(n) ? avant : `${avant}\n${n}`);
+        }
       } else {
         existing.push({
           name: product.name,
@@ -108,6 +145,7 @@ const ShopsScreen = () => {
           category: shop.category || 'product_purchase',
           ...(variant ? { variant } : {}),
           ...(cap !== null ? { maxQty: cap } : {}),
+          ...(String(note || '').trim() ? { note: String(note).trim() } : {}),
         });
       }
       await AsyncStorage.setItem(KEY_CART, JSON.stringify(existing));
@@ -152,7 +190,8 @@ const ShopsScreen = () => {
   };
 
   const renderShopCard = ({ item }) => (
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.card} onPress={() => { setSelectedProduct(null); setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
+    <View style={shopStyles.card}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.cardMain} onPress={() => { setSelectedProduct(null); setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
@@ -171,6 +210,14 @@ const ShopsScreen = () => {
         </View>
       </View>
     </TouchableOpacity>
+      {/* Cœur favori : frère de la zone de la carte (jamais un touchable dans un autre côté iOS). */}
+      <TouchableOpacity activeOpacity={0.8} onPress={() => toggleShopFav(item)}
+        style={[shopStyles.favBtn, isShopFav(item.name) && shopStyles.favBtnOn]}
+        accessibilityRole="button" accessibilityState={{ selected: isShopFav(item.name) }} accessibilityLabel={`${t('tabs.favorites')} ${item.name}`}
+        hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
+        <Ionicons name={isShopFav(item.name) ? 'heart' : 'heart-outline'} size={17} color={isShopFav(item.name) ? THEME.terra : THEME.muted} />
+      </TouchableOpacity>
+    </View>
   );
 
   const renderProduct = ({ item }) => (
@@ -215,7 +262,7 @@ const ShopsScreen = () => {
     : _shopProducts;
 
   return (
-    <SafeAreaView style={shopStyles.screen} edges={['top']}>
+    <SafeAreaView style={shopStyles.screen} edges={integre ? [] : ['top']}>
       <View style={shopStyles.header}>
         <Text style={shopStyles.title}>{t('shops.title', 'Boutiques')}</Text>
         <Text style={shopStyles.subtitle}>{t('shops.subtitle', 'Achat de produits, click & collect ou livraison')}</Text>
@@ -260,6 +307,7 @@ const ShopsScreen = () => {
           data={filteredShops}
           keyExtractor={(s) => String(s.id)}
           renderItem={renderShopCard}
+          extraData={favShops}
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={BRAND} />}
           keyboardShouldPersistTaps="handled"
@@ -389,7 +437,7 @@ const ShopsScreen = () => {
                   <Ionicons name="remove" size={20} color={THEME.ink} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[shopStyles.pdAddBig, bloque && shopStyles.pdAddBigOff]} activeOpacity={0.9} disabled={bloque}
-                  onPress={() => { if (selectedProduct) { addToCart(selectedShop, selectedProduct, plafonner(pdQty, cap), pdOption); } setSelectedProduct(null); }}
+                  onPress={() => { if (selectedProduct) { addToCart(selectedShop, selectedProduct, plafonner(pdQty, cap), pdOption, pdNote); } setSelectedProduct(null); }}
                   accessibilityRole="button" accessibilityState={{ disabled: bloque }} accessibilityLabel={t('cart.add', 'Ajouter')}>
                   {enLecture ? <ActivityIndicator color="#1C1917" /> : (
                     <Text style={shopStyles.pdAddBigTxt} numberOfLines={1}>
@@ -426,6 +474,9 @@ const shopStyles = StyleSheet.create({
   retryBtn: { marginTop: 16, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, paddingHorizontal: 22, height: TAILLES.boutonPetit, borderRadius: TAILLES.rayonBouton, alignItems: 'center', justifyContent: 'center' },
   retryTxt: { color: THEME.ink, fontWeight: '600' },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
+  cardMain: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  favBtn: { width: TAILLES.icone, height: TAILLES.icone, borderRadius: TAILLES.icone / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, marginLeft: 10, alignSelf: 'flex-start' },
+  favBtnOn: { borderColor: THEME.terra, backgroundColor: THEME.terraSoft },
   cover: { marginRight: 12 },
   coverImg: { width: 64, height: 64, borderRadius: 16, backgroundColor: THEME.subtle },
   coverPlaceholder: { alignItems: 'center', justifyContent: 'center' },

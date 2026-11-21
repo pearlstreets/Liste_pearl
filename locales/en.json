@@ -6,7 +6,11 @@
     "cart": "Cart",
     "profile": "Profile",
     "shops": "Shops",
-    "menus": "Menus"
+    "menus": "Menus",
+    "acheter": "Shop"
+  },
+  "acheter": {
+    "comparer": "Compare my list"
   },
   "listScreen": {
     "scan": "Scan",
@@ -60,7 +64,10 @@
     "profileFollowers": "Followers",
     "profileFollowing": "Following",
     "profileOpenFull": "View profile on Pearl Streets",
-    "grantedAdd": "Add someone"
+    "grantedAdd": "Add someone",
+    "compareMyList": "Compare my list",
+    "deleteThisItem": "Delete this item",
+    "deleteThisItemConfirm": "This item will be removed from your list."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -117,7 +124,8 @@
     "close": "Close",
     "soonAvailable": "Soon available",
     "validate": "Add",
-    "finish": "Done"
+    "finish": "Done",
+    "addToSelection": "Add to selection"
   },
   "camera": {
     "permissionDenied": "Permission denied",
@@ -179,7 +187,8 @@
     "searchProductPlaceholder": "Search a product...",
     "shops": "Shops",
     "products": "Products",
-    "manageHint": "Your favorite shops and products"
+    "manageHint": "Your favorite shops and products",
+    "addFromBuy": "Add them from the Shop tab"
   },
   "profile": {
     "guestTitle": "You're not logged in",
@@ -322,7 +331,9 @@
     "termsOfUse": "Terms of use",
     "menusUnsavedTitle": "Menus not saved",
     "menusUnsavedMsg": "Your menus could not be saved to your account. Erase them from this device?",
-    "menusUnsavedErase": "Erase and log out"
+    "menusUnsavedErase": "Erase and log out",
+    "myOrders": "My orders",
+    "myOrdersHint": "Track and find your orders"
   },
   "auth": {
     "login": "Login",
@@ -446,7 +457,26 @@
     "errorPhone": "Invalid phone number (5 to 16 digits)",
     "errorUsernameTaken": "This username is already taken.",
     "passwordRuleHint": "At least 8 characters, with a lowercase letter, an uppercase letter, a number and a special character (@$!%*?&).",
-    "chooseYourLanguage": "Choose your language"
+    "chooseYourLanguage": "Choose your language",
+    "forgotTitle": "Forgot password",
+    "forgotEmailHint": "Enter the email address of your account. We will send you a verification code.",
+    "forgotSendCode": "Get the code",
+    "forgotCodeHint": "Enter the code sent by email to {{email}}.",
+    "forgotCodeLabel": "Verification code",
+    "forgotCodePlaceholder": "Code received by email",
+    "forgotVerifyCode": "Verify the code",
+    "forgotResendCode": "Resend the code",
+    "forgotCodeResent": "A new code has been sent to you.",
+    "forgotCodeRequired": "Enter the code received by email.",
+    "forgotNewPwdHint": "Choose your new password.",
+    "forgotSavePwd": "Save the password",
+    "forgotSuccess": "Your password has been changed. You can now log in.",
+    "forgotErrorCode": "Invalid or expired code.",
+    "forgotErrorExpired": "The time limit has passed. Please request a new code.",
+    "forgotErrorWeak": "This password is not accepted. Please choose another one that is harder to guess.",
+    "forgotErrorGeneric": "Something went wrong. Please try again.",
+    "forgotTooMany": "Too many requests. Please try again later.",
+    "forgotBackToLogin": "Back to login"
   },
   "cart": {
     "today": "Today",
@@ -571,7 +601,15 @@
     "tipDriver": "Thank your driver",
     "totalPrice": "price",
     "qtyMinus": "minus",
-    "qtyPlus": "plus"
+    "qtyPlus": "plus",
+    "myOrders": "My orders",
+    "paidByCard": "Paid by card",
+    "byCard": "By card",
+    "trackMyOrder": "Track my order",
+    "orderConfirmedCollectCart": "Your order will be prepared for pickup. Follow its status in My orders, at the top of the cart.",
+    "orderConfirmedDeliveryCart": "A driver will take charge of your order. Follow its status in My orders, at the top of the cart.",
+    "noShopProductFound": "No product found for this shop.",
+    "searchAllProducts": "Search all products"
   },
   "orderStatus": {
     "confirmed": "Order confirmed",
@@ -1330,6 +1368,7 @@
       "alreadyText": "Everything is already in \"{{name}}\".",
       "seeList": "View my list",
       "compare": "Compare prices",
+      "compareList": "Compare my list",
       "compareHint": "Compare the real prices of Pearl Streets shops.",
       "err": {
         "error": "An error has occurred, please try again.",

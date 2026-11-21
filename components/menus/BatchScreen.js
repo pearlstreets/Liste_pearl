@@ -325,7 +325,7 @@ function Session({ onClose, onOpenRecipe }) {
         <PrimaryButton
           soft
           icon="cart"
-          label={t('batch.addShopping')}
+          label={t('recipe.addToList')}
           loading={adding}
           onPress={addShopping}
           style={[s.btn, { marginTop: 10 }]}
