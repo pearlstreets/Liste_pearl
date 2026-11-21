@@ -393,7 +393,7 @@ export default function ShoppingScreen({ navigation, onOpenPlan }) {
 }
 
 const s = StyleSheet.create({
-  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink, marginTop: 2 },
+  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '400', color: T.ink, letterSpacing: -0.3, marginTop: 2 },
   sub: { fontSize: 12, color: T.muted, fontWeight: '600', marginTop: 8, letterSpacing: 0.3 },
   note: { fontSize: 12, color: T.faint, marginTop: 4, lineHeight: 17 },
   label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 18, marginBottom: 10 },
