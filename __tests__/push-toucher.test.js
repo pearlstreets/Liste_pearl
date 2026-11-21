@@ -121,9 +121,9 @@ describe('toucher', () => {
     expect(mockNotif.getLastNotificationResponseAsync).toHaveBeenCalled();
   });
 
-  test('ouvre le Profil, range la commande et l oublie système', async () => {
+  test('ouvre le Panier, range la commande et l oublie système', async () => {
     await mockReponse(reponse({ content: { data: donnees() } }));
-    expect(navRef.navigate).toHaveBeenCalledWith('profile');
+    expect(navRef.navigate).toHaveBeenCalledWith('cart');
     expect(ouvertures()).toHaveLength(1);
     expect(mockNotif.clearLastNotificationResponseAsync).toHaveBeenCalled();
     expect(toucher.prendreCommandeAOuvrir()).toEqual({
@@ -202,9 +202,9 @@ describe('toucher', () => {
     expect(navRef.navigate).not.toHaveBeenCalled();
   });
 
-  test('route inconnue : le Profil seul', async () => {
+  test('route inconnue : le Panier seul', async () => {
     await mockReponse(reponse({ content: { data: donnees({ route: 'ailleurs' }) } }));
-    expect(navRef.navigate).toHaveBeenCalledWith('profile');
+    expect(navRef.navigate).toHaveBeenCalledWith('cart');
     expect(ouvertures()).toHaveLength(0);
     expect(toucher.prendreCommandeAOuvrir()).toBeNull();
   });
@@ -217,7 +217,7 @@ describe('toucher', () => {
     toucher.brancherNavigation(navRef);
     toucher.definirConnexion(true);
     toucher.consommerDestination();
-    expect(navRef.navigate).toHaveBeenCalledWith('profile');
+    expect(navRef.navigate).toHaveBeenCalledWith('cart');
   });
 });
 

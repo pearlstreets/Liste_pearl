@@ -11,7 +11,8 @@ import {
   useWindowDimensions,
   Alert,
 } from 'react-native';
-import { prefillProducts, readMyLists } from '../../lib/menus/listBridge';
+import { prefillProducts, readMyLists, pendingLines } from '../../lib/menus/listBridge';
+import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import {
   mealsByDay,
@@ -32,6 +33,7 @@ import { nearbyShops } from '../../lib/menus/pearl';
 import { usePearlShops, useKnownPlace, openShopFromMenus } from './usePearl';
 import { dayTotals, mealSide, needsSide, sideIdOf } from '../../lib/menus/sides';
 import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
+import { allerA } from '../../app/onglets';
 
 // Repli quand le thème est simulé (tests) : les styles se créent au chargement du module.
 const TAILLES = TAILLES_THEME || {};
@@ -138,6 +140,41 @@ export default function WeekScreen({
   const [addedName, setAddedName] = useState('');
   const [sending, setSending] = useState(false);
   const [replacing, setReplacing] = useState(false);
+  // Même libellé que l'onglet Courses : déjà ajouté, différence seulement, ou ajout complet (liste active).
+  const [listState, setListState] = useState({ kind: 'new', count: 0 });
+  const focused = useIsFocused();
+  const activeLines = m.activeLines;
+  const planWeekStart = (plan && plan.weekStart) || null;
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (!activeLines || activeLines.length === 0) {
+        if (alive) setListState({ kind: 'empty', count: 0 });
+        return;
+      }
+      try {
+        const { activeId } = await readMyLists();
+        const diff = await pendingLines(
+          activeId,
+          activeLines,
+          (l) => texts.ingredientName(l.key),
+          planWeekStart
+        );
+        if (!alive) return;
+        if (diff.length === 0) setListState({ kind: 'already', count: 0 });
+        else
+          setListState({
+            kind: diff.length < activeLines.length ? 'delta' : 'new',
+            count: diff.length,
+          });
+      } catch {
+        if (alive) setListState({ kind: 'new', count: activeLines.length });
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [activeLines, added, focused, texts, planWeekStart]);
   // Repas qui ne conviennent plus au profil (allergie ou régime ajouté après la composition).
   const unsuitable = useMemo(() => m.unsuitable || [], [m.unsuitable]);
   const badKeys = useMemo(() => new Set(unsuitable.map((x) => x.key)), [unsuitable]);
@@ -283,7 +320,7 @@ export default function WeekScreen({
       } catch {}
     }
     try {
-      navigation.navigate(screen);
+      allerA(navigation, screen);
     } catch {}
   };
 
@@ -606,7 +643,13 @@ export default function WeekScreen({
       <View style={s.bar}>
         <PrimaryButton
           icon="cart"
-          label={t('week.validate')}
+          label={
+            listState.kind === 'already'
+              ? t('shop.alreadyAdded')
+              : listState.kind === 'delta'
+                ? t('shop.addDelta', { count: listState.count })
+                : t('recipe.addToList')
+          }
           disabled={!hasMeals || !m.shopping || m.activeLines.length === 0}
           loading={sending}
           onPress={onValidate}

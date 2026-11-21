@@ -338,7 +338,7 @@ export const AddedSheet = memo(function AddedSheet({
           <>
             <PrimaryButton icon="list" label={t('added.seeList')} onPress={onSeeList} />
             <View style={{ height: 10 }} />
-            <PrimaryButton soft icon="pricetags" label={t('added.compare')} onPress={onCompare} />
+            <PrimaryButton soft icon="pricetags" label={t('added.compareList')} onPress={onCompare} />
             <Text style={s.hint}>{t('added.compareHint')}</Text>
           </>
         ) : null}

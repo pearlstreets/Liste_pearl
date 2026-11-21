@@ -6,7 +6,11 @@
     "cart": "Cart",
     "profile": "Profile",
     "shops": "Shops",
-    "menus": "Menus"
+    "menus": "Menus",
+    "acheter": "Shop"
+  },
+  "acheter": {
+    "comparer": "Compare"
   },
   "listScreen": {
     "scan": "Scan",
@@ -23,7 +27,7 @@
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
-    "deleteTitle": "Delete",
+    "deleteTitle": "Delete these items?",
     "deleteConfirm": "Delete",
     "deleteItem": "selected item",
     "deleteItem_one": "selected item",
@@ -60,7 +64,13 @@
     "profileFollowers": "Followers",
     "profileFollowing": "Following",
     "profileOpenFull": "View profile on Pearl Streets",
-    "grantedAdd": "Add someone"
+    "grantedAdd": "Add someone",
+    "compareMyList": "Compare my list",
+    "deleteThisItem": "Delete this item",
+    "deleteThisItemConfirm": "This item will be removed from your list.",
+    "markBought": "Mark as bought",
+    "rejectRequest": "Decline request",
+    "blockUser": "Block this person"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -90,19 +100,20 @@
     "search": "Search",
     "noItems": "No items",
     "addFromList": "Add products to My List",
-    "addFromListSub": "Then tap \"Find exact products\"",
+    "addFromListSub": "Then tap \"Compare my list\"",
     "clear": "Clear",
     "addProduct": "Add a product",
-    "defaultProducts": "Add items to My List then tap \"Find exact products\" to see results here.",
+    "defaultProducts": "Add items to My List then tap \"Compare my list\" to see results here.",
     "quantity": "quantity",
     "continueShopping": "Continue shopping",
     "notFound": "not found in shops",
     "noMatchTitle": "No products found\nfor your list",
     "noMatchSub": "These shops do not sell these items. Check the names or browse the Shops.",
-    "searchToPrice": "Tap Search to choose your products and see the price.",
+    "searchToPrice": "Tap \"Add a product\" to choose your products and see the price.",
     "searchToPriceShop": "Search for a product to see the price.",
     "shopUnit": "shop",
-    "shopUnitPlural": "shops"
+    "shopUnitPlural": "shops",
+    "clearConfirmMsg": "Clear the current comparison? The chosen products will be removed."
   },
   "searchPopup": {
     "header": "What do you need?",
@@ -117,7 +128,8 @@
     "close": "Close",
     "soonAvailable": "Soon available",
     "validate": "Add",
-    "finish": "Done"
+    "finish": "Done",
+    "addToSelection": "Add to selection"
   },
   "camera": {
     "permissionDenied": "Permission denied",
@@ -179,7 +191,8 @@
     "searchProductPlaceholder": "Search a product...",
     "shops": "Shops",
     "products": "Products",
-    "manageHint": "Your favorite shops and products"
+    "manageHint": "Your favorite shops and products",
+    "addFromBuy": "Add them from the Shop tab"
   },
   "profile": {
     "guestTitle": "You're not logged in",
@@ -322,7 +335,9 @@
     "termsOfUse": "Terms of use",
     "menusUnsavedTitle": "Menus not saved",
     "menusUnsavedMsg": "Your menus could not be saved to your account. Erase them from this device?",
-    "menusUnsavedErase": "Erase and log out"
+    "menusUnsavedErase": "Erase and log out",
+    "myOrders": "My orders",
+    "myOrdersHint": "Track and find your orders"
   },
   "auth": {
     "login": "Login",
@@ -446,7 +461,27 @@
     "errorPhone": "Invalid phone number (5 to 16 digits)",
     "errorUsernameTaken": "This username is already taken.",
     "passwordRuleHint": "At least 8 characters, with a lowercase letter, an uppercase letter, a number and a special character (@$!%*?&).",
-    "chooseYourLanguage": "Choose your language"
+    "chooseYourLanguage": "Choose your language",
+    "forgotTitle": "Forgot password",
+    "forgotEmailHint": "Enter the email address of your account. We will send you a verification code.",
+    "forgotSendCode": "Get the code",
+    "forgotCodeHint": "Enter the code sent by email to {{email}}.",
+    "forgotCodeLabel": "Verification code",
+    "forgotCodePlaceholder": "Code received by email",
+    "forgotVerifyCode": "Verify the code",
+    "forgotResendCode": "Resend the code",
+    "forgotCodeResent": "A new code has been sent to you.",
+    "forgotCodeRequired": "Enter the code received by email.",
+    "forgotNewPwdHint": "Choose your new password.",
+    "forgotSavePwd": "Save the password",
+    "forgotSuccess": "Your password has been changed. You can now log in.",
+    "forgotErrorCode": "Invalid or expired code.",
+    "forgotErrorExpired": "The time limit has passed. Please request a new code.",
+    "forgotErrorWeak": "This password is not accepted. Please choose another one that is harder to guess.",
+    "forgotErrorGeneric": "Something went wrong. Please try again.",
+    "forgotTooMany": "Too many requests. Please try again later.",
+    "forgotBackToLogin": "Back to login",
+    "forgotEmailNotFound": "This email address is not linked to any account."
   },
   "cart": {
     "today": "Today",
@@ -571,7 +606,15 @@
     "tipDriver": "Thank your driver",
     "totalPrice": "price",
     "qtyMinus": "minus",
-    "qtyPlus": "plus"
+    "qtyPlus": "plus",
+    "myOrders": "My orders",
+    "paidByCard": "Paid by card",
+    "byCard": "By card",
+    "trackMyOrder": "Track my order",
+    "orderConfirmedCollectCart": "Your order will be prepared for pickup. Follow its status in My orders, at the top of the cart.",
+    "orderConfirmedDeliveryCart": "A driver will take charge of your order. Follow its status in My orders, at the top of the cart.",
+    "noShopProductFound": "No product found for this shop.",
+    "searchAllProducts": "Search all products"
   },
   "orderStatus": {
     "confirmed": "Order confirmed",
@@ -720,7 +763,8 @@
     "thanks": "Thank you!",
     "saved": "Your rating has been saved.",
     "yourRating": "Your rating",
-    "rateDriver": "Rate your driver"
+    "rateDriver": "Rate your driver",
+    "failed": "Your rating could not be saved. Please try again."
   },
   "report": {
     "notReceived": "Order not received",
@@ -733,7 +777,9 @@
     "sentTitle": "Report sent",
     "sent": "Our support team will handle your request.",
     "answerTitle": "Answer to your report",
-    "handled": "Your report has been handled"
+    "handled": "Your report has been handled",
+    "failed": "Your report could not be sent. Please try again.",
+    "moreReasons": "Other reasons…"
   },
   "stock": {
     "option": "Option",
@@ -1330,6 +1376,7 @@
       "alreadyText": "Everything is already in \"{{name}}\".",
       "seeList": "View my list",
       "compare": "Compare prices",
+      "compareList": "Compare my list",
       "compareHint": "Compare the real prices of Pearl Streets shops.",
       "err": {
         "error": "An error has occurred, please try again.",
@@ -1555,7 +1602,7 @@
       "summary_one": "{{count}} item, about {{total}}",
       "summary_other": "{{count}} items, about {{total}}",
       "estimateNote": "Indicative estimate (~). The real price is the shop's, compare it next.",
-      "targetList": "Add to list",
+      "targetList": "Which list?",
       "defaultList": "My List",
       "activeList": "active",
       "showBasics": "Show pantry basics",

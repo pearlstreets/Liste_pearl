@@ -1,5 +1,5 @@
 // Toucher d'une notification de commande (push du serveur, services/pushDirect.js) :
-// ouverture du Profil puis du détail de la commande concernée.
+// ouverture de l'onglet Panier (Mes commandes) puis du détail de la commande concernée.
 //
 // Importé tout en haut d'App.js : l'abonnement est pris AU CHARGEMENT du module,
 // pour capter aussi le toucher qui LANCE l'app (même modèle que l'app livreur).
@@ -17,12 +17,14 @@ export const CLE_DERNIER_TAP = 'push.dernierTap';
 export const DUREE_DERNIER_TAP = 5 * 60 * 1000;
 export const DUREE_DESTINATION = 120 * 1000;
 export const EVENEMENT_OUVRIR = 'PUSH_OUVRIR_COMMANDE';
-// Demande de partage de liste (push ou lien pearl-list://partage) : Profil puis
+// Demande de partage de liste (push ou lien pearl-list://partage) : Ma Liste puis
 // la fenêtre « Demandes de partage ».
 export const EVENEMENT_PARTAGE = 'PUSH_OUVRIR_PARTAGE';
 const ROUTE_PARTAGE = 'partage';
 const KEY_ORDER_HISTORY = 'KEY_ORDER_HISTORY';
-const ONGLET_PROFIL = 'profile';
+// Onglets ouverts : commandes dans le Panier, demandes de partage dans Ma Liste.
+const ONGLET_COMMANDES = 'cart';
+const ONGLET_PARTAGE = 'myList';
 const ROUTES = ['commande', 'suivi', 'plainte'];
 
 let notifications; // undefined = pas encore essayé, null = indisponible
@@ -131,7 +133,7 @@ export async function traiterReponse(reponse) {
   }
 }
 
-/** Navigation de l'app (App.js), pour ouvrir le Profil. */
+/** Navigation de l'app (app/Racine.js), pour ouvrir le Panier ou Ma Liste. */
 export function brancherNavigation(navRef) {
   _navRef = navRef || null;
 }
@@ -160,12 +162,12 @@ export function consommerDestination() {
     if (d.route === ROUTE_PARTAGE) {
       _commandeAOuvrir = null;
       _partageAOuvrir = true;
-      _navRef.navigate(ONGLET_PROFIL);
+      _navRef.navigate(ONGLET_PARTAGE);
       const ep = emetteur();
       if (ep) ep.emit(EVENEMENT_PARTAGE);
       return;
     }
-    // Route inconnue : le Profil seul.
+    // Route inconnue : l'onglet Panier seul.
     _commandeAOuvrir = ROUTES.includes(d.route)
       ? {
           route: d.route,
@@ -173,7 +175,7 @@ export function consommerDestination() {
           external_order_id: d.external_order_id,
         }
       : null;
-    _navRef.navigate(ONGLET_PROFIL);
+    _navRef.navigate(ONGLET_COMMANDES);
     const e = emetteur();
     if (e && _commandeAOuvrir) e.emit(EVENEMENT_OUVRIR);
   } catch {
@@ -190,14 +192,14 @@ export function ouvrirDemandesPartage() {
   consommerDestination();
 }
 
-/** Vrai une seule fois si les demandes de partage sont à ouvrir (Profil). */
+/** Vrai une seule fois si les demandes de partage sont à ouvrir (Ma Liste). */
 export function prendrePartageAOuvrir() {
   const v = _partageAOuvrir;
   _partageAOuvrir = false;
   return v;
 }
 
-/** Rend la commande à ouvrir et l'oublie (Profil, au focus ou sur l'évènement). */
+/** Rend la commande à ouvrir et l'oublie (Panier, au focus ou sur l'évènement). */
 export function prendreCommandeAOuvrir() {
   const c = _commandeAOuvrir;
   _commandeAOuvrir = null;

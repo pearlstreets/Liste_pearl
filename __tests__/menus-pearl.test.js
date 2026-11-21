@@ -79,9 +79,9 @@ describe('matchProduct : même règle que App.js', () => {
     expect(nameMatches('filet de poulet', 'Filet de poulet fermier')).toBe(true);
     expect(nameMatches('pain', 'Pain au chocolat')).toBe(false);
   });
-  test('App.js utilise la fonction partagée', () => {
-    const app = fs.readFileSync(path.join(__dirname, '..', 'App.js'), 'utf8');
-    expect(app).toMatch(/from "\.\/lib\/matchProduct"/);
+  test('l\'écran Produits utilise la fonction partagée', () => {
+    const app = fs.readFileSync(path.join(__dirname, '..', 'screens', 'shop', 'ProductsScreen.js'), 'utf8');
+    expect(app).toMatch(/from "\.\.\/\.\.\/lib\/matchProduct"/);
     expect(app).toMatch(/matchProduct\(/);
     expect(app).toMatch(/loadShops\('product_purchase'/);
   });
@@ -355,8 +355,8 @@ describe('articles ajoutés : pris en compte dans l\'onglet Produits', () => {
     const r = toListItems(lines, nameOf, [], { force: true, idGen: () => 'i' });
     expect(r.items[0].matchNames).toBeUndefined();
   });
-  test('App.js ne transmet les noms français que si le nom n\'a pas changé', () => {
-    const app = fs.readFileSync(path.join(__dirname, '..', 'App.js'), 'utf8');
+  test('Ma Liste ne transmet les noms français que si le nom n\'a pas changé', () => {
+    const app = fs.readFileSync(path.join(__dirname, '..', 'screens', 'list', 'ListScreen.js'), 'utf8');
     expect(app).toMatch(/it\.matchFor === it\.name/);
   });
 });

@@ -31,7 +31,7 @@ function Meal({ meal, onAddWeek }) {
     const st = r && r.status;
     setNote(
       st === 'ok'
-        ? t('shared.addedShop')
+        ? t('added.ok', { count: r.count })
         : st === 'already'
           ? t('added.already')
           : t('added.err.error')
@@ -60,7 +60,7 @@ function Meal({ meal, onAddWeek }) {
       </View>
       {known ? (
         <View style={s.actions}>
-          <GhostButton icon="cart-outline" label={t('shared.addShop')} onPress={addShop} />
+          <GhostButton icon="cart-outline" label={t('recipe.addToList')} onPress={addShop} />
           <GhostButton
             icon="calendar-outline"
             label={t('shared.addWeek')}
