@@ -268,7 +268,7 @@ const lstyles = StyleSheet.create({
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   title: { fontFamily: SERIF, fontSize: 26, fontWeight: '400', color: THEME.ink, letterSpacing: -0.3 },
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 2, fontWeight: '600' },
-  scanBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, paddingHorizontal: 14, height: TAILLES.boutonPetit, borderRadius: TAILLES.boutonPetit / 2, marginLeft: 10 },
+  scanBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexShrink: 0, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, paddingHorizontal: 12, height: TAILLES.boutonPetit, borderRadius: TAILLES.boutonPetit / 2, marginLeft: 8 },
   scanTxt: { color: THEME.ink, fontWeight: '700', fontSize: 13, marginLeft: 6 },
   inputWrap: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   input: { flex: 1, height: TAILLES.champ, backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.borderInput, ...THEME.shadowSm },
@@ -873,9 +873,9 @@ function ListScreen() {
   const Header = (
     <View style={lstyles.header}>
       <View style={lstyles.headerRow}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, minWidth: 0 }}>
           <Text style={lstyles.title} numberOfLines={1}>{readOnly ? (activeShared.owner?.name || t('tabs.myList')) : t('tabs.myList')}</Text>
-          <Text style={lstyles.subtitle}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.filter(it => it && it.selected && !it.crossed).length })}</Text>
+          <Text style={lstyles.subtitle} numberOfLines={1}>{readOnly ? (t('listScreen.readOnlyShared', 'Liste partagée · lecture seule')) : t('counts.listSelected', { count: items.filter(it => it && it.selected && !it.crossed).length })}</Text>
         </View>
         {!readOnly && (
           <TouchableOpacity onPress={ouvrirPartage} activeOpacity={0.8} style={lstyles.scanBtn}>
@@ -3118,8 +3118,10 @@ const cartStyles = StyleSheet.create({
   emptyTitle: { fontFamily: SERIF, fontSize: 18, fontWeight: '400', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
-  card: { backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, padding: 14, marginHorizontal: TAILLES.marge, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  cardOn: { borderColor: THEME.brand, borderWidth: 2 },
+  // Bordure 1.5 dans les deux états : la sélection change la couleur seulement,
+  // la mise en page ne bouge pas.
+  card: { backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, padding: 14, marginHorizontal: TAILLES.marge, marginTop: 10, borderWidth: 1.5, borderColor: THEME.border, ...THEME.shadowSm },
+  cardOn: { borderColor: THEME.brand },
   shopHead: { flexDirection: 'row', alignItems: 'center', paddingBottom: 12, marginBottom: 2, borderBottomWidth: 1, borderBottomColor: THEME.border },
   shopIcon: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginLeft: 10, marginRight: 10 },
   shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
@@ -5527,7 +5529,7 @@ function MainNavigator({ onLogout, isAuth }) {
         headerShown: true,
         headerTitleAlign: "center",
         headerTitle: getTabName(route.name),
-        tabBarLabel: ({ color }) => <TabLabel label={getTabName(route.name)} color={color} />,
+        tabBarLabel: ({ color, position }) => <TabLabel label={getTabName(route.name)} color={color} position={position} />,
         tabBarActiveTintColor: THEME.ink,
         tabBarInactiveTintColor: THEME.faint,
         tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28, backgroundColor: THEME.bg, borderTopColor: THEME.border, borderTopWidth: StyleSheet.hairlineWidth },
@@ -5542,7 +5544,7 @@ function MainNavigator({ onLogout, isAuth }) {
       <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
       <Tab.Screen name="products" component={ProductsScreen} options={{ headerShown: false }} />
       <Tab.Screen name="shops" component={ShopsScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8 } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
     </Tab.Navigator>
   );

@@ -820,7 +820,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 
 const s = StyleSheet.create({
   head: { paddingHorizontal: TAILLES.marge, paddingTop: 6 },
-  big: { fontFamily: SERIF, fontSize: 32, fontWeight: '600', color: T.ink, letterSpacing: -0.3 },
+  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '400', color: T.ink, letterSpacing: -0.3 },
   search: {
     flexDirection: 'row',
     alignItems: 'center',
