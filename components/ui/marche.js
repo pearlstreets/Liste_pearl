@@ -23,7 +23,9 @@ export const MARCHE = {
 };
 
 // Titres à empattements sans police à télécharger (OTA possible).
-export const SERIF = Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia, serif' });
+export const SERIF = Platform.select
+  ? Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia, serif' })
+  : 'Georgia';
 
 // Mesures communes : mêmes hauteurs de boutons partout.
 export const TAILLES = {
