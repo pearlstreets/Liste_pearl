@@ -328,7 +328,7 @@ const SearchItem = React.memo(
                 width: 36,
                 height: 36,
                 borderRadius: 18,
-                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
@@ -389,7 +389,7 @@ const SearchItem = React.memo(
                   width: 28,
                   height: 28,
                   borderRadius: 14,
-                  borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                  borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
@@ -762,7 +762,7 @@ export default function SearchPopup({
                                 width: 24,
                                 height: 24,
                                 borderRadius: 12,
-                                borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                                borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                               }}
@@ -798,7 +798,7 @@ export default function SearchPopup({
                   onPress={handleFinish}
                   activeOpacity={0.9}
                   style={{
-                    borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF',
+                    borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF',
                     paddingVertical: 14,
                     borderRadius: 14,
                     flexDirection: 'row',

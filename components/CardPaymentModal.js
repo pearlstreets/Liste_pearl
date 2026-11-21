@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   optSub: { fontSize: 12.5, color: '#8A94A6', marginTop: 2 },
   cardField: { width: '100%', height: 50, marginTop: 2, marginBottom: 6 },
   err: { color: '#EF4444', fontSize: 13, textAlign: 'center', marginTop: 8, marginBottom: 2 },
-  payBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, height: 54, marginTop: 12 },
+  payBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, height: 54, marginTop: 12 },
   payTxt: { color: '#1C1917', fontSize: 16, fontWeight: '600' },
   cancelBtn: { alignItems: 'center', paddingVertical: 14 },
   cancelTxt: { color: '#6B7280', fontSize: 15, fontWeight: '600' },
