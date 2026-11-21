@@ -48,7 +48,8 @@ import {
   scheduleCookAlarms,
   cancelCookAlarms,
 } from '../../services/cookAlerts';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { isolerUnitesLatines } from '../../lib/texteBidi';
@@ -461,7 +462,12 @@ export default function KitchenMode({ id, persons, onClose }) {
           style={[s.btn, { marginTop: 22, alignSelf: 'stretch' }]}
           onPress={onFinish}
         >
-          <Ionicons name="checkmark-circle" size={20} color="#fff" style={{ marginRight: 8 }} />
+          <Ionicons
+            name="checkmark-circle"
+            size={20}
+            color={MARCHE.noir}
+            style={{ marginRight: 8 }}
+          />
           <Text style={s.btnTxt}>{t('cook.done')}</Text>
         </TouchableOpacity>
       </View>
@@ -488,7 +494,7 @@ export default function KitchenMode({ id, persons, onClose }) {
       body.push(
         <View key={`d-${i}`} style={s.rw}>
           <View style={[s.dot, s.dotDone]}>
-            <Ionicons name="checkmark" size={16} color="#fff" />
+            <Ionicons name="checkmark" size={16} color={MARCHE.blanc} />
           </View>
           <Text style={[s.rt, s.rtDone]} numberOfLines={2}>
             {textOf(x)}
@@ -512,9 +518,9 @@ export default function KitchenMode({ id, persons, onClose }) {
         <View key={`c-${i}`} style={[s.ck, c.ok && s.ckOk]}>
           <View style={[s.dot, c.ok ? s.dotOk : s.dotCook]}>
             {c.ok ? (
-              <Ionicons name="checkmark" size={16} color={T.brandDark} />
+              <Ionicons name="checkmark" size={16} color={T.brand} />
             ) : (
-              <Ionicons name="flame-outline" size={15} color="#B45309" />
+              <Ionicons name="flame-outline" size={15} color={ORANGE} />
             )}
           </View>
           <View style={{ flex: 1 }}>
@@ -533,7 +539,7 @@ export default function KitchenMode({ id, persons, onClose }) {
               </View>
             ) : null}
           </View>
-          <Text style={[s.ckTime, c.ok && { color: T.brandDark, fontSize: 18 }]}>
+          <Text style={[s.ckTime, c.ok && { color: T.brand, fontSize: 18 }]}>
             {c.ok ? t('cook.k.ready') : fmt(c.r)}
           </Text>
         </View>
@@ -587,7 +593,7 @@ export default function KitchenMode({ id, persons, onClose }) {
                 <Ionicons
                   name={x.cook ? 'flame' : 'play'}
                   size={20}
-                  color="#fff"
+                  color={MARCHE.noir}
                   style={{ marginRight: 8 }}
                 />
                 <Text style={s.btnBigTxt}>{x.cook ? t('cook.k.launchCook') : t('cook.start')}</Text>
@@ -595,7 +601,15 @@ export default function KitchenMode({ id, persons, onClose }) {
             </>
           ) : (
             <>
-              <Text style={[s.big, st.pz && { color: T.faint }]}>{fmt(st.r)}</Text>
+              <View style={s.ring}>
+                <Text
+                  style={[s.big, st.pz && { color: SECOND }]}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                >
+                  {fmt(st.r)}
+                </Text>
+              </View>
               <View style={s.bar}>
                 <View
                   style={[
@@ -641,13 +655,13 @@ export default function KitchenMode({ id, persons, onClose }) {
         const m = missing(plan, S, w);
         body.push(
           <View key="wait" style={s.wait} onLayout={(e) => (nowY.current = e.nativeEvent.layout.y)}>
-            <Text style={[s.nl, { color: '#B45309' }]}>{t('cook.k.idle')}</Text>
+            <Text style={[s.nl, { color: ORANGE }]}>{t('cook.k.idle')}</Text>
             <Text style={[s.nt, { textAlign: 'center' }]}>
               {m
                 ? byKind(m, 'cook.k.waterIn', 'cook.k.ovenIn', 'cook.k.cookIn')
                 : t('cook.k.launchInTitle')}
             </Text>
-            <Text style={[s.big, { color: '#B45309' }]}>{fmt(bestW)}</Text>
+            <Text style={[s.big, { color: ORANGE }]}>{fmt(bestW)}</Text>
             <Text style={[s.nd, { textAlign: 'center' }]}>
               {t('cook.k.then', { what: textOf(plan.tasks[w]) })}
             </Text>
@@ -663,7 +677,7 @@ export default function KitchenMode({ id, persons, onClose }) {
       body.push(
         <View key={`r-${i}`} style={s.ec}>
           <View style={[s.dot, { borderColor: T.brand }]}>
-            <Text style={[s.dotTxt, { color: T.brandDark }]}>{i + 1}</Text>
+            <Text style={[s.dotTxt, { color: CREME }]}>{i + 1}</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text style={s.ckName} numberOfLines={2}>
@@ -671,7 +685,7 @@ export default function KitchenMode({ id, persons, onClose }) {
             </Text>
             <View style={s.mini}>
               <TouchableOpacity style={[s.miniBtn, s.miniOn]} onPress={() => onDone(i)}>
-                <Text style={[s.miniTxt, { color: '#fff' }]}>{t('cook.k.done')}</Text>
+                <Text style={[s.miniTxt, { color: MARCHE.noir }]}>{t('cook.k.done')}</Text>
               </TouchableOpacity>
               {st.r > 0 ? (
                 <TouchableOpacity style={s.miniBtn} onPress={() => onStepPause(i)}>
@@ -680,7 +694,7 @@ export default function KitchenMode({ id, persons, onClose }) {
               ) : null}
             </View>
           </View>
-          <Text style={[s.ckTime, { color: T.brandDark }]}>{fmt(st.r)}</Text>
+          <Text style={s.ckTime}>{fmt(st.r)}</Text>
         </View>
       );
     });
@@ -707,7 +721,7 @@ export default function KitchenMode({ id, persons, onClose }) {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={s.rt}>{textOf(x)}</Text>
-            <Text style={[s.rs, waiting && { color: '#B45309' }]}>{sub}</Text>
+            <Text style={[s.rs, waiting && { color: ORANGE }]}>{sub}</Text>
           </View>
         </View>
       );
@@ -724,7 +738,7 @@ export default function KitchenMode({ id, persons, onClose }) {
             accessibilityLabel={t('cook.quit')}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Ionicons name="close" size={26} color={T.ink} />
+            <Ionicons name="close" size={26} color={CREME} />
           </TouchableOpacity>
           <Text style={s.h1} numberOfLines={2}>
             {texts.recipeTitle(id)}
@@ -737,7 +751,7 @@ export default function KitchenMode({ id, persons, onClose }) {
             <Ionicons
               name={showIng ? 'list' : 'list-outline'}
               size={24}
-              color={showIng ? T.brandDark : T.ink}
+              color={showIng ? T.brand : CREME}
             />
           </TouchableOpacity>
         </View>
@@ -756,7 +770,16 @@ export default function KitchenMode({ id, persons, onClose }) {
           </Text>
         ) : null}
         <View style={s.pb}>
-          <View style={[s.pbIn, { width: `${(nDone / N) * 100}%` }]} />
+          {plan.tasks.map((_, i) => (
+            <View
+              key={i}
+              style={[
+                s.seg,
+                i > 0 && { marginLeft: 3 },
+                { backgroundColor: i < nDone ? T.brand : AVENIR },
+              ]}
+            />
+          ))}
         </View>
         {resumed && !fini ? (
           <View style={s.resumed}>
@@ -774,7 +797,11 @@ export default function KitchenMode({ id, persons, onClose }) {
       <ScrollView
         ref={scroll}
         style={s.ls}
-        contentContainerStyle={{ padding: 14, paddingBottom: 24 }}
+        contentContainerStyle={{
+          paddingHorizontal: TAILLES.marge,
+          paddingTop: 14,
+          paddingBottom: 24,
+        }}
       >
         {showIng ? (
           <View style={s.ingBox}>
@@ -799,10 +826,10 @@ export default function KitchenMode({ id, persons, onClose }) {
             <Ionicons
               name="arrow-undo-outline"
               size={18}
-              color={hist.length ? T.ink : '#CBD5E1'}
+              color={hist.length ? CREME : ETEINT}
               style={{ marginRight: 6 }}
             />
-            <Text style={[s.ftTxt, !hist.length && { color: '#CBD5E1' }]}>{t('cook.k.undo')}</Text>
+            <Text style={[s.ftTxt, !hist.length && { color: ETEINT }]}>{t('cook.k.undo')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[s.ftBtn, { marginLeft: 8 }, S.pz && s.ftOn, !(active(S) || S.pz) && s.ftOff]}
@@ -812,10 +839,16 @@ export default function KitchenMode({ id, persons, onClose }) {
             <Ionicons
               name={S.pz ? 'play' : 'pause'}
               size={18}
-              color={active(S) || S.pz ? T.ink : '#CBD5E1'}
+              color={S.pz ? MARCHE.noir : active(S) ? CREME : ETEINT}
               style={{ marginRight: 6 }}
             />
-            <Text style={[s.ftTxt, !(active(S) || S.pz) && { color: '#CBD5E1' }]}>
+            <Text
+              style={[
+                s.ftTxt,
+                S.pz && { color: MARCHE.noir },
+                !(active(S) || S.pz) && { color: ETEINT },
+              ]}
+            >
               {S.pz ? t('cook.k.resumeAll') : t('cook.k.pauseAll')}
             </Text>
           </TouchableOpacity>
@@ -825,108 +858,140 @@ export default function KitchenMode({ id, persons, onClose }) {
   );
 }
 
-const ORANGE = '#B45309';
+// Mode cuisine en style Marché : fond sombre, textes crème, accents terracotta.
+const CREME = '#F7F1E8';
+const SECOND = '#D9BFAE';
+const AVENIR = '#5E4234';
+const CONTOUR = '#6E5143';
+const CARTE = '#4A2F21';
+const ETEINT = '#7E6252'; // bouton désactivé
+const ORANGE = '#E59A6B'; // attente, lisible sur fond sombre
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F7F8FA' },
+  root: { flex: 1, backgroundColor: MARCHE.nuit },
   center: { alignItems: 'center', justifyContent: 'center', padding: 24 },
-  hd: { backgroundColor: '#fff', paddingHorizontal: 14, paddingTop: 6, paddingBottom: 12 },
-  hdTop: { flexDirection: 'row', alignItems: 'center' },
-  x: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
-  h1: { flex: 1, fontSize: 19, fontWeight: '700', color: T.ink, textAlign: 'center' },
-  h2: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4, paddingHorizontal: 4 },
-  h2Txt: { fontSize: 14, color: T.muted, paddingHorizontal: 4, flexShrink: 1 },
-  h2Ok: { fontSize: 14, fontWeight: '700', color: '#07795f' },
-  pb: {
-    height: 6,
-    backgroundColor: '#EEF1F4',
-    borderRadius: 3,
-    overflow: 'hidden',
-    marginTop: 10,
-    marginHorizontal: 4,
+  hd: {
+    backgroundColor: MARCHE.nuit,
+    paddingHorizontal: TAILLES.marge - 4,
+    paddingTop: 6,
+    paddingBottom: 12,
   },
-  pbIn: { height: 6, backgroundColor: T.brand },
+  hdTop: { flexDirection: 'row', alignItems: 'center' },
+  x: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  h1: {
+    flex: 1,
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: CREME,
+    textAlign: 'center',
+    marginHorizontal: 6,
+  },
+  h2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+    paddingHorizontal: 4,
+  },
+  h2Txt: { fontSize: 14, color: SECOND, paddingHorizontal: 4, flexShrink: 1 },
+  h2Ok: { fontSize: 14, fontWeight: '700', color: CREME, paddingHorizontal: 4 },
+  pb: { flexDirection: 'row', height: 4, marginTop: 12, marginHorizontal: 8 },
+  seg: { flex: 1, height: 4, borderRadius: 2 },
   resumed: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 8,
-    paddingHorizontal: 4,
+    marginTop: 10,
+    paddingHorizontal: 8,
   },
-  resumedTxt: { fontSize: 13, color: T.muted, flexShrink: 1 },
-  restart: { fontSize: 13, fontWeight: '700', color: '#07795f', marginLeft: 10 },
+  resumedTxt: { fontSize: 13, color: SECOND, flexShrink: 1 },
+  restart: { fontSize: 13, fontWeight: '700', color: CREME, marginLeft: 10 },
   ls: { flex: 1 },
-  ingBox: { backgroundColor: '#fff', borderRadius: 16, padding: 14, marginBottom: 10 },
-  ingTxt: { fontSize: 15, color: T.ink, fontWeight: '600', lineHeight: 26 },
+  ingBox: {
+    backgroundColor: CARTE,
+    borderRadius: TAILLES.rayonCarte,
+    padding: 14,
+    marginBottom: 10,
+  },
+  ingTxt: { fontSize: 15, color: CREME, fontWeight: '600', lineHeight: 26 },
   al: {
-    backgroundColor: T.brand,
-    borderRadius: 16,
+    backgroundColor: MARCHE.blanc,
+    borderRadius: TAILLES.rayonCarte,
+    borderLeftWidth: 4,
+    borderLeftColor: T.brand,
     paddingVertical: 12,
     paddingHorizontal: 14,
     marginBottom: 8,
   },
-  alTitle: { color: '#fff', fontSize: 17, fontWeight: '600' },
-  alTxt: { color: '#fff', fontSize: 14, marginTop: 2 },
+  alTitle: { color: MARCHE.noir, fontSize: 17, fontWeight: '600' },
+  alTxt: { color: MARCHE.ink, fontSize: 14, marginTop: 2 },
   rw: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 10, paddingHorizontal: 4 },
   dot: {
     width: 28,
     height: 28,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: '#CBD5E1',
+    borderColor: AVENIR,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     marginRight: 12,
   },
-  dotTxt: { fontSize: 13, color: T.faint, fontWeight: '700' },
+  dotTxt: { fontSize: 13, color: SECOND, fontWeight: '700' },
   dotDone: { backgroundColor: T.brand, borderColor: T.brand },
-  dotCook: { borderColor: T.accent },
+  dotCook: { borderColor: ORANGE },
   dotOk: { borderColor: T.brand },
-  rt: { fontSize: 15, lineHeight: 20, color: '#334155', paddingTop: 3 },
-  rtDone: { flex: 1, color: T.faint, textDecorationLine: 'line-through' },
-  rs: { fontSize: 13, color: T.faint, marginTop: 2 },
+  rt: { fontSize: 15, lineHeight: 20, color: CREME, paddingTop: 4 },
+  rtDone: { flex: 1, color: MARCHE.faint, textDecorationLine: 'line-through' },
+  rs: { fontSize: 13, color: SECOND, marginTop: 2 },
   ck: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF7EA',
-    borderRadius: 16,
+    backgroundColor: CARTE,
+    borderRadius: TAILLES.rayonCarte,
     padding: 12,
     marginVertical: 4,
   },
-  ckOk: { backgroundColor: T.brandSoft },
-  ckName: { fontSize: 15, fontWeight: '700', color: T.ink, lineHeight: 20 },
+  ckOk: { borderWidth: 1, borderColor: T.brand },
+  ckName: { fontSize: 15, fontWeight: '700', color: CREME, lineHeight: 20 },
   ckTime: {
     fontSize: 24,
     fontWeight: '600',
-    color: ORANGE,
+    color: CREME,
     marginLeft: 8,
     fontVariant: ['tabular-nums'],
   },
   ec: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: CARTE,
     borderWidth: 2,
     borderColor: T.brand,
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
     padding: 12,
     marginVertical: 4,
   },
-  mini: { flexDirection: 'row', marginTop: 6 },
+  mini: { flexDirection: 'row', marginTop: 8 },
   miniBtn: {
-    height: 32,
-    paddingHorizontal: 10,
-    borderRadius: 9,
+    height: TAILLES.boutonPetit,
+    paddingHorizontal: 14,
+    borderRadius: TAILLES.boutonPetit / 2,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#fff',
+    borderColor: CONTOUR,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 6,
+    marginRight: 8,
   },
-  miniOn: { backgroundColor: T.brand, borderColor: T.brand },
-  miniTxt: { fontSize: 13, fontWeight: '600', color: T.ink },
+  miniOn: { backgroundColor: MARCHE.blanc, borderColor: MARCHE.blanc },
+  miniTxt: { fontSize: 13, fontWeight: '600', color: CREME, textAlign: 'center' },
   nw: {
-    backgroundColor: '#fff',
+    backgroundColor: CARTE,
     borderRadius: 22,
     padding: 16,
     marginTop: 6,
@@ -935,94 +1000,124 @@ const s = StyleSheet.create({
     borderColor: T.brand,
     ...T.shadow,
   },
-  nl: { fontSize: 12, fontWeight: '600', color: '#07795f', letterSpacing: 0.5 },
-  nowTitle: {
-    fontSize: 22,
+  nl: {
+    fontSize: 12,
     fontWeight: '600',
-    lineHeight: 28,
-    color: T.ink,
-    marginTop: 6,
-    marginBottom: 6,
+    color: ORANGE,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
   },
-  nt: { fontSize: 18, fontWeight: '700', color: T.ink, marginTop: 6 },
+  nowTitle: {
+    fontFamily: SERIF,
+    fontSize: 24,
+    fontWeight: '400',
+    lineHeight: 34,
+    color: CREME,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  nt: { fontSize: 18, fontWeight: '700', color: CREME, marginTop: 6 },
   qt: {
     alignSelf: 'flex-start',
-    backgroundColor: T.brandSoft,
+    backgroundColor: AVENIR,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    marginBottom: 6,
+    marginBottom: 8,
   },
-  qtTxt: { fontSize: 14, fontWeight: '700', color: '#07795f' },
-  nd: { fontSize: 14, color: T.muted, lineHeight: 19 },
+  qtTxt: { fontSize: 14, fontWeight: '700', color: CREME },
+  nd: { fontSize: 14, color: SECOND, lineHeight: 20 },
+  ring: {
+    alignSelf: 'center',
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    borderWidth: 6,
+    borderColor: T.brand,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+    marginTop: 8,
+    marginBottom: 14,
+  },
   big: {
-    fontSize: 54,
+    fontSize: 50,
     fontWeight: '600',
     textAlign: 'center',
-    color: T.ink,
+    color: CREME,
     marginTop: 6,
     fontVariant: ['tabular-nums'],
   },
-  bar: { height: 8, backgroundColor: '#EEF1F4', borderRadius: 4, overflow: 'hidden' },
-  barIn: { height: 8, backgroundColor: T.brand },
-  over: { textAlign: 'center', color: ORANGE, fontWeight: '700', fontSize: 15, marginTop: 6 },
-  btns: { flexDirection: 'row', marginTop: 12 },
+  bar: { height: 6, backgroundColor: AVENIR, borderRadius: 3, overflow: 'hidden' },
+  barIn: { height: 6, backgroundColor: T.brand },
+  over: { textAlign: 'center', color: ORANGE, fontWeight: '700', fontSize: 15, marginTop: 8 },
+  btns: { flexDirection: 'row', marginTop: 14 },
   btn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: T.brand,
-    borderRadius: 16,
-    minHeight: 48,
+    backgroundColor: MARCHE.blanc,
+    borderRadius: TAILLES.rayonBouton,
+    height: TAILLES.bouton,
     paddingHorizontal: 16,
   },
-  btnTxt: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  btnBig: { minHeight: 54, marginTop: 12 },
-  btnBigTxt: { color: '#fff', fontSize: 18, fontWeight: '700' },
+  btnTxt: { color: MARCHE.noir, fontSize: 16, fontWeight: '700', textAlign: 'center' },
+  btnBig: { height: TAILLES.bouton, marginTop: 14 },
+  btnBigTxt: { color: MARCHE.noir, fontSize: 17, fontWeight: '700', textAlign: 'center' },
   btnSec: {
-    width: 100,
-    minHeight: 54,
-    borderRadius: 16,
-    backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.borderInput,
+    minWidth: 100,
+    height: TAILLES.bouton,
+    paddingHorizontal: 16,
+    borderRadius: TAILLES.rayonBouton,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: CONTOUR,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnSecTxt: { color: T.ink, fontSize: 16, fontWeight: '600' },
+  btnSecTxt: { color: CREME, fontSize: 16, fontWeight: '600', textAlign: 'center' },
   wait: {
-    backgroundColor: '#fff',
+    backgroundColor: CARTE,
     borderRadius: 22,
     padding: 16,
     marginTop: 6,
     marginBottom: 8,
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: T.accent,
+    borderColor: ORANGE,
     alignItems: 'stretch',
   },
   fin: { alignItems: 'center', paddingVertical: 30, paddingHorizontal: 10 },
-  finTitle: { fontSize: 28, fontWeight: '600', color: T.ink, marginBottom: 6 },
+  finTitle: {
+    fontFamily: SERIF,
+    fontSize: 28,
+    fontWeight: '600',
+    color: CREME,
+    marginBottom: 6,
+    textAlign: 'center',
+  },
   ft: {
     flexDirection: 'row',
-    paddingHorizontal: 14,
-    paddingTop: 10,
+    paddingHorizontal: TAILLES.marge,
+    paddingTop: 12,
     paddingBottom: 16,
-    backgroundColor: '#fff',
+    backgroundColor: MARCHE.nuit,
     borderTopWidth: 1,
-    borderTopColor: '#EEF1F4',
+    borderTopColor: AVENIR,
   },
   ftBtn: {
     flex: 1,
     flexDirection: 'row',
-    height: 46,
-    borderRadius: 16,
+    height: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#fff',
+    borderColor: CONTOUR,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 12,
   },
-  ftOn: { backgroundColor: T.accent, borderColor: T.accent },
-  ftOff: { borderColor: '#E5E7EB' },
-  ftTxt: { fontSize: 15, fontWeight: '600', color: T.ink },
+  ftOn: { backgroundColor: MARCHE.blanc, borderColor: MARCHE.blanc },
+  ftOff: { borderColor: AVENIR },
+  ftTxt: { fontSize: 15, fontWeight: '600', color: CREME },
 });

@@ -5,8 +5,8 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { scaleIngredients, normalizeLang } from '../../lib/menus';
-import { T } from './theme';
-import { PrimaryButton } from './ui';
+import { T, SERIF, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { IngredientThumb } from './RecipeVisual';
@@ -30,6 +30,37 @@ const lotSig = (steps) => {
   for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
   return `${steps.length}:${h}`;
 };
+
+// Mode cuisine en style Marché : fond sombre, textes crème, accents terracotta.
+const CREME = '#F7F1E8';
+const SECOND = '#D9BFAE';
+const AVENIR = '#5E4234';
+const CONTOUR = '#6E5143';
+const CARTE = '#4A2F21';
+
+// Bouton du mode cuisine : plein (fond blanc, texte noir) ou contour fin (texte crème), même hauteur.
+function CookButton({ label, icon, onPress, disabled, outline, style }) {
+  const color = outline ? CREME : MARCHE.noir;
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={disabled ? undefined : onPress}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !!disabled }}
+      style={[s.btn, outline ? s.btnOutline : s.btnFull, disabled && { opacity: 0.45 }, style]}
+    >
+      {icon ? <Ionicons name={icon} size={19} color={color} style={{ marginRight: 8 }} /> : null}
+      <Text
+        style={[s.btnTxt, { color }]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.75}
+      >
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+}
 
 const fmt = (sec) => {
   const x = Math.max(0, sec);
@@ -199,7 +230,7 @@ function StepCook({ id, persons, onClose, guided }) {
       <View style={[s.root, { alignItems: 'center', justifyContent: 'center', padding: 24 }]}>
         <Text style={s.stepTxt}>{t('cook.none')}</Text>
         <View style={{ height: 16 }} />
-        <PrimaryButton label={t('common.close')} onPress={onClose} />
+        <CookButton label={t('common.close')} onPress={onClose} style={{ alignSelf: 'stretch' }} />
       </View>
     );
   }
@@ -234,7 +265,7 @@ function StepCook({ id, persons, onClose, guided }) {
           accessibilityLabel={t('cook.quit')}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Ionicons name="close" size={26} color={T.ink} />
+          <Ionicons name="close" size={26} color={CREME} />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={s.counter}>{t('cook.stepOf', { n: cur + 1, total: steps.length })}</Text>
@@ -253,20 +284,29 @@ function StepCook({ id, persons, onClose, guided }) {
             <Ionicons
               name={showIng ? 'list' : 'list-outline'}
               size={24}
-              color={showIng ? T.brandDark : T.ink}
+              color={showIng ? T.brand : CREME}
             />
           </TouchableOpacity>
         )}
       </View>
       <View style={s.progress}>
-        <View style={[s.progressFill, { width: `${((cur + 1) / steps.length) * 100}%` }]} />
+        {steps.map((_, i) => (
+          <View
+            key={i}
+            style={[
+              s.seg,
+              i > 0 && { marginLeft: 4 },
+              { backgroundColor: i <= cur ? T.brand : AVENIR },
+            ]}
+          />
+        ))}
       </View>
 
       {others.length ? (
         <View style={s.running}>
           {others.map((k) => (
             <TouchableOpacity key={k} onPress={() => setIdx(k)} style={s.runPill}>
-              <Ionicons name="timer-outline" size={15} color={T.brandDark} />
+              <Ionicons name="timer-outline" size={15} color={T.brand} />
               <Text style={s.runTxt}>
                 {t('cook.stepShort', { n: k + 1 })} {fmt(timerOf(k).left)}
               </Text>
@@ -301,14 +341,18 @@ function StepCook({ id, persons, onClose, guided }) {
         ) : null}
         <Text style={s.stepTxt}>{isolerUnitesLatines(steps[cur], lang)}</Text>
         {tm ? (
-          <View style={[s.timer, tm.left === 0 && !tm.endAt && { backgroundColor: T.accentSoft }]}>
-            <Text style={s.timerLabel}>
-              {tm.left === 0 && !tm.endAt ? t('cook.timerDone') : t('cook.timer')}
-            </Text>
-            <Text style={s.timerVal}>{fmt(tm.left)}</Text>
-            <View style={{ flexDirection: 'row', marginTop: 12 }}>
-              <PrimaryButton
-                style={{ flex: 1, marginRight: 8, minHeight: 48 }}
+          <View style={s.timer}>
+            <View style={[s.ring, tm.left === 0 && !tm.endAt && s.ringDone]}>
+              <Text style={s.timerLabel} numberOfLines={2}>
+                {tm.left === 0 && !tm.endAt ? t('cook.timerDone') : t('cook.timer')}
+              </Text>
+              <Text style={s.timerVal} numberOfLines={1} adjustsFontSizeToFit>
+                {fmt(tm.left)}
+              </Text>
+            </View>
+            <View style={s.timerBtns}>
+              <CookButton
+                style={{ flex: 1, marginRight: 10 }}
                 icon={tm.endAt ? 'pause' : 'play'}
                 label={
                   tm.endAt
@@ -319,9 +363,9 @@ function StepCook({ id, persons, onClose, guided }) {
                 }
                 onPress={() => startPause(cur)}
               />
-              <PrimaryButton
-                soft
-                style={{ minHeight: 48 }}
+              <CookButton
+                outline
+                style={{ flex: 1 }}
                 icon="refresh"
                 label={t('cook.reset')}
                 onPress={() => reset(cur)}
@@ -332,8 +376,8 @@ function StepCook({ id, persons, onClose, guided }) {
       </ScrollView>
 
       <View style={s.nav}>
-        <PrimaryButton
-          soft
+        <CookButton
+          outline
           style={{ flex: 1, marginRight: 10 }}
           icon="chevron-back"
           label={t('cook.prev')}
@@ -341,15 +385,15 @@ function StepCook({ id, persons, onClose, guided }) {
           onPress={() => setIdx(cur - 1)}
         />
         {last ? (
-          <PrimaryButton
-            style={{ flex: 1.4 }}
+          <CookButton
+            style={{ flex: 1 }}
             icon="checkmark-circle"
             label={t('cook.done')}
             onPress={finish}
           />
         ) : (
-          <PrimaryButton
-            style={{ flex: 1.4 }}
+          <CookButton
+            style={{ flex: 1 }}
             icon="chevron-forward"
             label={t('cook.next')}
             onPress={next}
@@ -361,68 +405,107 @@ function StepCook({ id, persons, onClose, guided }) {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#fff' },
+  root: { flex: 1, backgroundColor: MARCHE.nuit },
   top: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: TAILLES.marge - 8,
     paddingTop: 8,
-    paddingBottom: 8,
+    paddingBottom: 10,
   },
-  x: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  x: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   counter: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
-    color: T.brandDark,
+    color: SECOND,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
+    textAlign: 'center',
   },
-  name: { fontSize: 14, fontWeight: '700', color: T.muted, marginTop: 2 },
-  progress: {
-    height: 6,
-    backgroundColor: T.subtle,
-    marginHorizontal: 18,
-    borderRadius: 3,
-    overflow: 'hidden',
+  name: { fontSize: 14, fontWeight: '600', color: CREME, marginTop: 3, textAlign: 'center' },
+  progress: { flexDirection: 'row', height: 4, marginHorizontal: TAILLES.marge },
+  seg: { flex: 1, height: 4, borderRadius: 2 },
+  running: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: TAILLES.marge,
+    paddingTop: 12,
   },
-  progressFill: { height: 6, backgroundColor: T.brand, borderRadius: 3 },
-  running: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 18, paddingTop: 10 },
   runPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: T.brandSoft,
-    borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    justifyContent: 'center',
+    height: TAILLES.boutonPetit,
+    backgroundColor: CARTE,
+    borderWidth: 1,
+    borderColor: CONTOUR,
+    borderRadius: TAILLES.boutonPetit / 2,
+    paddingHorizontal: 14,
     marginRight: 8,
+    marginBottom: 8,
   },
-  runTxt: { fontSize: 13, fontWeight: '600', color: T.brandDark, marginLeft: 5 },
-  body: { padding: 22, paddingBottom: 30 },
-  stepTxt: { fontSize: 27, lineHeight: 38, fontWeight: '600', color: T.ink },
-  ingBox: { backgroundColor: T.subtle, borderRadius: 16, padding: 16, marginBottom: 20 },
-  ingTxt: { fontSize: 16, color: T.ink, fontWeight: '600', lineHeight: 28 },
-  timer: {
-    backgroundColor: T.brandSoft,
-    borderRadius: 24,
-    padding: 20,
-    marginTop: 28,
-    alignItems: 'stretch',
+  runTxt: { fontSize: 13, fontWeight: '600', color: CREME, marginLeft: 6 },
+  body: { paddingHorizontal: TAILLES.marge, paddingTop: 24, paddingBottom: 30 },
+  stepTxt: { fontFamily: SERIF, fontSize: 24, lineHeight: 36, fontWeight: '400', color: CREME },
+  ingBox: {
+    backgroundColor: CARTE,
+    borderRadius: TAILLES.rayonCarte,
+    padding: 16,
+    marginBottom: 20,
   },
+  ingTxt: { fontSize: 16, color: CREME, fontWeight: '600', lineHeight: 28 },
+  timer: { marginTop: 32, alignItems: 'center' },
+  ring: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    borderWidth: 6,
+    borderColor: T.brand,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 22,
+  },
+  ringDone: { backgroundColor: 'rgba(200, 98, 59, 0.22)' },
   timerLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
-    color: T.muted,
+    color: SECOND,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
     textAlign: 'center',
   },
-  timerVal: { fontSize: 56, fontWeight: '600', color: T.ink, textAlign: 'center', marginTop: 4 },
+  timerVal: {
+    fontSize: 48,
+    fontWeight: '600',
+    color: CREME,
+    textAlign: 'center',
+    marginTop: 4,
+    fontVariant: ['tabular-nums'],
+  },
+  timerBtns: { flexDirection: 'row', alignSelf: 'stretch', marginTop: 24 },
+  btn: {
+    height: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnFull: { backgroundColor: MARCHE.blanc },
+  btnOutline: { borderWidth: 1, borderColor: CONTOUR, backgroundColor: 'transparent' },
+  btnTxt: { fontSize: 16, fontWeight: '600', textAlign: 'center' },
   nav: {
     flexDirection: 'row',
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: TAILLES.marge,
+    paddingTop: 12,
     paddingBottom: 14,
     borderTopWidth: 1,
-    borderTopColor: T.border,
+    borderTopColor: AVENIR,
+    backgroundColor: MARCHE.nuit,
   },
 });

@@ -14,7 +14,8 @@ import {
 } from '../../lib/menus/needs';
 import { cleanPrefs, QUICK_CHOICES, TREAT_CHOICES } from '../../lib/menus/profile';
 import { CUISINES } from '../../lib/menus/healthy';
-import { T } from './theme';
+import { T, TAILLES } from './theme';
+import { MARCHE } from '../ui/marche';
 import { Chip, Stepper, Field, GhostButton } from './ui';
 import useT from './useT';
 
@@ -290,7 +291,7 @@ export const BudgetCard = memo(function BudgetCard({ profile, onChange, style })
         <Switch
           value={hasBudget}
           onValueChange={(on) => onChange({ budget: on ? 80 : null })}
-          trackColor={{ true: T.brand, false: '#CBD5E1' }}
+          trackColor={{ true: MARCHE.noir, false: T.borderInput }}
           thumbColor="#fff"
         />
       </View>
@@ -436,7 +437,7 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
               <Switch
                 value={profile.kidsCantine}
                 onValueChange={(v) => onChange({ kidsCantine: v })}
-                trackColor={{ true: T.brand, false: '#CBD5E1' }}
+                trackColor={{ true: MARCHE.noir, false: T.borderInput }}
                 thumbColor="#fff"
               />
             </View>
@@ -448,7 +449,7 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
           <Switch
             value={profile.useLeftovers}
             onValueChange={(v) => onChange({ useLeftovers: v })}
-            trackColor={{ true: T.brand, false: '#CBD5E1' }}
+            trackColor={{ true: MARCHE.noir, false: T.borderInput }}
             thumbColor="#fff"
           />
         </View>
@@ -581,7 +582,7 @@ export const PrefsSwitches = memo(function PrefsSwitches({ profile, onChange }) 
           <Switch
             value={pf.balanced}
             onValueChange={(v) => set({ balanced: v })}
-            trackColor={{ true: T.brand, false: '#CBD5E1' }}
+            trackColor={{ true: MARCHE.noir, false: T.borderInput }}
             thumbColor="#fff"
           />
         </View>
@@ -591,7 +592,7 @@ export const PrefsSwitches = memo(function PrefsSwitches({ profile, onChange }) 
           <Switch
             value={pf.sides}
             onValueChange={(v) => set({ sides: v })}
-            trackColor={{ true: T.brand, false: '#CBD5E1' }}
+            trackColor={{ true: MARCHE.noir, false: T.borderInput }}
             thumbColor="#fff"
           />
         </View>
@@ -682,7 +683,7 @@ export const PrefsSection = memo(function PrefsSection({ profile, onChange }) {
 const s = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
     padding: 16,
     borderWidth: 1,
     borderColor: T.border,
@@ -701,7 +702,7 @@ const s = StyleSheet.create({
   needs: { fontSize: 15, fontWeight: '600', color: T.ink },
   gridRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 5 },
   gridHead: { width: 54, paddingRight: 4 },
-  gridHeadTxt: { fontSize: 12, fontWeight: '700', color: T.muted },
+  gridHeadTxt: { fontSize: 12, fontWeight: '600', color: T.muted },
   gridDay: { flex: 1, textAlign: 'center', fontSize: 12, fontWeight: '600', color: T.muted },
   gridCellWrap: { flex: 1, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   gridCell: {
@@ -712,6 +713,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
-  gridOn: { backgroundColor: T.brand, borderColor: T.brand },
+  gridOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
   gridOff: { backgroundColor: '#fff', borderColor: T.borderInput },
 });

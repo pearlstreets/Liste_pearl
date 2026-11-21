@@ -1,8 +1,9 @@
 import React from 'react';
 import { Animated, Platform, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { MARCHE, TAILLES } from './marche';
 
-const BRAND_DEFAULT = '#00C29B';
+const BRAND_DEFAULT = MARCHE.terra;
 
 // Accepts an optional `brand` color override to avoid a cross-file constant dependency.
 const Toast = ({ visible, message, brand = BRAND_DEFAULT }) => {
@@ -22,11 +23,12 @@ const Toast = ({ visible, message, brand = BRAND_DEFAULT }) => {
       style={{
         position: 'absolute',
         top: Platform.OS === 'ios' ? 50 : 30,
-        left: 20,
-        right: 20,
+        left: TAILLES.marge,
+        right: TAILLES.marge,
         zIndex: 9999,
-        backgroundColor: '#111',
-        borderRadius: 12,
+        backgroundColor: MARCHE.noir,
+        borderRadius: TAILLES.rayonCarte,
+        minHeight: TAILLES.boutonPetit + 4,
         paddingVertical: 10,
         paddingHorizontal: 16,
         flexDirection: 'row',
@@ -40,7 +42,9 @@ const Toast = ({ visible, message, brand = BRAND_DEFAULT }) => {
       }}
     >
       <Ionicons name="checkmark-circle" size={20} color={brand} style={{ marginRight: 8 }} />
-      <Text style={{ color: '#fff', fontWeight: '600', fontSize: 14 }}>{message}</Text>
+      <Text style={{ color: '#fff', fontWeight: '600', fontSize: 14, flexShrink: 1 }}>
+        {message}
+      </Text>
     </Animated.View>
   );
 };

@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { SectionTitle, GhostButton, PrimaryButton } from './ui';
 import Questionnaire from './Questionnaire';
 import { HouseholdSection, MealsSection, DietSection, PrefsSection } from './ProfileForms';
@@ -82,7 +82,7 @@ export default function SettingsScreen({ onClose }) {
     );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <View style={s.head}>
         <TouchableOpacity
           onPress={onClose}
@@ -143,9 +143,21 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
-  close: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 18, fontWeight: '600', color: T.ink },
-  body: { paddingHorizontal: 20, paddingBottom: 60 },
+  close: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+    flex: 1,
+    textAlign: 'center',
+  },
+  body: { paddingHorizontal: TAILLES.marge, paddingBottom: 60 },
   intro: { fontSize: 15, color: T.muted, lineHeight: 21 },
   sync: { fontSize: 15, color: T.muted, lineHeight: 21 },
 });
