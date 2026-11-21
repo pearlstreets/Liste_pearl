@@ -48,10 +48,10 @@ export function useKnownPlace(enabled = true) {
   return place;
 }
 
-/** Ouvre la fiche existante de la boutique (onglet Boutiques). */
+/** Ouvre la fiche existante de la boutique (onglet Acheter, segment Boutiques). */
 export function openShopFromMenus(navigation, shop) {
   if (!requestOpenShop(shop)) return;
   try {
-    navigation.navigate('shops');
+    navigation.navigate('acheter', { segment: 'boutiques', n: Date.now() });
   } catch {}
 }

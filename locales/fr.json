@@ -6,7 +6,11 @@
     "cart": "Panier",
     "profile": "Profil",
     "shops": "Boutiques",
-    "menus": "Menus"
+    "menus": "Menus",
+    "acheter": "Acheter"
+  },
+  "acheter": {
+    "comparer": "Comparer"
   },
   "listScreen": {
     "scan": "Scan",
@@ -23,7 +27,7 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "delete": "Supprimer",
-    "deleteTitle": "Supprimer",
+    "deleteTitle": "Supprimer ces articles ?",
     "deleteConfirm": "Supprimer",
     "deleteItem": "produit sélectionné",
     "deleteItem_one": "produit sélectionné",
@@ -61,7 +65,13 @@
     "profileFollowers": "Abonnés",
     "profileFollowing": "Abonnements",
     "profileOpenFull": "Voir le profil sur Pearl Streets",
-    "grantedAdd": "Ajouter une personne"
+    "grantedAdd": "Ajouter une personne",
+    "compareMyList": "Comparer ma liste",
+    "deleteThisItem": "Supprimer cet article",
+    "deleteThisItemConfirm": "Cet article sera retiré de votre liste.",
+    "markBought": "Marquer comme acheté",
+    "rejectRequest": "Refuser la demande",
+    "blockUser": "Bloquer cette personne"
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -91,19 +101,20 @@
     "search": "Chercher",
     "noItems": "Aucun article",
     "addFromList": "Ajoutez des produits dans Ma Liste",
-    "addFromListSub": "Puis appuyez sur « Trouver les produits exacts »",
+    "addFromListSub": "Puis appuyez sur « Comparer ma liste »",
     "clear": "Effacer",
     "addProduct": "Ajouter un produit",
-    "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur « Trouver les produits exacts » pour voir les résultats ici.",
+    "defaultProducts": "Ajoutez des articles dans Ma Liste puis appuyez sur « Comparer ma liste » pour voir les résultats ici.",
     "quantity": "quantité",
     "continueShopping": "Continuer les courses",
     "notFound": "non trouvé(s) en boutique",
     "noMatchTitle": "Aucun produit trouvé\npour votre liste",
     "noMatchSub": "Ces boutiques ne vendent pas ces articles. Vérifiez les noms ou parcourez les Boutiques.",
-    "searchToPrice": "Appuyez sur « Chercher » pour choisir vos produits et voir le prix.",
+    "searchToPrice": "Appuyez sur « Ajouter un produit » pour choisir vos produits et voir le prix.",
     "searchToPriceShop": "Recherchez un produit pour voir le prix.",
     "shopUnit": "boutique",
-    "shopUnitPlural": "boutiques"
+    "shopUnitPlural": "boutiques",
+    "clearConfirmMsg": "Effacer la comparaison en cours ? Les produits choisis seront retirés."
   },
   "searchPopup": {
     "header": "De quoi avez-vous besoin ?",
@@ -118,7 +129,8 @@
     "close": "Fermer",
     "soonAvailable": "Bientôt disponible",
     "validate": "Validé",
-    "finish": "Terminer"
+    "finish": "Terminer",
+    "addToSelection": "Ajouter à la sélection"
   },
   "camera": {
     "permissionDenied": "Permission refusée",
@@ -176,11 +188,12 @@
     "noFavProducts": "Aucun produit favori",
     "addFromProducts": "Ajoutez depuis l'onglet Produits",
     "addProductHint": "Appuyez sur le coeur d'un produit pour l'ajouter",
-    "searchPlaceholder": "Rechercher un shop...",
+    "searchPlaceholder": "Rechercher une boutique...",
     "searchProductPlaceholder": "Rechercher un produit...",
     "shops": "Boutiques",
     "products": "Produits",
-    "manageHint": "Vos boutiques et produits favoris"
+    "manageHint": "Vos boutiques et produits favoris",
+    "addFromBuy": "Ajoutez depuis l'onglet Acheter"
   },
   "profile": {
     "guestTitle": "Vous n'êtes pas connecté",
@@ -323,7 +336,9 @@
     "termsOfUse": "Conditions d'utilisation",
     "menusUnsavedTitle": "Menus non sauvegardés",
     "menusUnsavedMsg": "Vos menus n'ont pas pu être sauvegardés sur votre compte. Les effacer de cet appareil ?",
-    "menusUnsavedErase": "Effacer et me déconnecter"
+    "menusUnsavedErase": "Effacer et me déconnecter",
+    "myOrders": "Mes commandes",
+    "myOrdersHint": "Suivez et retrouvez vos commandes"
   },
   "auth": {
     "login": "Connexion",
@@ -447,7 +462,27 @@
     "errorPhone": "Numéro de téléphone invalide (5 à 16 chiffres)",
     "errorUsernameTaken": "Ce pseudo est déjà pris.",
     "passwordRuleHint": "8 caractères minimum, avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).",
-    "chooseYourLanguage": "Choisissez votre langue"
+    "chooseYourLanguage": "Choisissez votre langue",
+    "forgotTitle": "Mot de passe oublié",
+    "forgotEmailHint": "Saisissez l'adresse e-mail de votre compte. Nous vous enverrons un code de vérification.",
+    "forgotSendCode": "Recevoir le code",
+    "forgotCodeHint": "Saisissez le code reçu par e-mail à l'adresse {{email}}.",
+    "forgotCodeLabel": "Code de vérification",
+    "forgotCodePlaceholder": "Code reçu par e-mail",
+    "forgotVerifyCode": "Vérifier le code",
+    "forgotResendCode": "Renvoyer le code",
+    "forgotCodeResent": "Un nouveau code vous a été envoyé.",
+    "forgotCodeRequired": "Saisissez le code reçu par e-mail.",
+    "forgotNewPwdHint": "Choisissez votre nouveau mot de passe.",
+    "forgotSavePwd": "Enregistrer le mot de passe",
+    "forgotSuccess": "Votre mot de passe a bien été modifié. Vous pouvez vous connecter.",
+    "forgotErrorCode": "Code invalide ou expiré.",
+    "forgotErrorExpired": "Le délai est dépassé. Veuillez demander un nouveau code.",
+    "forgotErrorWeak": "Ce mot de passe n'est pas accepté. Choisissez-en un autre, plus difficile à deviner.",
+    "forgotErrorGeneric": "Une erreur est survenue. Veuillez réessayer.",
+    "forgotTooMany": "Trop de demandes. Veuillez réessayer plus tard.",
+    "forgotBackToLogin": "Retour à la connexion",
+    "forgotEmailNotFound": "Cette adresse e-mail n'est reliée à aucun compte."
   },
   "cart": {
     "today": "Aujourd'hui",
@@ -573,7 +608,15 @@
     "tipDriver": "Remercier votre livreur",
     "totalPrice": "prix",
     "qtyMinus": "moins",
-    "qtyPlus": "plus"
+    "qtyPlus": "plus",
+    "myOrders": "Mes commandes",
+    "paidByCard": "Payé par carte",
+    "byCard": "Par carte",
+    "trackMyOrder": "Suivre ma commande",
+    "orderConfirmedCollectCart": "Votre commande sera préparée pour le retrait. Suivez son statut dans Mes commandes, en haut du panier.",
+    "orderConfirmedDeliveryCart": "Un livreur va prendre en charge votre commande. Suivez son statut dans Mes commandes, en haut du panier.",
+    "noShopProductFound": "Aucun produit trouvé pour cette boutique.",
+    "searchAllProducts": "Rechercher dans tous les produits"
   },
   "orderStatus": {
     "confirmed": "Commande confirmée",
@@ -722,7 +765,8 @@
     "thanks": "Merci !",
     "saved": "Votre note a été enregistrée.",
     "yourRating": "Votre note",
-    "rateDriver": "Noter votre livreur"
+    "rateDriver": "Noter votre livreur",
+    "failed": "Votre note n'a pas pu être enregistrée. Veuillez réessayer."
   },
   "report": {
     "notReceived": "Commande non reçue",
@@ -733,7 +777,11 @@
     "title": "Signaler un problème",
     "pick": "Que s'est-il passé ?",
     "sentTitle": "Signalement envoyé",
-    "sent": "Notre support va traiter votre demande."
+    "sent": "Notre support va traiter votre demande.",
+    "answerTitle": "Réponse à votre signalement",
+    "handled": "Votre signalement a été traité",
+    "failed": "Votre signalement n'a pas pu être envoyé. Veuillez réessayer.",
+    "moreReasons": "Autres motifs…"
   },
   "stock": {
     "option": "Option",
@@ -1331,6 +1379,7 @@
       "alreadyText": "Tout est déjà dans « {{name}} ».",
       "seeList": "Voir ma liste",
       "compare": "Comparer les prix",
+      "compareList": "Comparer ma liste",
       "compareHint": "Comparez les prix réels des boutiques Pearl Streets.",
       "err": {
         "error": "Une erreur est survenue, veuillez réessayer.",
@@ -1561,7 +1610,7 @@
       "summary_many": "{{count}} articles, environ {{total}}",
       "summary_other": "{{count}} articles, environ {{total}}",
       "estimateNote": "Estimation indicative (~). Le prix réel est celui de la boutique, comparez-le ensuite.",
-      "targetList": "Ajouter à la liste",
+      "targetList": "Dans quelle liste ?",
       "defaultList": "Ma Liste",
       "activeList": "active",
       "showBasics": "Afficher les basiques du placard",
@@ -1934,10 +1983,10 @@
     "itemsSelected_one": "{{count}} article sélectionné",
     "itemsSelected_many": "{{count}} articles sélectionnés",
     "itemsSelected_other": "{{count}} articles sélectionnés",
-    "listSelected": "{{count}} produits sélectionnés",
-    "listSelected_one": "{{count}} produit sélectionné",
-    "listSelected_many": "{{count}} produits sélectionnés",
-    "listSelected_other": "{{count}} produits sélectionnés",
+    "listSelected": "{{count}} articles sélectionnés",
+    "listSelected_one": "{{count}} article sélectionné",
+    "listSelected_many": "{{count}} articles sélectionnés",
+    "listSelected_other": "{{count}} articles sélectionnés",
     "notFound": "{{count}} produits non trouvés en boutique",
     "notFound_one": "{{count}} produit non trouvé en boutique",
     "notFound_many": "{{count}} produits non trouvés en boutique",
@@ -1954,5 +2003,8 @@
     "pendingRequests_one": "{{count}} demande en attente",
     "pendingRequests_many": "{{count}} demandes en attente",
     "pendingRequests_other": "{{count}} demandes en attente"
+  },
+  "notifications": {
+    "channelOrders": "Commandes et livraisons"
   }
 }

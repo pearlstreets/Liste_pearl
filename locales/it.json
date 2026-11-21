@@ -6,7 +6,11 @@
     "cart": "Carrello",
     "profile": "Profilo",
     "shops": "Negozi",
-    "menus": "Menu"
+    "menus": "Menu",
+    "acheter": "Acquista"
+  },
+  "acheter": {
+    "comparer": "Confronta"
   },
   "listScreen": {
     "scan": "Scansionare",
@@ -23,7 +27,7 @@
     "cancel": "Annullare",
     "save": "Salvare",
     "delete": "Eliminare",
-    "deleteTitle": "Eliminare",
+    "deleteTitle": "Eliminare questi articoli?",
     "deleteConfirm": "Eliminare",
     "deleteItem": "articolo selezionato",
     "deleteItem_one": "articolo selezionato",
@@ -61,7 +65,13 @@
     "profileFollowers": "Follower",
     "profileFollowing": "Seguiti",
     "profileOpenFull": "Vedi il profilo su Pearl Streets",
-    "grantedAdd": "Aggiungi una persona"
+    "grantedAdd": "Aggiungi una persona",
+    "compareMyList": "Confronta la mia lista",
+    "deleteThisItem": "Elimina questo articolo",
+    "deleteThisItemConfirm": "Questo articolo verrà rimosso dalla sua lista.",
+    "markBought": "Segna come acquistato",
+    "rejectRequest": "Rifiuta la richiesta",
+    "blockUser": "Blocca questa persona"
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",
@@ -96,14 +106,15 @@
     "notFound": "non trovato/i in negozio",
     "noMatchTitle": "Nessun prodotto trovato\nper la Sua lista",
     "noMatchSub": "Questi negozi non vendono questi articoli. Controlli i nomi o esplori i Negozi.",
-    "searchToPrice": "Tocchi Cercare per scegliere i Suoi prodotti e vedere il prezzo.",
+    "searchToPrice": "Tocchi \"Aggiungere un prodotto\" per scegliere i Suoi prodotti e vedere il prezzo.",
     "searchToPriceShop": "Cerchi un prodotto per vedere il prezzo.",
     "shopUnit": "negozio",
     "shopUnitPlural": "negozi",
-    "defaultProducts": "Aggiunga articoli a La mia Lista, poi tocchi \"Trovare i prodotti esatti\" per vedere i risultati qui.",
+    "defaultProducts": "Aggiunga articoli a La mia Lista, poi tocchi \"Confronta la mia lista\" per vedere i risultati qui.",
     "addProduct": "Aggiungere un prodotto",
     "addFromList": "Aggiunga prodotti a La mia Lista",
-    "addFromListSub": "Poi tocchi \"Trovare i prodotti esatti\""
+    "addFromListSub": "Poi tocchi \"Confronta la mia lista\"",
+    "clearConfirmMsg": "Cancellare il confronto in corso? I prodotti scelti saranno rimossi."
   },
   "searchPopup": {
     "header": "Di cosa ha bisogno?",
@@ -118,7 +129,8 @@
     "close": "Chiudere",
     "soonAvailable": "Disponibile presto",
     "validate": "Aggiungere",
-    "finish": "Fine"
+    "finish": "Fine",
+    "addToSelection": "Aggiungi alla selezione"
   },
   "camera": {
     "permissionDenied": "Autorizzazione negata",
@@ -174,13 +186,14 @@
   "favorites": {
     "noFavorites": "Nessun negozio preferito ancora",
     "addFromProducts": "Aggiunga i Suoi negozi preferiti dalla scheda Prodotti",
-    "searchPlaceholder": "Cercare un preferito...",
+    "searchPlaceholder": "Cercare un negozio...",
     "manageHint": "I Suoi negozi e prodotti preferiti",
     "shops": "Negozi",
     "products": "Prodotti",
     "searchProductPlaceholder": "Cercare un prodotto...",
     "noFavProducts": "Nessun prodotto preferito",
-    "addProductHint": "Tocchi il cuore di un prodotto per aggiungerlo"
+    "addProductHint": "Tocchi il cuore di un prodotto per aggiungerlo",
+    "addFromBuy": "Le aggiunga dalla scheda Acquista"
   },
   "profile": {
     "guestTitle": "Non ha effettuato l'accesso",
@@ -323,7 +336,9 @@
     "termsOfUse": "Condizioni d'uso",
     "menusUnsavedTitle": "Menu non salvati",
     "menusUnsavedMsg": "Non è stato possibile salvare i Suoi menu sul Suo account. Cancellarli da questo dispositivo?",
-    "menusUnsavedErase": "Cancellare e uscire"
+    "menusUnsavedErase": "Cancellare e uscire",
+    "myOrders": "I miei ordini",
+    "myOrdersHint": "Segua e ritrovi i suoi ordini"
   },
   "auth": {
     "login": "Accedere",
@@ -447,7 +462,27 @@
     "errorPhone": "Numero di telefono non valido (da 5 a 16 cifre)",
     "errorUsernameTaken": "Questo nome utente è già in uso.",
     "passwordRuleHint": "Minimo 8 caratteri, con una minuscola, una maiuscola, un numero e un carattere speciale (@$!%*?&).",
-    "chooseYourLanguage": "Scelga la Sua lingua"
+    "chooseYourLanguage": "Scelga la Sua lingua",
+    "forgotTitle": "Password dimenticata",
+    "forgotEmailHint": "Inserisca l'indirizzo e-mail del suo account. Le invieremo un codice di verifica.",
+    "forgotSendCode": "Ricevi il codice",
+    "forgotCodeHint": "Inserisca il codice ricevuto via e-mail all'indirizzo {{email}}.",
+    "forgotCodeLabel": "Codice di verifica",
+    "forgotCodePlaceholder": "Codice ricevuto via e-mail",
+    "forgotVerifyCode": "Verifica il codice",
+    "forgotResendCode": "Invia di nuovo il codice",
+    "forgotCodeResent": "Le è stato inviato un nuovo codice.",
+    "forgotCodeRequired": "Inserisca il codice ricevuto via e-mail.",
+    "forgotNewPwdHint": "Scelga la sua nuova password.",
+    "forgotSavePwd": "Salva la password",
+    "forgotSuccess": "La sua password è stata modificata. Ora può accedere.",
+    "forgotErrorCode": "Codice non valido o scaduto.",
+    "forgotErrorExpired": "Il tempo è scaduto. Richieda un nuovo codice.",
+    "forgotErrorWeak": "Questa password non è accettata. Ne scelga un'altra, più difficile da indovinare.",
+    "forgotErrorGeneric": "Si è verificato un problema. Riprovi.",
+    "forgotTooMany": "Troppe richieste. Riprovi più tardi.",
+    "forgotBackToLogin": "Torna all'accesso",
+    "forgotEmailNotFound": "Questo indirizzo e-mail non è collegato a nessun account."
   },
   "cart": {
     "today": "Oggi",
@@ -573,7 +608,15 @@
     "tipDriver": "Ringraziare il corriere",
     "totalPrice": "prezzo",
     "qtyMinus": "meno",
-    "qtyPlus": "più"
+    "qtyPlus": "più",
+    "myOrders": "I miei ordini",
+    "paidByCard": "Pagato con carta",
+    "byCard": "Con carta",
+    "trackMyOrder": "Segui il mio ordine",
+    "orderConfirmedCollectCart": "Il suo ordine sarà preparato per il ritiro. Segua lo stato in I miei ordini, in alto nel carrello.",
+    "orderConfirmedDeliveryCart": "Un fattorino prenderà in carico il suo ordine. Segua lo stato in I miei ordini, in alto nel carrello.",
+    "noShopProductFound": "Nessun prodotto trovato per questo negozio.",
+    "searchAllProducts": "Cerca in tutti i prodotti"
   },
   "orderStatus": {
     "confirmed": "Ordine confermato",
@@ -722,7 +765,8 @@
     "thanks": "Grazie!",
     "saved": "La Sua valutazione è stata salvata.",
     "yourRating": "La Sua valutazione",
-    "rateDriver": "Valutare il corriere"
+    "rateDriver": "Valutare il corriere",
+    "failed": "Non è stato possibile salvare la Sua valutazione. La preghiamo di riprovare."
   },
   "report": {
     "notReceived": "Ordine non ricevuto",
@@ -733,7 +777,11 @@
     "title": "Segnalare un problema",
     "pick": "Cosa è successo?",
     "sentTitle": "Segnalazione inviata",
-    "sent": "Il nostro team di supporto gestirà la Sua richiesta."
+    "sent": "Il nostro team di supporto gestirà la Sua richiesta.",
+    "answerTitle": "Risposta alla sua segnalazione",
+    "handled": "La sua segnalazione è stata gestita",
+    "failed": "Non è stato possibile inviare la Sua segnalazione. La preghiamo di riprovare.",
+    "moreReasons": "Altri motivi…"
   },
   "stock": {
     "option": "Opzione",
@@ -1331,6 +1379,7 @@
       "alreadyText": "Tutto è già presente in « {{name}} ».",
       "seeList": "Vedere la mia lista",
       "compare": "Confrontare i prezzi",
+      "compareList": "Confrontare la mia lista",
       "compareHint": "Confronti i prezzi reali dei negozi Pearl Streets.",
       "err": {
         "error": "Si è verificato un errore, La preghiamo di riprovare.",
@@ -1564,7 +1613,7 @@
       "summary_many": "{{count}} articoli, circa {{total}}",
       "summary_other": "{{count}} articoli, circa {{total}}",
       "estimateNote": "Stima indicativa (~). Il prezzo reale è quello del negozio, lo confronti in seguito.",
-      "targetList": "Aggiungere alla lista",
+      "targetList": "In quale lista?",
       "defaultList": "La mia Lista",
       "activeList": "attiva",
       "showBasics": "Mostrare i prodotti di base",
@@ -1960,5 +2009,8 @@
     "pendingRequests_one": "{{count}} richiesta in sospeso",
     "pendingRequests_many": "{{count}} richieste in sospeso",
     "pendingRequests_other": "{{count}} richieste in sospeso"
+  },
+  "notifications": {
+    "channelOrders": "Ordini e consegne"
   }
 }

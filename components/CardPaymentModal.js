@@ -154,7 +154,7 @@ function CardPaymentInner({ orders, totalLabel, notices, t, onSuccess, onCancel 
       <View style={styles.sheet}>
         <View style={styles.handle} />
         <Text style={styles.title}>{tr('cart.payByCard', 'Paiement par carte')}</Text>
-        <Text style={styles.total}>{totalLabel}</Text>
+        <Text style={styles.total}>{tr('cart.subtotal', 'Sous-total produits')} · {totalLabel}</Text>
         <Text style={styles.subtotalNote}>{tr('cart.amountConfirmedByShop', 'Montant indicatif. Frais et total définitifs confirmés par la boutique.')}</Text>
         {/* Écarts de stock à la création de la course (lignes neutres). */}
         {Array.isArray(notices) && notices.length ? (
