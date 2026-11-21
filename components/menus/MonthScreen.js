@@ -28,7 +28,7 @@ import {
   weeksIndex,
   weekKind,
 } from '../../lib/menus/weeks';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { PrimaryButton, GhostButton, Field, Empty } from './ui';
 import RecipeVisual from './RecipeVisual';
 import { Sheet, SwapSheet, warningList } from './Sheets';
@@ -204,7 +204,7 @@ function RecipePicker({ onPick, onClose }) {
     }
   }, [dq, favorites, recipeById, recipes, texts, useCat, tl]);
   return (
-    <View style={[StyleSheet.absoluteFill, { backgroundColor: '#fff', zIndex: 60 }]}>
+    <View style={[StyleSheet.absoluteFill, { backgroundColor: T.bg, zIndex: 60 }]}>
       <View style={s.head}>
         <TouchableOpacity
           onPress={onClose}
@@ -215,10 +215,12 @@ function RecipePicker({ onPick, onClose }) {
         >
           <Ionicons name="chevron-back" size={26} color={T.ink} />
         </TouchableOpacity>
-        <Text style={s.title}>{t('week.takeRecipe')}</Text>
+        <Text style={s.title} numberOfLines={1}>
+          {t('week.takeRecipe')}
+        </Text>
         <View style={s.close} />
       </View>
-      <View style={{ paddingHorizontal: 18 }}>
+      <View style={{ paddingHorizontal: TAILLES.marge }}>
         <Field
           value={q}
           onChangeText={setQ}
@@ -232,7 +234,7 @@ function RecipePicker({ onPick, onClose }) {
         data={list}
         keyExtractor={(r) => r.id}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 30, flexGrow: 1 }}
+        contentContainerStyle={{ paddingHorizontal: TAILLES.marge, paddingBottom: 30, flexGrow: 1 }}
         ListHeaderComponent={!dq ? <Text style={s.hint}>{t('month.searchHint')}</Text> : null}
         ListEmptyComponent={
           dq ? (
@@ -452,7 +454,7 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <View style={s.head}>
         <TouchableOpacity
           onPress={onClose}
@@ -463,11 +465,13 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
         >
           <Ionicons name="chevron-back" size={26} color={T.ink} />
         </TouchableOpacity>
-        <Text style={s.title}>{t('nav.week')}</Text>
+        <Text style={s.title} numberOfLines={1}>
+          {t('nav.week')}
+        </Text>
         <View style={s.close} />
       </View>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 40 }}
+        contentContainerStyle={{ paddingHorizontal: TAILLES.marge, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
         <View style={s.monthRow}>
@@ -479,7 +483,9 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
           >
             <Ionicons name="chevron-back" size={22} color={T.ink} />
           </TouchableOpacity>
-          <Text style={s.monthTitle}>{monthTitle}</Text>
+          <Text style={s.monthTitle} numberOfLines={1}>
+            {monthTitle}
+          </Text>
           <TouchableOpacity
             onPress={() => go(1)}
             style={s.close}
@@ -562,7 +568,7 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
               label={t('month.prepare')}
               loading={working || busy}
               onPress={onPrepare}
-              style={s.action}
+              style={[s.action, s.actionNoir]}
             />
             {plan && plan.weekStart && plan.weekStart !== weekStart ? (
               <Text style={s.note}>{t('month.prepareNote')}</Text>
@@ -585,23 +591,50 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
-  close: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center' },
-  title: { flex: 1, textAlign: 'center', fontSize: 18, fontWeight: '600', color: T.ink },
+  close: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+  },
   monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  monthTitle: { fontSize: 20, fontWeight: '600', color: T.ink },
+  monthTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: SERIF,
+    fontSize: 22,
+    fontWeight: '600',
+    color: T.ink,
+  },
   line: { flexDirection: 'row', marginTop: 6 },
-  dayHead: { flex: 1, textAlign: 'center', fontSize: 12, fontWeight: '600', color: T.muted },
+  dayHead: {
+    flex: 1,
+    marginHorizontal: 2,
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: '600',
+    color: T.muted,
+  },
   cell: {
     flex: 1,
     marginHorizontal: 2,
-    paddingVertical: 9,
+    height: 48,
     borderRadius: 14,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    backgroundColor: T.card,
     borderWidth: 1,
     borderColor: T.border,
   },
-  cellOn: { backgroundColor: T.brand, borderColor: T.brand },
+  cellOn: { backgroundColor: T.ink, borderColor: T.ink },
   cellOut: { opacity: 0.45 },
   cellTxt: { fontSize: 14, fontWeight: '600', color: T.ink },
   dots: { flexDirection: 'row', marginTop: 5 },
@@ -616,24 +649,32 @@ const s = StyleSheet.create({
     backgroundColor: T.brand,
   },
   dayTitle: {
+    fontFamily: SERIF,
     fontSize: 20,
     fontWeight: '600',
     color: T.ink,
     marginTop: 22,
   },
   weekSub: { fontSize: 13, color: T.muted, marginTop: 2, marginBottom: 8 },
-  meal: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: T.borderInput },
+  meal: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: T.border },
   mealMain: { flexDirection: 'row', alignItems: 'center' },
   slot: { fontSize: 13, color: T.muted },
-  mealTitle: { fontSize: 16, fontWeight: '700', color: T.ink, marginTop: 2 },
+  mealTitle: { fontFamily: SERIF, fontSize: 16, fontWeight: '600', color: T.ink, marginTop: 2 },
   acts: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 },
   note: { fontSize: 13, color: T.muted, marginTop: 10, lineHeight: 19 },
   none: { fontSize: 15, color: T.muted, textAlign: 'center', paddingVertical: 20 },
-  action: { alignSelf: 'stretch', marginTop: 14 },
+  action: {
+    alignSelf: 'stretch',
+    marginTop: 14,
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+  },
+  actionNoir: { backgroundColor: T.ink },
   hint: { fontSize: 14, color: T.muted, marginVertical: 12, lineHeight: 20 },
-  sheetTitle: { fontSize: 22, fontWeight: '600', color: T.ink },
+  sheetTitle: { fontFamily: SERIF, fontSize: 22, fontWeight: '600', color: T.ink },
   sheetSub: { fontSize: 14, color: T.muted, marginTop: 4, marginBottom: 12, lineHeight: 20 },
   idea: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
-  ideaTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
+  ideaTitle: { fontFamily: SERIF, fontSize: 16, fontWeight: '600', color: T.ink },
   ideaMeta: { fontSize: 13, color: T.muted, marginTop: 3 },
 });

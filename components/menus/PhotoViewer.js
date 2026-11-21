@@ -15,7 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '../ui/IoniconsSens';
 import { containRect, shouldDismissSwipe } from '../../lib/menus/photoUrls';
-import { T } from './theme';
+import { T, TAILLES } from './theme';
 import useT from './useT';
 
 function useNaturalSize(source) {
@@ -126,7 +126,7 @@ const PhotoViewer = memo(function PhotoViewer({ source, visible, onClose }) {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={[s.close, { top: insets.top + 12, right: insets.right + 16 }]}
         >
-          <Ionicons name="close" size={26} color={T.ink} />
+          <Ionicons name="close" size={22} color={T.ink} />
         </TouchableOpacity>
       </View>
     </Modal>
@@ -140,9 +140,9 @@ const s = StyleSheet.create({
   backdrop: { backgroundColor: 'rgba(12,10,9,0.94)' },
   close: {
     position: 'absolute',
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    borderRadius: TAILLES.icone / 2,
     backgroundColor: 'rgba(255,255,255,0.95)',
     alignItems: 'center',
     justifyContent: 'center',

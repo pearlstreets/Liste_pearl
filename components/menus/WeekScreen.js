@@ -21,7 +21,7 @@ import {
   normalizeProfile,
   headsFor,
 } from '../../lib/menus';
-import { T } from './theme';
+import { T, SERIF, TAILLES as TAILLES_THEME } from './theme';
 import { PrimaryButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
 import MealCard, { isolerPrix } from './MealCard';
 import { SwapSheet, AddedSheet, GuestsSheet, guestsText } from './Sheets';
@@ -32,6 +32,9 @@ import { nearbyShops } from '../../lib/menus/pearl';
 import { usePearlShops, useKnownPlace, openShopFromMenus } from './usePearl';
 import { dayTotals, mealSide, needsSide, sideIdOf } from '../../lib/menus/sides';
 import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
+
+// Repli quand le thème est simulé (tests) : les styles se créent au chargement du module.
+const TAILLES = TAILLES_THEME || {};
 
 /** Libellé exact de la semaine ("Semaine du 2 novembre"), jamais une formule vague. */
 export function weekLabel(weekStart, lang, t) {
@@ -299,7 +302,7 @@ export default function WeekScreen({
               label={t('week.compose')}
               loading={busy}
               onPress={() => m.generate({ fresh: true })}
-              style={{ alignSelf: 'stretch' }}
+              style={[s.btn, s.btnNoir]}
             />
           }
         />
@@ -309,7 +312,7 @@ export default function WeekScreen({
           </TouchableOpacity>
         ) : null}
         {genError ? (
-          <View style={{ paddingHorizontal: 20 }}>
+          <View style={{ paddingHorizontal: TAILLES.marge }}>
             <ErrorBox
               text={t('week.error')}
               onRetry={() => m.generate({ fresh: true })}
@@ -365,6 +368,7 @@ export default function WeekScreen({
         sideIdea={idea}
         sideIdeaTitle={idea ? texts.recipeTitle(idea.id) : ''}
         onAddSide={idea ? () => m.setMealSide(meal.key, idea.id) : undefined}
+        style={badKeys.has(meal.key) ? s.cardInBad : null}
       />
     );
     if (!badKeys.has(meal.key)) return card;
@@ -421,7 +425,7 @@ export default function WeekScreen({
             icon="layers"
             label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
             onPress={onOpenBatch}
-            style={{ alignSelf: 'stretch', marginTop: 12, minHeight: 46 }}
+            style={[s.btn, { marginTop: 12 }]}
           />
         ) : null}
         {onOpenShared ? (
@@ -441,7 +445,7 @@ export default function WeekScreen({
               label={t('week.unsuitableAction', { count: unsuitable.length })}
               loading={replacing || busy}
               onPress={onReplace}
-              style={{ alignSelf: 'stretch' }}
+              style={[s.btn, s.btnNoir]}
             />
           </View>
         ) : null}
@@ -456,7 +460,7 @@ export default function WeekScreen({
               label={t('week.composeNext')}
               loading={busy}
               onPress={() => m.generate({ fresh: true, weekStart: target0.next })}
-              style={{ alignSelf: 'stretch' }}
+              style={[s.btn, s.btnNoir]}
             />
           </View>
         ) : null}
@@ -606,7 +610,7 @@ export default function WeekScreen({
           disabled={!hasMeals || !m.shopping || m.activeLines.length === 0}
           loading={sending}
           onPress={onValidate}
-          style={compact ? { minHeight: 44 } : null}
+          style={[s.btn, s.btnNoir]}
         />
         <TouchableOpacity
           onPress={onOpenShop}
@@ -638,18 +642,18 @@ const s = StyleSheet.create({
     borderWidth: 1, borderColor: T.border,
     borderRadius: 16,
     padding: 14,
-    marginBottom: 14,
+    marginTop: 12,
     gap: 10,
   },
   nextTxt: { color: T.brandDark, fontSize: 14, fontWeight: '600', lineHeight: 20 },
-  scroll: { paddingHorizontal: 18, paddingBottom: 24 },
+  scroll: { paddingHorizontal: TAILLES.marge, paddingBottom: 24 },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
-  big: { fontSize: 34, fontWeight: '600', color: T.ink, letterSpacing: -0.5 },
-  bigCompact: { fontSize: 28 },
+  big: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink },
+  bigCompact: { fontSize: 24 },
   sub: { fontSize: 14, color: T.muted, fontWeight: '600', marginTop: 2 },
   gauge: {
     backgroundColor: '#fff',
-    borderRadius: 24,
+    borderRadius: 18,
     padding: 18,
     marginTop: 16,
     borderWidth: 1,
@@ -696,18 +700,19 @@ const s = StyleSheet.create({
   },
   bannerTxt: { flex: 1, fontSize: 13, color: '#92400E', fontWeight: '600', marginHorizontal: 8 },
   bannerAct: { fontSize: 13, fontWeight: '600', color: '#92400E', textDecorationLine: 'underline' },
-  pills: { flexDirection: 'row', marginTop: 20 },
+  pills: { flexDirection: 'row', marginTop: 20, gap: 6 },
   pill: {
     flex: 1,
-    marginHorizontal: 3,
-    paddingVertical: 10,
-    borderRadius: 16,
+    height: 52,
+    borderRadius: 999,
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    justifyContent: 'center',
+    backgroundColor: T.card,
+    borderWidth: 1,
+    borderColor: T.border,
   },
-  pillOn: { backgroundColor: T.brand, borderColor: T.brand },
-  pillTxt: { fontSize: 13, fontWeight: '600', color: T.ink },
+  pillOn: { backgroundColor: T.ink, borderColor: T.ink },
+  pillTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
   pillDots: { flexDirection: 'row', marginTop: 6 },
   pillDot: {
     width: 5,
@@ -718,8 +723,8 @@ const s = StyleSheet.create({
   },
   today: {
     position: 'absolute',
-    top: 5,
-    right: 6,
+    top: 7,
+    right: 9,
     width: 6,
     height: 6,
     borderRadius: 3,
@@ -741,32 +746,52 @@ const s = StyleSheet.create({
     borderColor: T.danger,
     borderRadius: 22,
     padding: 4,
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  badHead: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, paddingTop: 4, paddingBottom: 6 },
+  cardInBad: { marginBottom: 0 },
+  badHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
   badHeadTxt: { flex: 1, marginLeft: 6, fontSize: 13, fontWeight: '600', color: T.danger },
   pillAlert: {
     position: 'absolute',
-    top: 5,
-    left: 6,
+    top: 7,
+    left: 9,
     width: 7,
     height: 7,
     borderRadius: 4,
     backgroundColor: T.danger,
   },
-  dayTitle: { fontSize: 22, fontWeight: '600', color: T.ink, marginTop: 20, marginBottom: 12 },
+  dayTitle: {
+    fontFamily: SERIF,
+    fontSize: 22,
+    fontWeight: '600',
+    color: T.ink,
+    marginTop: 20,
+    marginBottom: 12,
+  },
   dayTitleCompact: { fontSize: 18, marginTop: 10, marginBottom: 8 },
   composing: { fontSize: 13, color: T.muted, marginBottom: 8, fontWeight: '600' },
   dayNutri: { fontSize: 13, color: T.muted, marginTop: -6, marginBottom: 12, lineHeight: 18 },
   none: { fontSize: 15, color: T.muted, textAlign: 'center', paddingVertical: 24 },
   bar: {
-    paddingHorizontal: 18,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
     paddingBottom: 8,
-    backgroundColor: '#fff',
+    backgroundColor: T.bg,
     borderTopWidth: 1,
     borderTopColor: T.border,
   },
+  btn: {
+    alignSelf: 'stretch',
+    height: TAILLES.bouton,
+    minHeight: TAILLES.bouton,
+    borderRadius: TAILLES.rayonBouton,
+  },
+  btnNoir: { backgroundColor: T.ink },
   barLink: { alignItems: 'center', paddingTop: 10, paddingBottom: 2 },
   barLinkTxt: { fontSize: 14, fontWeight: '600', color: T.muted },
 });

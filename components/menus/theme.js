@@ -29,8 +29,8 @@ export const T = {
 
 // Teinte du visuel d'une recette selon son type (repli quand il n'y a pas de photo).
 export const COURSE_TINT = {
-  plat: '#E0FAF3',
-  entree: '#FFF3E0',
-  dessert: '#FCE7F3',
-  'petit-dejeuner': '#FEF9C3',
+  plat: '#F6E3D8',
+  entree: '#EFE6D2',
+  dessert: '#F3DCD3',
+  'petit-dejeuner': '#F7EBD0',
 };

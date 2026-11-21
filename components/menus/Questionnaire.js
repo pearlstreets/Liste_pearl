@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { PrimaryButton, GhostButton, Chip } from './ui';
 import {
   HouseholdModeChips,
@@ -129,20 +129,22 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <View style={s.top}>
-        {step > 0 || onClose ? (
-          <TouchableOpacity
-            onPress={goBack}
-            style={s.back}
-            accessibilityLabel={t('common.back')}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Ionicons name="chevron-back" size={24} color={T.ink} />
-          </TouchableOpacity>
-        ) : (
-          <View style={s.back} />
-        )}
+        <View style={s.side}>
+          {step > 0 || onClose ? (
+            <TouchableOpacity
+              onPress={goBack}
+              style={s.back}
+              accessibilityLabel={t('common.back')}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons name="chevron-back" size={24} color={T.ink} />
+            </TouchableOpacity>
+          ) : (
+            <View style={s.back} />
+          )}
+        </View>
         <View style={s.dots}>
           {PAGES.map((_, i) => (
             <View
@@ -151,7 +153,12 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
             />
           ))}
         </View>
-        <GhostButton label={t('onboarding.skip')} onPress={() => (last ? finish(false) : next())} />
+        <View style={[s.side, { alignItems: 'flex-end' }]}>
+          <GhostButton
+            label={t('onboarding.skip')}
+            onPress={() => (last ? finish(false) : next())}
+          />
+        </View>
       </View>
       <ScrollView
         ref={scroll}
@@ -233,11 +240,17 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 6,
   },
-  back: { width: 60, height: 44, justifyContent: 'center', paddingLeft: 6 },
+  side: { flex: 1, alignItems: 'flex-start' },
+  back: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   dots: { flexDirection: 'row', alignItems: 'center' },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: T.border, marginHorizontal: 4 },
   dotOn: { width: 26, backgroundColor: T.brand },
-  body: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 24 },
+  body: { paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: 24 },
   kicker: {
     fontSize: 13,
     fontWeight: '600',
@@ -247,14 +260,14 @@ const s = StyleSheet.create({
     textTransform: 'uppercase',
   },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
-  title: { fontSize: 28, fontWeight: '600', color: T.ink, lineHeight: 34 },
+  title: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink, lineHeight: 32 },
   text: { fontSize: 16, color: T.muted, marginTop: 8, lineHeight: 23 },
   hint: { fontSize: 13, color: T.muted, marginTop: 10, lineHeight: 18 },
   later: { fontSize: 13, color: T.faint, textAlign: 'center', marginTop: 24 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap' },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: TAILLES.rayonCarte,
     padding: 16,
     borderWidth: 1,
     borderColor: T.border,
@@ -264,12 +277,12 @@ const s = StyleSheet.create({
   cardTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
   cardHint: { fontSize: 13, color: T.muted, marginTop: 2, marginBottom: 10, lineHeight: 18 },
   footer: {
-    paddingHorizontal: 22,
+    paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
     paddingBottom: 14,
     borderTopWidth: 1,
     borderTopColor: T.border,
-    backgroundColor: '#fff',
+    backgroundColor: T.bg,
   },
   footerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 });

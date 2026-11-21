@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
-import { T } from './theme';
+import { T, SERIF, TAILLES } from './theme';
 import { Empty, GhostButton, SectionTitle } from './ui';
 import RecipeVisual from './RecipeVisual';
 import { PlanPickSheet } from './Sheets';
@@ -78,7 +78,7 @@ export default function SharedWeekScreen({ weeks, onClose }) {
   const { lang } = useMenus();
   const [pick, setPick] = useState(null);
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: T.bg }}>
       <View style={s.head}>
         <TouchableOpacity
           onPress={onClose}
@@ -88,7 +88,9 @@ export default function SharedWeekScreen({ weeks, onClose }) {
         >
           <Ionicons name="chevron-back" size={26} color={T.ink} />
         </TouchableOpacity>
-        <Text style={s.title}>{t('shared.title')}</Text>
+        <Text style={s.title} numberOfLines={1}>
+          {t('shared.title')}
+        </Text>
         <View style={s.close} />
       </View>
       {weeks.length === 0 ? (
@@ -135,14 +137,26 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
-  close: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center' },
-  title: { flex: 1, textAlign: 'center', fontSize: 18, fontWeight: '600', color: T.ink },
-  body: { paddingHorizontal: 20, paddingBottom: 60 },
-  meal: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: T.borderInput },
+  close: {
+    width: TAILLES.icone,
+    height: TAILLES.icone,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: SERIF,
+    fontSize: 20,
+    fontWeight: '600',
+    color: T.ink,
+  },
+  body: { paddingHorizontal: TAILLES.marge, paddingBottom: 60 },
+  meal: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: T.border },
   row: { flexDirection: 'row', alignItems: 'center' },
-  thumb: { width: 52, marginRight: 12, borderRadius: 16, overflow: 'hidden' },
+  thumb: { width: 52, height: 52, marginRight: 12, borderRadius: 12, overflow: 'hidden' },
   when: { fontSize: 13, color: T.muted },
-  name: { fontSize: 16, fontWeight: '700', color: T.ink, marginVertical: 2 },
+  name: { fontFamily: SERIF, fontSize: 16, fontWeight: '600', color: T.ink, marginVertical: 2 },
   actions: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 },
   note: { fontSize: 13, color: T.brandDark, fontWeight: '700', marginTop: 2 },
 });
