@@ -85,6 +85,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { openCamera } from "./utils/openCamera";
 import RepeatButton from "./components/ui/RepeatButton";
+import { MARCHE, SERIF, TAILLES } from "./components/ui/marche";
 import { PRODUCT_IMAGES, DEFAULT_PRODUCT, CATEGORY_FALLBACKS, getProductImage } from "./lib/productImages";
 import { CURRENCIES } from "./data/currencies";
 import { RATES_CACHE_MS, fetchLiveRates, getCurrencyWithLiveRate, getCachedLiveRates } from "./lib/rates";
@@ -104,14 +105,15 @@ const sousCategorie = (p) => {
 };
 
 const THEME = {
-  brand: '#1C1917', brandDark: '#1C1917', brandSoft: '#F4F4F5',
-  bg: '#FAFAF9', card: '#FFFFFF', subtle: '#F5F5F4',
-  ink: '#1C1917', muted: '#78716C', faint: '#A8A29E',
-  border: '#E7E5E4', borderInput: '#D6D3D1', danger: '#EF4444', dangerSoft: '#FEE2E2',
-  accent: '#FFB547', accentSoft: '#FFF3E0', info: '#3B82F6', infoSoft: '#DBEAFE',
+  brand: MARCHE.noir, brandDark: MARCHE.noir, brandSoft: MARCHE.subtle,
+  bg: MARCHE.bg, card: MARCHE.card, subtle: MARCHE.subtle,
+  ink: MARCHE.ink, muted: MARCHE.muted, faint: MARCHE.faint,
+  border: MARCHE.border, borderInput: MARCHE.borderInput, danger: '#EF4444', dangerSoft: '#FEE2E2',
+  accent: MARCHE.terra, accentSoft: MARCHE.terraSoft, info: '#3B82F6', infoSoft: '#DBEAFE',
+  terra: MARCHE.terra, terraDark: MARCHE.terraDark, terraSoft: MARCHE.terraSoft,
   // Cartes à contour fin, sans ombre.
-  // Ombre très douce des boutons blancs, pour qu'ils ressortent sur le fond pierre.
-  shadow: { shadowColor: '#1C1917', shadowOpacity: 0.06, shadowRadius: 10, shadowOffset: { width: 0, height: 3 }, elevation: 2 },
+  // Ombre très douce des boutons blancs, pour qu'ils ressortent sur le fond crème.
+  shadow: { shadowColor: MARCHE.ink, shadowOpacity: 0.06, shadowRadius: 10, shadowOffset: { width: 0, height: 3 }, elevation: 2 },
   shadowSm: { shadowOpacity: 0, elevation: 0 },
 };
 
@@ -232,7 +234,7 @@ const Square = ({ value, onPress }) => (
 const Radio = ({ value, onPress, style }) => {
   const Cmp = onPress ? TouchableOpacity : View;
   return (
-    <Cmp onPress={onPress} style={[styles.radioOuter, value && { borderColor: '#D6D3D1', backgroundColor: '#FFFFFF' }, style]}>
+    <Cmp onPress={onPress} style={[styles.radioOuter, value && { borderColor: '#DCC9B8', backgroundColor: '#FFFFFF' }, style]}>
       {value ? <Ionicons name="checkmark" size={14} color="#1C1917" /> : null}
     </Cmp>
   );
@@ -283,18 +285,18 @@ const lstyles = StyleSheet.create({
   scanTxt: { color: THEME.brandDark, fontWeight: '700', fontSize: 13, marginLeft: 6 },
   inputWrap: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   input: { flex: 1, height: 52, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.borderInput, ...THEME.shadowSm },
-  addBtn: { width: 52, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginLeft: 10, ...THEME.shadow },
+  addBtn: { width: 52, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginLeft: 10, ...THEME.shadow },
   toolRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
   pill: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 16, marginRight: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   pillOn: { backgroundColor: '#FFFFFF', borderColor: '#1C1917' },
-  pillOnDark: { backgroundColor: '#FFFFFF', borderColor: '#D6D3D1' },
+  pillOnDark: { backgroundColor: '#FFFFFF', borderColor: '#DCC9B8' },
   pillTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
   pillTxtOn: { color: '#1C1917' },
   delPill: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 16, backgroundColor: THEME.dangerSoft },
   delTxt: { color: THEME.danger, fontWeight: '600', fontSize: 12.5, marginLeft: 4 },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 12, paddingHorizontal: 14, marginHorizontal: 20, marginTop: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
-  checkOn: { backgroundColor: '#FFFFFF', borderColor: '#D6D3D1' },
+  checkOn: { backgroundColor: '#FFFFFF', borderColor: '#DCC9B8' },
   itemName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   itemPack: { fontSize: 12.5, color: THEME.muted, marginTop: 1 },
   itemNameCrossed: { textDecorationLine: 'line-through', color: THEME.faint, fontWeight: '600' },
@@ -311,9 +313,9 @@ const lstyles = StyleSheet.create({
   unitOptTxt: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   unitOptTxtOn: { color: '#1C1917' },
   doneBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: '#E2E6EB', alignItems: 'center', justifyContent: 'center' },
-  doneBtnOn: { backgroundColor: '#FFFFFF', borderColor: '#D6D3D1' },
+  doneBtnOn: { backgroundColor: '#FFFFFF', borderColor: '#DCC9B8' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   // zIndex/elevation : garantit que cette barre reste au-dessus de la liste
@@ -321,7 +323,7 @@ const lstyles = StyleSheet.create({
   bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10, elevation: 0, backgroundColor: THEME.card, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
   hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
   hideTxt: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
-  cta: { height: 54, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  cta: { height: 54, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   ctaTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(15,23,42,0.45)', justifyContent: 'center', paddingHorizontal: 28 },
   modalBox: { backgroundColor: THEME.card, borderRadius: 22, padding: 22 },
@@ -333,7 +335,7 @@ const lstyles = StyleSheet.create({
   modalInput: { height: 50, backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 14, fontSize: 15, color: THEME.ink, borderWidth: 1, borderColor: THEME.border },
   modalRow: { flexDirection: 'row', marginTop: 16 },
   modalCancel: { flex: 1, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.subtle, marginRight: 8 },
-  modalSave: { flex: 1, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', marginLeft: 8 },
+  modalSave: { flex: 1, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', marginLeft: 8 },
   modalCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
   modalSaveTxt: { color: '#1C1917', fontWeight: '600', fontSize: 15 },
 });
@@ -1273,7 +1275,7 @@ function ListScreen() {
                 <Text style={{ fontWeight:'700', color:THEME.muted }}>{t('listScreen.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmCreateList} activeOpacity={0.85} disabled={!newListName.trim()}
-                style={{ borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: newListName.trim() ? 1 : 0.5 }}>
+                style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: newListName.trim() ? 1 : 0.5 }}>
                 <Text style={{ fontWeight:'800', color:'#1C1917' }}>{t('listScreen.create', 'Créer')}</Text>
               </TouchableOpacity>
             </View>
@@ -1305,7 +1307,7 @@ function ListScreen() {
                 <Text style={{ fontWeight:'700', color:THEME.muted }}>{t('listScreen.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmRenameList} activeOpacity={0.85} disabled={!renameName.trim()}
-                style={{ borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: renameName.trim() ? 1 : 0.5 }}>
+                style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:14, paddingHorizontal:20, paddingVertical:10, opacity: renameName.trim() ? 1 : 0.5 }}>
                 <Text style={{ fontWeight:'800', color:'#1C1917' }}>{t('listScreen.save', 'Enregistrer')}</Text>
               </TouchableOpacity>
             </View>
@@ -1516,7 +1518,7 @@ const prodStyles = StyleSheet.create({
   productTitle: { flex: 1, fontSize: 15, fontWeight: '700', color: THEME.ink, marginRight: 10 },
   addedTag: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
   addedTagTxt: { color: THEME.brand, fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
-  searchBtn: { borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10, flexDirection: 'row', alignItems: 'center' },
+  searchBtn: { borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 10, flexDirection: 'row', alignItems: 'center' },
   searchBtnTxt: { color: '#1C1917', fontWeight: '700', fontSize: 12.5, marginLeft: 4 },
 
   picked: { marginTop: 10, padding: 12, backgroundColor: THEME.subtle, borderRadius: 16 },
@@ -1530,7 +1532,7 @@ const prodStyles = StyleSheet.create({
   pickedFav: { marginLeft: 8 },
   stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, height: 34, paddingHorizontal: 3, borderWidth: 1, borderColor: THEME.border, marginLeft: 'auto' },
   stepBtn: { width: 28, height: 28, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
-  stepBtnAdd: { width: 28, height: 28, borderRadius: 9, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  stepBtnAdd: { width: 28, height: 28, borderRadius: 9, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   stepBtnDel: { width: 28, height: 28, borderRadius: 9, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
   stepQty: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginHorizontal: 6, minWidth: 18, textAlign: 'center' },
 
@@ -1544,7 +1546,7 @@ const prodStyles = StyleSheet.create({
   grandValue: { fontSize: 15, fontWeight: '600', color: THEME.brand },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
@@ -1559,7 +1561,7 @@ const prodStyles = StyleSheet.create({
   bottomSummary: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 8 },
   bottomCount: { fontSize: 14, fontWeight: '700', color: THEME.muted },
   bottomTotal: { fontSize: 18, fontWeight: '600', color: THEME.brand },
-  cta: { marginHorizontal: 20, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  cta: { marginHorizontal: 20, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   ctaTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
 });
 
@@ -2665,7 +2667,7 @@ const ProductsScreen = () => {
                         onPress={() => setDupItems(prev => prev.map((d, i) => i === di ? {...d, add: true} : d))}
                         style={{
                           paddingHorizontal:12, paddingVertical:8, borderRadius:10,
-                          borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: dup.add ? '#FFFFFF' : '#F3F4F6'
+                          borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: dup.add ? '#FFFFFF' : '#F3F4F6'
                         }}
                       >
                         <Text style={{color: dup.add ? '#fff' : '#999', fontWeight:'700', fontSize:12}}>{t('cart.addItem')}</Text>
@@ -2708,7 +2710,7 @@ const ProductsScreen = () => {
                   navigation.navigate('cart');
                   } catch(e) {}
                 }}
-                style={{height:50, borderRadius:14, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
+                style={{height:50, borderRadius:14, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
               >
                 <Text style={{color:'#1C1917', fontWeight:'700', fontSize:16}}>{t('profile.confirm')}</Text>
               </TouchableOpacity>
@@ -2794,7 +2796,7 @@ const ProductsScreen = () => {
                           <RepeatButton
                             onPress={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
                             onLongAction={() => setPopupSelectedItems(prev => prev.map(p => p.id === si.id ? {...p, qty: (p.qty||1)+1} : p))}
-                            style={{width:24,height:24,borderRadius:12,borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF',alignItems:'center',justifyContent:'center'}}
+                            style={{width:24,height:24,borderRadius:12,borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF',alignItems:'center',justifyContent:'center'}}
                           >
                             <Ionicons name="add" size={11} color="#1C1917" />
                           </RepeatButton>
@@ -2848,7 +2850,7 @@ const ProductsScreen = () => {
                     navigation.navigate('cart');
                   } catch(e) {}
                 }}
-                style={{height:50, borderRadius:14, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
+                style={{height:50, borderRadius:14, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
               >
                 <Text style={{color:'#1C1917', fontWeight:'700', fontSize:16}}>{t('profile.confirm')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)})</Text>
               </TouchableOpacity>
@@ -2874,7 +2876,7 @@ const ProductsScreen = () => {
             <Text style={{fontSize:14, color:'#6B7280', marginTop:8, textAlign:'center'}}>{t('counts.addedToCart', { count: cartSuccessCount })}</Text>
             <TouchableOpacity
               onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart'); }}
-              style={{marginTop:20, width:'100%', height:50, borderRadius:14, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
+              style={{marginTop:20, width:'100%', height:50, borderRadius:14, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center'}}
             >
               <Text style={{color:'#1C1917', fontWeight:'700', fontSize:16}}>{t('cart.viewCart')}</Text>
             </TouchableOpacity>
@@ -2919,7 +2921,7 @@ const favStyles = StyleSheet.create({
   unitPrice: { fontSize: 11, color: THEME.faint, marginLeft: 6, fontWeight: '600' },
   favBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 });
@@ -3125,7 +3127,7 @@ const cartStyles = StyleSheet.create({
   clearBtn: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.dangerSoft, alignItems: 'center', justifyContent: 'center' },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 },
-  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  emptyCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
@@ -3137,7 +3139,7 @@ const cartStyles = StyleSheet.create({
   shopMeta: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
   check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: '#D7DCE3', alignItems: 'center', justifyContent: 'center' },
-  checkOn: { backgroundColor: '#FFFFFF', borderColor: '#D6D3D1' },
+  checkOn: { backgroundColor: '#FFFFFF', borderColor: '#DCC9B8' },
 
   productRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
   productDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
@@ -3166,7 +3168,7 @@ const cartStyles = StyleSheet.create({
   bottomCountVal: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
   bottomTotalLabel: { fontSize: 16, fontWeight: '600', color: THEME.ink },
   bottomTotalVal: { fontSize: 20, fontWeight: '600', color: THEME.brand },
-  cta: { marginTop: 12, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  cta: { marginTop: 12, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   ctaTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   ctaDisabled: { backgroundColor: THEME.faint },
 
@@ -3229,7 +3231,7 @@ const cartStyles = StyleSheet.create({
   addrBtnRow: { flexDirection: 'row', marginTop: 14, gap: 10 },
   addrCancelBtn: { flex: 1, height: 44, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
   addrCancelTxt: { color: THEME.muted, fontWeight: '700', fontSize: 14 },
-  addrSaveBtn: { flex: 1, height: 44, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  addrSaveBtn: { flex: 1, height: 44, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   addrSaveTxt: { color: '#1C1917', fontWeight: '600', fontSize: 14 },
   addrDisplay: { marginTop: 10, marginLeft: 28 },
   addrDisplayRow: { flexDirection: 'row', alignItems: 'center' },
@@ -3270,7 +3272,7 @@ const cartStyles = StyleSheet.create({
   itemsCaption: { fontSize: 12, color: THEME.faint, textAlign: 'center', marginTop: 12, fontWeight: '600' },
 
   sheetFooter: { paddingHorizontal: 20, paddingTop: 12, gap: 10 },
-  primaryBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  primaryBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint },
   primaryBtnTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   ghostBtn: { height: 46, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
@@ -3289,8 +3291,8 @@ const cartStyles = StyleSheet.create({
   pickerPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 3 },
   pickerPrice: { fontSize: 14, fontWeight: '600', color: THEME.ink },
   pickerUnit: { fontSize: 10.5, color: THEME.faint, marginLeft: 4, fontWeight: '600' },
-  pickerAddBtn: { width: 36, height: 36, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF' },
-  pickerAddPill: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', paddingHorizontal: 12, height: 36, borderRadius: 16 },
+  pickerAddBtn: { width: 36, height: 36, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF' },
+  pickerAddPill: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', paddingHorizontal: 12, height: 36, borderRadius: 16 },
   pickerAddPillTxt: { fontSize: 13, fontWeight: '700', color: '#1C1917', marginLeft: 4 },
   pickerInCart: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, paddingHorizontal: 10, height: 32, borderRadius: 10 },
   pickerInCartTxt: { fontSize: 12, fontWeight: '700', color: THEME.muted, marginLeft: 4 },
@@ -3394,7 +3396,7 @@ const OrderTracker = ({ visible, onClose, onCancel, items, total, mode, orderNo,
                 <Ionicons name={step.icon} size={18} color={i <= currentStep ? '#fff' : THEME.faint} />
               </View>
               {i < steps.length - 1 && (
-                <View style={[cartStyles.stepConnector, { borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: i < currentStep ? '#FFFFFF' : THEME.border }]} />
+                <View style={[cartStyles.stepConnector, { borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: i < currentStep ? '#FFFFFF' : THEME.border }]} />
               )}
               <View style={cartStyles.stepLabelWrap}>
                 <Text style={[cartStyles.stepLabel, i <= currentStep ? cartStyles.stepLabelOn : cartStyles.stepLabelOff]}>{step.label}</Text>
@@ -4447,7 +4449,7 @@ const CartScreen = ({ isAuth }) => {
                       {[0, 1, 2, 3].map(v => (
                         <TouchableOpacity key={v} activeOpacity={0.85} onPress={() => setDeliveryTip(v)}
                           style={{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1.5,
-                            borderColor: deliveryTip === v ? '#D6D3D1' : '#ddd',
+                            borderColor: deliveryTip === v ? '#DCC9B8' : '#ddd',
                             backgroundColor: deliveryTip === v ? '#FFFFFF' : '#fff' }}>
                           <Text style={{ fontWeight: '700', fontSize: 13, color: deliveryTip === v ? '#fff' : '#333' }}>
                             {v === 0 ? t('cart.noTip', 'Aucun') : fmtPrice(v)}
@@ -4784,7 +4786,7 @@ const CartScreen = ({ isAuth }) => {
                   </View>
                   <Text style={{ fontSize: 18, fontWeight: '800', color: THEME.ink, textAlign: 'center', marginBottom: 6 }}>{popup.title}</Text>
                   {!!popup.message && <Text style={{ fontSize: 14.5, lineHeight: 21, color: THEME.muted, textAlign: 'center', marginBottom: 20 }}>{popup.message}</Text>}
-                  <TouchableOpacity activeOpacity={0.9} onPress={() => setPopup(null)} style={{ alignSelf: 'stretch', backgroundColor: tn === TONES.info ? '#FFFFFF' : tn.c, borderWidth: tn === TONES.info ? 1 : 0, borderColor: '#D6D3D1', borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity activeOpacity={0.9} onPress={() => setPopup(null)} style={{ alignSelf: 'stretch', backgroundColor: tn === TONES.info ? '#FFFFFF' : tn.c, borderWidth: tn === TONES.info ? 1 : 0, borderColor: '#DCC9B8', borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ color: tn === TONES.info ? '#1C1917' : '#fff', fontSize: 16, fontWeight: '800' }}>{t('common.ok', 'OK')}</Text>
                   </TouchableOpacity>
                 </TouchableOpacity>
@@ -5418,7 +5420,7 @@ const shopStyles = StyleSheet.create({
   subtitle: { fontSize: 13, color: THEME.muted, marginTop: 4, fontWeight: '600' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
   emptyTxt: { fontSize: 14, color: THEME.muted, marginTop: 12, fontWeight: '600', textAlign: 'center' },
-  retryBtn: { marginTop: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', paddingHorizontal: 22, paddingVertical: 11, borderRadius: 16 },
+  retryBtn: { marginTop: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', paddingHorizontal: 22, paddingVertical: 11, borderRadius: 16 },
   retryTxt: { color: '#1C1917', fontWeight: '600' },
   card: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
   cover: { marginRight: 12 },
@@ -5439,8 +5441,8 @@ const shopStyles = StyleSheet.create({
   prodSub: { fontSize: 11, color: THEME.faint, marginTop: 1, fontWeight: '600' },
   prodPrice: { fontSize: 15, fontWeight: '600', color: THEME.brandDark, marginTop: 3 },
   prodBase: { fontSize: 12, color: THEME.faint, marginLeft: 8, marginTop: 4, textDecorationLine: 'line-through' },
-  addBtn: { width: 40, height: 40, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
-  toast: { position: 'absolute', bottom: 24, left: 24, right: 24, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
+  addBtn: { width: 40, height: 40, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
+  toast: { position: 'absolute', bottom: 24, left: 24, right: 24, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, paddingVertical: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', ...THEME.shadow },
   toastTxt: { color: '#1C1917', fontWeight: '700', marginLeft: 8, flex: 1 },
   // Barre de recherche (boutiques + produits)
   searchWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, paddingHorizontal: 12, height: 44, marginHorizontal: 16, marginBottom: 4, borderWidth: 1, borderColor: THEME.border },
@@ -5457,7 +5459,7 @@ const shopStyles = StyleSheet.create({
   pdDesc: { fontSize: 14, color: THEME.muted, marginTop: 14, lineHeight: 21, fontWeight: '500' },
   pdShopRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16 },
   pdShopTxt: { fontSize: 13, color: THEME.muted, fontWeight: '700', marginLeft: 6, flex: 1 },
-  pdAddBtn: { marginTop: 18, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  pdAddBtn: { marginTop: 18, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
   pdAddTxt: { color: '#1C1917', fontSize: 16, fontWeight: '600', marginLeft: 8 },
   // Page détail produit plein écran (façon AppUser)
   pdFull: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: THEME.bg },
@@ -5473,7 +5475,7 @@ const shopStyles = StyleSheet.create({
   pdNoteInput: { minHeight: 96, borderWidth: 1, borderColor: THEME.border, borderRadius: 16, padding: 12, fontSize: 14, color: THEME.ink, textAlignVertical: 'top', backgroundColor: THEME.card },
   pdFooter: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 12, paddingBottom: 28, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
   pdQtyBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
-  pdAddBig: { flex: 1, marginHorizontal: 10, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
+  pdAddBig: { flex: 1, marginHorizontal: 10, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 16, height: 52, alignItems: 'center', justifyContent: 'center' },
   pdAddBigTxt: { color: '#1C1917', fontSize: 16, fontWeight: '600' },
   pdAddBigOff: { opacity: 0.45 },
   // Pastilles d'options (fiche à plusieurs options)
@@ -5580,7 +5582,7 @@ const authStyles = StyleSheet.create({
   scrollBodySignup: { paddingTop: 8 },
   brandHeaderSignup: { marginBottom: 16 },
   brandLogoSignup: { width: 52, height: 52, borderRadius: 16, marginBottom: 10 },
-  brandLogo: { width: 72, height: 72, borderRadius: 24, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 16, ...THEME.shadow },
+  brandLogo: { width: 72, height: 72, borderRadius: 24, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 16, ...THEME.shadow },
   brandTitle: { fontSize: 26, fontWeight: '600', color: THEME.ink, letterSpacing: -0.5 },
   brandSubtitle: { fontSize: 13, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 19, fontWeight: '600' },
 
@@ -5604,7 +5606,7 @@ const authStyles = StyleSheet.create({
   stayTxt: { marginLeft: 10, fontSize: 14, color: '#44403C' },
 
   // Primary button
-  primaryBtn: { height: 54, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 4, ...THEME.shadow },
+  primaryBtn: { height: 54, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 4, ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint, shadowOpacity: 0, elevation: 0 },
   primaryBtnTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16 },
 
@@ -5748,7 +5750,7 @@ function WheelDatePicker({ visible, value, onCancel, onConfirm, t }) {
             <TouchableOpacity onPress={onCancel} activeOpacity={0.8} style={{ paddingHorizontal: 16, paddingVertical: 10 }}>
               <Text style={{ fontWeight: '700', color: THEME.muted }}>{t('listScreen.cancel', 'Annuler')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={confirm} activeOpacity={0.85} style={{ borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', borderRadius: 14, paddingHorizontal: 22, paddingVertical: 10 }}>
+            <TouchableOpacity onPress={confirm} activeOpacity={0.85} style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', borderRadius: 14, paddingHorizontal: 22, paddingVertical: 10 }}>
               <Text style={{ fontWeight: '800', color: '#1C1917' }}>{t('auth.confirm', 'Confirmer')}</Text>
             </TouchableOpacity>
           </View>
@@ -6319,7 +6321,7 @@ function FirstLaunchLanguage({ onDone }) {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ alignItems: 'center', paddingTop: 90, paddingBottom: 18 }}>
-        <View style={{ width: 72, height: 72, borderRadius: 22, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+        <View style={{ width: 72, height: 72, borderRadius: 22, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
           <Ionicons name="language" size={34} color="#1C1917" />
         </View>
         <Text style={{ fontSize: 23, fontWeight: '800', color: THEME.ink }}>{tFL('auth.chooseYourLanguage', 'Choose your language')}</Text>
@@ -6529,7 +6531,7 @@ const styles = StyleSheet.create({
 
   inputRow:{ flexDirection:"row", alignItems:"center", paddingHorizontal:GUTTER, marginTop:8 },
   input:{ flex:1, height:44, borderWidth:1, borderColor:"#E5E7EB", borderRadius:10, paddingHorizontal:12, fontSize:15, color:"#111" },
-  addBtn:{ width:44, height:44, borderRadius:10, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center", marginLeft:10 },
+  addBtn:{ width:44, height:44, borderRadius:10, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center", marginLeft:10 },
 
   scanPill:{ height:32, paddingHorizontal:10, borderRadius:10, borderWidth:1, borderColor:BRAND, flexDirection:"row", alignItems:"center", justifyContent:"center" },
   scanText:{ color:BRAND, fontWeight:"600", marginLeft:6, fontSize:13 },
@@ -6549,10 +6551,10 @@ const styles = StyleSheet.create({
   trashBtn:{ paddingHorizontal:8, marginLeft:8 },
 
   square:{ width:CTRL, height:CTRL, borderRadius:6, borderWidth:1, borderColor:"#CBD5E1", alignItems:"center", justifyContent:"center" },
-  squareOn:{ backgroundColor:'#FFFFFF', borderColor:'#D6D3D1' },
+  squareOn:{ backgroundColor:'#FFFFFF', borderColor:'#DCC9B8' },
 
   radioOuter:{ width:CTRL, height:CTRL, borderRadius:10, borderWidth:1, borderColor:"#CBD5E1", backgroundColor:"#fff", alignItems:"center", justifyContent:"center" },
-  radioInner:{ width:10, height:10, borderRadius:5, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF' },
+  radioInner:{ width:10, height:10, borderRadius:5, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF' },
 
   h1:{ fontSize:20, fontWeight:'600', color:"#111", marginTop:6, marginBottom:6 },
   muted:{ color:"#9AA", fontSize:15 },
@@ -6562,7 +6564,7 @@ const styles = StyleSheet.create({
   switchCenterRow:{ flexDirection:"row", alignItems:"center", justifyContent:"center", marginBottom:12 },
   switchLabel:{ fontSize:15, color:"#333", marginLeft:10 },
 
-  bottomBtn:{ height:48, borderRadius:16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center" },
+  bottomBtn:{ height:48, borderRadius:16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center" },
   bottomBtnText:{ color:"#1C1917", fontSize:16, fontWeight:"700" },
 
   modalBackdrop:{ flex:1, backgroundColor:"rgba(0,0,0,0.4)", justifyContent:"center", alignItems:"center" },
@@ -6571,7 +6573,7 @@ const styles = StyleSheet.create({
   modalInput:{ borderWidth:1, borderColor:"#DDD", borderRadius:8, padding:10, fontSize:16, marginBottom:16 },
   modalRow:{ flexDirection:"row", justifyContent:"flex-end" },
   modalBtnCancel:{ paddingVertical:10, paddingHorizontal:16, marginRight:10 },
-  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', borderRadius:8 },
+  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:8 },
   modalBtnText:{ fontSize:15, color:"#333" },
   modalBtnTextSave:{ fontSize:15, fontWeight:"700", color:"#1C1917" }
 });
@@ -6655,14 +6657,14 @@ const profStyles = StyleSheet.create({
   settingsCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm, overflow: 'hidden' },
   settingRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 11, paddingHorizontal: 14 },
   settingDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
-  settingIcon: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  settingIcon: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   settingBody: { flex: 1, marginLeft: 12, marginRight: 8 },
   settingLabel: { fontSize: 15, fontWeight: '700', color: THEME.ink },
   settingValue: { fontSize: 12.5, color: THEME.muted, marginTop: 1, fontWeight: '600' },
 
   // Driver CTA card
   driverCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: THEME.border },
-  driverIcon: { width: 44, height: 44, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  driverIcon: { width: 44, height: 44, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   driverBody: { flex: 1, marginLeft: 12, marginRight: 8 },
   driverTitle: { fontSize: 15.5, fontWeight: '600', color: THEME.ink },
   driverSub: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
@@ -6675,7 +6677,7 @@ const profStyles = StyleSheet.create({
 
   // Empty state
   empty: { backgroundColor: THEME.card, borderRadius: 16, paddingVertical: 16, paddingHorizontal: 24, alignItems: 'center', borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  emptyCircle: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  emptyCircle: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
   emptyTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
 
@@ -6683,16 +6685,16 @@ const profStyles = StyleSheet.create({
   guestWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 40 },
   guestTitle: { fontSize: 17, fontWeight: '600', color: THEME.ink, textAlign: 'center' },
   guestHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
-  guestBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
+  guestBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', marginTop: 24, ...THEME.shadow },
   guestBtnTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
   // Guest hero (design soigné) + préférences accessibles sans connexion
-  guestHero: { margin: 20, borderRadius: 22, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
+  guestHero: { margin: 20, borderRadius: 22, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', paddingVertical: 26, paddingHorizontal: 24, alignItems: 'center', ...THEME.shadow },
   guestHeroIcon: { width: 78, height: 78, borderRadius: 39, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
   guestHeroTitle: { fontSize: 20, fontWeight: '600', color: '#1C1917', textAlign: 'center', letterSpacing: -0.3 },
   guestHeroHint: { fontSize: 13, color: THEME.muted, textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },
-  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#D6D3D1', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 16, marginTop: 18 },
+  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 1, borderColor: '#DCC9B8', paddingHorizontal: 26, paddingVertical: 13, borderRadius: 16, marginTop: 18 },
   guestHeroBtnTxt: { color: THEME.brand, fontWeight: '600', fontSize: 15, marginLeft: 8 },
-  guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderWidth: 1, borderColor: '#D6D3D1', paddingHorizontal: 26, paddingVertical: 12, borderRadius: 16, marginTop: 10 },
+  guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.subtle, borderWidth: 1, borderColor: '#DCC9B8', paddingHorizontal: 26, paddingVertical: 12, borderRadius: 16, marginTop: 10 },
   guestHeroBtnAltTxt: { color: '#1C1917', fontWeight: '600', fontSize: 15, marginLeft: 8 },
   guestPrefTitle: { fontSize: 12, fontWeight: '600', color: THEME.faint, marginBottom: 10, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.6 },
 
@@ -6730,11 +6732,11 @@ const profStyles = StyleSheet.create({
   btnRow: { flexDirection: 'row', gap: 12 },
   cancelBtn: { flex: 1, height: 52, borderRadius: 16, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center' },
   cancelBtnTxt: { color: THEME.muted, fontWeight: '700', fontSize: 15 },
-  saveBtn: { flex: 1, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  saveBtn: { flex: 1, height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   saveBtnTxt: { color: '#1C1917', fontWeight: '600', fontSize: 15 },
 
   // Primary full-width button
-  primaryBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  primaryBtn: { height: 52, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   primaryBtnDisabled: { backgroundColor: THEME.faint },
   primaryBtnTxt: { color: '#1C1917', fontWeight: '600', fontSize: 16, marginLeft: 8 },
 
@@ -6751,7 +6753,7 @@ const profStyles = StyleSheet.create({
 
   // Driver info modal hero
   driverHero: { alignItems: 'center', marginBottom: 22 },
-  driverHeroIcon: { width: 72, height: 72, borderRadius: 24, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  driverHeroIcon: { width: 72, height: 72, borderRadius: 24, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
   driverHeroTitle: { fontSize: 22, fontWeight: '600', color: THEME.ink, textAlign: 'center', letterSpacing: -0.4 },
   driverHeroSub: { fontSize: 14, color: THEME.muted, marginTop: 6, textAlign: 'center', lineHeight: 20, fontWeight: '600' },
   driverTypeCard: { backgroundColor: THEME.card, borderRadius: 16, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
@@ -6771,10 +6773,10 @@ const profStyles = StyleSheet.create({
   detailInfoLabel: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
   detailInfoValue: { fontSize: 13, fontWeight: '700', color: THEME.ink, marginLeft: 6 },
   driverChip: { backgroundColor: THEME.brandSoft, borderRadius: 16, padding: 12, marginBottom: 10, flexDirection: 'row', alignItems: 'center' },
-  driverChipIcon: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  driverChipIcon: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
   driverChipName: { fontSize: 13.5, fontWeight: '600', color: THEME.ink },
   driverChipSub: { fontSize: 12, color: THEME.muted, marginTop: 1, fontWeight: '600' },
-  driverChipCall: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  driverChipCall: { width: 38, height: 38, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   costBlock: { borderTopWidth: 1, borderTopColor: THEME.border, paddingTop: 12, marginTop: 4 },
   costRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
   costLabel: { fontSize: 13, color: THEME.muted, fontWeight: '600' },
@@ -6830,11 +6832,11 @@ const profStyles = StyleSheet.create({
   addrCard: { backgroundColor: THEME.card, borderRadius: 16, borderWidth: 1, borderColor: THEME.border, padding: 14, marginBottom: 12, ...THEME.shadowSm },
   addrCardOn: { borderColor: THEME.brand, borderWidth: 2, padding: 13 },
   addrCardHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  addrTypeIcon: { width: 26, height: 26, borderRadius: 9, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  addrTypeIcon: { width: 26, height: 26, borderRadius: 9, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
   addrType: { fontSize: 14.5, fontWeight: '600', color: THEME.ink },
-  addrBadge: { borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 7, marginLeft: 8 },
+  addrBadge: { borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 7, marginLeft: 8 },
   addrBadgeTxt: { fontSize: 9.5, fontWeight: '600', color: '#1C1917', letterSpacing: 0.4, textTransform: 'uppercase' },
-  addrCheck: { width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+  addrCheck: { width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   addrName: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginBottom: 3 },
   addrText: { fontSize: 13, color: THEME.muted, fontWeight: '600', lineHeight: 19 },
   addrDivider: { height: 1, backgroundColor: THEME.border, marginVertical: 12 },
@@ -6842,7 +6844,7 @@ const profStyles = StyleSheet.create({
   addrAction: { flexDirection: 'row', alignItems: 'center' },
   addrActionTxt: { fontSize: 13.5, fontWeight: '700', color: THEME.ink, marginLeft: 7 },
   addrEmpty: { alignItems: 'center', paddingVertical: 44 },
-  addrEmptyIcon: { width: 58, height: 58, borderRadius: 16, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  addrEmptyIcon: { width: 58, height: 58, borderRadius: 16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
   addrEmptyTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted },
   addrFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 30 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
   addrTypeBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 48, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
@@ -7550,11 +7552,11 @@ function FakeProfileScreen({ onLogout, isAuth }) {
       <View style={{ marginBottom:10 }}>
         {steps.map((step, i) => (
           <View key={i} style={{ flexDirection:'row', alignItems:'center', marginBottom:6 }}>
-            <View style={{ width:24, height:24, borderRadius:12, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center' }}>
+            <View style={{ width:24, height:24, borderRadius:12, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:'center', justifyContent:'center' }}>
               <Ionicons name={step.icon} size={12} color="#1C1917" />
             </View>
             {i < steps.length - 1 && (
-              <View style={{ position:'absolute', left:11, top:24, width:2, height:6, borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF' }} />
+              <View style={{ position:'absolute', left:11, top:24, width:2, height:6, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF' }} />
             )}
             <Text style={{ fontSize:12, fontWeight:'600', color:'#111', marginLeft:8 }}>{step.label}</Text>
             <Ionicons name="checkmark" size={14} color="#27272A" style={{ marginLeft:6 }} />
@@ -7664,7 +7666,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
                 <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                   <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
                   <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '-'}</Text>
-                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                  <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                     <Text style={{ color:'#1C1917', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
@@ -8357,7 +8359,7 @@ function FakeProfileScreen({ onLogout, isAuth }) {
               <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:'#F1F3F5' }}>
                 <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
                 <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '-'}</Text>
-                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#D6D3D1', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                   <Text style={{ color:'#1C1917', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}>
