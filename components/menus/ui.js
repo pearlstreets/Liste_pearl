@@ -256,7 +256,8 @@ const s = StyleSheet.create({
   },
   btnOn: { backgroundColor: MARCHE.noir, ...T.shadowSm },
   btnSoft: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.borderInput },
-  btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  // flexShrink : le libellé reste dans la marge intérieure (réduit par adjustsFontSizeToFit) au lieu de déborder.
+  btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600', flexShrink: 1 },
   ghost: {
     height: TAILLES.boutonPetit,
     flexDirection: 'row',

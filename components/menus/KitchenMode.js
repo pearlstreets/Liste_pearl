@@ -765,7 +765,7 @@ export default function KitchenMode({ id, persons, onClose }) {
           </Text>
         </View>
         {best > 0 && plan.seqSec - best >= 60 ? (
-          <Text style={[s.h2Txt, { marginTop: 2 }]}>
+          <Text style={[s.h2Txt, { marginTop: 2, paddingHorizontal: 4 }]}>
             {t('cook.k.optimized', { opt: minutes(best), seq: minutes(plan.seqSec) })}
           </Text>
         ) : null}
@@ -898,9 +898,10 @@ const s = StyleSheet.create({
     marginTop: 6,
     paddingHorizontal: 4,
   },
-  h2Txt: { fontSize: 14, color: SECOND, paddingHorizontal: 4, flexShrink: 1 },
-  h2Ok: { fontSize: 14, fontWeight: '700', color: CREME, paddingHorizontal: 4 },
-  pb: { flexDirection: 'row', height: 4, marginTop: 12, marginHorizontal: 8 },
+  // Lignes d'infos et barre de progression alignées sur le bord de la carte du dessous.
+  h2Txt: { fontSize: 14, color: SECOND, flexShrink: 1 },
+  h2Ok: { fontSize: 14, fontWeight: '700', color: CREME, marginLeft: 8 },
+  pb: { flexDirection: 'row', height: 4, marginTop: 12, marginHorizontal: 4 },
   seg: { flex: 1, height: 4, borderRadius: 2 },
   resumed: {
     flexDirection: 'row',
