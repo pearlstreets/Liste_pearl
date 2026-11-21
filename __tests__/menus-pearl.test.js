@@ -355,8 +355,8 @@ describe('articles ajoutés : pris en compte dans l\'onglet Produits', () => {
     const r = toListItems(lines, nameOf, [], { force: true, idGen: () => 'i' });
     expect(r.items[0].matchNames).toBeUndefined();
   });
-  test('App.js ne transmet les noms français que si le nom n\'a pas changé', () => {
-    const app = fs.readFileSync(path.join(__dirname, '..', 'App.js'), 'utf8');
+  test('Ma Liste ne transmet les noms français que si le nom n\'a pas changé', () => {
+    const app = fs.readFileSync(path.join(__dirname, '..', 'screens', 'list', 'ListScreen.js'), 'utf8');
     expect(app).toMatch(/it\.matchFor === it\.name/);
   });
 });
