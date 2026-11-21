@@ -3,7 +3,6 @@ import React from "react";
 import { logoutUser, deleteAccount as apiDeleteAccount, updatePassword as apiUpdatePassword, getDocumentStatus, clearLocalUserData } from "../../services/auth";
 import { getProfile as apiGetProfile, updateProfile as apiUpdateProfile, uploadProfilePhoto } from "../../services/profile";
 import { fetchAddresses, createAddress, updateAddress, deleteAddressById, makeAddressDefault } from "../../services/addresses";
-import { LEGAL_URLS } from "../../services/config";
 import { getSecureItem, setSecureItem } from "../../services/secureStorage";
 import { isDriverMode, getDriverEarnings, canDeliver, getDriverCountry } from "../../services/delivery";
 import PaymentMethodsModal from "../../components/PaymentMethodsModal";
@@ -12,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { DeviceEventEmitter } from 'react-native';
 import Modal from '../../components/DeuxEcrans';
 import * as Location from 'expo-location';
-import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, Image, ScrollView, Platform, KeyboardAvoidingView, Linking } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, Image, ScrollView, Platform, KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -30,6 +29,7 @@ import { fetchPhotonSuggestions } from "../../lib/photon";
 import FavoritesScreen from "../shop/FavoritesScreen";
 import { formatSavedAddress } from "../cart/adresses";
 import { profStyles } from "./profStyles";
+import LegalLinks from "./LegalLinks";
 import { useCommandes } from "../cart/orders/useCommandes";
 import { ApercuCommandes, ToutesLesCommandes } from "../cart/orders/HistoriqueCommandes";
 import { DetailCommande } from "../cart/orders/DetailCommande";
@@ -40,37 +40,6 @@ const EMPTY_ADDR_FORM = {
   house_building: '', road_area_colony: '', pincode: '', city: '',
   state: '', address_type: 'home', countryFlag: 'FR', lat: null, lang: null,
 };
-
-// Pages légales publiques (politique de confidentialité, conditions d'utilisation), visibles avec ou sans compte.
-function LegalLinks() {
-  const { t } = useTranslation();
-  const ouvrir = (url) => { Linking.openURL(url).catch(() => {}); };
-  return (
-    <View style={profStyles.section}>
-      <Text style={profStyles.guestPrefTitle}>{t('profile.legalTitle', 'Informations légales')}</Text>
-      <View style={profStyles.settingsCard}>
-        <TouchableOpacity activeOpacity={0.8} accessibilityRole="link" onPress={() => ouvrir(LEGAL_URLS.privacy)} style={[profStyles.settingRow, profStyles.settingDivider]}>
-          <View style={profStyles.settingIcon}>
-            <Ionicons name="shield-checkmark-outline" size={19} color="#1C1917" />
-          </View>
-          <View style={profStyles.settingBody}>
-            <Text style={profStyles.settingLabel}>{t('profile.privacyPolicy', 'Politique de confidentialité')}</Text>
-          </View>
-          <Ionicons name="open-outline" size={16} color={THEME.faint} />
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} accessibilityRole="link" onPress={() => ouvrir(LEGAL_URLS.terms)} style={profStyles.settingRow}>
-          <View style={profStyles.settingIcon}>
-            <Ionicons name="document-text-outline" size={19} color="#1C1917" />
-          </View>
-          <View style={profStyles.settingBody}>
-            <Text style={profStyles.settingLabel}>{t('profile.termsOfUse', "Conditions d'utilisation")}</Text>
-          </View>
-          <Ionicons name="open-outline" size={16} color={THEME.faint} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
 
 export default function FakeProfileScreen({ onLogout, isAuth }) {
   const { t, i18n: i18nInstance } = useTranslation();

@@ -92,7 +92,7 @@ describe('interpolations des phrases', () => {
 
   test('tout le depot : toutes les variables fournies', () => {
     const tous = [
-      ...['components', 'services', 'utils', 'lib', 'screens'].flatMap((d) => fichiers(path.join(ROOT, d))),
+      ...['components', 'services', 'utils', 'lib', 'screens', 'app'].flatMap((d) => fichiers(path.join(ROOT, d))),
       path.join(ROOT, 'App.js'),
     ];
     expect(tous.flatMap(controler)).toEqual([]);
