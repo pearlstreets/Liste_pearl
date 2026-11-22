@@ -48,8 +48,9 @@ export const lstyles = StyleSheet.create({
   emptyHint: { fontSize: 13.5, color: THEME.muted, textAlign: 'center', marginTop: 6, lineHeight: 19 },
   // zIndex/elevation : garantit que cette barre reste au-dessus de la liste
   // réordonnable, qui crée son propre plan (gesture-handler).
-  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10, elevation: 0, backgroundColor: THEME.card, paddingHorizontal: TAILLES.marge, paddingTop: 12, paddingBottom: 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
-  hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  bottomWrap: { position: 'absolute', left: 12, right: 12, bottom: 12, zIndex: 10, elevation: 0, backgroundColor: THEME.card, paddingHorizontal: TAILLES.marge, paddingVertical: 14, borderRadius: 24, borderWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  hideRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  hideRowAvecBouton: { marginBottom: 10 },
   hideTxt: { fontSize: 13, color: THEME.muted, marginLeft: 8, fontWeight: '600' },
   cta: { height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   ctaTxt: { color: MARCHE.noir, fontWeight: '600', fontSize: 16, marginLeft: 8 },
