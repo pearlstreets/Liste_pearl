@@ -94,9 +94,9 @@ export default function MainNavigator({ onLogout, isAuth }) {
       })}
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="acheter" component={AcheterScreen} options={{ headerShown: false }} />
       <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8 } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="acheter" component={AcheterScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="products" component={AncienProduits} options={CACHE} />
       <Tab.Screen name="shops" component={AncienneBoutiques} options={CACHE} />

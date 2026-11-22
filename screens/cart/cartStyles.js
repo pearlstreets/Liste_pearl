@@ -50,7 +50,7 @@ export const cartStyles = StyleSheet.create({
   subtotalLabel: { fontSize: 12.5, color: THEME.muted, fontWeight: '600' },
   subtotalValue: { fontSize: 15, fontWeight: '600', color: THEME.brand },
 
-  bottomWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: THEME.card, paddingHorizontal: TAILLES.marge, paddingTop: 14, paddingBottom: Platform.OS === 'ios' ? 28 : 16, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderTopWidth: 1, borderColor: THEME.border, ...THEME.shadow },
+  bottomWrap: { position: 'absolute', left: 12, right: 12, bottom: 12, backgroundColor: THEME.card, paddingHorizontal: TAILLES.marge, paddingVertical: 14, borderRadius: 24, borderWidth: 1, borderColor: THEME.border, ...THEME.shadow },
   bottomRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   bottomCount: { fontSize: 13.5, fontWeight: '700', color: THEME.muted },
   bottomCountVal: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },

@@ -859,7 +859,7 @@ export default function ListScreen() {
         <Pressable
           onPress={() => setHideCrossed(v => !v)}
           hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
-          style={lstyles.hideRow}
+          style={[lstyles.hideRow, itemsToSend.length > 0 && lstyles.hideRowAvecBouton]}
           accessibilityRole="switch"
           accessibilityState={{ checked: hideCrossed }}
           accessibilityLabel={t('listScreen.hideStriked')}
