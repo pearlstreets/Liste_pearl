@@ -1197,6 +1197,7 @@
       }
     },
     "slot": {
+      "matin": "Manhã",
       "midi": "Almoço",
       "soir": "Jantar"
     },
@@ -1255,6 +1256,8 @@
       "weekdays": "Só dias úteis",
       "cantine": "Cantina ou refeição fora",
       "cantineHint": "Os almoços dos dias úteis não estão previstos",
+      "breakfast": "Pequeno-almoço",
+      "breakfastHint": "Uma refeição de manhã além do almoço e do jantar, ajustável dia a dia",
       "leftovers": "Usar sobras",
       "leftoversHint": "Um prato cozinhado a dobrar serve para outra refeição"
     },

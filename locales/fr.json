@@ -1197,6 +1197,7 @@
       }
     },
     "slot": {
+      "matin": "Matin",
       "midi": "Midi",
       "soir": "Soir"
     },
@@ -1255,6 +1256,8 @@
       "weekdays": "Semaine seulement",
       "cantine": "Cantine ou repas pris dehors",
       "cantineHint": "Les midis de semaine ne sont pas prévus",
+      "breakfast": "Petit-déjeuner",
+      "breakfastHint": "Un repas le matin en plus du midi et du soir, à régler jour par jour",
       "leftovers": "Utiliser les restes",
       "leftoversHint": "Un plat cuisiné en double sert pour un deuxième repas"
     },

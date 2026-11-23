@@ -374,16 +374,29 @@ export const HouseholdSection = memo(function HouseholdSection({ profile, onChan
 
 export const MealsSection = memo(function MealsSection({ profile, onChange }) {
   const t = useT();
+  // petit-déjeuner (créneau matin) : gardé tel quel par les choix rapides, qui ne règlent que midi et soir
+  const matinOn = [0, 1, 2, 3, 4, 5, 6].some((d) => !!profile.slots[`${d}-matin`]);
   const setSlots = (fn) => {
     const slots = {};
-    for (let d = 0; d < 7; d++)
+    for (let d = 0; d < 7; d++) {
+      if (profile.slots[`${d}-matin`]) slots[`${d}-matin`] = true;
       for (const sl of ['midi', 'soir']) slots[`${d}-${sl}`] = !!fn(d, sl);
+    }
+    onChange({ slots });
+  };
+  const setMatin = (v) => {
+    const slots = { ...profile.slots };
+    for (let d = 0; d < 7; d++) {
+      if (v) slots[`${d}-matin`] = true;
+      else delete slots[`${d}-matin`];
+    }
     onChange({ slots });
   };
   const toggle = (k) => onChange({ slots: { ...profile.slots, [k]: !profile.slots[k] } });
-  const all = Object.values(profile.slots).every(Boolean);
-  const soirOnly = Object.entries(profile.slots).every(([k, v]) => (k.endsWith('soir') ? v : !v));
-  const weekdays = Object.entries(profile.slots).every(([k, v]) => (Number(k[0]) <= 4 ? v : !v));
+  const mainSlots = Object.entries(profile.slots).filter(([k]) => !k.endsWith('matin'));
+  const all = mainSlots.every(([, v]) => v);
+  const soirOnly = mainSlots.every(([k, v]) => (k.endsWith('soir') ? v : !v));
+  const weekdays = mainSlots.every(([k, v]) => (Number(k[0]) <= 4 ? v : !v));
   return (
     <View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -410,10 +423,15 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
             </Text>
           ))}
         </View>
-        {['midi', 'soir'].map((sl) => (
+        {(matinOn ? ['matin', 'midi', 'soir'] : ['midi', 'soir']).map((sl) => (
           <View key={sl} style={s.gridRow}>
             <View style={s.gridHead}>
-              <Text style={s.gridHeadTxt} numberOfLines={1}>
+              <Text
+                style={s.gridHeadTxt}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
+              >
                 {t(`slot.${sl}`)}
               </Text>
             </View>
@@ -453,6 +471,16 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
             <View style={s.sep} />
           </>
         ) : null}
+        <View style={s.row}>
+          <RowLabel title={t('meals.breakfast')} hint={t('meals.breakfastHint')} />
+          <Switch
+            value={matinOn}
+            onValueChange={setMatin}
+            trackColor={{ true: MARCHE.noir, false: T.borderInput }}
+            thumbColor="#fff"
+          />
+        </View>
+        <View style={s.sep} />
         <View style={s.row}>
           <RowLabel title={t('meals.leftovers')} hint={t('meals.leftoversHint')} />
           <Switch

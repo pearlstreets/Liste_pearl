@@ -1193,6 +1193,7 @@
       }
     },
     "slot": {
+      "matin": "早餐",
       "midi": "午餐",
       "soir": "晚餐"
     },
@@ -1251,6 +1252,8 @@
       "weekdays": "仅工作日",
       "cantine": "食堂或外出用餐",
       "cantineHint": "工作日午餐不安排",
+      "breakfast": "早餐",
+      "breakfastHint": "在午餐和晚餐之外增加早餐，可按天设置",
       "leftovers": "使用剩菜",
       "leftoversHint": "多做一份可吃两餐"
     },

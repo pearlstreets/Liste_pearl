@@ -1195,6 +1195,7 @@
       }
     },
     "slot": {
+      "matin": "Frukost",
       "midi": "Lunch",
       "soir": "Middag"
     },
@@ -1253,6 +1254,8 @@
       "weekdays": "Bara vardagar",
       "cantine": "Skolmat eller äta ute",
       "cantineHint": "Vardagsluncher planeras inte",
+      "breakfast": "Frukost",
+      "breakfastHint": "En måltid på morgonen utöver lunch och middag, kan ställas in dag för dag",
       "leftovers": "Använd rester",
       "leftoversHint": "En rätt lagad dubbelt räcker till en måltid till"
     },

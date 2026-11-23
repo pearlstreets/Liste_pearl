@@ -17,11 +17,12 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 import { setGenSource, resetGenSource } from '../lib/menus/genSource';
 import { getCatalog, getRecipes, getIngredients, resetMenusCache } from '../lib/menus/recipes';
-import { generatePlan } from '../lib/menus/planner';
+import { generatePlan, swapMeal, slotIdeas, mealsByDay } from '../lib/menus/planner';
 import { mealTraits, balancePenalty, isTreat, BASE_CAP } from '../lib/menus/variety';
 import { healthOf, cuisineOf, isFried } from '../lib/menus/healthy';
 import {
   normalizeProfile,
+  enabledSlots,
   cleanPrefs,
   defaultPrefs,
   prefsActive,
@@ -485,5 +486,128 @@ describe('goûts et frigo : la semaine les suit', () => {
     }
     expect(avec).toBeLessThan(21); // aimé ne veut pas dire à chaque repas
     expect(avec).toBeGreaterThan(sans);
+  });
+});
+
+describe('petit-déjeuner au choix (créneau matin)', () => {
+  const avecMatin = (extra = {}) => {
+    const slots = {};
+    for (let d = 0; d < 7; d++) {
+      slots[`${d}-matin`] = true;
+      slots[`${d}-midi`] = true;
+      slots[`${d}-soir`] = true;
+    }
+    return { adults: 2, slots, ...extra };
+  };
+  const isBreakfast = (id) => !!rec(id) && rec(id).course === 'petit-dejeuner';
+
+  test('profil sans matin : mêmes créneaux qu avant (midi et soir seulement)', () => {
+    for (const seed of [1, 2]) {
+      const p = plan({ adults: 2 }, seed);
+      expect(p.meals).toHaveLength(14);
+      expect(p.meals.every((m) => m.slot === 'midi' || m.slot === 'soir')).toBe(true);
+      const keys = [];
+      for (let d = 0; d < 7; d++) keys.push(`${d}-midi`, `${d}-soir`);
+      expect(p.meals.map((m) => m.key)).toEqual(keys);
+      // clés matin éteintes : rien ne change
+      const off = { adults: 2, slots: { ...avecMatin().slots } };
+      for (let d = 0; d < 7; d++) off.slots[`${d}-matin`] = false;
+      expect(plan(off, seed).meals.map((m) => [m.key, m.recipeId])).toEqual(
+        p.meals.map((m) => [m.key, m.recipeId])
+      );
+    }
+  });
+
+  test('avec matin : 7 petits-déjeuners, recettes petit-déjeuner seulement, aucun reste le matin', () => {
+    for (const seed of [1, 2, 3]) {
+      const p = plan(avecMatin(), seed);
+      const matin = p.meals.filter((m) => m.slot === 'matin');
+      expect(matin).toHaveLength(7);
+      expect(matin.every((m) => m.recipeId && isBreakfast(m.recipeId))).toBe(true);
+      expect(matin.every((m) => !m.leftoverOf)).toBe(true);
+      expect(p.meals.some((m) => m.leftoverOf && m.leftoverOf.endsWith('-matin'))).toBe(false);
+      // ordre matin, midi, soir
+      expect(p.meals.slice(0, 3).map((m) => m.slot)).toEqual(['matin', 'midi', 'soir']);
+      // jamais de petit-déjeuner à midi ou le soir
+      const plats = p.meals.filter((m) => m.slot !== 'matin' && m.recipeId);
+      expect(plats.some((m) => isBreakfast(m.recipeId))).toBe(false);
+      // les plats du midi et du soir restent ceux du plan sans petit-déjeuner
+      const sans = plan({ adults: 2 }, seed);
+      expect(plats.length).toBeGreaterThan(0);
+      expect(p.meals.filter((m) => m.slot !== 'matin').map((m) => m.recipeId)).toEqual(
+        sans.meals.map((m) => m.recipeId)
+      );
+    }
+  });
+
+  test('changer un petit-déjeuner propose un autre petit-déjeuner', () => {
+    const profile = avecMatin();
+    const p = plan(profile, 4);
+    const ideas = slotIdeas({
+      plan: p,
+      mealKey: '2-matin',
+      recipes: cat,
+      ingredients: ings,
+      profile,
+      seed: 1,
+    });
+    expect(ideas.length).toBeGreaterThan(0);
+    expect(ideas.every((r) => r.course === 'petit-dejeuner')).toBe(true);
+    const sw = swapMeal({ plan: p, mealKey: '2-matin', recipes: cat, ingredients: ings, profile });
+    const m = sw.meals.find((x) => x.key === '2-matin');
+    expect(isBreakfast(m.recipeId)).toBe(true);
+    expect(m.recipeId).not.toBe(p.meals.find((x) => x.key === '2-matin').recipeId);
+  });
+
+  test('nutrition et affichage : le matin compte, part du matin plus petite', () => {
+    const profile = avecMatin({
+      members: [FEMME, HOMME],
+    });
+    const p = plan(profile, 6);
+    const w = weekTargets(p, cat, profile);
+    const d0 = w.days[0].meals;
+    expect(d0.map((m) => m.slot)).toEqual(['matin', 'midi', 'soir']);
+    expect(w.hasTargets).toBe(true);
+    expect(d0[0].members[0].targetKcal).toBeLessThan(d0[1].members[0].targetKcal);
+    const days = mealsByDay(p);
+    expect(days[0].matin && days[0].matin.slot).toBe('matin');
+  });
+
+  test('entrées abîmées : jamais d exception, plan sans matin toujours valide', () => {
+    expect(() =>
+      normalizeProfile({ slots: { '0-matin': 'oui', '9-matin': true, x: 1 } })
+    ).not.toThrow();
+    expect(normalizeProfile({ slots: { '0-matin': 'oui' } }).slots['0-matin']).toBeUndefined();
+    expect(normalizeProfile({ slots: { '3-matin': true } }).slots['3-matin']).toBe(true);
+    expect(enabledSlots({ slots: { '3-matin': true, '3-soir': true } }).map((s) => s.key)).toEqual([
+      '3-matin',
+      '3-soir',
+    ]);
+    expect(() =>
+      mealsByDay({ meals: [null, { day: 1, slot: 'matin' }, { day: 'x' }] })
+    ).not.toThrow();
+    // ancien plan sauvegardé (midi et soir) changé avec un profil qui a le matin : rien ne casse
+    const ancien = plan({ adults: 2 }, 3);
+    const sw = swapMeal({
+      plan: ancien,
+      mealKey: '1-soir',
+      recipes: cat,
+      ingredients: ings,
+      profile: avecMatin(),
+    });
+    expect(Array.isArray(sw.meals)).toBe(true);
+    expect(
+      sw.meals
+        .filter((m) => m.slot === 'matin')
+        .every((m) => !m.recipeId || isBreakfast(m.recipeId))
+    ).toBe(true);
+    const sans = swapMeal({
+      plan: ancien,
+      mealKey: '1-soir',
+      recipes: cat,
+      ingredients: ings,
+      profile: { adults: 2 },
+    });
+    expect(sans.meals.some((m) => m.slot === 'matin')).toBe(false);
   });
 });

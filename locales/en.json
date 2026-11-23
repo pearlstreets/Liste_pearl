@@ -1195,6 +1195,7 @@
       }
     },
     "slot": {
+      "matin": "Breakfast",
       "midi": "Lunch",
       "soir": "Dinner"
     },
@@ -1253,6 +1254,8 @@
       "weekdays": "Weekdays only",
       "cantine": "Canteen or meals eaten out",
       "cantineHint": "Weekday lunches not planned",
+      "breakfast": "Breakfast",
+      "breakfastHint": "A morning meal on top of lunch and dinner, adjustable day by day",
       "leftovers": "Use leftovers",
       "leftoversHint": "A dish cooked as a double portion serves for a second meal"
     },

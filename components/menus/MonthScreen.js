@@ -18,6 +18,7 @@ import {
   buildSearchIndex,
   catalogActive,
   resultRecipes,
+  slotRank,
 } from '../../lib/menus';
 import {
   parseISO,
@@ -40,7 +41,7 @@ import { weekLabel } from './WeekScreen';
 // « Dienstag, 3. November » en allemand, « Tuesday, November 3 » en anglais).
 const capFirst = (s) => (typeof s === 'string' && s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
-const SLOTS = ['midi', 'soir'];
+const SLOTS = ['matin', 'midi', 'soir'];
 const HIT = { top: 10, bottom: 10, left: 10, right: 10 };
 
 /** Titre d'un repas du plan : recette, « Libre », ou rien de prévu. Ne lève pas. */
@@ -92,8 +93,8 @@ export const AddToWeekSheet = memo(function AddToWeekSheet({ recipe, onClose, on
   const meals = useMemo(
     () =>
       ((plan && plan.meals) || [])
-        .filter((x) => x && /^[0-6]-(midi|soir)$/.test(String(x.key)))
-        .sort((a, b) => a.day - b.day || (a.slot === b.slot ? 0 : a.slot === 'midi' ? -1 : 1)),
+        .filter((x) => x && /^[0-6]-(matin|midi|soir)$/.test(String(x.key)))
+        .sort((a, b) => a.day - b.day || slotRank(a.slot) - slotRank(b.slot)),
     [plan]
   );
   const pick = (meal) =>
@@ -279,7 +280,7 @@ const Cell = memo(function Cell({ iso, date, inMonth, selected, today, count, on
     >
       <Text style={[s.cellTxt, selected && { color: '#fff' }]}>{date}</Text>
       <View style={s.dots}>
-        {[0, 1].map((i) => (
+        {(count > 2 ? [0, 1, 2] : [0, 1]).map((i) => (
           <View
             key={i}
             style={[
@@ -318,7 +319,7 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
 
   const index = useMemo(() => weeksIndex(plan, history), [plan, history]);
   const grid = useMemo(() => monthGrid(cursor.year, cursor.month), [cursor]);
-  // repas de chaque semaine affichée : { lundi -> 7 jours { midi, soir } }
+  // repas de chaque semaine affichée : { lundi -> 7 jours { matin, midi, soir } }
   const daysOf = useMemo(() => {
     const out = new Map();
     for (const w of grid) {
@@ -534,7 +535,8 @@ export default function MonthScreen({ onClose, onOpenRecipe, onOpenWeek }) {
 
         {known ? (
           <>
-            {SLOTS.map(renderMeal)}
+            {/* petit-déjeuner affiché seulement s'il est au menu de ce jour */}
+            {SLOTS.filter((k) => k !== 'matin' || (dayMeals && dayMeals.matin)).map(renderMeal)}
             {kind === 'past' ? <Text style={s.note}>{t('month.past')}</Text> : null}
           </>
         ) : (

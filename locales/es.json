@@ -1197,6 +1197,7 @@
       }
     },
     "slot": {
+      "matin": "Mañana",
       "midi": "Mediodía",
       "soir": "Noche"
     },
@@ -1255,6 +1256,8 @@
       "weekdays": "Solo entre semana",
       "cantine": "Comedor o comidas fuera",
       "cantineHint": "Las comidas de mediodía entre semana no están previstas",
+      "breakfast": "Desayuno",
+      "breakfastHint": "Una comida por la mañana además del almuerzo y la cena, ajustable día a día",
       "leftovers": "Aprovechar sobras",
       "leftoversHint": "Un plato cocinado doble sirve para una segunda comida"
     },

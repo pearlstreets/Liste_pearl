@@ -1195,6 +1195,7 @@
       }
     },
     "slot": {
+      "matin": "Morgen",
       "midi": "Mittag",
       "soir": "Abend"
     },
@@ -1253,6 +1254,8 @@
       "weekdays": "Nur an Wochentagen",
       "cantine": "Kantine oder außer Haus",
       "cantineHint": "Die Mittagsmahlzeiten an Wochentagen sind nicht eingeplant",
+      "breakfast": "Frühstück",
+      "breakfastHint": "Eine Mahlzeit am Morgen zusätzlich zu Mittag- und Abendessen, Tag für Tag einstellbar",
       "leftovers": "Reste verwenden",
       "leftoversHint": "Ein Gericht, das doppelt gekocht wird, dient als zweites Mahl"
     },

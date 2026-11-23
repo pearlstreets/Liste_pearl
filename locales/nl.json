@@ -1195,6 +1195,7 @@
       }
     },
     "slot": {
+      "matin": "Ochtend",
       "midi": "Middag",
       "soir": "Avond"
     },
@@ -1253,6 +1254,8 @@
       "weekdays": "Alleen weekdagen",
       "cantine": "Kantine of buitenshuis gegeten",
       "cantineHint": "Middagmaaltijden op werkdagen zijn niet gepland",
+      "breakfast": "Ontbijt",
+      "breakfastHint": "Een maaltijd in de ochtend naast lunch en diner, per dag in te stellen",
       "leftovers": "Restjes gebruiken",
       "leftoversHint": "Een dubbele portie wordt gebruikt voor een tweede maaltijd"
     },

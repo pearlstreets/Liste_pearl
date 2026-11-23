@@ -1197,6 +1197,7 @@
       }
     },
     "slot": {
+      "matin": "Colazione",
       "midi": "Pranzo",
       "soir": "Cena"
     },
@@ -1255,6 +1256,8 @@
       "weekdays": "Solo giorni feriali",
       "cantine": "Mensa o pasti fuori casa",
       "cantineHint": "I pranzi nei giorni feriali non sono previsti",
+      "breakfast": "Colazione",
+      "breakfastHint": "Un pasto al mattino oltre a pranzo e cena, regolabile giorno per giorno",
       "leftovers": "Usare gli avanzi",
       "leftoversHint": "Un piatto cucinato in doppia dose serve per un secondo pasto"
     },

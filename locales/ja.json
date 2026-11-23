@@ -1193,6 +1193,7 @@
       }
     },
     "slot": {
+      "matin": "朝",
       "midi": "昼",
       "soir": "夜"
     },
@@ -1251,6 +1252,8 @@
       "weekdays": "平日のみ",
       "cantine": "社食または外食",
       "cantineHint": "平日の昼食は計画されません",
+      "breakfast": "朝食",
+      "breakfastHint": "昼食と夕食に加えて朝の食事を追加します。曜日ごとに設定できます",
       "leftovers": "残り物を使います",
       "leftoversHint": "2食分として作った料理は、もう1回の食事に使います"
     },
