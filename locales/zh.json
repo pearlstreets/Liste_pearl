@@ -1416,6 +1416,7 @@
       "regenerate": "全部重新制定",
       "estimated": "预计预算",
       "budget": "您的预算",
+      "budgetChange": "更改您的预算",
       "noBudget": "未设定预算",
       "overBudget": "超出预算 {{amount}}",
       "underBudget": "低于预算 {{amount}}",
@@ -1673,6 +1674,12 @@
         "france": "法国",
         "ameriques": "美洲",
         "afrique": "非洲"
+      },
+      "suggest": {
+        "season": "应季",
+        "quick30": "30分钟搞定",
+        "budget": "省钱之选",
+        "balanced": "营养均衡"
       }
     },
     "fridge": {

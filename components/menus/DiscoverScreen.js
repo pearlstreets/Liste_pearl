@@ -71,6 +71,37 @@ const FRIDGE_MAX_MISSING = 5;
 // Etat du bouton d'ajout par recette ET par liste de manquants : si le frigo change, le bouton se réarme.
 const fridgeKey = (it) => `${it.recipe.id}:${it.missing.join(',')}`;
 const DEBOUNCE_MS = 130; // attente apres la derniere frappe avant de relancer la recherche
+// Rangées de suggestions d'Idées (sans recherche ni filtre) : quelques recettes tirées par thème.
+const SUGGEST_N = 10;
+const BUDGET_SCAN = 40; // Petit budget : les moins chères parmi ce nombre de recettes tirées
+const SUGGEST_THEMES = ['season', 'quick30', 'budget', 'balanced'];
+const hashStr = (str) => {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return h >>> 0;
+};
+// Positions tirées dans [0, total) selon le sel (stable pour la journée), sans doublon, au plus n.
+const pickPositions = (total, salt, n) => {
+  const out = [];
+  if (total <= 0) return out;
+  const seen = new Set();
+  let h = hashStr(salt);
+  for (let k = 0; k < n * 6 && out.length < n && seen.size < total; k++) {
+    h = Math.imul(h ^ (h >>> 15), 0x85ebca6b) + 0x9e3779b9;
+    h = (h ^ (h >>> 13)) >>> 0;
+    const p = h % total;
+    if (!seen.has(p)) {
+      seen.add(p);
+      out.push(p);
+    }
+  }
+  for (let p = 0; out.length < n && p < total; p++)
+    if (!seen.has(p)) {
+      seen.add(p);
+      out.push(p);
+    }
+  return out;
+};
 
 // Ordre sans recherche : les recettes relues d'abord, puis les générées dans un ordre mélangé stable pour la journée.
 const feedSeed = () => {
@@ -84,6 +115,26 @@ const idOfRef = (res, v) => (v < 0 ? res.legacy[-v - 1].id : idFromRow(v));
 
 // Objets constants : aucune nouvelle valeur par ligne a chaque rendu.
 const HIT = { top: 10, bottom: 10, left: 10, right: 10 };
+
+const SuggestCard = memo(function SuggestCard({ recipe, title, meta, onPress }) {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.88}
+      onPress={() => onPress(recipe.id)}
+      style={s.sugCard}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+    >
+      <RecipeVisual recipe={recipe} height={96} radius={TAILLES.rayonCarte - 6} />
+      <Text style={s.sugTitle} numberOfLines={2}>
+        {title}
+      </Text>
+      <Text style={s.sugMeta} numberOfLines={2}>
+        {meta}
+      </Text>
+    </TouchableOpacity>
+  );
+});
 
 const RecipeRow = memo(function RecipeRow({
   recipe,
@@ -170,6 +221,8 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   const [maxTime, setMaxTime] = useState(null);
   const [plentyVeg, setPlentyVeg] = useState(false);
   const [cuisine, setCuisine] = useState(null);
+  // Repères santé du catalogue prêts : la rangée « Équilibré » attend ce calcul (jamais fait d'un bloc au rendu).
+  const [healthReady, setHealthReady] = useState(false);
   // Recherche ou filtre changé : la liste repart tout en haut, sur les premiers résultats.
   // Deja en haut : pas de defilement force (un defilement a chaque recherche, espace de plus d'une demi-seconde,
   // fait croire a la liste qu'elle est lente a se mettre a jour).
@@ -226,6 +279,9 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
               cancelled: () => off,
             })
       )
+      .then(() => {
+        if (!off) setHealthReady(true);
+      })
       .catch(() => {});
     return () => {
       off = true;
@@ -420,6 +476,124 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   }, [costOf, profile, t, lang]);
   const favSet = useMemo(() => new Set(favorites), [favorites]);
 
+  // Rangées de suggestions d'Idées : seulement sans recherche ni filtre. Chaque thème tire quelques positions
+  // dans ses résultats (mélange stable de la journée), une recette n'apparaît que dans une rangée,
+  // et seules ces quelques dizaines de recettes deviennent des objets.
+  const noFilter =
+    mode === 'ideas' &&
+    !dq &&
+    !course &&
+    tags.length === 0 &&
+    !balanced &&
+    !maxTime &&
+    !plentyVeg &&
+    !cuisine;
+  const healthOk = !useCat || healthReady;
+  const suggestions = useMemo(() => {
+    if (!noFilter) return [];
+    const used = new Set();
+    const persons = personsFor(profile, null, null);
+    const filtersOf = {
+      season: { month },
+      quick30: { maxTimeMin: 30 },
+      budget: {},
+      balanced: { balanced: true },
+    };
+    const rows = [];
+    for (const key of SUGGEST_THEMES) {
+      if (key === 'balanced' && !healthOk) continue;
+      const opts = {
+        query: '',
+        filters: filtersOf[key],
+        titleOf: (r) => texts.recipeTitle(r.id),
+        ingredientNameOf: (k) => texts.ingredientName(k),
+      };
+      let total = 0;
+      let at = () => null;
+      let done = false;
+      if (useCat) {
+        try {
+          const r = searchCatalog({
+            ...opts,
+            catalog,
+            lang: tl,
+            legacyList: base.legacy,
+            allowedRows: base.allowed,
+            shuffleSeed: seed,
+          });
+          total = r.total;
+          at = (p) => recipeOf(r, r.refs[p], catalog);
+          done = true;
+        } catch {
+          /* repli : recettes écrites à la main seules */
+        }
+      }
+      if (!done) {
+        const list = searchRecipes(base.legacy || recipes, opts);
+        total = list.length;
+        at = (p) => list[p];
+      }
+      const want = key === 'budget' ? BUDGET_SCAN : SUGGEST_N;
+      let picked = [];
+      for (const p of pickPositions(total, `${seed}-${key}`, want + SUGGEST_N)) {
+        const r = at(p);
+        if (!r || used.has(r.id) || (key === 'budget' && r.custom)) continue;
+        picked.push(r);
+        if (picked.length >= want) break;
+      }
+      if (key === 'budget') {
+        picked = picked
+          .map((r) => ({ r, c: costOf(r, persons).perPerson }))
+          .filter((x) => x.c > 0)
+          .sort((a, b) => a.c - b.c)
+          .slice(0, SUGGEST_N)
+          .map((x) => x.r);
+      }
+      if (!picked.length) continue;
+      for (const r of picked) used.add(r.id);
+      rows.push({ key, recipes: picked });
+    }
+    return rows;
+  }, [noFilter, healthOk, month, profile, texts, useCat, catalog, tl, base, seed, recipes, costOf]);
+
+  // Ligne courte d'une carte de suggestion : temps · prix par personne.
+  const sugMetaOf = useCallback(
+    (r) => {
+      if (r.custom) return t('recipe.minutes', { n: r.timeMin });
+      const c = costOf(r, personsFor(profile, null, null));
+      const v = `${t('recipe.minutes', { n: r.timeMin })} · ${t('week.perPerson', { price: formatEur(c.perPerson, lang) })}`;
+      return isolerPrix(isolerUnitesLatines(v, lang), lang);
+    },
+    [costOf, profile, t, lang]
+  );
+
+  const suggestRows = suggestions.length ? (
+    <View>
+      {suggestions.map((row) => (
+        <View key={row.key}>
+          <Text style={s.label}>{t(`discover.suggest.${row.key}`)}</Text>
+          <FlatList
+            horizontal
+            data={row.recipes}
+            keyExtractor={(r) => r.id}
+            showsHorizontalScrollIndicator={false}
+            style={s.filtersBar}
+            contentContainerStyle={s.sugList}
+            initialNumToRender={4}
+            renderItem={({ item: r }) => (
+              <SuggestCard
+                recipe={r}
+                title={texts.recipeTitle(r.id)}
+                meta={sugMetaOf(r)}
+                onPress={onOpenRecipe}
+              />
+            )}
+          />
+        </View>
+      ))}
+    </View>
+  ) : null;
+
   const renderRecipe = useCallback(
     ({ item: entry }) => {
       const item = typeof entry === 'number' ? null : entry;
@@ -609,6 +783,7 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
       <View>
         {mode === 'season' ? <Text style={s.modeNote}>{t('discover.seasonNote')}</Text> : null}
         {filters}
+        {mode === 'ideas' ? suggestRows : null}
       </View>
     );
     empty =
@@ -881,6 +1056,27 @@ const s = StyleSheet.create({
   rowTitle: { fontFamily: SERIF, fontSize: 16, fontWeight: '600', color: T.ink, lineHeight: 21 },
   rowMeta: { fontSize: 13, color: T.muted, marginTop: 3, fontWeight: '600' },
   rowExtra: { fontSize: 12, color: T.brandDark, marginTop: 3, fontWeight: '700' },
+  sugList: { paddingHorizontal: TAILLES.marge, paddingTop: 2, paddingBottom: 8 },
+  sugCard: {
+    width: 140,
+    backgroundColor: '#fff',
+    borderRadius: TAILLES.rayonCarte,
+    padding: 6,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: T.border,
+    ...T.shadowSm,
+  },
+  sugTitle: {
+    fontFamily: SERIF,
+    fontSize: 14,
+    fontWeight: '600',
+    color: T.ink,
+    lineHeight: 18,
+    height: 36,
+    marginTop: 6,
+  },
+  sugMeta: { fontSize: 12, color: T.muted, marginTop: 3, fontWeight: '600' },
   hist: {
     flexDirection: 'row',
     alignItems: 'center',

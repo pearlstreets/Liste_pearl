@@ -52,10 +52,10 @@ export function ListeCommandes({ commandes, t, fmtPrice }) {
     setRefreshing(false);
   }, [loadOrders]);
   return (
-    <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS }} showsVerticalScrollIndicator={false}
+    <ScrollView contentContainerStyle={{ paddingHorizontal:20, paddingTop:10, paddingBottom:32 + INSET_BAS, flexGrow:1, justifyContent: orders.length === 0 ? 'center' : 'flex-start' }} showsVerticalScrollIndicator={false}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {orders.length === 0 ? (
-        <View style={profStyles.empty}>
+        <View style={{ alignItems: 'center', paddingHorizontal: 24 }}>
           <Text style={profStyles.emptyTitle}>{t('profile.noOrders')}</Text>
         </View>
       ) : orders.map((order) => (
