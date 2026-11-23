@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
 
   inputRow:{ flexDirection:"row", alignItems:"center", paddingHorizontal:GUTTER, marginTop:8 },
   input:{ flex:1, height:44, borderWidth:1, borderColor:"#E5E7EB", borderRadius:10, paddingHorizontal:12, fontSize:15, color:"#111" },
-  addBtn:{ width:44, height:44, borderRadius:10, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center", marginLeft:10 },
+  addBtn:{ width:44, height:44, borderRadius:10, borderWidth: 1, borderColor: '#D5DBD4', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center", marginLeft:10 },
 
   scanPill:{ height:32, paddingHorizontal:10, borderRadius:10, borderWidth:1, borderColor:BRAND, flexDirection:"row", alignItems:"center", justifyContent:"center" },
   scanText:{ color:BRAND, fontWeight:"600", marginLeft:6, fontSize:13 },
@@ -31,10 +31,10 @@ export const styles = StyleSheet.create({
   trashBtn:{ paddingHorizontal:8, marginLeft:8 },
 
   square:{ width:CTRL, height:CTRL, borderRadius:6, borderWidth:1, borderColor:"#CBD5E1", alignItems:"center", justifyContent:"center" },
-  squareOn:{ backgroundColor:'#FFFFFF', borderColor:'#DCC9B8' },
+  squareOn:{ backgroundColor:'#FFFFFF', borderColor:'#D5DBD4' },
 
   radioOuter:{ width:CTRL, height:CTRL, borderRadius:10, borderWidth:1, borderColor:"#CBD5E1", backgroundColor:"#fff", alignItems:"center", justifyContent:"center" },
-  radioInner:{ width:10, height:10, borderRadius:5, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF' },
+  radioInner:{ width:10, height:10, borderRadius:5, borderWidth: 1, borderColor: '#D5DBD4', backgroundColor:'#FFFFFF' },
 
   h1:{ fontSize:20, fontWeight:'600', color:"#111", marginTop:6, marginBottom:6 },
   muted:{ color:"#9AA", fontSize:15 },
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
   switchCenterRow:{ flexDirection:"row", alignItems:"center", justifyContent:"center", marginBottom:12 },
   switchLabel:{ fontSize:15, color:"#333", marginLeft:10 },
 
-  bottomBtn:{ height:48, borderRadius:16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center" },
+  bottomBtn:{ height:48, borderRadius:16, borderWidth: 1, borderColor: '#D5DBD4', backgroundColor:'#FFFFFF', alignItems:"center", justifyContent:"center" },
   bottomBtnText:{ color:"#1C1917", fontSize:16, fontWeight:"700" },
 
   modalBackdrop:{ flex:1, backgroundColor:"rgba(0,0,0,0.4)", justifyContent:"center", alignItems:"center" },
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   modalInput:{ borderWidth:1, borderColor:"#DDD", borderRadius:8, padding:10, fontSize:16, marginBottom:16 },
   modalRow:{ flexDirection:"row", justifyContent:"flex-end" },
   modalBtnCancel:{ paddingVertical:10, paddingHorizontal:16, marginRight:10 },
-  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:8 },
+  modalBtnSave:{ paddingVertical:10, paddingHorizontal:16, borderWidth: 1, borderColor: '#D5DBD4', backgroundColor:'#FFFFFF', borderRadius:8 },
   modalBtnText:{ fontSize:15, color:"#333" },
   modalBtnTextSave:{ fontSize:15, fontWeight:"700", color:"#1C1917" }
 });

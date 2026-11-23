@@ -1,24 +1,27 @@
-// Style Marché (choisi par le user le 21/11/2026) : fond crème, encre brun profond,
-// terracotta pour les accents, titres à empattements. Les boutons pleins restent
-// NOIRS ou BLANCS (règle du user), le terracotta ne sert qu'aux accents
-// (icônes, pastilles, barres de progression, minuteur). Les vraies photos ne
-// sont jamais remplacées.
+// Style Pearl List (piste A choisie par le user le 23/11/2026, reprend les
+// couleurs de l'icône) : fond blanc cassé, encre anthracite, vert de l'icône
+// pour les accents (texte vert un peu plus foncé pour rester lisible), jaune en
+// touche rare. Les boutons pleins restent NOIRS ou BLANCS (règle du user).
+// Les clés gardent leurs anciens noms (terra...) pour ne rien casser ailleurs.
+// Les vraies photos ne sont jamais remplacées.
 import { Platform } from 'react-native';
 
 export const MARCHE = {
-  bg: '#F7F1E8',
+  bg: '#FAFAF7',
   card: '#FFFFFF',
-  subtle: '#F0E6DA',
-  ink: '#2E1C12',
-  muted: '#7A5A48',
-  faint: '#A88E7E',
-  border: '#E9DCCF',
-  borderInput: '#DCC9B8',
-  terra: '#C8623B',
-  terraDark: '#9E4A2A',
-  terraSoft: '#F6E3D8',
+  subtle: '#F1F4F0',
+  ink: '#1F2421',
+  muted: '#4A524C',
+  faint: '#8A928C',
+  border: '#E3E7E2',
+  borderInput: '#D5DBD4',
+  terra: '#2E9E3B', // vert lisible (texte, prix, onglet actif),
+  terraDark: '#237A2E',
+  terraSoft: '#E8F6EA',
   noir: '#1C1917',
   blanc: '#FFFFFF',
+  vert: '#3DBE4A', // vert exact de l'icône (pastilles, puces)
+  jaune: '#FFC21F', // touche rare
   nuit: '#3B2418', // fond du mode cuisine
 };
 
