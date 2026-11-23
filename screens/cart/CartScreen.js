@@ -244,8 +244,18 @@ const CartScreen = ({ isAuth }) => {
       countryFlag: (COUNTRIES.find(c => c.name === p.country)?.code || 'FR'), lat: null, lang: null,
     });
     setAddrSugg([]);
-    setAddrFormVisible(true);
+    // iOS n'empile pas deux Modal : la feuille « Confirmer » se ferme d'abord,
+    // le formulaire suit, puis la feuille revient à la fermeture du formulaire.
+    retourConfirmRef.current = true;
+    setConfirmVisible(false);
+    setTimeout(() => setAddrFormVisible(true), 450);
   }, []);
+  const retourConfirmRef = React.useRef(false);
+  React.useEffect(() => {
+    if (addrFormVisible || !retourConfirmRef.current) return;
+    retourConfirmRef.current = false;
+    setTimeout(() => setConfirmVisible(true), 450);
+  }, [addrFormVisible]);
   const setAF = (k, v) => setAddrForm(f => ({ ...f, [k]: v }));
   const onAddrRueChange = (v) => {
     setAF('house_building', v);
