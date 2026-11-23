@@ -1702,6 +1702,12 @@
         "france": "Frankrike",
         "ameriques": "Amerika",
         "afrique": "Afrika"
+      },
+      "suggest": {
+        "season": "Säsongens",
+        "quick30": "Klart på 30 min",
+        "budget": "Liten budget",
+        "balanced": "Balanserat"
       }
     },
     "fridge": {

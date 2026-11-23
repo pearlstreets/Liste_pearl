@@ -1674,6 +1674,12 @@
         "france": "フランス",
         "ameriques": "アメリカ大陸",
         "afrique": "アフリカ"
+      },
+      "suggest": {
+        "season": "旬の料理",
+        "quick30": "30分でできる",
+        "budget": "お手頃",
+        "balanced": "バランスの良い食事"
       }
     },
     "fridge": {

@@ -1674,6 +1674,12 @@
         "france": "法国",
         "ameriques": "美洲",
         "afrique": "非洲"
+      },
+      "suggest": {
+        "season": "应季",
+        "quick30": "30分钟搞定",
+        "budget": "省钱之选",
+        "balanced": "营养均衡"
       }
     },
     "fridge": {

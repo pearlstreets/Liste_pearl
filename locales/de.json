@@ -1700,6 +1700,12 @@
         "france": "Frankreich",
         "ameriques": "Amerika",
         "afrique": "Afrika"
+      },
+      "suggest": {
+        "season": "Saisonal",
+        "quick30": "In 30 Min. fertig",
+        "budget": "Kleines Budget",
+        "balanced": "Ausgewogen"
       }
     },
     "fridge": {

@@ -1724,6 +1724,12 @@
         "france": "França",
         "ameriques": "Américas",
         "afrique": "África"
+      },
+      "suggest": {
+        "season": "Da estação",
+        "quick30": "Pronto em 30 min",
+        "budget": "Orçamento baixo",
+        "balanced": "Equilibrado"
       }
     },
     "fridge": {

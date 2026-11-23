@@ -1674,6 +1674,12 @@
         "france": "ฝรั่งเศส",
         "ameriques": "อเมริกา",
         "afrique": "แอฟริกา"
+      },
+      "suggest": {
+        "season": "ตามฤดูกาล",
+        "quick30": "เสร็จใน 30 นาที",
+        "budget": "ประหยัดงบ",
+        "balanced": "สมดุล"
       }
     },
     "fridge": {

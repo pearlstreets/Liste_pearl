@@ -1702,6 +1702,12 @@
         "france": "Frankrijk",
         "ameriques": "Amerika",
         "afrique": "Afrika"
+      },
+      "suggest": {
+        "season": "Van het seizoen",
+        "quick30": "Klaar in 30 min",
+        "budget": "Klein budget",
+        "balanced": "Gebalanceerd"
       }
     },
     "fridge": {
