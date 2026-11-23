@@ -1416,6 +1416,7 @@
       "regenerate": "全部重新制定",
       "estimated": "预计预算",
       "budget": "您的预算",
+      "budgetChange": "更改您的预算",
       "noBudget": "未设定预算",
       "overBudget": "超出预算 {{amount}}",
       "underBudget": "低于预算 {{amount}}",

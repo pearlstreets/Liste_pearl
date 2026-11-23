@@ -1416,6 +1416,7 @@
       "regenerate": "すべて再作成する",
       "estimated": "予算見積もり",
       "budget": "ご予算",
+      "budgetChange": "予算を変更する",
       "noBudget": "予算は設定されていません",
       "overBudget": "予算より{{amount}}超えています",
       "underBudget": "予算より{{amount}}少ないです",

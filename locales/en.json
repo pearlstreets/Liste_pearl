@@ -1420,6 +1420,7 @@
       "regenerate": "Recompose everything",
       "estimated": "Estimated budget",
       "budget": "Your budget",
+      "budgetChange": "Change your budget",
       "noBudget": "No budget set",
       "overBudget": "{{amount}} over the budget",
       "underBudget": "{{amount}} under the budget",

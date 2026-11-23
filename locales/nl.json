@@ -1420,6 +1420,7 @@
       "regenerate": "Alles opnieuw samenstellen",
       "estimated": "Geschat budget",
       "budget": "Uw budget",
+      "budgetChange": "Uw budget wijzigen",
       "noBudget": "Geen budget ingesteld",
       "overBudget": "{{amount}} boven het budget",
       "underBudget": "{{amount}} onder het budget",

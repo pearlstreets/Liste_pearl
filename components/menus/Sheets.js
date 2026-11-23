@@ -16,7 +16,9 @@ import { MARCHE } from '../ui/marche';
 import { PrimaryButton, GhostButton, Empty, Stepper } from './ui';
 import RecipeVisual, { IngredientThumb } from './RecipeVisual';
 import { portionTarget, recipePortionScale } from '../../lib/menus/needs';
+import { BudgetCard } from './ProfileForms';
 import { useMenus } from './MenusContext';
+import { loadMenusSyncStatus } from '../../services/menusSync';
 import useT from './useT';
 
 export function Sheet({ onClose, children, label }) {
@@ -57,6 +59,48 @@ function confirmManual(warning, t, onOk) {
     ]
   );
 }
+
+/**
+ * « Tout réinitialiser » : même confirmation depuis les réglages et depuis Ma semaine. Sur un compte, le texte dit que
+ * l'effacement part aussi sur le compte (`connected` absent : état de synchronisation lu ici).
+ */
+export async function askResetAll({ t, resetAll, connected, onDone }) {
+  let surCompte = connected;
+  if (surCompte === undefined) {
+    const st = await loadMenusSyncStatus().catch(() => null);
+    surCompte = !!(st && st.connected);
+  }
+  Alert.alert(
+    t('settings.resetTitle'),
+    t(surCompte ? 'settings.resetTextAccount' : 'settings.resetText'),
+    [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('settings.resetAction'),
+        style: 'destructive',
+        onPress: async () => {
+          await resetAll();
+          onDone && onDone();
+        },
+      },
+    ]
+  );
+}
+
+/** Budget de la semaine changé depuis Ma semaine : même réglage et même enregistrement que dans les réglages. */
+export const BudgetSheet = memo(function BudgetSheet({ onClose }) {
+  const t = useT();
+  const { profile, updateProfile } = useMenus();
+  return (
+    <Sheet onClose={onClose} label={t('common.close')}>
+      <Text style={s.title}>{t('week.budget')}</Text>
+      <BudgetCard profile={profile} onChange={updateProfile} style={{ marginTop: 12 }} />
+      <View style={{ marginTop: 14 }}>
+        <PrimaryButton label={t('common.close')} onPress={onClose} />
+      </View>
+    </Sheet>
+  );
+});
 
 /** Choisir le repas du plan où poser une recette personnelle. */
 export const PlanPickSheet = memo(function PlanPickSheet({ recipe, onClose, onDone }) {

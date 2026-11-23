@@ -112,15 +112,17 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
   const byShop = new Map();
   const extra = (parBoutique > 0 ? `&par_boutique=${parBoutique}` : '')
     + (company !== null && company !== undefined ? `&company=${encodeURIComponent(String(company))}` : '');
-  for (let page = 1; page <= pages; page++) {
-    let data;
-    try {
-      data = await apiGet(`/users/products-by-category/${slug}/?page=${page}&page_size=${pageSize}${extra}`);
-    } catch (e) {
-      break;
-    }
-    const rows = Array.isArray(data) ? data : (data && (data.results || data.data)) || [];
-    if (!rows.length) break;
+  const lire = (page) => apiGet(`/users/products-by-category/${slug}/?page=${page}&page_size=${pageSize}${extra}`).catch(() => null);
+  const lignes = (data) => (Array.isArray(data) ? data : (data && (data.results || data.data)) || []);
+  // Page 1 d'abord (elle donne le total), puis toutes les suivantes EN MÊME
+  // TEMPS : l'attente est celle de la page la plus lente, pas leur somme.
+  const premiere = await lire(1);
+  const total = (premiere && Number(premiere.count)) || 0;
+  const nbPages = Math.min(pages, Math.max(1, Math.ceil(total / pageSize)));
+  const suite = nbPages > 1 ? await Promise.all(Array.from({ length: nbPages - 1 }, (_, i) => lire(i + 2))) : [];
+  for (const data of [premiere, ...suite]) {
+    const rows = lignes(data);
+    if (!rows.length) continue;
     // Le backend peut renvoyer les images en tableau OU en chaîne, et parfois
     // en chemin relatif (/media/...) : on normalise vers la 1ʳᵉ URL absolue.
     const firstUrl = (v, fallback) => {
@@ -173,8 +175,6 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         if (n > 0) shop.total = n;
       });
     }
-    const total = (data && Number(data.count)) || 0;
-    if (page * pageSize >= total) break;
   }
   return Array.from(byShop.values());
 }

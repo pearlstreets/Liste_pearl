@@ -9,6 +9,7 @@ import Modal from "../../components/DeuxEcrans";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, Image, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SqueletteBoutiques } from "../../components/ui/Squelette";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import { MARCHE, SERIF, TAILLES } from "../../components/ui/marche";
 import { BRAND, INSET_BAS, THEME } from "../../components/commun/theme";
@@ -307,7 +308,7 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
       ) : null}
 
       {loading ? (
-        <View style={shopStyles.center}><ActivityIndicator size="large" color={BRAND} /></View>
+        <SqueletteBoutiques />
       ) : error ? (
         <View style={shopStyles.center}>
           <Ionicons name="cloud-offline-outline" size={40} color={THEME.faint} />

@@ -1432,6 +1432,7 @@
       "regenerate": "إعادة الإعداد بالكامل",
       "estimated": "الميزانية المقدرة",
       "budget": "ميزانيتكم",
+      "budgetChange": "تغيير ميزانيتك",
       "noBudget": "لا يوجد ميزانية محددة",
       "overBudget": "{{amount}} فوق الميزانية",
       "underBudget": "{{amount}} تحت الميزانية",

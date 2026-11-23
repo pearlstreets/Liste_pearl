@@ -23,7 +23,8 @@ import useSharedWeeks from './useSharedWeeks';
 import { onMenuReminderOpen, takePendingMenuReminder } from '../../services/menuReminders';
 import { usePhotoManifestRefresh } from '../../services/photoManifest';
 
-const TABS = ['week', 'shop', 'discover'];
+// Ordre du segment : Ma semaine, Recettes, Courses.
+const TABS = ['week', 'discover', 'shop'];
 
 function Inner({ navigation }) {
   const t = useT();

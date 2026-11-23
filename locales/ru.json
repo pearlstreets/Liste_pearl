@@ -1426,6 +1426,7 @@
       "regenerate": "Пересобрать все",
       "estimated": "Оценочный бюджет",
       "budget": "Ваш бюджет",
+      "budgetChange": "Изменить ваш бюджет",
       "noBudget": "Бюджет не установлен",
       "overBudget": "{{amount}} сверх бюджета",
       "underBudget": "{{amount}} ниже бюджета",

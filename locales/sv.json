@@ -1420,6 +1420,7 @@
       "regenerate": "Gör om allt",
       "estimated": "Uppskattad budget",
       "budget": "Din budget",
+      "budgetChange": "Ändra din budget",
       "noBudget": "Ingen satt budget",
       "overBudget": "{{amount}} över budget",
       "underBudget": "{{amount}} under budget",
