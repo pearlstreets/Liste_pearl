@@ -129,7 +129,7 @@ const SuggestCard = memo(function SuggestCard({ recipe, title, meta, onPress }) 
       <Text style={s.sugTitle} numberOfLines={2}>
         {title}
       </Text>
-      <Text style={s.sugMeta} numberOfLines={1}>
+      <Text style={s.sugMeta} numberOfLines={2}>
         {meta}
       </Text>
     </TouchableOpacity>
