@@ -1420,6 +1420,7 @@
       "regenerate": "Alles neu zusammenstellen",
       "estimated": "Geschätztes Budget",
       "budget": "Ihr Budget",
+      "budgetChange": "Ihr Budget ändern",
       "noBudget": "Kein festgelegtes Budget",
       "overBudget": "{{amount}} über dem Budget",
       "underBudget": "{{amount}} unter dem Budget",
@@ -1699,6 +1700,12 @@
         "france": "Frankreich",
         "ameriques": "Amerika",
         "afrique": "Afrika"
+      },
+      "suggest": {
+        "season": "Saisonal",
+        "quick30": "In 30 Min. fertig",
+        "budget": "Kleines Budget",
+        "balanced": "Ausgewogen"
       }
     },
     "fridge": {

@@ -1432,6 +1432,7 @@
       "regenerate": "إعادة الإعداد بالكامل",
       "estimated": "الميزانية المقدرة",
       "budget": "ميزانيتكم",
+      "budgetChange": "تغيير ميزانيتك",
       "noBudget": "لا يوجد ميزانية محددة",
       "overBudget": "{{amount}} فوق الميزانية",
       "underBudget": "{{amount}} تحت الميزانية",
@@ -1783,6 +1784,12 @@
         "france": "فرنسا",
         "ameriques": "الأمريكتان",
         "afrique": "أفريقيا"
+      },
+      "suggest": {
+        "season": "من الموسم",
+        "quick30": "جاهز في 30 دقيقة",
+        "budget": "ميزانية صغيرة",
+        "balanced": "متوازن"
       }
     },
     "fridge": {

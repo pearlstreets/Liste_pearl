@@ -11,6 +11,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, 
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { SqueletteComparer } from "../../components/ui/Squelette";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import { loadListItems } from "../../lib/listStore";
 import RepeatButton from "../../components/ui/RepeatButton";
@@ -1092,7 +1093,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
           )}
           ListEmptyComponent={
             (loading || realShops === null) ? (
-              <ActivityIndicator style={{marginTop:40}} color={THEME.brand} />
+              <SqueletteComparer />
             ) : (
             <View style={prodStyles.empty}>
               {unmatchedNames.length > 0 ? (

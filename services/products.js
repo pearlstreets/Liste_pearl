@@ -105,17 +105,24 @@ export async function getAllProducts() {
 // Vrais shops Pearl Streets d'une catégorie racine (product_purchase / food_drink),
 // groupés avec leurs produits publiés. Consommé par l'écran Boutiques.
 // 1 endpoint (products-by-category) → on dédoublonne par company_id.
-export async function getShopsByCategory(slug = 'product_purchase', { pages = 3, pageSize = 100 } = {}) {
+// parBoutique : au plus N annonces par boutique (sinon une boutique à gros
+// catalogue remplit seule les pages). company : une seule boutique. Un serveur
+// plus ancien ignore ces deux paramètres.
+export async function getShopsByCategory(slug = 'product_purchase', { pages = 3, pageSize = 100, parBoutique = 0, company = null } = {}) {
   const byShop = new Map();
-  for (let page = 1; page <= pages; page++) {
-    let data;
-    try {
-      data = await apiGet(`/users/products-by-category/${slug}/?page=${page}&page_size=${pageSize}`);
-    } catch (e) {
-      break;
-    }
-    const rows = Array.isArray(data) ? data : (data && (data.results || data.data)) || [];
-    if (!rows.length) break;
+  const extra = (parBoutique > 0 ? `&par_boutique=${parBoutique}` : '')
+    + (company !== null && company !== undefined ? `&company=${encodeURIComponent(String(company))}` : '');
+  const lire = (page) => apiGet(`/users/products-by-category/${slug}/?page=${page}&page_size=${pageSize}${extra}`).catch(() => null);
+  const lignes = (data) => (Array.isArray(data) ? data : (data && (data.results || data.data)) || []);
+  // Page 1 d'abord (elle donne le total), puis toutes les suivantes EN MÊME
+  // TEMPS : l'attente est celle de la page la plus lente, pas leur somme.
+  const premiere = await lire(1);
+  const total = (premiere && Number(premiere.count)) || 0;
+  const nbPages = Math.min(pages, Math.max(1, Math.ceil(total / pageSize)));
+  const suite = nbPages > 1 ? await Promise.all(Array.from({ length: nbPages - 1 }, (_, i) => lire(i + 2))) : [];
+  for (const data of [premiere, ...suite]) {
+    const rows = lignes(data);
+    if (!rows.length) continue;
     // Le backend peut renvoyer les images en tableau OU en chaîne, et parfois
     // en chemin relatif (/media/...) : on normalise vers la 1ʳᵉ URL absolue.
     const firstUrl = (v, fallback) => {
@@ -160,10 +167,23 @@ export async function getShopsByCategory(slug = 'product_purchase', { pages = 3,
         surPlaceSeul: p.sur_place_seul === true,
       });
     });
-    const total = (data && Number(data.count)) || 0;
-    if (page * pageSize >= total) break;
+    // Nombre réel d'annonces de chaque boutique quand la liste est bornée.
+    const totaux = data && data.totaux_boutiques;
+    if (totaux && typeof totaux === 'object') {
+      byShop.forEach((shop, id) => {
+        const n = Number(totaux[String(id)]);
+        if (n > 0) shop.total = n;
+      });
+    }
   }
   return Array.from(byShop.values());
+}
+
+// Catalogue complet d'une boutique (ouverture de sa fiche). null si illisible.
+export async function getShopCatalogue(slug, companyId) {
+  const shops = await getShopsByCategory(slug, { company: companyId });
+  const shop = shops.find((x) => String(x.id) === String(companyId));
+  return shop ? shop.products : null;
 }
 
 // ── Options (déclinaisons) d'une fiche ──────────────────────────────────────
