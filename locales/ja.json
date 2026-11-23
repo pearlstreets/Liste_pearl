@@ -69,7 +69,17 @@
     "deleteThisItemConfirm": "この項目はリストから削除されます。",
     "markBought": "購入済みにする",
     "rejectRequest": "リクエストを拒否",
-    "blockUser": "このユーザーをブロック"
+    "blockUser": "このユーザーをブロック",
+    "scanReading": "写真を読み取っています…",
+    "scanFoundTitle": "見つかった商品",
+    "scanAdd": "追加 ({{count}})",
+    "scanNothing": "この写真から商品を読み取れませんでした。もっと明るい場所でお試しください。",
+    "scanLimit": "本日のスキャン上限に達しました。明日もう一度お試しください。",
+    "scanImage": "この写真を読み取れませんでした。別の写真でお試しください。",
+    "scanUnavailable": "写真の読み取りは現在ご利用いただけません。しばらくしてからお試しください。",
+    "scanNetwork": "接続できません。ネットワークを確認して、もう一度お試しください。",
+    "scanLoginTitle": "ログインが必要です",
+    "scanLoginMsg": "ログインすると、写真が読み取られ、商品がリストに追加されます。"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",
@@ -1193,6 +1203,7 @@
       }
     },
     "slot": {
+      "matin": "朝",
       "midi": "昼",
       "soir": "夜"
     },
@@ -1230,9 +1241,15 @@
       "goal": "目標",
       "goal_perdre": "体重を減らす",
       "goal_maintenir": "体重を保つ",
-      "goal_prendre": "筋肉をつける",
+      "goal_prendre": "増量する",
+      "goal_muscler": "脂肪をつけずに筋肉をつける",
       "goalMinor": "18歳未満は目標なしで、成長に必要な量だけを考えます。",
       "needs": "1日あたり約{{kcal}} kcal、たんぱく質{{protein}} g",
+      "needsMacros": "1日あたり炭水化物{{carbs}} g、脂質{{fat}} g",
+      "advice_perdre": "約18 %の軽いカロリー不足と高たんぱくで筋肉を守ります。目安は週に約0.5 kg減。",
+      "advice_maintenir": "体重を保つためのバランスのとれた摂取量です。",
+      "advice_muscler": "バランスのとれた摂取量と高たんぱく（体重1 kgあたり2 g）、週3回の筋トレと組み合わせます。",
+      "advice_prendre": "約12 %の軽いカロリー余剰と高たんぱく。目安は週に0.25〜0.5 kg増。",
       "remove": "削除",
       "addAdult": "大人を追加",
       "addChild": "子どもを追加",
@@ -1245,6 +1262,8 @@
       "weekdays": "平日のみ",
       "cantine": "社食または外食",
       "cantineHint": "平日の昼食は計画されません",
+      "breakfast": "朝食",
+      "breakfastHint": "昼食と夕食に加えて朝の食事を追加します。曜日ごとに設定できます",
       "leftovers": "残り物を使います",
       "leftoversHint": "2食分として作った料理は、もう1回の食事に使います"
     },
@@ -1309,7 +1328,10 @@
       "p4Text": "手早い食事、予算、バランスのよい1週間、野菜の付け合わせ。",
       "later": "あとで",
       "redo": "アンケートをやり直す",
-      "redoHint": "メニューを自分好みにする4ページです。すべて任意で、入力のたびに保存されます。"
+      "redoHint": "メニューを自分好みにする4ページです。すべて任意で、入力のたびに保存されます。",
+      "reset": "回答をリセット",
+      "resetTitle": "回答をリセットしますか？",
+      "resetText": "アンケートの回答が初期設定に戻ります。週の献立とお気に入りは残ります。"
     },
     "onboarding": {
       "skip": "スキップ",
@@ -1899,6 +1921,25 @@
         "source": "出典：Ciqual食品成分表（Anses）",
         "energyValue": "{{kj}}kJ / {{kcal}}kcal"
       }
+    },
+    "likes": {
+      "title": "好きなもの",
+      "proteins": "肉・魚・たんぱく質",
+      "bases": "主食",
+      "veg": "野菜",
+      "fridgeHint": "これらの食材を使う料理が一週間の献立で優先されます。",
+      "p_volaille": "鶏肉など",
+      "p_boeuf": "牛肉・子牛肉",
+      "p_porc": "豚肉",
+      "p_agneau": "羊肉",
+      "p_poisson": "魚介",
+      "p_oeufs": "卵",
+      "p_legumineuses": "豆類・豆腐",
+      "b_pates": "パスタ",
+      "b_riz": "ご飯",
+      "b_pdt": "じゃがいも",
+      "b_cereales": "クスクス・ブルグル・キヌア",
+      "b_pain": "パン・ラップ・ピザ"
     }
   },
   "counts": {

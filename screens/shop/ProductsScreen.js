@@ -1,7 +1,7 @@
 import React from "react";
 import { separerDoublons, cumulerQuantite, ajouterAuPanier, champsCommande } from "../../lib/panier";
 import { matchProduct } from "../../lib/matchProduct";
-import { loadShops } from "../../lib/shopsCache";
+import { loadShops, peekShops, hydrateShops } from "../../lib/shopsCache";
 import { libelleDetail } from "../../lib/libelleDetail";
 import { useTranslation } from "react-i18next";
 import { DeviceEventEmitter } from "react-native";
@@ -209,10 +209,14 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
   const [summary,setSummary]=React.useState({price:0,time:0,shops:0});
   const [unmatchedNames,setUnmatchedNames]=React.useState([]); // articles de la liste sans correspondance dans les vraies boutiques
   // Vrais shops product_purchase Pearl Streets (null = pas encore chargé → fallback échantillon)
-  const [realShops,setRealShops]=React.useState(null);
+  // Dernière liste connue affichée tout de suite (mémoire, sinon téléphone) ;
+  // le réseau la met à jour ensuite, sans rond d'attente.
+  const [realShops,setRealShops]=React.useState(()=>{ const d=peekShops('product_purchase'); return Array.isArray(d)&&d.length?d:null; });
   React.useEffect(()=>{ let a=true; (async()=>{
-    try{ const d=await loadShops('product_purchase'); if(a) setRealShops(d); }
-    catch(e){ if(a) setRealShops([]); }
+    const local=await hydrateShops('product_purchase');
+    if(a&&local) setRealShops(prev=>prev||local);
+    try{ const d=await loadShops('product_purchase'); if(a&&(d.length||!local)) setRealShops(d); }
+    catch(e){ if(a&&!local) setRealShops([]); }
   })(); return ()=>{a=false}; },[]);
 
 

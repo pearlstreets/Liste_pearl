@@ -71,7 +71,17 @@
     "deleteThisItemConfirm": "Este artigo será removido da sua lista.",
     "markBought": "Marcar como comprado",
     "rejectRequest": "Recusar o pedido",
-    "blockUser": "Bloquear esta pessoa"
+    "blockUser": "Bloquear esta pessoa",
+    "scanReading": "A ler a foto…",
+    "scanFoundTitle": "Artigos encontrados",
+    "scanAdd": "Adicionar ({{count}})",
+    "scanNothing": "Nenhum artigo foi lido nesta foto. Tente com mais luz.",
+    "scanLimit": "Atingiu o limite de digitalizações de hoje. Tente novamente amanhã.",
+    "scanImage": "Não foi possível ler esta foto. Tente com outra foto.",
+    "scanUnavailable": "A leitura de fotos está temporariamente indisponível. Tente mais tarde.",
+    "scanNetwork": "Sem ligação. Verifique a sua rede e tente novamente.",
+    "scanLoginTitle": "Sessão necessária",
+    "scanLoginMsg": "Inicie sessão para que as suas fotos sejam lidas e os artigos adicionados à sua lista."
   },
   "productsScreen": {
     "clickAndCollect": "Compre e Retire",
@@ -1197,6 +1207,7 @@
       }
     },
     "slot": {
+      "matin": "Manhã",
       "midi": "Almoço",
       "soir": "Jantar"
     },
@@ -1234,9 +1245,15 @@
       "goal": "Objetivo",
       "goal_perdre": "Perder peso",
       "goal_maintenir": "Manter o peso",
-      "goal_prendre": "Ganhar massa muscular",
+      "goal_prendre": "Ganhar massa",
+      "goal_muscler": "Ganhar músculo sem engordar",
       "goalMinor": "Menos de 18 anos, sem objetivo, contam apenas as necessidades de crescimento.",
       "needs": "Cerca de {{kcal}} kcal e {{protein}} g de proteínas por dia",
+      "needsMacros": "Hidratos {{carbs}} g e gorduras {{fat}} g por dia",
+      "advice_perdre": "Ligeiro défice de cerca de 18 % e proteínas altas para manter os músculos. Objetivo: cerca de 0,5 kg a menos por semana.",
+      "advice_maintenir": "Ingestão equilibrada para manter o seu peso.",
+      "advice_muscler": "Ingestão equilibrada e proteínas altas (2 g por kg), com 3 treinos de força por semana.",
+      "advice_prendre": "Ligeiro excedente de cerca de 12 % e proteínas altas. Objetivo: 0,25 a 0,5 kg a mais por semana.",
       "remove": "Remover",
       "addAdult": "Adicionar um adulto",
       "addChild": "Adicionar uma criança",
@@ -1249,6 +1266,8 @@
       "weekdays": "Só dias úteis",
       "cantine": "Cantina ou refeição fora",
       "cantineHint": "Os almoços dos dias úteis não estão previstos",
+      "breakfast": "Pequeno-almoço",
+      "breakfastHint": "Uma refeição de manhã além do almoço e do jantar, ajustável dia a dia",
       "leftovers": "Usar sobras",
       "leftoversHint": "Um prato cozinhado a dobrar serve para outra refeição"
     },
@@ -1313,7 +1332,10 @@
       "p4Text": "Refeições rápidas, orçamento, uma semana equilibrada e um acompanhamento de legumes.",
       "later": "Mais tarde",
       "redo": "Refazer o questionário",
-      "redoHint": "Quatro páginas para personalizar os seus menus. Tudo é opcional e guardado à medida."
+      "redoHint": "Quatro páginas para personalizar os seus menus. Tudo é opcional e guardado à medida.",
+      "reset": "Repor as minhas respostas",
+      "resetTitle": "Repor as suas respostas?",
+      "resetText": "As suas respostas ao questionário voltam às definições iniciais. A sua semana e os favoritos são mantidos."
     },
     "onboarding": {
       "skip": "Saltar",
@@ -1962,6 +1984,25 @@
         "source": "Fonte: tabela Ciqual, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "O que gosta",
+      "proteins": "Carne, peixe e proteínas",
+      "bases": "Amidos",
+      "veg": "Legumes",
+      "fridgeHint": "Os pratos com estes ingredientes vêm primeiro na sua semana.",
+      "p_volaille": "Aves",
+      "p_boeuf": "Vaca e vitela",
+      "p_porc": "Porco",
+      "p_agneau": "Borrego",
+      "p_poisson": "Peixe e marisco",
+      "p_oeufs": "Ovos",
+      "p_legumineuses": "Leguminosas e tofu",
+      "b_pates": "Massa",
+      "b_riz": "Arroz",
+      "b_pdt": "Batatas",
+      "b_cereales": "Sêmola, bulgur, quinoa",
+      "b_pain": "Pão, wraps, pizza"
     }
   },
   "counts": {

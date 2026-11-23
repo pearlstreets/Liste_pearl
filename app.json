@@ -26,7 +26,23 @@
         "NSLocationWhenInUseUsageDescription": "Pearl List utilise votre position pour afficher les magasins proches et estimer les frais de livraison, par exemple trouver les enseignes qui livrent à votre adresse.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": false
-        }
+        },
+        "CFBundleAllowMixedLocalizations": true,
+        "CFBundleLocalizations": [
+          "fr",
+          "en",
+          "de",
+          "es",
+          "it",
+          "nl",
+          "pt",
+          "ru",
+          "ar",
+          "ja",
+          "zh-Hans",
+          "sv",
+          "th"
+        ]
       }
     },
     "android": {

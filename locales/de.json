@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "Dieser Artikel wird von Ihrer Liste entfernt.",
     "markBought": "Als gekauft markieren",
     "rejectRequest": "Anfrage ablehnen",
-    "blockUser": "Diese Person blockieren"
+    "blockUser": "Diese Person blockieren",
+    "scanReading": "Foto wird gelesen…",
+    "scanFoundTitle": "Gefundene Artikel",
+    "scanAdd": "Hinzufügen ({{count}})",
+    "scanNothing": "Auf diesem Foto wurde kein Artikel erkannt. Versuchen Sie es mit mehr Licht.",
+    "scanLimit": "Sie haben das heutige Scan-Limit erreicht. Bitte versuchen Sie es morgen erneut.",
+    "scanImage": "Dieses Foto konnte nicht gelesen werden. Bitte versuchen Sie es mit einem anderen Foto.",
+    "scanUnavailable": "Das Lesen von Fotos ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+    "scanNetwork": "Keine Verbindung. Bitte prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+    "scanLoginTitle": "Anmeldung erforderlich",
+    "scanLoginMsg": "Melden Sie sich an, damit Ihre Fotos gelesen und die Artikel Ihrer Liste hinzugefügt werden."
   },
   "productsScreen": {
     "clickAndCollect": "Abholen",
@@ -1195,6 +1205,7 @@
       }
     },
     "slot": {
+      "matin": "Morgen",
       "midi": "Mittag",
       "soir": "Abend"
     },
@@ -1232,9 +1243,15 @@
       "goal": "Ziel",
       "goal_perdre": "Abnehmen",
       "goal_maintenir": "Gewicht halten",
-      "goal_prendre": "Muskeln aufbauen",
+      "goal_prendre": "Masse aufbauen",
+      "goal_muscler": "Muskeln aufbauen, schlank bleiben",
       "goalMinor": "Unter 18 Jahren kein Ziel, nur der Wachstumsbedarf zählt.",
       "needs": "Etwa {{kcal}} kcal und {{protein}} g Eiweiß pro Tag",
+      "needsMacros": "Kohlenhydrate {{carbs}} g und Fett {{fat}} g pro Tag",
+      "advice_perdre": "Leichtes Defizit von etwa 18 % und viel Eiweiß, um Ihre Muskeln zu erhalten. Ziel: etwa 0,5 kg weniger pro Woche.",
+      "advice_maintenir": "Ausgeglichene Zufuhr, um Ihr Gewicht zu halten.",
+      "advice_muscler": "Ausgeglichene Zufuhr und viel Eiweiß (2 g pro kg), mit 3 Krafttrainings pro Woche.",
+      "advice_prendre": "Leichter Überschuss von etwa 12 % und viel Eiweiß. Ziel: 0,25 bis 0,5 kg mehr pro Woche.",
       "remove": "Entfernen",
       "addAdult": "Erwachsenen hinzufügen",
       "addChild": "Kind hinzufügen",
@@ -1247,6 +1264,8 @@
       "weekdays": "Nur an Wochentagen",
       "cantine": "Kantine oder außer Haus",
       "cantineHint": "Die Mittagsmahlzeiten an Wochentagen sind nicht eingeplant",
+      "breakfast": "Frühstück",
+      "breakfastHint": "Eine Mahlzeit am Morgen zusätzlich zu Mittag- und Abendessen, Tag für Tag einstellbar",
       "leftovers": "Reste verwenden",
       "leftoversHint": "Ein Gericht, das doppelt gekocht wird, dient als zweites Mahl"
     },
@@ -1311,7 +1330,10 @@
       "p4Text": "Schnelle Gerichte, Budget, eine ausgewogene Woche und eine Gemüsebeilage.",
       "later": "Später",
       "redo": "Fragebogen wiederholen",
-      "redoHint": "Vier Seiten, um Ihre Menüs anzupassen. Alles ist freiwillig und wird laufend gespeichert."
+      "redoHint": "Vier Seiten, um Ihre Menüs anzupassen. Alles ist freiwillig und wird laufend gespeichert.",
+      "reset": "Meine Antworten zurücksetzen",
+      "resetTitle": "Antworten zurücksetzen?",
+      "resetText": "Ihre Antworten im Fragebogen werden auf die Standardeinstellungen zurückgesetzt. Ihre Woche und Favoriten bleiben erhalten."
     },
     "onboarding": {
       "skip": "Überspringen",
@@ -1934,6 +1956,25 @@
         "source": "Quelle: Ciqual-Tabelle, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Was Sie mögen",
+      "proteins": "Fleisch, Fisch und Eiweiß",
+      "bases": "Sättigungsbeilagen",
+      "veg": "Gemüse",
+      "fridgeHint": "Gerichte mit diesen Zutaten kommen zuerst in Ihre Woche.",
+      "p_volaille": "Geflügel",
+      "p_boeuf": "Rind und Kalb",
+      "p_porc": "Schwein",
+      "p_agneau": "Lamm",
+      "p_poisson": "Fisch und Meeresfrüchte",
+      "p_oeufs": "Eier",
+      "p_legumineuses": "Hülsenfrüchte und Tofu",
+      "b_pates": "Nudeln",
+      "b_riz": "Reis",
+      "b_pdt": "Kartoffeln",
+      "b_cereales": "Couscous, Bulgur, Quinoa",
+      "b_pain": "Brot, Wraps, Pizza"
     }
   },
   "counts": {
