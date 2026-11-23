@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "Dit artikel wordt van uw lijst verwijderd.",
     "markBought": "Markeren als gekocht",
     "rejectRequest": "Verzoek weigeren",
-    "blockUser": "Deze persoon blokkeren"
+    "blockUser": "Deze persoon blokkeren",
+    "scanReading": "Foto wordt gelezen…",
+    "scanFoundTitle": "Gevonden artikelen",
+    "scanAdd": "Toevoegen ({{count}})",
+    "scanNothing": "Er is geen artikel op deze foto gelezen. Probeer het met meer licht.",
+    "scanLimit": "U hebt de scanlimiet voor vandaag bereikt. Probeer het morgen opnieuw.",
+    "scanImage": "Deze foto kon niet worden gelezen. Probeer een andere foto.",
+    "scanUnavailable": "Het lezen van foto's is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+    "scanNetwork": "Geen verbinding. Controleer uw netwerk en probeer het opnieuw.",
+    "scanLoginTitle": "Inloggen vereist",
+    "scanLoginMsg": "Log in zodat uw foto's worden gelezen en de artikelen aan uw lijst worden toegevoegd."
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",
@@ -1195,6 +1205,7 @@
       }
     },
     "slot": {
+      "matin": "Ochtend",
       "midi": "Middag",
       "soir": "Avond"
     },
@@ -1232,9 +1243,15 @@
       "goal": "Doel",
       "goal_perdre": "Afvallen",
       "goal_maintenir": "Gewicht behouden",
-      "goal_prendre": "Spiermassa opbouwen",
+      "goal_prendre": "Massa opbouwen",
+      "goal_muscler": "Spieren opbouwen, slank blijven",
       "goalMinor": "Onder de 18 geen doel, alleen de behoeften voor de groei tellen.",
       "needs": "Ongeveer {{kcal}} kcal en {{protein}} g eiwit per dag",
+      "needsMacros": "Koolhydraten {{carbs}} g en vet {{fat}} g per dag",
+      "advice_perdre": "Licht tekort van ongeveer 18 % en veel eiwit om uw spieren te behouden. Doel: ongeveer 0,5 kg minder per week.",
+      "advice_maintenir": "Evenwichtige inname om uw gewicht te behouden.",
+      "advice_muscler": "Evenwichtige inname en veel eiwit (2 g per kg), met 3 krachttrainingen per week.",
+      "advice_prendre": "Licht overschot van ongeveer 12 % en veel eiwit. Doel: 0,25 tot 0,5 kg meer per week.",
       "remove": "Verwijderen",
       "addAdult": "Volwassene toevoegen",
       "addChild": "Kind toevoegen",
@@ -1247,6 +1264,8 @@
       "weekdays": "Alleen weekdagen",
       "cantine": "Kantine of buitenshuis gegeten",
       "cantineHint": "Middagmaaltijden op werkdagen zijn niet gepland",
+      "breakfast": "Ontbijt",
+      "breakfastHint": "Een maaltijd in de ochtend naast lunch en diner, per dag in te stellen",
       "leftovers": "Restjes gebruiken",
       "leftoversHint": "Een dubbele portie wordt gebruikt voor een tweede maaltijd"
     },
@@ -1311,7 +1330,10 @@
       "p4Text": "Snelle maaltijden, budget, een evenwichtige week en een groentebijgerecht.",
       "later": "Later",
       "redo": "Vragenlijst opnieuw invullen",
-      "redoHint": "Vier pagina's om uw menu's aan te passen. Alles is optioneel en wordt direct bewaard."
+      "redoHint": "Vier pagina's om uw menu's aan te passen. Alles is optioneel en wordt direct bewaard.",
+      "reset": "Mijn antwoorden resetten",
+      "resetTitle": "Uw antwoorden resetten?",
+      "resetText": "Uw antwoorden op de vragenlijst gaan terug naar de standaardinstellingen. Uw week en favorieten blijven bewaard."
     },
     "onboarding": {
       "skip": "Overslaan",
@@ -1936,6 +1958,25 @@
         "source": "Bron: Ciqual-tabel, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Wat u lekker vindt",
+      "proteins": "Vlees, vis en eiwit",
+      "bases": "Zetmeel",
+      "veg": "Groenten",
+      "fridgeHint": "Gerechten met deze ingrediënten komen eerst in uw week.",
+      "p_volaille": "Gevogelte",
+      "p_boeuf": "Rund en kalf",
+      "p_porc": "Varken",
+      "p_agneau": "Lam",
+      "p_poisson": "Vis en zeevruchten",
+      "p_oeufs": "Eieren",
+      "p_legumineuses": "Peulvruchten en tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Rijst",
+      "b_pdt": "Aardappelen",
+      "b_cereales": "Couscous, bulgur, quinoa",
+      "b_pain": "Brood, wraps, pizza"
     }
   },
   "counts": {

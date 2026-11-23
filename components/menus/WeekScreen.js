@@ -89,7 +89,7 @@ const DayPill = React.memo(function DayPill({ d, selected, count, today, alert, 
     >
       <Text style={[s.pillTxt, selected && { color: '#fff' }]}>{label}</Text>
       <View style={s.pillDots}>
-        {[0, 1].map((i) => (
+        {(count > 2 ? [0, 1, 2] : [0, 1]).map((i) => (
           <View
             key={i}
             style={[
@@ -587,7 +587,9 @@ export default function WeekScreen({
 
         <View style={[s.pills, compact && { marginTop: 12 }]}>
           {days.map((dd) => {
-            const count = [dd.midi, dd.soir].filter((x) => x && (x.recipeId || x.free)).length;
+            const count = [dd.matin, dd.midi, dd.soir].filter(
+              (x) => x && (x.recipeId || x.free)
+            ).length;
             return (
               <DayPill
                 key={dd.day}
@@ -635,9 +637,12 @@ export default function WeekScreen({
         ) : null}
 
         {busy ? <Text style={s.composing}>{t('week.composing')}</Text> : null}
+        {renderMeal(cur.matin)}
         {renderMeal(cur.midi)}
         {renderMeal(cur.soir)}
-        {!cur.midi && !cur.soir ? <Text style={s.none}>{t('week.noMeal')}</Text> : null}
+        {!cur.matin && !cur.midi && !cur.soir ? (
+          <Text style={s.none}>{t('week.noMeal')}</Text>
+        ) : null}
       </ScrollView>
 
       <View style={s.bar}>

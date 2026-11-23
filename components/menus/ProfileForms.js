@@ -12,7 +12,14 @@ import {
   ADULT_AGE,
   MEMBERS_MAX,
 } from '../../lib/menus/needs';
-import { cleanPrefs, QUICK_CHOICES, TREAT_CHOICES } from '../../lib/menus/profile';
+import {
+  cleanPrefs,
+  QUICK_CHOICES,
+  TREAT_CHOICES,
+  LIKE_PROTEINS,
+  LIKE_BASES,
+  LIKE_VEG,
+} from '../../lib/menus/profile';
 import { CUISINES } from '../../lib/menus/healthy';
 import { T, TAILLES } from './theme';
 import { MARCHE } from '../ui/marche';
@@ -154,6 +161,8 @@ const MemberCard = ({ m, index, onPatch, onRemove }) => {
       )}
       <View style={s.sep} />
       <Text style={s.needs}>{t('nutri.needs', { kcal: n.kcal, protein: n.protein })}</Text>
+      <Text style={s.rowHint}>{t('nutri.needsMacros', { carbs: n.carbs, fat: n.fat })}</Text>
+      {!mineur && m.goal ? <Text style={s.rowHint}>{t(`nutri.advice_${m.goal}`)}</Text> : null}
       <View style={{ alignItems: 'flex-start', marginTop: 6 }}>
         <GhostButton label={t('nutri.remove')} icon="trash-outline" danger onPress={onRemove} />
       </View>
@@ -365,16 +374,29 @@ export const HouseholdSection = memo(function HouseholdSection({ profile, onChan
 
 export const MealsSection = memo(function MealsSection({ profile, onChange }) {
   const t = useT();
+  // petit-déjeuner (créneau matin) : gardé tel quel par les choix rapides, qui ne règlent que midi et soir
+  const matinOn = [0, 1, 2, 3, 4, 5, 6].some((d) => !!profile.slots[`${d}-matin`]);
   const setSlots = (fn) => {
     const slots = {};
-    for (let d = 0; d < 7; d++)
+    for (let d = 0; d < 7; d++) {
+      if (profile.slots[`${d}-matin`]) slots[`${d}-matin`] = true;
       for (const sl of ['midi', 'soir']) slots[`${d}-${sl}`] = !!fn(d, sl);
+    }
+    onChange({ slots });
+  };
+  const setMatin = (v) => {
+    const slots = { ...profile.slots };
+    for (let d = 0; d < 7; d++) {
+      if (v) slots[`${d}-matin`] = true;
+      else delete slots[`${d}-matin`];
+    }
     onChange({ slots });
   };
   const toggle = (k) => onChange({ slots: { ...profile.slots, [k]: !profile.slots[k] } });
-  const all = Object.values(profile.slots).every(Boolean);
-  const soirOnly = Object.entries(profile.slots).every(([k, v]) => (k.endsWith('soir') ? v : !v));
-  const weekdays = Object.entries(profile.slots).every(([k, v]) => (Number(k[0]) <= 4 ? v : !v));
+  const mainSlots = Object.entries(profile.slots).filter(([k]) => !k.endsWith('matin'));
+  const all = mainSlots.every(([, v]) => v);
+  const soirOnly = mainSlots.every(([k, v]) => (k.endsWith('soir') ? v : !v));
+  const weekdays = mainSlots.every(([k, v]) => (Number(k[0]) <= 4 ? v : !v));
   return (
     <View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -401,10 +423,15 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
             </Text>
           ))}
         </View>
-        {['midi', 'soir'].map((sl) => (
+        {(matinOn ? ['matin', 'midi', 'soir'] : ['midi', 'soir']).map((sl) => (
           <View key={sl} style={s.gridRow}>
             <View style={s.gridHead}>
-              <Text style={s.gridHeadTxt} numberOfLines={1}>
+              <Text
+                style={s.gridHeadTxt}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
+              >
                 {t(`slot.${sl}`)}
               </Text>
             </View>
@@ -445,6 +472,16 @@ export const MealsSection = memo(function MealsSection({ profile, onChange }) {
           </>
         ) : null}
         <View style={s.row}>
+          <RowLabel title={t('meals.breakfast')} hint={t('meals.breakfastHint')} />
+          <Switch
+            value={matinOn}
+            onValueChange={setMatin}
+            trackColor={{ true: MARCHE.noir, false: T.borderInput }}
+            thumbColor="#fff"
+          />
+        </View>
+        <View style={s.sep} />
+        <View style={s.row}>
           <RowLabel title={t('meals.leftovers')} hint={t('meals.leftoversHint')} />
           <Switch
             value={profile.useLeftovers}
@@ -484,6 +521,12 @@ export const DietSection = memo(function DietSection({
     return out;
   }, [q, ingredients, texts, profile.excludedIngredients]);
   const ingExcluded = profile.excludedIngredients.filter((k) => !ALLERGENS.includes(k));
+  // Bouton + et touche Terminé : ajoute le premier ingrédient trouvé.
+  const addFirst = () => {
+    if (!found.length) return;
+    toggleIn('excludedIngredients', found[0].key);
+    setQ('');
+  };
   return (
     <View>
       <Text style={s.label}>{t('diet.diets')}</Text>
@@ -511,18 +554,34 @@ export const DietSection = memo(function DietSection({
       {!compact ? (
         <>
           <Text style={s.label}>{t('diet.dislikes')}</Text>
-          <Field
-            value={q}
-            onChangeText={setQ}
-            placeholder={t('diet.dislikesPlaceholder')}
-            autoCorrect={false}
-            returnKeyType="search"
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>
+              <Field
+                value={q}
+                onChangeText={setQ}
+                placeholder={t('diet.dislikesPlaceholder')}
+                autoCorrect={false}
+                returnKeyType="done"
+                onSubmitEditing={addFirst}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={addFirst}
+              disabled={!found.length}
+              activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel={t('diet.dislikes')}
+              style={[s.addRound, !found.length && { opacity: 0.35 }]}
+            >
+              <Ionicons name="add" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
           {found.length ? (
             <View style={[s.wrap, { marginTop: 10 }]}>
               {found.map((f) => (
                 <Chip
                   key={f.key}
+                  icon="add"
                   label={f.name}
                   on={false}
                   onPress={() => {
@@ -669,18 +728,116 @@ export const CuisinesPicker = memo(function CuisinesPicker({ profile, onChange }
   );
 });
 
-export const PrefsSection = memo(function PrefsSection({ profile, onChange }) {
+// Ce que l'on aime (prefs.likes) : protéines, féculents et légumes proposés plus souvent dans la semaine.
+export const LikesPicker = memo(function LikesPicker({ profile, onChange, texts }) {
+  const t = useT();
+  const [pf, set] = usePrefs(profile, onChange);
+  const toggle = (k) =>
+    set({ likes: pf.likes.includes(k) ? pf.likes.filter((x) => x !== k) : [...pf.likes, k] });
+  const vegName = (k) => (texts && texts.ingredientName ? texts.ingredientName(k) : k);
+  const group = (title, list, label) => (
+    <>
+      <Text style={s.fieldLabel}>{title}</Text>
+      <View style={s.wrap}>
+        {list.map((k) => (
+          <Chip key={k} label={label(k)} on={pf.likes.includes(k)} onPress={() => toggle(k)} />
+        ))}
+      </View>
+    </>
+  );
+  return (
+    <View>
+      <Text style={s.label}>{t('likes.title')}</Text>
+      <Text style={[s.rowHint, { marginTop: -6 }]}>{t('prefs.cuisinesHint')}</Text>
+      {group(t('likes.proteins'), LIKE_PROTEINS, (k) => t(`likes.p_${k}`))}
+      {group(t('likes.bases'), LIKE_BASES, (k) => t(`likes.b_${k}`))}
+      {group(t('likes.veg'), LIKE_VEG, vegName)}
+    </View>
+  );
+});
+
+// Ce qu'il y a dans le frigo (même liste que Découvrir > Frigo) : les plats qui l'utilisent passent devant.
+export const FridgeSection = memo(function FridgeSection({ fridge, setFridge, texts, ingredients }) {
+  const t = useT();
+  const [q, setQ] = useState('');
+  const list = Array.isArray(fridge) ? fridge : [];
+  const found = useMemo(() => {
+    const n = norm(q);
+    if (n.length < 2 || !texts) return [];
+    const out = [];
+    for (const key of Object.keys(ingredients || {})) {
+      if (list.includes(key)) continue;
+      if (norm(texts.ingredientName(key)).includes(n)) out.push(key);
+      if (out.length >= 8) break;
+    }
+    return out;
+  }, [q, ingredients, texts, list]);
+  const name = (k) => (texts && texts.ingredientName ? texts.ingredientName(k) : k);
+  return (
+    <View>
+      <Text style={s.label}>{t('fridge.mine')}</Text>
+      <Text style={[s.rowHint, { marginTop: -6, marginBottom: 10 }]}>{t('likes.fridgeHint')}</Text>
+      <Field
+        value={q}
+        onChangeText={setQ}
+        placeholder={t('fridge.search')}
+        autoCorrect={false}
+        returnKeyType="search"
+      />
+      {found.length ? (
+        <View style={[s.wrap, { marginTop: 10 }]}>
+          {found.map((k) => (
+            <Chip
+              key={k}
+              label={name(k)}
+              on={false}
+              onPress={() => {
+                setFridge([...list, k]);
+                setQ('');
+              }}
+            />
+          ))}
+        </View>
+      ) : null}
+      {list.length ? (
+        <View style={[s.wrap, { marginTop: 10 }]}>
+          {list.map((k) => (
+            <Chip
+              key={k}
+              icon="close"
+              label={name(k)}
+              on
+              onPress={() => setFridge(list.filter((x) => x !== k))}
+            />
+          ))}
+        </View>
+      ) : null}
+    </View>
+  );
+});
+
+export const PrefsSection = memo(function PrefsSection({ profile, onChange, texts }) {
   return (
     <View>
       <PrefsSwitches profile={profile} onChange={onChange} />
       <QuickPicker profile={profile} onChange={onChange} />
       <TreatsPicker profile={profile} onChange={onChange} />
       <CuisinesPicker profile={profile} onChange={onChange} />
+      <LikesPicker profile={profile} onChange={onChange} texts={texts} />
     </View>
   );
 });
 
 const s = StyleSheet.create({
+  addRound: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: T.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: TAILLES.rayonCarte,

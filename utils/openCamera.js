@@ -10,7 +10,7 @@ export async function openCamera() {
   const res = await ImagePicker.launchCameraAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: false,
-    quality: 1,
+    quality: 0.6,
   });
   if (res?.canceled) return null;
   return res.assets?.[0]?.uri || null;
