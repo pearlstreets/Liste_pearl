@@ -858,19 +858,21 @@ export default function KitchenMode({ id, persons, onClose }) {
   );
 }
 
-// Mode cuisine en style Marché : fond sombre, textes crème, accents terracotta.
+// Mode cuisine en style Marché : fond brun moyen (moins sombre), textes crème,
+// accents terracotta. Crème sur le fond : contraste 8,7.
+const FOND = '#5A3D2E';
 const CREME = '#F7F1E8';
 const SECOND = '#D9BFAE';
-const AVENIR = '#5E4234';
-const CONTOUR = '#6E5143';
-const CARTE = '#4A2F21';
-const ETEINT = '#7E6252'; // bouton désactivé
+const AVENIR = '#7A5949';
+const CONTOUR = '#8A6958';
+const CARTE = '#684938';
+const ETEINT = '#A08575'; // bouton désactivé
 const ORANGE = '#E59A6B'; // attente, lisible sur fond sombre
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: MARCHE.nuit },
+  root: { flex: 1, backgroundColor: FOND },
   center: { alignItems: 'center', justifyContent: 'center', padding: 24 },
   hd: {
-    backgroundColor: MARCHE.nuit,
+    backgroundColor: FOND,
     paddingHorizontal: TAILLES.marge - 4,
     paddingTop: 6,
     paddingBottom: 12,
@@ -1102,7 +1104,7 @@ const s = StyleSheet.create({
     paddingHorizontal: TAILLES.marge,
     paddingTop: 12,
     paddingBottom: 16,
-    backgroundColor: MARCHE.nuit,
+    backgroundColor: FOND,
     borderTopWidth: 1,
     borderTopColor: AVENIR,
   },
