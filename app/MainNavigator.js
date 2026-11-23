@@ -85,7 +85,7 @@ export default function MainNavigator({ onLogout, isAuth }) {
         headerTitle: getTabName(route.name),
         tabBarLabel: ({ color, position }) => <TabLabel label={getTabName(route.name)} color={color} position={position} />,
         tabBarActiveTintColor: THEME.accent,
-        tabBarInactiveTintColor: THEME.faint,
+        tabBarInactiveTintColor: THEME.ink,
         tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28, backgroundColor: THEME.card, borderTopColor: THEME.border, borderTopWidth: StyleSheet.hairlineWidth },
         tabBarIcon: ({ focused, color, size }) => {
           const iconSet = ICONS[route.name] || { focused:"ellipse", unfocused:"ellipse-outline" };
