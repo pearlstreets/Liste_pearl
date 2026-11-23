@@ -11,7 +11,7 @@ export const Square = ({ value, onPress }) => (
 export const Radio = ({ value, onPress, style }) => {
   const Cmp = onPress ? TouchableOpacity : View;
   return (
-    <Cmp onPress={onPress} style={[styles.radioOuter, value && { borderColor: '#DCC9B8', backgroundColor: '#FFFFFF' }, style]}>
+    <Cmp onPress={onPress} style={[styles.radioOuter, value && { borderColor: '#D5DBD4', backgroundColor: '#FFFFFF' }, style]}>
       {value ? <Ionicons name="checkmark" size={14} color="#1C1917" /> : null}
     </Cmp>
   );

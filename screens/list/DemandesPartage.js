@@ -111,7 +111,7 @@ export function DemandesPartageModale({ t, partage, invite }) {
               <View key={String(r.request_id)} style={{ flexDirection:'row', alignItems:'center', paddingVertical:12, borderBottomWidth:1, borderBottomColor:THEME.border }}>
                 <Ionicons name="person-circle-outline" size={34} color={THEME.brandDark} />
                 <Text style={{ flex:1, marginHorizontal:10, fontWeight:'700', color:THEME.ink }} numberOfLines={1}>{r.from?.name || '-'}</Text>
-                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#DCC9B8', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
+                <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'accept'))} style={{ borderWidth: 1, borderColor: '#D5DBD4', backgroundColor:'#FFFFFF', borderRadius:16, paddingHorizontal:14, paddingVertical:8, marginRight:6 }}>
                   <Text style={{ color:'#1C1917', fontWeight:'700', fontSize:13 }}>{t('profile.accept', 'Accepter')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => runShareAction(() => respondRequest(r.request_id, 'reject'))} style={{ padding:6, marginRight:2 }}

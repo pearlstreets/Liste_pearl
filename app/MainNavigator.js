@@ -8,6 +8,7 @@ import { Ionicons } from "../components/ui/IoniconsSens";
 import MenusScreen from "../components/menus/MenusScreen";
 import TabLabel from "../components/menus/TabLabel";
 import { THEME } from "../components/commun/theme";
+import { MARCHE } from "../components/ui/marche";
 import { KEY_CART } from "../lib/constants";
 import AcheterScreen from "../screens/shop/AcheterScreen";
 import { ROUTE_ACHETER, ANCIENNES_ROUTES } from "./onglets";
@@ -83,9 +84,9 @@ export default function MainNavigator({ onLogout, isAuth }) {
         headerTitleAlign: "center",
         headerTitle: getTabName(route.name),
         tabBarLabel: ({ color, position }) => <TabLabel label={getTabName(route.name)} color={color} position={position} />,
-        tabBarActiveTintColor: THEME.ink,
+        tabBarActiveTintColor: THEME.accent,
         tabBarInactiveTintColor: THEME.faint,
-        tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28, backgroundColor: THEME.bg, borderTopColor: THEME.border, borderTopWidth: StyleSheet.hairlineWidth },
+        tabBarStyle: { height: 88, paddingTop: 8, paddingBottom: 28, backgroundColor: THEME.card, borderTopColor: THEME.border, borderTopWidth: StyleSheet.hairlineWidth },
         tabBarIcon: ({ focused, color, size }) => {
           const iconSet = ICONS[route.name] || { focused:"ellipse", unfocused:"ellipse-outline" };
           const name = focused ? iconSet.focused : iconSet.unfocused;
@@ -94,7 +95,7 @@ export default function MainNavigator({ onLogout, isAuth }) {
       })}
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8 } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8, backgroundColor: MARCHE.jaune, color: THEME.ink } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="acheter" component={AcheterScreen} options={{ headerShown: false }} />
       <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>
