@@ -154,6 +154,8 @@ const MemberCard = ({ m, index, onPatch, onRemove }) => {
       )}
       <View style={s.sep} />
       <Text style={s.needs}>{t('nutri.needs', { kcal: n.kcal, protein: n.protein })}</Text>
+      <Text style={s.rowHint}>{t('nutri.needsMacros', { carbs: n.carbs, fat: n.fat })}</Text>
+      {!mineur && m.goal ? <Text style={s.rowHint}>{t(`nutri.advice_${m.goal}`)}</Text> : null}
       <View style={{ alignItems: 'flex-start', marginTop: 6 }}>
         <GhostButton label={t('nutri.remove')} icon="trash-outline" danger onPress={onRemove} />
       </View>

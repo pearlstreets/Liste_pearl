@@ -19,7 +19,7 @@ import {
   TreatsPicker,
   CuisinesPicker,
 } from './ProfileForms';
-import { GOALS, ADULT_AGE } from '../../lib/menus/needs';
+import { GOALS, ADULT_AGE, memberNeeds } from '../../lib/menus/needs';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 
@@ -56,6 +56,19 @@ function PageHousehold({ profile, onChange }) {
   );
 }
 
+// Besoins du jour estimés et conseil de l'objectif choisi, sous les choix d'objectif.
+function NeedsLine({ m }) {
+  const t = useT();
+  const n = memberNeeds(m);
+  return (
+    <View style={{ marginTop: 8 }}>
+      <Text style={s.needs}>{t('nutri.needs', { kcal: n.kcal, protein: n.protein })}</Text>
+      <Text style={s.hint}>{t('nutri.needsMacros', { carbs: n.carbs, fat: n.fat })}</Text>
+      {m.goal ? <Text style={s.hint}>{t(`nutri.advice_${m.goal}`)}</Text> : null}
+    </View>
+  );
+}
+
 // Page 2 : objectif de chaque adulte (masqué sous 18 ans) et repas plaisir par semaine.
 function PageGoals({ profile, onChange }) {
   const t = useT();
@@ -82,6 +95,7 @@ function PageGoals({ profile, onChange }) {
                 />
               ))}
             </View>
+            <NeedsLine m={m} />
           </View>
         ) : null
       )}
@@ -263,6 +277,7 @@ const s = StyleSheet.create({
   title: { fontFamily: SERIF, fontSize: 26, fontWeight: '600', color: T.ink, lineHeight: 32 },
   text: { fontSize: 16, color: T.muted, marginTop: 8, lineHeight: 23 },
   hint: { fontSize: 13, color: T.muted, marginTop: 10, lineHeight: 18 },
+  needs: { fontSize: 14, fontWeight: '600', color: T.ink, marginTop: 4 },
   later: { fontSize: 13, color: T.faint, textAlign: 'center', marginTop: 24 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap' },
   card: {
