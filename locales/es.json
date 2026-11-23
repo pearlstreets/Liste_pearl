@@ -1332,7 +1332,10 @@
       "p4Text": "Comidas rápidas, presupuesto, una semana equilibrada y una guarnición de verduras.",
       "later": "Más tarde",
       "redo": "Repetir el cuestionario",
-      "redoHint": "Cuatro páginas para personalizar sus menús. Todo es opcional y se guarda sobre la marcha."
+      "redoHint": "Cuatro páginas para personalizar sus menús. Todo es opcional y se guarda sobre la marcha.",
+      "reset": "Restablecer mis respuestas",
+      "resetTitle": "¿Restablecer sus respuestas?",
+      "resetText": "Sus respuestas al cuestionario volverán a los ajustes iniciales. Su semana y sus favoritos se conservan."
     },
     "onboarding": {
       "skip": "Saltar",

@@ -1332,7 +1332,10 @@
       "p4Text": "Repas rapides, budget, semaine équilibrée et accompagnement de légumes.",
       "later": "Plus tard",
       "redo": "Refaire le questionnaire",
-      "redoHint": "Quatre pages pour personnaliser vos menus. Tout est facultatif et enregistré au fur et à mesure."
+      "redoHint": "Quatre pages pour personnaliser vos menus. Tout est facultatif et enregistré au fur et à mesure.",
+      "reset": "Réinitialiser mes réponses",
+      "resetTitle": "Réinitialiser vos réponses ?",
+      "resetText": "Vos réponses au questionnaire reviendront aux réglages de départ. Votre semaine et vos favoris sont gardés."
     },
     "onboarding": {
       "skip": "Passer",

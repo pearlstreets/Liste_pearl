@@ -1330,7 +1330,10 @@
       "p4Text": "Quick meals, budget, a balanced week and a vegetable side.",
       "later": "Later",
       "redo": "Redo the questionnaire",
-      "redoHint": "Four pages to personalize your menus. Everything is optional and saved as you go."
+      "redoHint": "Four pages to personalize your menus. Everything is optional and saved as you go.",
+      "reset": "Reset my answers",
+      "resetTitle": "Reset your answers?",
+      "resetText": "Your questionnaire answers will go back to the default settings. Your week and favourites are kept."
     },
     "onboarding": {
       "skip": "Skip",

@@ -1330,7 +1330,10 @@
       "p4Text": "Snabba måltider, budget, en balanserad vecka och ett grönsakstillbehör.",
       "later": "Senare",
       "redo": "Gör frågeformuläret igen",
-      "redoHint": "Fyra sidor för att anpassa dina menyer. Allt är frivilligt och sparas efter hand."
+      "redoHint": "Fyra sidor för att anpassa dina menyer. Allt är frivilligt och sparas efter hand.",
+      "reset": "Återställ mina svar",
+      "resetTitle": "Återställa era svar?",
+      "resetText": "Era svar i frågeformuläret återgår till standardinställningarna. Er vecka och era favoriter sparas."
     },
     "onboarding": {
       "skip": "Hoppa över",

@@ -521,6 +521,12 @@ export const DietSection = memo(function DietSection({
     return out;
   }, [q, ingredients, texts, profile.excludedIngredients]);
   const ingExcluded = profile.excludedIngredients.filter((k) => !ALLERGENS.includes(k));
+  // Bouton + et touche Terminé : ajoute le premier ingrédient trouvé.
+  const addFirst = () => {
+    if (!found.length) return;
+    toggleIn('excludedIngredients', found[0].key);
+    setQ('');
+  };
   return (
     <View>
       <Text style={s.label}>{t('diet.diets')}</Text>
@@ -548,18 +554,34 @@ export const DietSection = memo(function DietSection({
       {!compact ? (
         <>
           <Text style={s.label}>{t('diet.dislikes')}</Text>
-          <Field
-            value={q}
-            onChangeText={setQ}
-            placeholder={t('diet.dislikesPlaceholder')}
-            autoCorrect={false}
-            returnKeyType="search"
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>
+              <Field
+                value={q}
+                onChangeText={setQ}
+                placeholder={t('diet.dislikesPlaceholder')}
+                autoCorrect={false}
+                returnKeyType="done"
+                onSubmitEditing={addFirst}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={addFirst}
+              disabled={!found.length}
+              activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel={t('diet.dislikes')}
+              style={[s.addRound, !found.length && { opacity: 0.35 }]}
+            >
+              <Ionicons name="add" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
           {found.length ? (
             <View style={[s.wrap, { marginTop: 10 }]}>
               {found.map((f) => (
                 <Chip
                   key={f.key}
+                  icon="add"
                   label={f.name}
                   on={false}
                   onPress={() => {
@@ -807,6 +829,15 @@ export const PrefsSection = memo(function PrefsSection({ profile, onChange, text
 });
 
 const s = StyleSheet.create({
+  addRound: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: T.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: TAILLES.rayonCarte,

@@ -1330,7 +1330,10 @@
       "p4Text": "Schnelle Gerichte, Budget, eine ausgewogene Woche und eine Gemüsebeilage.",
       "later": "Später",
       "redo": "Fragebogen wiederholen",
-      "redoHint": "Vier Seiten, um Ihre Menüs anzupassen. Alles ist freiwillig und wird laufend gespeichert."
+      "redoHint": "Vier Seiten, um Ihre Menüs anzupassen. Alles ist freiwillig und wird laufend gespeichert.",
+      "reset": "Meine Antworten zurücksetzen",
+      "resetTitle": "Antworten zurücksetzen?",
+      "resetText": "Ihre Antworten im Fragebogen werden auf die Standardeinstellungen zurückgesetzt. Ihre Woche und Favoriten bleiben erhalten."
     },
     "onboarding": {
       "skip": "Überspringen",

@@ -1332,7 +1332,10 @@
       "p4Text": "Refeições rápidas, orçamento, uma semana equilibrada e um acompanhamento de legumes.",
       "later": "Mais tarde",
       "redo": "Refazer o questionário",
-      "redoHint": "Quatro páginas para personalizar os seus menus. Tudo é opcional e guardado à medida."
+      "redoHint": "Quatro páginas para personalizar os seus menus. Tudo é opcional e guardado à medida.",
+      "reset": "Repor as minhas respostas",
+      "resetTitle": "Repor as suas respostas?",
+      "resetText": "As suas respostas ao questionário voltam às definições iniciais. A sua semana e os favoritos são mantidos."
     },
     "onboarding": {
       "skip": "Saltar",

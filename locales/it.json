@@ -1332,7 +1332,10 @@
       "p4Text": "Pasti veloci, budget, una settimana equilibrata e un contorno di verdure.",
       "later": "Più tardi",
       "redo": "Rifare il questionario",
-      "redoHint": "Quattro pagine per personalizzare i Suoi menu. Tutto è facoltativo e salvato man mano."
+      "redoHint": "Quattro pagine per personalizzare i Suoi menu. Tutto è facoltativo e salvato man mano.",
+      "reset": "Reimpostare le mie risposte",
+      "resetTitle": "Reimpostare le risposte?",
+      "resetText": "Le sue risposte al questionario torneranno alle impostazioni iniziali. La settimana e i preferiti restano."
     },
     "onboarding": {
       "skip": "Salta",

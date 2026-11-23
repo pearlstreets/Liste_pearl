@@ -1330,7 +1330,10 @@
       "p4Text": "Snelle maaltijden, budget, een evenwichtige week en een groentebijgerecht.",
       "later": "Later",
       "redo": "Vragenlijst opnieuw invullen",
-      "redoHint": "Vier pagina's om uw menu's aan te passen. Alles is optioneel en wordt direct bewaard."
+      "redoHint": "Vier pagina's om uw menu's aan te passen. Alles is optioneel en wordt direct bewaard.",
+      "reset": "Mijn antwoorden resetten",
+      "resetTitle": "Uw antwoorden resetten?",
+      "resetText": "Uw antwoorden op de vragenlijst gaan terug naar de standaardinstellingen. Uw week en favorieten blijven bewaard."
     },
     "onboarding": {
       "skip": "Overslaan",

@@ -2,10 +2,10 @@
 // aussitôt (rien ne se perd si l'app est fermée au milieu). Proposé à la première ouverture (Onboarding.js)
 // et refaisable depuis les réglages. Mêmes blocs que l'écran Réglages (ProfileForms.js).
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
 import { T, SERIF, TAILLES } from './theme';
-import { PrimaryButton, GhostButton, Chip } from './ui';
+import { PrimaryButton, GhostButton } from './ui';
 import {
   HouseholdModeChips,
   HouseholdCounts,
@@ -22,6 +22,7 @@ import {
   FridgeSection,
 } from './ProfileForms';
 import { GOALS, ADULT_AGE, memberNeeds } from '../../lib/menus/needs';
+import { defaultProfile, defaultPrefs } from '../../lib/menus/profile';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 
@@ -72,7 +73,43 @@ function NeedsLine({ m }) {
 }
 
 // Page 2 : objectif de chaque adulte (masqué sous 18 ans) et repas plaisir par semaine.
-function PageGoals({ profile, onChange }) {
+const GOAL_ICONS = {
+  perdre: 'trending-down-outline',
+  maintenir: 'scale-outline',
+  muscler: 'barbell-outline',
+  prendre: 'trending-up-outline',
+};
+
+// Objectifs en grandes cartes illustrées, deux par ligne : un appui choisit, un second retire.
+function GoalGrid({ value, onPick }) {
+  const t = useT();
+  return (
+    <View style={s.goalGrid}>
+      {GOALS.map((g) => {
+        const on = value === g;
+        return (
+          <TouchableOpacity
+            key={g}
+            activeOpacity={0.85}
+            onPress={() => onPick(on ? null : g)}
+            style={[s.goalCard, on && s.goalCardOn]}
+            accessibilityRole="button"
+            accessibilityState={{ selected: on }}
+          >
+            <View style={[s.goalIcon, on && s.goalIconOn]}>
+              <Ionicons name={GOAL_ICONS[g]} size={22} color={on ? T.ink : T.brandDark} />
+            </View>
+            <Text style={[s.goalLabel, on && s.goalLabelOn]} numberOfLines={2}>
+              {t(`nutri.goal_${g}`)}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+function PageGoals({ profile, onChange, onPersonalize }) {
   const t = useT();
   const perso = profile.mode !== 'simple' && Array.isArray(profile.members) && profile.members.length > 0;
   const members = perso ? profile.members : [];
@@ -81,35 +118,46 @@ function PageGoals({ profile, onChange }) {
     onChange({ members: members.map((m) => (m.id === id ? { ...m, goal } : m)) });
   return (
     <View>
-      {!perso ? <Text style={s.hint}>{t('questionnaire.goalNeedsPerso')}</Text> : null}
+      {!perso ? (
+        <View style={[s.card, s.persoCard]}>
+          <View style={s.persoIcons}>
+            {GOALS.map((g) => (
+              <View key={g} style={s.persoIcon}>
+                <Ionicons name={GOAL_ICONS[g]} size={20} color={T.brandDark} />
+              </View>
+            ))}
+          </View>
+          <Text style={s.persoText}>{t('questionnaire.goalNeedsPerso')}</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={onPersonalize} style={s.persoBtn}>
+            <Ionicons name="people-outline" size={18} color="#fff" style={{ marginRight: 8 }} />
+            <Text style={s.persoBtnTxt}>{t('questionnaire.modePerso')}</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
       {members.map((m, i) =>
         adult(m) ? (
           <View key={m.id} style={s.card}>
             <Text style={s.cardTitle}>{m.name.trim() || t('nutri.person', { n: i + 1 })}</Text>
             <Text style={s.cardHint}>{t('nutri.goal')}</Text>
-            <View style={s.wrap}>
-              {GOALS.map((g) => (
-                <Chip
-                  key={g}
-                  label={t(`nutri.goal_${g}`)}
-                  on={m.goal === g}
-                  onPress={() => setGoal(m.id, m.goal === g ? null : g)}
-                />
-              ))}
-            </View>
+            <GoalGrid value={m.goal} onPick={(g) => setGoal(m.id, g)} />
             <NeedsLine m={m} />
           </View>
         ) : null
       )}
       {perso && !members.some(adult) ? <Text style={s.hint}>{t('nutri.goalMinor')}</Text> : null}
-      <TreatsPicker profile={profile} onChange={onChange} />
+      <View style={s.card}>
+        <View style={s.treatIcon}>
+          <Ionicons name="pizza-outline" size={22} color={T.brandDark} />
+        </View>
+        <TreatsPicker profile={profile} onChange={onChange} />
+      </View>
     </View>
   );
 }
 
 export default function Questionnaire({ onboarding, onFinish, onClose }) {
   const t = useT();
-  const { profile, updateProfile, startOnboarding, texts, ingredients, fridge, setFridge } =
+  const { profile, updateProfile, startOnboarding, texts, ingredients, fridge, setFridge, ready } =
     useMenus();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -124,6 +172,43 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
     },
     [onboarding, startOnboarding, updateProfile]
   );
+
+  // Jamais réglé (aucune préférence enregistrée) : budget, semaine équilibrée et légumes allumés par défaut.
+  const defautsPoses = useRef(false);
+  useEffect(() => {
+    if (!ready || defautsPoses.current) return;
+    defautsPoses.current = true;
+    if (profile && profile.prefs === undefined) {
+      change({
+        ...(profile.budget == null ? { budget: ON_PAR_DEFAUT.budget } : null),
+        prefs: { ...defaultPrefs(), ...ON_PAR_DEFAUT.prefs },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
+
+  // Réinitialiser les réponses du questionnaire (foyer, objectifs, goûts, frigo, quotidien), sans toucher
+  // à la semaine, aux favoris ni à l'historique.
+  const confirmResetAnswers = () =>
+    Alert.alert(t('questionnaire.resetTitle'), t('questionnaire.resetText'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('settings.resetAction'),
+        style: 'destructive',
+        onPress: async () => {
+          await change({
+            ...defaultProfile(),
+            ...ON_PAR_DEFAUT,
+            mode: 'simple',
+            members: [],
+            dormant: [],
+            prefs: { ...defaultPrefs(), ...ON_PAR_DEFAUT.prefs },
+          });
+          if (setFridge) await setFridge([]);
+          setStep(0);
+        },
+      },
+    ]);
   const last = step === PAGES.length - 1;
   const pg = PAGES[step];
 
@@ -191,7 +276,16 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
         <Text style={s.text}>{t(pg.text)}</Text>
         <View style={{ marginTop: 22 }}>
           {step === 0 ? <PageHousehold profile={profile} onChange={change} /> : null}
-          {step === 1 ? <PageGoals profile={profile} onChange={change} /> : null}
+          {step === 1 ? (
+            <PageGoals
+              profile={profile}
+              onChange={change}
+              onPersonalize={() => {
+                change({ mode: 'perso' });
+                setStep(0);
+              }}
+            />
+          ) : null}
           {step === 2 ? (
             <View>
               <CuisinesPicker profile={profile} onChange={change} />
@@ -226,6 +320,15 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
               ) : null}
             </View>
           ) : null}
+          <TouchableOpacity
+            style={s.resetBtn}
+            onPress={confirmResetAnswers}
+            accessibilityRole="button"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Ionicons name="refresh" size={16} color={T.ink} />
+            <Text style={s.resetBtnTxt}>{t('questionnaire.reset')}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={s.footer}>
@@ -255,6 +358,9 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
     </View>
   );
 }
+
+// Réglages allumés par défaut dans le questionnaire.
+const ON_PAR_DEFAUT = { budget: 80, prefs: { balanced: true, sides: true } };
 
 const s = StyleSheet.create({
   top: {
@@ -300,6 +406,61 @@ const s = StyleSheet.create({
     ...T.shadowSm,
   },
   cardTitle: { fontSize: 16, fontWeight: '600', color: T.ink },
+  goalGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  goalCard: {
+    width: '48.5%',
+    minHeight: 96,
+    backgroundColor: '#fff',
+    borderRadius: TAILLES.rayonCarte,
+    borderWidth: 1,
+    borderColor: T.border,
+    padding: 12,
+    marginBottom: 10,
+  },
+  goalCardOn: { backgroundColor: T.ink, borderColor: T.ink },
+  goalIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: T.brandSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  goalIconOn: { backgroundColor: '#fff' },
+  goalLabel: { fontSize: 15, fontWeight: '600', color: T.ink, lineHeight: 20 },
+  goalLabelOn: { color: '#fff' },
+  persoCard: { alignItems: 'center', paddingVertical: 22 },
+  persoIcons: { flexDirection: 'row', marginBottom: 14 },
+  persoIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: T.brandSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
+  },
+  persoText: { fontSize: 15, color: T.ink, textAlign: 'center', lineHeight: 21 },
+  persoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: T.ink,
+    borderRadius: 999,
+    paddingHorizontal: 22,
+    height: 46,
+    marginTop: 16,
+  },
+  persoBtnTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  treatIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: T.brandSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
   cardHint: { fontSize: 13, color: T.muted, marginTop: 2, marginBottom: 10, lineHeight: 18 },
   footer: {
     paddingHorizontal: TAILLES.marge,
@@ -309,5 +470,19 @@ const s = StyleSheet.create({
     borderTopColor: T.border,
     backgroundColor: T.bg,
   },
+  resetBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 24,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: T.line || '#E5E5E5',
+    backgroundColor: '#FFFFFF',
+  },
+  resetBtnTxt: { marginLeft: 6, color: T.ink, fontSize: 14, fontWeight: '600' },
   footerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 });
