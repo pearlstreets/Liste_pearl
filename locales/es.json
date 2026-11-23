@@ -1968,6 +1968,25 @@
         "source": "Fuente: tabla Ciqual, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Lo que le gusta",
+      "proteins": "Carne, pescado y proteínas",
+      "bases": "Féculas",
+      "veg": "Verduras",
+      "fridgeHint": "Los platos con estos ingredientes van primero en su semana.",
+      "p_volaille": "Aves",
+      "p_boeuf": "Ternera y buey",
+      "p_porc": "Cerdo",
+      "p_agneau": "Cordero",
+      "p_poisson": "Pescado y marisco",
+      "p_oeufs": "Huevos",
+      "p_legumineuses": "Legumbres y tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Arroz",
+      "b_pdt": "Patatas",
+      "b_cereales": "Sémola, bulgur, quinoa",
+      "b_pain": "Pan, wraps, pizza"
     }
   },
   "counts": {

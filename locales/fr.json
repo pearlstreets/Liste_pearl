@@ -1962,6 +1962,25 @@
         "source": "Source : table Ciqual, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Ce que vous aimez",
+      "proteins": "Viandes, poissons et protéines",
+      "bases": "Féculents",
+      "veg": "Légumes",
+      "fridgeHint": "Les plats qui utilisent ces ingrédients passent en premier dans votre semaine.",
+      "p_volaille": "Volaille",
+      "p_boeuf": "Bœuf et veau",
+      "p_porc": "Porc",
+      "p_agneau": "Agneau",
+      "p_poisson": "Poisson et fruits de mer",
+      "p_oeufs": "Œufs",
+      "p_legumineuses": "Légumineuses et tofu",
+      "b_pates": "Pâtes",
+      "b_riz": "Riz",
+      "b_pdt": "Pommes de terre",
+      "b_cereales": "Semoule, boulgour, quinoa",
+      "b_pain": "Pain, wraps, pizza"
     }
   },
   "counts": {

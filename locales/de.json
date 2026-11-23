@@ -1940,6 +1940,25 @@
         "source": "Quelle: Ciqual-Tabelle, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Was Sie mögen",
+      "proteins": "Fleisch, Fisch und Eiweiß",
+      "bases": "Sättigungsbeilagen",
+      "veg": "Gemüse",
+      "fridgeHint": "Gerichte mit diesen Zutaten kommen zuerst in Ihre Woche.",
+      "p_volaille": "Geflügel",
+      "p_boeuf": "Rind und Kalb",
+      "p_porc": "Schwein",
+      "p_agneau": "Lamm",
+      "p_poisson": "Fisch und Meeresfrüchte",
+      "p_oeufs": "Eier",
+      "p_legumineuses": "Hülsenfrüchte und Tofu",
+      "b_pates": "Nudeln",
+      "b_riz": "Reis",
+      "b_pdt": "Kartoffeln",
+      "b_cereales": "Couscous, Bulgur, Quinoa",
+      "b_pain": "Brot, Wraps, Pizza"
     }
   },
   "counts": {

@@ -1968,6 +1968,25 @@
         "source": "Fonte: tabella Ciqual, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Cosa le piace",
+      "proteins": "Carne, pesce e proteine",
+      "bases": "Amidi",
+      "veg": "Verdure",
+      "fridgeHint": "I piatti con questi ingredienti vengono prima nella sua settimana.",
+      "p_volaille": "Pollame",
+      "p_boeuf": "Manzo e vitello",
+      "p_porc": "Maiale",
+      "p_agneau": "Agnello",
+      "p_poisson": "Pesce e frutti di mare",
+      "p_oeufs": "Uova",
+      "p_legumineuses": "Legumi e tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Riso",
+      "b_pdt": "Patate",
+      "b_cereales": "Semola, bulgur, quinoa",
+      "b_pain": "Pane, piadine, pizza"
     }
   },
   "counts": {

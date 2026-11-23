@@ -1905,6 +1905,25 @@
         "source": "出典：Ciqual食品成分表（Anses）",
         "energyValue": "{{kj}}kJ / {{kcal}}kcal"
       }
+    },
+    "likes": {
+      "title": "好きなもの",
+      "proteins": "肉・魚・たんぱく質",
+      "bases": "主食",
+      "veg": "野菜",
+      "fridgeHint": "これらの食材を使う料理が一週間の献立で優先されます。",
+      "p_volaille": "鶏肉など",
+      "p_boeuf": "牛肉・子牛肉",
+      "p_porc": "豚肉",
+      "p_agneau": "羊肉",
+      "p_poisson": "魚介",
+      "p_oeufs": "卵",
+      "p_legumineuses": "豆類・豆腐",
+      "b_pates": "パスタ",
+      "b_riz": "ご飯",
+      "b_pdt": "じゃがいも",
+      "b_cereales": "クスクス・ブルグル・キヌア",
+      "b_pain": "パン・ラップ・ピザ"
     }
   },
   "counts": {

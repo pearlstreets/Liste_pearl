@@ -1905,6 +1905,25 @@
         "source": "来源：Ciqual 成分表，Anses",
         "energyValue": "{{kj}} 千焦 / {{kcal}} 千卡"
       }
+    },
+    "likes": {
+      "title": "您喜欢的",
+      "proteins": "肉类、鱼类和蛋白质",
+      "bases": "主食",
+      "veg": "蔬菜",
+      "fridgeHint": "使用这些食材的菜会优先排进您的一周。",
+      "p_volaille": "禽肉",
+      "p_boeuf": "牛肉和小牛肉",
+      "p_porc": "猪肉",
+      "p_agneau": "羊肉",
+      "p_poisson": "鱼和海鲜",
+      "p_oeufs": "鸡蛋",
+      "p_legumineuses": "豆类和豆腐",
+      "b_pates": "意面",
+      "b_riz": "米饭",
+      "b_pdt": "土豆",
+      "b_cereales": "粗麦粉、布格麦、藜麦",
+      "b_pain": "面包、卷饼、披萨"
     }
   },
   "counts": {

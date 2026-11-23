@@ -1942,6 +1942,25 @@
         "source": "Bron: Ciqual-tabel, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Wat u lekker vindt",
+      "proteins": "Vlees, vis en eiwit",
+      "bases": "Zetmeel",
+      "veg": "Groenten",
+      "fridgeHint": "Gerechten met deze ingrediënten komen eerst in uw week.",
+      "p_volaille": "Gevogelte",
+      "p_boeuf": "Rund en kalf",
+      "p_porc": "Varken",
+      "p_agneau": "Lam",
+      "p_poisson": "Vis en zeevruchten",
+      "p_oeufs": "Eieren",
+      "p_legumineuses": "Peulvruchten en tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Rijst",
+      "b_pdt": "Aardappelen",
+      "b_cereales": "Couscous, bulgur, quinoa",
+      "b_pain": "Brood, wraps, pizza"
     }
   },
   "counts": {

@@ -1944,6 +1944,25 @@
         "source": "Source: Ciqual table, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "What you like",
+      "proteins": "Meat, fish and protein",
+      "bases": "Starches",
+      "veg": "Vegetables",
+      "fridgeHint": "Dishes that use these ingredients come first in your week.",
+      "p_volaille": "Poultry",
+      "p_boeuf": "Beef and veal",
+      "p_porc": "Pork",
+      "p_agneau": "Lamb",
+      "p_poisson": "Fish and seafood",
+      "p_oeufs": "Eggs",
+      "p_legumineuses": "Pulses and tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Rice",
+      "b_pdt": "Potatoes",
+      "b_cereales": "Couscous, bulgur, quinoa",
+      "b_pain": "Bread, wraps, pizza"
     }
   },
   "counts": {

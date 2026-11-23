@@ -12,7 +12,14 @@ import {
   ADULT_AGE,
   MEMBERS_MAX,
 } from '../../lib/menus/needs';
-import { cleanPrefs, QUICK_CHOICES, TREAT_CHOICES } from '../../lib/menus/profile';
+import {
+  cleanPrefs,
+  QUICK_CHOICES,
+  TREAT_CHOICES,
+  LIKE_PROTEINS,
+  LIKE_BASES,
+  LIKE_VEG,
+} from '../../lib/menus/profile';
 import { CUISINES } from '../../lib/menus/healthy';
 import { T, TAILLES } from './theme';
 import { MARCHE } from '../ui/marche';
@@ -671,13 +678,102 @@ export const CuisinesPicker = memo(function CuisinesPicker({ profile, onChange }
   );
 });
 
-export const PrefsSection = memo(function PrefsSection({ profile, onChange }) {
+// Ce que l'on aime (prefs.likes) : protéines, féculents et légumes proposés plus souvent dans la semaine.
+export const LikesPicker = memo(function LikesPicker({ profile, onChange, texts }) {
+  const t = useT();
+  const [pf, set] = usePrefs(profile, onChange);
+  const toggle = (k) =>
+    set({ likes: pf.likes.includes(k) ? pf.likes.filter((x) => x !== k) : [...pf.likes, k] });
+  const vegName = (k) => (texts && texts.ingredientName ? texts.ingredientName(k) : k);
+  const group = (title, list, label) => (
+    <>
+      <Text style={s.fieldLabel}>{title}</Text>
+      <View style={s.wrap}>
+        {list.map((k) => (
+          <Chip key={k} label={label(k)} on={pf.likes.includes(k)} onPress={() => toggle(k)} />
+        ))}
+      </View>
+    </>
+  );
+  return (
+    <View>
+      <Text style={s.label}>{t('likes.title')}</Text>
+      <Text style={[s.rowHint, { marginTop: -6 }]}>{t('prefs.cuisinesHint')}</Text>
+      {group(t('likes.proteins'), LIKE_PROTEINS, (k) => t(`likes.p_${k}`))}
+      {group(t('likes.bases'), LIKE_BASES, (k) => t(`likes.b_${k}`))}
+      {group(t('likes.veg'), LIKE_VEG, vegName)}
+    </View>
+  );
+});
+
+// Ce qu'il y a dans le frigo (même liste que Découvrir > Frigo) : les plats qui l'utilisent passent devant.
+export const FridgeSection = memo(function FridgeSection({ fridge, setFridge, texts, ingredients }) {
+  const t = useT();
+  const [q, setQ] = useState('');
+  const list = Array.isArray(fridge) ? fridge : [];
+  const found = useMemo(() => {
+    const n = norm(q);
+    if (n.length < 2 || !texts) return [];
+    const out = [];
+    for (const key of Object.keys(ingredients || {})) {
+      if (list.includes(key)) continue;
+      if (norm(texts.ingredientName(key)).includes(n)) out.push(key);
+      if (out.length >= 8) break;
+    }
+    return out;
+  }, [q, ingredients, texts, list]);
+  const name = (k) => (texts && texts.ingredientName ? texts.ingredientName(k) : k);
+  return (
+    <View>
+      <Text style={s.label}>{t('fridge.mine')}</Text>
+      <Text style={[s.rowHint, { marginTop: -6, marginBottom: 10 }]}>{t('likes.fridgeHint')}</Text>
+      <Field
+        value={q}
+        onChangeText={setQ}
+        placeholder={t('fridge.search')}
+        autoCorrect={false}
+        returnKeyType="search"
+      />
+      {found.length ? (
+        <View style={[s.wrap, { marginTop: 10 }]}>
+          {found.map((k) => (
+            <Chip
+              key={k}
+              label={name(k)}
+              on={false}
+              onPress={() => {
+                setFridge([...list, k]);
+                setQ('');
+              }}
+            />
+          ))}
+        </View>
+      ) : null}
+      {list.length ? (
+        <View style={[s.wrap, { marginTop: 10 }]}>
+          {list.map((k) => (
+            <Chip
+              key={k}
+              icon="close"
+              label={name(k)}
+              on
+              onPress={() => setFridge(list.filter((x) => x !== k))}
+            />
+          ))}
+        </View>
+      ) : null}
+    </View>
+  );
+});
+
+export const PrefsSection = memo(function PrefsSection({ profile, onChange, texts }) {
   return (
     <View>
       <PrefsSwitches profile={profile} onChange={onChange} />
       <QuickPicker profile={profile} onChange={onChange} />
       <TreatsPicker profile={profile} onChange={onChange} />
       <CuisinesPicker profile={profile} onChange={onChange} />
+      <LikesPicker profile={profile} onChange={onChange} texts={texts} />
     </View>
   );
 });

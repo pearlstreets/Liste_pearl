@@ -329,14 +329,21 @@ describe('prefs : assainies, rangées dans household', () => {
     expect(cleanPrefs(undefined)).toEqual(defaultPrefs());
     expect(
       cleanPrefs({ balanced: 'oui', quick: 25, cuisines: ['asie', 'asie', 'mars', 3], treats: 7 })
-    ).toEqual({ balanced: false, quick: 0, cuisines: ['asie'], sides: false, treats: null });
+    ).toEqual({ balanced: false, quick: 0, cuisines: ['asie'], sides: false, treats: null, likes: [] });
     expect(cleanPrefs({ balanced: true, quick: '30', sides: true, treats: '0' })).toEqual({
       balanced: true,
       quick: 30,
       cuisines: [],
       sides: true,
       treats: 0,
+      likes: [],
     });
+    expect(cleanPrefs({ likes: ['poisson', 'poisson', 'riz', 'tomate', 'mars', 3] }).likes).toEqual([
+      'poisson',
+      'riz',
+      'tomate',
+    ]);
+    expect(prefsActive({ ...defaultPrefs(), likes: ['riz'] })).toBe(true);
     expect(QUICK_CHOICES).toEqual([0, 20, 30]);
     expect(TREAT_CHOICES).toEqual([0, 1, 2, 3]);
     expect(prefsActive(defaultPrefs())).toBe(false);
@@ -452,5 +459,31 @@ describe('weekTargets', () => {
         {}
       ).days[1].meals[0].free
     ).toBe(true);
+  });
+});
+
+describe('goûts et frigo : la semaine les suit', () => {
+  const count = (p, pred) => served(p).filter((m) => pred(rec(m.recipeId))).length;
+  test('protéine aimée plus souvent, jamais de plantage', () => {
+    let sans = 0;
+    let avec = 0;
+    for (const seed of [1, 2, 3]) {
+      const isFish = (r) => !!r && mealTraits(r).protein === 'poisson';
+      sans += count(plan({ adults: 2 }, seed), isFish);
+      avec += count(plan({ adults: 2, prefs: { likes: ['poisson'] } }, seed), isFish);
+    }
+    expect(avec).toBeLessThan(21); // aimé ne veut pas dire à chaque repas
+    expect(avec).toBeGreaterThan(sans);
+  });
+  test('ingrédients du frigo utilisés plus souvent', () => {
+    let sans = 0;
+    let avec = 0;
+    const uses = (r) => !!r && (r.ingredients || []).some((i) => i && i.key === 'courgette');
+    for (const seed of [1, 2, 3]) {
+      sans += count(plan({ adults: 2 }, seed), uses);
+      avec += count(plan({ adults: 2, fridge: ['courgette', 42, null] }, seed), uses);
+    }
+    expect(avec).toBeLessThan(21); // aimé ne veut pas dire à chaque repas
+    expect(avec).toBeGreaterThan(sans);
   });
 });

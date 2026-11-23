@@ -18,6 +18,8 @@ import {
   QuickPicker,
   TreatsPicker,
   CuisinesPicker,
+  LikesPicker,
+  FridgeSection,
 } from './ProfileForms';
 import { GOALS, ADULT_AGE, memberNeeds } from '../../lib/menus/needs';
 import { useMenus } from './MenusContext';
@@ -107,7 +109,8 @@ function PageGoals({ profile, onChange }) {
 
 export default function Questionnaire({ onboarding, onFinish, onClose }) {
   const t = useT();
-  const { profile, updateProfile, startOnboarding, texts, ingredients } = useMenus();
+  const { profile, updateProfile, startOnboarding, texts, ingredients, fridge, setFridge } =
+    useMenus();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const scroll = useRef(null);
@@ -192,6 +195,13 @@ export default function Questionnaire({ onboarding, onFinish, onClose }) {
           {step === 2 ? (
             <View>
               <CuisinesPicker profile={profile} onChange={change} />
+              <LikesPicker profile={profile} onChange={change} texts={texts} />
+              <FridgeSection
+                fridge={fridge}
+                setFridge={setFridge}
+                texts={texts}
+                ingredients={ingredients}
+              />
               <DietSection
                 profile={profile}
                 onChange={change}
