@@ -1426,6 +1426,7 @@
       "regenerate": "Пересобрать все",
       "estimated": "Оценочный бюджет",
       "budget": "Ваш бюджет",
+      "budgetChange": "Изменить ваш бюджет",
       "noBudget": "Бюджет не установлен",
       "overBudget": "{{amount}} сверх бюджета",
       "underBudget": "{{amount}} ниже бюджета",
@@ -1743,6 +1744,12 @@
         "france": "Франция",
         "ameriques": "Америка",
         "afrique": "Африка"
+      },
+      "suggest": {
+        "season": "Сезонное",
+        "quick30": "Готово за 30 мин",
+        "budget": "Бюджетно",
+        "balanced": "Сбалансированно"
       }
     },
     "fridge": {
