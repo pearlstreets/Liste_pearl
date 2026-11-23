@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "This item will be removed from your list.",
     "markBought": "Mark as bought",
     "rejectRequest": "Decline request",
-    "blockUser": "Block this person"
+    "blockUser": "Block this person",
+    "scanReading": "Reading the photo…",
+    "scanFoundTitle": "Items found",
+    "scanAdd": "Add ({{count}})",
+    "scanNothing": "No items could be read from this photo. Try again with more light.",
+    "scanLimit": "You have reached today's scan limit. Please try again tomorrow.",
+    "scanImage": "This photo could not be read. Please try another photo.",
+    "scanUnavailable": "Photo reading is temporarily unavailable. Please try again later.",
+    "scanNetwork": "Unable to connect. Please check your network and try again.",
+    "scanLoginTitle": "Sign in required",
+    "scanLoginMsg": "Sign in so your photos can be read and the items added to your list."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",
@@ -1195,6 +1205,7 @@
       }
     },
     "slot": {
+      "matin": "Breakfast",
       "midi": "Lunch",
       "soir": "Dinner"
     },
@@ -1232,9 +1243,15 @@
       "goal": "Goal",
       "goal_perdre": "Lose weight",
       "goal_maintenir": "Maintain weight",
-      "goal_prendre": "Build muscle",
+      "goal_prendre": "Bulk up",
+      "goal_muscler": "Build muscle, stay lean",
       "goalMinor": "Under 18, no goal, only growth needs count.",
       "needs": "About {{kcal}} kcal and {{protein}} g of protein per day",
+      "needsMacros": "Carbs {{carbs}} g and fat {{fat}} g per day",
+      "advice_perdre": "A small deficit of about 18 % and high protein to keep your muscle. Aim for about 0.5 kg less per week.",
+      "advice_maintenir": "Balanced intake to keep your weight.",
+      "advice_muscler": "Balanced intake and high protein (2 g per kg), with 3 strength sessions per week.",
+      "advice_prendre": "A small surplus of about 12 % and high protein. Aim for 0.25 to 0.5 kg more per week.",
       "remove": "Remove",
       "addAdult": "Add an adult",
       "addChild": "Add a child",
@@ -1247,6 +1264,8 @@
       "weekdays": "Weekdays only",
       "cantine": "Canteen or meals eaten out",
       "cantineHint": "Weekday lunches not planned",
+      "breakfast": "Breakfast",
+      "breakfastHint": "A morning meal on top of lunch and dinner, adjustable day by day",
       "leftovers": "Use leftovers",
       "leftoversHint": "A dish cooked as a double portion serves for a second meal"
     },
@@ -1311,7 +1330,10 @@
       "p4Text": "Quick meals, budget, a balanced week and a vegetable side.",
       "later": "Later",
       "redo": "Redo the questionnaire",
-      "redoHint": "Four pages to personalize your menus. Everything is optional and saved as you go."
+      "redoHint": "Four pages to personalize your menus. Everything is optional and saved as you go.",
+      "reset": "Reset my answers",
+      "resetTitle": "Reset your answers?",
+      "resetText": "Your questionnaire answers will go back to the default settings. Your week and favourites are kept."
     },
     "onboarding": {
       "skip": "Skip",
@@ -1938,6 +1960,25 @@
         "source": "Source: Ciqual table, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "What you like",
+      "proteins": "Meat, fish and protein",
+      "bases": "Starches",
+      "veg": "Vegetables",
+      "fridgeHint": "Dishes that use these ingredients come first in your week.",
+      "p_volaille": "Poultry",
+      "p_boeuf": "Beef and veal",
+      "p_porc": "Pork",
+      "p_agneau": "Lamb",
+      "p_poisson": "Fish and seafood",
+      "p_oeufs": "Eggs",
+      "p_legumineuses": "Pulses and tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Rice",
+      "b_pdt": "Potatoes",
+      "b_cereales": "Couscous, bulgur, quinoa",
+      "b_pain": "Bread, wraps, pizza"
     }
   },
   "counts": {

@@ -191,8 +191,10 @@ export function MenusProvider({ children }) {
     []
   );
   const profileRef = useRef(profile);
+  const fridgeRef = useRef(fridge);
   planRef.current = plan;
   profileRef.current = profile;
+  fridgeRef.current = fridge;
 
   // Fusion distante : une modification faite pendant la relecture la rend périmée, on recommence.
   const editSeq = useRef(0);
@@ -338,7 +340,8 @@ export function MenusProvider({ children }) {
   }, [load, flushPhotos]);
 
   const planProfile = useCallback(
-    () => ({ ...profileRef.current, month: new Date().getMonth() }),
+    // frigo : les plats qui utilisent ce qui est déjà là passent devant (planner.js, fridgeScore)
+    () => ({ ...profileRef.current, month: new Date().getMonth(), fridge: fridgeRef.current }),
     []
   );
 

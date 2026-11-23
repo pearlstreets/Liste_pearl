@@ -71,7 +71,17 @@
     "deleteThisItemConfirm": "Questo articolo verrà rimosso dalla sua lista.",
     "markBought": "Segna come acquistato",
     "rejectRequest": "Rifiuta la richiesta",
-    "blockUser": "Blocca questa persona"
+    "blockUser": "Blocca questa persona",
+    "scanReading": "Lettura della foto…",
+    "scanFoundTitle": "Articoli trovati",
+    "scanAdd": "Aggiungi ({{count}})",
+    "scanNothing": "Nessun articolo letto in questa foto. Riprovi con più luce.",
+    "scanLimit": "Ha raggiunto il limite di scansioni di oggi. Riprovi domani.",
+    "scanImage": "Impossibile leggere questa foto. Provi con un'altra foto.",
+    "scanUnavailable": "La lettura delle foto è momentaneamente non disponibile. Riprovi più tardi.",
+    "scanNetwork": "Connessione impossibile. Verifichi la rete e riprovi.",
+    "scanLoginTitle": "Accesso richiesto",
+    "scanLoginMsg": "Acceda per far leggere le sue foto e aggiungere gli articoli alla sua lista."
   },
   "productsScreen": {
     "clickAndCollect": "Ordinare e ritirare",
@@ -1197,6 +1207,7 @@
       }
     },
     "slot": {
+      "matin": "Colazione",
       "midi": "Pranzo",
       "soir": "Cena"
     },
@@ -1234,9 +1245,15 @@
       "goal": "Obiettivo",
       "goal_perdre": "Perdere peso",
       "goal_maintenir": "Mantenere il peso",
-      "goal_prendre": "Aumentare la massa muscolare",
+      "goal_prendre": "Aumentare la massa",
+      "goal_muscler": "Mettere muscoli senza ingrassare",
       "goalMinor": "Sotto i 18 anni nessun obiettivo, contano solo i bisogni della crescita.",
       "needs": "Circa {{kcal}} kcal e {{protein}} g di proteine al giorno",
+      "needsMacros": "Carboidrati {{carbs}} g e grassi {{fat}} g al giorno",
+      "advice_perdre": "Leggero deficit di circa il 18 % e proteine alte per mantenere i muscoli. Obiettivo: circa 0,5 kg in meno a settimana.",
+      "advice_maintenir": "Apporto equilibrato per mantenere il peso.",
+      "advice_muscler": "Apporto equilibrato e proteine alte (2 g per kg), con 3 allenamenti di forza a settimana.",
+      "advice_prendre": "Leggero surplus di circa il 12 % e proteine alte. Obiettivo: da 0,25 a 0,5 kg in più a settimana.",
       "remove": "Rimuova",
       "addAdult": "Aggiunga un adulto",
       "addChild": "Aggiunga un bambino",
@@ -1249,6 +1266,8 @@
       "weekdays": "Solo giorni feriali",
       "cantine": "Mensa o pasti fuori casa",
       "cantineHint": "I pranzi nei giorni feriali non sono previsti",
+      "breakfast": "Colazione",
+      "breakfastHint": "Un pasto al mattino oltre a pranzo e cena, regolabile giorno per giorno",
       "leftovers": "Usare gli avanzi",
       "leftoversHint": "Un piatto cucinato in doppia dose serve per un secondo pasto"
     },
@@ -1313,7 +1332,10 @@
       "p4Text": "Pasti veloci, budget, una settimana equilibrata e un contorno di verdure.",
       "later": "Più tardi",
       "redo": "Rifare il questionario",
-      "redoHint": "Quattro pagine per personalizzare i Suoi menu. Tutto è facoltativo e salvato man mano."
+      "redoHint": "Quattro pagine per personalizzare i Suoi menu. Tutto è facoltativo e salvato man mano.",
+      "reset": "Reimpostare le mie risposte",
+      "resetTitle": "Reimpostare le risposte?",
+      "resetText": "Le sue risposte al questionario torneranno alle impostazioni iniziali. La settimana e i preferiti restano."
     },
     "onboarding": {
       "skip": "Salta",
@@ -1962,6 +1984,25 @@
         "source": "Fonte: tabella Ciqual, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Cosa le piace",
+      "proteins": "Carne, pesce e proteine",
+      "bases": "Amidi",
+      "veg": "Verdure",
+      "fridgeHint": "I piatti con questi ingredienti vengono prima nella sua settimana.",
+      "p_volaille": "Pollame",
+      "p_boeuf": "Manzo e vitello",
+      "p_porc": "Maiale",
+      "p_agneau": "Agnello",
+      "p_poisson": "Pesce e frutti di mare",
+      "p_oeufs": "Uova",
+      "p_legumineuses": "Legumi e tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Riso",
+      "b_pdt": "Patate",
+      "b_cereales": "Semola, bulgur, quinoa",
+      "b_pain": "Pane, piadine, pizza"
     }
   },
   "counts": {

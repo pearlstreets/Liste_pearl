@@ -16,6 +16,8 @@ import { openCamera } from "../../utils/openCamera";
 import RepeatButton from "../../components/ui/RepeatButton";
 import { MARCHE, TAILLES } from "../../components/ui/marche";
 import { parseMulti } from "../../lib/parseMulti";
+import { fusionnerArticles } from "../../lib/fusionListe";
+import { scanListPhoto } from "../../services/listScan";
 import { THEME } from "../../components/commun/theme";
 import { lstyles } from "../../components/commun/lstyles";
 import { QtyInput } from "../../components/commun/QtyInput";
@@ -54,6 +56,9 @@ export default function ListScreen() {
   const [editText, setEditText] = useState("");
 
   const [unitPickerId, setUnitPickerId] = useState(null);
+  // Scan : lecture de la photo en cours, puis articles trouvés (null = feuille fermée).
+  const [scanBusy, setScanBusy] = useState(false);
+  const [scanArticles, setScanArticles] = useState(null); // null = feuille fermée
 
   // --- Partage de listes (compte marketplace unifié) ---
   const [sharedLists, setSharedLists] = useState([]);          // listes partagées AVEC moi (lecture seule)
@@ -161,11 +166,12 @@ export default function ListScreen() {
   const shareInputRef = React.useRef(null);
   const editInputRef = React.useRef(null);
   // Fenêtres de Ma Liste ouvertes (lu par ouvrirPartageDepuisPush).
-  autreModaleListe.current = switcherOpen || shareModalOpen || grantedOpen || createListOpen || renameOpen || editVisible || unitPickerId !== null;
+  autreModaleListe.current = switcherOpen || shareModalOpen || grantedOpen || createListOpen || renameOpen || editVisible || unitPickerId !== null || scanArticles !== null;
   fermerModalesListe.current = () => {
     setSwitcherOpen(false); setShareModalOpen(false); setGrantedOpen(false); setProfilPartage(null);
     setCreateListOpen(false); setRenameOpen(false); setUnitPickerId(null);
     setEditVisible(false); setEditId(null); setEditText("");
+    setScanArticles(null);
   };
   const activeListName = (myLists.find(l => l.id === activeListId)?.name) || t('tabs.myList');
   const activeShared = viewingShareId != null
@@ -380,17 +386,42 @@ export default function ListScreen() {
   const addFromInput = (garderClavier) => {
     const parsed = parseMulti(text);
     if (parsed.length === 0) return;
-    setItems(prev => {
-      const base = [...prev];
-      for (const p of parsed) {
-        const idx = base.findIndex(b => b.name.toLowerCase() === p.name.toLowerCase() && (b.unit || 'u') === (p.unit || 'u'));
-        if (idx >= 0) base[idx] = { ...base[idx], qty: (base[idx].qty || 1) + p.qty };
-        else base.push({ id: String(Date.now()) + Math.random().toString(36).slice(2), name: p.name, qty: p.qty, unit: p.unit || 'u', crossed: false, selected: true });
-      }
-      return base;
-    });
+    setItems(prev => fusionnerArticles(prev, parsed));
     setText("");
     if (!garderClavier) Keyboard.dismiss();
+  };
+
+  // --- Scan : photo lue par le serveur, articles proposés dans une feuille ---
+  const lancerScan = async () => {
+    if (readOnly || scanBusy) return;
+    const uri = await openCamera();
+    if (!uri) return;
+    setScanBusy(true);
+    const res = await scanListPhoto(uri, langueListe);
+    setScanBusy(false);
+    if (res.error === 'login') {
+      Alert.alert(t('listScreen.scanLoginTitle'), t('listScreen.scanLoginMsg'), [
+        { text: t('listScreen.cancel'), style: 'cancel' },
+        { text: t('auth.loginBtn'), onPress: () => DeviceEventEmitter.emit('OPEN_AUTH') },
+      ]);
+      return;
+    }
+    if (res.error) {
+      const cle = { limit: 'scanLimit', image: 'scanImage', unavailable: 'scanUnavailable' }[res.error] || 'scanNetwork';
+      Alert.alert(t('listScreen.scan'), t('listScreen.' + cle));
+      return;
+    }
+    if (!res.items || res.items.length === 0) {
+      Alert.alert(t('listScreen.scan'), t('listScreen.scanNothing'));
+      return;
+    }
+    setScanArticles(res.items.map((a, i) => ({ ...a, key: String(i), on: true })));
+  };
+  const scanCoches = (scanArticles || []).filter(a => a.on);
+  const ajouterScan = () => {
+    const ajouts = scanCoches.map(({ name, qty, unit }) => ({ name, qty, unit }));
+    if (ajouts.length > 0) setItems(prev => fusionnerArticles(prev, ajouts));
+    setScanArticles(null);
   };
 
   const onMinus = id => setItems(items.map(it => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it));
@@ -721,11 +752,21 @@ export default function ListScreen() {
             <Text style={lstyles.scanTxt}>{t('listScreen.share', 'Partager')}</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={async () => { await openCamera(); }} activeOpacity={0.8} style={lstyles.scanBtn}>
-          <Ionicons name="scan-outline" size={17} color={THEME.brandDark} />
-          <Text style={lstyles.scanTxt}>{t('listScreen.scan')}</Text>
-        </TouchableOpacity>
+        {!readOnly && (
+          <TouchableOpacity onPress={lancerScan} disabled={scanBusy} activeOpacity={0.8} style={lstyles.scanBtn}>
+            {scanBusy
+              ? <ActivityIndicator size="small" color={THEME.brandDark} />
+              : <Ionicons name="scan-outline" size={17} color={THEME.brandDark} />}
+            <Text style={lstyles.scanTxt}>{t('listScreen.scan')}</Text>
+          </TouchableOpacity>
+        )}
       </View>
+      {scanBusy && (
+        <View style={{ flexDirection:'row', alignItems:'center', marginTop:8 }}>
+          <ActivityIndicator size="small" color={THEME.brandDark} />
+          <Text style={{ marginLeft:8, color:THEME.faint, fontSize:13 }}>{t('listScreen.scanReading')}</Text>
+        </View>
+      )}
 
       {/* Nom de liste à gauche, badge de partage aligné à DROITE sur la même ligne. */}
       <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:10 }}>
@@ -1288,6 +1329,38 @@ export default function ListScreen() {
             </Pressable>
           </View>
         </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Scan : articles lus sur la photo, à cocher avant l'ajout */}
+      <Modal visible={scanArticles !== null} transparent animationType="fade" onRequestClose={() => setScanArticles(null)}>
+        <View style={lstyles.modalBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setScanArticles(null)} />
+          <View style={lstyles.modalBox}>
+            <Text style={lstyles.modalTitle}>{t('listScreen.scanFoundTitle')}</Text>
+            <ScrollView style={{ maxHeight: 360 }} keyboardShouldPersistTaps="handled">
+              {(scanArticles || []).map((a, i) => (
+                <Pressable key={a.key} accessibilityRole="checkbox" accessibilityState={{ checked: a.on }}
+                  onPress={() => setScanArticles(prev => (prev || []).map(x => x.key === a.key ? { ...x, on: !x.on } : x))}
+                  style={[{ flexDirection:'row', alignItems:'center', paddingVertical:10 }, i < scanArticles.length - 1 && { borderBottomWidth:1, borderBottomColor:THEME.border }]}>
+                  <Ionicons name={a.on ? 'checkbox' : 'square-outline'} size={22} color={a.on ? MARCHE.noir : THEME.faint} />
+                  <Text style={{ flex:1, marginLeft:10, fontSize:15, color:THEME.ink }} numberOfLines={2}>{a.name}</Text>
+                  <Text style={{ marginLeft:8, fontSize:14, fontWeight:'600', color:THEME.ink }}>
+                    {a.qty} {a.unit === 'u' ? t('listScreen.unitPiece', 'u') : a.unit}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+            <View style={lstyles.modalRow}>
+              <Pressable onPress={() => setScanArticles(null)} style={lstyles.modalCancel}>
+                <Text style={lstyles.modalCancelTxt}>{t('listScreen.cancel')}</Text>
+              </Pressable>
+              <Pressable onPress={ajouterScan} disabled={scanCoches.length === 0}
+                style={[lstyles.modalSave, { opacity: scanCoches.length > 0 ? 1 : 0.5 }]}>
+                <Text style={lstyles.modalSaveTxt}>{t('listScreen.scanAdd', { count: scanCoches.length })}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
       </Modal>
 
       {/* Partage de listes : demandes reçues (Accepter, Refuser, Bloquer) et utilisateurs bloqués (Débloquer). */}

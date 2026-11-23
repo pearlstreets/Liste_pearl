@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "Varan tas bort från din lista.",
     "markBought": "Markera som köpt",
     "rejectRequest": "Avböj förfrågan",
-    "blockUser": "Blockera den här personen"
+    "blockUser": "Blockera den här personen",
+    "scanReading": "Läser fotot…",
+    "scanFoundTitle": "Hittade varor",
+    "scanAdd": "Lägg till ({{count}})",
+    "scanNothing": "Inga varor kunde läsas på det här fotot. Försök med mer ljus.",
+    "scanLimit": "Ni har nått dagens gräns för skanningar. Försök igen i morgon.",
+    "scanImage": "Det här fotot kunde inte läsas. Försök med ett annat foto.",
+    "scanUnavailable": "Läsning av foton är tillfälligt otillgänglig. Försök igen senare.",
+    "scanNetwork": "Ingen anslutning. Kontrollera nätverket och försök igen.",
+    "scanLoginTitle": "Inloggning krävs",
+    "scanLoginMsg": "Logga in så att era foton läses och varorna läggs till i er lista."
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",
@@ -1195,6 +1205,7 @@
       }
     },
     "slot": {
+      "matin": "Frukost",
       "midi": "Lunch",
       "soir": "Middag"
     },
@@ -1232,9 +1243,15 @@
       "goal": "Mål",
       "goal_perdre": "Gå ner i vikt",
       "goal_maintenir": "Behålla vikten",
-      "goal_prendre": "Bygga muskler",
+      "goal_prendre": "Bygga massa",
+      "goal_muscler": "Bygga muskler utan fett",
       "goalMinor": "Under 18 år finns inget mål, bara behoven för växandet räknas.",
       "needs": "Cirka {{kcal}} kcal och {{protein}} g protein per dag",
+      "needsMacros": "Kolhydrater {{carbs}} g och fett {{fat}} g per dag",
+      "advice_perdre": "Litet underskott på cirka 18 % och mycket protein för att behålla musklerna. Mål: cirka 0,5 kg mindre per vecka.",
+      "advice_maintenir": "Balanserat intag för att behålla vikten.",
+      "advice_muscler": "Balanserat intag och mycket protein (2 g per kg), med 3 styrkepass per vecka.",
+      "advice_prendre": "Litet överskott på cirka 12 % och mycket protein. Mål: 0,25 till 0,5 kg mer per vecka.",
       "remove": "Ta bort",
       "addAdult": "Lägg till en vuxen",
       "addChild": "Lägg till ett barn",
@@ -1247,6 +1264,8 @@
       "weekdays": "Bara vardagar",
       "cantine": "Skolmat eller äta ute",
       "cantineHint": "Vardagsluncher planeras inte",
+      "breakfast": "Frukost",
+      "breakfastHint": "En måltid på morgonen utöver lunch och middag, kan ställas in dag för dag",
       "leftovers": "Använd rester",
       "leftoversHint": "En rätt lagad dubbelt räcker till en måltid till"
     },
@@ -1311,7 +1330,10 @@
       "p4Text": "Snabba måltider, budget, en balanserad vecka och ett grönsakstillbehör.",
       "later": "Senare",
       "redo": "Gör frågeformuläret igen",
-      "redoHint": "Fyra sidor för att anpassa dina menyer. Allt är frivilligt och sparas efter hand."
+      "redoHint": "Fyra sidor för att anpassa dina menyer. Allt är frivilligt och sparas efter hand.",
+      "reset": "Återställ mina svar",
+      "resetTitle": "Återställa era svar?",
+      "resetText": "Era svar i frågeformuläret återgår till standardinställningarna. Er vecka och era favoriter sparas."
     },
     "onboarding": {
       "skip": "Hoppa över",
@@ -1934,6 +1956,25 @@
         "source": "Källa: Ciqual-tabellen, Anses",
         "energyValue": "{{kj}} kJ / {{kcal}} kcal"
       }
+    },
+    "likes": {
+      "title": "Det du gillar",
+      "proteins": "Kött, fisk och protein",
+      "bases": "Kolhydrater",
+      "veg": "Grönsaker",
+      "fridgeHint": "Rätter med dessa ingredienser kommer först i din vecka.",
+      "p_volaille": "Fågel",
+      "p_boeuf": "Nöt och kalv",
+      "p_porc": "Fläsk",
+      "p_agneau": "Lamm",
+      "p_poisson": "Fisk och skaldjur",
+      "p_oeufs": "Ägg",
+      "p_legumineuses": "Baljväxter och tofu",
+      "b_pates": "Pasta",
+      "b_riz": "Ris",
+      "b_pdt": "Potatis",
+      "b_cereales": "Couscous, bulgur, quinoa",
+      "b_pain": "Bröd, wraps, pizza"
     }
   },
   "counts": {

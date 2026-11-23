@@ -69,7 +69,17 @@
     "deleteThisItemConfirm": "此项将从您的清单中移除。",
     "markBought": "标记为已购买",
     "rejectRequest": "拒绝请求",
-    "blockUser": "屏蔽此人"
+    "blockUser": "屏蔽此人",
+    "scanReading": "正在读取照片…",
+    "scanFoundTitle": "找到的商品",
+    "scanAdd": "添加 ({{count}})",
+    "scanNothing": "未能从这张照片中读取到商品，请在光线更充足的地方重试。",
+    "scanLimit": "您已达到今日扫描次数上限，请明天再试。",
+    "scanImage": "无法读取这张照片，请换一张照片再试。",
+    "scanUnavailable": "照片读取功能暂时不可用，请稍后再试。",
+    "scanNetwork": "无法连接，请检查网络后重试。",
+    "scanLoginTitle": "需要登录",
+    "scanLoginMsg": "登录后，您的照片将被读取，商品会添加到您的清单中。"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",
@@ -1193,6 +1203,7 @@
       }
     },
     "slot": {
+      "matin": "早餐",
       "midi": "午餐",
       "soir": "晚餐"
     },
@@ -1230,9 +1241,15 @@
       "goal": "目标",
       "goal_perdre": "减重",
       "goal_maintenir": "保持体重",
-      "goal_prendre": "增肌",
+      "goal_prendre": "增重",
+      "goal_muscler": "增肌不增脂",
       "goalMinor": "未满 18 岁不设目标，只考虑成长所需。",
       "needs": "每天约 {{kcal}} 千卡，蛋白质 {{protein}} 克",
+      "needsMacros": "每天碳水 {{carbs}} 克，脂肪 {{fat}} 克",
+      "advice_perdre": "约 18 % 的轻度热量缺口，高蛋白以保住肌肉。目标：每周约减 0.5 公斤。",
+      "advice_maintenir": "均衡摄入，保持体重。",
+      "advice_muscler": "均衡摄入，高蛋白（每公斤 2 克），每周 3 次力量训练。",
+      "advice_prendre": "约 12 % 的轻度热量盈余，高蛋白。目标：每周增加 0.25 至 0.5 公斤。",
       "remove": "移除",
       "addAdult": "添加成人",
       "addChild": "添加儿童",
@@ -1245,6 +1262,8 @@
       "weekdays": "仅工作日",
       "cantine": "食堂或外出用餐",
       "cantineHint": "工作日午餐不安排",
+      "breakfast": "早餐",
+      "breakfastHint": "在午餐和晚餐之外增加早餐，可按天设置",
       "leftovers": "使用剩菜",
       "leftoversHint": "多做一份可吃两餐"
     },
@@ -1309,7 +1328,10 @@
       "p4Text": "快手餐、预算、均衡的一周和蔬菜配菜。",
       "later": "稍后",
       "redo": "重新填写问卷",
-      "redoHint": "共四页，为您定制菜单。一切均为可选，并会随时保存。"
+      "redoHint": "共四页，为您定制菜单。一切均为可选，并会随时保存。",
+      "reset": "重置我的回答",
+      "resetTitle": "重置您的回答？",
+      "resetText": "您的问卷回答将恢复为初始设置。您的一周菜单和收藏将保留。"
     },
     "onboarding": {
       "skip": "跳过",
@@ -1899,6 +1921,25 @@
         "source": "来源：Ciqual 成分表，Anses",
         "energyValue": "{{kj}} 千焦 / {{kcal}} 千卡"
       }
+    },
+    "likes": {
+      "title": "您喜欢的",
+      "proteins": "肉类、鱼类和蛋白质",
+      "bases": "主食",
+      "veg": "蔬菜",
+      "fridgeHint": "使用这些食材的菜会优先排进您的一周。",
+      "p_volaille": "禽肉",
+      "p_boeuf": "牛肉和小牛肉",
+      "p_porc": "猪肉",
+      "p_agneau": "羊肉",
+      "p_poisson": "鱼和海鲜",
+      "p_oeufs": "鸡蛋",
+      "p_legumineuses": "豆类和豆腐",
+      "b_pates": "意面",
+      "b_riz": "米饭",
+      "b_pdt": "土豆",
+      "b_cereales": "粗麦粉、布格麦、藜麦",
+      "b_pain": "面包、卷饼、披萨"
     }
   },
   "counts": {

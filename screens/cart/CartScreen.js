@@ -3,7 +3,10 @@ import { resolveCategoryId } from "../../services/products";
 import { champsCommande, articleSansFiche, signaturePanier, etatCommandesEnAttente } from "../../lib/panier";
 import { plafonner, ecartsDeStock, appliquerEcarts, refusDeStock, appliquerRefus, champsVariantePanier } from "../../lib/variantes";
 import { clearCart, placeOrder, getMarketplaceOrderStatuses } from "../../services/orders";
-import { fetchAddresses } from "../../services/addresses";
+import { fetchAddresses, createAddress } from "../../services/addresses";
+import { getProfile } from "../../services/profile";
+import { fetchPhotonSuggestions } from "../../lib/photon";
+import { COUNTRIES } from "../../lib/countries";
 import { getSecureItem } from "../../services/secureStorage";
 import { createDeliveryOrder, DELIVERY_STATUS } from "../../services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
@@ -38,7 +41,7 @@ import { prendreCommandeAOuvrir, trouverCommande, EVENEMENT_OUVRIR } from "../..
 const SEARCH_MAP = require('../../data/search-map.json');
 
 const CartScreen = ({ isAuth }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { fmtPrice } = useCurrency();
   const navigation = useNavigation();
   const [cartItems, setCartItems] = React.useState([]);
@@ -97,6 +100,12 @@ const CartScreen = ({ isAuth }) => {
   const [addressesLoading, setAddressesLoading] = React.useState(false);
   const [selectedAddressId, setSelectedAddressId] = React.useState(null);
   const [addressPickerVisible, setAddressPickerVisible] = React.useState(false);
+  // Formulaire « ce qui manque » ouvert par le bouton Continuer du panier.
+  const [addrFormVisible, setAddrFormVisible] = React.useState(false);
+  const [addrForm, setAddrForm] = React.useState({ first_name: '', last_name: '', phone_code: '+33', phone_number: '', house_building: '', pincode: '', city: '', countryFlag: 'FR', lat: null, lang: null });
+  const [addrSaving, setAddrSaving] = React.useState(false);
+  const [addrSugg, setAddrSugg] = React.useState([]);
+  const addrSuggTimer = React.useRef(null);
   const [selectedDateIndex, setSelectedDateIndex] = React.useState(0);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [addProductShop, setAddProductShop] = React.useState(null); // shop name for add product popup
@@ -169,11 +178,39 @@ const CartScreen = ({ isAuth }) => {
     }
   }, [deliverySlots]);
 
+  // Profil du compte (adresse saisie à l'inscription) : adresse par défaut
+  // quand le carnet est vide, et pré-remplissage du formulaire du panier.
+  const profilCompteRef = React.useRef(null);
+  const adresseCompteTenteeRef = React.useRef(false);
+
   const loadAddresses = React.useCallback(async () => {
     setAddressesLoading(true);
     try {
       const list = await fetchAddresses();
-      const arr = Array.isArray(list) ? list : [];
+      let arr = Array.isArray(list) ? list : [];
+      // Carnet vide : l'adresse du compte devient l'adresse par défaut
+      // (enregistrée une seule fois dans le carnet, puis sélectionnée).
+      if (arr.length === 0) {
+        let prof = null;
+        try { prof = await getProfile(); } catch (_) {}
+        profilCompteRef.current = prof;
+        if (!adresseCompteTenteeRef.current && prof && (prof.address || '').trim() && (prof.city || '').trim()) {
+          adresseCompteTenteeRef.current = true;
+          try {
+            await createAddress({
+              first_name: prof.prenom || prof.firstName || '', last_name: prof.nom || prof.lastName || '',
+              phone_code: '+33', phone_number: prof.phone || '',
+              house_building: prof.address.trim(), road_area_colony: prof.addressSupplement || '',
+              pincode: prof.postalCode || '', city: prof.city.trim(), state: '',
+              address_type: 'home',
+              countryFlag: (COUNTRIES.find(c => c.name === prof.country)?.code || 'FR'),
+              lat: null, lang: null,
+            });
+            const relu = await fetchAddresses();
+            arr = Array.isArray(relu) ? relu : [];
+          } catch (_) {}
+        }
+      }
       setAddresses(arr);
       setSelectedAddressId((prev) => {
         if (prev != null && arr.some((a) => String(a.id) === String(prev))) return prev;
@@ -192,6 +229,73 @@ const CartScreen = ({ isAuth }) => {
   );
   const deliveryAddress = formatSavedAddress(selectedAddress);
   const recipient = formatAddressContact(selectedAddress);
+
+  // Bouton « Continuer » sans adresse : formulaire pré-rempli avec ce que le
+  // compte connaît déjà, il ne reste qu'à compléter ce qui manque.
+  const ouvrirFormulaireAdresse = React.useCallback(async () => {
+    let auth = null;
+    try { const raw = await getSecureItem('KEY_AUTH'); auth = raw ? JSON.parse(raw) : null; } catch (_) {}
+    if (!auth || !auth.id) { DeviceEventEmitter.emit('OPEN_AUTH'); return; }
+    const p = profilCompteRef.current || {};
+    setAddrForm({
+      first_name: p.prenom || p.firstName || '', last_name: p.nom || p.lastName || '',
+      phone_code: '+33', phone_number: p.phone || '',
+      house_building: p.address || '', pincode: p.postalCode || '', city: p.city || '',
+      countryFlag: (COUNTRIES.find(c => c.name === p.country)?.code || 'FR'), lat: null, lang: null,
+    });
+    setAddrSugg([]);
+    // iOS n'empile pas deux Modal : la feuille « Confirmer » se ferme d'abord,
+    // le formulaire suit, puis la feuille revient à la fermeture du formulaire.
+    retourConfirmRef.current = true;
+    setConfirmVisible(false);
+    setTimeout(() => setAddrFormVisible(true), 450);
+  }, []);
+  const retourConfirmRef = React.useRef(false);
+  React.useEffect(() => {
+    if (addrFormVisible || !retourConfirmRef.current) return;
+    retourConfirmRef.current = false;
+    setTimeout(() => setConfirmVisible(true), 450);
+  }, [addrFormVisible]);
+  const setAF = (k, v) => setAddrForm(f => ({ ...f, [k]: v }));
+  const onAddrRueChange = (v) => {
+    setAF('house_building', v);
+    if (addrSuggTimer.current) clearTimeout(addrSuggTimer.current);
+    const q = (v || '').trim();
+    if (q.length < 3) { setAddrSugg([]); return; }
+    addrSuggTimer.current = setTimeout(async () => {
+      try { setAddrSugg(await fetchPhotonSuggestions(q, (addrForm.countryFlag || 'FR').toUpperCase(), i18n.language)); } catch (_) {}
+    }, 300);
+  };
+  const choisirSuggestion = (s) => {
+    if (addrSuggTimer.current) clearTimeout(addrSuggTimer.current);
+    setAddrForm(f => ({ ...f, house_building: s.address || s.label, pincode: s.postcode || f.pincode, city: s.city || f.city, lat: s.lat ?? f.lat, lang: s.lng ?? f.lang }));
+    setAddrSugg([]);
+  };
+  const enregistrerAdresse = async () => {
+    if (!addrForm.first_name.trim() || !addrForm.house_building.trim() || !addrForm.city.trim()) {
+      Alert.alert(t('cart.deliveryAddress'), t('cart.addressRequiredMsg', 'Ajoutez une adresse de livraison pour continuer.'));
+      return;
+    }
+    setAddrSaving(true);
+    try {
+      const cree = await createAddress({
+        first_name: addrForm.first_name.trim(), last_name: addrForm.last_name.trim(),
+        phone_code: (addrForm.phone_code || '').trim() || '+33', phone_number: addrForm.phone_number.trim(),
+        house_building: addrForm.house_building.trim(), road_area_colony: '',
+        pincode: addrForm.pincode.trim(), city: addrForm.city.trim(), state: '',
+        address_type: 'home', countryFlag: addrForm.countryFlag || 'FR',
+        lat: addrForm.lat, lang: addrForm.lang,
+      });
+      const newId = cree && (cree.id || (cree.data && cree.data.id));
+      if (!newId) throw new Error('refus');
+      setSelectedAddressId(newId);
+      await loadAddresses();
+      setAddrFormVisible(false);
+    } catch (e) {
+      Alert.alert(t('cart.deliveryAddress'), t('profile.addrSaveError', 'Could not save the address.'));
+    }
+    setAddrSaving(false);
+  };
   const totalPrice = cartItems.reduce((sum, it, i) => selectedCart[i] ? sum + (Number(it.price || 0) * Number(it.qty || 1)) : sum, 0);
 
   const loadCart = React.useCallback(async () => {
@@ -606,7 +710,7 @@ const CartScreen = ({ isAuth }) => {
   // d'abord, le détail suit 300 ms plus tard. Paiement en cours : jamais
   // interrompu, la commande s'ouvre dès que la fenêtre de paiement se ferme.
   const autreModaleOuverte = React.useRef(false);
-  autreModaleOuverte.current = orderVisible || confirmVisible || shopProductsVisible || addressPickerVisible
+  autreModaleOuverte.current = orderVisible || confirmVisible || shopProductsVisible || addressPickerVisible || addrFormVisible
     || cartSearchVisible || mesCommandes.reorderVisible || mesCommandes.allOrdersVisible;
   const paiementEnCoursRef = React.useRef(false);
   paiementEnCoursRef.current = cardModalVisible;
@@ -616,7 +720,7 @@ const CartScreen = ({ isAuth }) => {
     if (autreModaleOuverte.current) {
       setOrderVisible(false); setPlacedOrder(null);
       setConfirmVisible(false); setShopProductsVisible(false);
-      setAddressPickerVisible(false); setCartSearchVisible(false);
+      setAddressPickerVisible(false); setAddrFormVisible(false); setCartSearchVisible(false);
       mesCommandes.setReorderVisible(false); mesCommandes.setAllOrdersVisible(false);
       setTimeout(() => setDetailOrder(order), 300);
     } else {
@@ -1180,16 +1284,17 @@ const CartScreen = ({ isAuth }) => {
                 activeOpacity={0.9}
                 disabled={disabled}
                 accessibilityRole="button"
-                accessibilityLabel={missingAddress ? t('cart.addressRequired', 'Adresse requise') : t('cart.confirmOrder')}
+                accessibilityLabel={missingAddress ? t('auth.continue', 'Continuer') : t('cart.confirmOrder')}
                 onPress={async () => {
-                  if (!selectedSlot) {
-                    setPopup({ tone: 'warning', icon: 'time-outline', title: t('cart.slotRequired'), message: t('cart.slotRequiredMsg') });
+                  // En livraison, une adresse est obligatoire (sinon le livreur
+                  // n'a pas de destination) : « Continuer » ouvre le formulaire
+                  // pré-rempli pour compléter ce qui manque.
+                  if (orderMode === 'delivery' && !selectedAddress) {
+                    ouvrirFormulaireAdresse();
                     return;
                   }
-                  // En livraison, une adresse est obligatoire (sinon le livreur
-                  // n'a pas de destination). On ouvre directement le sélecteur.
-                  if (orderMode === 'delivery' && !selectedAddress) {
-                    setAddressPickerVisible(true);
+                  if (!selectedSlot) {
+                    setPopup({ tone: 'warning', icon: 'time-outline', title: t('cart.slotRequired'), message: t('cart.slotRequiredMsg') });
                     return;
                   }
                   if (placingRef.current) return; // idempotence : ignore les taps rapides
@@ -1295,11 +1400,13 @@ const CartScreen = ({ isAuth }) => {
                     else if (ok !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('favorites.addFromBuy') }); }
                   } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
-                style={[cartStyles.primaryBtn, (disabled || missingAddress) && cartStyles.primaryBtnDisabled]}
+                style={[cartStyles.primaryBtn, missingAddress && { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir }, disabled && cartStyles.primaryBtnDisabled]}
               >
-                {placing ? <ActivityIndicator color="#1C1917" /> : (<>
-                  <Ionicons name={missingAddress ? 'location-outline' : 'checkmark-circle'} size={20} color="#1C1917" />
-                  <Text style={cartStyles.primaryBtnTxt}>{missingAddress ? t('cart.addressRequired', 'Adresse requise') : t('cart.confirmOrder')}</Text>
+                {placing ? <ActivityIndicator color="#1C1917" /> : missingAddress ? (
+                  <Text style={[cartStyles.primaryBtnTxt, { color: MARCHE.blanc, marginLeft: 0 }]}>{t('auth.continue', 'Continuer')}</Text>
+                ) : (<>
+                  <Ionicons name="checkmark-circle" size={20} color="#1C1917" />
+                  <Text style={cartStyles.primaryBtnTxt}>{t('cart.confirmOrder')}</Text>
                 </>)}
               </TouchableOpacity>
                 );
@@ -1606,6 +1713,68 @@ const CartScreen = ({ isAuth }) => {
             />
           </View>
         </View>
+      </Modal>
+
+      {/* Formulaire « Continuer » : compléter l'adresse de livraison manquante */}
+      <Modal visible={addrFormVisible} animationType="none" transparent={true} onRequestClose={() => setAddrFormVisible(false)}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+        <View style={cartStyles.sheetBackdrop}>
+          <View style={[cartStyles.sheet, { maxHeight: '88%', paddingBottom: 32 }]}>
+            <View style={cartStyles.sheetGrabber} />
+            <View style={cartStyles.sheetHeader}>
+              <View style={{ flex: 1 }}>
+                <Text style={[cartStyles.sheetTitle, { fontSize: 18 }]}>{t('cart.deliveryAddress')}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setAddrFormVisible(false)} activeOpacity={0.8} style={cartStyles.closeBtn}>
+                <Ionicons name="close" size={20} color={THEME.muted} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 12 }} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+              <View style={{ flexDirection: 'row', gap: 10 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={cartStyles.addrFieldLabel}>{t('profile.firstName')}</Text>
+                  <TextInput value={addrForm.first_name} onChangeText={(v) => setAF('first_name', v)} placeholderTextColor={THEME.faint} style={cartStyles.addrInput} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={cartStyles.addrFieldLabel}>{t('profile.lastName')}</Text>
+                  <TextInput value={addrForm.last_name} onChangeText={(v) => setAF('last_name', v)} placeholderTextColor={THEME.faint} style={cartStyles.addrInput} />
+                </View>
+              </View>
+              <Text style={[cartStyles.addrFieldLabel, { marginTop: 12 }]}>{t('profile.addrPhone')}</Text>
+              <View style={{ flexDirection: 'row', gap: 10 }}>
+                <TextInput value={addrForm.phone_code} onChangeText={(v) => setAF('phone_code', v)} placeholder="+33" placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[cartStyles.addrInput, { width: 88 }]} />
+                <TextInput value={addrForm.phone_number} onChangeText={(v) => setAF('phone_number', v)} placeholder="6 12 34 56 78" placeholderTextColor={THEME.faint} keyboardType="phone-pad" style={[cartStyles.addrInput, { flex: 1 }]} />
+              </View>
+              <Text style={[cartStyles.addrFieldLabel, { marginTop: 12 }]}>{t('profile.street')}</Text>
+              <TextInput value={addrForm.house_building} onChangeText={onAddrRueChange} placeholder={t('auth.addressAutoPlaceholder', 'Commencez à taper votre adresse…')} placeholderTextColor={THEME.faint} autoCorrect={false} style={cartStyles.addrInput} />
+              {addrSugg.length > 0 && (
+                <View style={cartStyles.addrSuggestBox}>
+                  {addrSugg.map((s, i) => (
+                    <TouchableOpacity key={i} onPress={() => choisirSuggestion(s)} activeOpacity={0.7}
+                      style={[cartStyles.addrSuggestRow, i < addrSugg.length - 1 && { borderBottomWidth: 1, borderBottomColor: THEME.border }]}>
+                      <Ionicons name="location-outline" size={16} color={THEME.brand} />
+                      <Text style={[cartStyles.addrSuggestTxt, { flex: 1 }]} numberOfLines={2}>{s.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+              <View style={{ flexDirection: 'row', gap: 10, marginTop: 12 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={cartStyles.addrFieldLabel}>{t('profile.postalCode')}</Text>
+                  <TextInput value={addrForm.pincode} onChangeText={(v) => setAF('pincode', v)} keyboardType="number-pad" placeholderTextColor={THEME.faint} style={cartStyles.addrInput} />
+                </View>
+                <View style={{ flex: 2 }}>
+                  <Text style={cartStyles.addrFieldLabel}>{t('profile.city')}</Text>
+                  <TextInput value={addrForm.city} onChangeText={(v) => setAF('city', v)} placeholderTextColor={THEME.faint} style={cartStyles.addrInput} />
+                </View>
+              </View>
+              <TouchableOpacity onPress={enregistrerAdresse} disabled={addrSaving} activeOpacity={0.9} style={[cartStyles.addrSaveBtn, { flex: 0, marginTop: 18 }]}>
+                {addrSaving ? <ActivityIndicator color={MARCHE.blanc} /> : <Text style={cartStyles.addrSaveTxt}>{t('auth.continue', 'Continuer')}</Text>}
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+        </KeyboardAvoidingView>
       </Modal>
 
       {/* Modal sélection adresse de livraison */}

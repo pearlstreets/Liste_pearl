@@ -108,7 +108,7 @@ export default function SettingsScreen({ onClose }) {
         <SectionTitle title={t('settings.diet')} />
         <DietSection profile={profile} onChange={change} texts={texts} ingredients={ingredients} />
         <SectionTitle title={t('prefs.title')} hint={t('prefs.intro')} />
-        <PrefsSection profile={profile} onChange={change} />
+        <PrefsSection profile={profile} onChange={change} texts={texts} />
         <RemindersSection />
         <PrivacySection connected={!!(sync && sync.connected)} />
         <SectionTitle title={t('settings.sync')} />
