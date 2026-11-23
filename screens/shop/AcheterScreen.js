@@ -79,8 +79,8 @@ const AcheterScreen = () => {
     <SafeAreaView style={styles.screen} edges={['top']}>
       <View style={styles.header}>
         <View style={styles.segment}>
-          <Bouton valeur={SEGMENT_COMPARER} icone="pricetags" libelle={t('acheter.comparer')} />
           <Bouton valeur={SEGMENT_BOUTIQUES} icone="storefront" libelle={t('tabs.shops')} />
+          <Bouton valeur={SEGMENT_COMPARER} icone="pricetags" libelle={t('acheter.comparer')} />
         </View>
         <TouchableOpacity onPress={() => setFavVisible(true)} style={styles.favBtn}
           accessibilityRole="button" accessibilityLabel={t('tabs.favorites')} hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>

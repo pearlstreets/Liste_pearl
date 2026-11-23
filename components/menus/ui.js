@@ -292,6 +292,8 @@ const s = StyleSheet.create({
   sectionTitle: { fontFamily: SERIF, fontSize: 20, fontWeight: '600', color: T.ink },
   sectionHint: { fontSize: 13, color: T.muted, marginTop: 2 },
   empty: {
+    // Prend la hauteur libre de l'écran : écrans vides centrés verticalement.
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 28,

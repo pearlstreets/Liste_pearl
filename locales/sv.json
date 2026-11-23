@@ -1420,6 +1420,7 @@
       "regenerate": "Gör om allt",
       "estimated": "Uppskattad budget",
       "budget": "Din budget",
+      "budgetChange": "Ändra din budget",
       "noBudget": "Ingen satt budget",
       "overBudget": "{{amount}} över budget",
       "underBudget": "{{amount}} under budget",
@@ -1701,6 +1702,12 @@
         "france": "Frankrike",
         "ameriques": "Amerika",
         "afrique": "Afrika"
+      },
+      "suggest": {
+        "season": "Säsongens",
+        "quick30": "Klart på 30 min",
+        "budget": "Liten budget",
+        "balanced": "Balanserat"
       }
     },
     "fridge": {

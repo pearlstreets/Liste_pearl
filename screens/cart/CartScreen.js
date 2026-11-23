@@ -7,6 +7,25 @@ import { fetchAddresses, createAddress } from "../../services/addresses";
 import { getProfile } from "../../services/profile";
 import { fetchPhotonSuggestions } from "../../lib/photon";
 import { COUNTRIES } from "../../lib/countries";
+
+// Téléphone du compte souvent enregistré avec l'indicatif (« 33647055417 » ou
+// « +33 6 47… ») : on le sépare pour ne pas l'afficher deux fois.
+const decouperTelephone = (raw, pays) => {
+  const brut = String(raw || '').replace(/[^\d+]/g, '');
+  const parDefaut = (COUNTRIES.find(c => c.name === pays)?.dial) || '+33';
+  if (!brut) return { phone_code: parDefaut, phone_number: '' };
+  const dials = COUNTRIES.map(c => c.dial).filter(Boolean).sort((a, b) => b.length - a.length);
+  if (brut.startsWith('+')) {
+    const d = dials.find(x => brut.startsWith(x));
+    if (d) return { phone_code: d, phone_number: brut.slice(d.length) };
+    return { phone_code: parDefaut, phone_number: brut };
+  }
+  const sansPlus = parDefaut.slice(1);
+  if (brut.startsWith(sansPlus) && brut.length - sansPlus.length >= 8 && brut.length - sansPlus.length <= 10) {
+    return { phone_code: parDefaut, phone_number: brut.slice(sansPlus.length) };
+  }
+  return { phone_code: parDefaut, phone_number: brut };
+};
 import { getSecureItem } from "../../services/secureStorage";
 import { createDeliveryOrder, DELIVERY_STATUS } from "../../services/delivery";
 // Paiement carte réel (Option A) : tunnel commande Marketplace + SDK Stripe natif.
@@ -199,7 +218,7 @@ const CartScreen = ({ isAuth }) => {
           try {
             await createAddress({
               first_name: prof.prenom || prof.firstName || '', last_name: prof.nom || prof.lastName || '',
-              phone_code: '+33', phone_number: prof.phone || '',
+              ...decouperTelephone(prof.phone, prof.country),
               house_building: prof.address.trim(), road_area_colony: prof.addressSupplement || '',
               pincode: prof.postalCode || '', city: prof.city.trim(), state: '',
               address_type: 'home',
@@ -239,7 +258,7 @@ const CartScreen = ({ isAuth }) => {
     const p = profilCompteRef.current || {};
     setAddrForm({
       first_name: p.prenom || p.firstName || '', last_name: p.nom || p.lastName || '',
-      phone_code: '+33', phone_number: p.phone || '',
+      ...decouperTelephone(p.phone, p.country),
       house_building: p.address || '', pincode: p.postalCode || '', city: p.city || '',
       countryFlag: (COUNTRIES.find(c => c.name === p.country)?.code || 'FR'), lat: null, lang: null,
     });
@@ -252,10 +271,17 @@ const CartScreen = ({ isAuth }) => {
   }, []);
   const retourConfirmRef = React.useRef(false);
   React.useEffect(() => {
-    if (addrFormVisible || !retourConfirmRef.current) return;
+    if (addrFormVisible || addressPickerVisible || !retourConfirmRef.current) return;
     retourConfirmRef.current = false;
     setTimeout(() => setConfirmVisible(true), 450);
-  }, [addrFormVisible]);
+  }, [addrFormVisible, addressPickerVisible]);
+  // Choix d'adresse depuis la feuille « Confirmer » : même règle, la feuille se
+  // ferme, le choix s'ouvre, puis la feuille revient à sa fermeture.
+  const ouvrirChoixAdresse = React.useCallback(() => {
+    retourConfirmRef.current = true;
+    setConfirmVisible(false);
+    setTimeout(() => setAddressPickerVisible(true), 450);
+  }, []);
   const setAF = (k, v) => setAddrForm(f => ({ ...f, [k]: v }));
   const onAddrRueChange = (v) => {
     setAF('house_building', v);
@@ -1114,7 +1140,7 @@ const CartScreen = ({ isAuth }) => {
                     <Ionicons name="location" size={18} color={THEME.brand} />
                     <Text style={cartStyles.addrTitle}>{t('cart.deliveryAddress')}</Text>
                   </View>
-                  <TouchableOpacity onPress={() => setAddressPickerVisible(true)}>
+                  <TouchableOpacity onPress={ouvrirChoixAdresse}>
                     <Text style={cartStyles.addrEditTxt}>{selectedAddress ? t('cart.edit') : t('profile.addrAdd', 'Add New Address')}</Text>
                   </TouchableOpacity>
                 </View>
@@ -1132,7 +1158,7 @@ const CartScreen = ({ isAuth }) => {
                     ) : null}
                   </View>
                 ) : (
-                  <TouchableOpacity onPress={() => setAddressPickerVisible(true)} activeOpacity={0.7} style={cartStyles.addrDisplay}>
+                  <TouchableOpacity onPress={ouvrirChoixAdresse} activeOpacity={0.7} style={cartStyles.addrDisplay}>
                     <View style={cartStyles.addrDisplayRow}>
                       <Ionicons name="alert-circle-outline" size={14} color={THEME.faint} />
                       <Text style={cartStyles.addrDisplaySub}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
@@ -1801,6 +1827,7 @@ const CartScreen = ({ isAuth }) => {
                 <Text style={[cartStyles.pickerEmptyTxt, { marginTop: 8 }]}>{t('profile.addrEmpty', 'No saved address yet')}</Text>
                 <TouchableOpacity
                   onPress={() => {
+                    retourConfirmRef.current = false;
                     setAddressPickerVisible(false);
                     setConfirmVisible(false);
                     navigation.navigate('profile');
@@ -1851,6 +1878,7 @@ const CartScreen = ({ isAuth }) => {
                 })}
                 <TouchableOpacity
                   onPress={() => {
+                    retourConfirmRef.current = false;
                     setAddressPickerVisible(false);
                     setConfirmVisible(false);
                     navigation.navigate('profile');

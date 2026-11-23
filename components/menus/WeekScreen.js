@@ -23,9 +23,9 @@ import {
   headsFor,
 } from '../../lib/menus';
 import { T, SERIF, TAILLES as TAILLES_THEME } from './theme';
-import { PrimaryButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
+import { PrimaryButton, GhostButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
 import MealCard, { isolerPrix } from './MealCard';
-import { SwapSheet, AddedSheet, GuestsSheet, guestsText } from './Sheets';
+import { SwapSheet, AddedSheet, GuestsSheet, BudgetSheet, askResetAll, guestsText } from './Sheets';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { weekTarget, parseISO, dayIndexIn } from '../../lib/menus/weeks';
@@ -136,6 +136,7 @@ export default function WeekScreen({
   );
   const [swapKey, setSwapKey] = useState(null);
   const [guestsKey, setGuestsKey] = useState(null);
+  const [budgetOpen, setBudgetOpen] = useState(false);
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [sending, setSending] = useState(false);
@@ -508,15 +509,34 @@ export default function WeekScreen({
               <Text style={s.gaugeLabel}>{t('week.estimated')}</Text>
               <Text style={[s.gaugeVal, compact && s.gaugeValCompact]}>{formatEur(b.estimated || 0, lang)}</Text>
             </View>
+            {/* Budget changé ici en un geste (même réglage que dans les réglages), ou ajouté s'il n'y en a pas. */}
             {target ? (
-              <View style={{ alignItems: 'flex-end' }}>
-                <Text style={s.gaugeLabel}>{t('week.budget')}</Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setBudgetOpen(true)}
+                style={{ alignItems: 'flex-end' }}
+                accessibilityRole="button"
+                accessibilityLabel={t('week.budgetChange')}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <View style={s.gaugeEdit}>
+                  <Text style={s.gaugeLabel}>{t('week.budget')}</Text>
+                  <Ionicons name="pencil" size={12} color={T.muted} style={{ marginLeft: 4 }} />
+                </View>
                 <Text style={s.gaugeTarget}>{formatEur(target, lang)}</Text>
-              </View>
+              </TouchableOpacity>
             ) : (
-              <View style={s.gaugeNoBudget}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setBudgetOpen(true)}
+                style={[s.gaugeNoBudget, s.gaugeEdit]}
+                accessibilityRole="button"
+                accessibilityLabel={t('week.budgetChange')}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
                 <Text style={s.gaugeNoBudgetTxt}>{t('week.noBudget')}</Text>
-              </View>
+                <Ionicons name="pencil" size={12} color={T.muted} style={{ marginLeft: 4 }} />
+              </TouchableOpacity>
             )}
           </View>
           {target ? (
@@ -643,6 +663,15 @@ export default function WeekScreen({
         {!cur.matin && !cur.midi && !cur.soir ? (
           <Text style={s.none}>{t('week.noMeal')}</Text>
         ) : null}
+        {/* Même confirmation et même effacement que « Tout réinitialiser » des réglages. */}
+        <View style={{ marginTop: 28, alignItems: 'center' }}>
+          <GhostButton
+            danger
+            icon="trash-outline"
+            label={t('settings.reset')}
+            onPress={() => askResetAll({ t, resetAll: m.resetAll })}
+          />
+        </View>
       </ScrollView>
 
       <View style={s.bar}>
@@ -671,6 +700,7 @@ export default function WeekScreen({
 
       {swapKey ? <SwapSheet mealKey={swapKey} onClose={() => setSwapKey(null)} /> : null}
       {guestsKey ? <GuestsSheet mealKey={guestsKey} onClose={() => setGuestsKey(null)} /> : null}
+      {budgetOpen ? <BudgetSheet onClose={() => setBudgetOpen(false)} /> : null}
       {added ? (
         <AddedSheet
           result={added}
@@ -727,6 +757,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
+  gaugeEdit: { flexDirection: 'row', alignItems: 'center' },
   gaugeNoBudgetTxt: { fontSize: 12, fontWeight: '700', color: T.muted },
   track: {
     height: 10,

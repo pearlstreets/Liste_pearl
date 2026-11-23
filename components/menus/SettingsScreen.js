@@ -1,12 +1,13 @@
 // Réglages des menus : foyer, repas voulus, régimes. Tout est enregistré à chaque changement.
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '../ui/IoniconsSens';
 import { T, SERIF, TAILLES } from './theme';
 import { SectionTitle, GhostButton, PrimaryButton } from './ui';
 import Questionnaire from './Questionnaire';
 import { HouseholdSection, MealsSection, DietSection, PrefsSection } from './ProfileForms';
 import RemindersSection from './RemindersSection';
+import { askResetAll } from './Sheets';
 import PrivacySection from './PrivacySection';
 import { useMenus } from './MenusContext';
 import { loadMenusSyncStatus, onMenusSyncStatus } from '../../services/menusSync';
@@ -49,21 +50,7 @@ export default function SettingsScreen({ onClose }) {
   }, []);
 
   const confirmReset = () =>
-    Alert.alert(
-      t('settings.resetTitle'),
-      t(sync && sync.connected ? 'settings.resetTextAccount' : 'settings.resetText'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('settings.resetAction'),
-          style: 'destructive',
-          onPress: async () => {
-            await resetAll();
-            onClose && onClose();
-          },
-        },
-      ]
-    );
+    askResetAll({ t, resetAll, connected: !!(sync && sync.connected), onDone: onClose });
 
   // « Refaire le questionnaire » : les réponses sont enregistrées au fil des pages ; la fin peut composer la semaine
   // (les repas verrouillés sont gardés).

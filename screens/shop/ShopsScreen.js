@@ -1,5 +1,5 @@
 import React from "react";
-import { getProductOptions, prefetchShopOptions } from "../../services/products";
+import { getProductOptions, prefetchShopOptions, getShopCatalogue } from "../../services/products";
 import { optionDOffice, ficheEpuisee, optionEpuisee, plafonner, varianteDeLOption, cleVariante } from "../../lib/variantes";
 import { loadShops, peekShops } from "../../lib/shopsCache";
 import { takePendingShop, onOpenShop } from "../../lib/openShop";
@@ -9,6 +9,7 @@ import Modal from "../../components/DeuxEcrans";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, Image, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SqueletteBoutiques } from "../../components/ui/Squelette";
 import { Ionicons } from "../../components/ui/IoniconsSens";
 import { MARCHE, SERIF, TAILLES } from "../../components/ui/marche";
 import { BRAND, INSET_BAS, THEME } from "../../components/commun/theme";
@@ -68,16 +69,28 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
 
   React.useEffect(() => { load(); }, [load]);
 
+  // La liste ne porte que 12 annonces par boutique : à l'ouverture de sa fiche,
+  // son catalogue complet remplace ces annonces (rien ne change si la lecture échoue).
+  const chargerCatalogue = React.useCallback((shop) => {
+    if (!shop || !(shop.total > (shop.products || []).length)) return;
+    getShopCatalogue('product_purchase', shop.id).then((products) => {
+      if (!Array.isArray(products) || products.length <= (shop.products || []).length) return;
+      setSelectedShop((cur) => (cur && cur.id === shop.id ? { ...cur, products } : cur));
+      if (products.some((p) => p.options === undefined)) prefetchShopOptions(shop.id);
+    }).catch(() => {});
+  }, []);
+
   // Fiche demandée depuis Menus (Soir libre, courses) : ouvre la boutique donnée.
   React.useEffect(() => {
     const ouvrir = (shop) => {
       if (!shop) return;
       setSelectedProduct(null); setProductSearch(''); setSelectedShop(shop);
       if ((shop.products || []).some((p) => p.options === undefined)) prefetchShopOptions(shop.id);
+      chargerCatalogue(shop);
     };
     ouvrir(takePendingShop());
     return onOpenShop(() => ouvrir(takePendingShop()));
-  }, []);
+  }, [chargerCatalogue]);
 
   // Boutiques favorites : même stockage que Comparer et Favoris (KEY_FAV_SHOPS,
   // tableau de noms).
@@ -195,7 +208,7 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
 
   const renderShopCard = ({ item }) => (
     <View style={shopStyles.card}>
-    <TouchableOpacity activeOpacity={0.9} style={shopStyles.cardMain} onPress={() => { setSelectedProduct(null); setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); }}>
+    <TouchableOpacity activeOpacity={0.9} style={shopStyles.cardMain} onPress={() => { setSelectedProduct(null); setSelectedShop(item); setProductSearch(''); if ((item.products || []).some((p) => p.options === undefined)) prefetchShopOptions(item.id); chargerCatalogue(item); }}>
       <View style={shopStyles.cover}>
         {item.cover ? (
           <Image source={{ uri: item.cover }} style={shopStyles.coverImg} resizeMode="cover" />
@@ -209,7 +222,7 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
         <Text style={shopStyles.shopName} numberOfLines={1}>{item.name}</Text>
         {item.address ? <Text style={shopStyles.shopAddr} numberOfLines={1}>{item.address}</Text> : null}
         <View style={shopStyles.badgeRow}>
-          <View style={shopStyles.badge}><Text style={shopStyles.badgeTxt}>{t('counts.products', { count: item.products.length })}</Text></View>
+          <View style={shopStyles.badge}><Text style={shopStyles.badgeTxt}>{t('counts.products', { count: item.total || item.products.length })}</Text></View>
           <Ionicons name="chevron-forward" size={18} color={THEME.faint} />
         </View>
       </View>
@@ -295,7 +308,7 @@ const ShopsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => {
       ) : null}
 
       {loading ? (
-        <View style={shopStyles.center}><ActivityIndicator size="large" color={BRAND} /></View>
+        <SqueletteBoutiques />
       ) : error ? (
         <View style={shopStyles.center}>
           <Ionicons name="cloud-offline-outline" size={40} color={THEME.faint} />
