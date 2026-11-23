@@ -71,7 +71,17 @@
     "deleteThisItemConfirm": "Este artículo se eliminará de su lista.",
     "markBought": "Marcar como comprado",
     "rejectRequest": "Rechazar la solicitud",
-    "blockUser": "Bloquear a esta persona"
+    "blockUser": "Bloquear a esta persona",
+    "scanReading": "Leyendo la foto…",
+    "scanFoundTitle": "Artículos encontrados",
+    "scanAdd": "Añadir ({{count}})",
+    "scanNothing": "No se ha leído ningún artículo en esta foto. Inténtelo con más luz.",
+    "scanLimit": "Ha alcanzado el límite de escaneos de hoy. Inténtelo de nuevo mañana.",
+    "scanImage": "No se ha podido leer esta foto. Inténtelo con otra foto.",
+    "scanUnavailable": "La lectura de fotos no está disponible por el momento. Inténtelo más tarde.",
+    "scanNetwork": "No hay conexión. Compruebe su red e inténtelo de nuevo.",
+    "scanLoginTitle": "Inicio de sesión necesario",
+    "scanLoginMsg": "Inicie sesión para que sus fotos se lean y los artículos se añadan a su lista."
   },
   "productsScreen": {
     "clickAndCollect": "Compra y Recoge",

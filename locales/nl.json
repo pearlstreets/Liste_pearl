@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "Dit artikel wordt van uw lijst verwijderd.",
     "markBought": "Markeren als gekocht",
     "rejectRequest": "Verzoek weigeren",
-    "blockUser": "Deze persoon blokkeren"
+    "blockUser": "Deze persoon blokkeren",
+    "scanReading": "Foto wordt gelezen…",
+    "scanFoundTitle": "Gevonden artikelen",
+    "scanAdd": "Toevoegen ({{count}})",
+    "scanNothing": "Er is geen artikel op deze foto gelezen. Probeer het met meer licht.",
+    "scanLimit": "U hebt de scanlimiet voor vandaag bereikt. Probeer het morgen opnieuw.",
+    "scanImage": "Deze foto kon niet worden gelezen. Probeer een andere foto.",
+    "scanUnavailable": "Het lezen van foto's is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+    "scanNetwork": "Geen verbinding. Controleer uw netwerk en probeer het opnieuw.",
+    "scanLoginTitle": "Inloggen vereist",
+    "scanLoginMsg": "Log in zodat uw foto's worden gelezen en de artikelen aan uw lijst worden toegevoegd."
   },
   "productsScreen": {
     "clickAndCollect": "Klik en Afhaal",

@@ -69,7 +69,17 @@
     "deleteThisItemConfirm": "此项将从您的清单中移除。",
     "markBought": "标记为已购买",
     "rejectRequest": "拒绝请求",
-    "blockUser": "屏蔽此人"
+    "blockUser": "屏蔽此人",
+    "scanReading": "正在读取照片…",
+    "scanFoundTitle": "找到的商品",
+    "scanAdd": "添加 ({{count}})",
+    "scanNothing": "未能从这张照片中读取到商品，请在光线更充足的地方重试。",
+    "scanLimit": "您已达到今日扫描次数上限，请明天再试。",
+    "scanImage": "无法读取这张照片，请换一张照片再试。",
+    "scanUnavailable": "照片读取功能暂时不可用，请稍后再试。",
+    "scanNetwork": "无法连接，请检查网络后重试。",
+    "scanLoginTitle": "需要登录",
+    "scanLoginMsg": "登录后，您的照片将被读取，商品会添加到您的清单中。"
   },
   "productsScreen": {
     "clickAndCollect": "点击并收取",

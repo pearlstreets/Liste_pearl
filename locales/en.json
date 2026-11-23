@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "This item will be removed from your list.",
     "markBought": "Mark as bought",
     "rejectRequest": "Decline request",
-    "blockUser": "Block this person"
+    "blockUser": "Block this person",
+    "scanReading": "Reading the photo…",
+    "scanFoundTitle": "Items found",
+    "scanAdd": "Add ({{count}})",
+    "scanNothing": "No items could be read from this photo. Try again with more light.",
+    "scanLimit": "You have reached today's scan limit. Please try again tomorrow.",
+    "scanImage": "This photo could not be read. Please try another photo.",
+    "scanUnavailable": "Photo reading is temporarily unavailable. Please try again later.",
+    "scanNetwork": "Unable to connect. Please check your network and try again.",
+    "scanLoginTitle": "Sign in required",
+    "scanLoginMsg": "Sign in so your photos can be read and the items added to your list."
   },
   "productsScreen": {
     "clickAndCollect": "Click & Collect",

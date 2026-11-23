@@ -69,7 +69,17 @@
     "deleteThisItemConfirm": "この項目はリストから削除されます。",
     "markBought": "購入済みにする",
     "rejectRequest": "リクエストを拒否",
-    "blockUser": "このユーザーをブロック"
+    "blockUser": "このユーザーをブロック",
+    "scanReading": "写真を読み取っています…",
+    "scanFoundTitle": "見つかった商品",
+    "scanAdd": "追加 ({{count}})",
+    "scanNothing": "この写真から商品を読み取れませんでした。もっと明るい場所でお試しください。",
+    "scanLimit": "本日のスキャン上限に達しました。明日もう一度お試しください。",
+    "scanImage": "この写真を読み取れませんでした。別の写真でお試しください。",
+    "scanUnavailable": "写真の読み取りは現在ご利用いただけません。しばらくしてからお試しください。",
+    "scanNetwork": "接続できません。ネットワークを確認して、もう一度お試しください。",
+    "scanLoginTitle": "ログインが必要です",
+    "scanLoginMsg": "ログインすると、写真が読み取られ、商品がリストに追加されます。"
   },
   "productsScreen": {
     "clickAndCollect": "クリック&コレクト",

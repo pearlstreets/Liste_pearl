@@ -70,7 +70,17 @@
     "deleteThisItemConfirm": "Varan tas bort från din lista.",
     "markBought": "Markera som köpt",
     "rejectRequest": "Avböj förfrågan",
-    "blockUser": "Blockera den här personen"
+    "blockUser": "Blockera den här personen",
+    "scanReading": "Läser fotot…",
+    "scanFoundTitle": "Hittade varor",
+    "scanAdd": "Lägg till ({{count}})",
+    "scanNothing": "Inga varor kunde läsas på det här fotot. Försök med mer ljus.",
+    "scanLimit": "Ni har nått dagens gräns för skanningar. Försök igen i morgon.",
+    "scanImage": "Det här fotot kunde inte läsas. Försök med ett annat foto.",
+    "scanUnavailable": "Läsning av foton är tillfälligt otillgänglig. Försök igen senare.",
+    "scanNetwork": "Ingen anslutning. Kontrollera nätverket och försök igen.",
+    "scanLoginTitle": "Inloggning krävs",
+    "scanLoginMsg": "Logga in så att era foton läses och varorna läggs till i er lista."
   },
   "productsScreen": {
     "clickAndCollect": "Klicka & Hämta",
