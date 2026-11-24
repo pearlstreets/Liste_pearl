@@ -49,7 +49,7 @@ const prodStyles = StyleSheet.create({
 
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 12 },
   chip: { height: TAILLES.boutonPetit, justifyContent: 'center', paddingHorizontal: 14, borderRadius: TAILLES.boutonPetit / 2, marginRight: 8, marginBottom: 8, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  chipOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  chipOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   chipTxt: { fontSize: 12.5, fontWeight: '700', color: THEME.muted },
   chipTxtOn: { color: MARCHE.blanc },
 
@@ -128,8 +128,8 @@ const prodStyles = StyleSheet.create({
   bottomSummary: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: TAILLES.marge, paddingTop: 10, paddingBottom: 8 },
   bottomCount: { fontSize: 14, fontWeight: '700', color: THEME.muted },
   bottomTotal: { fontSize: 18, fontWeight: '600', color: THEME.brand },
-  cta: { marginHorizontal: TAILLES.marge, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  ctaTxt: { color: MARCHE.noir, fontWeight: '600', fontSize: 16, marginLeft: 8 },
+  cta: { marginHorizontal: TAILLES.marge, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  ctaTxt: { color: MARCHE.blanc, fontWeight: '600', fontSize: 16, marginLeft: 8 },
 });
 
 // integre : affiché dans l'onglet Acheter (sous son segment, sans marge du haut).
@@ -1180,7 +1180,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
               }}
               style={prodStyles.cta}
             >
-              <Ionicons name="cart" size={20} color="#1C1917" />
+              <Ionicons name="cart" size={20} color={MARCHE.blanc} />
               <Text style={prodStyles.ctaTxt}>
                 {t('cart.addToCart')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty||1), 0)})
               </Text>
@@ -1309,7 +1309,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                   setCartSuccessVisible(true);
                   } catch(e) {}
                 }}
-                style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
+                style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, alignItems:'center', justifyContent:'center'}}
               >
                 <Text style={{color:MARCHE.blanc, fontWeight:'700', fontSize:16}}>{t('profile.confirm')}</Text>
               </TouchableOpacity>
@@ -1447,7 +1447,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
                     setCartSuccessVisible(true);
                   } catch(e) {}
                 }}
-                style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
+                style={{height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, alignItems:'center', justifyContent:'center'}}
               >
                 <Text style={{color:MARCHE.blanc, fontWeight:'700', fontSize:16}}>{t('profile.confirm')} ({popupSelectedItems.filter(si => checkedShops[si.shopIndex]).reduce((s, si) => s + (si.qty || 1), 0)})</Text>
               </TouchableOpacity>
@@ -1473,7 +1473,7 @@ const ProductsScreen = ({ integre = false, actif = true, favTick = 0 } = {}) => 
             <Text style={{fontSize:14, color:THEME.muted, marginTop:8, textAlign:'center'}}>{t('counts.addedToCart', { count: cartSuccessCount })}</Text>
             <TouchableOpacity
               onPress={() => { setCartSuccessVisible(false); navigation.navigate('cart', { mode, n: Date.now() }); }}
-              style={{marginTop:20, width:'100%', height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor:MARCHE.noir, alignItems:'center', justifyContent:'center'}}
+              style={{marginTop:20, width:'100%', height:TAILLES.bouton, borderRadius:TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, alignItems:'center', justifyContent:'center'}}
             >
               <Text style={{color:MARCHE.blanc, fontWeight:'700', fontSize:16}}>{t('cart.viewCart')}</Text>
             </TouchableOpacity>

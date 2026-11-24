@@ -639,7 +639,7 @@ export default function ListScreen() {
       return (
         <View style={[lstyles.card, isCrossed && { opacity: 0.55 }]}>
           <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
-            {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color={MARCHE.blanc} /> : null}
+            {item.selected && !isCrossed ? <Ionicons name="checkmark-sharp" size={17} color={MARCHE.blanc} /> : null}
           </View>
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Text numberOfLines={1} style={[lstyles.itemName, isCrossed && lstyles.itemNameCrossed]}>{paquet.name}</Text>
@@ -660,7 +660,7 @@ export default function ListScreen() {
       <TouchableOpacity onPress={() => !isCrossed && toggleSelected(item.id)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}
         accessibilityRole="checkbox" accessibilityState={{ checked: !!(item.selected && !isCrossed) }} accessibilityLabel={paquet.name}>
         <View style={[lstyles.check, item.selected && !isCrossed && lstyles.checkOn]}>
-          {item.selected && !isCrossed ? <Ionicons name="checkmark" size={15} color={MARCHE.blanc} /> : null}
+          {item.selected && !isCrossed ? <Ionicons name="checkmark-sharp" size={17} color={MARCHE.blanc} /> : null}
         </View>
       </TouchableOpacity>
 
@@ -935,7 +935,7 @@ export default function ListScreen() {
         DeviceEventEmitter.emit('PRODUCTS_RESET');
         allerA(navigation, 'products');
       }}>
-          <Ionicons name="bag-check-outline" size={20} color="#1C1917" />
+          <Ionicons name="bag-check-outline" size={20} color={MARCHE.blanc} />
           <Text style={lstyles.ctaTxt}>{t('listScreen.compareMyList')} ({itemsToSend.length})</Text>
         </TouchableOpacity>
         )}

@@ -495,7 +495,7 @@ const s = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: MARCHE.noir,
+    backgroundColor: MARCHE.vert,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -513,6 +513,6 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pickBoxOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  pickBoxOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   pickName: { flex: 1, fontSize: 16, fontWeight: '600', color: T.ink },
 });
