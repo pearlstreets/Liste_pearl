@@ -20,14 +20,14 @@ export const cartStyles = StyleSheet.create({
   // Bordure 1.5 dans les deux états : la sélection change la couleur seulement,
   // la mise en page ne bouge pas.
   card: { backgroundColor: THEME.card, borderRadius: TAILLES.rayonCarte, padding: 14, marginHorizontal: TAILLES.marge, marginTop: 10, borderWidth: 1.5, borderColor: THEME.border, ...THEME.shadowSm },
-  cardOn: { borderColor: THEME.brand },
+  cardOn: { borderColor: MARCHE.vert },
   shopHead: { flexDirection: 'row', alignItems: 'center', paddingBottom: 12, marginBottom: 2, borderBottomWidth: 1, borderBottomColor: THEME.border },
   shopIcon: { width: 38, height: 38, borderRadius: 16, backgroundColor: THEME.brandSoft, alignItems: 'center', justifyContent: 'center', marginLeft: 10, marginRight: 10 },
   shopName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   shopMeta: { fontSize: 12.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
 
-  check: { width: 24, height: 24, borderRadius: 8, borderWidth: 2, borderColor: THEME.borderInput, alignItems: 'center', justifyContent: 'center' },
-  checkOn: { backgroundColor: THEME.terra, borderColor: THEME.terra },
+  check: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: THEME.borderInput, alignItems: 'center', justifyContent: 'center' },
+  checkOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
 
   productRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
   productDivider: { borderBottomWidth: 1, borderBottomColor: THEME.border },
@@ -56,8 +56,8 @@ export const cartStyles = StyleSheet.create({
   bottomCountVal: { fontSize: 13.5, fontWeight: '700', color: THEME.ink },
   bottomTotalLabel: { fontSize: 16, fontWeight: '600', color: THEME.ink },
   bottomTotalVal: { fontSize: 20, fontWeight: '600', color: THEME.brand },
-  cta: { marginTop: 12, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
-  ctaTxt: { color: MARCHE.noir, fontWeight: '600', fontSize: 16, marginLeft: 8 },
+  cta: { marginTop: 12, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  ctaTxt: { color: MARCHE.blanc, fontWeight: '600', fontSize: 16, marginLeft: 8 },
   ctaDisabled: { opacity: 0.45 },
 
   // Bottom sheet modals
@@ -119,7 +119,7 @@ export const cartStyles = StyleSheet.create({
   addrBtnRow: { flexDirection: 'row', marginTop: 14, gap: 10 },
   addrCancelBtn: { flex: 1, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.borderInput, alignItems: 'center', justifyContent: 'center' },
   addrCancelTxt: { color: THEME.ink, fontWeight: '600', fontSize: 14 },
-  addrSaveBtn: { flex: 1, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.noir, backgroundColor: MARCHE.noir, alignItems: 'center', justifyContent: 'center' },
+  addrSaveBtn: { flex: 1, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, alignItems: 'center', justifyContent: 'center' },
   addrSaveTxt: { color: MARCHE.blanc, fontWeight: '600', fontSize: 14 },
   addrDisplay: { marginTop: 10, marginLeft: 28 },
   addrDisplayRow: { flexDirection: 'row', alignItems: 'center' },
@@ -131,7 +131,7 @@ export const cartStyles = StyleSheet.create({
   slotSectionHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   slotSectionTitle: { fontSize: 15, fontWeight: '700', color: THEME.ink, marginLeft: 10 },
   dayPill: { paddingHorizontal: 14, height: TAILLES.boutonPetit, borderRadius: TAILLES.boutonPetit / 2, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
-  dayPillOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  dayPillOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   dayPillTxt: { fontSize: 13, fontWeight: '700', color: THEME.muted },
   dayPillTxtOn: { color: MARCHE.blanc },
   periodGroup: { marginBottom: 14 },
@@ -139,7 +139,7 @@ export const cartStyles = StyleSheet.create({
   periodLabel: { fontSize: 11.5, fontWeight: '700', color: THEME.terraDark, marginLeft: 6, textTransform: 'uppercase', letterSpacing: 1 },
   slotGrid: { flexDirection: 'row', flexWrap: 'wrap' },
   slotChip: { width: '31.5%', marginBottom: 8, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
-  slotChipOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  slotChipOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   slotChipTxt: { fontSize: 11, fontWeight: '700', color: THEME.muted },
   slotChipTxtOn: { color: MARCHE.blanc },
   noSlots: { padding: 22, alignItems: 'center', backgroundColor: THEME.subtle, borderRadius: 16 },
@@ -160,9 +160,9 @@ export const cartStyles = StyleSheet.create({
   itemsCaption: { fontSize: 12, color: THEME.faint, textAlign: 'center', marginTop: 12, fontWeight: '600' },
 
   sheetFooter: { paddingHorizontal: TAILLES.marge, paddingTop: 12, gap: 10 },
-  primaryBtn: { height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.borderInput, backgroundColor: THEME.card, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
+  primaryBtn: { height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: MARCHE.vert, backgroundColor: MARCHE.vert, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', ...THEME.shadow },
   primaryBtnDisabled: { opacity: 0.45 },
-  primaryBtnTxt: { color: MARCHE.noir, fontWeight: '600', fontSize: 16, marginLeft: 8 },
+  primaryBtnTxt: { color: MARCHE.blanc, fontWeight: '600', fontSize: 16, marginLeft: 8 },
   ghostBtn: { height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, borderWidth: 1, borderColor: THEME.border, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
   ghostBtnTxt: { color: THEME.ink, fontWeight: '600', fontSize: 15 },
 

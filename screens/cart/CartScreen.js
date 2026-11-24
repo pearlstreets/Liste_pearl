@@ -905,7 +905,7 @@ const CartScreen = ({ isAuth }) => {
               style={cartStyles.shopHead}>
               <TouchableOpacity onPress={() => toggleShopSelection(group)} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
                 <View style={[cartStyles.check, someSelected && cartStyles.checkOn]}>
-                  {someSelected ? <Ionicons name="checkmark" size={15} color={MARCHE.blanc} /> : null}
+                  {someSelected ? <Ionicons name="checkmark-sharp" size={17} color={MARCHE.blanc} /> : null}
                 </View>
               </TouchableOpacity>
               <View style={cartStyles.shopIcon}>
@@ -927,7 +927,7 @@ const CartScreen = ({ isAuth }) => {
                 style={[cartStyles.productRow, pi < group.items.length - 1 && cartStyles.productDivider]}>
                 <TouchableOpacity onPress={() => setSelectedCart(prev => ({...prev, [idx]: !prev[idx]}))} activeOpacity={0.7} hitSlop={{top:8,bottom:8,left:8,right:8}}>
                   <View style={[cartStyles.check, !!selectedCart[idx] && cartStyles.checkOn]}>
-                    {!!selectedCart[idx] ? <Ionicons name="checkmark" size={15} color={MARCHE.blanc} /> : null}
+                    {!!selectedCart[idx] ? <Ionicons name="checkmark-sharp" size={17} color={MARCHE.blanc} /> : null}
                   </View>
                 </TouchableOpacity>
                 <View style={{ marginLeft: 10 }}>
@@ -990,7 +990,7 @@ const CartScreen = ({ isAuth }) => {
           <Text style={cartStyles.bottomTotalVal}>{fmtPrice(totalPrice)}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.9} onPress={() => { if (!isAuth) { veutConfirmerRef.current = true; DeviceEventEmitter.emit('OPEN_AUTH'); return; } setPopup(null); setConfirmVisible(true); }} style={cartStyles.cta}>
-          <Ionicons name="bicycle" size={20} color="#1C1917" />
+          <Ionicons name="bicycle" size={20} color={MARCHE.blanc} />
           <Text style={cartStyles.ctaTxt}>{t('cart.confirmOrder')}</Text>
         </TouchableOpacity>
       </View>
@@ -1426,12 +1426,12 @@ const CartScreen = ({ isAuth }) => {
                     else if (ok !== false) { setPopup({ tone: 'info', title: t('cart.emptyCart'), message: t('favorites.addFromBuy') }); }
                   } finally { if (cardRes !== 'started') { placingRef.current = false; setPlacing(false); } }
                 }}
-                style={[cartStyles.primaryBtn, missingAddress && { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir }, disabled && cartStyles.primaryBtnDisabled]}
+                style={[cartStyles.primaryBtn, missingAddress && { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert }, disabled && cartStyles.primaryBtnDisabled]}
               >
-                {placing ? <ActivityIndicator color="#1C1917" /> : missingAddress ? (
+                {placing ? <ActivityIndicator color={MARCHE.blanc} /> : missingAddress ? (
                   <Text style={[cartStyles.primaryBtnTxt, { color: MARCHE.blanc, marginLeft: 0 }]}>{t('auth.continue', 'Continuer')}</Text>
                 ) : (<>
-                  <Ionicons name="checkmark-circle" size={20} color="#1C1917" />
+                  <Ionicons name="checkmark-circle" size={20} color={MARCHE.blanc} />
                   <Text style={cartStyles.primaryBtnTxt}>{t('cart.confirmOrder')}</Text>
                 </>)}
               </TouchableOpacity>
@@ -1579,7 +1579,7 @@ const CartScreen = ({ isAuth }) => {
                     }}
                     style={cartStyles.primaryBtn}
                   >
-                    <Ionicons name="checkmark-circle" size={20} color="#1C1917" />
+                    <Ionicons name="checkmark-circle" size={20} color={MARCHE.blanc} />
                     <Text style={cartStyles.primaryBtnTxt}>{t('cart.addToOrder')}</Text>
                   </TouchableOpacity>
                 </View>
@@ -1604,7 +1604,7 @@ const CartScreen = ({ isAuth }) => {
                   </View>
                   <Text style={{ fontFamily: SERIF, fontSize: 20, fontWeight: '400', color: THEME.ink, textAlign: 'center', marginBottom: 6 }}>{popup.title}</Text>
                   {!!popup.message && <Text style={{ fontSize: 14.5, lineHeight: 21, color: THEME.muted, textAlign: 'center', marginBottom: 20 }}>{popup.message}</Text>}
-                  <TouchableOpacity activeOpacity={0.9} onPress={() => setPopup(null)} style={{ alignSelf: 'stretch', backgroundColor: MARCHE.noir, borderRadius: TAILLES.rayonBouton, height: TAILLES.bouton, alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity activeOpacity={0.9} onPress={() => setPopup(null)} style={{ alignSelf: 'stretch', backgroundColor: MARCHE.vert, borderRadius: TAILLES.rayonBouton, height: TAILLES.bouton, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ color: MARCHE.blanc, fontSize: 16, fontWeight: '700' }}>{t('common.ok', 'OK')}</Text>
                   </TouchableOpacity>
                 </TouchableOpacity>

@@ -90,12 +90,18 @@ export default function MainNavigator({ onLogout, isAuth }) {
         tabBarIcon: ({ focused, color, size }) => {
           const iconSet = ICONS[route.name] || { focused:"ellipse", unfocused:"ellipse-outline" };
           const name = focused ? iconSet.focused : iconSet.unfocused;
-          return <Ionicons name={name} size={22} color={color} />;
+          // Onglet actif : petit point jaune au-dessus de l'icône, comme dans le logo.
+          return (
+            <View style={{ alignItems: 'center' }}>
+              <Ionicons name={name} size={22} color={color} />
+              {focused ? <View style={{ position: 'absolute', top: -9, width: 5, height: 5, borderRadius: 2.5, backgroundColor: MARCHE.jaune }} /> : null}
+            </View>
+          );
         },
       })}
     >
       <Tab.Screen name="myList" component={ListScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8, backgroundColor: MARCHE.jaune, color: THEME.ink } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
+      <Tab.Screen name="cart" options={{ headerShown: false, tabBarBadge: cartCount > 0 ? cartCount : undefined, tabBarBadgeStyle: { top: -5, end: -8, backgroundColor: MARCHE.jaune, color: MARCHE.noir } }}>{() => <CartScreen isAuth={isAuth} />}</Tab.Screen>
       <Tab.Screen name="acheter" component={AcheterScreen} options={{ headerShown: false }} />
       <Tab.Screen name="menus" component={MenusScreen} options={{ headerShown: false }} />
       <Tab.Screen name="profile" options={{ headerShown: false }}>{() => <FakeProfileScreen onLogout={onLogout} isAuth={isAuth} />}</Tab.Screen>

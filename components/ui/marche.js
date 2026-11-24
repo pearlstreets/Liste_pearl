@@ -7,7 +7,7 @@
 import { Platform } from 'react-native';
 
 export const MARCHE = {
-  bg: '#FAFAF7',
+  bg: '#F6FAF5',
   card: '#FFFFFF',
   subtle: '#F1F4F0',
   ink: '#1F2421',
@@ -15,12 +15,12 @@ export const MARCHE = {
   faint: '#8A928C',
   border: '#E3E7E2',
   borderInput: '#D5DBD4',
-  terra: '#2E9E3B', // vert lisible (texte, prix, onglet actif),
+  terra: '#4AA552', // vert lisible (texte, prix, onglet actif),
   terraDark: '#237A2E',
   terraSoft: '#E8F6EA',
   noir: '#1C1917',
   blanc: '#FFFFFF',
-  vert: '#3DBE4A', // vert exact de l'icône (pastilles, puces)
+  vert: '#4AA552', // vert exact de l'icône (pastilles, puces)
   jaune: '#FFC21F', // touche rare
   nuit: '#3B2418', // fond du mode cuisine
 };

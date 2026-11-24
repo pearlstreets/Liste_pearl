@@ -243,7 +243,7 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   chipSmall: { paddingHorizontal: 11, height: 32 },
-  chipOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  chipOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   chipOff: { backgroundColor: '#fff', borderColor: T.border },
   chipTxt: { fontSize: 14, fontWeight: '600', color: T.ink },
   btn: {
@@ -254,7 +254,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnOn: { backgroundColor: MARCHE.noir, ...T.shadowSm },
+  btnOn: { backgroundColor: MARCHE.vert, ...T.shadowSm },
   btnSoft: { backgroundColor: '#fff', borderWidth: 1, borderColor: T.borderInput },
   // flexShrink : le libellé reste dans la marge intérieure (réduit par adjustsFontSizeToFit) au lieu de déborder.
   btnTxt: { color: '#fff', fontSize: 16, fontWeight: '600', flexShrink: 1 },
