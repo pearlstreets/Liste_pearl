@@ -970,7 +970,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  checkOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   ingName: { flex: 1, fontSize: 16, fontWeight: '700', color: T.ink },
   ingQty: { fontSize: 15, fontWeight: '600', color: T.ink, marginLeft: 8 },
   nutri: {
@@ -1049,7 +1049,7 @@ const s = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: MARCHE.noir,
+    backgroundColor: MARCHE.vert,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -1074,5 +1074,5 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
   },
   barBtnFlex: { flex: 1 },
-  barBtnNoir: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  barBtnNoir: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
 });

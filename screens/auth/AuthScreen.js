@@ -62,7 +62,7 @@ const authStyles = StyleSheet.create({
   pwdEye: { paddingHorizontal: 14, height: TAILLES.champ - 2, alignItems: 'center', justifyContent: 'center' },
   stayRow: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', marginTop: 12, paddingVertical: 4 },
   stayBox: { width: 20, height: 20, borderRadius: 5, borderWidth: 1.5, borderColor: THEME.faint, backgroundColor: THEME.card, alignItems: 'center', justifyContent: 'center' },
-  stayBoxOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  stayBoxOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   stayTxt: { marginLeft: 10, fontSize: 14, color: THEME.ink },
 
   // Primary button
@@ -79,7 +79,7 @@ const authStyles = StyleSheet.create({
   stepRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', marginHorizontal: 24, marginBottom: 22, marginTop: 4 },
   stepItem: { alignItems: 'center', width: 120 },
   stepDot: { width: 30, height: 30, borderRadius: 15, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: THEME.border },
-  stepDotActive: { backgroundColor: THEME.card, borderColor: MARCHE.noir },
+  stepDotActive: { backgroundColor: THEME.card, borderColor: MARCHE.vert },
   stepDotTxt: { fontSize: 14, fontWeight: '600', color: THEME.muted },
   stepDotTxtActive: { color: THEME.ink },
   stepLabel: { fontSize: 12, fontWeight: '700', color: THEME.faint, marginTop: 6, textAlign: 'center' },
@@ -89,7 +89,7 @@ const authStyles = StyleSheet.create({
   // Genre (segmented)
   genderRow: { flexDirection: 'row', gap: 8 },
   genderChip: { flex: 1, height: TAILLES.champ, borderRadius: 999, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
-  genderChipActive: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  genderChipActive: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   genderChipTxt: { fontSize: 14.5, fontWeight: '700', color: THEME.muted },
   genderChipTxtActive: { color: MARCHE.blanc },
 

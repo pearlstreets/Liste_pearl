@@ -99,7 +99,7 @@ export const profStyles = StyleSheet.create({
   guestHeroIcon: { width: 78, height: 78, borderRadius: 39, backgroundColor: THEME.subtle, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
   guestHeroTitle: { fontSize: 20, fontFamily: SERIF, fontWeight: '600', color: THEME.ink, textAlign: 'center', letterSpacing: -0.3 },
   guestHeroHint: { fontSize: 13, color: THEME.muted, textAlign: 'center', marginTop: 8, lineHeight: 19, fontWeight: '600' },
-  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', backgroundColor: MARCHE.noir, borderWidth: 1, borderColor: MARCHE.noir, paddingHorizontal: 26, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, marginTop: 18 },
+  guestHeroBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', backgroundColor: MARCHE.vert, borderWidth: 1, borderColor: MARCHE.vert, paddingHorizontal: 26, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, marginTop: 18 },
   guestHeroBtnTxt: { color: MARCHE.blanc, fontWeight: '600', fontSize: 15, marginLeft: 8 },
   guestHeroBtnAlt: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'stretch', backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.borderInput, paddingHorizontal: 26, height: TAILLES.bouton, borderRadius: TAILLES.rayonBouton, marginTop: 10 },
   guestHeroBtnAltTxt: { color: THEME.ink, fontWeight: '600', fontSize: 15, marginLeft: 8 },
@@ -147,7 +147,7 @@ export const profStyles = StyleSheet.create({
 
   // Picker rows (language / currency)
   pickerRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: THEME.card, borderRadius: 16, minHeight: 64, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  pickerRowOn: { backgroundColor: THEME.card, borderColor: MARCHE.noir },
+  pickerRowOn: { backgroundColor: THEME.card, borderColor: MARCHE.vert },
   pickerFlag: { fontSize: 24, marginRight: 14 },
   pickerName: { fontSize: 15.5, fontWeight: '700', color: THEME.ink },
   pickerNameOn: { color: THEME.ink, fontWeight: '600' },
@@ -221,7 +221,7 @@ export const profStyles = StyleSheet.create({
   selectAllTxt: { fontSize: 12, fontWeight: '700', color: THEME.ink },
   closeBtn: { width: TAILLES.icone, height: TAILLES.icone, borderRadius: TAILLES.icone / 2, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, alignItems: 'center', justifyContent: 'center' },
   reorderRow: { flexDirection: 'row', alignItems: 'center', padding: 12, marginBottom: 8, borderRadius: 16, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border, ...THEME.shadowSm },
-  reorderRowOn: { backgroundColor: THEME.card, borderColor: MARCHE.noir },
+  reorderRowOn: { backgroundColor: THEME.card, borderColor: MARCHE.vert },
   reorderBody: { flex: 1, marginLeft: 10 },
   reorderName: { fontSize: 14, fontWeight: '700', color: THEME.ink },
   reorderShop: { fontSize: 11.5, color: THEME.muted, marginTop: 2, fontWeight: '600' },
@@ -253,7 +253,7 @@ export const profStyles = StyleSheet.create({
   addrEmptyTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted },
   addrFooter: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: Platform.OS === 'ios' ? 30 : 16, borderTopWidth: 1, borderTopColor: THEME.border, backgroundColor: THEME.card },
   addrTypeBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: TAILLES.champ, borderRadius: 999, backgroundColor: THEME.card, borderWidth: 1, borderColor: THEME.border },
-  addrTypeBtnOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  addrTypeBtnOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   addrTypeBtnTxt: { fontSize: 14, fontWeight: '700', color: THEME.muted, marginLeft: 8 },
   addrTypeBtnTxtOn: { color: MARCHE.blanc, fontWeight: '600' },
 });
