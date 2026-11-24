@@ -1,5 +1,7 @@
 module.exports = {
   testEnvironment: 'node',
+  // react-native lit `__DEV__` au chargement : Metro le définit, Jest non.
+  globals: { __DEV__: true },
   transform: {
     '^.+\\.[jt]sx?$': ['babel-jest', { presets: ['babel-preset-expo'] }],
   },
