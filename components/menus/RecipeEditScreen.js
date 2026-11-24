@@ -331,7 +331,7 @@ const s = StyleSheet.create({
   // Champs d'une ligne : même hauteur partout, texte centré verticalement.
   field: { height: TAILLES.champ, paddingVertical: 0 },
   btn: { height: TAILLES.bouton, minHeight: TAILLES.bouton, borderRadius: TAILLES.rayonBouton },
-  btnNoir: { backgroundColor: MARCHE.noir },
+  btnNoir: { backgroundColor: MARCHE.vert },
   box: { backgroundColor: T.subtle, borderRadius: 16, padding: 14 },
   label: { fontSize: 15, fontWeight: '600', color: T.ink, marginTop: 20, marginBottom: 8 },
   inlineLabel: { flex: 1, fontSize: 15, fontWeight: '600', color: T.ink },

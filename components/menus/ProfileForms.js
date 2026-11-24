@@ -870,6 +870,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
-  gridOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  gridOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   gridOff: { backgroundColor: '#fff', borderColor: T.borderInput },
 });
