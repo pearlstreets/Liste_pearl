@@ -493,13 +493,13 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 12,
   },
-  checkOn: { backgroundColor: MARCHE.noir, borderColor: MARCHE.noir },
+  checkOn: { backgroundColor: MARCHE.vert, borderColor: MARCHE.vert },
   btnMain: {
     height: TAILLES.bouton,
     minHeight: TAILLES.bouton,
     borderRadius: TAILLES.rayonBouton,
   },
-  btnNoir: { backgroundColor: MARCHE.noir },
+  btnNoir: { backgroundColor: MARCHE.vert },
   bar: {
     paddingHorizontal: TAILLES.marge,
     paddingTop: 10,
