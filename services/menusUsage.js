@@ -11,7 +11,26 @@ export const USAGE_QUEUE_MAX = 50; // aussi le maximum accepté par le serveur e
 export const USAGE_DELAY_MS = 30000;
 export const USAGE_TIMEOUT_MS = 8000;
 
-const EVENEMENTS = ['plan_genere', 'courses_envoyees', 'retour_semaine_suivante'];
+// Paniers du menu express : un « panier_<enseigne> » par panier envoyé et un « euros_<enseigne> »
+// qui porte le montant estimé arrondi à l'euro (n). Ni article, ni adresse, ni compte.
+export const ENSEIGNES_PANIER = [
+  'pearl',
+  'leclerc',
+  'auchan',
+  'carrefour',
+  'intermarche',
+  'monoprix',
+  'lidl',
+];
+export const EUROS_MAX = 2000;
+const EVENEMENTS = [
+  'plan_genere',
+  'courses_envoyees',
+  'retour_semaine_suivante',
+  ...ENSEIGNES_PANIER.map((x) => `panier_${x}`),
+  ...ENSEIGNES_PANIER.map((x) => `euros_${x}`),
+];
+const estEuros = (event) => typeof event === 'string' && event.startsWith('euros_');
 const LANGUES = ['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'nl', 'pt', 'ru', 'sv', 'th', 'zh'];
 
 const VIDE = { queue: [], lastWeek: null, returnWeek: null };
@@ -36,7 +55,9 @@ function langueDe(lang) {
 }
 
 function valide(x) {
-  return !!x && EVENEMENTS.includes(x.event) && LANGUES.includes(x.lang);
+  if (!x || !EVENEMENTS.includes(x.event) || !LANGUES.includes(x.lang)) return false;
+  if (!estEuros(x.event)) return x.n === undefined;
+  return Number.isInteger(x.n) && x.n >= 1 && x.n <= EUROS_MAX;
 }
 
 async function lire() {
@@ -56,8 +77,10 @@ async function lire() {
 
 const ecrire = (st) => AsyncStorage.setItem(USAGE_KEY, JSON.stringify(st));
 
-function ajouter(st, event, lang) {
-  st.queue = [...st.queue, { event, lang: langueDe(lang) }].slice(-USAGE_QUEUE_MAX);
+function ajouter(st, event, lang, n) {
+  const x = { event, lang: langueDe(lang) };
+  if (n !== undefined) x.n = n;
+  st.queue = [...st.queue, x].slice(-USAGE_QUEUE_MAX);
 }
 
 function arreterMinuteur() {
@@ -79,6 +102,20 @@ export function trackMenusUsage(event, lang) {
     const st = await lire();
     if (!st.enabled) return;
     ajouter(st, event, lang);
+    await ecrire(st);
+    programmer();
+  });
+}
+
+/** Panier du menu express envoyé chez une enseigne (ou chez les commerçants Pearl Streets). */
+export function trackMenusBasket(store, euros, lang) {
+  if (!ENSEIGNES_PANIER.includes(store)) return Promise.resolve();
+  const n = Math.min(EUROS_MAX, Math.round(Number(euros) || 0));
+  return enFile(async () => {
+    const st = await lire();
+    if (!st.enabled) return;
+    ajouter(st, `panier_${store}`, lang);
+    if (n >= 1) ajouter(st, `euros_${store}`, lang, n);
     await ecrire(st);
     programmer();
   });
