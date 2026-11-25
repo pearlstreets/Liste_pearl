@@ -1671,6 +1671,7 @@
     },
     "discover": {
       "title": "Recepten",
+      "countBadge": "12.000+ recepten",
       "searchPlaceholder": "Een gerecht, een ingrediënt...",
       "modes": {
         "ideas": "Ideeën",
