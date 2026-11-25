@@ -53,7 +53,10 @@ export function weekLabel(weekStart, lang, t) {
 const mealsSignature = (p) =>
   (p && Array.isArray(p.meals) ? p.meals : [])
     .filter((x) => x && x.key)
-    .map((x) => `${x.key}:${x.recipeId || ''}:${x.free ? 1 : 0}:${Math.round((Number(x.persons) || 0) * 10)}:${typeof x.sideId === 'string' ? x.sideId : ''}`)
+    .map(
+      (x) =>
+        `${x.key}:${x.recipeId || ''}:${x.free ? 1 : 0}:${Math.round((Number(x.persons) || 0) * 10)}:${typeof x.sideId === 'string' ? x.sideId : ''}`
+    )
     .sort()
     .join('|');
 
@@ -77,7 +80,16 @@ export function headcountFor(profile, day, slot) {
   return Math.max(1, adults + (cantine ? 0 : children));
 }
 
-const DayPill = React.memo(function DayPill({ d, selected, count, today, alert, onPress, label, a11y }) {
+const DayPill = React.memo(function DayPill({
+  d,
+  selected,
+  count,
+  today,
+  alert,
+  onPress,
+  label,
+  a11y,
+}) {
   return (
     <TouchableOpacity
       activeOpacity={0.85}
@@ -111,6 +123,7 @@ export default function WeekScreen({
   onOpenRecipe,
   onOpenShop,
   onOpenBatch,
+  onOpenExpress,
   onOpenShared,
   onOpenMonth,
 }) {
@@ -344,6 +357,11 @@ export default function WeekScreen({
             />
           }
         />
+        {onOpenExpress ? (
+          <TouchableOpacity onPress={onOpenExpress} style={s.barLink} accessibilityRole="button">
+            <Text style={s.barLinkTxt}>{t('express.open')}</Text>
+          </TouchableOpacity>
+        ) : null}
         {onOpenShared ? (
           <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
             <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
@@ -455,6 +473,16 @@ export default function WeekScreen({
               />
             </View>
           ) : null}
+          {compact && onOpenExpress ? (
+            <View style={{ marginLeft: 8 }}>
+              <RoundIcon
+                name="mic-outline"
+                label={t('express.open')}
+                onPress={onOpenExpress}
+                color={T.brandDark}
+              />
+            </View>
+          ) : null}
         </View>
 
         {!compact ? (
@@ -464,6 +492,15 @@ export default function WeekScreen({
             label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
             onPress={onOpenBatch}
             style={[s.btn, { marginTop: 12 }]}
+          />
+        ) : null}
+        {!compact && onOpenExpress ? (
+          <PrimaryButton
+            soft
+            icon="mic-outline"
+            label={t('express.open')}
+            onPress={onOpenExpress}
+            style={[s.btn, { marginTop: 10 }]}
           />
         ) : null}
         {onOpenShared ? (
@@ -507,7 +544,9 @@ export default function WeekScreen({
           <View style={s.gaugeTop}>
             <View>
               <Text style={s.gaugeLabel}>{t('week.estimated')}</Text>
-              <Text style={[s.gaugeVal, compact && s.gaugeValCompact]}>{formatEur(b.estimated || 0, lang)}</Text>
+              <Text style={[s.gaugeVal, compact && s.gaugeValCompact]}>
+                {formatEur(b.estimated || 0, lang)}
+              </Text>
             </View>
             {/* Budget changé ici en un geste (même réglage que dans les réglages), ou ajouté s'il n'y en a pas. */}
             {target ? (
@@ -717,7 +756,8 @@ export default function WeekScreen({
 const s = StyleSheet.create({
   nextBox: {
     backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    borderWidth: 1,
+    borderColor: T.border,
     borderRadius: 16,
     padding: 14,
     marginTop: 12,
@@ -752,7 +792,8 @@ const s = StyleSheet.create({
   gaugeTarget: { fontSize: 20, fontWeight: '600', color: T.ink, marginTop: 2 },
   gaugeNoBudget: {
     backgroundColor: '#fff',
-    borderWidth: 1, borderColor: T.border,
+    borderWidth: 1,
+    borderColor: T.border,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -819,7 +860,14 @@ const s = StyleSheet.create({
     borderColor: T.danger,
   },
   alertRow: { flexDirection: 'row', alignItems: 'center' },
-  alertTxt: { flex: 1, marginLeft: 8, fontSize: 14, lineHeight: 20, color: T.ink, fontWeight: '700' },
+  alertTxt: {
+    flex: 1,
+    marginLeft: 8,
+    fontSize: 14,
+    lineHeight: 20,
+    color: T.ink,
+    fontWeight: '700',
+  },
   badCard: {
     borderWidth: 2,
     borderColor: T.danger,
