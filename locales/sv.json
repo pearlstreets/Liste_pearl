@@ -1671,6 +1671,7 @@
     },
     "discover": {
       "title": "Recept",
+      "countBadge": "12 000+ recept",
       "searchPlaceholder": "En maträtt, en ingrediens...",
       "modes": {
         "ideas": "Idéer",

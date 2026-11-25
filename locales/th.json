@@ -1643,6 +1643,7 @@
     },
     "discover": {
       "title": "สูตรอาหาร",
+      "countBadge": "12,000+ สูตรอาหาร",
       "searchPlaceholder": "ชื่ออาหาร หรือวัตถุดิบ...",
       "modes": {
         "ideas": "ไอเดีย",
