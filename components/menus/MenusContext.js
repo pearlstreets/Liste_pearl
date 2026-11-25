@@ -82,12 +82,7 @@ import {
   replaceMeals,
   MAX_MY_RECIPES,
 } from '../../lib/menus';
-import {
-  prepareElig,
-  okForSig,
-  recipeConflicts,
-  unsuitableMeals,
-} from '../../lib/menus/pool';
+import { prepareElig, okForSig, recipeConflicts, unsuitableMeals } from '../../lib/menus/pool';
 
 import { mondayISO, weekTarget, isPastWeek, toISO } from '../../lib/menus/weeks';
 import {
@@ -97,6 +92,9 @@ import {
   planSideIds,
 } from '../../lib/menus/sides';
 import { setMealGuests as planSetGuests, carryGuests, slotIdeas } from '../../lib/menus/planner';
+import { expressProfile, dropDraftMeal, draftMeals } from '../../lib/menus/express';
+import { arr } from '../../lib/menus/util';
+import { isPantryKey } from '../../lib/menus/shopping';
 import { recipeListLines } from '../../lib/menus/recipeList';
 import { ingredientQueries } from '../../lib/menus/pearl';
 import { cleanFamilyShare, defaultFamilyShare } from '../../lib/menus/sharedWeek';
@@ -134,7 +132,9 @@ export function conflictList(w, t) {
   if (!w) return '';
   return [
     ...(w.allergens || []).map((a) =>
-      t(MOTS_PROPRES.includes(a) ? `myRecipes.allergen.${a}` : `allergens.${a}`, { defaultValue: a })
+      t(MOTS_PROPRES.includes(a) ? `myRecipes.allergen.${a}` : `allergens.${a}`, {
+        defaultValue: a,
+      })
     ),
     ...(w.diets || []).map((d) => t(`tags.${d}`, { defaultValue: d })),
     ...(w.ingredients || []),
@@ -341,12 +341,31 @@ export function MenusProvider({ children }) {
 
   const planProfile = useCallback(
     // frigo : les plats qui utilisent ce qui est déjà là passent devant (planner.js, fridgeScore)
-    () => ({ ...profileRef.current, month: new Date().getMonth(), fridge: fridgeRef.current }),
+    // Menu express confirmé : ses créneaux et sa demande restent ceux de la semaine (échanges, recomposition),
+    // sauf nouvelle semaine ou composition à neuf.
+    (opts) => {
+      const base = {
+        ...profileRef.current,
+        month: new Date().getMonth(),
+        fridge: fridgeRef.current,
+      };
+      const cur = planRef.current;
+      const o = opts || {};
+      if (o.base || o.fresh || !cur || !cur.express) return base;
+      if (o.weekStart && o.weekStart !== cur.weekStart) return base;
+      return expressProfile(base, cur.express.req);
+    },
     []
   );
 
-  const persist = useCallback(async (next) => {
-    if (!next || next === planRef.current) return;
+  const persist = useCallback(async (input) => {
+    if (!input || input === planRef.current) return;
+    const prev = planRef.current;
+    // le planificateur ne connaît pas `express` : gardé d'un plan à l'autre de la même semaine
+    const next =
+      prev && prev.express && !input.express && input.weekStart === prev.weekStart
+        ? { ...input, express: prev.express }
+        : input;
     noteEdit();
     planRef.current = next;
     setPlan(next);
@@ -382,14 +401,24 @@ export function MenusProvider({ children }) {
               const gen = generatePlan({
                 recipes: recipeIndex,
                 ingredients,
-                profile: planProfile(),
+                profile: planProfile({ fresh: opts.fresh, weekStart }),
                 seed: opts.seed != null ? opts.seed : Math.floor(Math.random() * 1e9),
                 locked,
                 weekStart,
                 eaters: cur && cur.weekStart === weekStart ? cur : undefined,
               });
               // accompagnements gardés sur les repas qui restent les mêmes (même semaine)
-              const next = cur && cur.weekStart === weekStart ? carryGuests(cur, carrySides(cur, gen), planProfile()) : gen;
+              const same = cur && cur.weekStart === weekStart;
+              const carried = same
+                ? carryGuests(
+                    cur,
+                    carrySides(cur, gen),
+                    planProfile({ fresh: opts.fresh, weekStart })
+                  )
+                : gen;
+              // menu express : gardé quand la même semaine est recomposée sans repartir de zéro
+              const next =
+                same && !opts.fresh && cur.express ? { ...carried, express: cur.express } : carried;
               noteEdit();
               await savePlan(next);
               planRef.current = next;
@@ -447,7 +476,9 @@ export function MenusProvider({ children }) {
       const meals = recomputeCooking(mealsForProfile(cur.meals, profileRef.current));
       const changed = meals.some(
         (m, i) =>
-          m && cur.meals[i] && (m.persons !== cur.meals[i].persons || m.cookPersons !== cur.meals[i].cookPersons)
+          m &&
+          cur.meals[i] &&
+          (m.persons !== cur.meals[i].persons || m.cookPersons !== cur.meals[i].cookPersons)
       );
       if (changed) {
         const next = { ...cur, meals };
@@ -602,8 +633,13 @@ export function MenusProvider({ children }) {
       if (!dataReady || !recipe) return [];
       const used = planSideIds(planRef.current);
       const prof = planProfile();
-      let out = sideCandidates(recipeIndex, ingredients, prof, { forId: recipe.id, exclude: used, n });
-      if (out.length < 2) out = sideCandidates(recipeIndex, ingredients, prof, { forId: recipe.id, n });
+      let out = sideCandidates(recipeIndex, ingredients, prof, {
+        forId: recipe.id,
+        exclude: used,
+        n,
+      });
+      if (out.length < 2)
+        out = sideCandidates(recipeIndex, ingredients, prof, { forId: recipe.id, n });
       return out;
     },
     [dataReady, recipeIndex, ingredients, planProfile]
@@ -617,7 +653,12 @@ export function MenusProvider({ children }) {
     (n = 3, mealKey) => {
       const cur = planRef.current;
       const prof = planProfile();
-      if (mealKey && cur && Array.isArray(cur.meals) && cur.meals.some((m) => m && m.key === mealKey)) {
+      if (
+        mealKey &&
+        cur &&
+        Array.isArray(cur.meals) &&
+        cur.meals.some((m) => m && m.key === mealKey)
+      ) {
         const ideas = slotIdeas({
           plan: cur,
           mealKey,
@@ -863,6 +904,135 @@ export function MenusProvider({ children }) {
     });
     return () => sub.remove();
   }, [forget]);
+
+  /* ----------------------------- menu express ----------------------------- */
+  // Une phrase (lib/menus/express.js) devient un brouillon de menu : rien n'est enregistré avant « Confirmer ».
+
+  const expressProfileOf = useCallback(
+    (req) => expressProfile(planProfile({ base: true }), req),
+    [planProfile]
+  );
+
+  /** Brouillon de la semaine qui vient (ou en cours) pour la demande. Calcul différé après les interactions. */
+  const expressDraft = useCallback(
+    (req) =>
+      new Promise((resolve) => {
+        InteractionManager.runAfterInteractions(() => {
+          setTimeout(() => {
+            try {
+              const plan = generatePlan({
+                recipes: recipeIndex,
+                ingredients,
+                profile: expressProfileOf(req),
+                seed: Math.floor(Math.random() * 1e9),
+                weekStart: weekTarget().start,
+              });
+              resolve(draftMeals(plan).length ? plan : null);
+            } catch {
+              resolve(null);
+            }
+          }, 40);
+        });
+      }),
+    [recipeIndex, ingredients, expressProfileOf]
+  );
+
+  /** « Remplacer » : une autre recette pour ce repas du brouillon, portions gardées. */
+  const expressSwap = useCallback(
+    (draft, mealKey, req) => {
+      try {
+        const prof = expressProfileOf(req);
+        const next = swapMeal({
+          plan: draft,
+          mealKey,
+          recipes: recipeIndex,
+          ingredients,
+          profile: prof,
+          seed: Math.floor(Math.random() * 1e9),
+        });
+        return carryGuests(draft, next, prof);
+      } catch {
+        return draft;
+      }
+    },
+    [recipeIndex, ingredients, expressProfileOf]
+  );
+
+  /** Portions d'un repas du brouillon (sans personnes détaillées dans le profil). */
+  const expressPortions = useCallback(
+    (draft, mealKey, heads, req) =>
+      planSetGuests({
+        plan: draft,
+        profile: expressProfileOf(req),
+        mealKey,
+        heads,
+        recipes: recipeIndex,
+        ingredients,
+      }),
+    [expressProfileOf, recipeIndex, ingredients]
+  );
+
+  const expressDrop = useCallback((draft, mealKey) => dropDraftMeal(draft, mealKey), []);
+
+  /**
+   * Courses du brouillon, placard compris : chaque ligne porte `maybeHave` (placard ou frigo), ce que
+   * « Vous avez peut-être déjà… » propose de retirer.
+   */
+  const expressLines = useCallback(
+    (draft) => {
+      try {
+        const sh = buildShoppingList({
+          plan: draft,
+          recipes: recipeIndex,
+          ingredients,
+          profile: profileRef.current,
+          includePantry: true,
+          fitNeeds: true,
+        });
+        const inFridge = new Set(arr(fridgeRef.current).filter((k) => typeof k === 'string'));
+        return sh.lines.map((l) => ({
+          ...l,
+          maybeHave:
+            inFridge.has(l.key) ||
+            isPantryKey(l.key, ingredients && ingredients[l.key], profileRef.current, false),
+        }));
+      } catch {
+        return [];
+      }
+    },
+    [recipeIndex, ingredients]
+  );
+
+  /**
+   * « Confirmer » : le brouillon devient le menu de la semaine (l'ancien part dans l'historique), avec les
+   * articles retirés à l'étape « Vous avez déjà… ». Le placard est compté : il a été passé en revue.
+   */
+  const expressConfirm = useCallback(async (draft, req, removedKeys) => {
+    if (!draft || !draftMeals(draft).length) return null;
+    try {
+      const cur = planRef.current;
+      if (cur && hasRecipes(cur)) {
+        if (await pushHistory(cur)) setHistory(await loadHistory());
+        else if (cur.weekStart !== draft.weekStart) return null; // jamais perdre la semaine en cours
+      }
+      const keys = draftMeals(draft).map((m) => m.key);
+      const next = {
+        ...draft,
+        express: { req: { ...req, understood: undefined, keys }, at: Date.now() },
+      };
+      noteEdit();
+      if (!(await savePlan(next))) return null;
+      planRef.current = next;
+      setPlan(next);
+      setRemoved(arr(removedKeys).filter((k) => typeof k === 'string'));
+      setPantryOn(true);
+      setDirty(false);
+      trackMenusUsage('plan_genere', langRef.current);
+      return next;
+    } catch {
+      return null;
+    }
+  }, []);
 
   /* ------------------------------- courses ------------------------------- */
 
@@ -1149,6 +1319,12 @@ export function MenusProvider({ children }) {
       sendBatchToList,
       costOf,
       resetAll,
+      expressDraft,
+      expressSwap,
+      expressPortions,
+      expressDrop,
+      expressLines,
+      expressConfirm,
       persons: (d, s) => personsFor(profile, d, s),
     }),
     [
@@ -1217,6 +1393,12 @@ export function MenusProvider({ children }) {
       sendBatchToList,
       costOf,
       resetAll,
+      expressDraft,
+      expressSwap,
+      expressPortions,
+      expressDrop,
+      expressLines,
+      expressConfirm,
     ]
   );
 

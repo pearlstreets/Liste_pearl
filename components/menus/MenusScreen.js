@@ -15,6 +15,7 @@ import DiscoverScreen from './DiscoverScreen';
 import RecipeScreen from './RecipeScreen';
 import CookMode from './CookMode';
 import BatchScreen from './BatchScreen';
+import ExpressScreen from './ExpressScreen';
 import RecipeEditScreen from './RecipeEditScreen';
 import SettingsScreen from './SettingsScreen';
 import SharedWeekScreen from './SharedWeekScreen';
@@ -40,6 +41,7 @@ function Inner({ navigation }) {
   const openCook = useCallback((id, persons) => push({ type: 'cook', id, persons }), [push]);
   const openEdit = useCallback((id) => push({ type: 'recipeEdit', id: id || null }), [push]);
   const openBatch = useCallback(() => push({ type: 'batch' }), [push]);
+  const openExpress = useCallback(() => push({ type: 'express' }), [push]);
   const goWeek = useCallback(() => {
     setStack([]);
     setTab('week');
@@ -146,6 +148,7 @@ function Inner({ navigation }) {
             onOpenRecipe={openRecipe}
             onOpenShop={goShop}
             onOpenBatch={openBatch}
+            onOpenExpress={openExpress}
             onOpenShared={sharedWeeks.length ? openShared : null}
             onOpenMonth={openMonth}
           />
@@ -193,6 +196,9 @@ function Inner({ navigation }) {
             <CookMode id={top.id} persons={top.persons} onClose={pop} />
           ) : null}
           {top.type === 'batch' ? <BatchScreen onClose={pop} onOpenRecipe={openRecipe} /> : null}
+          {top.type === 'express' ? (
+            <ExpressScreen onClose={pop} onDone={goWeek} navigation={navigation} />
+          ) : null}
           {top.type === 'recipeEdit' ? <RecipeEditScreen id={top.id} onClose={pop} /> : null}
           {top.type === 'settings' ? <SettingsScreen onClose={pop} /> : null}
           {top.type === 'sharedWeek' ? (
