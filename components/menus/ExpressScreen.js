@@ -34,6 +34,7 @@ import {
 } from '../../lib/menus/enseignes';
 import { prefillProducts } from '../../lib/menus/listBridge';
 import { allerA } from '../../app/onglets';
+import { trackMenusBasket } from '../../services/menusUsage';
 
 const STORE_KEY = 'menus.express.store'; // dernière enseigne et dernier mode choisis
 const LOADING_MIN_MS = 1400; // l'écran « menu parfait » reste lisible même quand le calcul est immédiat
@@ -272,6 +273,16 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
   const [store, setStore] = useState(null); // id d'enseigne ou 'pearl'
   const [sent, setSent] = useState(false);
   const alive = useRef(true);
+  // Un seul comptage par enseigne et par parcours, même si on touche plusieurs boutons.
+  const counted = useRef(new Set());
+  const countBasket = useCallback(
+    (id, total) => {
+      if (!id || counted.current.has(id)) return;
+      counted.current.add(id);
+      trackMenusBasket(id, total, lang).catch(() => {});
+    },
+    [lang]
+  );
   useEffect(
     () => () => {
       alive.current = false;
@@ -548,15 +559,13 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
               </TouchableOpacity>
             ))}
           </View>
-          {mode === 'livraison' ? (
-            <StoreRow
-              color={T.brand}
-              initial="P"
-              name={t('express.pearlName')}
-              text={t('express.pearlText')}
-              onPress={() => chooseStore('pearl')}
-            />
-          ) : null}
+          <StoreRow
+            color={T.brand}
+            initial="P"
+            name={t('express.pearlName')}
+            text={t(mode === 'livraison' ? 'express.pearlText' : `express.pearlText_${mode}`)}
+            onPress={() => chooseStore('pearl')}
+          />
           {list.map((e) => (
             <StoreRow
               key={e.id}
@@ -579,6 +588,7 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
   const ad = isPearl ? null : adapterFor(store);
   const inStore = mode === 'magasin' || (e && !e.search);
   const cart = estimateCart(m.activeLines, isPearl ? null : store, (k) => texts.ingredientName(k));
+  const count = () => countBasket(store, cart.total);
   const info = isPearl
     ? t('express.cartPearl')
     : inStore
@@ -645,7 +655,10 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
             <PrimaryButton
               icon="bicycle"
               label={t('express.pearlGo')}
-              onPress={goPearl}
+              onPress={() => {
+                count();
+                goPearl();
+              }}
               style={[s.btn, s.btnNoir]}
             />
           ) : ad && ad.partner && ad.capabilities.cart ? (
@@ -653,6 +666,7 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
               icon="cart"
               label={t('express.fillCart', { name })}
               onPress={async () => {
+                count();
                 try {
                   const r = await ad.fillCart(cart.items, { mode });
                   if (r && r.url) openUrl(r.url);
@@ -666,14 +680,20 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
             <PrimaryButton
               icon="navigate"
               label={t('express.route')}
-              onPress={() => openUrl(storeMapUrl(store))}
+              onPress={() => {
+                count();
+                openUrl(storeMapUrl(store));
+              }}
               style={[s.btn, s.btnNoir]}
             />
           ) : (
             <PrimaryButton
               icon="open-outline"
               label={t('express.openSite', { name })}
-              onPress={() => openUrl(ad && ad.siteUrl)}
+              onPress={() => {
+                count();
+                openUrl(ad && ad.siteUrl);
+              }}
               style={[s.btn, s.btnNoir]}
             />
           )
@@ -684,7 +704,10 @@ export default function ExpressScreen({ onClose, onDone, navigation }) {
             icon={sent ? 'checkmark' : 'list'}
             label={t(sent ? 'express.sent' : 'express.toList')}
             disabled={sent}
-            onPress={sendList}
+            onPress={() => {
+              count();
+              sendList();
+            }}
             style={[s.btn, { marginTop: 10 }]}
           />
         ) : null}

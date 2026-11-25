@@ -1993,6 +1993,8 @@
       "mode_magasin": "店頭",
       "pearlName": "Pearl Streetsの店舗",
       "pearlText": "お近くの店舗がお届けします",
+      "pearlText_drive": "お近くの店舗で受け取り",
+      "pearlText_magasin": "お近くの店舗で",
       "storeSite": "店舗の公式サイトで",
       "storeShop": "店舗用のリストを準備済み",
       "cartTitle": "{{name}}のカート",

@@ -1993,6 +1993,8 @@
       "mode_magasin": "到店购买",
       "pearlName": "Pearl Streets 商家",
       "pearlText": "由您附近的商家配送",
+      "pearlText_drive": "到您附近的商家自取",
+      "pearlText_magasin": "在您附近的商家",
       "storeSite": "在商家官网",
       "storeShop": "已为门店准备好清单",
       "cartTitle": "您的{{name}}购物车",

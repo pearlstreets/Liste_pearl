@@ -2050,6 +2050,8 @@
       "mode_magasin": "En magasin",
       "pearlName": "Commerçants Pearl Streets",
       "pearlText": "Livrés par les commerçants de votre quartier",
+      "pearlText_drive": "À retirer chez les commerçants de votre quartier",
+      "pearlText_magasin": "Chez les commerçants de votre quartier",
       "storeSite": "Sur le site de l'enseigne",
       "storeShop": "Liste prête pour le magasin",
       "cartTitle": "Votre panier {{name}}",

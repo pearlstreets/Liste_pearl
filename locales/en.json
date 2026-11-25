@@ -2032,6 +2032,8 @@
       "mode_magasin": "In store",
       "pearlName": "Pearl Streets shops",
       "pearlText": "Delivered by shops in your neighbourhood",
+      "pearlText_drive": "Pick up from shops in your neighbourhood",
+      "pearlText_magasin": "At shops in your neighbourhood",
       "storeSite": "On the retailer's website",
       "storeShop": "List ready for the store",
       "cartTitle": "Your {{name}} cart",

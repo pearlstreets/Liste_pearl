@@ -2056,6 +2056,8 @@
       "mode_magasin": "En tienda",
       "pearlName": "Comercios Pearl Streets",
       "pearlText": "Entregado por los comercios de su barrio",
+      "pearlText_drive": "Para recoger en los comercios de su barrio",
+      "pearlText_magasin": "En los comercios de su barrio",
       "storeSite": "En el sitio web de la marca",
       "storeShop": "Lista preparada para la tienda",
       "cartTitle": "Su cesta de {{name}}",

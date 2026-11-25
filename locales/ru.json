@@ -2090,6 +2090,8 @@
       "mode_magasin": "В магазине",
       "pearlName": "Магазины Pearl Streets",
       "pearlText": "Доставляют магазины вашего района",
+      "pearlText_drive": "Самовывоз из магазинов вашего района",
+      "pearlText_magasin": "В магазинах вашего района",
       "storeSite": "На сайте магазина",
       "storeShop": "Список готов для магазина",
       "cartTitle": "Ваша корзина {{name}}",

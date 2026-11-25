@@ -1993,6 +1993,8 @@
       "mode_magasin": "ที่ร้าน",
       "pearlName": "ร้านค้า Pearl Streets",
       "pearlText": "จัดส่งโดยร้านค้าในย่านของคุณ",
+      "pearlText_drive": "รับสินค้าที่ร้านค้าในย่านของคุณ",
+      "pearlText_magasin": "ที่ร้านค้าในย่านของคุณ",
       "storeSite": "บนเว็บไซต์ของร้าน",
       "storeShop": "รายการพร้อมสำหรับไปร้าน",
       "cartTitle": "ตะกร้า {{name}} ของคุณ",

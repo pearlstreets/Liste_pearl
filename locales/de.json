@@ -2028,6 +2028,8 @@
       "mode_magasin": "Im Geschäft",
       "pearlName": "Pearl Streets Händler",
       "pearlText": "Geliefert von Händlern aus Ihrer Nachbarschaft",
+      "pearlText_drive": "Abholung bei Händlern aus Ihrer Nachbarschaft",
+      "pearlText_magasin": "Bei Händlern aus Ihrer Nachbarschaft",
       "storeSite": "Auf der Website des Anbieters",
       "storeShop": "Liste bereit für den Laden",
       "cartTitle": "Ihr {{name}}-Warenkorb",

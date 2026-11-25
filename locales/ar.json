@@ -2142,6 +2142,8 @@
       "mode_magasin": "في المتجر",
       "pearlName": "متاجر Pearl Streets",
       "pearlText": "يوصلها تجار حيّكم",
+      "pearlText_drive": "استلموها من تجار حيّكم",
+      "pearlText_magasin": "لدى تجار حيّكم",
       "storeSite": "على موقع المتجر",
       "storeShop": "القائمة جاهزة للمتجر",
       "cartTitle": "سلة {{name}} الخاصة بكم",

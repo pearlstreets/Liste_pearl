@@ -11,6 +11,8 @@ import {
   estimateCart,
   registerPartner,
   unregisterPartner,
+  AFFILIATION,
+  withAffiliate,
 } from '../lib/menus/enseignes';
 
 const on = (slots) => Object.keys(slots).filter((k) => slots[k]);
@@ -115,5 +117,32 @@ describe('enseignes', () => {
     });
     unregisterPartner('leclerc');
     expect(adapterFor('leclerc').partner).toBe(false);
+  });
+});
+
+describe('affiliation', () => {
+  afterEach(() => {
+    AFFILIATION.leclerc = null;
+  });
+
+  test('sans identifiant : lien direct, inchangé', () => {
+    expect(withAffiliate('leclerc', 'https://www.e.leclerc/')).toBe('https://www.e.leclerc/');
+    expect(adapterFor('leclerc').siteUrl).toBe('https://www.e.leclerc/');
+  });
+
+  test('avec identifiant : le site et la recherche passent par le lien affilié', () => {
+    AFFILIATION.leclerc = 'https://aff.test/c?m=1&u={url}';
+    const ad = adapterFor('leclerc');
+    expect(ad.siteUrl).toBe(
+      `https://aff.test/c?m=1&u=${encodeURIComponent('https://www.e.leclerc/')}`
+    );
+    expect(ad.searchUrl('Carotte')).toBe(
+      `https://aff.test/c?m=1&u=${encodeURIComponent('https://www.e.leclerc/recherche?q=Carotte')}`
+    );
+  });
+
+  test('gabarit sans {url} : ignoré', () => {
+    AFFILIATION.leclerc = 'https://aff.test/c';
+    expect(withAffiliate('leclerc', 'https://x.test/')).toBe('https://x.test/');
   });
 });

@@ -2028,6 +2028,8 @@
       "mode_magasin": "I butiken",
       "pearlName": "Pearl Streets handlare",
       "pearlText": "Levereras av handlare i ert område",
+      "pearlText_drive": "Hämtas hos handlare i ert område",
+      "pearlText_magasin": "Hos handlare i ert område",
       "storeSite": "På butikskedjans webbplats",
       "storeShop": "Lista redo för butiken",
       "cartTitle": "Er {{name}}-varukorg",

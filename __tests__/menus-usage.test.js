@@ -182,3 +182,28 @@ describe('désactivation', () => {
     expect(global.fetch).not.toHaveBeenCalled();
   });
 });
+
+describe('paniers du menu express', () => {
+  test('un panier et son montant arrondi, enseigne inconnue ignorée', async () => {
+    await u.trackMenusBasket('leclerc', 71.03, 'fr');
+    await u.trackMenusBasket('inconnue', 20, 'fr');
+    expect(etat().queue).toEqual([
+      { event: 'panier_leclerc', lang: 'fr' },
+      { event: 'euros_leclerc', lang: 'fr', n: 71 },
+    ]);
+  });
+
+  test('montant nul : seul le panier compte ; montant énorme : plafonné', async () => {
+    await u.trackMenusBasket('pearl', 0, 'de');
+    await u.trackMenusBasket('auchan', 999999, 'de');
+    const q = etat().queue;
+    expect(q.map((x) => x.event)).toEqual(['panier_pearl', 'panier_auchan', 'euros_auchan']);
+    expect(q[2].n).toBe(u.EUROS_MAX);
+  });
+
+  test('désactivé : rien n est noté', async () => {
+    await u.setMenusUsageEnabled(false);
+    await u.trackMenusBasket('carrefour', 30, 'fr');
+    expect(etat().queue).toEqual([]);
+  });
+});

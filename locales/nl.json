@@ -2030,6 +2030,8 @@
       "mode_magasin": "In de winkel",
       "pearlName": "Pearl Streets winkeliers",
       "pearlText": "Bezorgd door winkeliers uit uw buurt",
+      "pearlText_drive": "Ophalen bij winkeliers uit uw buurt",
+      "pearlText_magasin": "Bij winkeliers uit uw buurt",
       "storeSite": "Op de website van de winkelketen",
       "storeShop": "Lijst klaar voor de winkel",
       "cartTitle": "Uw {{name}}-winkelwagen",

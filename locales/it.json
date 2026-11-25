@@ -2056,6 +2056,8 @@
       "mode_magasin": "In negozio",
       "pearlName": "Negozianti Pearl Streets",
       "pearlText": "Consegnato dai negozianti del suo quartiere",
+      "pearlText_drive": "Da ritirare dai negozianti del suo quartiere",
+      "pearlText_magasin": "Dai negozianti del suo quartiere",
       "storeSite": "Sul sito dell'insegna",
       "storeShop": "Lista pronta per il negozio",
       "cartTitle": "Il suo carrello {{name}}",
