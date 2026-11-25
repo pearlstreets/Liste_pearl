@@ -1643,6 +1643,7 @@
     },
     "discover": {
       "title": "レシピ",
+      "countBadge": "12,000件以上のレシピ",
       "searchPlaceholder": "料理名、食材など",
       "modes": {
         "ideas": "アイデア",

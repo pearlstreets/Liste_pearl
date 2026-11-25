@@ -1669,6 +1669,7 @@
     },
     "discover": {
       "title": "Rezepte",
+      "countBadge": "12.000+ Rezepte",
       "searchPlaceholder": "Ein Gericht, eine Zutat...",
       "modes": {
         "ideas": "Ideen",
