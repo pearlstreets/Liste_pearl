@@ -1690,6 +1690,7 @@
     },
     "discover": {
       "title": "Recettes",
+      "countBadge": "+12 000 recettes",
       "searchPlaceholder": "Un plat, un ingrédient...",
       "modes": {
         "ideas": "Idées",

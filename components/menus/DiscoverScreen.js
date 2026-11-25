@@ -941,7 +941,13 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
   return (
     <View style={{ flex: 1 }}>
       <View style={s.head}>
-        <Text style={s.big}>{t('discover.title')}</Text>
+        <View style={s.titleRow}>
+          <Text style={s.big}>{t('discover.title')}</Text>
+          <View style={s.countBadge}>
+            <Ionicons name="sparkles" size={13} color={T.brand} style={{ marginRight: 5 }} />
+            <Text style={s.countBadgeText}>{t('discover.countBadge')}</Text>
+          </View>
+        </View>
         {mode !== 'fridge' ? (
           <View style={s.search}>
             <Ionicons name="search" size={18} color={T.faint} style={{ marginRight: 8 }} />
@@ -996,6 +1002,17 @@ export default function DiscoverScreen({ onOpenRecipe, onOpenWeek, onAddRecipe, 
 const s = StyleSheet.create({
   head: { paddingHorizontal: TAILLES.marge, paddingTop: 6 },
   big: { fontFamily: SERIF, fontSize: 26, fontWeight: '400', color: T.ink, letterSpacing: -0.3 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  countBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: T.brandSoft,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginLeft: 12,
+  },
+  countBadgeText: { fontSize: 13, fontWeight: '700', color: T.brandDark, letterSpacing: 0.1 },
   search: {
     flexDirection: 'row',
     alignItems: 'center',
