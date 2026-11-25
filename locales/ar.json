@@ -1753,6 +1753,7 @@
     },
     "discover": {
       "title": "وصفات",
+      "countBadge": "+12٬000 وصفة",
       "searchPlaceholder": "طبق، مكون...",
       "modes": {
         "ideas": "أفكار",

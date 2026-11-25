@@ -1643,6 +1643,7 @@
     },
     "discover": {
       "title": "食谱",
+      "countBadge": "12,000+ 道食谱",
       "searchPlaceholder": "菜品、食材…",
       "modes": {
         "ideas": "灵感",

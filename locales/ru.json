@@ -1713,6 +1713,7 @@
     },
     "discover": {
       "title": "Рецепты",
+      "countBadge": "12 000+ рецептов",
       "searchPlaceholder": "Блюдо, ингредиент...",
       "modes": {
         "ideas": "Идеи",
