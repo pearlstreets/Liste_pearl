@@ -25,7 +25,7 @@ import {
 import { T, SERIF, TAILLES as TAILLES_THEME } from './theme';
 import { PrimaryButton, GhostButton, Empty, Loading, ErrorBox, RoundIcon } from './ui';
 import MealCard, { isolerPrix } from './MealCard';
-import { SwapSheet, AddedSheet, GuestsSheet, BudgetSheet, askResetAll, guestsText } from './Sheets';
+import { SwapSheet, AddedSheet, GuestsSheet, BudgetSheet, BudgetUpdateSheet, askResetAll, guestsText } from './Sheets';
 import { useMenus } from './MenusContext';
 import useT from './useT';
 import { weekTarget, parseISO, dayIndexIn } from '../../lib/menus/weeks';
@@ -152,6 +152,7 @@ export default function WeekScreen({
   const [budgetOpen, setBudgetOpen] = useState(false);
   // Budget changé dans la fenêtre : à la fermeture, proposer de recomposer la semaine pour qu'elle colle au budget.
   const budgetStart = useRef(undefined);
+  const [budgetAsk, setBudgetAsk] = useState(false);
   const curBudget = m.profile ? m.profile.budget : null;
   const openBudget = () => {
     budgetStart.current = curBudget;
@@ -175,10 +176,7 @@ export default function WeekScreen({
     }
     budgetStart.current = undefined;
     if (curBudget == null) return undefined;
-    Alert.alert(t('week.budgetUpdateTitle'), t('week.budgetUpdateText'), [
-      { text: t('week.budgetUpdateLater'), style: 'cancel' },
-      { text: t('week.budgetUpdateGo'), onPress: () => m.generate() },
-    ]);
+    setBudgetAsk(true);
     return undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [budgetOpen, curBudget]);
@@ -765,6 +763,15 @@ export default function WeekScreen({
       {swapKey ? <SwapSheet mealKey={swapKey} onClose={() => setSwapKey(null)} /> : null}
       {guestsKey ? <GuestsSheet mealKey={guestsKey} onClose={() => setGuestsKey(null)} /> : null}
       {budgetOpen ? <BudgetSheet onClose={() => setBudgetOpen(false)} /> : null}
+      {budgetAsk ? (
+        <BudgetUpdateSheet
+          onClose={() => setBudgetAsk(false)}
+          onUpdate={() => {
+            setBudgetAsk(false);
+            m.generate();
+          }}
+        />
+      ) : null}
       {added ? (
         <AddedSheet
           result={added}
