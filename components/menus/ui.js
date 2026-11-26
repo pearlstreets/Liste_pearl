@@ -278,7 +278,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepVal: { minWidth: 56, marginHorizontal: 12, textAlign: 'center', fontSize: 16, lineHeight: 34, fontWeight: '600', fontVariant: ['tabular-nums'], color: T.ink },
+  stepVal: { minWidth: 44, marginHorizontal: 8, textAlign: 'center', fontSize: 16, lineHeight: 34, fontWeight: '600', fontVariant: ['tabular-nums'], color: T.ink },
   input: {
     backgroundColor: '#fff',
     borderWidth: 1,
