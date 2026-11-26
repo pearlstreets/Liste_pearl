@@ -465,7 +465,8 @@ export function MenusProvider({ children }) {
     profileRef.current = merged;
     setProfile(merged);
     const saved = await saveProfile(patch);
-    if (saved) {
+    // un changement plus récent pendant l'écriture garde la main (sinon le chiffre revient en arrière)
+    if (saved && profileRef.current === merged) {
       profileRef.current = normalizeProfile(saved);
       setProfile(profileRef.current);
     }
