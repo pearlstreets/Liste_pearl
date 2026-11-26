@@ -349,18 +349,26 @@ export default function FakeProfileScreen({ onLogout, isAuth }) {
         return;
       }
       const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-      const results = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
-      const r = results && results[0];
+      // Coordonnées GPS exactes gardées telles quelles ; le géocodage inverse
+      // ne remplit que l'adresse texte (rue seulement si elle est connue,
+      // jamais le nom d'un lieu à la place de la rue).
+      setAddrForm(f => ({ ...f, lat: loc.coords.latitude, lang: loc.coords.longitude }));
+      let r = null;
+      try {
+        const results = await Location.reverseGeocodeAsync({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+        r = results && results[0];
+      } catch (_) {
+        r = null;
+      }
       if (r) {
         setAddrForm(f => ({
           ...f,
-          house_building: ((r.streetNumber || '') + ' ' + (r.street || r.name || '')).trim() || f.house_building,
+          house_building: r.street ? ((r.streetNumber || '') + ' ' + r.street).trim() : f.house_building,
           road_area_colony: r.district || r.subregion || f.road_area_colony,
           city: r.city || r.region || f.city,
           pincode: r.postalCode || f.pincode,
           state: r.region || f.state,
           countryFlag: r.isoCountryCode || f.countryFlag,
-          lat: loc.coords.latitude, lang: loc.coords.longitude,
         }));
       } else {
         Alert.alert(t('profile.deliveryAddress'), t('profile.locationError'));
