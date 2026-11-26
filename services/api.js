@@ -60,7 +60,20 @@ export function refreshTokens(staleRefresh) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refresh: staleRefresh }),
       });
-      if (!res.ok) return null;
+      if (!res.ok) {
+        // Refus du serveur (jeton de rafraîchissement expiré ou en liste
+        // noire) : la session est morte, on la purge, sauf si un autre appel a
+        // fait tourner la paire entre-temps. Une panne réseau (exception plus
+        // bas) garde la session.
+        if (res.status === 401 || res.status === 403) {
+          const now = await getTokens();
+          if (!now?.refresh || now.refresh === staleRefresh) {
+            await clearTokens();
+            await removeSecureItem('KEY_AUTH');
+          }
+        }
+        return null;
+      }
       const data = await res.json();
       // Lire les deux formes (`access` sur /token/refresh/, `access_token` ailleurs).
       const newAccess = data.access || data.access_token;
@@ -131,10 +144,28 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT) {
 
 // ========== API METHODS (with response sanitization) ==========
 
+// Lecture du corps JSON sans planter : un corps JSON est rendu tel quel, même
+// sur une erreur HTTP (les appelants y lisent le message du serveur). Un corps
+// illisible (page HTML d'un 502, réponse vide) lève une erreur propre portant
+// le statut si la requête a échoué, et donne un objet vide si elle a réussi.
+async function readJson(res) {
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    if (!res.ok) {
+      const err = new Error(`Le serveur ne répond pas correctement (HTTP ${res.status}). Veuillez réessayer.`);
+      err.status = res.status;
+      throw err;
+    }
+    return {};
+  }
+  return sanitizeResponse(data);
+}
+
 export async function apiGet(endpoint) {
   const res = await apiFetch(endpoint, { method: 'GET' });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return readJson(res);
 }
 
 export async function apiPost(endpoint, body) {
@@ -142,8 +173,7 @@ export async function apiPost(endpoint, body) {
     method: 'POST',
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return readJson(res);
 }
 
 export async function apiPut(endpoint, body) {
@@ -151,16 +181,14 @@ export async function apiPut(endpoint, body) {
     method: 'PUT',
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return readJson(res);
 }
 
 export async function apiDelete(endpoint, body) {
   const opts = { method: 'DELETE' };
   if (body !== undefined) opts.body = JSON.stringify(body);
   const res = await apiFetch(endpoint, opts);
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return readJson(res);
 }
 
 // Variante qui garde le statut HTTP, pour les appels où un `message` dans le
@@ -201,8 +229,7 @@ export async function apiJsonWithStatus(method, endpoint, body, { timeoutMs } = 
 // Même rafraîchissement du jeton que les autres appels (jeton expiré, 401).
 export async function apiUpload(endpoint, formData, method = 'POST') {
   const res = await apiFetch(endpoint, { method, body: formData, multipart: true });
-  const data = await res.json();
-  return sanitizeResponse(data);
+  return readJson(res);
 }
 
 // Comme apiUpload, avec le statut HTTP ; un corps illisible n'est pas une erreur (data = null).
