@@ -112,7 +112,7 @@ const DayPill = React.memo(function DayPill({
           />
         ))}
       </View>
-      {today ? <View style={[s.today, selected && { backgroundColor: '#fff' }]} /> : null}
+      {today && !selected ? <View style={s.today} /> : null}
       {alert ? <View style={s.pillAlert} /> : null}
     </TouchableOpacity>
   );
@@ -822,8 +822,8 @@ const s = StyleSheet.create({
   pills: { flexDirection: 'row', marginTop: 20, gap: 6 },
   pill: {
     flex: 1,
-    height: 52,
-    borderRadius: 999,
+    aspectRatio: 1,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: T.card,
