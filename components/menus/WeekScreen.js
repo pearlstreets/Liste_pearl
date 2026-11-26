@@ -471,11 +471,29 @@ export default function WeekScreen({
             <Text style={s.sub}>{weekLabel(plan.weekStart, lang, t)}</Text>
           </View>
           <RoundIcon
-            name="refresh"
-            label={t('week.regenerate')}
-            onPress={() => m.generate()}
+            name="layers"
+            label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
+            onPress={onOpenBatch}
             color={T.brandDark}
           />
+          {onOpenExpress ? (
+            <View style={{ marginLeft: 8 }}>
+              <RoundIcon
+                name="mic-outline"
+                label={t('express.open')}
+                onPress={onOpenExpress}
+                color={T.brandDark}
+              />
+            </View>
+          ) : null}
+          <View style={{ marginLeft: 8 }}>
+            <RoundIcon
+              name="refresh"
+              label={t('week.regenerate')}
+              onPress={() => m.generate()}
+              color={T.brandDark}
+            />
+          </View>
           {onOpenMonth ? (
             <View style={{ marginLeft: 8 }}>
               <RoundIcon
@@ -486,46 +504,8 @@ export default function WeekScreen({
               />
             </View>
           ) : null}
-          {compact ? (
-            <View style={{ marginLeft: 8 }}>
-              <RoundIcon
-                name="layers"
-                label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
-                onPress={onOpenBatch}
-                color={T.brandDark}
-              />
-            </View>
-          ) : null}
-          {compact && onOpenExpress ? (
-            <View style={{ marginLeft: 8 }}>
-              <RoundIcon
-                name="mic-outline"
-                label={t('express.open')}
-                onPress={onOpenExpress}
-                color={T.brandDark}
-              />
-            </View>
-          ) : null}
         </View>
 
-        {!compact ? (
-          <PrimaryButton
-            soft
-            icon="layers"
-            label={t(m.batch ? 'batch.resumeOpen' : 'batch.open')}
-            onPress={onOpenBatch}
-            style={[s.btn, { marginTop: 12 }]}
-          />
-        ) : null}
-        {!compact && onOpenExpress ? (
-          <PrimaryButton
-            soft
-            icon="mic-outline"
-            label={t('express.open')}
-            onPress={onOpenExpress}
-            style={[s.btn, { marginTop: 10 }]}
-          />
-        ) : null}
         {onOpenShared ? (
           <TouchableOpacity onPress={onOpenShared} style={s.barLink} accessibilityRole="button">
             <Text style={s.barLinkTxt}>{t('week.sharedLink')}</Text>
