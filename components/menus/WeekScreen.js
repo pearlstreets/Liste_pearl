@@ -822,7 +822,7 @@ const s = StyleSheet.create({
   pills: { flexDirection: 'row', marginTop: 20, gap: 6 },
   pill: {
     flex: 1,
-    aspectRatio: 1,
+    height: 40,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -832,7 +832,7 @@ const s = StyleSheet.create({
   },
   pillOn: { backgroundColor: T.noir, borderColor: T.noir },
   pillTxt: { fontSize: 13, fontWeight: '600', color: T.muted },
-  pillDots: { flexDirection: 'row', marginTop: 6 },
+  pillDots: { flexDirection: 'row', marginTop: 4 },
   pillDot: {
     width: 5,
     height: 5,
