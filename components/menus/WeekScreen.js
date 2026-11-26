@@ -486,14 +486,6 @@ export default function WeekScreen({
               />
             </View>
           ) : null}
-          <View style={{ marginLeft: 8 }}>
-            <RoundIcon
-              name="refresh"
-              label={t('week.regenerate')}
-              onPress={() => m.generate()}
-              color={T.brandDark}
-            />
-          </View>
           {onOpenMonth ? (
             <View style={{ marginLeft: 8 }}>
               <RoundIcon
@@ -504,6 +496,14 @@ export default function WeekScreen({
               />
             </View>
           ) : null}
+          <View style={{ marginLeft: 8 }}>
+            <RoundIcon
+              name="refresh"
+              label={t('week.regenerate')}
+              onPress={() => m.generate()}
+              color={T.brandDark}
+            />
+          </View>
         </View>
 
         {onOpenShared ? (
@@ -624,18 +624,6 @@ export default function WeekScreen({
           ) : null}
         </View>
 
-        {changedSinceSent ? (
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={onOpenShop}
-            style={s.banner}
-            accessibilityRole="button"
-          >
-            <Ionicons name="options" size={18} color="#B45309" />
-            <Text style={s.bannerTxt}>{t('week.dirty')}</Text>
-            <Text style={s.bannerAct}>{t('week.dirtyAction')}</Text>
-          </TouchableOpacity>
-        ) : null}
         {warn && warn.code !== 'over_budget' ? (
           <ErrorBox text={t(`week.warn.${warn.code}`)} />
         ) : null}
