@@ -476,22 +476,22 @@ export default function WeekScreen({
             onPress={onOpenBatch}
             color={T.brandDark}
           />
-          {onOpenExpress ? (
-            <View style={{ marginLeft: 8 }}>
-              <RoundIcon
-                name="mic-outline"
-                label={t('express.open')}
-                onPress={onOpenExpress}
-                color={T.brandDark}
-              />
-            </View>
-          ) : null}
           {onOpenMonth ? (
             <View style={{ marginLeft: 8 }}>
               <RoundIcon
                 name="calendar-outline"
                 label={t('month.view')}
                 onPress={onOpenMonth}
+                color={T.brandDark}
+              />
+            </View>
+          ) : null}
+          {onOpenExpress ? (
+            <View style={{ marginLeft: 8 }}>
+              <RoundIcon
+                name="mic-outline"
+                label={t('express.open')}
+                onPress={onOpenExpress}
                 color={T.brandDark}
               />
             </View>
@@ -543,11 +543,11 @@ export default function WeekScreen({
           </View>
         ) : null}
 
-        <View style={[s.gauge, compact && s.gaugeCompact]}>
+        <View style={[s.gauge, s.gaugeCompact]}>
           <View style={s.gaugeTop}>
             <View>
               <Text style={s.gaugeLabel}>{t('week.estimated')}</Text>
-              <Text style={[s.gaugeVal, compact && s.gaugeValCompact]}>
+              <Text style={[s.gaugeVal, s.gaugeValCompact]}>
                 {formatEur(b.estimated || 0, lang)}
               </Text>
             </View>
@@ -616,8 +616,7 @@ export default function WeekScreen({
               ) : null}
             </>
           ) : null}
-          {!compact ? <Text style={s.gaugeFoot}>{t('week.estimateNote')}</Text> : null}
-          {!compact && m.shopping && m.shopping.unpricedCount > 0 ? (
+          {m.shopping && m.shopping.unpricedCount > 0 ? (
             <Text style={s.gaugeFoot}>
               {t('shop.unpriced', { count: m.shopping.unpricedCount })}
             </Text>
@@ -789,7 +788,7 @@ const s = StyleSheet.create({
   },
   gaugeVal: { fontSize: 32, fontWeight: '600', color: T.ink, marginTop: 2 },
   gaugeValCompact: { fontSize: 24 },
-  gaugeTarget: { fontSize: 20, fontWeight: '600', color: T.ink, marginTop: 2 },
+  gaugeTarget: { fontSize: 18, fontWeight: '600', color: T.ink, marginTop: 2 },
   gaugeNoBudget: {
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -801,14 +800,14 @@ const s = StyleSheet.create({
   gaugeEdit: { flexDirection: 'row', alignItems: 'center' },
   gaugeNoBudgetTxt: { fontSize: 12, fontWeight: '700', color: T.muted },
   track: {
-    height: 10,
-    borderRadius: 5,
+    height: 8,
+    borderRadius: 4,
     backgroundColor: T.subtle,
-    marginTop: 14,
+    marginTop: 10,
     overflow: 'hidden',
   },
   fill: { height: 10, borderRadius: 5 },
-  gaugeNote: { fontSize: 13, fontWeight: '700', color: T.brandDark, marginTop: 8 },
+  gaugeNote: { fontSize: 13, fontWeight: '700', color: T.brandDark, marginTop: 6 },
   gaugeFoot: { fontSize: 12, color: T.faint, marginTop: 8, lineHeight: 17 },
   banner: {
     flexDirection: 'row',
