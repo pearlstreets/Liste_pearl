@@ -102,6 +102,28 @@ export const BudgetSheet = memo(function BudgetSheet({ onClose }) {
   );
 });
 
+/** Budget changé : proposer de recomposer la semaine pour qu'elle colle au nouveau budget. */
+export const BudgetUpdateSheet = memo(function BudgetUpdateSheet({ onClose, onUpdate }) {
+  const t = useT();
+  return (
+    <Sheet onClose={onClose} label={t('week.budgetUpdateLater')}>
+      <View style={{ alignItems: 'center', paddingTop: 6 }}>
+        <View style={s.badge}>
+          <Ionicons name="refresh" size={34} color="#fff" />
+        </View>
+        <Text style={[s.title, { textAlign: 'center', marginTop: 14 }]}>
+          {t('week.budgetUpdateTitle')}
+        </Text>
+        <Text style={[s.sub, { textAlign: 'center' }]}>{t('week.budgetUpdateText')}</Text>
+      </View>
+      <View style={{ marginTop: 6 }}>
+        <PrimaryButton label={t('week.budgetUpdateGo')} onPress={onUpdate} />
+        <GhostButton label={t('week.budgetUpdateLater')} onPress={onClose} />
+      </View>
+    </Sheet>
+  );
+});
+
 /** Choisir le repas du plan où poser une recette personnelle. */
 export const PlanPickSheet = memo(function PlanPickSheet({ recipe, onClose, onDone }) {
   const t = useT();
