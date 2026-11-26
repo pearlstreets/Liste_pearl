@@ -1,5 +1,5 @@
 // Blocs de réglages partagés entre la présentation (3 écrans) et l'écran Réglages.
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { norm, ALLERGEN_CHOICES } from '../../lib/menus';
@@ -290,6 +290,33 @@ export const HouseholdModeChips = memo(function HouseholdModeChips({ profile, on
 export const BudgetCard = memo(function BudgetCard({ profile, onChange, style }) {
   const t = useT();
   const hasBudget = profile.budget != null;
+  // Chiffre affiché tout de suite à chaque appui ; enregistrement (profil, plan, synchro) une seule fois
+  // quand les appuis s'arrêtent, et à la fermeture.
+  const [local, setLocal] = useState(profile.budget);
+  const attente = useRef(null);
+  const aEnvoyer = useRef(null);
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+  useEffect(() => {
+    if (aEnvoyer.current == null) setLocal(profile.budget);
+  }, [profile.budget]);
+  const envoyer = useCallback(() => {
+    clearTimeout(attente.current);
+    attente.current = null;
+    const v = aEnvoyer.current;
+    aEnvoyer.current = null;
+    if (v != null) onChangeRef.current({ budget: v });
+  }, []);
+  useEffect(() => envoyer, [envoyer]);
+  const changer = useCallback(
+    (v) => {
+      setLocal(v);
+      aEnvoyer.current = v;
+      clearTimeout(attente.current);
+      attente.current = setTimeout(envoyer, 400);
+    },
+    [envoyer]
+  );
   return (
     <Card style={style}>
       <View style={s.row}>
@@ -299,7 +326,12 @@ export const BudgetCard = memo(function BudgetCard({ profile, onChange, style })
         />
         <Switch
           value={hasBudget}
-          onValueChange={(on) => onChange({ budget: on ? 80 : null })}
+          onValueChange={(on) => {
+            clearTimeout(attente.current);
+            aEnvoyer.current = null;
+            setLocal(on ? 80 : null);
+            onChange({ budget: on ? 80 : null });
+          }}
           trackColor={{ true: MARCHE.noir, false: T.borderInput }}
           thumbColor="#fff"
         />
@@ -307,12 +339,12 @@ export const BudgetCard = memo(function BudgetCard({ profile, onChange, style })
       {hasBudget ? (
         <View style={[s.row, { marginTop: 14, justifyContent: 'center' }]}>
           <Stepper
-            value={profile.budget}
+            value={local != null ? local : profile.budget}
             min={20}
             max={500}
             step={5}
             format={(v) => `${v} €`}
-            onChange={(v) => onChange({ budget: v })}
+            onChange={changer}
             label={t('profile.budget')}
           />
         </View>
