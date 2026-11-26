@@ -58,13 +58,29 @@ test('enregistrement : chiffré seulement', async () => {
   expect(mockStore.has('MARKETPLACE_TOKENS')).toBe(false);
 });
 
-test('échec du stockage chiffré : repli AsyncStorage, personne n est déconnecté', async () => {
+test('échec du stockage chiffré : jetons en mémoire seulement, jamais en clair', async () => {
   mockStore.set('MARKETPLACE_TOKENS', TOKENS);
   mockFlags.failSet = true;
   expect(await api.getTokens()).toMatchObject({ refresh: 'R1' });
-  expect(mockStore.get('MARKETPLACE_TOKENS')).toBe(TOKENS);
+  expect(mockStore.has('MARKETPLACE_TOKENS')).toBe(false);
   await api.saveTokens('A3', 'R3');
   expect(await api.getTokens()).toMatchObject({ access: 'A3', refresh: 'R3' });
+  expect(mockStore.has('MARKETPLACE_TOKENS')).toBe(false);
+  expect(mockSecure.has('MARKETPLACE_TOKENS')).toBe(false);
+});
+
+test('jetons de plus de 2 Ko : découpés sur plusieurs entrées chiffrées', async () => {
+  const longAccess = 'a'.repeat(3000);
+  await api.saveTokens(longAccess, 'R7');
+  expect(mockStore.has('MARKETPLACE_TOKENS')).toBe(false);
+  expect(mockSecure.get('MARKETPLACE_TOKENS')).toMatch(/^__pearl_morceaux__:/);
+  for (const v of mockSecure.values()) expect(v.length).toBeLessThanOrEqual(2048);
+  expect(await api.getTokens()).toMatchObject({ access: longAccess, refresh: 'R7' });
+  await api.saveTokens('A8', 'R8');
+  expect(mockSecure.has('MARKETPLACE_TOKENS.part0')).toBe(false);
+  expect(await api.getTokens()).toMatchObject({ access: 'A8' });
+  await api.clearTokens();
+  expect(mockSecure.size).toBe(0);
 });
 
 test('stockage chiffré absent (web) : AsyncStorage comme avant', async () => {

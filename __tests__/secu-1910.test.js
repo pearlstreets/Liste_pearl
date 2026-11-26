@@ -63,14 +63,33 @@ describe('rafraîchissement des jetons', () => {
     expect(refreshCalls).toHaveLength(1);
   });
 
-  test('refresh refusé : la requête part sans en-tête et rien n est écrasé', async () => {
+  test('refresh refusé par le serveur : la requête part sans en-tête et la session est purgée', async () => {
     await api.saveTokens(jwt(-10), 'R1');
     global.fetch
       .mockResolvedValueOnce(jsonRes(401, { detail: 'Token is blacklisted' }))
       .mockResolvedValueOnce(jsonRes(200, { ok: true }));
     await api.apiGet('/users/x/');
     expect(global.fetch.mock.calls[1][1].headers.Authorization).toBeUndefined();
+    expect(await api.getTokens()).toBeNull();
+  });
+
+  test('refresh en panne réseau : la session est gardée', async () => {
+    await api.saveTokens(jwt(-10), 'R1');
+    global.fetch
+      .mockRejectedValueOnce(new TypeError('Network request failed'))
+      .mockResolvedValueOnce(jsonRes(200, { ok: true }));
+    await api.apiGet('/users/x/');
     expect((await api.getTokens()).refresh).toBe('R1');
+  });
+
+  test('réponse HTML (502) : erreur propre avec le statut, pas de SyntaxError', async () => {
+    global.fetch.mockResolvedValueOnce({ ok: false, status: 502, json: async () => { throw new SyntaxError('html'); } });
+    await expect(api.apiGet('/users/x/')).rejects.toMatchObject({ status: 502 });
+  });
+
+  test('erreur HTTP avec corps JSON : le message du serveur reste lisible', async () => {
+    global.fetch.mockResolvedValueOnce(jsonRes(400, { status: false, message: 'Code invalide' }));
+    expect(await api.apiPost('/users/verify-otp/', {})).toMatchObject({ message: 'Code invalide' });
   });
 });
 
