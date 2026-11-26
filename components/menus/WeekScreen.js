@@ -1,5 +1,5 @@
 // Accueil "Ma semaine" : budget estimé, jours, cartes repas, validation en un geste.
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -150,6 +150,13 @@ export default function WeekScreen({
   const [swapKey, setSwapKey] = useState(null);
   const [guestsKey, setGuestsKey] = useState(null);
   const [budgetOpen, setBudgetOpen] = useState(false);
+  // Budget changé dans la fenêtre : à la fermeture, proposer de recomposer la semaine pour qu'elle colle au budget.
+  const budgetStart = useRef(undefined);
+  const curBudget = m.profile ? m.profile.budget : null;
+  const openBudget = () => {
+    budgetStart.current = curBudget;
+    setBudgetOpen(true);
+  };
   const [added, setAdded] = useState(null);
   const [addedName, setAddedName] = useState('');
   const [sending, setSending] = useState(false);
@@ -157,6 +164,24 @@ export default function WeekScreen({
   // Même libellé que l'onglet Courses : déjà ajouté, différence seulement, ou ajout complet (liste active).
   const [listState, setListState] = useState({ kind: 'new', count: 0 });
   const focused = useIsFocused();
+  useEffect(() => {
+    if (budgetOpen || budgetStart.current === undefined) return undefined;
+    if (curBudget === budgetStart.current) {
+      // le dernier chiffre part à la fermeture de la fenêtre : on lui laisse le temps d'arriver
+      const id = setTimeout(() => {
+        budgetStart.current = undefined;
+      }, 800);
+      return () => clearTimeout(id);
+    }
+    budgetStart.current = undefined;
+    if (curBudget == null) return undefined;
+    Alert.alert(t('week.budgetUpdateTitle'), t('week.budgetUpdateText'), [
+      { text: t('week.budgetUpdateLater'), style: 'cancel' },
+      { text: t('week.budgetUpdateGo'), onPress: () => m.generate() },
+    ]);
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [budgetOpen, curBudget]);
   const activeLines = m.activeLines;
   const planWeekStart = (plan && plan.weekStart) || null;
   useEffect(() => {
@@ -552,7 +577,7 @@ export default function WeekScreen({
             {target ? (
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => setBudgetOpen(true)}
+                onPress={openBudget}
                 style={{ alignItems: 'flex-end' }}
                 accessibilityRole="button"
                 accessibilityLabel={t('week.budgetChange')}
@@ -567,7 +592,7 @@ export default function WeekScreen({
             ) : (
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => setBudgetOpen(true)}
+                onPress={openBudget}
                 style={[s.gaugeNoBudget, s.gaugeEdit]}
                 accessibilityRole="button"
                 accessibilityLabel={t('week.budgetChange')}
