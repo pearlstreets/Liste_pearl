@@ -10,6 +10,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //   valeur reste dans AsyncStorage, personne n'est déconnecté ;
 // - valeurs de plus de 2 Ko (limite conseillée par expo-secure-store) gardées
 //   dans AsyncStorage.
+// Exception, les jetons de session (CLES_SANS_CLAIR) : jamais en clair dans
+// AsyncStorage sur un appareil qui a un trousseau. Au-delà de 2 Ko ils sont
+// découpés sur plusieurs entrées chiffrées ; si le trousseau échoue, ils restent
+// en mémoire seulement (perdus à la fermeture de l'app). Une ancienne copie
+// AsyncStorage est relue une fois, réécrite chiffrée, puis effacée. Sans
+// trousseau du tout (web, tests), AsyncStorage comme avant.
 
 let SecureStore = null;
 try {
@@ -23,6 +29,12 @@ try {
 export const SECURE_KEYS = ['MARKETPLACE_TOKENS', 'KEY_AUTH', 'KEY_PROFILE'];
 
 const MAX_SECURE_BYTES = 2048;
+// Jetons : jamais en clair, découpés au-delà de 2 Ko.
+const CLES_SANS_CLAIR = ['MARKETPLACE_TOKENS'];
+const MARQUE_MORCEAUX = '__pearl_morceaux__:';
+const MAX_MORCEAUX = 16;
+// Repli en mémoire des clés sans clair quand le trousseau échoue.
+const memoire = {};
 // Le trousseau iOS survit à la désinstallation de l'app : ce repère, gardé dans
 // AsyncStorage (effacé, lui, à la désinstallation), signale une installation
 // neuve, auquel cas les restes de l'installation précédente sont effacés.
@@ -72,6 +84,13 @@ async function secureAvailable() {
             try {
               await SecureStore.deleteItemAsync(k, OPTIONS);
             } catch {}
+            if (CLES_SANS_CLAIR.includes(k)) {
+              for (let i = 0; i < MAX_MORCEAUX; i++) {
+                try {
+                  await SecureStore.deleteItemAsync(cleMorceau(k, i), OPTIONS);
+                } catch {}
+              }
+            }
           }
           await AsyncStorage.setItem(INSTALL_MARKER, '1');
         }
@@ -108,7 +127,137 @@ async function readSecure(key) {
   }
 }
 
+function cleMorceau(key, i) {
+  return `${key}.part${i}`;
+}
+
+// Découpe en morceaux de 2 Ko au plus (en octets UTF-8).
+function decouper(value) {
+  const parts = [];
+  let cur = '';
+  let curBytes = 0;
+  for (const ch of value) {
+    const b = utf8Bytes(ch);
+    if (curBytes + b > MAX_SECURE_BYTES) {
+      parts.push(cur);
+      cur = '';
+      curBytes = 0;
+    }
+    cur += ch;
+    curBytes += b;
+  }
+  parts.push(cur);
+  return parts;
+}
+
+function nbMorceaux(head) {
+  if (typeof head !== 'string' || !head.startsWith(MARQUE_MORCEAUX)) return 0;
+  const n = parseInt(head.slice(MARQUE_MORCEAUX.length), 10);
+  return n > 0 && n <= MAX_MORCEAUX ? n : 0;
+}
+
+async function effacerMorceaux(key, depuis = 0) {
+  for (let i = depuis; i < MAX_MORCEAUX; i++) {
+    try {
+      await SecureStore.deleteItemAsync(cleMorceau(key, i), OPTIONS);
+    } catch {}
+  }
+}
+
+// Écrit chiffré (découpé si besoin) et relit pour vérifier ; lève sur échec.
+async function ecrireDecoupe(key, value) {
+  const avant = nbMorceaux((await readSecure(key)).value);
+  let apres = 0;
+  if (utf8Bytes(value) <= MAX_SECURE_BYTES) {
+    await SecureStore.setItemAsync(key, value, OPTIONS);
+  } else {
+    const parts = decouper(value);
+    if (parts.length > MAX_MORCEAUX) throw new Error('valeur trop grande');
+    for (let i = 0; i < parts.length; i++) {
+      await SecureStore.setItemAsync(cleMorceau(key, i), parts[i], OPTIONS);
+    }
+    await SecureStore.setItemAsync(key, MARQUE_MORCEAUX + parts.length, OPTIONS);
+    apres = parts.length;
+  }
+  if (avant > apres) await effacerMorceaux(key, apres);
+  if ((await lireDecoupe(key)) !== value) throw new Error('relecture');
+}
+
+async function lireDecoupe(key) {
+  const head = (await readSecure(key)).value;
+  const n = nbMorceaux(head);
+  if (!n) return head ?? null;
+  const parts = [];
+  for (let i = 0; i < n; i++) {
+    const part = (await readSecure(cleMorceau(key, i))).value;
+    if (part === null || part === undefined) return null;
+    parts.push(part);
+  }
+  return parts.join('');
+}
+
+async function effacerDecoupe(key) {
+  try {
+    await SecureStore.deleteItemAsync(key, OPTIONS);
+  } catch {}
+  await effacerMorceaux(key);
+}
+
+// Clés sans clair, sur un appareil qui a un trousseau.
+function getSansClair(key) {
+  return withLock(key, async () => {
+    if (Object.prototype.hasOwnProperty.call(memoire, key)) return memoire[key];
+    // Ancienne copie en clair : relue une fois, réécrite chiffrée, effacée.
+    let legacy = null;
+    try {
+      legacy = await AsyncStorage.getItem(key);
+    } catch {}
+    if (legacy !== null && legacy !== undefined) {
+      try {
+        await ecrireDecoupe(key, legacy);
+      } catch {
+        memoire[key] = legacy;
+      }
+      try {
+        await AsyncStorage.removeItem(key);
+      } catch {}
+      return legacy;
+    }
+    return lireDecoupe(key);
+  });
+}
+
+function setSansClair(key, value) {
+  return withLock(key, async () => {
+    try {
+      await ecrireDecoupe(key, value);
+      delete memoire[key];
+    } catch {
+      // Trousseau en échec : mémoire seulement, et la copie chiffrée, plus
+      // ancienne, est retirée pour ne pas resurgir.
+      memoire[key] = value;
+      await effacerDecoupe(key);
+    }
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch {}
+  });
+}
+
+async function trousseauPresent() {
+  await secureAvailable();
+  if (!SecureStore || !availability) return false;
+  return !!(await availability);
+}
+
 export function getSecureItem(key) {
+  if (CLES_SANS_CLAIR.includes(key)) {
+    return trousseauPresent().then((present) => (present ? getSansClair(key) : getSecureItemClassique(key)));
+  }
+  return getSecureItemClassique(key);
+}
+
+function getSecureItemClassique(key) {
   return withLock(key, async () => {
     if (!(await secureAvailable())) return AsyncStorage.getItem(key);
     // Une valeur encore présente dans AsyncStorage est la plus récente
@@ -131,6 +280,13 @@ export function getSecureItem(key) {
 }
 
 export function setSecureItem(key, value) {
+  if (CLES_SANS_CLAIR.includes(key)) {
+    return trousseauPresent().then((present) => (present ? setSansClair(key, value) : setSecureItemClassique(key, value)));
+  }
+  return setSecureItemClassique(key, value);
+}
+
+function setSecureItemClassique(key, value) {
   return withLock(key, async () => {
     if ((await secureAvailable()) && utf8Bytes(value) <= MAX_SECURE_BYTES) {
       try {
@@ -153,10 +309,14 @@ export function setSecureItem(key, value) {
 
 export function removeSecureItem(key) {
   return withLock(key, async () => {
+    delete memoire[key];
     if (await secureAvailable()) {
       try {
         await SecureStore.deleteItemAsync(key, OPTIONS);
       } catch {}
+    }
+    if (CLES_SANS_CLAIR.includes(key) && (await trousseauPresent())) {
+      await effacerMorceaux(key);
     }
     await AsyncStorage.removeItem(key);
   });
