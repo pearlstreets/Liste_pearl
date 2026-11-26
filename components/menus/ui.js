@@ -154,18 +154,20 @@ export const Stepper = memo(function Stepper({
         onPress={() => onChange(Math.max(min, v - step))}
         style={[s.stepBtn, v <= min && { opacity: 0.4 }]}
         disabled={v <= min}
+        hitSlop={6}
         accessibilityLabel="-"
       >
-        <Ionicons name="remove" size={20} color={T.ink} />
+        <Ionicons name="remove" size={17} color={T.ink} />
       </TouchableOpacity>
       <Text style={s.stepVal}>{format ? format(v) : String(v)}</Text>
       <TouchableOpacity
         onPress={() => onChange(Math.min(max, v + step))}
         style={[s.stepBtn, v >= max && { opacity: 0.4 }]}
         disabled={v >= max}
+        hitSlop={6}
         accessibilityLabel="+"
       >
-        <Ionicons name="add" size={20} color={T.ink} />
+        <Ionicons name="add" size={17} color={T.ink} />
       </TouchableOpacity>
     </View>
   );
@@ -268,15 +270,15 @@ const s = StyleSheet.create({
   ghostTxt: { color: T.muted, fontSize: 14, fontWeight: '600' },
   stepper: { flexDirection: 'row', alignItems: 'center' },
   stepBtn: {
-    width: TAILLES.icone,
-    height: TAILLES.icone,
-    borderRadius: TAILLES.icone / 2,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     backgroundColor: '#fff',
     borderWidth: 1, borderColor: T.borderInput,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepVal: { minWidth: 44, textAlign: 'center', fontSize: 18, fontWeight: '600', color: T.ink },
+  stepVal: { minWidth: 44, marginHorizontal: 12, textAlign: 'center', fontSize: 18, fontWeight: '600', color: T.ink },
   input: {
     backgroundColor: '#fff',
     borderWidth: 1,
